@@ -1,0 +1,9 @@
+{
+  "assets": [
+    {
+      "name": "ZP3CommonAsset",
+      "version": "0.0",
+      "class": "ru.gltexture.zpm3.assets.common.ZPCommonAsset"
+    }
+  ]
+}

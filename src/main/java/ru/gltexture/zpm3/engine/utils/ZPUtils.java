@@ -6,7 +6,6 @@ import java.io.*;
 import java.util.stream.Collectors;
 
 public abstract class ZPUtils {
-
     public static String readTextFromJar(String path) throws IOException {
         try (InputStream input = ZombiePlague3.class.getClassLoader().getResourceAsStream(path)) {
             if (input == null) {

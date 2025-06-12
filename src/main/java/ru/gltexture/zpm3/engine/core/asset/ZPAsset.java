@@ -9,6 +9,7 @@ public abstract class ZPAsset {
         this.zpAssetData = zpAssetData;
     }
 
+    public abstract void commonSetup();
     public abstract void initAsset(ZombiePlague3.IAssetEntry assetEntry);
 
     public ZPAssetData getZpAssetData() {

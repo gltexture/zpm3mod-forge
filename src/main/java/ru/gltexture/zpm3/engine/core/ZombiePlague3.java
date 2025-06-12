@@ -11,6 +11,7 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.DeferredRegister;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,9 +44,16 @@ public final class ZombiePlague3 {
         this.init();
     }
 
+    private static IEventBus getModEventBus() {
+        return FMLJavaModLoadingContext.get().getModEventBus();
+    }
+
     private void init() {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        ZPLogger.info(this + " INIT");
+        IEventBus modEventBus = ZombiePlague3.getModEventBus();
+        this.initAssets();
         modEventBus.addListener(this::commonSetup);
+        ZPLogger.info(this + " END INIT");
     }
 
     private void initAssets() {
@@ -125,9 +133,14 @@ public final class ZombiePlague3 {
         }
     }
 
+    public static void registerDeferred(DeferredRegister<?> deferredRegister) {
+        deferredRegister.register(ZombiePlague3.getModEventBus());
+    }
+
     private void commonSetup(final FMLCommonSetupEvent event) {
-        ZPLogger.info(this + " Common setup");
-        this.initAssets();
+        for (ZPAsset zpAsset : this.assets) {
+            zpAsset.commonSetup();
+        }
     }
 
     public ZPRegistryConveyor getZpRegistryConveyor() {

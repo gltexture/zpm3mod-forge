@@ -12,9 +12,13 @@ public class ZPCommonAsset extends ZPAsset {
     }
 
     @Override
+    public void commonSetup() {
+
+    }
+
+    @Override
     public void initAsset(ZombiePlague3.IAssetEntry assetEntry) {
         assetEntry.addRegistryClass(ZPItems.class);
         assetEntry.addEventClass(ZPGatherDataEvent.class);
-        //assetEntry.addPackageWithEvents("ru.gltexture.zpm3.assets.common.events.server");
     }
 }

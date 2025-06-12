@@ -11,19 +11,20 @@ public final class ZPRegistryConveyor {
     public ZPRegistryConveyor() {
     }
 
-    void launch(Set<Class<? extends ZPRegistry<?>>> processorClasses) {
-        List<ZPRegistry<?>> processors = new ArrayList<>();
+    void launch(Set<Class<? extends ZPRegistry<?>>> registryClasses) {
+        List<ZPRegistry<?>> registries = new ArrayList<>();
         try {
-            for (Class<? extends ZPRegistry<?>> zpRegistryProcessorClass : processorClasses) {
-                processors.add(zpRegistryProcessorClass.getConstructor().newInstance());
+            for (Class<? extends ZPRegistry<?>> zpRegistryProcessorClass : registryClasses) {
+                registries.add(zpRegistryProcessorClass.getConstructor().newInstance());
             }
         } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
             throw new ZPRuntimeException(e);
         }
-        processors.sort(Comparator.comparing((ZPRegistry<?> p) -> p.getTarget().getOrder()).thenComparing(ZPRegistry::priority));
+        registries.sort(Comparator.comparing((ZPRegistry<?> p) -> p.getTarget().getOrder()).thenComparing(ZPRegistry::priority));
 
-        for (ZPRegistry<?> zpRegistry : processors) {
-            ZPLogger.info("Initializing ZP processor: " + zpRegistry);
+        for (ZPRegistry<?> zpRegistry : registries) {
+            ZPLogger.info("Initializing ZP registry: " + zpRegistry);
+            ZombiePlague3.registerDeferred(zpRegistry.getDeferredRegister());
             zpRegistry.runRegister();
         }
     }

@@ -1,17 +1,23 @@
 package ru.gltexture.zpm3.engine.registry.base;
 
+import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
+import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 
 import java.util.function.Supplier;
 
 public abstract class ZPRegistry<T> {
     private final DeferredRegister<T> deferredRegister;
+    private final ZPRegistryConveyor.Target target;
 
-    public ZPRegistry() {
-        this.deferredRegister = this.createDeferredRegister();
+    public ZPRegistry(@NotNull IForgeRegistry<T> registry, @NotNull ZPRegistryConveyor.Target target) {
+        this.deferredRegister = this.createDeferredRegister(registry);
+        this.target = target;
     }
 
     protected abstract void runRegister(@NotNull ZPRegistry.ZPRegSupplier<T> regSupplier);
@@ -20,13 +26,34 @@ public abstract class ZPRegistry<T> {
         this.runRegister(this.getSupplier());
     }
 
-    protected abstract @NotNull DeferredRegister<T> createDeferredRegister();
+    protected @NotNull DeferredRegister<T> createDeferredRegister(IForgeRegistry<T> registry) {
+        return DeferredRegister.create(registry, ZombiePlague3.MOD_ID());
+    }
+
     public abstract int priority();
-    public abstract @NotNull ZPRegistryConveyor.Target getTarget();
     public abstract @NotNull String getID();
 
+    public ZPRegistryConveyor.Target getTarget() {
+        return this.target;
+    }
+
+    public DeferredRegister<T> getDeferredRegister() {
+        return this.deferredRegister;
+    }
+
+    protected void preRegister() {
+    }
+
+    protected void postRegister(RegistryObject<T> object) {
+    }
+
     private ZPRegSupplier<T> getSupplier() {
-        return this.deferredRegister::register;
+        return ((name, supplier) -> {
+            this.preRegister();
+            RegistryObject<T> object = this.getDeferredRegister().register(name, supplier);
+            this.postRegister(object);
+            return object;
+        });
     }
 
     @FunctionalInterface

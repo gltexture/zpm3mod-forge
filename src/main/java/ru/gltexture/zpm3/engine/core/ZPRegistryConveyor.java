@@ -25,14 +25,16 @@ public final class ZPRegistryConveyor {
         for (ZPRegistry<?> zpRegistry : registries) {
             ZPLogger.info("Initializing ZP registry: " + zpRegistry);
             ZombiePlague3.registerDeferred(zpRegistry.getDeferredRegister());
+            zpRegistry.preProcessing();
             zpRegistry.runRegister();
+            zpRegistry.postProcessing();
         }
     }
 
     public enum Target {
         TAB(0),
-        ITEM(1),
-        BLOCK(2);
+        BLOCK(1),
+        ITEM(2);
 
         private final int order;
 

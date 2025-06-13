@@ -6,31 +6,31 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.engine.helpers.ZPDefaultModelsHelper;
+import ru.gltexture.zpm3.engine.helpers.ZPItemBlockHelper;
 import ru.gltexture.zpm3.engine.helpers.ZPItemTabAddHelper;
 import ru.gltexture.zpm3.engine.registry.base.ZPRegistry;
 
-public class ZPItems extends ZPRegistry<Item> {
-    public static RegistryObject<Item> acid_bottle;
+public class ZPBlockItems extends ZPRegistry<Item> {
+    public static RegistryObject<Item> block_lamp_item;
 
-    public ZPItems() {
+    public ZPBlockItems() {
         super(ForgeRegistries.ITEMS, ZPRegistryConveyor.Target.ITEM);
     }
 
     @Override
     protected void runRegister(@NotNull ZPRegSupplier<Item> regSupplier) {
-        ZPItems.acid_bottle = regSupplier.register("acid_bottle", () -> new Item(new Item.Properties()));
+        ZPBlockItems.block_lamp_item = ZPItemBlockHelper.createBlockItem(regSupplier, ZPBlocks.block_lamp);
 
-        ZPItemTabAddHelper.matchTabItem(ZPTabs.zp_items_tab, ZPItems.acid_bottle);
+        ZPItemTabAddHelper.matchTabItem(ZPTabs.zp_blocks_tab, ZPBlockItems.block_lamp_item);
     }
 
     @Override
     protected void postRegister(String name, RegistryObject<Item> object) {
-        ZPDefaultModelsHelper.addNewItemWithDefaultModel(object, ZPDefaultModelsHelper.DEFAULT_ITEM);
     }
 
     @Override
     public int priority() {
-        return 0;
+        return 1;
     }
 
     @Override

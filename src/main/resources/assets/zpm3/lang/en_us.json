@@ -1,3 +1,8 @@
 {
-  "zpm3.tab.items": "ZP3 Items"
+  "tab.zpm3.items": "ZP3 Items",
+  "tab.zpm3.blocks": "ZP3 Blocks",
+
+  "item.zpm3.acid_bottle": "Acid Bottle",
+
+  "block.zpm3.block_lamp": "City Lamp"
 }

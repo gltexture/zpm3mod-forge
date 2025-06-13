@@ -1,8 +1,8 @@
 package ru.gltexture.zpm3.engine.registry.base;
 
-import net.minecraft.world.item.Item;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +20,11 @@ public abstract class ZPRegistry<T> {
         this.target = target;
     }
 
+    public ZPRegistry(@NotNull ResourceKey<? extends Registry<T>> registry, @NotNull ZPRegistryConveyor.Target target) {
+        this.deferredRegister = this.createDeferredRegister(registry);
+        this.target = target;
+    }
+
     protected abstract void runRegister(@NotNull ZPRegistry.ZPRegSupplier<T> regSupplier);
 
     public void runRegister() {
@@ -27,6 +32,10 @@ public abstract class ZPRegistry<T> {
     }
 
     protected @NotNull DeferredRegister<T> createDeferredRegister(IForgeRegistry<T> registry) {
+        return DeferredRegister.create(registry, ZombiePlague3.MOD_ID());
+    }
+
+    protected @NotNull DeferredRegister<T> createDeferredRegister(ResourceKey<? extends Registry<T>> registry) {
         return DeferredRegister.create(registry, ZombiePlague3.MOD_ID());
     }
 
@@ -41,17 +50,23 @@ public abstract class ZPRegistry<T> {
         return this.deferredRegister;
     }
 
-    protected void preRegister() {
+    protected void preRegister(String name) {
     }
 
-    protected void postRegister(RegistryObject<T> object) {
+    protected void postRegister(String name, RegistryObject<T> object) {
+    }
+
+    public void preProcessing() {
+    }
+
+    public void postProcessing() {
     }
 
     private ZPRegSupplier<T> getSupplier() {
         return ((name, supplier) -> {
-            this.preRegister();
+            this.preRegister(name);
             RegistryObject<T> object = this.getDeferredRegister().register(name, supplier);
-            this.postRegister(object);
+            this.postRegister(name, object);
             return object;
         });
     }

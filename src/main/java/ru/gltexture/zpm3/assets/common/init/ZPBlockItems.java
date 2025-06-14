@@ -35,6 +35,6 @@ public class ZPBlockItems extends ZPRegistry<Item> {
 
     @Override
     public @NotNull String getID() {
-        return "ZPItems";
+        return this.getClass().getSimpleName();
     }
 }

@@ -62,18 +62,22 @@ public abstract class ZPRegistry<T> {
     public void postProcessing() {
     }
 
-    private ZPRegSupplier<T> getSupplier() {
-        return ((name, supplier) -> {
-            this.preRegister(name);
-            RegistryObject<T> object = this.getDeferredRegister().register(name, supplier);
-            this.postRegister(name, object);
-            return object;
-        });
+    @SuppressWarnings("unchecked")
+    private <I extends T> ZPRegSupplier<I> getSupplier() {
+        return new ZPRegSupplier<I>() {
+            @Override
+            public <E extends I> RegistryObject<E> register(String name, Supplier<E> supplier) {
+                ZPRegistry.this.preRegister(name);
+                RegistryObject<E> object = getDeferredRegister().register(name, supplier);
+                ZPRegistry.this.postRegister(name, (RegistryObject<T>) object);
+                return object;
+            }
+        };
     }
 
     @FunctionalInterface
     public interface ZPRegSupplier<R> {
-        RegistryObject<R> register(String name, Supplier<R> supplier);
+        <E extends R> RegistryObject<E> register(String name, Supplier<E> supplier);
     }
 
     @Override

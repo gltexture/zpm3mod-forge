@@ -4,6 +4,7 @@ import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.assets.items.ItemAcidBottle;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.engine.helpers.ZPDefaultModelsHelper;
 import ru.gltexture.zpm3.engine.helpers.ZPItemTabAddHelper;
@@ -18,7 +19,7 @@ public class ZPItems extends ZPRegistry<Item> {
 
     @Override
     protected void runRegister(@NotNull ZPRegSupplier<Item> regSupplier) {
-        ZPItems.acid_bottle = regSupplier.register("acid_bottle", () -> new Item(new Item.Properties()));
+        ZPItems.acid_bottle = regSupplier.register("acid_bottle", () -> new ItemAcidBottle(new Item.Properties()));
 
         ZPItemTabAddHelper.matchTabItem(ZPTabs.zp_items_tab, ZPItems.acid_bottle);
     }
@@ -35,6 +36,6 @@ public class ZPItems extends ZPRegistry<Item> {
 
     @Override
     public @NotNull String getID() {
-        return "ZPItems";
+        return this.getClass().getSimpleName();
     }
 }

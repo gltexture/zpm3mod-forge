@@ -1,5 +1,7 @@
 package ru.gltexture.zpm3.engine.utils;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 
 import java.io.*;
@@ -13,5 +15,13 @@ public abstract class ZPUtils {
             }
             return new BufferedReader(new InputStreamReader(input)).lines().collect(Collectors.joining("\n"));
         }
+    }
+
+    public static void onlyClient(Runnable runnable) {
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> runnable);
+    }
+
+    public static void onlyServer(Runnable runnable) {
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> runnable);
     }
 }

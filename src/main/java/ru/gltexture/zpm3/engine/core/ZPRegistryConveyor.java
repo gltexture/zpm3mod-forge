@@ -34,7 +34,8 @@ public final class ZPRegistryConveyor {
     public enum Target {
         TAB(0),
         BLOCK(1),
-        ITEM(2);
+        ITEM(2),
+        ENTITY(3);
 
         private final int order;
 

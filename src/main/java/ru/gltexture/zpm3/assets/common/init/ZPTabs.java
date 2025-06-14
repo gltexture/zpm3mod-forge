@@ -36,6 +36,6 @@ public class ZPTabs extends ZPRegistry<CreativeModeTab> {
 
     @Override
     public @NotNull String getID() {
-        return "ZPTabs";
+        return this.getClass().getSimpleName();
     }
 }

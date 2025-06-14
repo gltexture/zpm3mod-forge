@@ -88,13 +88,13 @@ public final class ZombiePlague3 {
             }
         }
 
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
+        ZPUtils.onlyClient(() -> {
             final ZPClientMod zpClientMod = new ZPClientMod();
             clientEvents.forEach(e -> zpClientMod.addNew(e.getEventType(), e));
             MinecraftForge.EVENT_BUS.register(zpClientMod);
         });
 
-        DistExecutor.unsafeRunWhenOn(Dist.DEDICATED_SERVER, () -> () -> {
+        ZPUtils.onlyServer(() -> {
             final ZPServerMod zpServerMod = new ZPServerMod();
             serverEvents.forEach(e -> zpServerMod.addNew(e.getEventType(), e));
             MinecraftForge.EVENT_BUS.register(zpServerMod);

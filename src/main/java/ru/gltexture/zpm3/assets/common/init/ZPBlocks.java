@@ -21,7 +21,7 @@ public class ZPBlocks extends ZPRegistry<Block> {
 
     @Override
     protected void runRegister(@NotNull ZPRegSupplier<Block> regSupplier) {
-        ZPBlocks.block_lamp = regSupplier.register("block_lamp", () -> new Block(BlockBehaviour.Properties.of().strength(0.5f).sound(SoundType.GLASS).lightLevel((e) -> 15)));
+        ZPBlocks.block_lamp = regSupplier.register("block_lamp", () -> new Block(BlockBehaviour.Properties.of().strength(0.5f).sound(SoundType.GLASS).lightLevel((e) -> 15))).registryObject();
     }
 
     @Override

@@ -32,6 +32,7 @@ public final class ZPRegistryConveyor {
     }
 
     public enum Target {
+        FX(-1),
         TAB(0),
         BLOCK(1),
         ITEM(2),

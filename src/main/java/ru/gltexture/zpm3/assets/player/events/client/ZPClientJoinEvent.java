@@ -1,0 +1,21 @@
+package ru.gltexture.zpm3.assets.player.events.client;
+
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
+import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.events.ZPEvent;
+
+public class ZPClientJoinEvent implements ZPEvent<ClientPlayerNetworkEvent.LoggingIn> {
+    @Override
+    public void exec(ClientPlayerNetworkEvent.@NotNull LoggingIn event) {
+    }
+
+    @Override
+    public @NotNull Class<ClientPlayerNetworkEvent.LoggingIn> getEventType() {
+        return ClientPlayerNetworkEvent.LoggingIn.class;
+    }
+
+    @Override
+    public @NotNull Side getSide() {
+        return Side.CLIENT;
+    }
+}

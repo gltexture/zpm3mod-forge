@@ -21,12 +21,13 @@ public class ZPTabs extends ZPRegistry<CreativeModeTab> {
 
     @Override
     protected void runRegister(@NotNull ZPRegSupplier<CreativeModeTab> regSupplier) {
-        ZPTabs.zp_items_tab = regSupplier.register("zp_items_tab", () -> CreativeModeTab.builder().title(Component.translatable("tab.zpm3.items")).icon(() -> new ItemStack(ZPItems.acid_bottle.get())).build());
-        ZPTabs.zp_blocks_tab = regSupplier.register("zp_blocks_tab", () -> CreativeModeTab.builder().title(Component.translatable("tab.zpm3.blocks")).icon(() -> new ItemStack(ZPBlockItems.block_lamp_item.get())).build());
+        ZPTabs.zp_items_tab = regSupplier.register("zp_items_tab", () -> CreativeModeTab.builder().title(Component.translatable("tab.zpm3.items")).icon(() -> new ItemStack(ZPItems.acid_bottle.get())).build()).registryObject();
+        ZPTabs.zp_blocks_tab = regSupplier.register("zp_blocks_tab", () -> CreativeModeTab.builder().title(Component.translatable("tab.zpm3.blocks")).icon(() -> new ItemStack(ZPBlockItems.block_lamp_item.get())).build()).registryObject();
     }
 
     @Override
     protected void postRegister(String name, RegistryObject<CreativeModeTab> object) {
+        super.postRegister(name, object);
     }
 
     @Override

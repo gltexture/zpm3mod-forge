@@ -17,7 +17,7 @@ public class ZPGatherDataEvent implements ZPEvent<GatherDataEvent> {
     }
 
     @Override
-    public @NotNull Dist getDist() {
-        return Dist.CLIENT;
+    public @NotNull Side getSide() {
+        return Side.CLIENT;
     }
 }

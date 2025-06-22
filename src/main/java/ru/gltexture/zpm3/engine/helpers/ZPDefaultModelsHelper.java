@@ -11,7 +11,7 @@ import java.util.function.Supplier;
 
 public abstract class ZPDefaultModelsHelper {
     public static final String DEFAULT_BLOCK_CUBE = "block/cobblestone";
-    public static final String DEFAULT_ITEM = "item/stick";
+    public static final String DEFAULT_ITEM = "item/diamond";
 
     public static void addNewItemWithDefaultModel(@NotNull Supplier<Item> item, String reference) {
         ZPItemModelProvider.addNewObject(new Pair<>(item, reference));

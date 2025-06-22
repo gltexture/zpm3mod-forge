@@ -1,9 +1,29 @@
 {
   "assets": [
     {
+      "name": "ZP3NetPackAsset",
+      "version": "0.0",
+      "class": "ru.gltexture.zpm3.assets.net_pack.ZPNetPackAsset"
+    },
+    {
+      "name": "ZP3FXAsset",
+      "version": "0.0",
+      "class": "ru.gltexture.zpm3.assets.fx.ZPFXAsset"
+    },
+    {
       "name": "ZP3CommonAsset",
       "version": "0.0",
       "class": "ru.gltexture.zpm3.assets.common.ZPCommonAsset"
+    },
+    {
+      "name": "ZP3EntityAsset",
+      "version": "0.0",
+      "class": "ru.gltexture.zpm3.assets.entity.ZPEntityAsset"
+    },
+    {
+      "name": "ZP3PlayerAsset",
+      "version": "0.0",
+      "class": "ru.gltexture.zpm3.assets.player.ZPPlayerAsset"
     }
   ]
 }

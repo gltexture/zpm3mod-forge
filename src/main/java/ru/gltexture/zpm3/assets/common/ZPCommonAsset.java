@@ -1,10 +1,12 @@
 package ru.gltexture.zpm3.assets.common;
 
+import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.events.client.ZPGatherDataEvent;
 import ru.gltexture.zpm3.assets.common.init.*;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.asset.ZPAsset;
 import ru.gltexture.zpm3.engine.core.asset.ZPAssetData;
+import ru.gltexture.zpm3.engine.utils.ZPUtility;
 
 public class ZPCommonAsset extends ZPAsset {
     public ZPCommonAsset(ZPAssetData zpAssetData) {
@@ -17,12 +19,16 @@ public class ZPCommonAsset extends ZPAsset {
     }
 
     @Override
-    public void initAsset(ZombiePlague3.IAssetEntry assetEntry) {
+    public void initAsset(ZombiePlague3.@NotNull IAssetEntry assetEntry) {
         assetEntry.addRegistryClass(ZPItems.class);
         assetEntry.addRegistryClass(ZPBlockItems.class);
         assetEntry.addRegistryClass(ZPBlocks.class);
-        assetEntry.addRegistryClass(ZPTabs.class);
         assetEntry.addRegistryClass(ZPEntities.class);
+
+        ZPUtility.sides().onlyClient(() -> {
+            assetEntry.addRegistryClass(ZPTabs.class);
+        });
+
         assetEntry.addEventClass(ZPGatherDataEvent.class);
     }
 }

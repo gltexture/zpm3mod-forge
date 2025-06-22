@@ -7,5 +7,11 @@ import org.jetbrains.annotations.NotNull;
 public interface ZPEvent<T extends Event> {
     void exec(@NotNull T t);
     @NotNull Class<T> getEventType();
-    @NotNull Dist getDist();
+    @NotNull Side getSide();
+
+    enum Side {
+        SERVER,
+        CLIENT,
+        BOTH
+    }
 }

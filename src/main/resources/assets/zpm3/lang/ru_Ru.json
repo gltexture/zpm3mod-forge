@@ -1,10 +1,17 @@
 {
   "tab.zpm3.items": "ZP3 Предметы",
   "tab.zpm3.blocks": "ZP3 Блоки",
+  "tab.zpm3.melee": "ZP3 Ближний бой",
 
   "item.zpm3.acid_bottle": "Банка кислоты",
   "item.zpm3.plate": "Тарелка",
   "item.zpm3.rock": "Каменный валун",
-
+  "item.zpm3.bat": "Бита",
+  "item.zpm3.crowbar": "Лом",
+  "item.zpm3.iron_club":"Железная дубина",
+  "item.zpm3.pipe": "Труба",
+  "item.zpm3.golf_club":"Клюшка для гольфа",
+  "item.zpm3.hatchet": "Пожарный топор",
+  "item.zpm3.sledgehammer": "Строительная кувалда",
   "block.zpm3.block_lamp": "Городская лампа"
 }

@@ -1,10 +1,18 @@
 {
   "tab.zpm3.items": "ZP3 Items",
   "tab.zpm3.blocks": "ZP3 Blocks",
+  "tab.zpm3.melee": "ZP3 Melee",
 
   "item.zpm3.acid_bottle": "Acid Bottle",
   "item.zpm3.plate": "Plate",
   "item.zpm3.rock": "Rock",
+  "item.zpm3.bat": "Bat",
+  "item.zpm3.crowbar": "Crowbar",
+  "item.zpm3.iron_club":"Iron Club",
+  "item.zpm3.pipe": "Pipe",
+  "item.zpm3.golf_club":"Golf Club",
+  "item.zpm3.hatchet": "Hatchet",
+  "item.zpm3.sledgehammer": "Sledgehammer",
 
   "block.zpm3.block_lamp": "City Lamp"
 }

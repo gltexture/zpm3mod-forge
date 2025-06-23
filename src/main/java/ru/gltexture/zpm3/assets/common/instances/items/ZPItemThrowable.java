@@ -23,7 +23,7 @@ import ru.gltexture.zpm3.engine.utils.Pair;
 public class ZPItemThrowable extends ZPItem {
     private final ThrowableProjectileFabric throwableProjectileFabric;
 
-    public ZPItemThrowable(@NotNull ThrowableProjectileFabric throwableProjectileFabric, Properties pProperties) {
+    public ZPItemThrowable(@NotNull ThrowableProjectileFabric throwableProjectileFabric, @NotNull Properties pProperties) {
         super(pProperties);
         this.throwableProjectileFabric = throwableProjectileFabric;
     }

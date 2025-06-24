@@ -1,6 +1,5 @@
 package ru.gltexture.zpm3.assets.common.init;
 
-import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -15,7 +14,7 @@ import ru.gltexture.zpm3.assets.common.instances.entities.ZPRockEntity;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.helpers.ZPEntityRenderMatchHelper;
-import ru.gltexture.zpm3.engine.registry.base.ZPRegistry;
+import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.rendering.entities.ZPThrowableEntityRender;
 
 public class ZPEntities extends ZPRegistry<EntityType<?>> {

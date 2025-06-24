@@ -2,6 +2,7 @@
   "tab.zpm3.items": "ZP3 Items",
   "tab.zpm3.blocks": "ZP3 Blocks",
   "tab.zpm3.melee": "ZP3 Melee",
+  "tab.zpm3.food": "ZP3 Food",
 
   "item.zpm3.acid_bottle": "Acid Bottle",
   "item.zpm3.plate": "Plate",
@@ -13,6 +14,15 @@
   "item.zpm3.golf_club":"Golf Club",
   "item.zpm3.hatchet": "Hatchet",
   "item.zpm3.sledgehammer": "Sledgehammer",
+  "item.zpm3.cleaver": "Cleaver",
+
+  "item.zpm3.bean": "Canned Beans",
+  "item.zpm3.sprats": "Canned Sprats",
+  "item.zpm3.jam": "Jam",
+  "item.zpm3.mysterious_can": "Mysterious Can",
+  "item.zpm3.peaches": "Canned Peaches",
+  "item.zpm3.soda": "Soda",
+  "item.zpm3.water": "Mineral Water",
 
   "block.zpm3.block_lamp": "City Lamp"
 }

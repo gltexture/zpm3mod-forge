@@ -1,55 +1,59 @@
 package ru.gltexture.zpm3.assets.common.init.helper;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.Tiers;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.assets.common.init.ZPEntities;
 import ru.gltexture.zpm3.assets.common.init.ZPItems;
 import ru.gltexture.zpm3.assets.common.init.ZPTabs;
-import ru.gltexture.zpm3.assets.common.instances.entities.ZPAcidBottleEntity;
 import ru.gltexture.zpm3.assets.common.instances.items.ZPItemAxe;
 import ru.gltexture.zpm3.assets.common.instances.items.ZPItemPickaxe;
 import ru.gltexture.zpm3.assets.common.instances.items.ZPItemSword;
 import ru.gltexture.zpm3.assets.common.instances.items.tier.ZPTiers;
-import ru.gltexture.zpm3.engine.helpers.ZPDispenserHelper;
+import ru.gltexture.zpm3.engine.helpers.ZPDefaultModelsHelper;
 import ru.gltexture.zpm3.engine.helpers.ZPItemTabAddHelper;
-import ru.gltexture.zpm3.engine.registry.base.ZPRegistry;
+import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 
 public abstract class ZPRegMelee {
     public static void init(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
         ZPItems.bat = regSupplier.register("bat", () -> new ZPItemSword(ZPTiers.ZP_WOOD, 6, -3.2F, new Item.Properties())).postConsume(Dist.CLIENT, (e) -> {
             ZPItemTabAddHelper.matchTabItem(e, ZPTabs.zp_melee_tab);
+            ZPDefaultModelsHelper.addNewItemWithDefaultModel(e::get, ZPDefaultModelsHelper.DEFAULT_MELEE);
         }).registryObject();
 
         ZPItems.iron_club = regSupplier.register("iron_club", () -> new ZPItemSword(ZPTiers.ZP_IRON_2, 3, -1.2F, new Item.Properties())).postConsume(Dist.CLIENT, (e) -> {
             ZPItemTabAddHelper.matchTabItem(e, ZPTabs.zp_melee_tab);
+            ZPDefaultModelsHelper.addNewItemWithDefaultModel(e::get, ZPDefaultModelsHelper.DEFAULT_MELEE);
         }).registryObject();
 
         ZPItems.pipe = regSupplier.register("pipe", () -> new ZPItemSword(ZPTiers.ZP_IRON_1, 3, -2.8F, new Item.Properties())).postConsume(Dist.CLIENT, (e) -> {
             ZPItemTabAddHelper.matchTabItem(e, ZPTabs.zp_melee_tab);
+            ZPDefaultModelsHelper.addNewItemWithDefaultModel(e::get, ZPDefaultModelsHelper.DEFAULT_MELEE);
         }).registryObject();
 
         ZPItems.golf_club = regSupplier.register("golf_club", () -> new ZPItemSword(ZPTiers.ZP_IRON_1, 4, -1.8F, new Item.Properties())).postConsume(Dist.CLIENT, (e) -> {
             ZPItemTabAddHelper.matchTabItem(e, ZPTabs.zp_melee_tab);
+            ZPDefaultModelsHelper.addNewItemWithDefaultModel(e::get, ZPDefaultModelsHelper.DEFAULT_MELEE);
         }).registryObject();
 
         ZPItems.crowbar = regSupplier.register("crowbar", () -> new ZPItemSword(ZPTiers.ZP_IRON_2, 4, -1.8F, new Item.Properties())).postConsume(Dist.CLIENT, (e) -> {
             ZPItemTabAddHelper.matchTabItem(e, ZPTabs.zp_melee_tab);
+            ZPDefaultModelsHelper.addNewItemWithDefaultModel(e::get, ZPDefaultModelsHelper.DEFAULT_MELEE);
+        }).registryObject();
+
+        ZPItems.cleaver = regSupplier.register("cleaver", () -> new ZPItemSword(ZPTiers.ZP_IRON_1, 2, -0.2F, new Item.Properties())).postConsume(Dist.CLIENT, (e) -> {
+            ZPItemTabAddHelper.matchTabItem(e, ZPTabs.zp_melee_tab);
+            ZPDefaultModelsHelper.addNewItemWithDefaultModel(e::get, ZPDefaultModelsHelper.DEFAULT_MELEE);
         }).registryObject();
 
         ZPItems.hatchet = regSupplier.register("hatchet", () -> new ZPItemAxe(ZPTiers.ZP_IRON_3, 5.0f, -3.2F, new Item.Properties())).postConsume(Dist.CLIENT, (e) -> {
             ZPItemTabAddHelper.matchTabItem(e, ZPTabs.zp_melee_tab);
+            ZPDefaultModelsHelper.addNewItemWithDefaultModel(e::get, ZPDefaultModelsHelper.DEFAULT_MELEE);
         }).registryObject();
 
         ZPItems.sledgehammer = regSupplier.register("sledgehammer", () -> new ZPItemPickaxe(ZPTiers.ZP_IRON_3, 5, -3.2F, new Item.Properties())).postConsume(Dist.CLIENT, (e) -> {
             ZPItemTabAddHelper.matchTabItem(e, ZPTabs.zp_melee_tab);
+            ZPDefaultModelsHelper.addNewItemWithDefaultModel(e::get, ZPDefaultModelsHelper.DEFAULT_MELEE);
         }).registryObject();
-
-
     }
 
     /*

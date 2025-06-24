@@ -1,7 +1,7 @@
 package ru.gltexture.zpm3.engine.core;
 
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
-import ru.gltexture.zpm3.engine.registry.base.ZPRegistry;
+import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;

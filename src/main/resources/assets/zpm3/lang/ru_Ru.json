@@ -2,6 +2,7 @@
   "tab.zpm3.items": "ZP3 Предметы",
   "tab.zpm3.blocks": "ZP3 Блоки",
   "tab.zpm3.melee": "ZP3 Ближний бой",
+  "tab.zpm3.food": "ZP3 Жрачка",
 
   "item.zpm3.acid_bottle": "Банка кислоты",
   "item.zpm3.plate": "Тарелка",
@@ -13,5 +14,15 @@
   "item.zpm3.golf_club":"Клюшка для гольфа",
   "item.zpm3.hatchet": "Пожарный топор",
   "item.zpm3.sledgehammer": "Строительная кувалда",
+  "item.zpm3.cleaver": "Тесак",
+
+  "item.zpm3.bean": "Консервированная фасоль",
+  "item.zpm3.sprats": "Консервированные шпроты",
+  "item.zpm3.jam": "Варенье",
+  "item.zpm3.mysterious_can": "Загадочные консервы",
+  "item.zpm3.peaches": "Консервированные персики",
+  "item.zpm3.soda": "Газировка",
+  "item.zpm3.water": "Минеральная вода",
+
   "block.zpm3.block_lamp": "Городская лампа"
 }

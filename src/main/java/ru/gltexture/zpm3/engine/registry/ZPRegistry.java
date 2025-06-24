@@ -1,4 +1,4 @@
-package ru.gltexture.zpm3.engine.registry.base;
+package ru.gltexture.zpm3.engine.registry;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;

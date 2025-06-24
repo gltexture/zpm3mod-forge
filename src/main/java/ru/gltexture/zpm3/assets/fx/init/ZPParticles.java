@@ -10,7 +10,7 @@ import ru.gltexture.zpm3.assets.fx.particles.ParticleColoredCloud;
 import ru.gltexture.zpm3.assets.fx.particles.types.ColoredSmokeType;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.engine.helpers.ZPParticleRenderHelper;
-import ru.gltexture.zpm3.engine.registry.base.ZPRegistry;
+import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 
 public class ZPParticles extends ZPRegistry<ParticleType<?>> {
     public static RegistryObject<ColoredSmokeType> colored_cloud;

@@ -7,10 +7,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
-import ru.gltexture.zpm3.engine.helpers.ZPDefaultModelsHelper;
 import ru.gltexture.zpm3.engine.helpers.ZPItemBlockHelper;
 import ru.gltexture.zpm3.engine.helpers.ZPItemTabAddHelper;
-import ru.gltexture.zpm3.engine.registry.base.ZPRegistry;
+import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 
 public class ZPBlockItems extends ZPRegistry<Item> {
     public static RegistryObject<BlockItem> block_lamp_item;

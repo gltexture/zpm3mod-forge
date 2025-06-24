@@ -1,24 +1,16 @@
 package ru.gltexture.zpm3.assets.common.init;
 
 import net.minecraft.world.item.Item;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.assets.common.init.helper.ZPRegFood;
 import ru.gltexture.zpm3.assets.common.init.helper.ZPRegMelee;
 import ru.gltexture.zpm3.assets.common.init.helper.ZPRegThrowable;
-import ru.gltexture.zpm3.assets.common.instances.entities.ZPAcidBottleEntity;
-import ru.gltexture.zpm3.assets.common.instances.entities.ZPPlateEntity;
-import ru.gltexture.zpm3.assets.common.instances.entities.ZPRockEntity;
-import ru.gltexture.zpm3.assets.common.instances.items.ZPItemAxe;
-import ru.gltexture.zpm3.assets.common.instances.items.ZPItemPickaxe;
-import ru.gltexture.zpm3.assets.common.instances.items.ZPItemSword;
-import ru.gltexture.zpm3.assets.common.instances.items.ZPItemThrowable;
+import ru.gltexture.zpm3.assets.common.instances.items.*;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.engine.helpers.ZPDefaultModelsHelper;
-import ru.gltexture.zpm3.engine.helpers.ZPDispenserHelper;
-import ru.gltexture.zpm3.engine.helpers.ZPItemTabAddHelper;
-import ru.gltexture.zpm3.engine.registry.base.ZPRegistry;
+import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 
 public class ZPItems extends ZPRegistry<Item> {
     // ITEMS
@@ -35,6 +27,17 @@ public class ZPItems extends ZPRegistry<Item> {
     public static RegistryObject<ZPItemAxe> hatchet;
     public static RegistryObject<ZPItemPickaxe> sledgehammer;
     public static RegistryObject<ZPItemSword> crowbar;
+    public static RegistryObject<ZPItemSword> cleaver;
+
+
+    //FOOD
+    public static RegistryObject<ZPItemFood> bean;
+    public static RegistryObject<ZPItemFood> sprats;
+    public static RegistryObject<ZPItemFood> jam;
+    public static RegistryObject<ZPItemFood> mysterious_can;
+    public static RegistryObject<ZPItemFood> peaches;
+    public static RegistryObject<ZPItemFood> soda;
+    public static RegistryObject<ZPItemFood> water;
 
     public ZPItems() {
         super(ForgeRegistries.ITEMS, ZPRegistryConveyor.Target.ITEM);
@@ -44,11 +47,11 @@ public class ZPItems extends ZPRegistry<Item> {
     protected void runRegister(@NotNull ZPRegSupplier<Item> regSupplier) {
         ZPRegThrowable.init(regSupplier);
         ZPRegMelee.init(regSupplier);
+        ZPRegFood.init(regSupplier);
     }
 
     @Override
     protected void postRegister(String name, RegistryObject<Item> object) {
-        ZPDefaultModelsHelper.addNewItemWithDefaultModel(object, ZPDefaultModelsHelper.DEFAULT_ITEM);
     }
 
     @Override

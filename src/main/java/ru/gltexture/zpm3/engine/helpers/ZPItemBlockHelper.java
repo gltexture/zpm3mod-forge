@@ -9,7 +9,7 @@ import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 
 public abstract class ZPItemBlockHelper {
-    public static ZPRegistry.ZPRegistryObject<BlockItem> createBlockItem(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier, @NotNull RegistryObject<Block> block) {
+    public static ZPRegistry.ZPRegistryObject<BlockItem> createBlockItem(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier, @NotNull RegistryObject<? extends Block> block) {
         if (block.getId() == null) {
             throw new ZPRuntimeException("Block has NULL ResourceId");
         }

@@ -1,9 +1,13 @@
 package ru.gltexture.zpm3.engine.events.client;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.flag.FeatureFlags;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
@@ -17,9 +21,14 @@ import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.events.ZPAbstractEventMod;
 import ru.gltexture.zpm3.engine.helpers.ZPEntityRenderMatchHelper;
 import ru.gltexture.zpm3.engine.helpers.ZPItemTabAddHelper;
+import ru.gltexture.zpm3.engine.helpers.ZPLootTableHelper;
 import ru.gltexture.zpm3.engine.helpers.ZPParticleRenderHelper;
-import ru.gltexture.zpm3.engine.helpers.models.ZPBlockModelProvider;
-import ru.gltexture.zpm3.engine.helpers.models.ZPItemModelProvider;
+import ru.gltexture.zpm3.engine.helpers.gen.providers.*;
+import ru.gltexture.zpm3.engine.helpers.gen.sub_providers.ZPBlocksSubProvider;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Mod.EventBusSubscriber(modid = ZombiePlague3.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class ZPClientMod extends ZPAbstractEventMod {
@@ -69,7 +78,16 @@ public final class ZPClientMod extends ZPAbstractEventMod {
         DataGenerator generator = event.getGenerator();
         PackOutput output = generator.getPackOutput();
         ExistingFileHelper helper = event.getExistingFileHelper();
+        CompletableFuture<HolderLookup.Provider> lookup = event.getLookupProvider();
+
         generator.addProvider(event.includeClient(), new ZPItemModelProvider(output, helper));
         generator.addProvider(event.includeClient(), new ZPBlockModelProvider(output, helper));
+        generator.addProvider(event.includeClient(), new ZPParticleTextureProvider(generator, ZombiePlague3.MOD_ID));
+        generator.addProvider(event.includeServer(), new ZPBlockTagsProvider(output, lookup, ZombiePlague3.MOD_ID, helper));
+
+        {
+            ZPBlocksSubProvider subProvider1 = new ZPBlocksSubProvider(Collections.emptySet(), FeatureFlags.REGISTRY.allFlags(), ZPLootTableHelper.getLootPoolsToCreate());
+            generator.addProvider(event.includeServer(), new ZPLootTableProvider(output, Collections.emptySet(), List.of(new LootTableProvider.SubProviderEntry(() -> subProvider1, LootContextParamSets.BLOCK))));
+        }
     }
 }

@@ -9,7 +9,6 @@ import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.fx.particles.ParticleColoredCloud;
 import ru.gltexture.zpm3.assets.fx.particles.types.ColoredSmokeType;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
-import ru.gltexture.zpm3.engine.helpers.ZPParticleRenderHelper;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 
 public class ZPParticles extends ZPRegistry<ParticleType<?>> {
@@ -21,8 +20,9 @@ public class ZPParticles extends ZPRegistry<ParticleType<?>> {
 
     @Override
     protected void runRegister(@NotNull ZPRegSupplier<ParticleType<? extends ParticleOptions>> regSupplier) {
-        ZPParticles.colored_cloud = regSupplier.register("colored_cloud", () -> new ColoredSmokeType(false)).postConsume(Dist.CLIENT, (e) -> {
-            ZPParticleRenderHelper.matchParticleRendering(e, ParticleColoredCloud.ColoredSmokeParticleProvider::new);
+        ZPParticles.colored_cloud = regSupplier.register("colored_cloud", () -> new ColoredSmokeType(false)).postConsume(Dist.CLIENT, (e, utils) -> {
+            utils.matchParticleRendering(e, ParticleColoredCloud.ColoredSmokeParticleProvider::new);
+            utils.addParticlesTexturesData(e, "minecraft:generic_", 8);
         }).registryObject();
     }
 

@@ -1,7 +1,5 @@
 package ru.gltexture.zpm3.assets.common.instances.entities;
 
-import net.minecraft.core.particles.ItemParticleOption;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
@@ -25,7 +23,7 @@ import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.nbt.ZPEntityNBT;
 import ru.gltexture.zpm3.engine.objects.entities.ZPThrowableEntity;
 import ru.gltexture.zpm3.engine.sound.ZPPositionedSound;
-import ru.gltexture.zpm3.engine.utils.ZPUtility;
+import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public class ZPAcidBottleEntity extends ZPThrowableEntity {
     public ZPAcidBottleEntity(EntityType<ZPAcidBottleEntity> pEntityType, Level pLevel) {
@@ -57,7 +55,8 @@ public class ZPAcidBottleEntity extends ZPThrowableEntity {
 
         if (this.level().isClientSide) {
             ZPUtility.client().ifClientLevelValid(() -> {
-                ZPCommonClientUtils.emmitAcidParticle(1.5f + ZPRandom.getRandom().nextFloat(0.3f), this.position().toVector3f().add(0.0f, this.getBbHeight() + 0.4f, 0.0f), new Vector3f(0.0f, 1.0f, 0.0f));
+                final Vector3f randomVector = ZPRandom.instance.randomVector3f(0.05f, new Vector3f(0.1f, 0.0f, 0.1f)).add(0.0f, 0.05f, 0.0f);
+                ZPCommonClientUtils.emmitAcidParticle(1.2f + ZPRandom.getRandom().nextFloat(0.3f), this.position().toVector3f().add(0.0f, this.getBbHeight() + 0.4f, 0.0f), randomVector);
                 if (this.tickCount % 3 == 0) {
                     ZPUtility.sounds().play(new ZPPositionedSound(SoundEvents.FIRE_EXTINGUISH, SoundSource.MASTER, 0.375f, 1.15f, this.position().toVector3f(), 0L));
                 }
@@ -71,10 +70,10 @@ public class ZPAcidBottleEntity extends ZPThrowableEntity {
             ZPUtility.sounds().play(new ZPPositionedSound(SoundEvents.GLASS_BREAK, SoundSource.MASTER, 0.8f, 1.0f, this.position().toVector3f(), 0L));
 
             for (int i = 0; i < 40; i++) {
-                final Vector3f randomVector = ZPRandom.instance.randomVector3f(0.05f);
+                final Vector3f randomVector = ZPRandom.instance.randomVector3f(0.1f, new Vector3f(0.2f, 0.075f, 0.2f));
                 final Vector3f position = this.position().toVector3f();
                 position.add(ZPRandom.instance.randomVector3f(0.3f, new Vector3f(0.6f, 0.0f, 0.6f)));
-                ZPCommonClientUtils.emmitAcidParticle(2.2f + ZPRandom.getRandom().nextFloat(0.3f), position, new Vector3f(randomVector.x, (randomVector.y * 0.1f) + 0.05f, randomVector.z));
+                ZPCommonClientUtils.emmitAcidParticle(2.2f + ZPRandom.getRandom().nextFloat(0.3f), position, randomVector);
             }
 
             ZPCommonClientUtils.emmitItemBreakParticle(this.getItem(), this.position().toVector3f(), this.getDeltaMovement().toVector3f());

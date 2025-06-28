@@ -6,7 +6,7 @@ import ru.gltexture.zpm3.assets.common.init.*;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.asset.ZPAsset;
 import ru.gltexture.zpm3.engine.core.asset.ZPAssetData;
-import ru.gltexture.zpm3.engine.utils.ZPUtility;
+import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public class ZPCommonAsset extends ZPAsset {
     public ZPCommonAsset(ZPAssetData zpAssetData) {
@@ -22,7 +22,7 @@ public class ZPCommonAsset extends ZPAsset {
     public void initAsset(ZombiePlague3.@NotNull IAssetEntry assetEntry) {
         assetEntry.addRegistryClass(ZPItems.class);
         assetEntry.addRegistryClass(ZPBlockItems.class);
-        assetEntry.addRegistryClass(ZPBlocks.class);
+        assetEntry.addRegistryClass(ZPCommonBlocks.class);
         assetEntry.addRegistryClass(ZPEntities.class);
 
         ZPUtility.sides().onlyClient(() -> {

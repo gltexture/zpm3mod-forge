@@ -12,7 +12,7 @@ import ru.gltexture.zpm3.assets.entity.nbt.ZPTagsList;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.nbt.ZPEntityNBT;
 import ru.gltexture.zpm3.engine.sound.ZPPositionedSound;
-import ru.gltexture.zpm3.engine.utils.ZPUtility;
+import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 @OnlyIn(Dist.CLIENT)
 public class EntityClientSideLogic implements EntityTickEventLogic {
@@ -29,11 +29,11 @@ public class EntityClientSideLogic implements EntityTickEventLogic {
     }
 
     private void addAcidParticles(Entity entity) {
-        final int maxParticles = 2;
+        final int maxParticles = 1;
 
         for (int i = 0; i < maxParticles; ++i) {
-            final Vector3f randomVector = ZPRandom.instance.randomVector3f(0.05f);
-            final Vector3f position = entity.position().toVector3f().add(0.0f, entity.getBbHeight() * ((float) i / maxParticles), 0.0f);
+            final Vector3f randomVector = ZPRandom.instance.randomVector3f(0.15f, new Vector3f(0.3f, 0.1f, 0.3f));
+            final Vector3f position = entity.position().toVector3f().add(0.0f, ZPRandom.instance.randomFloat(entity.getBbHeight()), 0.0f);
             position.add(ZPRandom.instance.randomVector3f(0.3f, new Vector3f(0.6f, 0.3f, 0.6f)));
             ZPCommonClientUtils.emmitAcidParticle(2.2f + ZPRandom.getRandom().nextFloat(0.3f), position, new Vector3f(randomVector.x, (randomVector.y * 0.1f) + 0.05f, randomVector.z));
         }

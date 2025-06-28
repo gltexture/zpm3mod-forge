@@ -28,15 +28,15 @@ public class ZPEntities extends ZPRegistry<EntityType<?>> {
 
     @Override
     protected void runRegister(@NotNull ZPRegSupplier<EntityType<? extends Entity>> regSupplier) {
-        ZPEntities.acid_bottle_entity = regSupplier.register("acid_bottle_entity", () -> EntityType.Builder.<ZPAcidBottleEntity>of(ZPAcidBottleEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build(new ResourceLocation(ZombiePlague3.MOD_ID(), "acid_bottle_entity").toString())).postConsume(Dist.CLIENT, (e) -> {
+        ZPEntities.acid_bottle_entity = regSupplier.register("acid_bottle_entity", () -> EntityType.Builder.<ZPAcidBottleEntity>of(ZPAcidBottleEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "acid_bottle_entity").toString())).postConsume(Dist.CLIENT, (e, utils) -> {
             ZPEntityRenderMatchHelper.matchEntityRendering(e, ZPThrowableEntityRender::new);
         }).registryObject();
 
-        ZPEntities.plate_entity = regSupplier.register("plate_entity", () -> EntityType.Builder.<ZPPlateEntity>of(ZPPlateEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build(new ResourceLocation(ZombiePlague3.MOD_ID(), "plate_entity").toString())).postConsume(Dist.CLIENT, (e) -> {
+        ZPEntities.plate_entity = regSupplier.register("plate_entity", () -> EntityType.Builder.<ZPPlateEntity>of(ZPPlateEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "plate_entity").toString())).postConsume(Dist.CLIENT, (e, utils) -> {
             ZPEntityRenderMatchHelper.matchEntityRendering(e, ZPThrowableEntityRender::new);
         }).registryObject();
 
-        ZPEntities.rock_entity = regSupplier.register("rock_entity", () -> EntityType.Builder.<ZPRockEntity>of(ZPRockEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build(new ResourceLocation(ZombiePlague3.MOD_ID(), "rock_entity").toString())).postConsume(Dist.CLIENT, (e) -> {
+        ZPEntities.rock_entity = regSupplier.register("rock_entity", () -> EntityType.Builder.<ZPRockEntity>of(ZPRockEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "rock_entity").toString())).postConsume(Dist.CLIENT, (e, utils) -> {
             ZPEntityRenderMatchHelper.matchEntityRendering(e, ZPThrowableEntityRender::new);
         }).registryObject();
     }

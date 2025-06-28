@@ -6,6 +6,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.assets.common.init.helper.ZPRegBlockItems;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 
@@ -23,7 +24,7 @@ public class ZPTabs extends ZPRegistry<CreativeModeTab> {
     @Override
     protected void runRegister(@NotNull ZPRegSupplier<CreativeModeTab> regSupplier) {
         ZPTabs.zp_items_tab = regSupplier.register("zp_items_tab", () -> CreativeModeTab.builder().title(Component.translatable("tab.zpm3.items")).icon(() -> new ItemStack(ZPItems.acid_bottle.get())).build()).registryObject();
-        ZPTabs.zp_blocks_tab = regSupplier.register("zp_blocks_tab", () -> CreativeModeTab.builder().title(Component.translatable("tab.zpm3.blocks")).icon(() -> new ItemStack(ZPBlockItems.block_lamp_item.get())).build()).registryObject();
+        ZPTabs.zp_blocks_tab = regSupplier.register("zp_blocks_tab", () -> CreativeModeTab.builder().title(Component.translatable("tab.zpm3.blocks")).icon(() -> new ItemStack(ZPRegBlockItems.getBlockItem(ZPCommonBlocks.block_lamp).get())).build()).registryObject();
         ZPTabs.zp_melee_tab = regSupplier.register("zp_melee_tab", () -> CreativeModeTab.builder().title(Component.translatable("tab.zpm3.melee")).icon(() -> new ItemStack(ZPItems.crowbar.get())).build()).registryObject();
         ZPTabs.zp_food_tab = regSupplier.register("zp_food_tab", () -> CreativeModeTab.builder().title(Component.translatable("tab.zpm3.food")).icon(() -> new ItemStack(ZPItems.soda.get())).build()).registryObject();
     }

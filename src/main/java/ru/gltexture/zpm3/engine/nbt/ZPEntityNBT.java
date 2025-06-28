@@ -3,7 +3,7 @@ package ru.gltexture.zpm3.engine.nbt;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.engine.utils.Pair;
+import ru.gltexture.zpm3.engine.service.Pair;
 
 public record ZPEntityNBT(@NotNull Entity entity) {
     public static final String PERSISTED_NBT_TAG = "ZPM3EntityPersisted";
@@ -14,32 +14,32 @@ public record ZPEntityNBT(@NotNull Entity entity) {
     }
 
     public ZPEntityNBT putTagInt(@NotNull Pair<@NotNull ZPEntityTag, @NotNull Integer> value) {
-        this.getTag().putInt(value.getFirst().id(), value.getSecond());
+        this.getTag().putInt(value.first().id(), value.second());
         return this;
     }
 
     public ZPEntityNBT putTagBoolean(@NotNull Pair<@NotNull ZPEntityTag, @NotNull Boolean> value) {
-        this.getTag().putBoolean(value.getFirst().id(), value.getSecond());
+        this.getTag().putBoolean(value.first().id(), value.second());
         return this;
     }
 
     public ZPEntityNBT putTagString(@NotNull Pair<@NotNull ZPEntityTag, @NotNull String> value) {
-        this.getTag().putString(value.getFirst().id(), value.getSecond());
+        this.getTag().putString(value.first().id(), value.second());
         return this;
     }
 
     public ZPEntityNBT putTagDouble(@NotNull Pair<@NotNull ZPEntityTag, @NotNull Double> value) {
-        this.getTag().putDouble(value.getFirst().id(), value.getSecond());
+        this.getTag().putDouble(value.first().id(), value.second());
         return this;
     }
 
     public ZPEntityNBT putTagFloat(@NotNull Pair<@NotNull ZPEntityTag, @NotNull Float> value) {
-        this.getTag().putFloat(value.getFirst().id(), value.getSecond());
+        this.getTag().putFloat(value.first().id(), value.second());
         return this;
     }
 
     public ZPEntityNBT putTagLong(@NotNull Pair<@NotNull ZPEntityTag, @NotNull Long> value) {
-        this.getTag().putLong(value.getFirst().id(), value.getSecond());
+        this.getTag().putLong(value.first().id(), value.second());
         return this;
     }
 

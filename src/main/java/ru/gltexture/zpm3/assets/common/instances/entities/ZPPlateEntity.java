@@ -1,7 +1,5 @@
 package ru.gltexture.zpm3.assets.common.instances.entities;
 
-import net.minecraft.core.particles.ItemParticleOption;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
@@ -14,18 +12,12 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Vector3f;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.common.init.ZPItems;
 import ru.gltexture.zpm3.assets.common.utils.ZPCommonClientUtils;
-import ru.gltexture.zpm3.assets.entity.nbt.ZPTagsList;
-import ru.gltexture.zpm3.assets.net_pack.packets.AcidSpreadPacket;
-import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.core.random.ZPRandom;
-import ru.gltexture.zpm3.engine.nbt.ZPEntityNBT;
 import ru.gltexture.zpm3.engine.objects.entities.ZPThrowableEntity;
 import ru.gltexture.zpm3.engine.sound.ZPPositionedSound;
-import ru.gltexture.zpm3.engine.utils.ZPUtility;
+import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public class ZPPlateEntity extends ZPThrowableEntity {
     public ZPPlateEntity(EntityType<ZPPlateEntity> pEntityType, Level pLevel) {

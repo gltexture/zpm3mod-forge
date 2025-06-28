@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.core.Position;
 import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
@@ -11,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.TierSortingRegistry;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -30,8 +32,11 @@ import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.engine.events.ZPEvent;
 import ru.gltexture.zpm3.engine.helpers.ZPDispenserHelper;
 import ru.gltexture.zpm3.engine.network.ZPNetwork;
+import ru.gltexture.zpm3.engine.objects.items.tier.ZPTierData;
+import ru.gltexture.zpm3.engine.objects.items.tier.ZPTiers;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
-import ru.gltexture.zpm3.engine.utils.ZPUtility;
+import ru.gltexture.zpm3.engine.service.ZPPath;
+import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -53,6 +58,7 @@ public final class ZombiePlague3 {
         this.init();
     }
 
+    @SuppressWarnings("all")
     private static IEventBus getModEventBus() {
         return FMLJavaModLoadingContext.get().getModEventBus();
     }
@@ -65,11 +71,17 @@ public final class ZombiePlague3 {
 
     private void init() {
         ZPLogger.info(this + " INIT");
+        this.initDefaultTiers();
         IEventBus modEventBus = ZombiePlague3.getModEventBus();
         this.createNet();
         this.initAssets();
         modEventBus.addListener(this::commonSetup);
         ZPLogger.info(this + " END INIT");
+    }
+
+    private void initDefaultTiers() {
+        ZPLogger.info(this + " INIT DEFAULT ZP TIERS");
+        Arrays.stream(ZPTiers.values()).forEach(e -> e.init().forEach(ZombiePlague3::registerTier));
     }
 
     private void initAssets() {
@@ -125,7 +137,7 @@ public final class ZombiePlague3 {
     private void readAssetsJSON(List<ZPAsset> assets) {
         String jsonRaw = null;
         try {
-            jsonRaw = ZPUtility.files().readTextFromJar("zpm3.asset.json");
+            jsonRaw = ZPUtility.files().readTextFromJar(new ZPPath("zpm3.asset.json"));
         } catch (IOException e) {
             throw new ZPIOException(e);
         }
@@ -152,6 +164,10 @@ public final class ZombiePlague3 {
                 throw new ZPRuntimeException(e);
             }
         }
+    }
+
+    public static void registerTier(@NotNull ZPTierData tier) {
+        TierSortingRegistry.registerTier(tier.tier(), ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), tier.name()), tier.after(), tier.before());
     }
 
     public static void registerDeferred(DeferredRegister<?> deferredRegister) {
@@ -220,6 +236,10 @@ public final class ZombiePlague3 {
         void addRegistryClass(Class<? extends ZPRegistry<?>> zpRegistryProcessorClass);
         void addEventClass(Class<? extends ZPEvent<? extends Event>> clazz);
         void addNetworkPacket(ZPNetwork.PacketData<?> packetData);
+
+        default void registerTier(@NotNull ZPTierData tier) {
+            ZombiePlague3.registerTier(tier);
+        }
     }
 
     public static class AssetEntry implements IAssetEntry {

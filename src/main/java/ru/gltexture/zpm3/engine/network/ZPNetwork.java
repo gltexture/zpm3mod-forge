@@ -20,7 +20,7 @@ public class ZPNetwork {
     private final SimpleChannel mainChannel;
 
     public ZPNetwork() {
-        this.mainChannel = NetworkRegistry.newSimpleChannel(new ResourceLocation(ZombiePlague3.MOD_ID(), ZPNetwork.MAIN_CHANNEL), () -> ZPNetwork.PROTO_VERSION, ZPNetwork.PROTO_VERSION::equals, ZPNetwork.PROTO_VERSION::equals);
+        this.mainChannel = NetworkRegistry.newSimpleChannel(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), ZPNetwork.MAIN_CHANNEL), () -> ZPNetwork.PROTO_VERSION, ZPNetwork.PROTO_VERSION::equals, ZPNetwork.PROTO_VERSION::equals);
     }
 
     @SuppressWarnings("all")

@@ -4,7 +4,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.level.Level;
-import ru.gltexture.zpm3.engine.utils.ZPUtility;
+import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public abstract class ZPThrowableEntity extends ThrowableItemProjectile {
     public ZPThrowableEntity(EntityType<? extends ThrowableItemProjectile> pEntityType, Level pLevel) {

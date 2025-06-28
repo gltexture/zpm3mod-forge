@@ -11,7 +11,7 @@ import java.util.*;
 public abstract class ZPItemTabAddHelper {
     private static final Map<RegistryObject<CreativeModeTab>, Set<RegistryObject<? extends Item>>> itemMap = new HashMap<>();
 
-    public static void matchTabItem(@NotNull RegistryObject<? extends Item> item, @NotNull RegistryObject<CreativeModeTab> creativeModeTab) {
+    public static void addItemInTab(@NotNull RegistryObject<? extends Item> item, @NotNull RegistryObject<CreativeModeTab> creativeModeTab) {
         itemMap.computeIfAbsent(creativeModeTab, k -> new HashSet<>()).add(item);
     }
 

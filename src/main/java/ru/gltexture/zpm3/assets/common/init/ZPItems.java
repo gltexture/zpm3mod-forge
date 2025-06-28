@@ -7,9 +7,8 @@ import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.init.helper.ZPRegFood;
 import ru.gltexture.zpm3.assets.common.init.helper.ZPRegMelee;
 import ru.gltexture.zpm3.assets.common.init.helper.ZPRegThrowable;
-import ru.gltexture.zpm3.assets.common.instances.items.*;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
-import ru.gltexture.zpm3.engine.helpers.ZPDefaultModelsHelper;
+import ru.gltexture.zpm3.engine.objects.items.*;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 
 public class ZPItems extends ZPRegistry<Item> {

@@ -4,11 +4,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import ru.gltexture.zpm3.assets.entity.nbt.ZPTagsList;
-import ru.gltexture.zpm3.engine.nbt.ZPEntityTag;
 import ru.gltexture.zpm3.engine.nbt.ZPEntityNBT;
 import ru.gltexture.zpm3.engine.core.ZPLogger;
 import ru.gltexture.zpm3.engine.network.ZPNetwork;
-import ru.gltexture.zpm3.engine.utils.ZPUtility;
+import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 import java.util.Objects;
 

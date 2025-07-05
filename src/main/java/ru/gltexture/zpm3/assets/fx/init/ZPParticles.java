@@ -21,8 +21,8 @@ public class ZPParticles extends ZPRegistry<ParticleType<?>> {
     @Override
     protected void runRegister(@NotNull ZPRegSupplier<ParticleType<? extends ParticleOptions>> regSupplier) {
         ZPParticles.colored_cloud = regSupplier.register("colored_cloud", () -> new ColoredSmokeType(false)).postConsume(Dist.CLIENT, (e, utils) -> {
-            utils.matchParticleRendering(e, ParticleColoredCloud.ColoredSmokeParticleProvider::new);
-            utils.addParticlesTexturesData(e, "minecraft:generic_", 8);
+            utils.particles().matchParticleRendering(e, ParticleColoredCloud.ColoredSmokeParticleProvider::new);
+            utils.particles().addParticlesTexturesData(e, "minecraft:generic_", 8);
         }).registryObject();
     }
 

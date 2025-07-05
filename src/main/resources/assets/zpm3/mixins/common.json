@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "zpm3.refmap.json",
+  "plugin": "ru.gltexture.zpm3.engine.mixins.ZPMixinAssetHelperPlugin",
+  "mixins": [
+  ],
+  "client": [
+  ],
+  "server": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "package": "ru.gltexture.zpm3.assets.common.mixins.impl"
+}

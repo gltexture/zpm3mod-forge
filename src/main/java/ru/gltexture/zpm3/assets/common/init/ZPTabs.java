@@ -14,7 +14,6 @@ public class ZPTabs extends ZPRegistry<CreativeModeTab> {
     public static RegistryObject<CreativeModeTab> zp_items_tab;
     public static RegistryObject<CreativeModeTab> zp_melee_tab;
     public static RegistryObject<CreativeModeTab> zp_food_tab;
-
     public static RegistryObject<CreativeModeTab> zp_blocks_tab;
 
     public ZPTabs() {

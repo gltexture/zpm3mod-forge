@@ -6,17 +6,14 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.init.helper.ZPRegCommonBlocks;
 import ru.gltexture.zpm3.assets.common.instances.blocks.ZPBarbaredWireBlock;
-import ru.gltexture.zpm3.engine.objects.blocks.base.ZPPillarBlock;
+import ru.gltexture.zpm3.engine.objects.blocks.*;
 import ru.gltexture.zpm3.assets.common.instances.blocks.ZPFallingBlock;
 import ru.gltexture.zpm3.assets.common.instances.blocks.ZPUraniumBlock;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
 import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockItemModelExecutors;
 import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockModelExecutors;
 import ru.gltexture.zpm3.engine.helpers.gen.providers.ZPBlockModelProvider;
-import ru.gltexture.zpm3.engine.objects.blocks.base.ZPBlock;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
-import ru.gltexture.zpm3.engine.objects.blocks.base.ZPSlabBlock;
-import ru.gltexture.zpm3.engine.objects.blocks.base.ZPStairsBlock;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.registry.collection.IZPCollectRegistryObjects;
 
@@ -59,7 +56,6 @@ public class ZPCommonBlocks extends ZPRegistry<Block> implements IZPCollectRegis
     @Override
     public void preProcessing() {
         super.preProcessing();
-        ZPDataGenHelper.addBlockModelExecutor(ZPBarbaredWireBlock.class, () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(DefaultBlockModelExecutors.getDefaultCube(), DefaultBlockItemModelExecutors.getDefaultItemAsItem()));
     }
 
     @Override

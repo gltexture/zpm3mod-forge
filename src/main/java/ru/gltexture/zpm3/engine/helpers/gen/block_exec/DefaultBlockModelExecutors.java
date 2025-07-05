@@ -1,27 +1,68 @@
 package ru.gltexture.zpm3.engine.helpers.gen.block_exec;
 
 import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
+import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.client.model.generators.VariantBlockStateBuilder;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
 import ru.gltexture.zpm3.engine.helpers.gen.data.ZPGenTextureData;
 import ru.gltexture.zpm3.engine.helpers.gen.providers.ZPBlockModelProvider;
+import ru.gltexture.zpm3.engine.objects.blocks.ZPWallTorchBlock;
 import ru.gltexture.zpm3.engine.service.ZPPath;
 
 import java.util.function.Supplier;
 
 public abstract class DefaultBlockModelExecutors {
-    public static final @NotNull ZPBlockModelProvider.BlockModelExecutor DEFAULT_PILLAR_BLOCK_EXEC_PAIR = () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(getDefaultPillarCube(), DefaultBlockItemModelExecutors.getDefaultItemAsBlock());
-    public static final @NotNull ZPBlockModelProvider.BlockModelExecutor DEFAULT_BLOCK_EXEC_PAIR = () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(getDefaultCube(), DefaultBlockItemModelExecutors.getDefaultItemAsBlock());
-    public static final @NotNull ZPBlockModelProvider.BlockModelExecutor SLAB_BLOCK_EXEC_PAIR = () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(getSlab(), DefaultBlockItemModelExecutors.getDefaultItemAsBlock());
-    public static final @NotNull ZPBlockModelProvider.BlockModelExecutor STAIR_BLOCK_EXEC_PAIR = () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(getStairs(), DefaultBlockItemModelExecutors.getDefaultItemAsBlock());
+    @BlockModelRequiresVanillaRef
+    public static final @NotNull ZPBlockModelProvider.BlockModelExecutor DEFAULT_PILLAR_BLOCK_EXEC_PAIR = () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(DefaultBlockModelExecutors.getDefaultPillarCube(), DefaultBlockItemModelExecutors.getDefaultItemAsBlock());
 
+    @BlockModelRequiresVanillaRef
+    public static final @NotNull ZPBlockModelProvider.BlockModelExecutor DEFAULT_BLOCK_EXEC_PAIR = () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(DefaultBlockModelExecutors.getDefault(), DefaultBlockItemModelExecutors.getDefaultItemAsBlock());
+
+    @BlockModelRequiresVanillaRef
+    public static final @NotNull ZPBlockModelProvider.BlockModelExecutor DEFAULT_FLAT_ITEM_BLOCK_EXEC_PAIR = () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(DefaultBlockModelExecutors.getDefault(), DefaultBlockItemModelExecutors.getDefaultItemAsItem());
+
+    public static final @NotNull ZPBlockModelProvider.BlockModelExecutor SLAB_BLOCK_EXEC_PAIR = () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(DefaultBlockModelExecutors.getSlab(), DefaultBlockItemModelExecutors.getDefaultItemAsBlock());
+
+    public static final @NotNull ZPBlockModelProvider.BlockModelExecutor STAIR_BLOCK_EXEC_PAIR = () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(DefaultBlockModelExecutors.getStairs(), DefaultBlockItemModelExecutors.getDefaultItemAsBlock());
+    public static final @NotNull ZPBlockModelProvider.BlockModelExecutor TORCH_BLOCK_EXEC_PAIR = () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(DefaultBlockModelExecutors.getDefaultTorch(), DefaultBlockItemModelExecutors.getDefaultItemAsItem());
+    public static final @NotNull ZPBlockModelProvider.BlockModelExecutor TORCH_WALL_BLOCK_EXEC_PAIR = () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(DefaultBlockModelExecutors.getDefaultWallTorch(), DefaultBlockItemModelExecutors.getDefaultItemAsItem());
+
+    public static @NotNull ZPBlockModelProvider.BlockModelExecutor.EBlock<? extends Block> getDefaultTorch() {
+        return (blockStateProvider, block, renderType, name, textureData) -> {
+            String texture = textureData.getTextureByKey("torch").get().getFullPath();
+            BlockModelBuilder standing = blockStateProvider.models().torch(name, ZPDataGenHelper.locate(blockStateProvider, texture)).renderType(renderType);
+            VariantBlockStateBuilder builder = blockStateProvider.getVariantBuilder(block);
+            builder.partialState().addModels(new ConfiguredModel(standing));
+        };
+    }
+
+    public static @NotNull ZPBlockModelProvider.BlockModelExecutor.EBlock<? extends Block> getDefaultWallTorch() {
+        return (blockStateProvider, block, renderType, name, textureData) -> {
+            String texture = textureData.getTextureByKey("torch").get().getFullPath();
+            BlockModelBuilder wall = blockStateProvider.models().torchWall(name, ZPDataGenHelper.locate(blockStateProvider, texture)).renderType(renderType);
+
+            VariantBlockStateBuilder builder = blockStateProvider.getVariantBuilder(block);
+            builder.forAllStates(state -> {
+                Direction facing = state.getValue(HorizontalDirectionalBlock.FACING);
+
+                int rotationY = switch (facing) {
+                    case NORTH -> 270;
+                    case SOUTH -> 90;
+                    case WEST -> 180;
+                    default -> 0;
+                };
+
+                return ConfiguredModel.builder().modelFile(wall).rotationY(rotationY).build();
+            });
+        };
+    }
+
+    @BlockModelRequiresVanillaRef
     public static @NotNull ZPBlockModelProvider.BlockModelExecutor.EBlock<? extends Block> getDefaultPillarCube() {
         return (blockStateProvider, block, renderType, name, textureData) -> {
             if (textureData.getVanillaModelReference() == null) {
@@ -51,10 +92,11 @@ public abstract class DefaultBlockModelExecutors {
         };
     }
 
-    public static @NotNull ZPBlockModelProvider.BlockModelExecutor.EBlock<? extends Block> getDefaultCube() {
+    @BlockModelRequiresVanillaRef
+    public static @NotNull ZPBlockModelProvider.BlockModelExecutor.EBlock<? extends Block> getDefault() {
         return (blockStateProvider, block, renderType, name, textureData) -> {
             if (textureData.getVanillaModelReference() == null) {
-                throw new ZPRuntimeException("Block's default cube model should be extended by vanilla model");
+                throw new ZPRuntimeException("Block's default cube model should be extended by vanilla model: " + name);
             }
             final String vanillaModel = textureData.getVanillaModelReference().reference();
             BlockModelBuilder modelBuilder = blockStateProvider.models().withExistingParent(name, "minecraft:" + vanillaModel);

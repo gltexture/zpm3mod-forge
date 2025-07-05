@@ -25,16 +25,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.gltexture.zpm3.engine.core.asset.ZPAsset;
 import ru.gltexture.zpm3.engine.core.asset.ZPAssetData;
+import ru.gltexture.zpm3.engine.events.both.ZPBothMod;
 import ru.gltexture.zpm3.engine.events.client.ZPClientMod;
 import ru.gltexture.zpm3.engine.events.server.ZPServerMod;
 import ru.gltexture.zpm3.engine.exceptions.ZPIOException;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.engine.events.ZPEvent;
 import ru.gltexture.zpm3.engine.helpers.ZPDispenserHelper;
+import ru.gltexture.zpm3.engine.mixins.ZPMixinAssetHelperPlugin;
 import ru.gltexture.zpm3.engine.network.ZPNetwork;
 import ru.gltexture.zpm3.engine.objects.items.tier.ZPTierData;
 import ru.gltexture.zpm3.engine.objects.items.tier.ZPTiers;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
+import ru.gltexture.zpm3.engine.registry.ZPRegistryCollections;
 import ru.gltexture.zpm3.engine.service.ZPPath;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
@@ -45,9 +48,10 @@ import java.util.*;
 
 @Mod(ZombiePlague3.MOD_ID)
 public final class ZombiePlague3 {
+    public static final String assetsJsonPath = "zpm3.asset.json";
     public static final String MOD_ID = "zpm3";
     static final Logger LOGGER = LoggerFactory.getLogger(ZombiePlague3.MOD_ID);
-    private static final Project MOD_INFO = new Project("ZombiePlague3Engine", ZombiePlague3.MOD_ID, "In Development");
+    private static final ZPProject MOD_INFO = new ZPProject("ZombiePlague3Engine", ZombiePlague3.MOD_ID, "In Development");
     private final ZPRegistryConveyor zpRegistryConveyor;
     private final List<ZPAsset> assets;
     private ZPNetwork zpNetwork;
@@ -102,7 +106,7 @@ public final class ZombiePlague3 {
                 try {
                     Method getDistMethod = clazz.getDeclaredMethod("getSide");
                     ZPEvent<?> instance = clazz.getDeclaredConstructor().newInstance();
-                    ZPEvent.Side result = (ZPEvent.Side ) getDistMethod.invoke(instance);
+                    ZPSide result = (ZPSide) getDistMethod.invoke(instance);
                     switch (result) {
                         case CLIENT -> {
                             clientEvents.add(instance);
@@ -132,12 +136,14 @@ public final class ZombiePlague3 {
             serverEvents.forEach(e -> zpServerMod.addNew(e.getEventType(), e));
             MinecraftForge.EVENT_BUS.register(zpServerMod);
         });
+
+        MinecraftForge.EVENT_BUS.register(new ZPBothMod());
     }
 
     private void readAssetsJSON(List<ZPAsset> assets) {
         String jsonRaw = null;
         try {
-            jsonRaw = ZPUtility.files().readTextFromJar(new ZPPath("zpm3.asset.json"));
+            jsonRaw = ZPUtility.files().readTextFromJar(new ZPPath(ZombiePlague3.assetsJsonPath));
         } catch (IOException e) {
             throw new ZPIOException(e);
         }
@@ -179,6 +185,7 @@ public final class ZombiePlague3 {
             zpAsset.commonSetup();
         }
         this.initDispenserData();
+        ZPRegistryCollections.clearAll();
     }
 
     private void initDispenserData() {
@@ -230,6 +237,23 @@ public final class ZombiePlague3 {
 
     public static String MOD_VERSION() {
         return ZombiePlague3.MOD_INFO.VERSION();
+    }
+
+    @FunctionalInterface
+    public interface IMixinEntry {
+        void addMixinConfigName(@NotNull String configName);
+
+        default void addMixinInAssetHelperPlugin(@NotNull String name) {
+            this.addMixinInAssetHelperPlugin(name, ZPSide.BOTH);
+        }
+
+        default void addMixinInAssetHelperPlugin(@NotNull String name, @NotNull ZPSide side) {
+            switch (side) {
+                case BOTH -> ZPMixinAssetHelperPlugin.addBothSidesMixin(name);
+                case CLIENT -> ZPMixinAssetHelperPlugin.addClientSideMixin(name);
+                case SERVER -> ZPMixinAssetHelperPlugin.addServerSideMixin(name);
+            }
+        }
     }
 
     public interface IAssetEntry {

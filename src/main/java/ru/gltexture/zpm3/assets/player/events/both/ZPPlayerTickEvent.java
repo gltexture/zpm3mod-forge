@@ -1,10 +1,10 @@
 package ru.gltexture.zpm3.assets.player.events.both;
 
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.fml.LogicalSide;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.player.ZPPlayerAsset;
+import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.events.ZPEvent;
 
 public class ZPPlayerTickEvent implements ZPEvent<TickEvent.PlayerTickEvent> {
@@ -32,7 +32,7 @@ public class ZPPlayerTickEvent implements ZPEvent<TickEvent.PlayerTickEvent> {
     }
 
     @Override
-    public @NotNull Side getSide() {
-        return Side.BOTH;
+    public @NotNull ZPSide getSide() {
+        return ZPSide.BOTH;
     }
 }

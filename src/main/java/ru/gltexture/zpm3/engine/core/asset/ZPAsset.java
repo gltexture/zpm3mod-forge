@@ -1,7 +1,5 @@
 package ru.gltexture.zpm3.engine.core.asset;
 
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 
@@ -12,8 +10,12 @@ public abstract class ZPAsset {
         this.zpAssetData = zpAssetData;
     }
 
-    public abstract void commonSetup();
+    protected ZPAsset() {
+        this.zpAssetData = null;
+    }
 
+    public abstract void commonSetup();
+    public abstract void initMixins(@NotNull ZombiePlague3.IMixinEntry mixinEntry);
     public abstract void initAsset(@NotNull ZombiePlague3.IAssetEntry assetEntry);
 
     public ZPAssetData getZpAssetData() {

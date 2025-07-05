@@ -8,12 +8,20 @@ import ru.gltexture.zpm3.engine.core.asset.ZPAssetData;
 import ru.gltexture.zpm3.engine.network.ZPNetwork;
 
 public class ZPNetPackAsset extends ZPAsset {
-    public ZPNetPackAsset(ZPAssetData zpAssetData) {
+    public ZPNetPackAsset(@NotNull ZPAssetData zpAssetData) {
         super(zpAssetData);
+    }
+
+    public ZPNetPackAsset() {
     }
 
     @Override
     public void commonSetup() {
+
+    }
+
+    @Override
+    public void initMixins(ZombiePlague3.@NotNull IMixinEntry mixinEntry) {
 
     }
 

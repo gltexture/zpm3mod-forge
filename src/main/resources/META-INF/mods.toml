@@ -52,12 +52,15 @@ versionRange = "${forge_version_range}" #mandatory
 # BEFORE - This mod is loaded BEFORE the dependency
 # AFTER - This mod is loaded AFTER the dependency
 ordering = "NONE"
-# Side this dependency is applied on - BOTH, CLIENT, or SERVER
-side = "BOTH"# Here's another dependency
+# ZPSide this dependency is applied on - BOTH, CLIENT, or SERVER
+ZPSide = "BOTH"# Here's another dependency
 [[dependencies."${mod_id}"]]
 modId = "minecraft"
 mandatory = true
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
 versionRange = "${minecraft_version_range}"
 ordering = "NONE"
-side = "BOTH"
+ZPSide = "BOTH"
+
+[[mixins]]
+config = "zpm3.mixins.json"

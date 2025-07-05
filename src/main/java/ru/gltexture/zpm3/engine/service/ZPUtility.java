@@ -2,8 +2,14 @@ package ru.gltexture.zpm3.engine.service;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SoundInstance;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -17,6 +23,7 @@ import java.util.stream.Collectors;
 public final class ZPUtility {
     private static final ZPUtility instance = new ZPUtility();
 
+    private final Blocks blocks;
     private final Files files;
     private final Sides sides;
     private final Sounds sounds;
@@ -24,11 +31,16 @@ public final class ZPUtility {
     private final Math math;
 
     public ZPUtility() {
+        this.blocks = new Blocks();
         this.files = new Files();
         this.sides = new Sides();
         this.sounds = new Sounds();
         this.client = new Client();
         this.math = new Math();
+    }
+
+    public static Blocks blocks() {
+        return ZPUtility.instance.blocks;
     }
 
     public static Files files() {
@@ -49,6 +61,43 @@ public final class ZPUtility {
 
     public static Math math() {
         return ZPUtility.instance.math;
+    }
+
+    public static final class Blocks {
+        private Blocks() {
+        }
+
+        public boolean isRainingOnBlock(Level level, BlockPos pos) {
+            if (!level.isRaining()) {
+                return false;
+            }
+
+            Biome biome = level.getBiome(pos).value();
+            if (biome.getPrecipitationAt(pos) != Biome.Precipitation.RAIN) {
+                return false;
+            }
+
+            if (!level.canSeeSky(pos.above())) {
+                return false;
+            }
+
+            return level.isRainingAt(pos.above());
+        }
+
+        public BlockState copyProperties(@NotNull BlockState sourceState, @NotNull BlockState newState) {
+            for (Property<?> property : sourceState.getProperties()) {
+                if (newState.hasProperty(property)) {
+                    newState = Blocks.copyProperty(sourceState, newState, property);
+                }
+            }
+
+            return newState;
+        }
+
+        @SuppressWarnings("unchecked")
+        private static <T extends Comparable<T>> BlockState copyProperty(BlockState from, BlockState to, Property<?> property) {
+            return to.setValue((Property<T>) property, (T) from.getValue(property));
+        }
     }
 
     public static final class Math {

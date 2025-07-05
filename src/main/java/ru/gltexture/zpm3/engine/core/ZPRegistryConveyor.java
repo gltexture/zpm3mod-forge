@@ -36,7 +36,8 @@ public final class ZPRegistryConveyor {
         TAB(0),
         BLOCK(1),
         ITEM(2),
-        ENTITY(3);
+        ENTITY(3),
+        BLOCK_ENTITY(4);
 
         private final int order;
 

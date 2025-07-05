@@ -41,6 +41,10 @@ public final class ZPRandom {
         return ZPRandom.getRandom().nextFloat(range);
     }
 
+    public float randomFloatDuo(float range) {
+        return ZPRandom.getRandom().nextFloat(range * 2.0f) - range;
+    }
+
     public float randomInt(int from, int to) {
         return ZPRandom.getRandom().nextInt(from, to);
     }

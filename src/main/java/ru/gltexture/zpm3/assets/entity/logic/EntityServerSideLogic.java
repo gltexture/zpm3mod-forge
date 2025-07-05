@@ -5,11 +5,10 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.event.TickEvent;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.common.utils.ZPCommonServerUtils;
-import ru.gltexture.zpm3.assets.entity.nbt.ZPTagsList;
+import ru.gltexture.zpm3.assets.entity.nbt.ZPEntityTagsList;
 import ru.gltexture.zpm3.engine.nbt.ZPEntityNBT;
 
 public class EntityServerSideLogic implements EntityTickEventLogic {
@@ -17,7 +16,7 @@ public class EntityServerSideLogic implements EntityTickEventLogic {
     public void onTickEntity(@NotNull Entity entity) {
         ZPEntityNBT zpEntityTag = new ZPEntityNBT(entity);
 
-        if (zpEntityTag.getTagInt(ZPTagsList.ACID_AFFECT_COOLDOWN) > 0) {
+        if (zpEntityTag.getTagInt(ZPEntityTagsList.ACID_AFFECT_COOLDOWN) > 0) {
             this.damageItemsEveryTick(entity);
         }
     }

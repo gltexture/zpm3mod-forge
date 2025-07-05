@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.helpers.ZPBlockTagsHelper;
 import ru.gltexture.zpm3.engine.helpers.ZPLootTableHelper;
 import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockItemModelExecutors;
+import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockModelExecutors;
 import ru.gltexture.zpm3.engine.helpers.gen.data.VanillaMCModelRef;
 import ru.gltexture.zpm3.engine.helpers.gen.data.ZPGenTextureData;
 import ru.gltexture.zpm3.engine.helpers.gen.providers.ZPBlockModelProvider;
@@ -32,6 +33,9 @@ public abstract class ZPDataGenHelper {
     public static final VanillaMCModelRef DEFAULT_BLOCK_SLAB = new VanillaMCModelRef("block/cobblestone_slab");
     public static final VanillaMCModelRef DEFAULT_BLOCK_CROSS = new VanillaMCModelRef("block/cross");
 
+    public static final VanillaMCModelRef DEFAULT_TORCH = new VanillaMCModelRef("block/template_torch");
+    public static final VanillaMCModelRef DEFAULT_TORCH_WALL = new VanillaMCModelRef("block/template_torch_wall");
+
     public static final VanillaMCModelRef DEFAULT_BLOCK_PILLAR = new VanillaMCModelRef("block/cube_column");
 
     public static final VanillaMCModelRef DEFAULT_FOOD = new VanillaMCModelRef("item/bread");
@@ -43,6 +47,7 @@ public abstract class ZPDataGenHelper {
     public static final VanillaMCModelRef DEFAULT_HOE = new VanillaMCModelRef("item/diamond_hoe");
 
     public static final ZPPath COMMON_BLOCKS_DIRECTORY = new ZPPath("common");
+    public static final ZPPath TORCH_BLOCKS_DIRECTORY = new ZPPath("torch");
     public static final ZPPath PILLAR_BLOCKS_DIRECTORY = new ZPPath("pillar");
     public static final ZPPath MINECRAFT_VANILLA_ROOT = new ZPPath("VANILLA_MC$");
 
@@ -70,12 +75,8 @@ public abstract class ZPDataGenHelper {
         ZPBlockModelProvider.addBlockModelExecutor(clazz, blockModelExecutor);
     }
 
-    public static void addBlockModelExecutor(@NotNull RegistryObject<? extends Block> block, @NotNull ZPBlockModelProvider.BlockModelExecutor blockModelExecutor) {
-        ZPBlockModelProvider.addBlockModelExecutor(block, blockModelExecutor);
-    }
-
-    public static void addBlockModelExecutor(@NotNull RegistryObject<? extends Block> block, @NotNull ZPBlockModelProvider.BlockModelExecutor.EBlock<?> blockModelExecutor) {
-        ZPBlockModelProvider.addBlockModelExecutor(block, () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(blockModelExecutor, DefaultBlockItemModelExecutors.getDefaultItemAsBlock()));
+    public static void setBlockModelExecutor(@NotNull RegistryObject<? extends Block> block, @NotNull ZPBlockModelProvider.BlockModelExecutor blockModelExecutor) {
+        ZPBlockModelProvider.setBlockModelExecutor(block, blockModelExecutor);
     }
 
     public static void setBlockRenderType(@NotNull RegistryObject<? extends Block> block, @NotNull String renderType) {

@@ -12,4 +12,10 @@ public abstract class ZPConstants {
     public static float DEFAULT_ACID_BOTTLE_PACKET_RANGE = 128.0f;
 
     public static int ACID_DAMAGE_TICK_RATE = 4;
+
+    public static int TORCH_FADING_TIME = 12000;
+    public static int TORCH_FADING_TIME_SALT = 4000;
+
+    public static boolean FADING_TORCHES = true;
+    public static boolean FADING_PUMPKINS = true;
 }

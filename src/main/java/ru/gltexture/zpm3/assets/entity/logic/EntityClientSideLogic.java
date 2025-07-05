@@ -8,7 +8,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import ru.gltexture.zpm3.assets.common.utils.ZPCommonClientUtils;
-import ru.gltexture.zpm3.assets.entity.nbt.ZPTagsList;
+import ru.gltexture.zpm3.assets.entity.nbt.ZPEntityTagsList;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.nbt.ZPEntityNBT;
 import ru.gltexture.zpm3.engine.sound.ZPPositionedSound;
@@ -20,7 +20,7 @@ public class EntityClientSideLogic implements EntityTickEventLogic {
     public void onTickEntity(@NotNull Entity entity) {
         ZPEntityNBT zpEntityTag = new ZPEntityNBT(entity);
 
-        if (zpEntityTag.getTagInt(ZPTagsList.ACID_AFFECT_COOLDOWN) > 0) {
+        if (zpEntityTag.getTagInt(ZPEntityTagsList.ACID_AFFECT_COOLDOWN) > 0) {
             this.addAcidParticles(entity);
             if (entity.tickCount % 3 == 0) {
                 ZPUtility.sounds().play(new ZPPositionedSound(SoundEvents.FIRE_EXTINGUISH, SoundSource.MASTER, 0.375f, 1.15f, entity.position().toVector3f(), 0L));

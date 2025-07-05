@@ -1,4 +1,4 @@
-package ru.gltexture.zpm3.engine.objects.blocks.base;
+package ru.gltexture.zpm3.engine.objects.blocks;
 
 import net.minecraft.world.level.block.SlabBlock;
 import org.jetbrains.annotations.NotNull;

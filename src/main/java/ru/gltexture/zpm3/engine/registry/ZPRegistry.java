@@ -28,6 +28,7 @@ import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.engine.helpers.*;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
 import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockItemModelExecutors;
+import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockModelExecutors;
 import ru.gltexture.zpm3.engine.helpers.gen.data.VanillaMCModelRef;
 import ru.gltexture.zpm3.engine.helpers.gen.data.ZPGenTextureData;
 import ru.gltexture.zpm3.engine.helpers.gen.providers.ZPBlockModelProvider;
@@ -177,105 +178,159 @@ public abstract class ZPRegistry<T> {
 
     public static final class ZPRegUtils {
         private ZPRegUtils() {
+            this.items = new Items();
+            this.blocks = new Blocks();
+            this.particles = new Particles();
+            this.entities = new Entities();
+            this.loot = new Loot();
         }
 
         public static ZPRegUtils create() {
             return new ZPRegUtils();
         }
 
+        private final Items items;
+        private final Blocks blocks;
+        private final Particles particles;
+        private final Entities entities;
+        private final Loot loot;
 
-        public void addItemModel(@NotNull RegistryObject<? extends Item> item, @NotNull Supplier<ZPGenTextureData> itemTextureData) {
-            ZPDataGenHelper.addItemDefaultModel(item, itemTextureData);
+        public Items items() {
+            return this.items;
         }
 
-        public void addBlockModel(@NotNull RegistryObject<? extends Block> block, @NotNull Supplier<ZPGenTextureData> blockTextureData) {
-            ZPDataGenHelper.addBlockDefaultModel(block, blockTextureData);
+        public Blocks blocks() {
+            return this.blocks;
         }
 
-        public void addItemModel(@NotNull RegistryObject<? extends Item> item, @NotNull VanillaMCModelRef vanillaMCModelRef, @NotNull RegistryObject<? extends Item> textureLike) {
-            this.addItemModel(item, () -> ZPGenTextureData.copy(vanillaMCModelRef, ZPItemModelProvider.getTextureData(textureLike).get()));
+        public Particles particles() {
+            return this.particles;
         }
 
-        public void addBlockModel(@NotNull RegistryObject<? extends Block> block, @Nullable VanillaMCModelRef vanillaMCModelRef, @NotNull RegistryObject<? extends Block> textureLike) {
-            this.addBlockModel(block, () -> ZPGenTextureData.copy(vanillaMCModelRef, ZPBlockModelProvider.getTextureData(textureLike).get()));
+        public Entities entities() {
+            return this.entities;
         }
 
-        @SafeVarargs
-        public final void addItemModel(@NotNull RegistryObject<? extends Item> item, @NotNull VanillaMCModelRef vanillaMCModelRef, @NotNull Pair<@NotNull String, @NotNull Supplier<ZPPath>>... descriptors) {
-            this.addItemModel(item, () -> ZPGenTextureData.of(vanillaMCModelRef, descriptors));
+        public Loot loot() {
+            return this.loot;
         }
 
-        @SafeVarargs
-        public final void addBlockModel(@NotNull RegistryObject<? extends Block> block, @Nullable VanillaMCModelRef vanillaMCModelRef, Pair<@NotNull String, @NotNull Supplier<ZPPath>>... descriptors) {
-            this.addBlockModel(block, () -> ZPGenTextureData.of(vanillaMCModelRef, descriptors));
+        public static final class Items {
+            private Items() {
+            }
+
+            public void addItemModel(@NotNull RegistryObject<? extends Item> item, @NotNull Supplier<ZPGenTextureData> itemTextureData) {
+                ZPDataGenHelper.addItemDefaultModel(item, itemTextureData);
+            }
+
+            public void addItemModel(@NotNull RegistryObject<? extends Item> item, @NotNull VanillaMCModelRef vanillaMCModelRef, @NotNull String mainTextureKey, @NotNull ZPPath textureDirectory) {
+                final String textureName = Objects.requireNonNull(item.getId()).getPath();
+                this.addItemModel(item, () -> ZPGenTextureData.of(vanillaMCModelRef, mainTextureKey, () -> new ZPPath(textureDirectory, textureName)));
+            }
+
+            @SafeVarargs
+            public final void addItemModel(@NotNull RegistryObject<? extends Item> item, @NotNull VanillaMCModelRef vanillaMCModelRef, @NotNull Pair<@NotNull String, @NotNull Supplier<ZPPath>>... descriptors) {
+                this.addItemModel(item, () -> ZPGenTextureData.of(vanillaMCModelRef, descriptors));
+            }
+
+            public void addItemModel(@NotNull RegistryObject<? extends Item> item, @NotNull VanillaMCModelRef vanillaMCModelRef, @NotNull RegistryObject<? extends Item> textureLike) {
+                this.addItemModel(item, () -> ZPGenTextureData.copy(vanillaMCModelRef, ZPItemModelProvider.getTextureData(textureLike).get()));
+            }
+
+            public void addItemInTab(@NotNull RegistryObject<? extends Item> item, @NotNull RegistryObject<CreativeModeTab> creativeModeTab) {
+                ZPItemTabAddHelper.addItemInTab(item, creativeModeTab);
+            }
+
+            public void addDispenserData(@NotNull RegistryObject<? extends Item> registryObject, @NotNull ZPDispenserHelper.ProjectileData projectileData) {
+                ZPDispenserHelper.addDispenserData(registryObject, projectileData);
+            }
         }
 
-        public void addItemModel(@NotNull RegistryObject<? extends Item> item, @NotNull VanillaMCModelRef vanillaMCModelRef, @NotNull ZPPath textureDirectory) {
-            final String textureName = Objects.requireNonNull(item.getId()).getPath();
-            this.addItemModel(item, () -> ZPGenTextureData.of(vanillaMCModelRef, ZPGenTextureData.LAYER0_KEY, () -> new ZPPath(textureDirectory, textureName)));
+        public static final class Blocks {
+            private Blocks() {
+            }
+
+            public void addBlockModel(@NotNull RegistryObject<? extends Block> block, @NotNull Supplier<ZPGenTextureData> blockTextureData) {
+                ZPDataGenHelper.addBlockDefaultModel(block, blockTextureData);
+            }
+
+            public void addBlockModel(@NotNull RegistryObject<? extends Block> block, @Nullable VanillaMCModelRef vanillaMCModelRef, @NotNull String mainTextureKey, @NotNull ZPPath textureDirectory) {
+                final String textureName = Objects.requireNonNull(block.getId()).getPath();
+                this.addBlockModel(block, () -> ZPGenTextureData.of(vanillaMCModelRef, mainTextureKey, () -> new ZPPath(textureDirectory, textureName)));
+            }
+
+            public void addBlockModel(@NotNull RegistryObject<? extends Block> block, @NotNull String mainTextureKey, @NotNull ZPPath textureDirectory) {
+                final String textureName = Objects.requireNonNull(block.getId()).getPath();
+                this.addBlockModel(block, () -> ZPGenTextureData.of(null, mainTextureKey, () -> new ZPPath(textureDirectory, textureName)));
+            }
+
+            @SafeVarargs
+            public final void addBlockModel(@NotNull RegistryObject<? extends Block> block, @Nullable VanillaMCModelRef vanillaMCModelRef, Pair<@NotNull String, @NotNull Supplier<ZPPath>>... descriptors) {
+                this.addBlockModel(block, () -> ZPGenTextureData.of(vanillaMCModelRef, descriptors));
+            }
+
+            public void addBlockModel(@NotNull RegistryObject<? extends Block> block, @Nullable VanillaMCModelRef vanillaMCModelRef, @NotNull RegistryObject<? extends Block> textureLike) {
+                this.addBlockModel(block, () -> ZPGenTextureData.copy(vanillaMCModelRef, ZPBlockModelProvider.getTextureData(textureLike).get()));
+            }
+
+            public <T extends Block> void addModelExecutor(@NotNull Class<T> clazz, @NotNull ZPBlockModelProvider.BlockModelExecutor blockModelExecutor) {
+                ZPDataGenHelper.addBlockModelExecutor(clazz, blockModelExecutor);
+            }
+
+            public void setBlockModelExecutor(@NotNull RegistryObject<? extends Block> block, @NotNull ZPBlockModelProvider.BlockModelExecutor blockModelExecutor) {
+                ZPDataGenHelper.setBlockModelExecutor(block, blockModelExecutor);
+            }
+
+            public void setBlockModelExecutor(@NotNull RegistryObject<? extends Block> block, @NotNull ZPBlockModelProvider.BlockModelExecutor.EBlock<?> blockModelExecutor) {
+                ZPDataGenHelper.setBlockModelExecutor(block, () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(blockModelExecutor, DefaultBlockItemModelExecutors.getDefaultItemAsBlock()));
+            }
+
+            public void setBlockItemModelExecutor(@NotNull RegistryObject<? extends Block> block, @NotNull ZPBlockModelProvider.BlockModelExecutor.EItem<?> itemModelExecutor) {
+                ZPDataGenHelper.setBlockModelExecutor(block, () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(DefaultBlockModelExecutors.getDefault(), itemModelExecutor));
+            }
+
+            public void setBlockRenderType(@NotNull RegistryObject<? extends Block> block, @NotNull String renderType) {
+                ZPDataGenHelper.setBlockRenderType(block, renderType);
+            }
+
+            public void addTagToBlock(@NotNull RegistryObject<? extends Block> registryObject, @NotNull TagKey<Block> tagKey) {
+                ZPDataGenHelper.addTagToBlock(registryObject, tagKey);
+            }
         }
 
-        public void addBlockModel(@NotNull RegistryObject<? extends Block> block, @Nullable VanillaMCModelRef vanillaMCModelRef, @NotNull ZPPath textureDirectory) {
-            final String textureName = Objects.requireNonNull(block.getId()).getPath();
-            this.addBlockModel(block, () -> ZPGenTextureData.of(vanillaMCModelRef, ZPGenTextureData.ALL_KEY, () -> new ZPPath(textureDirectory, textureName)));
+        public static final class Particles {
+            private Particles() {
+            }
+
+            public <T extends ParticleOptions> void matchParticleRendering(@NotNull RegistryObject<? extends ParticleType<T>> type, @NotNull Function<SpriteSet, @NotNull ParticleProvider<T>> particleProvider) {
+                ZPParticleRenderHelper.matchParticleRendering(type, particleProvider);
+            }
+
+            public <T extends ParticleOptions> void addParticlesTexturesData(@NotNull RegistryObject<? extends ParticleType<T>> typeRegistryObject, @NotNull String texturesLink, int arraySize) {
+                ZPDataGenHelper.addParticlesTexturesData(typeRegistryObject, texturesLink, arraySize);
+            }
         }
 
-        public void addItemModel(@NotNull RegistryObject<? extends Item> item, @NotNull VanillaMCModelRef vanillaMCModelRef, @NotNull String key, @NotNull ZPPath textureDirectory) {
-            final String textureName = Objects.requireNonNull(item.getId()).getPath();
-            this.addItemModel(item, () -> ZPGenTextureData.of(vanillaMCModelRef, key, () -> new ZPPath(textureDirectory, textureName)));
+        public static final class Entities {
+            private Entities() {
+            }
+
+            public <T extends Entity> void matchEntityRendering(@NotNull RegistryObject<EntityType<T>> registryObject, @NotNull EntityRendererProvider<T> entityRenderer) {
+                ZPEntityRenderMatchHelper.matchEntityRendering(registryObject, entityRenderer);
+            }
         }
 
-        public void addBlockModel(@NotNull RegistryObject<? extends Block> block, @Nullable VanillaMCModelRef vanillaMCModelRef, @NotNull String key, @NotNull ZPPath textureDirectory) {
-            final String textureName = Objects.requireNonNull(block.getId()).getPath();
-            this.addBlockModel(block, () -> ZPGenTextureData.of(vanillaMCModelRef, key, () -> new ZPPath(textureDirectory, textureName)));
-        }
+        public static final class Loot {
+            private Loot() {
+            }
 
-        public <T extends Block> void addModelExecutor(@NotNull Class<T> clazz, @NotNull ZPBlockModelProvider.BlockModelExecutor blockModelExecutor) {
-            ZPDataGenHelper.addBlockModelExecutor(clazz, blockModelExecutor);
-        }
+            public void addBlockLootTable(@NotNull RegistryObject<? extends Block> blockSupplier, @NotNull Supplier<LootPool.Builder> lootPool) {
+                ZPDataGenHelper.addBlockLootTable(blockSupplier, lootPool);
+            }
 
-        public void addBlockModelExecutor(@NotNull RegistryObject<? extends Block> block, @NotNull ZPBlockModelProvider.BlockModelExecutor blockModelExecutor) {
-            ZPDataGenHelper.addBlockModelExecutor(block, blockModelExecutor);
-        }
-
-        public void addBlockModelExecutor(@NotNull RegistryObject<? extends Block> block, @NotNull ZPBlockModelProvider.BlockModelExecutor.EBlock<?> blockModelExecutor) {
-            ZPDataGenHelper.addBlockModelExecutor(block, () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(blockModelExecutor, DefaultBlockItemModelExecutors.getDefaultItemAsBlock()));
-        }
-
-        public void setBlockRenderType(@NotNull RegistryObject<? extends Block> block, @NotNull String renderType) {
-            ZPDataGenHelper.setBlockRenderType(block, renderType);
-        }
-
-        public void addItemInTab(@NotNull RegistryObject<? extends Item> item, @NotNull RegistryObject<CreativeModeTab> creativeModeTab) {
-            ZPItemTabAddHelper.addItemInTab(item, creativeModeTab);
-        }
-
-        public void addBlockLootTable(@NotNull RegistryObject<? extends Block> blockSupplier, @NotNull Supplier<LootPool.Builder> lootPool) {
-            ZPDataGenHelper.addBlockLootTable(blockSupplier, lootPool);
-        }
-
-        public void addTagToBlock(@NotNull RegistryObject<? extends Block> registryObject, @NotNull TagKey<Block> tagKey) {
-            ZPDataGenHelper.addTagToBlock(registryObject, tagKey);
-        }
-
-        public <T extends ParticleOptions> void matchParticleRendering(@NotNull RegistryObject<? extends ParticleType<T>> type, @NotNull Function<SpriteSet, @NotNull ParticleProvider<T>> particleProvider) {
-            ZPParticleRenderHelper.matchParticleRendering(type, particleProvider);
-        }
-
-        public <T extends ParticleOptions> void addParticlesTexturesData(@NotNull RegistryObject<? extends ParticleType<T>> typeRegistryObject, @NotNull String texturesLink, int arraySize) {
-            ZPDataGenHelper.addParticlesTexturesData(typeRegistryObject, texturesLink, arraySize);
-        }
-
-        public void addDispenserData(@NotNull RegistryObject<? extends Item> registryObject, @NotNull ZPDispenserHelper.ProjectileData projectileData) {
-            ZPDispenserHelper.addDispenserData(registryObject, projectileData);
-        }
-
-        public <T extends Entity> void matchEntityRendering(@NotNull RegistryObject<EntityType<T>> registryObject, @NotNull EntityRendererProvider<T> entityRenderer) {
-            ZPEntityRenderMatchHelper.matchEntityRendering(registryObject, entityRenderer);
-        }
-
-        public void addSelfDropLootTable(@NotNull RegistryObject<? extends Block> e) {
-            this.addBlockLootTable(e, () -> new LootPool.Builder().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(e.get())));
+            public void addSelfDropLootTable(@NotNull RegistryObject<? extends Block> e) {
+                addBlockLootTable(e, () -> new LootPool.Builder().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(e.get())));
+            }
         }
     }
 }

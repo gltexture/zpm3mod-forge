@@ -2,6 +2,7 @@ package ru.gltexture.zpm3.assets.player.events.client;
 
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.events.ZPEvent;
 
 public class ZPClientJoinEvent implements ZPEvent<ClientPlayerNetworkEvent.LoggingIn> {
@@ -15,7 +16,7 @@ public class ZPClientJoinEvent implements ZPEvent<ClientPlayerNetworkEvent.Loggi
     }
 
     @Override
-    public @NotNull Side getSide() {
-        return Side.CLIENT;
+    public @NotNull ZPSide getSide() {
+        return ZPSide.CLIENT;
     }
 }

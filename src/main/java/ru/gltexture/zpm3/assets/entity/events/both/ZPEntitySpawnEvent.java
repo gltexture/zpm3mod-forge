@@ -4,6 +4,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.events.ZPEvent;
 import ru.gltexture.zpm3.engine.nbt.ZPEntityNBT;
 
@@ -27,7 +28,7 @@ public class ZPEntitySpawnEvent implements ZPEvent<EntityJoinLevelEvent> {
     }
 
     @Override
-    public @NotNull Side getSide() {
-        return Side.BOTH;
+    public @NotNull ZPSide getSide() {
+        return ZPSide.BOTH;
     }
 }

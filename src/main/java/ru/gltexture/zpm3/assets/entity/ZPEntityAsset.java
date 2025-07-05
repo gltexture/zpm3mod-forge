@@ -12,16 +12,24 @@ import ru.gltexture.zpm3.engine.core.asset.ZPAsset;
 import ru.gltexture.zpm3.engine.core.asset.ZPAssetData;
 
 public class ZPEntityAsset extends ZPAsset {
+    public ZPEntityAsset(@NotNull ZPAssetData zpAssetData) {
+        super(zpAssetData);
+    }
+
+    public ZPEntityAsset() {
+    }
+
     public static final @NotNull EntityTickEventLogic bothSidesLogic = new EntityBothSidesLogic();
     public static final @NotNull EntityTickEventLogic clientSideLogic = new EntityClientSideLogic();
     public static final @NotNull EntityTickEventLogic serverSideLogic = new EntityServerSideLogic();
 
-    public ZPEntityAsset(ZPAssetData zpAssetData) {
-        super(zpAssetData);
+    @Override
+    public void commonSetup() {
+
     }
 
     @Override
-    public void commonSetup() {
+    public void initMixins(ZombiePlague3.@NotNull IMixinEntry mixinEntry) {
 
     }
 

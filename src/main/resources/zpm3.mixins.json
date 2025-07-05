@@ -1,8 +1,9 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "ru.gltexture.zpm3.engine.mixins",
   "compatibilityLevel": "JAVA_17",
+  "plugin": "ru.gltexture.zpm3.engine.mixins.ZPMixinPlugin",
+  "refmap": "zpm3.refmap.json",
   "mixins": [
   ],
   "client": [
@@ -11,5 +12,6 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "package": "ru.gltexture.zpm3.engine.mixins"
 }

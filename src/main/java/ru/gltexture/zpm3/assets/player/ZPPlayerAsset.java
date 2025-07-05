@@ -13,16 +13,24 @@ import ru.gltexture.zpm3.engine.core.asset.ZPAsset;
 import ru.gltexture.zpm3.engine.core.asset.ZPAssetData;
 
 public class ZPPlayerAsset extends ZPAsset {
+    public ZPPlayerAsset(@NotNull ZPAssetData zpAssetData) {
+        super(zpAssetData);
+    }
+
+    public ZPPlayerAsset() {
+    }
+
     public static final @NotNull PlayerTickEventLogic bothSidesLogic = new PlayerBothSidesLogic();
     public static final @NotNull PlayerTickEventLogic clientSideLogic = new PlayerClientSideLogic();
     public static final @NotNull PlayerTickEventLogic serverSideLogic = new PlayerServerSideLogic();
 
-    public ZPPlayerAsset(ZPAssetData zpAssetData) {
-        super(zpAssetData);
+    @Override
+    public void commonSetup() {
+
     }
 
     @Override
-    public void commonSetup() {
+    public void initMixins(ZombiePlague3.@NotNull IMixinEntry mixinEntry) {
 
     }
 

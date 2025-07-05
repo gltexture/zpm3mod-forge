@@ -1,19 +1,22 @@
 package ru.gltexture.zpm3.engine.helpers.gen.providers;
 
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import ru.gltexture.zpm3.assets.common.instances.blocks.ZPBarbaredWireBlock;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
 import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockModelExecutors;
 import ru.gltexture.zpm3.engine.helpers.gen.data.ZPGenTextureData;
-import ru.gltexture.zpm3.engine.objects.blocks.base.ZPSlabBlock;
-import ru.gltexture.zpm3.engine.objects.blocks.base.ZPStairsBlock;
+import ru.gltexture.zpm3.engine.objects.blocks.ZPSlabBlock;
+import ru.gltexture.zpm3.engine.objects.blocks.ZPStairsBlock;
+import ru.gltexture.zpm3.engine.objects.blocks.ZPTorchBlock;
+import ru.gltexture.zpm3.engine.objects.blocks.ZPWallTorchBlock;
 
 import java.util.Objects;
 import java.util.*;
@@ -21,7 +24,7 @@ import java.util.function.Supplier;
 
 public class ZPBlockModelProvider extends BlockStateProvider {
     private static final Map<RegistryObject<? extends Block>, Supplier<ZPGenTextureData>> blocksWithDefaultModel = new LinkedHashMap<>();
-    private static final Map<Class<? extends Block>, BlockModelExecutor> classExecutors = new HashMap<>();
+    private static final Map<@Nullable Class<? extends Block>, BlockModelExecutor> classExecutors = new HashMap<>();
     private static final Map<RegistryObject<? extends Block>, BlockModelExecutor> blockExecutors = new HashMap<>();
     private static final Map<RegistryObject<? extends Block>, String> renderTypeMap = new HashMap<>();
 
@@ -30,13 +33,16 @@ public class ZPBlockModelProvider extends BlockStateProvider {
         ZPBlockModelProvider.classExecutors.put(null, DefaultBlockModelExecutors.DEFAULT_BLOCK_EXEC_PAIR);
         ZPBlockModelProvider.classExecutors.put(ZPSlabBlock.class, DefaultBlockModelExecutors.SLAB_BLOCK_EXEC_PAIR);
         ZPBlockModelProvider.classExecutors.put(ZPStairsBlock.class, DefaultBlockModelExecutors.STAIR_BLOCK_EXEC_PAIR);
+        ZPBlockModelProvider.classExecutors.put(ZPTorchBlock.class, DefaultBlockModelExecutors.TORCH_BLOCK_EXEC_PAIR);
+        ZPBlockModelProvider.classExecutors.put(ZPWallTorchBlock.class, DefaultBlockModelExecutors.TORCH_WALL_BLOCK_EXEC_PAIR);
+        ZPBlockModelProvider.classExecutors.put(ZPBarbaredWireBlock.class, DefaultBlockModelExecutors.DEFAULT_FLAT_ITEM_BLOCK_EXEC_PAIR);
     }
 
     public static <R extends Block> void addBlockModelExecutor(@NotNull Class<R> clazz, @NotNull ZPBlockModelProvider.BlockModelExecutor blockModelExecutor) {
         ZPBlockModelProvider.classExecutors.put(clazz, blockModelExecutor);
     }
 
-    public static void addBlockModelExecutor(@NotNull RegistryObject<? extends Block> block, @NotNull ZPBlockModelProvider.BlockModelExecutor blockModelExecutor) {
+    public static void setBlockModelExecutor(@NotNull RegistryObject<? extends Block> block, @NotNull ZPBlockModelProvider.BlockModelExecutor blockModelExecutor) {
         ZPBlockModelProvider.blockExecutors.put(block, blockModelExecutor);
     }
 

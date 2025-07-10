@@ -5,6 +5,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.init.helper.ZPRegFood;
+import ru.gltexture.zpm3.assets.common.init.helper.ZPRegMedicine;
 import ru.gltexture.zpm3.assets.common.init.helper.ZPRegMelee;
 import ru.gltexture.zpm3.assets.common.init.helper.ZPRegThrowable;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
@@ -38,6 +39,17 @@ public class ZPItems extends ZPRegistry<Item> {
     public static RegistryObject<ZPItemFood> soda;
     public static RegistryObject<ZPItemFood> water;
 
+    //MEDICINE
+    public static RegistryObject<ZPItemMedicine> adrenaline;
+    public static RegistryObject<ZPItemMedicine> morphine;
+    public static RegistryObject<ZPItemMedicine> antidote;
+    public static RegistryObject<ZPItemMedicine> aquaclear;
+    public static RegistryObject<ZPItemMedicine> bandage;
+    public static RegistryObject<ZPItemMedicine> calmexin;
+    public static RegistryObject<ZPItemMedicine> carbocid;
+    public static RegistryObject<ZPItemMedicine> infectonol;
+    public static RegistryObject<ZPItemMedicine> vodka;
+
     public ZPItems() {
         super(ForgeRegistries.ITEMS, ZPRegistryConveyor.Target.ITEM);
     }
@@ -47,6 +59,7 @@ public class ZPItems extends ZPRegistry<Item> {
         ZPRegThrowable.init(regSupplier);
         ZPRegMelee.init(regSupplier);
         ZPRegFood.init(regSupplier);
+        ZPRegMedicine.init(regSupplier);
     }
 
     @Override

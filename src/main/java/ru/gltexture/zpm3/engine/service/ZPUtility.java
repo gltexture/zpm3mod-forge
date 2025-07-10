@@ -63,6 +63,10 @@ public final class ZPUtility {
         return ZPUtility.instance.math;
     }
 
+    public static boolean isDataGen() {
+        return Boolean.getBoolean("zpm3.datagen");
+    }
+
     public static final class Blocks {
         private Blocks() {
         }

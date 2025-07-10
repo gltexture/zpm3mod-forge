@@ -3,6 +3,7 @@ package ru.gltexture.zpm3.assets.entity.events.both;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.events.ZPEvent;
@@ -30,5 +31,10 @@ public class ZPEntitySpawnEvent implements ZPEvent<EntityJoinLevelEvent> {
     @Override
     public @NotNull ZPSide getSide() {
         return ZPSide.BOTH;
+    }
+
+    @Override
+    public Mod.EventBusSubscriber.@NotNull Bus getBus() {
+        return Mod.EventBusSubscriber.Bus.MOD;
     }
 }

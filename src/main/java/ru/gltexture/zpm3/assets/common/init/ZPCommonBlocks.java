@@ -5,6 +5,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.init.helper.ZPRegCommonBlocks;
+import ru.gltexture.zpm3.assets.common.init.helper.ZPRegMedicine;
 import ru.gltexture.zpm3.assets.common.instances.blocks.ZPBarbaredWireBlock;
 import ru.gltexture.zpm3.engine.objects.blocks.*;
 import ru.gltexture.zpm3.assets.common.instances.blocks.ZPFallingBlock;

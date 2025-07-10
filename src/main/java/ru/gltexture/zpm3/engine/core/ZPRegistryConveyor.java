@@ -32,6 +32,7 @@ public final class ZPRegistryConveyor {
     }
 
     public enum Target {
+        SOUNDS(-2),
         FX(-1),
         TAB(0),
         BLOCK(1),

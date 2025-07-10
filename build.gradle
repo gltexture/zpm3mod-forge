@@ -2,6 +2,9 @@ buildscript {
     repositories {
         maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
         mavenCentral()
+        flatDir {
+            dirs 'libs'
+        }
     }
     dependencies {
         classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
@@ -25,6 +28,7 @@ shadowJar {
 reobf {
     shadowJar {}
 }
+
 
 artifacts {
     archives shadowJar
@@ -65,6 +69,8 @@ minecraft {
 
         client {
             property 'forge.enabledGameTestNamespaces', mod_id
+            workingDirectory project.file("run")
+            args '--username', 'Dev'
         }
 
         server {
@@ -91,12 +97,22 @@ mixin {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-    implementation 'org.reflections:reflections:0.10.2'
+
+    implementation 'io.github.spair:imgui-java-binding:1.86.12'
+    implementation 'io.github.spair:imgui-java-lwjgl3:1.86.12'
+    implementation 'io.github.spair:imgui-java-natives-windows:1.86.12'
+
+    minecraftLibrary 'io.github.spair:imgui-java-binding:1.86.12'
+    minecraftLibrary 'io.github.spair:imgui-java-lwjgl3:1.86.12'
+    minecraftLibrary 'io.github.spair:imgui-java-natives-windows:1.86.12'
 }
 
 tasks.named('processResources', ProcessResources).configure {
@@ -129,4 +145,8 @@ tasks.named('jar', Jar).configure {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+}
+
+tasks.matching { it.name == "runData" }.configureEach {
+    systemProperty "zpm3.datagen", "true"
 }

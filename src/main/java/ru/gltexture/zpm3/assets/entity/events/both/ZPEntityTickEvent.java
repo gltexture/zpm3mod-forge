@@ -3,6 +3,7 @@ package ru.gltexture.zpm3.assets.entity.events.both;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.entity.ZPEntityAsset;
 import ru.gltexture.zpm3.engine.core.ZPSide;
@@ -34,5 +35,10 @@ public class ZPEntityTickEvent implements ZPEvent<LivingEvent.LivingTickEvent> {
     @Override
     public @NotNull ZPSide getSide() {
         return ZPSide.BOTH;
+    }
+
+    @Override
+    public Mod.EventBusSubscriber.@NotNull Bus getBus() {
+        return Mod.EventBusSubscriber.Bus.MOD;
     }
 }

@@ -12,13 +12,12 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.helpers.ZPBlockTagsHelper;
 import ru.gltexture.zpm3.engine.helpers.ZPLootTableHelper;
-import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockItemModelExecutors;
-import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockModelExecutors;
 import ru.gltexture.zpm3.engine.helpers.gen.data.VanillaMCModelRef;
 import ru.gltexture.zpm3.engine.helpers.gen.data.ZPGenTextureData;
 import ru.gltexture.zpm3.engine.helpers.gen.providers.ZPBlockModelProvider;
 import ru.gltexture.zpm3.engine.helpers.gen.providers.ZPItemModelProvider;
 import ru.gltexture.zpm3.engine.helpers.gen.providers.ZPParticleTextureProvider;
+import ru.gltexture.zpm3.engine.helpers.gen.providers.ZPSoundListProvider;
 import ru.gltexture.zpm3.engine.service.ZPPath;
 
 import java.util.function.Supplier;
@@ -54,6 +53,7 @@ public abstract class ZPDataGenHelper {
     public static final ZPPath FOOD_ITEMS_DIRECTORY = new ZPPath("food");
     public static final ZPPath ITEMS_ITEMS_DIRECTORY = new ZPPath("items");
     public static final ZPPath MELEE_ITEMS_DIRECTORY = new ZPPath("melee");
+    public static final ZPPath MEDICINE_ITEMS_DIRECTORY = new ZPPath("medicine");
 
     public static void addItemDefaultModel(@NotNull RegistryObject<? extends Item> item, @NotNull Supplier<ZPGenTextureData> itemTextureData) {
         ZPItemModelProvider.addNewObject(item, itemTextureData);
@@ -87,6 +87,9 @@ public abstract class ZPDataGenHelper {
         ZPParticleTextureProvider.addParticlesTexturesData(typeRegistryObject, texturesLink, arraySize);
     }
 
+    public static void addNewSoundEvent(@NotNull ZPSoundListProvider.ZPSoundEvent soundEvent) {
+        ZPSoundListProvider.addNewSoundEvent(soundEvent);
+    }
 
     public static @NotNull ResourceLocation locate(@NotNull BlockStateProvider blockStateProvider, @NotNull String ref) {
         if (ZPDataGenHelper.isVanillaRoot(ref)) {

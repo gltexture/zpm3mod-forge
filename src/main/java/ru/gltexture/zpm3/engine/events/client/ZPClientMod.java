@@ -1,5 +1,6 @@
 package ru.gltexture.zpm3.engine.events.client;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.data.DataGenerator;
@@ -10,13 +11,17 @@ import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
+import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPShaderReloader;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.events.ZPAbstractEventMod;
 import ru.gltexture.zpm3.engine.helpers.ZPEntityRenderMatchHelper;
@@ -84,10 +89,17 @@ public final class ZPClientMod extends ZPAbstractEventMod {
         generator.addProvider(event.includeClient(), new ZPBlockModelProvider(output, helper));
         generator.addProvider(event.includeClient(), new ZPParticleTextureProvider(generator, ZombiePlague3.MOD_ID));
         generator.addProvider(event.includeServer(), new ZPBlockTagsProvider(output, lookup, ZombiePlague3.MOD_ID, helper));
+        generator.addProvider(event.includeServer(), new ZPSoundListProvider(generator, ZombiePlague3.MOD_ID));
+        generator.addProvider(event.includeServer(), new ZPMixinConfigsProvider(generator, ZombiePlague3.MOD_ID));
 
         {
             ZPBlocksSubProvider subProvider1 = new ZPBlocksSubProvider(Collections.emptySet(), FeatureFlags.REGISTRY.allFlags(), ZPLootTableHelper.getLootPoolsToCreate());
             generator.addProvider(event.includeServer(), new ZPLootTableProvider(output, Collections.emptySet(), List.of(new LootTableProvider.SubProviderEntry(() -> subProvider1, LootContextParamSets.BLOCK))));
         }
+    }
+
+    @SubscribeEvent
+    public static void onRegisterReloadListeners(RegisterClientReloadListenersEvent event) {
+        event.registerReloadListener(new ZPShaderReloader());
     }
 }

@@ -1,5 +1,7 @@
 package ru.gltexture.zpm3.assets.entity;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.entity.events.both.ZPEntitySpawnEvent;
 import ru.gltexture.zpm3.assets.entity.events.both.ZPEntityTickEvent;
@@ -25,6 +27,18 @@ public class ZPEntityAsset extends ZPAsset {
 
     @Override
     public void commonSetup() {
+
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void clientSetup() {
+
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void clientDestroy() {
 
     }
 

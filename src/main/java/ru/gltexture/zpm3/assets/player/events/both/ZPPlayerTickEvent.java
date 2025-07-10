@@ -2,6 +2,7 @@ package ru.gltexture.zpm3.assets.player.events.both;
 
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.player.ZPPlayerAsset;
 import ru.gltexture.zpm3.engine.core.ZPSide;
@@ -34,5 +35,10 @@ public class ZPPlayerTickEvent implements ZPEvent<TickEvent.PlayerTickEvent> {
     @Override
     public @NotNull ZPSide getSide() {
         return ZPSide.BOTH;
+    }
+
+    @Override
+    public Mod.EventBusSubscriber.@NotNull Bus getBus() {
+        return Mod.EventBusSubscriber.Bus.MOD;
     }
 }

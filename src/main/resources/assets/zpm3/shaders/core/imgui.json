@@ -1,0 +1,22 @@
+{
+  "vertex": "zpm3:imgui/vertex",
+  "fragment": "zpm3:imgui/fragment",
+  "samplers": [
+    {
+      "name": "texture_map"
+    }
+  ],
+  "attributes": [
+    "position",
+    "texture",
+    "color"
+  ],
+  "uniforms": [
+    {
+      "name": "scale",
+      "type": "float",
+      "count": 2,
+      "values": [1.0, 1.0]
+    }
+  ]
+}

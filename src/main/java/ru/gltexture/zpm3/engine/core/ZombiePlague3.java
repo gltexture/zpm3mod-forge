@@ -2,6 +2,8 @@ package ru.gltexture.zpm3.engine.core;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.Position;
 import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
 import net.minecraft.resources.ResourceLocation;
@@ -11,11 +13,14 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.TierSortingRegistry;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
@@ -23,16 +28,20 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.gltexture.zpm3.engine.client.init.ZPClientInitManager;
+import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPDefaultShaders;
 import ru.gltexture.zpm3.engine.core.asset.ZPAsset;
 import ru.gltexture.zpm3.engine.core.asset.ZPAssetData;
+import ru.gltexture.zpm3.engine.events.both.ZPBothForge;
 import ru.gltexture.zpm3.engine.events.both.ZPBothMod;
+import ru.gltexture.zpm3.engine.events.client.ZPClientForge;
 import ru.gltexture.zpm3.engine.events.client.ZPClientMod;
+import ru.gltexture.zpm3.engine.events.server.ZPServerForge;
 import ru.gltexture.zpm3.engine.events.server.ZPServerMod;
 import ru.gltexture.zpm3.engine.exceptions.ZPIOException;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.engine.events.ZPEvent;
 import ru.gltexture.zpm3.engine.helpers.ZPDispenserHelper;
-import ru.gltexture.zpm3.engine.mixins.ZPMixinAssetHelperPlugin;
 import ru.gltexture.zpm3.engine.network.ZPNetwork;
 import ru.gltexture.zpm3.engine.objects.items.tier.ZPTierData;
 import ru.gltexture.zpm3.engine.objects.items.tier.ZPTiers;
@@ -76,10 +85,13 @@ public final class ZombiePlague3 {
     private void init() {
         ZPLogger.info(this + " INIT");
         this.initDefaultTiers();
-        IEventBus modEventBus = ZombiePlague3.getModEventBus();
+        final IEventBus modEventBus = ZombiePlague3.getModEventBus();
         this.createNet();
         this.initAssets();
         modEventBus.addListener(this::commonSetup);
+        ZPUtility.sides().onlyClient(() -> {
+            modEventBus.addListener(this::clientSetup);
+        });
         ZPLogger.info(this + " END INIT");
     }
 
@@ -108,12 +120,8 @@ public final class ZombiePlague3 {
                     ZPEvent<?> instance = clazz.getDeclaredConstructor().newInstance();
                     ZPSide result = (ZPSide) getDistMethod.invoke(instance);
                     switch (result) {
-                        case CLIENT -> {
-                            clientEvents.add(instance);
-                        }
-                        case SERVER -> {
-                            serverEvents.add(instance);
-                        }
+                        case CLIENT -> clientEvents.add(instance);
+                        case SERVER -> serverEvents.add(instance);
                         case BOTH -> {
                             clientEvents.add(instance);
                             serverEvents.add(instance);
@@ -127,17 +135,32 @@ public final class ZombiePlague3 {
 
         ZPUtility.sides().onlyClient(() -> {
             final ZPClientMod zpClientMod = new ZPClientMod();
-            clientEvents.forEach(e -> zpClientMod.addNew(e.getEventType(), e));
+            final ZPClientForge zpClientForge = new ZPClientForge();
+            clientEvents.forEach(e -> {
+                switch (e.getBus()) {
+                    case MOD -> zpClientMod.addNew(e.getEventType(), e);
+                    case FORGE -> zpClientForge.addNew(e.getEventType(), e);
+                }
+            });
             MinecraftForge.EVENT_BUS.register(zpClientMod);
+            MinecraftForge.EVENT_BUS.register(zpClientForge);
         });
 
         ZPUtility.sides().onlyServer(() -> {
             final ZPServerMod zpServerMod = new ZPServerMod();
-            serverEvents.forEach(e -> zpServerMod.addNew(e.getEventType(), e));
+            final ZPServerForge zpServerForge = new ZPServerForge();
+            serverEvents.forEach(e -> {
+                switch (e.getBus()) {
+                    case MOD -> zpServerMod.addNew(e.getEventType(), e);
+                    case FORGE -> zpServerForge.addNew(e.getEventType(), e);
+                }
+            });
             MinecraftForge.EVENT_BUS.register(zpServerMod);
+            MinecraftForge.EVENT_BUS.register(zpServerForge);
         });
 
         MinecraftForge.EVENT_BUS.register(new ZPBothMod());
+        MinecraftForge.EVENT_BUS.register(new ZPBothForge());
     }
 
     private void readAssetsJSON(List<ZPAsset> assets) {
@@ -180,7 +203,35 @@ public final class ZombiePlague3 {
         deferredRegister.register(ZombiePlague3.getModEventBus());
     }
 
+    @OnlyIn(Dist.CLIENT)
+    private void clientSetup(final FMLClientSetupEvent event) {
+        ZPLogger.info("Client resources setup");
+        Runtime.getRuntime().addShutdownHook(new Thread(this::clientDestroy));
+        RenderSystem.recordRenderCall(() -> {
+            ZPDefaultShaders.init();
+            ZPDefaultSysInit.initZPSystems();
+            for (ZPAsset zpAsset : this.assets) {
+                zpAsset.clientSetup();
+            }
+            ZPClientInitManager.getSetInit().forEach(e -> e.run(Minecraft.getInstance().getWindow()));
+            ZPClientInitManager.clearInit();
+        });
+    }
+
+    private void clientDestroy() {
+        ZPLogger.info("Client resources destroy");
+        RenderSystem.recordRenderCall(() -> {
+            ZPDefaultSysInit.destroyZPSystems();
+            for (ZPAsset zpAsset : this.assets) {
+                zpAsset.clientDestroy();
+            }
+            ZPClientInitManager.getSetDestroy().forEach(e -> e.run(Minecraft.getInstance().getWindow()));
+            ZPClientInitManager.clearDestroy();
+        });
+    }
+
     private void commonSetup(final FMLCommonSetupEvent event) {
+        ZPDefaultSysInit.destroyZPSystems();
         for (ZPAsset zpAsset : this.assets) {
             zpAsset.commonSetup();
         }
@@ -239,21 +290,11 @@ public final class ZombiePlague3 {
         return ZombiePlague3.MOD_INFO.VERSION();
     }
 
-    @FunctionalInterface
     public interface IMixinEntry {
-        void addMixinConfigName(@NotNull String configName);
+        void addMixinConfigData(@NotNull MixinConfig mixinConfig, @NotNull MixinClass... classes);
 
-        default void addMixinInAssetHelperPlugin(@NotNull String name) {
-            this.addMixinInAssetHelperPlugin(name, ZPSide.BOTH);
-        }
-
-        default void addMixinInAssetHelperPlugin(@NotNull String name, @NotNull ZPSide side) {
-            switch (side) {
-                case BOTH -> ZPMixinAssetHelperPlugin.addBothSidesMixin(name);
-                case CLIENT -> ZPMixinAssetHelperPlugin.addClientSideMixin(name);
-                case SERVER -> ZPMixinAssetHelperPlugin.addServerSideMixin(name);
-            }
-        }
+        record MixinClass(@NotNull String name, @NotNull ZPSide side) { ; }
+        record MixinConfig(@NotNull String name, @NotNull String packagePath) { ; }
     }
 
     public interface IAssetEntry {

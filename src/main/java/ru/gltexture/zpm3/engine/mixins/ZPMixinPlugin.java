@@ -12,6 +12,7 @@ import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.asset.ZPAsset;
 import ru.gltexture.zpm3.engine.exceptions.ZPIOException;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
+import ru.gltexture.zpm3.engine.helpers.gen.providers.ZPMixinConfigsProvider;
 import ru.gltexture.zpm3.engine.service.ZPPath;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
@@ -24,7 +25,7 @@ import java.util.List;
 import java.util.Set;
 
 public class ZPMixinPlugin implements IMixinConfigPlugin {
-    public static final String pathToMixinsCfg = "assets/zpm3/mixins/";
+    public static final String pathToMixinsCfg = "zpm3/mixins/";
 
     private static final List<String> mixins = new ArrayList<>();
 
@@ -64,7 +65,10 @@ public class ZPMixinPlugin implements IMixinConfigPlugin {
         List<ZPAsset> assets = new ArrayList<>();
         ZPMixinPlugin.readAssetsJSON(assets);
         for (ZPAsset zpAsset : assets) {
-            zpAsset.initMixins(ZPMixinPlugin.mixins::add);
+            zpAsset.initMixins((mixinConfig, classes) -> {
+                ZPMixinPlugin.mixins.add(mixinConfig.name());
+                ZPMixinConfigsProvider.addNewMixinData(mixinConfig, classes);
+            });
         }
     }
 
@@ -72,15 +76,17 @@ public class ZPMixinPlugin implements IMixinConfigPlugin {
     public void onLoad(String mixinPackage) {
         this.registerMixinConfigs();
 
-        ZPMixinPlugin.mixins.forEach(e -> {
-            final String path = ZPMixinPlugin.pathToMixinsCfg + e + ".json";
-            try (InputStream ignored = this.getClass().getResourceAsStream(path)) {
-                ZPLogger.info("Got mixin config: " + path);
-            } catch (IOException ex) {
-                throw new ZPRuntimeException(ex);
-            }
-            Mixins.addConfiguration(path);
-        });
+        if (!ZPUtility.isDataGen()) {
+            ZPMixinPlugin.mixins.forEach(e -> {
+                final String path = ZPMixinPlugin.pathToMixinsCfg + e + ".json";
+                try (InputStream ignored = this.getClass().getResourceAsStream(path)) {
+                    ZPLogger.info("Got mixin config: " + path);
+                } catch (IOException ex) {
+                    throw new ZPRuntimeException(ex);
+                }
+                Mixins.addConfiguration(path);
+            });
+        }
     }
 
     @Override

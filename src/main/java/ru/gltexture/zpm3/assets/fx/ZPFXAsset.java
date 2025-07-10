@@ -1,5 +1,7 @@
 package ru.gltexture.zpm3.assets.fx;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.fx.init.ZPParticles;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
@@ -16,6 +18,18 @@ public class ZPFXAsset extends ZPAsset {
 
     @Override
     public void commonSetup() {
+
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void clientSetup() {
+
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void clientDestroy() {
 
     }
 

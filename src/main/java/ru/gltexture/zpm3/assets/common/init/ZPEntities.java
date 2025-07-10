@@ -15,7 +15,7 @@ import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.helpers.ZPEntityRenderMatchHelper;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
-import ru.gltexture.zpm3.engine.rendering.entities.ZPThrowableEntityRender;
+import ru.gltexture.zpm3.engine.client.rendering.entities.ZPThrowableEntityRender;
 
 public class ZPEntities extends ZPRegistry<EntityType<?>> {
     public static RegistryObject<EntityType<ZPAcidBottleEntity>> acid_bottle_entity;

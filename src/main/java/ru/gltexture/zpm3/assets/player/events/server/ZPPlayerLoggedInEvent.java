@@ -1,6 +1,7 @@
 package ru.gltexture.zpm3.assets.player.events.server;
 
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.events.ZPEvent;
@@ -18,5 +19,10 @@ public class ZPPlayerLoggedInEvent implements ZPEvent<PlayerEvent.PlayerLoggedIn
     @Override
     public @NotNull ZPSide getSide() {
         return ZPSide.SERVER;
+    }
+
+    @Override
+    public Mod.EventBusSubscriber.@NotNull Bus getBus() {
+        return Mod.EventBusSubscriber.Bus.MOD;
     }
 }

@@ -20,7 +20,7 @@ import ru.gltexture.zpm3.assets.common.instances.blocks.torch.ZPFadingBlockBlock
 import java.util.function.Supplier;
 
 @Mixin(WallTorchBlock.class)
-public class WallBlockPlaceMixin implements EntityBlock, IFadingBlock {
+public class WallTorchPlaceMixin implements EntityBlock, IFadingBlock {
     @Override
     public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState) {
         return !ZPConstants.FADING_TORCHES ? null : new ZPFadingBlockEntity(pPos, pState);

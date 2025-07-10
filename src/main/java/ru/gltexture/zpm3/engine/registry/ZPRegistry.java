@@ -33,6 +33,7 @@ import ru.gltexture.zpm3.engine.helpers.gen.data.VanillaMCModelRef;
 import ru.gltexture.zpm3.engine.helpers.gen.data.ZPGenTextureData;
 import ru.gltexture.zpm3.engine.helpers.gen.providers.ZPBlockModelProvider;
 import ru.gltexture.zpm3.engine.helpers.gen.providers.ZPItemModelProvider;
+import ru.gltexture.zpm3.engine.helpers.gen.providers.ZPSoundListProvider;
 import ru.gltexture.zpm3.engine.registry.collection.IZPCollectRegistryObjects;
 import ru.gltexture.zpm3.engine.registry.collection.ZPRegistryObjectsCollector;
 import ru.gltexture.zpm3.engine.service.Pair;
@@ -183,6 +184,7 @@ public abstract class ZPRegistry<T> {
             this.particles = new Particles();
             this.entities = new Entities();
             this.loot = new Loot();
+            this.sounds = new Sounds();
         }
 
         public static ZPRegUtils create() {
@@ -194,6 +196,7 @@ public abstract class ZPRegistry<T> {
         private final Particles particles;
         private final Entities entities;
         private final Loot loot;
+        private final Sounds sounds;
 
         public Items items() {
             return this.items;
@@ -213,6 +216,10 @@ public abstract class ZPRegistry<T> {
 
         public Loot loot() {
             return this.loot;
+        }
+
+        public Sounds sounds() {
+            return this.sounds;
         }
 
         public static final class Items {
@@ -330,6 +337,15 @@ public abstract class ZPRegistry<T> {
 
             public void addSelfDropLootTable(@NotNull RegistryObject<? extends Block> e) {
                 addBlockLootTable(e, () -> new LootPool.Builder().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(e.get())));
+            }
+        }
+
+        public static final class Sounds {
+            private Sounds() {
+            }
+
+            public void addNewSound(@NotNull ZPSoundListProvider.ZPSoundEvent soundEvent) {
+                ZPDataGenHelper.addNewSoundEvent(soundEvent);
             }
         }
     }

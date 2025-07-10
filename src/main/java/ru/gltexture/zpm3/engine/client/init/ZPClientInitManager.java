@@ -7,12 +7,13 @@ import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class ZPClientInitManager {
-    private static Set<InitRun> setInit = new HashSet<>();
-    private static Set<InitRun> setDestroy = new HashSet<>();
+    private static LinkedHashSet<InitRun> setInit = new LinkedHashSet<>();
+    private static LinkedHashSet<InitRun> setDestroy = new LinkedHashSet<>();
 
     public static void setupRunner(InitRun runnable) {
         if (ZPClientInitManager.setInit == null) {

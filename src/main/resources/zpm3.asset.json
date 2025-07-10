@@ -1,6 +1,11 @@
 {
   "assets": [
     {
+      "name": "ZP3DebugAsset",
+      "version": "0.0",
+      "class": "ru.gltexture.zpm3.assets.debug.ZPDebugAsset"
+    },
+    {
       "name": "ZP3NetPackAsset",
       "version": "0.0",
       "class": "ru.gltexture.zpm3.assets.net_pack.ZPNetPackAsset"

@@ -2,11 +2,10 @@ package ru.gltexture.zpm3.engine.client.rendering;
 
 import com.mojang.blaze3d.platform.Window;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.TitleScreen;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPDefaultShaders;
 import ru.gltexture.zpm3.engine.client.rendering.ui.imgui.ZPDearUIRenderer;
-import ru.gltexture.zpm3.engine.client.rendering.ui.imgui.interfaces.DearUIMenuInterface;
+import ru.gltexture.zpm3.engine.client.rendering.ui.imgui.interfaces.DearUIDemoInterface;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +20,7 @@ public class ZPRenderHelper implements IZPRenderHelper {
     }
 
     private void defaultSetup() {
-        this.getDearUIRenderer().getInterfacesManager().addActiveInterface(new DearUIMenuInterface());
+        //this.getDearUIRenderer().getInterfacesManager().addActiveInterface(new DearUIDemoInterface());
         this.addNewRenderFunction(((renderStage, partialTicks, pNanoTime, pRenderLevel) -> {
             if (renderStage == RenderStage.POST) {
                 if (this.getDearUIRenderer() != null && !Minecraft.getInstance().isPaused()) {

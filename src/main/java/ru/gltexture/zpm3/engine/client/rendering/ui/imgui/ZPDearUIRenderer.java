@@ -131,7 +131,6 @@ public class ZPDearUIRenderer implements IZPResourceInit {
         });
     }
 
-    //-javaagent:"C:\Users\forge\.gradle\caches\modules-2\files-2.1\org.spongepowered\mixin\0.8.5\958671fbe7661c8cae6b1994014583332a14c7d5\mixin-0.8.5-sources.jar"
     public void onRender(@NotNull Window window, @NotNull DearUIInterface dearUIInterface, float frameTicking) {
         final ShaderInstance shader = this.getShaderManager().get();
         if (shader == null) {
@@ -142,7 +141,7 @@ public class ZPDearUIRenderer implements IZPResourceInit {
         final MouseHandler mouse = mc.mouseHandler;
 
         ImGui.newFrame();
-        ImGui.showDemoWindow();
+        dearUIInterface.drawGui(window, mouse);
         ImGui.endFrame();
         ImGui.render();
 

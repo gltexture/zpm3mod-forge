@@ -12,10 +12,9 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.common.init.ZPBlockEntities;
-import ru.gltexture.zpm3.assets.common.init.ZPTorchBlocks;
 import ru.gltexture.zpm3.assets.common.instances.block_entities.ZPFadingBlockEntity;
 import ru.gltexture.zpm3.assets.common.instances.blocks.torch.IFadingBlock;
-import ru.gltexture.zpm3.assets.common.instances.blocks.torch.ZPFadingBlockBlock;
+import ru.gltexture.zpm3.assets.common.instances.blocks.torch.ZPFadingBlock;
 
 import java.util.function.Supplier;
 
@@ -31,7 +30,7 @@ public class PumpkinPlaceMixin implements EntityBlock, IFadingBlock {
         if (!pState.getBlock().equals(Blocks.JACK_O_LANTERN)) {
             return null;
         }
-        return !ZPConstants.FADING_PUMPKINS ? null : ZPFadingBlockBlock.createTickerHelper(pBlockEntityType, ZPBlockEntities.fading_block_entity.get(), ZPFadingBlockEntity::tick);
+        return !ZPConstants.FADING_PUMPKINS ? null : ZPFadingBlock.createTickerHelper(pBlockEntityType, ZPBlockEntities.fading_block_entity.get(), ZPFadingBlockEntity::tick);
     }
 
     @Override

@@ -131,7 +131,7 @@ public abstract class DefaultBlockModelExecutors {
             final ModelFile stairInner = blockStateProvider.models().stairsInner(name + "_inner", ZPDataGenHelper.locate(blockStateProvider, side), ZPDataGenHelper.locate(blockStateProvider, bottom), ZPDataGenHelper.locate(blockStateProvider, top)).renderType(renderType);
             final ModelFile stairOuter = blockStateProvider.models().stairsOuter(name + "_outer", ZPDataGenHelper.locate(blockStateProvider, side), ZPDataGenHelper.locate(blockStateProvider, bottom), ZPDataGenHelper.locate(blockStateProvider, top)).renderType(renderType);
 
-            blockStateProvider.stairsBlock(block, stairInner, stair, stairOuter);
+            blockStateProvider.stairsBlock(block, stair, stairInner, stairOuter);
         };
     }
 

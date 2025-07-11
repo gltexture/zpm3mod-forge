@@ -91,11 +91,11 @@ public abstract class ZPRegistry<T> {
     }
 
     @SuppressWarnings("all")
-    public void continueCollecting() throws ZPRuntimeException {
+    public void startCollectingInto(@NotNull String id) throws ZPRuntimeException {
         if (!this.hasCollector()) {
             throw new ZPRuntimeException("Couldn't continue collecting, because collector wasn't attached");
         }
-        this.getObjectsCollector().continueCollecting();
+        this.getObjectsCollector().startCollectingInto(id);
     }
 
     @SuppressWarnings("all")

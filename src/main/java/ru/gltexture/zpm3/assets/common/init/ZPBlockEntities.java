@@ -28,16 +28,11 @@ public class ZPBlockEntities extends ZPRegistry<BlockEntityType<?>> {
     protected void runRegister(@NotNull ZPRegSupplier<BlockEntityType<?>> regSupplier) {
         ZPBlockEntities.fading_block_entity = regSupplier.register("fading_torch_block_entity",
                 () -> {
-                    ZPBlock[] zpBlocks = ZPRegistryCollections.getCollector(ZPTorchBlocks.class)
-                            .getObjectsToCollect().stream()
+                    ZPBlock[] zpBlocks = ZPRegistryCollections.getCollectionById(ZPTorchBlocks.class, "torches")
+                            .stream()
                             .map(e -> (ZPBlock) e.get())
                             .toArray(ZPBlock[]::new);
-
-                    Block[] allBlocks = Stream.concat(
-                            Arrays.stream(zpBlocks),
-                            Stream.of(Blocks.TORCH, Blocks.WALL_TORCH, Blocks.JACK_O_LANTERN)
-                    ).toArray(Block[]::new);
-
+                    Block[] allBlocks = Stream.concat(Arrays.stream(zpBlocks), Stream.of(Blocks.TORCH, Blocks.WALL_TORCH, Blocks.JACK_O_LANTERN)).toArray(Block[]::new);
                     return Builder.of(ZPFadingBlockEntity::new, allBlocks).build(null);
                 }).registryObject();
     }

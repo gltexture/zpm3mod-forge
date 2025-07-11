@@ -7,14 +7,25 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.gltexture.zpm3.assets.common.global.ZPConstants;
+import ru.gltexture.zpm3.assets.common.init.ZPCommonBlocks;
+import ru.gltexture.zpm3.assets.common.init.ZPItems;
+import ru.gltexture.zpm3.assets.common.init.helper.ZPRegBlockItems;
 import ru.gltexture.zpm3.engine.core.ZPLogger;
+import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
+import ru.gltexture.zpm3.engine.helpers.ZPItemBlockHelper;
+import ru.gltexture.zpm3.engine.registry.ZPRegistryCollections;
 
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -34,6 +45,16 @@ public class ZPItemMedicine extends ZPItem {
         }
 
         return this.isEdible() ? this.consume(pLevel, pStack, pLivingEntity, pLivingEntity) : pStack;
+    }
+
+    protected void cooldownForMedicine(@NotNull Player player) {
+        try {
+            for (RegistryObject<Item> registryObject : ZPRegistryCollections.getCollectionById(ZPItems.class, "medicine")) {
+                player.getCooldowns().addCooldown(registryObject.get(), ZPConstants.MEDICINE_COOLDOWN_USE);
+            }
+        } catch (ZPRuntimeException e) {
+            ZPLogger.warn(e.getMessage());
+        }
     }
 
     @Override
@@ -58,6 +79,11 @@ public class ZPItemMedicine extends ZPItem {
                     });
                 } else {
                     pFood.shrink(1);
+                }
+            }
+            if (entityWhoUsed instanceof Player player) {
+                if (!pLevel.isClientSide) {
+                    this.cooldownForMedicine(player);
                 }
             }
             entityToAffect.gameEvent(GameEvent.EAT);
@@ -133,7 +159,7 @@ public class ZPItemMedicine extends ZPItem {
 
         protected void setDefaults() {
             this.medicineAnim = MedicineAnim.EAT;
-            this.eatTime = 48;
+            this.eatTime = 32;
             this.soundToPlayOnConsume = null;
             this.canBeAffectedOnOther = false;
         }

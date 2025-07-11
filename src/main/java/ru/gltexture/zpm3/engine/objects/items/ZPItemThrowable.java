@@ -29,10 +29,10 @@ public class ZPItemThrowable extends ZPItem {
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level pLevel, Player pPlayer, @NotNull InteractionHand pHand) {
         ItemStack itemstack = pPlayer.getItemInHand(pHand);
-        pPlayer.getCooldowns().addCooldown(this, ZPConstants.DEFAULT_ITEMS_THROW_COOLDOWN);
 
         pLevel.playSound(null, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (pLevel.getRandom().nextFloat() * 0.4F + 0.8F));
         if (!pLevel.isClientSide) {
+            pPlayer.getCooldowns().addCooldown(this, ZPConstants.DEFAULT_ITEMS_THROW_COOLDOWN);
             ZPAcidBottleEntity acidBottle = new ZPAcidBottleEntity(ZPEntities.acid_bottle_entity.get(), pPlayer, pLevel);
             acidBottle.setItem(itemstack);
             acidBottle.shootFromRotation(pPlayer, pPlayer.getXRot(), pPlayer.getYRot(), 0.0F, 1.0F, 12.0F);

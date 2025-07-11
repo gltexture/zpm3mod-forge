@@ -5,8 +5,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.init.helper.ZPRegTorchBlocks;
-import ru.gltexture.zpm3.assets.common.instances.blocks.torch.ZPFadingBlockBlock;
-import ru.gltexture.zpm3.assets.common.instances.blocks.torch.ZPFadingBlockWallBlock;
+import ru.gltexture.zpm3.assets.common.instances.blocks.torch.ZPFadingBlock;
+import ru.gltexture.zpm3.assets.common.instances.blocks.torch.ZPFadingBlockWall;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.engine.objects.blocks.*;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
@@ -19,17 +19,17 @@ public class ZPTorchBlocks extends ZPRegistry<Block> implements IZPCollectRegist
     public static RegistryObject<ZPTorchBlock> wall_lamp_off;
     public static RegistryObject<ZPWallTorchBlock> wall_lamp_off_wall;
 
-    public static RegistryObject<ZPFadingBlockBlock> torch2;
-    public static RegistryObject<ZPFadingBlockWallBlock> torch2_wall;
+    public static RegistryObject<ZPFadingBlock> torch2;
+    public static RegistryObject<ZPFadingBlockWall> torch2_wall;
 
-    public static RegistryObject<ZPFadingBlockBlock> torch3;
-    public static RegistryObject<ZPFadingBlockWallBlock> torch3_wall;
+    public static RegistryObject<ZPFadingBlock> torch3;
+    public static RegistryObject<ZPFadingBlockWall> torch3_wall;
 
-    public static RegistryObject<ZPFadingBlockBlock> torch4;
-    public static RegistryObject<ZPFadingBlockWallBlock> torch4_wall;
+    public static RegistryObject<ZPFadingBlock> torch4;
+    public static RegistryObject<ZPFadingBlockWall> torch4_wall;
 
-    public static RegistryObject<ZPFadingBlockBlock> torch5;
-    public static RegistryObject<ZPFadingBlockWallBlock> torch5_wall;
+    public static RegistryObject<ZPFadingBlock> torch5;
+    public static RegistryObject<ZPFadingBlockWall> torch5_wall;
 
     public ZPTorchBlocks() {
         super(ForgeRegistries.BLOCKS, ZPRegistryConveyor.Target.BLOCK);

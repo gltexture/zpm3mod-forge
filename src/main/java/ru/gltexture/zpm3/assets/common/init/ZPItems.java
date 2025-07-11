@@ -11,8 +11,9 @@ import ru.gltexture.zpm3.assets.common.init.helper.ZPRegThrowable;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.engine.objects.items.*;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
+import ru.gltexture.zpm3.engine.registry.collection.IZPCollectRegistryObjects;
 
-public class ZPItems extends ZPRegistry<Item> {
+public class ZPItems extends ZPRegistry<Item> implements IZPCollectRegistryObjects {
     // ITEMS
     public static RegistryObject<ZPItemThrowable> acid_bottle;
     public static RegistryObject<ZPItemThrowable> plate;
@@ -59,7 +60,7 @@ public class ZPItems extends ZPRegistry<Item> {
         ZPRegThrowable.init(regSupplier);
         ZPRegMelee.init(regSupplier);
         ZPRegFood.init(regSupplier);
-        ZPRegMedicine.init(regSupplier);
+        ZPRegMedicine.init(this, regSupplier);
     }
 
     @Override

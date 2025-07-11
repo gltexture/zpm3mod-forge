@@ -18,10 +18,10 @@ import ru.gltexture.zpm3.engine.objects.blocks.ZPTorchBlock;
 
 import java.util.function.Supplier;
 
-public class ZPFadingBlockBlock extends ZPTorchBlock implements EntityBlock, IFadingBlock {
+public class ZPFadingBlock extends ZPTorchBlock implements EntityBlock, IFadingBlock {
     private final Supplier<Block> turnInto;
 
-    public ZPFadingBlockBlock(@NotNull Properties pProperties, @Nullable ParticleOptions pFlameParticle, float particleRate, @Nullable Supplier<Block> turnInto) {
+    public ZPFadingBlock(@NotNull Properties pProperties, @Nullable ParticleOptions pFlameParticle, float particleRate, @Nullable Supplier<Block> turnInto) {
         super(pProperties, pFlameParticle, particleRate);
         this.turnInto = turnInto;
     }
@@ -40,7 +40,7 @@ public class ZPFadingBlockBlock extends ZPTorchBlock implements EntityBlock, IFa
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
-        return !ZPConstants.FADING_TORCHES ? null : ZPFadingBlockBlock.createTickerHelper(type, ZPBlockEntities.fading_block_entity.get(), ZPFadingBlockEntity::tick);
+        return !ZPConstants.FADING_TORCHES ? null : ZPFadingBlock.createTickerHelper(type, ZPBlockEntities.fading_block_entity.get(), ZPFadingBlockEntity::tick);
     }
 
     @SuppressWarnings("all")

@@ -10,6 +10,8 @@ import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.init.ZPCommonBlocks;
 import ru.gltexture.zpm3.assets.common.init.ZPTabs;
 import ru.gltexture.zpm3.assets.common.init.ZPTorchBlocks;
+import ru.gltexture.zpm3.engine.core.ZPLogger;
+import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.engine.helpers.ZPItemBlockHelper;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.registry.ZPRegistryCollections;
@@ -40,16 +42,17 @@ public abstract class ZPRegBlockItems {
 
     private static void commonBlocks(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
         final RegistryObject<CreativeModeTab> tabToAdd = ZPTabs.zp_blocks_tab;
-        IZPRegistryObjectsCollector<Block> registryObjectsCollector = ZPRegistryCollections.getCollector(ZPCommonBlocks.class);
 
-        if (registryObjectsCollector != null) {
-            for (RegistryObject<Block> registryObject : registryObjectsCollector.getObjectsToCollect()) {
+        try {
+            for (RegistryObject<Block> registryObject : ZPRegistryCollections.getCollectionById(ZPCommonBlocks.class, "blocks")) {
                 RegistryObject<BlockItem> blockItemRegistryObject = ZPItemBlockHelper.createBlockItem(regSupplier, registryObject
                 ).postConsume(Dist.CLIENT, (e, utils) -> {
                     utils.items().addItemInTab(e, tabToAdd);
                 }).registryObject();
                 ZPRegBlockItems.registryObjectMap.put(registryObject, blockItemRegistryObject);
             }
+        } catch (ZPRuntimeException e) {
+            ZPLogger.warn(e.getMessage());
         }
     }
 

@@ -227,6 +227,7 @@ public final class ZombiePlague3 {
             }
             ZPClientInitManager.getSetDestroy().forEach(e -> e.run(Minecraft.getInstance().getWindow()));
             ZPClientInitManager.clearDestroy();
+            ZPRegistryCollections.clearAll();
         });
     }
 
@@ -236,7 +237,6 @@ public final class ZombiePlague3 {
             zpAsset.commonSetup();
         }
         this.initDispenserData();
-        ZPRegistryCollections.clearAll();
     }
 
     private void initDispenserData() {

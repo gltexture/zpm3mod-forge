@@ -16,6 +16,8 @@ public abstract class ZPConstants {
     public static int TORCH_FADING_TIME = 12000;
     public static int TORCH_FADING_TIME_SALT = 4000;
 
+    public static int MEDICINE_COOLDOWN_USE = 60;
+
     public static boolean FADING_TORCHES = true;
     public static boolean FADING_PUMPKINS = true;
 }

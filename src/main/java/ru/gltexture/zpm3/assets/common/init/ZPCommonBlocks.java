@@ -51,7 +51,9 @@ public class ZPCommonBlocks extends ZPRegistry<Block> implements IZPCollectRegis
 
     @Override
     protected void runRegister(@NotNull ZPRegSupplier<Block> regSupplier) {
+        this.startCollectingInto("blocks");
         ZPRegCommonBlocks.init(regSupplier);
+        this.stopCollecting();
     }
 
     @Override

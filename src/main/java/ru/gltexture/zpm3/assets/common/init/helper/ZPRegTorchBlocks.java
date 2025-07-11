@@ -8,8 +8,8 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.api.distmarker.Dist;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.init.ZPTorchBlocks;
-import ru.gltexture.zpm3.assets.common.instances.blocks.torch.ZPFadingBlockBlock;
-import ru.gltexture.zpm3.assets.common.instances.blocks.torch.ZPFadingBlockWallBlock;
+import ru.gltexture.zpm3.assets.common.instances.blocks.torch.ZPFadingBlock;
+import ru.gltexture.zpm3.assets.common.instances.blocks.torch.ZPFadingBlockWall;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
 import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockItemModelExecutors;
 import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockModelExecutors;
@@ -18,7 +18,9 @@ import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 
 public abstract class ZPRegTorchBlocks {
     public static void init(ZPTorchBlocks torchBlocks, @NotNull ZPRegistry.ZPRegSupplier<Block> regSupplier) {
-        ZPTorchBlocks.torch2 = regSupplier.register("torch2", () -> new ZPFadingBlockBlock(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 12).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), ParticleTypes.FLAME, 1.0f, () -> ZPTorchBlocks.torch3.get())
+        torchBlocks.startCollectingInto("torches");
+        
+        ZPTorchBlocks.torch2 = regSupplier.register("torch2", () -> new ZPFadingBlock(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 12).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), ParticleTypes.FLAME, 1.0f, () -> ZPTorchBlocks.torch3.get())
         ).postConsume(Dist.DEDICATED_SERVER, (e, utils) -> {
             utils.loot().addSelfDropLootTable(e);
         }).postConsume(Dist.CLIENT, (e, utils) -> {
@@ -28,7 +30,7 @@ public abstract class ZPRegTorchBlocks {
             utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
         }).registryObject();
 
-        ZPTorchBlocks.torch2_wall = regSupplier.register("torch2_wall", () -> new ZPFadingBlockWallBlock(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 12).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), ParticleTypes.FLAME, 1.0f, () -> ZPTorchBlocks.torch3_wall.get())
+        ZPTorchBlocks.torch2_wall = regSupplier.register("torch2_wall", () -> new ZPFadingBlockWall(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 12).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), ParticleTypes.FLAME, 1.0f, () -> ZPTorchBlocks.torch3_wall.get())
         ).postConsume(Dist.DEDICATED_SERVER, (e, utils) -> {
             utils.loot().addSelfDropLootTable(e);
         }).postConsume(Dist.CLIENT, (e, utils) -> {
@@ -37,7 +39,7 @@ public abstract class ZPRegTorchBlocks {
             utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
         }).registryObject();
 
-        ZPTorchBlocks.torch3 = regSupplier.register("torch3", () -> new ZPFadingBlockBlock(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 9).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), ParticleTypes.FLAME, 0.45f, () -> ZPTorchBlocks.torch4.get())
+        ZPTorchBlocks.torch3 = regSupplier.register("torch3", () -> new ZPFadingBlock(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 9).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), ParticleTypes.FLAME, 0.45f, () -> ZPTorchBlocks.torch4.get())
         ).postConsume(Dist.DEDICATED_SERVER, (e, utils) -> {
             utils.loot().addSelfDropLootTable(e);
         }).postConsume(Dist.CLIENT, (e, utils) -> {
@@ -47,7 +49,7 @@ public abstract class ZPRegTorchBlocks {
             utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
         }).registryObject();
 
-        ZPTorchBlocks.torch3_wall = regSupplier.register("torch3_wall", () -> new ZPFadingBlockWallBlock(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 9).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), ParticleTypes.FLAME, 0.45f, () -> ZPTorchBlocks.torch4_wall.get())
+        ZPTorchBlocks.torch3_wall = regSupplier.register("torch3_wall", () -> new ZPFadingBlockWall(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 9).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), ParticleTypes.FLAME, 0.45f, () -> ZPTorchBlocks.torch4_wall.get())
         ).postConsume(Dist.DEDICATED_SERVER, (e, utils) -> {
             utils.loot().addSelfDropLootTable(e);
         }).postConsume(Dist.CLIENT, (e, utils) -> {
@@ -56,7 +58,7 @@ public abstract class ZPRegTorchBlocks {
             utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
         }).registryObject();
 
-        ZPTorchBlocks.torch4 = regSupplier.register("torch4", () -> new ZPFadingBlockBlock(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 6).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), ParticleTypes.FLAME, 0.15f, () -> ZPTorchBlocks.torch5.get())
+        ZPTorchBlocks.torch4 = regSupplier.register("torch4", () -> new ZPFadingBlock(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 6).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), ParticleTypes.FLAME, 0.15f, () -> ZPTorchBlocks.torch5.get())
         ).postConsume(Dist.DEDICATED_SERVER, (e, utils) -> {
         }).postConsume(Dist.CLIENT, (e, utils) -> {
             utils.blocks().setBlockModelExecutor(e, DefaultBlockModelExecutors.getDefaultTorch());
@@ -65,7 +67,7 @@ public abstract class ZPRegTorchBlocks {
             utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
         }).registryObject();
 
-        ZPTorchBlocks.torch4_wall = regSupplier.register("torch4_wall", () -> new ZPFadingBlockWallBlock(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 6).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), ParticleTypes.FLAME, 0.15f, () -> ZPTorchBlocks.torch5_wall.get())
+        ZPTorchBlocks.torch4_wall = regSupplier.register("torch4_wall", () -> new ZPFadingBlockWall(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 6).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), ParticleTypes.FLAME, 0.15f, () -> ZPTorchBlocks.torch5_wall.get())
         ).postConsume(Dist.DEDICATED_SERVER, (e, utils) -> {
         }).postConsume(Dist.CLIENT, (e, utils) -> {
             utils.blocks().setBlockModelExecutor(e, DefaultBlockModelExecutors.getDefaultWallTorch());
@@ -73,7 +75,7 @@ public abstract class ZPRegTorchBlocks {
             utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
         }).registryObject();
 
-        ZPTorchBlocks.torch5 = regSupplier.register("torch5", () -> new ZPFadingBlockBlock(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 2).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), null, 0.0f, null)
+        ZPTorchBlocks.torch5 = regSupplier.register("torch5", () -> new ZPFadingBlock(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 2).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), null, 0.0f, null)
         ).postConsume(Dist.DEDICATED_SERVER, (e, utils) -> {
         }).postConsume(Dist.CLIENT, (e, utils) -> {
             utils.blocks().setBlockModelExecutor(e, DefaultBlockModelExecutors.getDefaultTorch());
@@ -82,7 +84,7 @@ public abstract class ZPRegTorchBlocks {
             utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
         }).registryObject();
 
-        ZPTorchBlocks.torch5_wall = regSupplier.register("torch5_wall", () -> new ZPFadingBlockWallBlock(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 2).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), null, 0.0f, null)
+        ZPTorchBlocks.torch5_wall = regSupplier.register("torch5_wall", () -> new ZPFadingBlockWall(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 2).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), null, 0.0f, null)
         ).postConsume(Dist.DEDICATED_SERVER, (e, utils) -> {
         }).postConsume(Dist.CLIENT, (e, utils) -> {
             utils.blocks().setBlockModelExecutor(e, DefaultBlockModelExecutors.getDefaultWallTorch());

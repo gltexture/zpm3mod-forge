@@ -20,7 +20,16 @@ import java.util.Objects;
 @OnlyIn(Dist.CLIENT)
 public abstract class ZPCommonClientUtils {
     public static void emmitUraniumParticle(final float scale, final @NotNull Vector3f position, final @NotNull Vector3f velocity) {
-        final Vector3f color = new Vector3f(0.6f, 0.9f, 0.6f).add(ZPRandom.instance.randomVector3f(0.0f, new Vector3f(0.1f, 0.1f, 0.1f)));
+        final Vector3f color = new Vector3f(0.5f, 0.9f, 0.6f).add(ZPRandom.instance.randomVector3f(0.0f, new Vector3f(0.1f, 0.1f, 0.1f)));
+        final int lifetime = 30;
+        final double x = position.x;
+        final double y = position.y;
+        final double z = position.z;
+        Objects.requireNonNull(Minecraft.getInstance().level).addParticle(new ColoredSmokeOptions(ZPParticles.colored_cloud.get(), color, scale, lifetime), true, x, y, z, velocity.x(), velocity.y(), velocity.z());
+    }
+
+    public static void emmitToxicParticle(final float scale, final @NotNull Vector3f position, final @NotNull Vector3f velocity) {
+        final Vector3f color = new Vector3f(0.65f, 0.7f, 0.3f).add(ZPRandom.instance.randomVector3f(0.0f, new Vector3f(0.2f, 0.0f, 0.2f)));
         final int lifetime = 30;
         final double x = position.x;
         final double y = position.y;
@@ -46,33 +55,33 @@ public abstract class ZPCommonClientUtils {
         }
     }
 
-    public static Vector3f getParticleSpawnPositionBlockDir(BlockPos pos, Direction face, RandomSource random) {
-        float x = pos.getX() + 0.5f;
-        float y = pos.getY() + 0.5f;
-        float z = pos.getZ() + 0.5f;
+    public static Vector3f getParticleSpawnPositionBlockDir(BlockPos pos, Direction face, RandomSource random, Vector3f bounds) {
+        float x = pos.getX() + (bounds.x / 2.0f);
+        float y = pos.getY() + (bounds.y / 2.0f);
+        float z = pos.getZ() + (bounds.z / 2.0f);
         float spread = 0.3f;
 
         final float offset = 0.05f;
 
         switch (face) {
             case DOWN -> y = pos.getY() - offset;
-            case UP -> y = pos.getY() + (offset + 1.0f);
+            case UP -> y = pos.getY() + (offset + bounds.y);
             case NORTH -> z = pos.getZ() - offset;
-            case SOUTH -> z = pos.getZ() + (offset + 1.0f);
+            case SOUTH -> z = pos.getZ() + (offset + bounds.z);
             case WEST -> x = pos.getX() - offset;
-            case EAST -> x = pos.getX() + (offset + 1.0f);
+            case EAST -> x = pos.getX() + (offset + bounds.x);
         }
 
         if (face.getAxis() != Direction.Axis.X) {
-            x += (random.nextFloat() - 0.5f) * spread;
+            x += (random.nextFloat() - (bounds.x / 2.0f)) * spread;
         }
 
         if (face.getAxis() != Direction.Axis.Y) {
-            y += (random.nextFloat() - 0.5f) * spread;
+            y += (random.nextFloat() - (bounds.y / 2.0f)) * spread;
         }
 
         if (face.getAxis() != Direction.Axis.Z) {
-            z += (random.nextFloat() - 0.5f) * spread;
+            z += (random.nextFloat() - (bounds.z / 2.0f)) * spread;
         }
 
         return new Vector3f(x, y, z);

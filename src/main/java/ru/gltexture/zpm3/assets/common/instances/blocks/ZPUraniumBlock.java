@@ -6,6 +6,8 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import ru.gltexture.zpm3.assets.common.utils.ZPCommonClientUtils;
@@ -18,6 +20,13 @@ public class ZPUraniumBlock extends Block {
 
     @Override
     public void animateTick(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+        if (level.isClientSide) {
+            ZPUraniumBlock.uraniumParticles(state, level, pos, random);
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static void uraniumParticles(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull RandomSource random) {
         if (!level.isClientSide) {
             return;
         }
@@ -28,7 +37,7 @@ public class ZPUraniumBlock extends Block {
 
             if (!adjacentState.isSolidRender(level, offsetPos)) {
                 if (random.nextFloat() < 0.15f) {
-                    Vector3f spawnPos = ZPCommonClientUtils.getParticleSpawnPositionBlockDir(pos, direction, random);
+                    Vector3f spawnPos = ZPCommonClientUtils.getParticleSpawnPositionBlockDir(pos, direction, random, new Vector3f(1.0f));
                     Vector3f motion = ZPRandom.instance.randomVector3f(0.05f, new Vector3f(0.1f));
                     ZPCommonClientUtils.emmitUraniumParticle(0.5f, spawnPos, motion);
                 }

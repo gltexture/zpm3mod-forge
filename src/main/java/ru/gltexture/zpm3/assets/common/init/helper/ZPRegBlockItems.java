@@ -7,7 +7,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.assets.common.init.ZPCommonBlocks;
+import ru.gltexture.zpm3.assets.common.init.ZPBlocks;
 import ru.gltexture.zpm3.assets.common.init.ZPTabs;
 import ru.gltexture.zpm3.assets.common.init.ZPTorchBlocks;
 import ru.gltexture.zpm3.engine.core.ZPLogger;
@@ -15,7 +15,6 @@ import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.engine.helpers.ZPItemBlockHelper;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.registry.ZPRegistryCollections;
-import ru.gltexture.zpm3.engine.registry.collection.IZPRegistryObjectsCollector;
 
 import java.util.*;
 
@@ -44,7 +43,7 @@ public abstract class ZPRegBlockItems {
         final RegistryObject<CreativeModeTab> tabToAdd = ZPTabs.zp_blocks_tab;
 
         try {
-            for (RegistryObject<Block> registryObject : ZPRegistryCollections.getCollectionById(ZPCommonBlocks.class, "blocks")) {
+            for (RegistryObject<Block> registryObject : ZPRegistryCollections.getCollectionById(ZPBlocks.class, "blocks")) {
                 RegistryObject<BlockItem> blockItemRegistryObject = ZPItemBlockHelper.createBlockItem(regSupplier, registryObject
                 ).postConsume(Dist.CLIENT, (e, utils) -> {
                     utils.items().addItemInTab(e, tabToAdd);

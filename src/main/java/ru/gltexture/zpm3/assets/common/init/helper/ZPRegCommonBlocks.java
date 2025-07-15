@@ -10,9 +10,9 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.api.distmarker.Dist;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.assets.common.init.ZPCommonBlocks;
+import ru.gltexture.zpm3.assets.common.init.ZPBlocks;
 import ru.gltexture.zpm3.assets.common.instances.blocks.ZPBarbaredWireBlock;
-import ru.gltexture.zpm3.engine.objects.blocks.*;
+import ru.gltexture.zpm3.engine.instances.blocks.*;
 import ru.gltexture.zpm3.assets.common.instances.blocks.ZPFallingBlock;
 import ru.gltexture.zpm3.assets.common.instances.blocks.ZPUraniumBlock;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
@@ -24,17 +24,17 @@ import ru.gltexture.zpm3.engine.service.ZPPath;
 
 public abstract class ZPRegCommonBlocks {
     public static void init(@NotNull ZPRegistry.ZPRegSupplier<Block> regSupplier) {
-        ZPCommonBlocks.block_lamp = regSupplier.register("block_lamp", () -> new ZPBlock(BlockBehaviour.Properties.of().strength(0.5f).sound(SoundType.GLASS).lightLevel((e) -> 15))
+        ZPBlocks.block_lamp = regSupplier.register("block_lamp", () -> new ZPBlock(BlockBehaviour.Properties.of().strength(0.5f).sound(SoundType.GLASS).lightLevel((e) -> 15))
         ).postConsume(Dist.CLIENT, (e, utils) -> {
             utils.blocks().addBlockModel(e, ZPDataGenHelper.DEFAULT_BLOCK_CUBE, ZPGenTextureData.ALL_KEY, ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY);
         }).registryObject();
 
-        ZPCommonBlocks.block_lamp_off = regSupplier.register("block_lamp_off", () -> new ZPBlock(BlockBehaviour.Properties.of().strength(0.5f).sound(SoundType.GLASS).lightLevel((e) -> 0))
+        ZPBlocks.block_lamp_off = regSupplier.register("block_lamp_off", () -> new ZPBlock(BlockBehaviour.Properties.of().strength(0.5f).sound(SoundType.GLASS).lightLevel((e) -> 0))
         ).postConsume(Dist.CLIENT, (e, utils) -> {
             utils.blocks().addBlockModel(e, ZPDataGenHelper.DEFAULT_BLOCK_CUBE, ZPGenTextureData.ALL_KEY, ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY);
         }).registryObject();
 
-        ZPCommonBlocks.armored_glass = regSupplier.register("armored_glass", () -> new ZPBlock(BlockBehaviour.Properties.of().strength(30.0f).sound(SoundType.GLASS).noOcclusion().lightLevel((e) -> 0))
+        ZPBlocks.armored_glass = regSupplier.register("armored_glass", () -> new ZPBlock(BlockBehaviour.Properties.of().strength(30.0f).sound(SoundType.GLASS).noOcclusion().lightLevel((e) -> 0))
         ).postConsume(Dist.DEDICATED_SERVER, (e, utils) -> {
             utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
         }).postConsume(Dist.CLIENT, (e, utils) -> {
@@ -42,21 +42,21 @@ public abstract class ZPRegCommonBlocks {
             utils.blocks().setBlockRenderType(e, ZPDataGenHelper.TRANSLUCENT_RENDER_TYPE);
         }).registryObject();
 
-        ZPCommonBlocks.armor_black = regSupplier.register("armor_black", () -> new ZPBlock(BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(300.0f, 10.0f).sound(SoundType.METAL))
+        ZPBlocks.armor_black = regSupplier.register("armor_black", () -> new ZPBlock(BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(300.0f, 10.0f).sound(SoundType.METAL))
         ).postConsume(Dist.DEDICATED_SERVER, (e, utils) -> {
             utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
         }).postConsume(Dist.CLIENT, (e, utils) -> {
             utils.blocks().addBlockModel(e, ZPDataGenHelper.DEFAULT_BLOCK_CUBE, ZPGenTextureData.ALL_KEY, ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY);
         }).registryObject();
 
-        ZPCommonBlocks.armor_green = regSupplier.register("armor_green", () -> new ZPBlock(BlockBehaviour.Properties.of().strength(300.0f, 10.0f).sound(SoundType.METAL))
+        ZPBlocks.armor_green = regSupplier.register("armor_green", () -> new ZPBlock(BlockBehaviour.Properties.of().strength(300.0f, 10.0f).sound(SoundType.METAL))
         ).postConsume(Dist.DEDICATED_SERVER, (e, utils) -> {
             utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
         }).postConsume(Dist.CLIENT, (e, utils) -> {
             utils.blocks().addBlockModel(e, ZPDataGenHelper.DEFAULT_BLOCK_CUBE, ZPGenTextureData.ALL_KEY, ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY);
         }).registryObject();
 
-        ZPCommonBlocks.sandbag = regSupplier.register("sandbag", () -> new ZPFallingBlock(BlockBehaviour.Properties.of().strength(5.0F, 1.0F).sound(SoundType.SAND))
+        ZPBlocks.sandbag = regSupplier.register("sandbag", () -> new ZPFallingBlock(BlockBehaviour.Properties.of().strength(5.0F, 1.0F).sound(SoundType.SAND))
         ).postConsume(Dist.DEDICATED_SERVER, (e, utils) -> {
             utils.loot().addSelfDropLootTable(e);
             utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_HOE);
@@ -64,7 +64,7 @@ public abstract class ZPRegCommonBlocks {
             utils.blocks().addBlockModel(e, ZPDataGenHelper.DEFAULT_BLOCK_CUBE, ZPGenTextureData.ALL_KEY, ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY);
         }).registryObject();
 
-        ZPCommonBlocks.scrap = regSupplier.register("scrap", () -> new ZPBlock(BlockBehaviour.Properties.of().strength(3.0F, 3.0F).sound(SoundType.METAL))
+        ZPBlocks.scrap = regSupplier.register("scrap", () -> new ZPBlock(BlockBehaviour.Properties.of().strength(3.0F, 3.0F).sound(SoundType.METAL))
         ).postConsume(Dist.DEDICATED_SERVER, (e, utils) -> {
             utils.loot().addBlockLootTable(e, () -> new LootPool.Builder().setRolls(UniformGenerator.between(0, 2)).add(LootItem.lootTableItem(Items.IRON_NUGGET)));
             utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
@@ -72,7 +72,7 @@ public abstract class ZPRegCommonBlocks {
             utils.blocks().addBlockModel(e, ZPDataGenHelper.DEFAULT_BLOCK_CUBE, ZPGenTextureData.ALL_KEY, ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY);
         }).registryObject();
 
-        ZPCommonBlocks.uranium = regSupplier.register("uranium", () -> new ZPUraniumBlock(BlockBehaviour.Properties.of().strength(12.0F, 12.0F).sound(SoundType.METAL).lightLevel((e) -> 3))
+        ZPBlocks.uranium = regSupplier.register("uranium", () -> new ZPUraniumBlock(BlockBehaviour.Properties.of().strength(12.0F, 12.0F).sound(SoundType.METAL).lightLevel((e) -> 3))
         ).postConsume(Dist.DEDICATED_SERVER, (e, utils) -> {
             //utils.addBlockLootTable(e, () -> new LootPool.Builder().setRolls(UniformGenerator.between(0, 2)).add(LootItem.lootTableItem(Items.IRON_NUGGET)));
             utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
@@ -80,7 +80,7 @@ public abstract class ZPRegCommonBlocks {
             utils.blocks().addBlockModel(e, ZPDataGenHelper.DEFAULT_BLOCK_CUBE, ZPGenTextureData.ALL_KEY, ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY);
         }).registryObject();
 
-        ZPCommonBlocks.asphalt = regSupplier.register("asphalt", () -> new ZPBlock(BlockBehaviour.Properties.of().strength(2.0F, 6.0F).sound(SoundType.STONE))
+        ZPBlocks.asphalt = regSupplier.register("asphalt", () -> new ZPBlock(BlockBehaviour.Properties.of().strength(2.0F, 6.0F).sound(SoundType.STONE))
         ).postConsume(Dist.DEDICATED_SERVER, (e, utils) -> {
             utils.loot().addSelfDropLootTable(e);
             utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
@@ -88,23 +88,23 @@ public abstract class ZPRegCommonBlocks {
             utils.blocks().addBlockModel(e, ZPDataGenHelper.DEFAULT_BLOCK_CUBE, ZPGenTextureData.ALL_KEY, ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY);
         }).registryObject();
 
-        ZPCommonBlocks.asphalt_slab = regSupplier.register("asphalt_slab", () -> new ZPSlabBlock(BlockBehaviour.Properties.of().strength(2.0F, 6.0F).sound(SoundType.STONE))
+        ZPBlocks.asphalt_slab = regSupplier.register("asphalt_slab", () -> new ZPSlabBlock(BlockBehaviour.Properties.of().strength(2.0F, 6.0F).sound(SoundType.STONE))
         ).postConsume(Dist.DEDICATED_SERVER, (e, utils) -> {
             utils.loot().addSelfDropLootTable(e);
             utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
         }).postConsume(Dist.CLIENT, (e, utils) -> {
-            utils.blocks().addBlockModel(e, null, ZPCommonBlocks.asphalt);
+            utils.blocks().addBlockModel(e, null, ZPBlocks.asphalt);
         }).registryObject();
 
-        ZPCommonBlocks.asphalt_stairs = regSupplier.register("asphalt_stairs", () -> new ZPStairsBlock(() -> ZPCommonBlocks.asphalt.get().defaultBlockState(), BlockBehaviour.Properties.of().strength(2.0F, 6.0F).sound(SoundType.STONE))
+        ZPBlocks.asphalt_stairs = regSupplier.register("asphalt_stairs", () -> new ZPStairsBlock(() -> ZPBlocks.asphalt.get().defaultBlockState(), BlockBehaviour.Properties.of().strength(2.0F, 6.0F).sound(SoundType.STONE))
         ).postConsume(Dist.DEDICATED_SERVER, (e, utils) -> {
             utils.loot().addSelfDropLootTable(e);
             utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
         }).postConsume(Dist.CLIENT, (e, utils) -> {
-            utils.blocks().addBlockModel(e, null, ZPCommonBlocks.asphalt);
+            utils.blocks().addBlockModel(e, null, ZPBlocks.asphalt);
         }).registryObject();
 
-        ZPCommonBlocks.asphalt_marking = regSupplier.register("asphalt_marking", () -> new ZPBlock(BlockBehaviour.Properties.of().strength(2.0F, 6.0F).sound(SoundType.STONE))
+        ZPBlocks.asphalt_marking = regSupplier.register("asphalt_marking", () -> new ZPBlock(BlockBehaviour.Properties.of().strength(2.0F, 6.0F).sound(SoundType.STONE))
         ).postConsume(Dist.DEDICATED_SERVER, (e, utils) -> {
             utils.loot().addSelfDropLootTable(e);
             utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
@@ -112,37 +112,38 @@ public abstract class ZPRegCommonBlocks {
             utils.blocks().addBlockModel(e, ZPDataGenHelper.DEFAULT_BLOCK_CUBE, ZPGenTextureData.ALL_KEY, ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY);
         }).registryObject();
 
-        ZPCommonBlocks.asphalt_marking_slab = regSupplier.register("asphalt_marking_slab", () -> new ZPSlabBlock(BlockBehaviour.Properties.of().strength(2.0F, 6.0F).sound(SoundType.STONE))
+        ZPBlocks.asphalt_marking_slab = regSupplier.register("asphalt_marking_slab", () -> new ZPSlabBlock(BlockBehaviour.Properties.of().strength(2.0F, 6.0F).sound(SoundType.STONE))
         ).postConsume(Dist.DEDICATED_SERVER, (e, utils) -> {
             utils.loot().addSelfDropLootTable(e);
             utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
         }).postConsume(Dist.CLIENT, (e, utils) -> {
-            utils.blocks().addBlockModel(e, null, ZPCommonBlocks.asphalt_marking);
+            utils.blocks().addBlockModel(e, null, ZPBlocks.asphalt_marking);
         }).registryObject();
 
-        ZPCommonBlocks.asphalt_marking_stairs = regSupplier.register("asphalt_marking_stairs", () -> new ZPStairsBlock(() -> ZPCommonBlocks.asphalt.get().defaultBlockState(), BlockBehaviour.Properties.of().strength(2.0F, 6.0F).sound(SoundType.STONE))
+        ZPBlocks.asphalt_marking_stairs = regSupplier.register("asphalt_marking_stairs", () -> new ZPStairsBlock(() -> ZPBlocks.asphalt.get().defaultBlockState(), BlockBehaviour.Properties.of().strength(2.0F, 6.0F).sound(SoundType.STONE))
         ).postConsume(Dist.DEDICATED_SERVER, (e, utils) -> {
             utils.loot().addSelfDropLootTable(e);
             utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
         }).postConsume(Dist.CLIENT, (e, utils) -> {
-            utils.blocks().addBlockModel(e, null, ZPCommonBlocks.asphalt_marking);
+            utils.blocks().addBlockModel(e, null, ZPBlocks.asphalt_marking);
         }).registryObject();
 
-        ZPCommonBlocks.barbared_wire = regSupplier.register("barbared_wire", () -> new ZPBarbaredWireBlock(BlockBehaviour.Properties.of().strength(12.0F, 1.0F).forceSolidOn().noCollission().noOcclusion().sound(SoundType.METAL))
+        ZPBlocks.barbared_wire = regSupplier.register("barbared_wire", () -> new ZPBarbaredWireBlock(BlockBehaviour.Properties.of().strength(12.0F, 1.0F).forceSolidOn().noCollission().noOcclusion().sound(SoundType.METAL))
         ).postConsume(Dist.DEDICATED_SERVER, (e, utils) -> {
         }).postConsume(Dist.CLIENT, (e, utils) -> {
             utils.blocks().addBlockModel(e, ZPDataGenHelper.DEFAULT_BLOCK_CROSS, ZPGenTextureData.CROSS_KEY, ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY);
             utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
         }).registryObject();
 
-        ZPCommonBlocks.empty_bookshelf1 = regSupplier.register("empty_bookshelf1", () -> new ZPPillarBlock(BlockBehaviour.Properties.of().strength(12.0F, 1.0F).sound(SoundType.WOOD))
+        ZPBlocks.empty_bookshelf1 = regSupplier.register("empty_bookshelf1", () -> new ZPPillarBlock(BlockBehaviour.Properties.of().strength(12.0F, 1.0F).sound(SoundType.WOOD))
         ).postConsume(Dist.DEDICATED_SERVER, (e, utils) -> {
             utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_AXE);
         }).postConsume(Dist.CLIENT, (e, utils) -> {
             utils.blocks().setBlockModelExecutor(e, DefaultBlockModelExecutors.DEFAULT_PILLAR_BLOCK_EXEC_PAIR);
-            utils.blocks().addBlockModel(e, ZPDataGenHelper.DEFAULT_BLOCK_PILLAR, Pair.of("side", () -> new ZPPath(ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY, "empty_bookshelf1")), Pair.of("end", () -> new ZPPath(ZPDataGenHelper.MINECRAFT_VANILLA_ROOT, "oak_planks")));        }).registryObject();
+            utils.blocks().addBlockModel(e, ZPDataGenHelper.DEFAULT_BLOCK_PILLAR, Pair.of("side", () -> new ZPPath(ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY, "empty_bookshelf1")), Pair.of("end", () -> new ZPPath(ZPDataGenHelper.MINECRAFT_VANILLA_ROOT, "oak_planks")));
+        }).registryObject();
 
-        ZPCommonBlocks.empty_bookshelf2 = regSupplier.register("empty_bookshelf2", () -> new ZPPillarBlock(BlockBehaviour.Properties.of().strength(12.0F, 1.0F).sound(SoundType.WOOD))
+        ZPBlocks.empty_bookshelf2 = regSupplier.register("empty_bookshelf2", () -> new ZPPillarBlock(BlockBehaviour.Properties.of().strength(12.0F, 1.0F).sound(SoundType.WOOD))
         ).postConsume(Dist.DEDICATED_SERVER, (e, utils) -> {
             utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_AXE);
         }).postConsume(Dist.CLIENT, (e, utils) -> {
@@ -150,7 +151,7 @@ public abstract class ZPRegCommonBlocks {
             utils.blocks().addBlockModel(e, ZPDataGenHelper.DEFAULT_BLOCK_PILLAR, Pair.of("side", () -> new ZPPath(ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY, "empty_bookshelf2")), Pair.of("end", () -> new ZPPath(ZPDataGenHelper.MINECRAFT_VANILLA_ROOT, "oak_planks")));
         }).registryObject();
 
-        ZPCommonBlocks.empty_bookshelf3 = regSupplier.register("empty_bookshelf3", () -> new ZPPillarBlock(BlockBehaviour.Properties.of().strength(12.0F, 1.0F).sound(SoundType.WOOD))
+        ZPBlocks.empty_bookshelf3 = regSupplier.register("empty_bookshelf3", () -> new ZPPillarBlock(BlockBehaviour.Properties.of().strength(12.0F, 1.0F).sound(SoundType.WOOD))
         ).postConsume(Dist.DEDICATED_SERVER, (e, utils) -> {
             utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_AXE);
         }).postConsume(Dist.CLIENT, (e, utils) -> {
@@ -158,7 +159,7 @@ public abstract class ZPRegCommonBlocks {
             utils.blocks().addBlockModel(e, ZPDataGenHelper.DEFAULT_BLOCK_PILLAR, Pair.of("side", () -> new ZPPath(ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY, "empty_bookshelf3")), Pair.of("end", () -> new ZPPath(ZPDataGenHelper.MINECRAFT_VANILLA_ROOT, "oak_planks")));
         }).registryObject();
 
-        ZPCommonBlocks.concrete_fence = regSupplier.register("concrete_fence", () -> new ZPPillarBlock(BlockBehaviour.Properties.of().strength(300.0F, 300.0F).sound(SoundType.STONE))
+        ZPBlocks.concrete_fence = regSupplier.register("concrete_fence", () -> new ZPPillarBlock(BlockBehaviour.Properties.of().strength(300.0F, 300.0F).sound(SoundType.STONE))
         ).postConsume(Dist.DEDICATED_SERVER, (e, utils) -> {
             utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
         }).postConsume(Dist.CLIENT, (e, utils) -> {

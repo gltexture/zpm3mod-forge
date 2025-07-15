@@ -46,7 +46,7 @@ public class AcidSpreadPacket implements ZPNetwork.ZPPacket {
         ZPUtility.client().ifClientLevelValid(() -> {
             Entity entity = Objects.requireNonNull(Minecraft.getInstance().level).getEntity(this.entityId);
             if (entity != null) {
-                new ZPEntityNBT(entity).incrementInt(ZPEntityTagsList.ACID_AFFECT_COOLDOWN, this.acidLevel);
+               // new ZPEntityNBT(entity).incrementInt(ZPEntityTagsList.ACID_AFFECT_COOLDOWN, this.acidLevel);
             } else {
                 ZPLogger.warn("Received entity-id: " + this.entityId + ", but entity is NULL");
             }

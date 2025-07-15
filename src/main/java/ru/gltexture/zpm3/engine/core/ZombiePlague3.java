@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.core.Position;
 import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
 import net.minecraft.resources.ResourceLocation;
@@ -41,10 +42,11 @@ import ru.gltexture.zpm3.engine.events.server.ZPServerMod;
 import ru.gltexture.zpm3.engine.exceptions.ZPIOException;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.engine.events.ZPEvent;
-import ru.gltexture.zpm3.engine.helpers.ZPDispenserHelper;
+import ru.gltexture.zpm3.engine.helpers.ZPBlocksRenderLayerHelper;
+import ru.gltexture.zpm3.engine.helpers.ZPDispenseProjectileHelper;
 import ru.gltexture.zpm3.engine.network.ZPNetwork;
-import ru.gltexture.zpm3.engine.objects.items.tier.ZPTierData;
-import ru.gltexture.zpm3.engine.objects.items.tier.ZPTiers;
+import ru.gltexture.zpm3.engine.instances.items.tier.ZPTierData;
+import ru.gltexture.zpm3.engine.instances.items.tier.ZPTiers;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.registry.ZPRegistryCollections;
 import ru.gltexture.zpm3.engine.service.ZPPath;
@@ -216,6 +218,14 @@ public final class ZombiePlague3 {
             ZPClientInitManager.getSetInit().forEach(e -> e.run(Minecraft.getInstance().getWindow()));
             ZPClientInitManager.clearInit();
         });
+
+        ZPBlocksRenderLayerHelper.liquidPairs.forEach(e -> {
+            ItemBlockRenderTypes.setRenderLayer(e.fluid().get(), e.type());
+        });
+        ZPBlocksRenderLayerHelper.blockPairSet.forEach(e -> {
+            ItemBlockRenderTypes.setRenderLayer(e.fluid().get(), e.type());
+        });
+        ZPBlocksRenderLayerHelper.clearAll();
     }
 
     private void clientDestroy() {
@@ -241,7 +251,7 @@ public final class ZombiePlague3 {
 
     private void initDispenserData() {
         ZPLogger.info(this + " Init dispensers data");
-        for (Map.Entry<RegistryObject<? extends Item>, ZPDispenserHelper.ProjectileData> entry : ZPDispenserHelper.getDispenserMap().entrySet()) {
+        for (Map.Entry<RegistryObject<? extends Item>, ZPDispenseProjectileHelper.ProjectileData> entry : ZPDispenseProjectileHelper.getDispenserMap().entrySet()) {
             DispenserBlock.registerBehavior(entry.getKey().get(), new AbstractProjectileDispenseBehavior() {
                 @Override
                 protected @NotNull Projectile getProjectile(@NotNull Level pLevel, @NotNull Position pPosition, @NotNull ItemStack pStack) {

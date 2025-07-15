@@ -53,6 +53,7 @@ public class ZPDearUIRenderer implements IZPResourceInit {
 
         ImInt width = new ImInt();
         ImInt height = new ImInt();
+
         ByteBuffer buffer = fontAtlas.getTexDataAsRGBA32(width, height);
         this.textureSample = new TextureSimple2DProgram();
         this.textureSample.createTexture(new Vector2i(width.get(), height.get()), new TextureProperties(GL46.GL_RGBA, GL46.GL_RGBA, GL46.GL_NEAREST, GL46.GL_NEAREST, GL46.GL_NONE, GL46.GL_LESS, GL46.GL_CLAMP_TO_EDGE, GL46.GL_CLAMP_TO_EDGE, null), buffer);
@@ -133,7 +134,7 @@ public class ZPDearUIRenderer implements IZPResourceInit {
 
     public void onRender(@NotNull Window window, @NotNull DearUIInterface dearUIInterface, float frameTicking) {
         final ShaderInstance shader = this.getShaderManager().get();
-        if (shader == null) {
+        if (shader == null || Minecraft.getInstance().options.hideGui) {
             return;
         }
 

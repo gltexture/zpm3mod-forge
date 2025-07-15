@@ -5,12 +5,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.helpers.ZPBlockTagsHelper;
+import ru.gltexture.zpm3.engine.helpers.ZPFluidTagsHelper;
 import ru.gltexture.zpm3.engine.helpers.ZPLootTableHelper;
 import ru.gltexture.zpm3.engine.helpers.gen.data.VanillaMCModelRef;
 import ru.gltexture.zpm3.engine.helpers.gen.data.ZPGenTextureData;
@@ -27,6 +29,7 @@ public abstract class ZPDataGenHelper {
     public static final String CUTOUT_RENDER_TYPE = "cutout";
     public static final String TRANSLUCENT_RENDER_TYPE = "translucent";
 
+    public static final VanillaMCModelRef DEFAULT_WATER = new VanillaMCModelRef("block/water");
     public static final VanillaMCModelRef DEFAULT_BLOCK_CUBE = new VanillaMCModelRef("block/cobblestone");
     public static final VanillaMCModelRef DEFAULT_BLOCK_STAIRS = new VanillaMCModelRef("block/cobblestone_stairs");
     public static final VanillaMCModelRef DEFAULT_BLOCK_SLAB = new VanillaMCModelRef("block/cobblestone_slab");
@@ -69,6 +72,10 @@ public abstract class ZPDataGenHelper {
 
     public static void addTagToBlock(@NotNull RegistryObject<? extends Block> registryObject, @NotNull TagKey<Block> tagKey) {
         ZPBlockTagsHelper.addTagToBlock(registryObject, tagKey);
+    }
+
+    public static void addTagToFluid(@NotNull RegistryObject<? extends Fluid> registryObject, @NotNull TagKey<Fluid> tagKey) {
+        ZPFluidTagsHelper.addTagToFluid(registryObject, tagKey);
     }
 
     public static <T extends Block> void addBlockModelExecutor(@NotNull Class<T> clazz, @NotNull ZPBlockModelProvider.BlockModelExecutor blockModelExecutor) {

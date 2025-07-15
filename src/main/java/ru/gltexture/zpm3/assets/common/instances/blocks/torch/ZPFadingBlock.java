@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.common.init.ZPBlockEntities;
 import ru.gltexture.zpm3.assets.common.instances.block_entities.ZPFadingBlockEntity;
-import ru.gltexture.zpm3.engine.objects.blocks.ZPTorchBlock;
+import ru.gltexture.zpm3.engine.instances.blocks.ZPTorchBlock;
 
 import java.util.function.Supplier;
 

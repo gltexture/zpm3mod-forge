@@ -74,7 +74,7 @@ public class ZPMixinConfigsProvider implements DataProvider {
 
             json.add("mixins", mixinsArr);
             json.add("client", clientArr);
-            json.add("server", serverArr);
+            json.add("both", serverArr);
 
             Path outPath = generator.getPackOutput().getOutputFolder().resolve(ZPMixinPlugin.pathToMixinsCfg + config.name() + ".json");
             futures.add(DataProvider.saveStable(pOutput, json, outPath));

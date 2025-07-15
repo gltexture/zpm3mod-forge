@@ -13,10 +13,10 @@ import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
 import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockModelExecutors;
 import ru.gltexture.zpm3.engine.helpers.gen.data.ZPGenTextureData;
-import ru.gltexture.zpm3.engine.objects.blocks.ZPSlabBlock;
-import ru.gltexture.zpm3.engine.objects.blocks.ZPStairsBlock;
-import ru.gltexture.zpm3.engine.objects.blocks.ZPTorchBlock;
-import ru.gltexture.zpm3.engine.objects.blocks.ZPWallTorchBlock;
+import ru.gltexture.zpm3.engine.instances.blocks.ZPSlabBlock;
+import ru.gltexture.zpm3.engine.instances.blocks.ZPStairsBlock;
+import ru.gltexture.zpm3.engine.instances.blocks.ZPTorchBlock;
+import ru.gltexture.zpm3.engine.instances.blocks.ZPWallTorchBlock;
 
 import java.util.Objects;
 import java.util.*;
@@ -92,7 +92,10 @@ public class ZPBlockModelProvider extends BlockStateProvider {
             }
 
             pair.block().exec(this, block, renderType, name, textureData);
-            pair.item().exec(this, block, name, textureData);
+
+            if (pair.item() != null) {
+                pair.item().exec(this, block, name, textureData);
+            }
         });
 
         ZPBlockModelProvider.clearMaps();
@@ -112,7 +115,7 @@ public class ZPBlockModelProvider extends BlockStateProvider {
     public interface BlockModelExecutor  {
         Pair createPair();
 
-        record Pair (@NotNull EBlock<? extends Block> block, @NotNull EItem<? extends Block> item) { }
+        record Pair (@NotNull EBlock<? extends Block> block, @Nullable EItem<? extends Block> item) { }
 
         @FunctionalInterface
         interface EItem<R extends Block> {

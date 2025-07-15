@@ -9,11 +9,9 @@ import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.init.ZPItems;
 import ru.gltexture.zpm3.assets.common.init.ZPSounds;
 import ru.gltexture.zpm3.assets.common.init.ZPTabs;
-import ru.gltexture.zpm3.engine.helpers.ZPItemTabAddHelper;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
 import ru.gltexture.zpm3.engine.helpers.gen.data.ZPGenTextureData;
-import ru.gltexture.zpm3.engine.objects.items.ZPItemFood;
-import ru.gltexture.zpm3.engine.objects.items.ZPItemMedicine;
+import ru.gltexture.zpm3.engine.instances.items.ZPItemMedicine;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 
 public abstract class ZPRegMedicine {

@@ -11,7 +11,6 @@ import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
 import ru.gltexture.zpm3.engine.helpers.gen.data.ZPGenTextureData;
 import ru.gltexture.zpm3.engine.helpers.gen.providers.ZPBlockModelProvider;
-import ru.gltexture.zpm3.engine.objects.blocks.ZPWallTorchBlock;
 import ru.gltexture.zpm3.engine.service.ZPPath;
 
 import java.util.function.Supplier;

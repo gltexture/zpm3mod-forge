@@ -2,6 +2,7 @@ package ru.gltexture.zpm3.engine.registry;
 
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
@@ -13,6 +14,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
@@ -185,6 +187,7 @@ public abstract class ZPRegistry<T> {
             this.entities = new Entities();
             this.loot = new Loot();
             this.sounds = new Sounds();
+            this.fluids = new Fluids();
         }
 
         public static ZPRegUtils create() {
@@ -193,10 +196,15 @@ public abstract class ZPRegistry<T> {
 
         private final Items items;
         private final Blocks blocks;
+        private final Fluids fluids;
         private final Particles particles;
         private final Entities entities;
         private final Loot loot;
         private final Sounds sounds;
+
+        public Fluids fluids() {
+            return this.fluids;
+        }
 
         public Items items() {
             return this.items;
@@ -220,6 +228,19 @@ public abstract class ZPRegistry<T> {
 
         public Sounds sounds() {
             return this.sounds;
+        }
+
+        public static final class Fluids {
+            private Fluids() {
+            }
+
+            public void setFluidRenderLayer(@NotNull Supplier<Fluid> liquid, @NotNull RenderType renderType) {
+                ZPBlocksRenderLayerHelper.addLiquidRenderLayerData(new ZPBlocksRenderLayerHelper.LiquidPair(liquid, renderType));
+            }
+
+            public void addTagToFluid(@NotNull RegistryObject<? extends Fluid> registryObject, @NotNull TagKey<Fluid> tagKey) {
+                ZPDataGenHelper.addTagToFluid(registryObject, tagKey);
+            }
         }
 
         public static final class Items {
@@ -248,13 +269,18 @@ public abstract class ZPRegistry<T> {
                 ZPItemTabAddHelper.addItemInTab(item, creativeModeTab);
             }
 
-            public void addDispenserData(@NotNull RegistryObject<? extends Item> registryObject, @NotNull ZPDispenserHelper.ProjectileData projectileData) {
-                ZPDispenserHelper.addDispenserData(registryObject, projectileData);
+            public void addDispenserData(@NotNull RegistryObject<? extends Item> registryObject, @NotNull ZPDispenseProjectileHelper.ProjectileData projectileData) {
+                ZPDispenseProjectileHelper.addDispenserData(registryObject, projectileData);
             }
         }
 
         public static final class Blocks {
             private Blocks() {
+            }
+
+            @Deprecated
+            public void setBlockRenderLayer(@NotNull Supplier<Block> block, @NotNull RenderType renderType) {
+                ZPBlocksRenderLayerHelper.addBlockRenderLayerData(new ZPBlocksRenderLayerHelper.BlockPair(block, renderType));
             }
 
             public void addBlockModel(@NotNull RegistryObject<? extends Block> block, @NotNull Supplier<ZPGenTextureData> blockTextureData) {
@@ -292,7 +318,7 @@ public abstract class ZPRegistry<T> {
                 ZPDataGenHelper.setBlockModelExecutor(block, () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(blockModelExecutor, DefaultBlockItemModelExecutors.getDefaultItemAsBlock()));
             }
 
-            public void setBlockItemModelExecutor(@NotNull RegistryObject<? extends Block> block, @NotNull ZPBlockModelProvider.BlockModelExecutor.EItem<?> itemModelExecutor) {
+            public void setBlockItemModelExecutor(@NotNull RegistryObject<? extends Block> block, @Nullable ZPBlockModelProvider.BlockModelExecutor.EItem<?> itemModelExecutor) {
                 ZPDataGenHelper.setBlockModelExecutor(block, () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(DefaultBlockModelExecutors.getDefault(), itemModelExecutor));
             }
 

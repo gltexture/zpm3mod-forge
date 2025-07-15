@@ -20,4 +20,5 @@ public abstract class ZPConstants {
 
     public static boolean FADING_TORCHES = true;
     public static boolean FADING_PUMPKINS = true;
+    public static boolean FADING_LAVAS = true;
 }

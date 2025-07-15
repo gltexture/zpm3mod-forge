@@ -7,6 +7,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
@@ -16,12 +17,9 @@ import org.joml.Vector3f;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.common.init.ZPItems;
 import ru.gltexture.zpm3.assets.common.utils.ZPCommonClientUtils;
-import ru.gltexture.zpm3.assets.entity.nbt.ZPEntityTagsList;
-import ru.gltexture.zpm3.assets.net_pack.packets.AcidSpreadPacket;
-import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
-import ru.gltexture.zpm3.engine.nbt.ZPEntityNBT;
-import ru.gltexture.zpm3.engine.objects.entities.ZPThrowableEntity;
+import ru.gltexture.zpm3.engine.mixins.entity_ext.IZPEntityExt;
+import ru.gltexture.zpm3.engine.instances.entities.ZPThrowableEntity;
 import ru.gltexture.zpm3.engine.sound.ZPPositionedSound;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
@@ -84,9 +82,11 @@ public class ZPAcidBottleEntity extends ZPThrowableEntity {
         super.onHitEntity(pResult);
         Entity entity = pResult.getEntity();
         if (!entity.level().isClientSide()) {
-            new ZPEntityNBT(entity).incrementInt(ZPEntityTagsList.ACID_AFFECT_COOLDOWN, ZPConstants.DEFAULT_ACID_BOTTLE_AFFECT_TIME);
+            if (entity instanceof IZPEntityExt izpEntityExt) {
+                izpEntityExt.addAcidLevel(ZPConstants.DEFAULT_ACID_BOTTLE_AFFECT_TIME);
+            }
             entity.hurt(this.damageSources().thrown(this, this.getOwner()), ZPConstants.DEFAULT_ACID_BOTTLE_DAMAGE);
-            ZombiePlague3.net().sendToRadius(new AcidSpreadPacket(entity.getId(), ZPConstants.DEFAULT_ACID_BOTTLE_AFFECT_TIME), this.level(), this.position(), ZPConstants.DEFAULT_ACID_BOTTLE_PACKET_RANGE);
+            //ZombiePlague3.net().sendToRadius(new AcidSpreadPacket(entity.getId(), ZPConstants.DEFAULT_ACID_BOTTLE_AFFECT_TIME), this.level(), this.position(), ZPConstants.DEFAULT_ACID_BOTTLE_PACKET_RANGE);
         }
     }
 

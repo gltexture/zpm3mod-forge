@@ -13,7 +13,7 @@ import ru.gltexture.zpm3.assets.common.instances.blocks.torch.ZPFadingBlockWall;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
 import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockItemModelExecutors;
 import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockModelExecutors;
-import ru.gltexture.zpm3.engine.objects.blocks.*;
+import ru.gltexture.zpm3.engine.instances.blocks.*;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 
 public abstract class ZPRegTorchBlocks {

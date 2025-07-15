@@ -4,12 +4,9 @@ import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.assets.common.init.helper.ZPRegFood;
-import ru.gltexture.zpm3.assets.common.init.helper.ZPRegMedicine;
-import ru.gltexture.zpm3.assets.common.init.helper.ZPRegMelee;
-import ru.gltexture.zpm3.assets.common.init.helper.ZPRegThrowable;
+import ru.gltexture.zpm3.assets.common.init.helper.*;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
-import ru.gltexture.zpm3.engine.objects.items.*;
+import ru.gltexture.zpm3.engine.instances.items.*;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.registry.collection.IZPCollectRegistryObjects;
 
@@ -18,7 +15,8 @@ public class ZPItems extends ZPRegistry<Item> implements IZPCollectRegistryObjec
     public static RegistryObject<ZPItemThrowable> acid_bottle;
     public static RegistryObject<ZPItemThrowable> plate;
     public static RegistryObject<ZPItemThrowable> rock;
-
+    public static RegistryObject<ZPItemBucket> acid_bucket;
+    public static RegistryObject<ZPItemBucket> toxicwater_bucket;
 
     // MELEE
     public static RegistryObject<ZPItemSword> bat;
@@ -58,6 +56,7 @@ public class ZPItems extends ZPRegistry<Item> implements IZPCollectRegistryObjec
     @Override
     protected void runRegister(@NotNull ZPRegSupplier<Item> regSupplier) {
         ZPRegThrowable.init(regSupplier);
+        ZPRegItems.init(regSupplier);
         ZPRegMelee.init(regSupplier);
         ZPRegFood.init(regSupplier);
         ZPRegMedicine.init(this, regSupplier);

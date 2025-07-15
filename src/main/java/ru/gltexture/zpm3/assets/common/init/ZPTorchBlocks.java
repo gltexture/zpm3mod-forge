@@ -8,7 +8,7 @@ import ru.gltexture.zpm3.assets.common.init.helper.ZPRegTorchBlocks;
 import ru.gltexture.zpm3.assets.common.instances.blocks.torch.ZPFadingBlock;
 import ru.gltexture.zpm3.assets.common.instances.blocks.torch.ZPFadingBlockWall;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
-import ru.gltexture.zpm3.engine.objects.blocks.*;
+import ru.gltexture.zpm3.engine.instances.blocks.*;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.registry.collection.IZPCollectRegistryObjects;
 

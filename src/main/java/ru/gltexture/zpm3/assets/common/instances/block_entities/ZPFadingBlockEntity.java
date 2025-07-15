@@ -7,13 +7,12 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.common.init.ZPBlockEntities;
 import ru.gltexture.zpm3.assets.common.instances.blocks.torch.IFadingBlock;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
-import ru.gltexture.zpm3.engine.objects.block_entities.ZPBlockEntity;
+import ru.gltexture.zpm3.engine.instances.block_entities.ZPBlockEntity;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public class ZPFadingBlockEntity extends ZPBlockEntity {

@@ -14,46 +14,5 @@ import ru.gltexture.zpm3.engine.nbt.ZPEntityNBT;
 public class EntityServerSideLogic implements EntityTickEventLogic {
     @Override
     public void onTickEntity(@NotNull Entity entity) {
-        ZPEntityNBT zpEntityTag = new ZPEntityNBT(entity);
-
-        if (zpEntityTag.getTagInt(ZPEntityTagsList.ACID_AFFECT_COOLDOWN) > 0) {
-            this.damageItemsEveryTick(entity);
-        }
-    }
-
-    private void damageItemsEveryTick(Entity entity) {
-        if (entity.tickCount % ZPConstants.ACID_DAMAGE_TICK_RATE != 0) {
-            return;
-        }
-
-        if (entity instanceof LivingEntity livingEntity) {
-            for (ItemStack stack : livingEntity.getHandSlots()) {
-                if (stack.isDamageableItem()) {
-                    stack.hurtAndBreak(1, livingEntity, e -> {
-                        e.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-                    });
-                }
-            }
-
-            if (livingEntity instanceof Player player) {
-                for (ItemStack stack : player.getInventory().items) {
-                    if (stack.isDamageableItem()) {
-                        stack.hurtAndBreak(1, player, e -> {
-                            e.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-                        });
-                    }
-                }
-
-                for (int i = 0; i < player.getInventory().armor.size(); i++) {
-                    ItemStack stack = player.getInventory().armor.get(i);
-                    if (stack.isDamageableItem()) {
-                        EquipmentSlot finalSlot = ZPCommonServerUtils.getEquipmentSlot(i);
-                        stack.hurtAndBreak(1, player, e -> {
-                            e.broadcastBreakEvent(finalSlot);
-                        });
-                    }
-                }
-            }
-        }
     }
 }

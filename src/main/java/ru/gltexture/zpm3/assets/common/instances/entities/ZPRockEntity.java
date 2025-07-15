@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.common.init.ZPItems;
 import ru.gltexture.zpm3.assets.common.utils.ZPCommonClientUtils;
-import ru.gltexture.zpm3.engine.objects.entities.ZPThrowableEntity;
+import ru.gltexture.zpm3.engine.instances.entities.ZPThrowableEntity;
 import ru.gltexture.zpm3.engine.sound.ZPPositionedSound;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 

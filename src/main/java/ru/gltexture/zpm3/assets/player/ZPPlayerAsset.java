@@ -4,6 +4,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.player.events.client.ZPClientJoinEvent;
+import ru.gltexture.zpm3.assets.player.events.server.ZPPlayerFillBucketEvent;
 import ru.gltexture.zpm3.assets.player.events.server.ZPPlayerLoggedInEvent;
 import ru.gltexture.zpm3.assets.player.events.both.ZPPlayerTickEvent;
 import ru.gltexture.zpm3.assets.player.logic.PlayerBothSidesLogic;
@@ -47,7 +48,7 @@ public class ZPPlayerAsset extends ZPAsset {
     @Override
     public void initMixins(ZombiePlague3.@NotNull IMixinEntry mixinEntry) {
         mixinEntry.addMixinConfigData(new ZombiePlague3.IMixinEntry.MixinConfig("player", "ru.gltexture.zpm3.assets.player.mixins.impl"),
-                new ZombiePlague3.IMixinEntry.MixinClass("server.SPlayerFeaturesMixin", ZPSide.SERVER),
+                new ZombiePlague3.IMixinEntry.MixinClass("both.PlayerFeaturesMixin", ZPSide.SERVER),
                 new ZombiePlague3.IMixinEntry.MixinClass("client.CPlayerFeaturesMixin", ZPSide.CLIENT),
                 new ZombiePlague3.IMixinEntry.MixinClass("client.PlayerItemMixin", ZPSide.CLIENT));
     }
@@ -57,5 +58,6 @@ public class ZPPlayerAsset extends ZPAsset {
         assetEntry.addEventClass(ZPPlayerLoggedInEvent.class);
         assetEntry.addEventClass(ZPPlayerTickEvent.class);
         assetEntry.addEventClass(ZPClientJoinEvent.class);
+        assetEntry.addEventClass(ZPPlayerFillBucketEvent.class);
     }
 }

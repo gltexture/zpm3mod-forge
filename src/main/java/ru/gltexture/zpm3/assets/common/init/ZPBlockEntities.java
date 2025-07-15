@@ -9,7 +9,7 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.instances.block_entities.ZPFadingBlockEntity;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
-import ru.gltexture.zpm3.engine.objects.blocks.ZPBlock;
+import ru.gltexture.zpm3.engine.instances.blocks.ZPBlock;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.registry.ZPRegistryCollections;
 
@@ -32,7 +32,7 @@ public class ZPBlockEntities extends ZPRegistry<BlockEntityType<?>> {
                             .stream()
                             .map(e -> (ZPBlock) e.get())
                             .toArray(ZPBlock[]::new);
-                    Block[] allBlocks = Stream.concat(Arrays.stream(zpBlocks), Stream.of(Blocks.TORCH, Blocks.WALL_TORCH, Blocks.JACK_O_LANTERN)).toArray(Block[]::new);
+                    Block[] allBlocks = Stream.concat(Arrays.stream(zpBlocks), Stream.of(Blocks.TORCH, Blocks.WALL_TORCH, Blocks.JACK_O_LANTERN, Blocks.LAVA)).toArray(Block[]::new);
                     return Builder.of(ZPFadingBlockEntity::new, allBlocks).build(null);
                 }).registryObject();
     }

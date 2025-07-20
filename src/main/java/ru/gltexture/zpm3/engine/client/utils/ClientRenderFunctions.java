@@ -1,4 +1,4 @@
-package ru.gltexture.zpm3.assets.player.client;
+package ru.gltexture.zpm3.engine.client.utils;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;

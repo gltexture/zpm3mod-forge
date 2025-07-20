@@ -7,46 +7,46 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public abstract class ZPCallbacks {
     @FunctionalInterface
     public interface ZPCharCallback {
-        void onAction(long descriptor, int c);
+        void onCharAction(long descriptor, int c);
     }
 
     @FunctionalInterface
     public interface ZPWindowResizeCallback {
-        void onAction(long descriptor, int width, int height);
+        void onWindowResizeAction(long descriptor, int width, int height);
     }
 
     @FunctionalInterface
     public interface ZPMouseClickCallback {
-        void onAction(long descriptor, int key);
+        void onMouseClickAction(long descriptor, int key);
     }
 
     @FunctionalInterface
     public interface ZPMouseHoldCallback {
-        void onAction(long descriptor, int key);
+        void onMouseHoldAction(long descriptor, int key);
     }
 
     @FunctionalInterface
     public interface ZPMouseReleaseCallback {
-        void onAction(long descriptor, int key);
+        void onMouseReleaseAction(long descriptor, int key);
     }
 
     @FunctionalInterface
     public interface ZPMouseScrollCallback {
-        void onAction(long descriptor, int x, int y);
+        void onMouseScrollAction(long descriptor, int x, int y);
     }
 
     @FunctionalInterface
     public interface ZPKeyboardClickCallback {
-        void onAction(long descriptor, int key, int scanCode, int mods);
+        void onKeyboardClickAction(long descriptor, int key, int scanCode, int mods);
     }
 
     @FunctionalInterface
     public interface ZPKeyboardHoldCallback {
-        void onAction(long descriptor, int key, int scanCode, int mods);
+        void onKeyBoardHoldAction(long descriptor, int key, int scanCode, int mods);
     }
 
     @FunctionalInterface
     public interface ZPKeyboardReleaseCallback {
-        void onAction(long descriptor, int key, int scanCode, int mods);
+        void onKeyboardReleaseAction(long descriptor, int key, int scanCode, int mods);
     }
 }

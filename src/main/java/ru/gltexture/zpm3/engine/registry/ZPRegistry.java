@@ -24,6 +24,8 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
+import ru.gltexture.zpm3.engine.client.rendering.items.ZPItemRenderingProcessor;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
@@ -245,6 +247,10 @@ public abstract class ZPRegistry<T> {
 
         public static final class Items {
             private Items() {
+            }
+
+            public void setItemRenderer(@NotNull RegistryObject<? extends Item> item, @NotNull ZPItemRenderingProcessor itemRenderingProcessor) {
+                ZPRenderHelper.INSTANCE.setItemRenderingProcessor(item::get, itemRenderingProcessor);
             }
 
             public void addItemModel(@NotNull RegistryObject<? extends Item> item, @NotNull Supplier<ZPGenTextureData> itemTextureData) {

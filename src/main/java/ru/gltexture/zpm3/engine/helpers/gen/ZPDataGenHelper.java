@@ -53,6 +53,7 @@ public abstract class ZPDataGenHelper {
     public static final ZPPath PILLAR_BLOCKS_DIRECTORY = new ZPPath("pillar");
     public static final ZPPath MINECRAFT_VANILLA_ROOT = new ZPPath("VANILLA_MC$");
 
+    public static final ZPPath GUN_ITEMS_DIRECTORY = new ZPPath("guns");
     public static final ZPPath FOOD_ITEMS_DIRECTORY = new ZPPath("food");
     public static final ZPPath ITEMS_ITEMS_DIRECTORY = new ZPPath("items");
     public static final ZPPath MELEE_ITEMS_DIRECTORY = new ZPPath("melee");

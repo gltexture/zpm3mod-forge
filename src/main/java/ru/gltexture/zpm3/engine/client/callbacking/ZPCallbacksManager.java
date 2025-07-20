@@ -122,7 +122,7 @@ public class ZPCallbacksManager implements IZPResourceInit {
 
         return GLFW.glfwSetCharCallback(handle, (win, c) -> {
             for (ZPCallbacks.ZPCharCallback cb : this.onChar) {
-                cb.onAction(win, c);
+                cb.onCharAction(win, c);
             }
 
             if (this.originalCharCallback != null) {
@@ -137,7 +137,7 @@ public class ZPCallbacksManager implements IZPResourceInit {
 
         return GLFW.glfwSetWindowSizeCallback(handle, (win, width, height) -> {
             for (ZPCallbacks.ZPWindowResizeCallback cb : this.onResize) {
-                cb.onAction(win, width, height);
+                cb.onWindowResizeAction(win, width, height);
             }
 
             if (this.originalWindowCallback != null) {
@@ -153,15 +153,15 @@ public class ZPCallbacksManager implements IZPResourceInit {
         return GLFW.glfwSetMouseButtonCallback(handle, (win, button, action, mods) -> {
             if (action == GLFW.GLFW_PRESS) {
                 for (ZPCallbacks.ZPMouseClickCallback cb : this.onMouseClick) {
-                    cb.onAction(win, button);
+                    cb.onMouseClickAction(win, button);
                 }
             } else if (action == GLFW.GLFW_REPEAT) {
                 for (ZPCallbacks.ZPMouseHoldCallback cb : this.onMouseHold) {
-                    cb.onAction(win, button);
+                    cb.onMouseHoldAction(win, button);
                 }
             } else if (action == GLFW.GLFW_RELEASE) {
                 for (ZPCallbacks.ZPMouseReleaseCallback cb : this.onMouseRelease) {
-                    cb.onAction(win, button);
+                    cb.onMouseReleaseAction(win, button);
                 }
             }
 
@@ -177,7 +177,7 @@ public class ZPCallbacksManager implements IZPResourceInit {
 
         return GLFW.glfwSetScrollCallback(handle, (win, xOffset, yOffset) -> {
             for (ZPCallbacks.ZPMouseScrollCallback cb : this.onMouseScroll) {
-                cb.onAction(win, (int) xOffset, (int) yOffset);
+                cb.onMouseScrollAction(win, (int) xOffset, (int) yOffset);
             }
 
             if (this.originalScrollCallback != null) {
@@ -193,15 +193,15 @@ public class ZPCallbacksManager implements IZPResourceInit {
         return GLFW.glfwSetKeyCallback(handle, (win, key, scanCode, action, mods) -> {
             if (action == GLFW.GLFW_PRESS) {
                 for (ZPCallbacks.ZPKeyboardClickCallback cb : this.onKeyClick) {
-                    cb.onAction(win, key, scanCode, mods);
+                    cb.onKeyboardClickAction(win, key, scanCode, mods);
                 }
             } else if (action == GLFW.GLFW_REPEAT) {
                 for (ZPCallbacks.ZPKeyboardHoldCallback cb : this.onKeyHold) {
-                    cb.onAction(win, key, scanCode, mods);
+                    cb.onKeyBoardHoldAction(win, key, scanCode, mods);
                 }
             } else if (action == GLFW.GLFW_RELEASE) {
                 for (ZPCallbacks.ZPKeyboardReleaseCallback cb : this.onKeyRelease) {
-                    cb.onAction(win, key, scanCode, mods);
+                    cb.onKeyboardReleaseAction(win, key, scanCode, mods);
                 }
             }
 

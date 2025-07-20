@@ -205,6 +205,7 @@ public final class ZombiePlague3 {
         deferredRegister.register(ZombiePlague3.getModEventBus());
     }
 
+    @SuppressWarnings("removal")
     @OnlyIn(Dist.CLIENT)
     private void clientSetup(final FMLClientSetupEvent event) {
         ZPLogger.info("Client resources setup");

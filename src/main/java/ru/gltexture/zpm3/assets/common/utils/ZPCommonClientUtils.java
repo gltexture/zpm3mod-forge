@@ -21,7 +21,7 @@ import java.util.Objects;
 public abstract class ZPCommonClientUtils {
     public static void emmitUraniumParticle(final float scale, final @NotNull Vector3f position, final @NotNull Vector3f velocity) {
         final Vector3f color = new Vector3f(0.5f, 0.9f, 0.6f).add(ZPRandom.instance.randomVector3f(0.0f, new Vector3f(0.1f, 0.1f, 0.1f)));
-        final int lifetime = 30;
+        final int lifetime = 30 + ZPRandom.getRandom().nextInt(15);
         final double x = position.x;
         final double y = position.y;
         final double z = position.z;
@@ -30,7 +30,7 @@ public abstract class ZPCommonClientUtils {
 
     public static void emmitToxicParticle(final float scale, final @NotNull Vector3f position, final @NotNull Vector3f velocity) {
         final Vector3f color = new Vector3f(0.65f, 0.7f, 0.3f).add(ZPRandom.instance.randomVector3f(0.0f, new Vector3f(0.2f, 0.0f, 0.2f)));
-        final int lifetime = 30;
+        final int lifetime = 30 + ZPRandom.getRandom().nextInt(15);
         final double x = position.x;
         final double y = position.y;
         final double z = position.z;
@@ -39,7 +39,7 @@ public abstract class ZPCommonClientUtils {
 
     public static void emmitAcidParticle(final float scale, final @NotNull Vector3f position, final @NotNull Vector3f velocity) {
         final Vector3f color = new Vector3f(0.8f, 0.9f, 0.8f).add(ZPRandom.instance.randomVector3f(0.0f, new Vector3f(0.2f, 0.0f, 0.2f)));
-        final int lifetime = 40;
+        final int lifetime = 40 + ZPRandom.getRandom().nextInt(15);
         final double x = position.x;
         final double y = position.y;
         final double z = position.z;

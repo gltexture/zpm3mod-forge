@@ -38,7 +38,6 @@ public class ZPPlateEntity extends ZPThrowableEntity {
     }
 
     @Override
-    @OnlyIn(Dist.DEDICATED_SERVER)
     protected void initServer() {
 
     }

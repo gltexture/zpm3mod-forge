@@ -1,9 +1,9 @@
 package ru.gltexture.zpm3.assets.entity.nbt;
 
 public abstract class ZPEntityTagsList {
-    //public static ZPEntityTag ACID_AFFECT_COOLDOWN = new ZPEntityTag("ACID_AFFECT_COOLDOWN");
+    //public static ZPTagID ACID_AFFECT_COOLDOWN = new ZPTagID("ACID_AFFECT_COOLDOWN");
 
     static {
-        //ZPEntityTag.TAGS_TO_DECREMENT_EACH_TICK.add(ZPEntityTagsList.ACID_AFFECT_COOLDOWN);
+        //ZPTagID.TAGS_TO_DECREMENT_EACH_TICK.add(ZPEntityTagsList.ACID_AFFECT_COOLDOWN);
     }
 }

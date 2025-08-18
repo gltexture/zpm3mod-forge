@@ -1,5 +1,6 @@
 package ru.gltexture.zpm3.engine.service;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
@@ -201,7 +202,7 @@ public final class ZPUtility {
         }
 
         public void onlyServer(Runnable runnable) {
-            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> runnable);
+            DistExecutor.unsafeRunWhenOn(Dist.DEDICATED_SERVER, () -> runnable);
         }
     }
 }

@@ -5,13 +5,23 @@
   "plugin": "ru.gltexture.zpm3.engine.mixins.ZPMixinPlugin",
   "refmap": "zpm3.refmap.json",
   "mixins": [
-    "both.EntityMixin"
+    "both.EntityMixin",
+    "both.LivingEntityMixin"
   ],
   "client": [
-    "client.RenderMixin",
-    "client.ZPItemMixin"
+    "client.ZPGameRendererMixin",
+    "client.ZPItemHookMixin",
+    "client.ZPItemMixin",
+    "client.ZPLevelRenderMixin",
+    "client.ZPLocalPlayerMixin",
+    "client.ZPMinecraftMixin",
+    "client.ZPMultiplayerGameModeMixin",
+    "client.ZPPlayerRenderMixin",
+    "client.ZPRenderMixin",
+    "client.ZPScreenEffectMixin"
   ],
   "server": [
+    "server.ZPServerPlayerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

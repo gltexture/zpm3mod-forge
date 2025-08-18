@@ -18,8 +18,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import ru.gltexture.zpm3.assets.common.init.ZPBlocks;
-import ru.gltexture.zpm3.engine.mixins.entity_ext.ZPEntityExtTicking;
-import ru.gltexture.zpm3.engine.mixins.entity_ext.IZPEntityExt;
+import ru.gltexture.zpm3.engine.mixins.ext.ZPEntityExtTicking;
+import ru.gltexture.zpm3.engine.mixins.ext.IZPEntityExt;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 @Mixin(Entity.class)
@@ -49,7 +49,7 @@ public abstract class EntityMixin implements IZPEntityExt {
     @Inject(method = "tick", at = @At("HEAD"))
     private void tickPre(CallbackInfo ci) {
         if (this.level().isClientSide()) {
-            ZPEntityExtTicking.clientEntityTickPre((Entity)(Object)this, this);
+            ZPEntityExtTicking.clientEntityTickPre((Entity) (Object) this, this);
         } else {
             if (ZPUtility.entity().isCollidingWithBlock((Entity) (Object) this, ZPBlocks.acid_block.get())) {
                 this.touchesAcidBlock = true;

@@ -12,7 +12,7 @@ public abstract class AbstractSmokeParticle extends TextureSheetParticle {
         super(level, position.x, position.y, position.z, velocity.x, velocity.y, velocity.z);
 
         this.pSprites = pSprites;
-        this.setSpriteFromAge(this.pSprites );
+        this.setSpriteFromAge(this.pSprites);
         this.rCol = color.x;
         this.gCol = color.y;
         this.bCol = color.z;

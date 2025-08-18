@@ -1,6 +1,6 @@
 package ru.gltexture.zpm3.engine.events.client;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.data.DataGenerator;
@@ -13,14 +13,12 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPShaderReloader;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.events.ZPAbstractEventMod;
@@ -59,8 +57,8 @@ public final class ZPClientMod extends ZPAbstractEventMod {
 
     @SubscribeEvent
     public static void onRegisterParticleRenderers(RegisterParticleProvidersEvent event) {
-        for (ZPParticleRenderHelper.ParticleRenderPair<?> pair : ZPParticleRenderHelper.getParticleRendererPairs()) {
-            ZPClientMod.registerParticleRender(event, pair);
+        for (ZPParticleRenderHelper.ParticleRenderPairSet<?> pair : ZPParticleRenderHelper.getParticleRendererPairSets()) {
+            ZPClientMod.registerParticleRenderSet(event, pair);
         }
         ZPParticleRenderHelper.clear();
     }
@@ -69,9 +67,10 @@ public final class ZPClientMod extends ZPAbstractEventMod {
         event.registerEntityRenderer(pair.registryObject().get(), pair.provider());
     }
 
-    public static <R extends ParticleOptions> void registerParticleRender(RegisterParticleProvidersEvent event, ZPParticleRenderHelper.ParticleRenderPair<R> pair) {
-        event.registerSpriteSet(pair.type().get(), (s) ->pair.particleProvider().apply(s));
+    public static <R extends ParticleOptions> void registerParticleRenderSet(RegisterParticleProvidersEvent event, ZPParticleRenderHelper.ParticleRenderPairSet<R> pair) {
+        event.registerSpriteSet(pair.type().get(), (s) -> pair.particleProvider().apply(s));
     }
+
 
     @SubscribeEvent
     public static void onBuildContents(BuildCreativeModeTabContentsEvent event) {

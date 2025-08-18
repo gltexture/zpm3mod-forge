@@ -3,8 +3,6 @@ package ru.gltexture.zpm3.assets.net_pack.packets;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
-import ru.gltexture.zpm3.assets.entity.nbt.ZPEntityTagsList;
-import ru.gltexture.zpm3.engine.nbt.ZPEntityNBT;
 import ru.gltexture.zpm3.engine.core.ZPLogger;
 import ru.gltexture.zpm3.engine.network.ZPNetwork;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
@@ -46,7 +44,7 @@ public class AcidSpreadPacket implements ZPNetwork.ZPPacket {
         ZPUtility.client().ifClientLevelValid(() -> {
             Entity entity = Objects.requireNonNull(Minecraft.getInstance().level).getEntity(this.entityId);
             if (entity != null) {
-               // new ZPEntityNBT(entity).incrementInt(ZPEntityTagsList.ACID_AFFECT_COOLDOWN, this.acidLevel);
+               // new ZPItemStackNBT(entity).incrementInt(ZPEntityTagsList.ACID_AFFECT_COOLDOWN, this.acidLevel);
             } else {
                 ZPLogger.warn("Received entity-id: " + this.entityId + ", but entity is NULL");
             }

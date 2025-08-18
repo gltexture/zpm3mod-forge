@@ -1,0 +1,28 @@
+{
+  "vertex": "zpm3:image/vertex",
+  "fragment": "zpm3:image/fragment",
+  "attributes": [
+    "position",
+    "texture"
+  ],
+  "uniforms": [
+    {
+      "name": "texture_map",
+      "type": "int",
+      "count": 1,
+      "values": [0]
+    },
+    {
+      "name": "sModelViewMat",
+      "type": "matrix4x4",
+      "count": 16,
+      "values": [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ]
+    },
+    {
+      "name": "sProjMat",
+      "type": "matrix4x4",
+      "count": 16,
+      "values": [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ]
+    }
+  ]
+}

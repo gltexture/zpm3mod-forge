@@ -1,32 +1,186 @@
 package ru.gltexture.zpm3.engine.client.rendering.items.guns;
 
-import ru.gltexture.zpm3.engine.client.rendering.items.functions.IZPItemRenderer;
+import com.mojang.blaze3d.vertex.*;
+import com.mojang.math.Axis;
+import com.mojang.math.Transformation;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
+import ru.gltexture.zpm3.assets.debug.imgui.DearUITRSInterface;
+import ru.gltexture.zpm3.engine.client.rendering.items.guns.fx.ZPGunFXGlobalData;
 
-public class ZPDefaultPistolRenderer implements IZPItemRenderer {
+import java.util.Objects;
 
-    public ZPDefaultPistolRenderer() {
+public class ZPDefaultPistolRenderer extends ZPAbstractGunRenderer {
+    private static final Vector3f translationGunRight = new Vector3f(0.245f, -0.05f, -1.15f);
+    private static final Vector3f rotationGunRight = new Vector3f(-10.0f, 10.0f, 1.5f);
+    private static final Vector3f translationArmRight = new Vector3f(-0.22f, -0.39f, 0.71f);
+    private static final Vector3f rotationArmRight = new Vector3f(-57.0f, 173.1f, -6.0f);
+
+    private static final Vector3f translationGunLeft = new Vector3f(-0.44f, 0.18f, -0.96f);
+    private static final Vector3f rotationGunLeft = new Vector3f(-61.8f, 188.6f, 9.0f);
+    private static final Vector3f translationArmLeft = new Vector3f(-0.358f, -0.67f, 0.2f);
+    private static final Vector3f rotationArmLeft = new Vector3f(-2.7f, 1.63f, 7.0f);
+
+    private static final Vector3f translationMuzzleflashRight = new Vector3f(0.06f, 0.41f, -0.23f);
+    private static final Vector3f translationMuzzleflashLeft = new Vector3f(-0.08f, 0.57f, 0.1f);
+    private static final float muzzleflashScale = 0.75f;
+
+    protected ZPDefaultPistolRenderer() {
+        super();
+    }
+
+    static ZPDefaultPistolRenderer create() {
+        return new ZPDefaultPistolRenderer();
     }
 
     @Override
-    public void setupResources() {
+    public void onRender(AbstractClientPlayer pPlayer, float deltaTicks, float pPartialTicks, float pPitch, InteractionHand pHand, float pSwingProgress, ItemStack pStack, float pEquippedProgress, PoseStack pPoseStack, MultiBufferSource pBuffer, int pCombinedLight) {
+        pPoseStack.pushPose();
+        final boolean isRightHanded = pHand == InteractionHand.MAIN_HAND;
+        final float equippedConst = -0.6F + pEquippedProgress * -0.6F;
+        final Matrix4f transformation = new Matrix4f().identity();
 
+        final Vector3f startTranslation = new Vector3f(isRightHanded ? ZPDefaultPistolRenderer.translationGunRight : translationGunLeft);
+        startTranslation.add(0.0f, equippedConst, 0.0f);
+        startTranslation.add(DearUITRSInterface.trs1.position);
+
+        final Vector3f startRotation = new Vector3f(isRightHanded ? ZPDefaultPistolRenderer.rotationGunRight : rotationGunLeft);
+        startRotation.add(DearUITRSInterface.trs1.rotation);
+
+        pPoseStack.setIdentity();
+        this.translateStack(pPoseStack, pPartialTicks);
+        transformation
+                .translate(startTranslation)
+                .rotateX((float) Math.toRadians(startRotation.x))
+                .rotateY((float) Math.toRadians(startRotation.y))
+                .rotateZ((float) Math.toRadians(startRotation.z))
+                .scale(new Vector3f(DearUITRSInterface.trs1.scale));
+        pPoseStack.pushTransformation(new Transformation(transformation));
+
+        final Matrix4f matrixGun = new Matrix4f(pPoseStack.last().pose());
+        @Nullable Matrix4f recoil = ZPDefaultGunRenderers.defaultRecoilFXUniversal.getCurrentRecoilTransformation(isRightHanded, pPartialTicks);
+        if (recoil != null) {
+            pPoseStack.pushTransformation(new Transformation(recoil));
+        }
+
+        this.renderItem(Minecraft.getInstance().getItemRenderer(), pPlayer, pStack, isRightHanded ? ItemDisplayContext.FIRST_PERSON_RIGHT_HAND : ItemDisplayContext.FIRST_PERSON_LEFT_HAND, !isRightHanded, pPoseStack, pBuffer, pCombinedLight);
+        this.renderPlayerArm(pPlayer, pPoseStack, pBuffer, pCombinedLight, pEquippedProgress, pSwingProgress, isRightHanded);
+        final Matrix4f matrixArm = new Matrix4f(pPoseStack.last().pose());
+
+        final Matrix4f muzzleflashTransformation = new Matrix4f().identity();
+        final Vector3f mflashTranslation = new Vector3f(isRightHanded ? ZPDefaultPistolRenderer.translationMuzzleflashRight : ZPDefaultPistolRenderer.translationMuzzleflashLeft);
+        mflashTranslation.add(0.0f, 0.0f, 0.0f);
+        mflashTranslation.add(DearUITRSInterface.trs3.position);
+
+        final Vector3f mflashRotation = new Vector3f(0.0f);
+        mflashRotation.add(0.0f, 180.0f, 0.0f);
+        mflashRotation.add(DearUITRSInterface.trs3.rotation);
+
+        final Vector3f mflashScale = new Vector3f(ZPDefaultPistolRenderer.muzzleflashScale, ZPDefaultPistolRenderer.muzzleflashScale, 1.0f);
+        mflashScale.add(new Vector3f(DearUITRSInterface.trs3.scale).sub(new Vector3f(1.0f)));
+
+        muzzleflashTransformation
+                .translate(mflashTranslation)
+                .rotateX((float) Math.toRadians(mflashRotation.x))
+                .rotateY((float) Math.toRadians(mflashRotation.y))
+                .rotateZ((float) Math.toRadians(mflashRotation.z))
+                .scale(mflashScale);
+
+        if (isRightHanded) {
+            ZPGunFXGlobalData.setRight(new ZPGunFXGlobalData.ClientGunRenderGlobalData(muzzleflashTransformation, matrixGun, matrixArm));
+        } else {
+            ZPGunFXGlobalData.setLeft(new ZPGunFXGlobalData.ClientGunRenderGlobalData(muzzleflashTransformation, matrixGun, matrixArm));
+        }
+
+        pPoseStack.popPose();
     }
 
-    @Override
-    public void destroyResources() {
+    /*
+    -XX:HotswapAgent=fatjar
+-XX:+AllowEnhancedClassRedefinition
+     */
 
+    private void translateStack(PoseStack pPoseStack, float pPartialTicks) {
+        LocalPlayer localPlayer = Objects.requireNonNull(Minecraft.getInstance().player);
+        final float f2 = Mth.lerp(pPartialTicks, localPlayer.xBobO, localPlayer.xBob);
+        final float f3 = Mth.lerp(pPartialTicks, localPlayer.yBobO, localPlayer.yBob);
+        pPoseStack.mulPose(Axis.XP.rotationDegrees((localPlayer.getViewXRot(pPartialTicks) - f2) * 0.1F));
+        pPoseStack.mulPose(Axis.YP.rotationDegrees((localPlayer.getViewYRot(pPartialTicks) - f3) * 0.1F));
+
+        this.bobHurt(pPoseStack, pPartialTicks);
+        if (Minecraft.getInstance().options.bobView().get()) {
+            this.bobView(pPoseStack, pPartialTicks);
+        }
     }
 
-    @Override
-    public void onClientTicking() {
+    private void renderPlayerArm(AbstractClientPlayer pPlayer, PoseStack pPoseStack, MultiBufferSource pBuffer, int pCombinedLight, float pEquippedProgress, float pSwingProgress, boolean isRightHanded) {
+        final Matrix4f transformation = new Matrix4f().identity();
+
+        final Vector3f startTranslation = new Vector3f(isRightHanded ? ZPDefaultPistolRenderer.translationArmRight : translationArmLeft);
+        startTranslation.add(DearUITRSInterface.trs2.position);
+
+        final Vector3f startRotation = new Vector3f(isRightHanded ? ZPDefaultPistolRenderer.rotationArmRight : rotationArmLeft);
+        startRotation.add(DearUITRSInterface.trs2.rotation);
+
+        transformation
+                .translate(startTranslation)
+                .rotateX((float) Math.toRadians(startRotation.x))
+                .rotateY((float) Math.toRadians(startRotation.y))
+                .rotateZ((float) Math.toRadians(startRotation.z))
+                .scale(new Vector3f(DearUITRSInterface.trs2.scale));
+
+        pPoseStack.mulPoseMatrix(transformation);
+
+        PlayerRenderer playerrenderer = (PlayerRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(pPlayer);
+        if (isRightHanded) {
+            playerrenderer.renderRightHand(pPoseStack, pBuffer, pCombinedLight, pPlayer);
+        } else {
+            playerrenderer.renderLeftHand(pPoseStack, pBuffer, pCombinedLight, pPlayer);
+        }
     }
 
-    @Override
-    public void onRender(double partialTicks) {
+    private void bobHurt(PoseStack pPoseStack, float pPartialTicks) {
+        if (Minecraft.getInstance().getCameraEntity() instanceof LivingEntity livingentity) {
+            float f = (float) livingentity.hurtTime - pPartialTicks;
+            if (livingentity.isDeadOrDying()) {
+                float f1 = Math.min((float) livingentity.deathTime + pPartialTicks, 20.0F);
+                pPoseStack.mulPose(Axis.ZP.rotationDegrees(40.0F - 8000.0F / (f1 + 200.0F)));
+            }
+
+            if (f < 0.0F) {
+                return;
+            }
+
+            f /= (float) livingentity.hurtDuration;
+            f = Mth.sin(f * f * f * f * (float) Math.PI);
+            float f3 = livingentity.getHurtDir();
+            pPoseStack.mulPose(Axis.YP.rotationDegrees(-f3));
+            float f2 = (float) ((double) (-f) * 14.0D * Minecraft.getInstance().options.damageTiltStrength().get());
+            pPoseStack.mulPose(Axis.ZP.rotationDegrees(f2));
+            pPoseStack.mulPose(Axis.YP.rotationDegrees(f3));
+        }
     }
 
-    @Override
-    public void onWindowResizeAction(long descriptor, int width, int height) {
-
+    private void bobView(PoseStack pPoseStack, float pPartialTicks) {
+        if (Minecraft.getInstance().getCameraEntity() instanceof Player player) {
+            float f = player.walkDist - player.walkDistO;
+            float f1 = -(player.walkDist + f * pPartialTicks);
+            float f2 = Mth.lerp(pPartialTicks, player.oBob, player.bob);
+            pPoseStack.translate(Mth.sin(f1 * (float) Math.PI) * f2 * 0.5F, -Math.abs(Mth.cos(f1 * (float) Math.PI) * f2), 0.0F);
+            pPoseStack.mulPose(Axis.ZP.rotationDegrees(Mth.sin(f1 * (float) Math.PI) * f2 * 3.0F));
+            pPoseStack.mulPose(Axis.XP.rotationDegrees(Math.abs(Mth.cos(f1 * (float) Math.PI - 0.2F) * f2) * 5.0F));
+        }
     }
 }

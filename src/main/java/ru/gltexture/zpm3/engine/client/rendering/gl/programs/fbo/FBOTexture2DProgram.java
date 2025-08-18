@@ -1,5 +1,6 @@
 package ru.gltexture.zpm3.engine.client.rendering.gl.programs.fbo;
 
+import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
 import org.lwjgl.opengl.GL46;
@@ -64,7 +65,7 @@ public class FBOTexture2DProgram {
         this.unBindFBO();
     }
 
-    public void copyFBOtoFBOColor(int fboTo, Pair<Integer, Integer>[] colorFrom_colorTo, Vector2i dimension) {
+    public void copyFBOtoFBOColor(int fboTo, Pair<Integer, Integer>[] colorFrom_colorTo, Vector2i dimensionSrc, Vector2i dimensionDist) {
         GL46.glBindFramebuffer(GL46.GL_READ_FRAMEBUFFER, this.getFrameBufferId());
         GL46.glBindFramebuffer(GL46.GL_DRAW_FRAMEBUFFER, fboTo);
         for (Pair<Integer, Integer> att : colorFrom_colorTo) {
@@ -72,7 +73,7 @@ public class FBOTexture2DProgram {
             if (fboTo != 0) {
                 GL46.glDrawBuffer(att.second());
             }
-            GL46.glBlitFramebuffer(0, 0, dimension.x, dimension.y, 0, 0, dimension.x, dimension.y, GL46.GL_COLOR_BUFFER_BIT, GL46.GL_NEAREST);
+            GL46.glBlitFramebuffer(0, 0, dimensionSrc.x, dimensionSrc.y, 0, 0, dimensionDist.x, dimensionDist.y, GL46.GL_COLOR_BUFFER_BIT, GL46.GL_NEAREST);
         }
         GL46.glBindFramebuffer(GL46.GL_FRAMEBUFFER, 0);
     }
@@ -106,6 +107,7 @@ public class FBOTexture2DProgram {
 
     public void unBindFBO() {
         GL46.glBindFramebuffer(GL46.GL_FRAMEBUFFER, 0);
+        Minecraft.getInstance().getMainRenderTarget().bindWrite(true);
     }
 
     public int getTextureIDByIndex(int i) {

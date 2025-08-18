@@ -29,10 +29,10 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.gltexture.zpm3.engine.client.init.ZPClientInitManager;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPDefaultShaders;
 import ru.gltexture.zpm3.engine.core.asset.ZPAsset;
 import ru.gltexture.zpm3.engine.core.asset.ZPAssetData;
+import ru.gltexture.zpm3.engine.core.init.ZPSystemInit;
 import ru.gltexture.zpm3.engine.events.both.ZPBothForge;
 import ru.gltexture.zpm3.engine.events.both.ZPBothMod;
 import ru.gltexture.zpm3.engine.events.client.ZPClientForge;
@@ -66,6 +66,9 @@ public final class ZombiePlague3 {
     private final ZPRegistryConveyor zpRegistryConveyor;
     private final List<ZPAsset> assets;
     private ZPNetwork zpNetwork;
+
+    private static boolean commonInitSwitch = true;
+    @OnlyIn(Dist.CLIENT) private static boolean clientInitSwitch = true;
 
     public ZombiePlague3() {
         this.assets = new ArrayList<>();
@@ -211,15 +214,16 @@ public final class ZombiePlague3 {
         ZPLogger.info("Client resources setup");
         Runtime.getRuntime().addShutdownHook(new Thread(this::clientDestroy));
         RenderSystem.recordRenderCall(() -> {
+            ZPSystemInit.client();
             ZPDefaultShaders.init();
-            ZPDefaultSysInit.initZPSystems();
             for (ZPAsset zpAsset : this.assets) {
                 zpAsset.clientSetup();
             }
-            ZPClientInitManager.getSetInit().forEach(e -> e.run(Minecraft.getInstance().getWindow()));
-            ZPClientInitManager.clearInit();
+            ZPSystemInit.clientRunSetup(Minecraft.getInstance().getWindow());
+            {
+                ZombiePlague3.clientInitSwitch = false;
+            }
         });
-
         ZPBlocksRenderLayerHelper.liquidPairs.forEach(e -> {
             ItemBlockRenderTypes.setRenderLayer(e.fluid().get(), e.type());
         });
@@ -232,22 +236,45 @@ public final class ZombiePlague3 {
     private void clientDestroy() {
         ZPLogger.info("Client resources destroy");
         RenderSystem.recordRenderCall(() -> {
-            ZPDefaultSysInit.destroyZPSystems();
             for (ZPAsset zpAsset : this.assets) {
                 zpAsset.clientDestroy();
             }
-            ZPClientInitManager.getSetDestroy().forEach(e -> e.run(Minecraft.getInstance().getWindow()));
-            ZPClientInitManager.clearDestroy();
+            ZPSystemInit.clientRunDestroy(Minecraft.getInstance().getWindow());
             ZPRegistryCollections.clearAll();
         });
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-        ZPDefaultSysInit.destroyZPSystems();
         for (ZPAsset zpAsset : this.assets) {
             zpAsset.commonSetup();
         }
         this.initDispenserData();
+
+        {
+            ZombiePlague3.commonInitSwitch = false;
+        }
+    }
+
+    public static boolean isCommonInitEnded() {
+        return !ZombiePlague3.commonInitSwitch;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static boolean isClientInitEnded() {
+        return !ZombiePlague3.clientInitSwitch;
+    }
+
+    public static void commonInitValidation() throws ZPRuntimeException {
+        if (ZombiePlague3.isCommonInitEnded()) {
+            throw new ZPRuntimeException("Couldn't continue exec, because common init is ended");
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static void clientInitValidation() throws ZPRuntimeException {
+        if (ZombiePlague3.isClientInitEnded()) {
+            throw new ZPRuntimeException("Couldn't continue exec, because client init is ended");
+        }
     }
 
     private void initDispenserData() {

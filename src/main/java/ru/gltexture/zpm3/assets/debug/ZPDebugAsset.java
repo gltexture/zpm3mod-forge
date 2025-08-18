@@ -3,15 +3,12 @@ package ru.gltexture.zpm3.assets.debug;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.assets.common.init.*;
 import ru.gltexture.zpm3.assets.debug.imgui.DearUITRSInterface;
-import ru.gltexture.zpm3.engine.client.init.ZPClientInitManager;
+import ru.gltexture.zpm3.engine.core.init.ZPClientInitManager;
 import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
-import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.asset.ZPAsset;
 import ru.gltexture.zpm3.engine.core.asset.ZPAssetData;
-import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public class ZPDebugAsset extends ZPAsset {
     public ZPDebugAsset(@NotNull ZPAssetData zpAssetData) {
@@ -28,7 +25,7 @@ public class ZPDebugAsset extends ZPAsset {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void clientSetup() {
-        ZPClientInitManager.setupRunner((w) -> ZPRenderHelper.INSTANCE.getDearUIRenderer().getInterfacesManager().addActiveInterface(new DearUITRSInterface()));
+        ZPRenderHelper.INSTANCE.getDearUIRenderer().getInterfacesManager().addActiveInterface(new DearUITRSInterface());
     }
 
     @OnlyIn(Dist.CLIENT)

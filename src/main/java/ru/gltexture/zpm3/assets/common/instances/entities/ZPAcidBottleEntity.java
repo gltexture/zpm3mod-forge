@@ -7,7 +7,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
@@ -18,7 +17,7 @@ import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.common.init.ZPItems;
 import ru.gltexture.zpm3.assets.common.utils.ZPCommonClientUtils;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
-import ru.gltexture.zpm3.engine.mixins.entity_ext.IZPEntityExt;
+import ru.gltexture.zpm3.engine.mixins.ext.IZPEntityExt;
 import ru.gltexture.zpm3.engine.instances.entities.ZPThrowableEntity;
 import ru.gltexture.zpm3.engine.sound.ZPPositionedSound;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
@@ -42,7 +41,6 @@ public class ZPAcidBottleEntity extends ZPThrowableEntity {
     }
 
     @Override
-    @OnlyIn(Dist.DEDICATED_SERVER)
     protected void initServer() {
 
     }

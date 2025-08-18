@@ -7,7 +7,7 @@ import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.events.ZPEvent;
-import ru.gltexture.zpm3.engine.nbt.ZPEntityNBT;
+import ru.gltexture.zpm3.engine.nbt.entity.ZPEntityNBT;
 
 public class ZPEntitySpawnEvent implements ZPEvent<EntityJoinLevelEvent> {
     @Override

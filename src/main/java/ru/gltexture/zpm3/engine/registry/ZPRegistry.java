@@ -4,6 +4,7 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
@@ -24,8 +25,8 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
-import ru.gltexture.zpm3.engine.client.rendering.items.ZPItemRenderingProcessor;
+import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooks;
+import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooksManager;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
@@ -249,8 +250,8 @@ public abstract class ZPRegistry<T> {
             private Items() {
             }
 
-            public void setItemRenderer(@NotNull RegistryObject<? extends Item> item, @NotNull ZPItemRenderingProcessor itemRenderingProcessor) {
-                ZPRenderHelper.INSTANCE.setItemRenderingProcessor(item::get, itemRenderingProcessor);
+            public void setItemRenderer(@NotNull RegistryObject<? extends Item> item, @NotNull ZPRenderHooks.ZPItemRenderingHook itemRenderingProcessor) {
+                ZPRenderHooksManager.INSTANCE.addItemRenderingHook(item::get, itemRenderingProcessor);
             }
 
             public void addItemModel(@NotNull RegistryObject<? extends Item> item, @NotNull Supplier<ZPGenTextureData> itemTextureData) {
@@ -341,8 +342,8 @@ public abstract class ZPRegistry<T> {
             private Particles() {
             }
 
-            public <T extends ParticleOptions> void matchParticleRendering(@NotNull RegistryObject<? extends ParticleType<T>> type, @NotNull Function<SpriteSet, @NotNull ParticleProvider<T>> particleProvider) {
-                ZPParticleRenderHelper.matchParticleRendering(type, particleProvider);
+            public <T extends ParticleOptions> void matchParticleRenderingSet(@NotNull RegistryObject<? extends ParticleType<T>> type, @NotNull Function<SpriteSet, @NotNull ParticleProvider<T>> particleProvider) {
+                ZPParticleRenderHelper.matchParticleRenderingSet(type, particleProvider);
             }
 
             public <T extends ParticleOptions> void addParticlesTexturesData(@NotNull RegistryObject<? extends ParticleType<T>> typeRegistryObject, @NotNull String texturesLink, int arraySize) {

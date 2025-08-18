@@ -14,29 +14,32 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2i;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL46;
-import ru.gltexture.zpm3.engine.client.callbacking.ZPCallbacksManager;
+import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
+import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacksManager;
 import ru.gltexture.zpm3.engine.client.rendering.gl.programs.textures.TextureSimple2DProgram;
 import ru.gltexture.zpm3.engine.client.rendering.gl.programs.textures.properties.TextureProperties;
-import ru.gltexture.zpm3.engine.client.rendering.resources.IZPResourceInit;
+import ru.gltexture.zpm3.engine.client.rendering.items.guns.ZPGunLayersProcessing;
 import ru.gltexture.zpm3.engine.client.rendering.ui.imgui.interfaces.DearUIInterface;
 
 import java.nio.ByteBuffer;
 import java.util.function.Supplier;
 
 @OnlyIn(Dist.CLIENT)
-public class ZPDearUIRenderer implements IZPResourceInit {
-    private ZPDearUIInterfacesManager zpDearUIInterfacesManager;
+public class ZPDearUIRenderer implements ZPClientCallbacks.ZPClientResourceDependentObject {
+    private final ZPDearUIInterfacesManager zpDearUIInterfacesManager;
     private final Supplier<ShaderInstance> shaderManager;
     private DearUIMesh dearImGuiMesh;
     private TextureSimple2DProgram textureSample;
-    private int sampler;
+    public static int sampler;
 
     public ZPDearUIRenderer(@NotNull Supplier<ShaderInstance> imguiShader) {
+        this.zpDearUIInterfacesManager = new ZPDearUIInterfacesManager(this);
         this.shaderManager = imguiShader;
         this.sampler = 0;
     }
 
     //-javaagent:"C:\Users\forge\.gradle\caches\modules-2\files-2.1\org.spongepowered\mixin\0.8.5\9d1c0c3a304ae6697ecd477218fa61b850bf57fc\mixin-0.8.5.jar"
+    @Override
     public void setupResources(@NotNull Window window) {
         this.sampler = GL46.glGenSamplers();
         GL46.glSamplerParameteri(this.sampler, GL46.GL_TEXTURE_MIN_FILTER, GL46.GL_LINEAR);
@@ -60,21 +63,27 @@ public class ZPDearUIRenderer implements IZPResourceInit {
 
         this.dearImGuiMesh = new DearUIMesh();
         this.createUICallbacks(window);
-        this.zpDearUIInterfacesManager = new ZPDearUIInterfacesManager(this);
     }
 
+    @Override
     public void destroyResources(@NotNull Window window) {
         GL46.glDeleteSamplers(this.sampler);
         this.getImguiMesh().clear();
         if (this.textureSample != null) {
             this.textureSample.clear();
         }
+        this.getInterfacesManager().clear();
+    }
+
+    @Override
+    public void onWindowResizeAction(long descriptor, int width, int height) {
+
     }
 
     private void createUICallbacks(Window window) {
         ImGuiIO io = ImGui.getIO();
 
-        ZPCallbacksManager.INSTANCE.addWindowResizeCallback((l, w, h) -> {
+        ZPClientCallbacksManager.INSTANCE.addWindowResizeCallback((l, w, h) -> {
             io.setDisplaySize(w, h);
         });
 
@@ -102,7 +111,11 @@ public class ZPDearUIRenderer implements IZPResourceInit {
         io.setKeyMap(ImGuiKey.Escape, GLFW.GLFW_KEY_ESCAPE);
         io.setKeyMap(ImGuiKey.KeyPadEnter, GLFW.GLFW_KEY_KP_ENTER);
 
-        ZPCallbacksManager.INSTANCE.addKeyboardHoldCallback((descriptor, key, scanCode, mods) -> {
+        ZPClientCallbacksManager.INSTANCE.addMouseScrollCallback((descriptor, x, y) -> {
+            io.setMouseWheel((float) y);
+        });
+
+        ZPClientCallbacksManager.INSTANCE.addKeyboardHoldCallback((descriptor, key, scanCode, mods) -> {
             if (!io.getWantCaptureKeyboard()) {
                 return;
             }
@@ -113,7 +126,7 @@ public class ZPDearUIRenderer implements IZPResourceInit {
             io.setKeySuper(io.getKeysDown(GLFW.GLFW_KEY_LEFT_SUPER));
         });
 
-        ZPCallbacksManager.INSTANCE.addKeyboardReleaseCallback((descriptor, key, scanCode, mods) -> {
+        ZPClientCallbacksManager.INSTANCE.addKeyboardReleaseCallback((descriptor, key, scanCode, mods) -> {
             if (!io.getWantCaptureKeyboard()) {
                 return;
             }
@@ -124,7 +137,7 @@ public class ZPDearUIRenderer implements IZPResourceInit {
             io.setKeySuper(io.getKeysDown(GLFW.GLFW_KEY_LEFT_SUPER));
         });
 
-        ZPCallbacksManager.INSTANCE.addCharCallback((descriptor, c) -> {
+        ZPClientCallbacksManager.INSTANCE.addCharCallback((descriptor, c) -> {
             if (!io.getWantCaptureKeyboard()) {
                 return;
             }
@@ -237,9 +250,7 @@ public class ZPDearUIRenderer implements IZPResourceInit {
         io.setMouseDown(0, GLFW.glfwGetMouseButton(win, GLFW.GLFW_MOUSE_BUTTON_LEFT) == GLFW.GLFW_PRESS);
         io.setMouseDown(1, GLFW.glfwGetMouseButton(win, GLFW.GLFW_MOUSE_BUTTON_RIGHT) == GLFW.GLFW_PRESS);
 
-        ZPCallbacksManager.INSTANCE.addMouseScrollCallback((descriptor, x, y) -> {
-            io.setMouseWheel((float) y);
-        });
+        GL46.glBindSampler(0, 0);
     }
 
     public ZPDearUIInterfacesManager getInterfacesManager() {

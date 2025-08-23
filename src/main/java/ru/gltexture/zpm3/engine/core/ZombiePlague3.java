@@ -44,6 +44,9 @@ import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.engine.events.ZPEvent;
 import ru.gltexture.zpm3.engine.helpers.ZPBlocksRenderLayerHelper;
 import ru.gltexture.zpm3.engine.helpers.ZPDispenseProjectileHelper;
+import ru.gltexture.zpm3.engine.helpers.ZPKeyBindingsRegistryHelper;
+import ru.gltexture.zpm3.engine.keybind.ZPBaseKeyBindings;
+import ru.gltexture.zpm3.engine.keybind.ZPKeyBindingsManager;
 import ru.gltexture.zpm3.engine.network.ZPNetwork;
 import ru.gltexture.zpm3.engine.instances.items.tier.ZPTierData;
 import ru.gltexture.zpm3.engine.instances.items.tier.ZPTiers;
@@ -94,6 +97,7 @@ public final class ZombiePlague3 {
         this.createNet();
         this.initAssets();
         modEventBus.addListener(this::commonSetup);
+        this.initBaseKeyBindings();
         ZPUtility.sides().onlyClient(() -> {
             modEventBus.addListener(this::clientSetup);
         });
@@ -103,6 +107,14 @@ public final class ZombiePlague3 {
     private void initDefaultTiers() {
         ZPLogger.info(this + " INIT DEFAULT ZP TIERS");
         Arrays.stream(ZPTiers.values()).forEach(e -> e.init().forEach(ZombiePlague3::registerTier));
+    }
+
+    public void initKeyBindings(@NotNull ZPKeyBindingsManager keyBindingsManager) {
+        ZPKeyBindingsRegistryHelper.addNewKeybinding(keyBindingsManager);
+    }
+
+    private void initBaseKeyBindings() {
+        this.initKeyBindings(new ZPBaseKeyBindings());
     }
 
     private void initAssets() {

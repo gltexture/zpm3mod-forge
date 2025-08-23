@@ -28,5 +28,9 @@ public abstract class ZPRegSounds {
         ZPSounds.makarov_fire = regSupplier.register("makarov_gire", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "makarov_fire"))).postConsume(Dist.CLIENT, (e, utils) -> {
             utils.sounds().addNewSound(new ZPSoundListProvider.ZPSoundEvent("makarov_fire", false, "sounds.zpm3.makarov_fire", List.of(new ZPSoundListProvider.SoundData("guns/makarov_fire"))));
         }).registryObject();
+
+        ZPSounds.makarov_reload = regSupplier.register("makarov_reload", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "makarov_reload"))).postConsume(Dist.CLIENT, (e, utils) -> {
+            utils.sounds().addNewSound(new ZPSoundListProvider.ZPSoundEvent("makarov_reload", false, "sounds.zpm3.makarov_reload", List.of(new ZPSoundListProvider.SoundData("guns/makarov_reload"))));
+        }).registryObject();
     }
 }

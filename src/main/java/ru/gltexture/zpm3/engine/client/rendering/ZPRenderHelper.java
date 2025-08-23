@@ -7,14 +7,14 @@ import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL46;
 import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
 import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacksManager;
-import ru.gltexture.zpm3.engine.client.rendering.crosshair.recoil.ZPClientCrosshairRecoilManager;
+import ru.gltexture.zpm3.engine.client.rendering.crosshair.ZPClientCrosshairRecoilManager;
 import ru.gltexture.zpm3.engine.client.rendering.gl.programs.meshes.ZPScreenMesh;
 import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooks;
 import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooksManager;
-import ru.gltexture.zpm3.engine.client.rendering.items.guns.ZPDefaultGunRenderers;
+import ru.gltexture.zpm3.assets.guns.rendering.ZPDefaultGunRenderers;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPDefaultShaders;
 import ru.gltexture.zpm3.engine.client.rendering.ui.imgui.ZPDearUIRenderer;
-import ru.gltexture.zpm3.engine.instances.guns.processing.input.ZPClientGunInputProcessing;
+import ru.gltexture.zpm3.assets.guns.processing.input.ZPClientGunInputProcessing;
 
 public final class ZPRenderHelper implements ZPClientCallbacks.ZPClientResourceDependentObject {
     public static ZPRenderHelper INSTANCE = new ZPRenderHelper();
@@ -27,26 +27,14 @@ public final class ZPRenderHelper implements ZPClientCallbacks.ZPClientResourceD
 
     public void init() {
         ZPClientCallbacksManager.INSTANCE.addResourceDependentObjectCallback(this);
-        ZPDefaultGunRenderers.init();
         ZPClientCallbacksManager.INSTANCE.addResourceDependentObjectCallback(ZPRenderHelper.INSTANCE.getDearUIRenderer());
         ZPClientCallbacksManager.INSTANCE.addResourceDependentObjectCallback(ZPRenderHooksManager.INSTANCE);
-        ZPRenderHooksManager.INSTANCE.addItemSceneRenderingHooks((ZPRenderHooks.ZPItemSceneRenderingHooks) ZPDefaultGunRenderers.defaultMuzzleflashFXUniversal);
-
-       // ZPRenderHooksManager.INSTANCE.addItemSceneRenderingHookPost(((pPartialTicks, pPoseStack, pBuffer, pPlayerEntity, pCombinedLight) -> {
-       //     ZPGunLayersProcessing.postRender();
-       // }));
 
         ZPRenderHooksManager.INSTANCE.addSceneRenderingHook(((renderStage, partialTicks, deltaTime, pNanoTime, pRenderLevel) -> {
             if (renderStage == RenderStage.POST) {
                 if (!Minecraft.getInstance().isPaused()) {
                     this.getDearUIRenderer().getInterfacesManager().renderAll(Minecraft.getInstance().getWindow(), deltaTime);
                 }
-            }
-        }));
-
-        ZPRenderHooksManager.INSTANCE.addSceneRenderingHook(((renderStage, partialTicks, deltaTime, pNanoTime, pRenderLevel) -> {
-            if (renderStage == RenderStage.PRE) {
-                ZPClientGunInputProcessing.INSTANCE.process(Minecraft.getInstance());
             }
         }));
 

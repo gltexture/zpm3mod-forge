@@ -18,7 +18,6 @@ import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
 import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacksManager;
 import ru.gltexture.zpm3.engine.client.rendering.gl.programs.textures.TextureSimple2DProgram;
 import ru.gltexture.zpm3.engine.client.rendering.gl.programs.textures.properties.TextureProperties;
-import ru.gltexture.zpm3.engine.client.rendering.items.guns.ZPGunLayersProcessing;
 import ru.gltexture.zpm3.engine.client.rendering.ui.imgui.interfaces.DearUIInterface;
 
 import java.nio.ByteBuffer;

@@ -12,6 +12,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
@@ -22,10 +23,7 @@ import net.minecraftforge.fml.common.Mod;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPShaderReloader;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.events.ZPAbstractEventMod;
-import ru.gltexture.zpm3.engine.helpers.ZPEntityRenderMatchHelper;
-import ru.gltexture.zpm3.engine.helpers.ZPItemTabAddHelper;
-import ru.gltexture.zpm3.engine.helpers.ZPLootTableHelper;
-import ru.gltexture.zpm3.engine.helpers.ZPParticleRenderHelper;
+import ru.gltexture.zpm3.engine.helpers.*;
 import ru.gltexture.zpm3.engine.helpers.gen.providers.*;
 import ru.gltexture.zpm3.engine.helpers.gen.sub_providers.ZPBlocksSubProvider;
 
@@ -46,6 +44,15 @@ public final class ZPClientMod extends ZPAbstractEventMod {
     }
 
     //***************************************
+
+    @SubscribeEvent
+    public static void onRegisterBindings(RegisterKeyMappingsEvent event) {
+        ZPKeyBindingsRegistryHelper.getAllKeyBindings().forEach(e -> {
+            e.init();
+            e.getKeyMappingList().forEach(event::register);
+        });
+        ZPKeyBindingsRegistryHelper.clear();
+    }
 
     @SubscribeEvent
     public static void onRegisterEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {

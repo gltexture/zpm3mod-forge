@@ -9,11 +9,9 @@ import net.minecraftforge.event.TickEvent;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.*;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
-import ru.gltexture.zpm3.engine.instances.guns.ZPBaseGun;
+import ru.gltexture.zpm3.assets.guns.item.ZPBaseGun;
 
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
@@ -33,6 +31,7 @@ public final class ZPClientCallbacksManager implements IZPClientCallbacksManager
     private final List<ZPClientCallbacks.@NotNull ZPDestroyResourcesCallback> onDestroyResourcesCallbacks;
     private final List<ZPClientCallbacks.@NotNull ZPClientTickCallback> onClientTickCallbacks;
     private final List<ZPClientCallbacks.@NotNull ZPGunShotCallback> onGunShotCallbacks;
+    private final List<ZPClientCallbacks.@NotNull ZPGunReloadStartCallback> onGunReloadStartCallbacks;
 
     private GLFWWindowSizeCallback windowCallback;
     private GLFWMouseButtonCallback mouseButtonCallback;
@@ -57,6 +56,7 @@ public final class ZPClientCallbacksManager implements IZPClientCallbacksManager
         this.onKeyReleaseCallbacks = new ArrayList<>();
         this.onCharCallbacks = new ArrayList<>();
         this.onGunShotCallbacks = new ArrayList<>();
+        this.onGunReloadStartCallbacks = new ArrayList<>();
 
         this.onSetupResourcesCallbacks = new ArrayList<>();
         this.onDestroyResourcesCallbacks = new ArrayList<>();
@@ -107,6 +107,7 @@ public final class ZPClientCallbacksManager implements IZPClientCallbacksManager
         this.onDestroyResourcesCallbacks.clear();
         this.onClientTickCallbacks.clear();
         this.onGunShotCallbacks.clear();
+        this.onGunReloadStartCallbacks.clear();
     }
 
     @Override
@@ -195,6 +196,12 @@ public final class ZPClientCallbacksManager implements IZPClientCallbacksManager
         this.onGunShotCallbacks.add(cb);
     }
 
+    @Override
+    public void addGunReloadStartCallback(@NotNull ZPClientCallbacks.ZPGunReloadStartCallback cb) {
+        ZombiePlague3.clientInitValidation();
+        this.onGunReloadStartCallbacks.add(cb);
+    }
+
 
     public void tickClientCallbacks(@NotNull TickEvent.Phase phase) {
         this.onClientTickCallbacks.forEach(e -> e.onTick(phase));
@@ -202,6 +209,10 @@ public final class ZPClientCallbacksManager implements IZPClientCallbacksManager
 
     public void triggerGunShots(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, @NotNull ZPClientCallbacks.ZPGunShotCallback.GunFXData gunFXData) {
         this.onGunShotCallbacks.forEach(e -> e.onShot(player, baseGun, itemStack, gunFXData));
+    }
+
+    public void triggerReloadingStart(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, @NotNull ZPClientCallbacks.ZPGunReloadStartCallback.GunFXData gunFXData) {
+        this.onGunReloadStartCallbacks.forEach(e -> e.onReloadStart(player, baseGun, itemStack, gunFXData));
     }
 
     private GLFWCharCallback setupCharCallback(@NotNull Window window) {

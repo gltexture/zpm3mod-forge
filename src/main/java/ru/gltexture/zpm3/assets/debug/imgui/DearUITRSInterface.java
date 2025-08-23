@@ -2,25 +2,24 @@ package ru.gltexture.zpm3.assets.debug.imgui;
 
 import com.mojang.blaze3d.platform.Window;
 import imgui.ImGui;
+import imgui.flag.ImGuiCol;
 import imgui.flag.ImGuiCond;
 import net.minecraft.client.MouseHandler;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL46;
-import ru.gltexture.zpm3.engine.client.rendering.items.guns.basic.ZPDefaultGunMuzzleflashFX;
+import ru.gltexture.zpm3.assets.guns.rendering.basic.ZPDefaultGunMuzzleflashFX;
 import ru.gltexture.zpm3.engine.client.rendering.ui.imgui.interfaces.DearUIInterface;
 
 public class DearUITRSInterface implements DearUIInterface {
-    public static boolean ENABLE_TRS_DEBUG = false;
-
     public DearUITRSInterface() {
     }
 
-    public static final TRS trs1 = new TRS("TRS_1");
-    public static final TRS trs2 = new TRS("TRS_2");
-    public static final TRS trs3 = new TRS("TRS_3");
-    public static final TRS trs4 = new TRS("TRS_4");
-    public static final TRS trs5 = new TRS("TRS_5");
+    public static final TRS trsGun = new TRS("Matrix Gun");
+    public static final TRS trsArm = new TRS("Matrix Arm");
+    public static final TRS trsMFlash = new TRS("Matrix mflash");
+    public static final TRS trsReloadingGun = new TRS("Matrix Gun Reloading");
+    public static final TRS trsReloadingArm = new TRS("Matrix Arm Reloading");
 
     public static boolean muzzleflashHandling = false;
     public static boolean emmitSmoke = false;
@@ -31,6 +30,7 @@ public class DearUITRSInterface implements DearUIInterface {
 
     public static float muzzleFlashBlurring = ZPDefaultGunMuzzleflashFX.DEFAULT_BLURRING;
     public static float scissor = 0.0f;
+    public static float reloadProgression = 0.0f;
 
     public static class TRS {
         public final String label;
@@ -48,19 +48,20 @@ public class DearUITRSInterface implements DearUIInterface {
         ImGui.setNextWindowSize(400, 600, ImGuiCond.Once);
         ImGui.begin("debug");
 
-        if (ImGui.collapsingHeader("TRS")) {
-            if (ImGui.checkbox("TRS", ENABLE_TRS_DEBUG)) {
-                ENABLE_TRS_DEBUG = !ENABLE_TRS_DEBUG;
-            }
-            this.drawTRS(trs1);
-            this.drawTRS(trs2);
-            this.drawTRS(trs3);
-            this.drawTRS(trs4);
-            this.drawTRS(trs5);
-        }
-
         if (ImGui.collapsingHeader("Gun-Rendering")) {
             ImGui.treePush();
+            if (ImGui.collapsingHeader("Matrices")) {
+                ImGui.treePush();
+                ImGui.pushStyleColor(ImGuiCol.Text, 0xffff00ff);
+                this.drawTRS(trsGun);
+                this.drawTRS(trsArm);
+                this.drawTRS(trsMFlash);
+                this.drawTRS(trsReloadingGun);
+                this.drawTRS(trsReloadingArm);
+                ImGui.popStyleColor();
+                ImGui.treePop();
+            }
+
             if (ImGui.treeNode("Adjust Render")) {
                 if (ImGui.checkbox("manual mflash", DearUITRSInterface.muzzleflashHandling)) {
                     DearUITRSInterface.muzzleflashHandling = !DearUITRSInterface.muzzleflashHandling;
@@ -75,6 +76,10 @@ public class DearUITRSInterface implements DearUIInterface {
                 float[] scissor = new float[] {DearUITRSInterface.scissor};
                 ImGui.sliderFloat("scissor", scissor, 0.0f, 1.0f);
                 DearUITRSInterface.scissor = scissor[0];
+
+                float[] reload = new float[] {DearUITRSInterface.reloadProgression};
+                ImGui.sliderFloat("reload", reload, 0.0f, 1.0f);
+                DearUITRSInterface.reloadProgression = reload[0];
 
                 float[] blur = new float[] {DearUITRSInterface.muzzleFlashBlurring};
                 ImGui.sliderFloat("blurring", blur, 1.0f, 12.0f);

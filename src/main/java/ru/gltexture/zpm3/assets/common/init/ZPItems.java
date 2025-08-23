@@ -6,7 +6,7 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.init.helper.*;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
-import ru.gltexture.zpm3.engine.instances.guns.ZPGunPistol;
+import ru.gltexture.zpm3.assets.guns.item.ZPGunPistol;
 import ru.gltexture.zpm3.engine.instances.items.*;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.registry.collection.IZPCollectRegistryObjects;

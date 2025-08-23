@@ -1,6 +1,7 @@
 package ru.gltexture.zpm3.engine.client.callbacking;
 
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 
 public interface IZPClientCallbacksManager extends ZPClientCallbacks.ZPSetupResourcesCallback, ZPClientCallbacks.ZPDestroyResourcesCallback {
     void addCharCallback(@NotNull ZPClientCallbacks.ZPCharCallback cb);
@@ -30,4 +31,6 @@ public interface IZPClientCallbacksManager extends ZPClientCallbacks.ZPSetupReso
     void addClientTickCallback(@NotNull ZPClientCallbacks.ZPClientTickCallback cb);
 
     void addGunShotCallback(@NotNull ZPClientCallbacks.ZPGunShotCallback cb);
+
+    void addGunReloadStartCallback(@NotNull ZPClientCallbacks.ZPGunReloadStartCallback cb);
 }

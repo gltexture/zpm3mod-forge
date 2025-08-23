@@ -2,7 +2,6 @@ package ru.gltexture.zpm3.engine.client.rendering.ui.imgui;
 
 import com.mojang.blaze3d.platform.Window;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.engine.client.rendering.items.guns.ZPGunLayersProcessing;
 import ru.gltexture.zpm3.engine.client.rendering.ui.imgui.interfaces.DearUIInterface;
 
 import java.util.HashSet;

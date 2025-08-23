@@ -7,7 +7,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.TickEvent;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.engine.instances.guns.ZPBaseGun;
+import ru.gltexture.zpm3.assets.guns.item.ZPBaseGun;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class ZPClientCallbacks {
@@ -75,6 +75,18 @@ public abstract class ZPClientCallbacks {
     public interface ZPGunShotCallback {
         void onShot(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, @NotNull GunFXData gunFXData);
         record GunFXData(boolean isRightHand, float recoilStrength, float muzzleflashTime) {}
+    }
+
+    @FunctionalInterface
+    public interface ZPGunReloadStartCallback {
+        void onReloadStart(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, @NotNull GunFXData gunFXData);
+        record GunFXData(boolean isRightHand) {}
+    }
+
+    @FunctionalInterface
+    public interface ZPGunReloadEndCallback {
+        void onReloadEnd(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, @NotNull GunFXData gunFXData);
+        record GunFXData(boolean isRightHand) {}
     }
 
     public interface ZPClientResourceDependentObject extends ZPSetupResourcesCallback, ZPDestroyResourcesCallback, ZPWindowResizeCallback {

@@ -2,7 +2,6 @@ package ru.gltexture.zpm3.engine.mixins.impl.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
-import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
@@ -12,7 +11,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import ru.gltexture.zpm3.engine.instances.guns.ZPBaseGun;
+import ru.gltexture.zpm3.assets.guns.item.ZPBaseGun;
 
 @Mixin(MultiPlayerGameMode.class)
 @OnlyIn(Dist.CLIENT)

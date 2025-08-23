@@ -18,6 +18,7 @@ public class ZPSounds extends ZPRegistry<SoundEvent> {
     public static RegistryObject<SoundEvent> bandage;
 
     public static RegistryObject<SoundEvent> makarov_fire;
+    public static RegistryObject<SoundEvent> makarov_reload;
 
     public ZPSounds() {
         super(Registries.SOUND_EVENT, ZPRegistryConveyor.Target.SOUNDS);

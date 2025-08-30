@@ -6,9 +6,9 @@ import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.player.ZPPlayerAsset;
 import ru.gltexture.zpm3.engine.core.ZPSide;
-import ru.gltexture.zpm3.engine.events.ZPEvent;
+import ru.gltexture.zpm3.engine.events.ZPSimpleEventClass;
 
-public class ZPPlayerTickEvent implements ZPEvent<TickEvent.PlayerTickEvent> {
+public class ZPPlayerTickEvent implements ZPSimpleEventClass<TickEvent.PlayerTickEvent> {
     public ZPPlayerTickEvent() {
     }
 

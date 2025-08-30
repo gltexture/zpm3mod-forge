@@ -33,6 +33,8 @@ import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPDefaultShaders;
 import ru.gltexture.zpm3.engine.core.asset.ZPAsset;
 import ru.gltexture.zpm3.engine.core.asset.ZPAssetData;
 import ru.gltexture.zpm3.engine.core.init.ZPSystemInit;
+import ru.gltexture.zpm3.engine.events.ZPEventClass;
+import ru.gltexture.zpm3.engine.events.ZPSimpleEventClass;
 import ru.gltexture.zpm3.engine.events.both.ZPBothForge;
 import ru.gltexture.zpm3.engine.events.both.ZPBothMod;
 import ru.gltexture.zpm3.engine.events.client.ZPClientForge;
@@ -41,7 +43,6 @@ import ru.gltexture.zpm3.engine.events.server.ZPServerForge;
 import ru.gltexture.zpm3.engine.events.server.ZPServerMod;
 import ru.gltexture.zpm3.engine.exceptions.ZPIOException;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
-import ru.gltexture.zpm3.engine.events.ZPEvent;
 import ru.gltexture.zpm3.engine.helpers.ZPBlocksRenderLayerHelper;
 import ru.gltexture.zpm3.engine.helpers.ZPDispenseProjectileHelper;
 import ru.gltexture.zpm3.engine.helpers.ZPKeyBindingsRegistryHelper;
@@ -121,8 +122,11 @@ public final class ZombiePlague3 {
         ZPLogger.info(this + " Assets setup");
         this.readAssetsJSON(this.assets);
 
-        final Set<ZPEvent<?>> clientEvents = new HashSet<>();
-        final Set<ZPEvent<?>> serverEvents = new HashSet<>();
+        final Set<ZPSimpleEventClass<?>> simpleClientEvents = new HashSet<>();
+        final Set<ZPSimpleEventClass<?>> simpleServerEvents = new HashSet<>();
+
+        final Set<ZPEventClass> clientEvents = new HashSet<>();
+        final Set<ZPEventClass> serverEvents = new HashSet<>();
 
         for (ZPAsset zpAsset : this.assets) {
             ZPLogger.info("Init asset: " + zpAsset);
@@ -131,10 +135,28 @@ public final class ZombiePlague3 {
             this.getZpNetwork().register(assetEntry.getPacketDataSet());
             this.getZpRegistryConveyor().launch(assetEntry.getRegistrySet());
 
-            for (Class<? extends ZPEvent<? extends Event>> clazz : assetEntry.getEventClasses()) {
+            assetEntry.getSimpleEventClasses().forEach(e -> {
                 try {
-                    Method getDistMethod = clazz.getDeclaredMethod("getSide");
-                    ZPEvent<?> instance = clazz.getDeclaredConstructor().newInstance();
+                    Method getDistMethod = e.getDeclaredMethod("getSide");
+                    ZPSimpleEventClass<?> instance = e.getDeclaredConstructor().newInstance();
+                    ZPSide result = (ZPSide) getDistMethod.invoke(instance);
+                    switch (result) {
+                        case CLIENT -> simpleClientEvents.add(instance);
+                        case SERVER -> simpleServerEvents.add(instance);
+                        case BOTH -> {
+                            simpleClientEvents.add(instance);
+                            simpleServerEvents.add(instance);
+                        }
+                    }
+                } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException ex) {
+                    throw new ZPRuntimeException(ex);
+                }
+            });
+
+            assetEntry.getSimpleEventClasses().forEach(e -> {
+                try {
+                    Method getDistMethod = e.getDeclaredMethod("getSide");
+                    ZPSimpleEventClass<?> instance = e.getDeclaredConstructor().newInstance();
                     ZPSide result = (ZPSide) getDistMethod.invoke(instance);
                     switch (result) {
                         case CLIENT -> clientEvents.add(instance);
@@ -144,21 +166,22 @@ public final class ZombiePlague3 {
                             serverEvents.add(instance);
                         }
                     }
-                } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
-                    throw new ZPRuntimeException(e);
+                } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException ex) {
+                    throw new ZPRuntimeException(ex);
                 }
-            }
+            });
         }
 
         ZPUtility.sides().onlyClient(() -> {
             final ZPClientMod zpClientMod = new ZPClientMod();
             final ZPClientForge zpClientForge = new ZPClientForge();
-            clientEvents.forEach(e -> {
+            simpleClientEvents.forEach(e -> {
                 switch (e.getBus()) {
                     case MOD -> zpClientMod.addNew(e.getEventType(), e);
                     case FORGE -> zpClientForge.addNew(e.getEventType(), e);
                 }
             });
+            clientEvents.forEach(MinecraftForge.EVENT_BUS::register);
             MinecraftForge.EVENT_BUS.register(zpClientMod);
             MinecraftForge.EVENT_BUS.register(zpClientForge);
         });
@@ -166,12 +189,13 @@ public final class ZombiePlague3 {
         ZPUtility.sides().onlyServer(() -> {
             final ZPServerMod zpServerMod = new ZPServerMod();
             final ZPServerForge zpServerForge = new ZPServerForge();
-            serverEvents.forEach(e -> {
+            simpleServerEvents.forEach(e -> {
                 switch (e.getBus()) {
                     case MOD -> zpServerMod.addNew(e.getEventType(), e);
                     case FORGE -> zpServerForge.addNew(e.getEventType(), e);
                 }
             });
+            serverEvents.forEach(MinecraftForge.EVENT_BUS::register);
             MinecraftForge.EVENT_BUS.register(zpServerMod);
             MinecraftForge.EVENT_BUS.register(zpServerForge);
         });
@@ -349,7 +373,7 @@ public final class ZombiePlague3 {
 
     public interface IAssetEntry {
         void addRegistryClass(Class<? extends ZPRegistry<?>> zpRegistryProcessorClass);
-        void addEventClass(Class<? extends ZPEvent<? extends Event>> clazz);
+        void addEventClass(Class<? extends ZPEventClass> clazz);
         void addNetworkPacket(ZPNetwork.PacketData<?> packetData);
 
         default void registerTier(@NotNull ZPTierData tier) {
@@ -359,11 +383,13 @@ public final class ZombiePlague3 {
 
     public static class AssetEntry implements IAssetEntry {
         private final Set<Class<? extends ZPRegistry<?>>> registrySet;
-        private final Set<Class<? extends ZPEvent<? extends Event>>> eventClasses;
+        private final Set<Class<? extends ZPSimpleEventClass<? extends Event>>> simpleEventClasses;
+        private final Set<Class<? extends ZPEventClass>> eventClasses;
         private final Set<ZPNetwork.PacketData<?>> packetDataSet;
 
         public AssetEntry() {
             this.registrySet = new HashSet<>();
+            this.simpleEventClasses = new HashSet<>();
             this.eventClasses = new HashSet<>();
             this.packetDataSet = new HashSet<>();
         }
@@ -373,8 +399,13 @@ public final class ZombiePlague3 {
             this.getRegistrySet().add(zpRegistryClass);
         }
 
+        @SuppressWarnings("unchecked")
         @Override
-        public final void addEventClass(@NotNull Class<? extends ZPEvent<? extends Event>> clazz) {
+        public final void addEventClass(@NotNull Class<? extends ZPEventClass> clazz) {
+            if (ZPSimpleEventClass.class.isAssignableFrom(clazz)) {
+                this.getSimpleEventClasses().add((Class<? extends ZPSimpleEventClass<? extends Event>>) clazz);
+                return;
+            }
             this.getEventClasses().add(clazz);
         }
 
@@ -391,7 +422,11 @@ public final class ZombiePlague3 {
             return this.registrySet;
         }
 
-        public Set<Class<? extends ZPEvent<? extends Event>>> getEventClasses() {
+        public Set<Class<? extends ZPSimpleEventClass<? extends Event>>> getSimpleEventClasses() {
+            return this.simpleEventClasses;
+        }
+
+        public Set<Class<? extends ZPEventClass>> getEventClasses() {
             return this.eventClasses;
         }
     }
@@ -401,9 +436,9 @@ public final class ZombiePlague3 {
 /*
                 Reflections reflections = new Reflections(pack.getName());
                 @SuppressWarnings("rawtypes")
-                Set<Class<? extends ZPEvent>> classes = reflections.getSubTypesOf(ZPEvent.class);
+                Set<Class<? extends ZPSimpleEventClass>> classes = reflections.getSubTypesOf(ZPSimpleEventClass.class);
 
-                for (@SuppressWarnings("rawtypes") Class<? extends ZPEvent> clazz : classes) {
+                for (@SuppressWarnings("rawtypes") Class<? extends ZPSimpleEventClass> clazz : classes) {
                     try {
                         Method getDistMethod = clazz.getDeclaredMethod("getDist");
                         Object instance = clazz.getDeclaredConstructor().newInstance();

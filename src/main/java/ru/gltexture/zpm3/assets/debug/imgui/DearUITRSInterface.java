@@ -15,6 +15,9 @@ public class DearUITRSInterface implements DearUIInterface {
     public DearUITRSInterface() {
     }
 
+    public static final TRS trsGun3d = new TRS("Matrix Gun 3d Person");
+    public static final TRS trsMflash3d = new TRS("Matrix Mflash 3d Person");
+
     public static final TRS trsGun = new TRS("Matrix Gun");
     public static final TRS trsArm = new TRS("Matrix Arm");
     public static final TRS trsMFlash = new TRS("Matrix mflash");
@@ -52,6 +55,14 @@ public class DearUITRSInterface implements DearUIInterface {
             ImGui.treePush();
             if (ImGui.collapsingHeader("Matrices")) {
                 ImGui.treePush();
+                if (ImGui.collapsingHeader("3d Person")) {
+                    ImGui.treePush();
+                    ImGui.pushStyleColor(ImGuiCol.Text, 0xffffaaaa);
+                    this.drawTRS(trsGun3d);
+                    this.drawTRS(trsMflash3d);
+                    ImGui.popStyleColor();
+                    ImGui.treePop();
+                }
                 ImGui.pushStyleColor(ImGuiCol.Text, 0xffff00ff);
                 this.drawTRS(trsGun);
                 this.drawTRS(trsArm);
@@ -94,13 +105,19 @@ public class DearUITRSInterface implements DearUIInterface {
                 DearUITRSInterface.muzzleflashFboPingPongOperations = operations[0];
                 ImGui.treePop();
             }
-            if (ImGui.treeNode("FBO")) {
+            if (ImGui.treeNode("FBO 1tp")) {
                 GL46.glScissor(0, 0, 1, 1);
                 ImGui.image(ZPDefaultGunMuzzleflashFX.muzzleflashFBO.getTextureByIndex(0).getTextureId(), 300, 200, 0.0f, 1.0f, 1.0f, 0.0f);
                 ImGui.image(ZPDefaultGunMuzzleflashFX.muzzleflashFBO.getTextureByIndex(1).getTextureId(), 300, 200, 0.0f, 1.0f, 1.0f, 0.0f);
                 ImGui.image(ZPDefaultGunMuzzleflashFX.muzzleflashFBO.getTextureByIndex(2).getTextureId(), 300, 200, 0.0f, 1.0f, 1.0f, 0.0f);
                 ImGui.separator();
                 ImGui.image(ZPDefaultGunMuzzleflashFX.muzzleflashBlurFBO.getTextureByIndex(0).getTextureId(), 300, 200, 0.0f, 1.0f, 1.0f, 0.0f);
+                ImGui.treePop();
+            }
+            if (ImGui.treeNode("FBO 3dp")) {
+                GL46.glScissor(0, 0, 1, 1);
+                ImGui.image(ZPDefaultGunMuzzleflashFX.muzzleflash3dpFBO.getTextureByIndex(0).getTextureId(), 300, 200, 0.0f, 1.0f, 1.0f, 0.0f);
+                ImGui.image(ZPDefaultGunMuzzleflashFX.muzzleflash3dpFBO.getTextureByIndex(1).getTextureId(), 300, 200, 0.0f, 1.0f, 1.0f, 0.0f);
                 ImGui.treePop();
             }
             ImGui.treePop();

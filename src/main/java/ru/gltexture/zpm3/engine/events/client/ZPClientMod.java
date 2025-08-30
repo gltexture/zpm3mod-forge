@@ -1,6 +1,5 @@
 package ru.gltexture.zpm3.engine.events.client;
 
-import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.data.DataGenerator;
@@ -22,7 +21,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPShaderReloader;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.events.ZPAbstractEventMod;
+import ru.gltexture.zpm3.engine.events.mod.ZPAbstractEventMod;
 import ru.gltexture.zpm3.engine.helpers.*;
 import ru.gltexture.zpm3.engine.helpers.gen.providers.*;
 import ru.gltexture.zpm3.engine.helpers.gen.sub_providers.ZPBlocksSubProvider;

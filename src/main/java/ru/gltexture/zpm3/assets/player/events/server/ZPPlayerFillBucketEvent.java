@@ -3,7 +3,6 @@ package ru.gltexture.zpm3.assets.player.events.server;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -13,7 +12,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -22,10 +20,10 @@ import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
-import ru.gltexture.zpm3.engine.events.ZPEvent;
+import ru.gltexture.zpm3.engine.events.ZPSimpleEventClass;
 import ru.gltexture.zpm3.engine.instances.blocks.IHotLiquid;
 
-public class ZPPlayerFillBucketEvent implements ZPEvent<FillBucketEvent> {
+public class ZPPlayerFillBucketEvent implements ZPSimpleEventClass<FillBucketEvent> {
     @Override
     public void exec(@NotNull FillBucketEvent event) {
         if (event.getEmptyBucket().getItem().equals(Items.BUCKET)) {

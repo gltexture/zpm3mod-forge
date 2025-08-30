@@ -42,7 +42,7 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
         final Quaternionf camRot = camera.rotation();
 
         Vector4f muzzle = new Vector4f(0, 0, 0, 1);
-        ZPGunFXGlobalData.getGunData(isRightHand).getMflashTransformationTarget().transform(muzzle);
+        ZPGunFXGlobalData.getGunData(isRightHand).getMflash1spTransformationTarget().transform(muzzle);
         ZPGunFXGlobalData.getGunData(isRightHand).getCurrentGunItemMatrix().transform(muzzle);
         muzzle.mul(-1.0f, 1.0f, -1.0f, 1.0f);
         muzzle.add(0.0f, 0.05f, 0.0f, 0.0f);
@@ -76,7 +76,7 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
         Matrix4f trans = new Matrix4f().identity().translate(0.0f, 0.0f, -distanceToGun);
 
         Vector4f muzzle = new Vector4f(0, 0, 0, 1);
-        ZPGunFXGlobalData.getGunData(isRightHand).getMflashTransformationTarget().transform(muzzle);
+        ZPGunFXGlobalData.getGunData(isRightHand).getMflash1spTransformationTarget().transform(muzzle);
         ZPGunFXGlobalData.getGunData(isRightHand).getCurrentGunItemMatrix().transform(muzzle);
 
         muzzle.mul(-1.0f, 1.0f, -1.0f, 1.0f);

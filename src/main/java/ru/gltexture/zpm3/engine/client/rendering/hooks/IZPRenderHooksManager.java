@@ -8,8 +8,15 @@ import java.util.function.Supplier;
 
 public interface IZPRenderHooksManager extends ZPClientCallbacks.ZPClientResourceDependentObject {
     void addSceneRenderingHook(@NotNull ZPRenderHooks.ZPSceneRenderingHook zpSceneRenderingHook);
-    void addItemRenderingHook(@NotNull Supplier<Item> itemSupplier, @NotNull ZPRenderHooks.ZPItemRenderingHook zpItemRenderingHook);
-    void addItemSceneRenderingHookPre(@NotNull ZPRenderHooks.ZPItemSceneRenderingHookPre zpItemSceneRenderingHookPre);
-    void addItemSceneRenderingHookPost(@NotNull ZPRenderHooks.ZPItemSceneRenderingHookPost zpItemSceneRenderingHookPost);
-    void addItemSceneRenderingHooks(@NotNull ZPRenderHooks.ZPItemSceneRenderingHooks zpItemSceneRenderingHooks);
+
+    void addItemRendering1PersonHook(@NotNull Supplier<Item> itemSupplier, @NotNull ZPRenderHooks.ZPItemRendering1PersonHook zpItemRendering1PersonHook);
+    void addItemRendering3PersonHook(@NotNull Supplier<Item> itemSupplier, @NotNull ZPRenderHooks.ZPItemRendering3PersonHook zpItemRendering3PersonHook);
+
+    void addItemSceneRendering1PersonHookPre(@NotNull ZPRenderHooks.ZPItemSceneRendering1PersonHookPre zpItemSceneRendering1PersonHookPre);
+    void addItemSceneRendering1PersonHookPost(@NotNull ZPRenderHooks.ZPItemSceneRendering1PersonHookPost zpItemSceneRendering1PersonHookPost);
+    void addItemSceneRendering1PersonHooks(@NotNull ZPRenderHooks.ZPItemSceneRendering1PersonHooks zpItemSceneRendering1PersonHooks);
+
+    void addItemSceneRendering3PersonHookPre(@NotNull ZPRenderHooks.ZPItemSceneRendering3PersonHookPre zpItemSceneRendering3PersonHookPre);
+    void addItemSceneRendering3PersonHookPost(@NotNull ZPRenderHooks.ZPItemSceneRendering3PersonHookPost zpItemSceneRendering3PersonHookPost);
+    void addItemSceneRendering3PersonHooks(@NotNull ZPRenderHooks.ZPItemSceneRendering3PersonHooks zpItemSceneRendering3PersonHooks);
 }

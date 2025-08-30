@@ -3,8 +3,11 @@ package ru.gltexture.zpm3.assets.guns.rendering;
 import com.mojang.blaze3d.shaders.Uniform;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.GameType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import org.joml.Vector2i;
 import org.joml.Vector3f;
@@ -24,13 +27,13 @@ import java.util.Objects;
 public abstract class ZPGunLayersProcessing {
 
     @SuppressWarnings("unchecked")
-    public static void postRender(ZPDefaultGunMuzzleflashFX defaultGunMuzzleflashFX) {
-        if (ZPDefaultGunMuzzleflashFX.muzzleflashFBO.getTexturePrograms().size() <= 0) {
+    public static void postRenderMflash1Person(ZPDefaultGunMuzzleflashFX defaultGunMuzzleflashFX) {
+        if (!defaultGunMuzzleflashFX.useFbo() || ZPDefaultGunMuzzleflashFX.muzzleflashFBO.getTexturePrograms().isEmpty()) {
             return;
         }
-        final Minecraft mc = Minecraft.getInstance();
-        final int w = mc.getWindow().getWidth();
-        final int h = mc.getWindow().getHeight();
+
+        final int w = ClientRenderFunctions.getWindowSize().x;
+        final int h = ClientRenderFunctions.getWindowSize().y;
         final Matrix4f orthographic2D = new Matrix4f().setOrtho2D(0, w, h, 0);
         final Matrix4f fullMatrix = new Matrix4f().identity().translate(new Vector3f(0, h, 0f)).scale(w, -h, 1.0F);
         final Matrix4f halfMatrix = (new Matrix4f().identity().translate(new Vector3f(0, h, 0f)).scaleXY(w * ZPDefaultGunMuzzleflashFX.MFLASH_FBO_SCALE, -h * ZPDefaultGunMuzzleflashFX.MFLASH_FBO_SCALE));
@@ -101,8 +104,8 @@ public abstract class ZPGunLayersProcessing {
             Vector3f pos1NDC = new Vector3f();
             Vector3f pos2NDC = new Vector3f();
 
-            defaultGunMuzzleflashFX.getMuzzleflashFinalTransformation()[0].getTranslation(pos1NDC);
-            defaultGunMuzzleflashFX.getMuzzleflashFinalTransformation()[1].getTranslation(pos2NDC);
+            defaultGunMuzzleflashFX.getMuzzleflashFinal1PersonTransformation()[0].getTranslation(pos1NDC);
+            defaultGunMuzzleflashFX.getMuzzleflashFinal1PersonTransformation()[1].getTranslation(pos2NDC);
 
             Vector4f pos1ScreenSpace = new Vector4f(pos1NDC, 1.0f).mul(RenderSystem.getProjectionMatrix());
             Vector4f pos2ScreenSpace = new Vector4f(pos2NDC, 1.0f).mul(RenderSystem.getProjectionMatrix());
@@ -118,15 +121,42 @@ public abstract class ZPGunLayersProcessing {
             }
 
             if (mflash_scissorRight != null) {
-                mflash_scissorRight.set(defaultGunMuzzleflashFX.getMuzzleflashScissor()[1]);
+                mflash_scissorRight.set(defaultGunMuzzleflashFX.getMuzzleflashScissor1Person()[1]);
             }
             if (mflash_scissorLeft != null) {
-                mflash_scissorLeft.set(defaultGunMuzzleflashFX.getMuzzleflashScissor()[0]);
+                mflash_scissorLeft.set(defaultGunMuzzleflashFX.getMuzzleflashScissor1Person()[0]);
             }
 
             Objects.requireNonNull(proj).set(orthographic2D);
             Objects.requireNonNull(mod).set(fullMatrix);
         }, List.of(Pair.of("mflash_map", ZPDefaultGunMuzzleflashFX.muzzleflashFBO.getTextureByIndex(1)), Pair.of("texture_map", ZPDefaultGunMuzzleflashFX.muzzleflashFBO.getTextureByIndex(0)), Pair.of("mfash_bloom_map", ZPDefaultGunMuzzleflashFX.muzzleflashBlurFBO.getTextureByIndex(0))));
         GL46.glBlendFuncSeparate(GL46.GL_SRC_ALPHA, GL46.GL_ONE_MINUS_SRC_ALPHA, GL46.GL_ONE, GL46.GL_ONE_MINUS_SRC_ALPHA);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static void postRenderMflash3Person(ZPDefaultGunMuzzleflashFX defaultGunMuzzleflashFX) {
+        if (ZPDefaultGunMuzzleflashFX.muzzleflash3dpFBO.getTexturePrograms().isEmpty() || ZPDefaultShaders.image.getShaderInstance() == null) {
+            return;
+        }
+        final Vector2i size = ClientRenderFunctions.getWindowSize();
+        final Matrix4f orthographic2D = new Matrix4f().setOrtho2D(0, size.x, size.y, 0);
+        final Matrix4f fullMatrix = new Matrix4f().identity().translate(new Vector3f(0, size.y, 0f)).scale(size.x, -size.y, 1.0F);
+
+        Minecraft.getInstance().getMainRenderTarget().bindWrite(true);
+        ClientRenderFunctions.renderTextureIDScreenOverlayFromFBO(Objects.requireNonNull(ZPDefaultShaders.image.getShaderInstance()), (shaderToRender) -> {
+            Uniform mod = shaderToRender.getUniform("sModelViewMat");
+            Uniform proj = shaderToRender.getUniform("sProjMat");
+            Objects.requireNonNull(proj).set(orthographic2D);
+            Objects.requireNonNull(mod).set(fullMatrix);
+        }, List.of(Pair.of("texture_map", ZPDefaultGunMuzzleflashFX.muzzleflash3dpFBO.getTextureByIndex(0))));
+    }
+
+    public static void postRender(ZPDefaultGunMuzzleflashFX defaultMuzzleflashFXUniversal) {
+        @NotNull Minecraft minecraft = Minecraft.getInstance();
+        boolean flag = minecraft.getCameraEntity() instanceof LivingEntity && ((LivingEntity)minecraft.getCameraEntity()).isSleeping();
+        if (minecraft.options.getCameraType().isFirstPerson() && !flag && !minecraft.options.hideGui && Objects.requireNonNull(minecraft.gameMode).getPlayerMode() != GameType.SPECTATOR) {
+            ZPGunLayersProcessing.postRenderMflash1Person(defaultMuzzleflashFXUniversal);
+        }
+        ZPGunLayersProcessing.postRenderMflash3Person(defaultMuzzleflashFXUniversal);
     }
 }

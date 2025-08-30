@@ -12,6 +12,7 @@
     "client.ZPGameRendererMixin",
     "client.ZPItemHookMixin",
     "client.ZPItemMixin",
+    "client.ZPItemRenderLayerMixin",
     "client.ZPLevelRenderMixin",
     "client.ZPLocalPlayerMixin",
     "client.ZPMinecraftMixin",

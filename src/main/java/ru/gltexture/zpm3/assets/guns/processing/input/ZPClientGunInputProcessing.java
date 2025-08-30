@@ -210,6 +210,7 @@ public class ZPClientGunInputProcessing implements IZPGunInputProcessor {
                             ZPBaseGun baseGun = (ZPBaseGun) itemStackInRightHand.getItem();
                             baseGun.getClientGunLogic().tryToShoot(level, player, baseGun, itemStackInRightHand, true);
                             ZPClientGunInputProcessing.dualShootTickCounter = Math.max(ZPClientGunInputProcessing.dualShootTickCounter, 1);
+                            ZPClientGunInputProcessing.lastShotLeft = false;
                         }
                     }
                 }
@@ -219,6 +220,7 @@ public class ZPClientGunInputProcessing implements IZPGunInputProcessor {
                             ZPBaseGun baseGun = (ZPBaseGun) itemStackInLeftHand.getItem();
                             baseGun.getClientGunLogic().tryToShoot(level, player, baseGun, itemStackInLeftHand, false);
                             ZPClientGunInputProcessing.dualShootTickCounter = Math.max(ZPClientGunInputProcessing.dualShootTickCounter, 1);
+                            ZPClientGunInputProcessing.lastShotLeft = true;
                         }
                     }
                 }

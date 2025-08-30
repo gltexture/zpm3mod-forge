@@ -4,7 +4,6 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
@@ -250,8 +249,17 @@ public abstract class ZPRegistry<T> {
             private Items() {
             }
 
-            public void setItemRenderer(@NotNull RegistryObject<? extends Item> item, @NotNull ZPRenderHooks.ZPItemRenderingHook itemRenderingProcessor) {
-                ZPRenderHooksManager.INSTANCE.addItemRenderingHook(item::get, itemRenderingProcessor);
+            public void setItemRenderer(@NotNull RegistryObject<? extends Item> item, @NotNull ZPRenderHooks.ZPItemRendering1PersonHook itemRenderingProcessor1, @NotNull ZPRenderHooks.ZPItemRendering3PersonHook itemRenderingProcessor3) {
+                ZPRenderHooksManager.INSTANCE.addItemRendering1PersonHook(item::get, itemRenderingProcessor1);
+                ZPRenderHooksManager.INSTANCE.addItemRendering3PersonHook(item::get, itemRenderingProcessor3);
+            }
+
+            public void setItemRenderer1Person(@NotNull RegistryObject<? extends Item> item, @NotNull ZPRenderHooks.ZPItemRendering1PersonHook itemRenderingProcessor) {
+                ZPRenderHooksManager.INSTANCE.addItemRendering1PersonHook(item::get, itemRenderingProcessor);
+            }
+
+            public void setItemRenderer3Person(@NotNull RegistryObject<? extends Item> item, @NotNull ZPRenderHooks.ZPItemRendering3PersonHook itemRenderingProcessor) {
+                ZPRenderHooksManager.INSTANCE.addItemRendering3PersonHook(item::get, itemRenderingProcessor);
             }
 
             public void addItemModel(@NotNull RegistryObject<? extends Item> item, @NotNull Supplier<ZPGenTextureData> itemTextureData) {

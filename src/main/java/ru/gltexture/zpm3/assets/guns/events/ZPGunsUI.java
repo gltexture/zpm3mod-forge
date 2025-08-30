@@ -1,7 +1,5 @@
 package ru.gltexture.zpm3.assets.guns.events;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
@@ -10,14 +8,13 @@ import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2i;
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL46;
 import ru.gltexture.zpm3.assets.guns.processing.input.ZPClientGunInputProcessing;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.events.ZPEvent;
+import ru.gltexture.zpm3.engine.events.ZPSimpleEventClass;
 
-public class ZPGunsUI implements ZPEvent<RenderGuiOverlayEvent.Post> {
+public class ZPGunsUI implements ZPSimpleEventClass<RenderGuiOverlayEvent.Post> {
     private static final ResourceLocation mouse_left = ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "textures/ui/mouse_left.png");
     private static final ResourceLocation mouse_right = ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "textures/ui/mouse_right.png");
     private static final ResourceLocation pistol_ind = ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "textures/ui/pistol_ind.png");

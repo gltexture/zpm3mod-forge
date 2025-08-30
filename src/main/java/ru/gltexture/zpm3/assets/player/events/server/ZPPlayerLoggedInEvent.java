@@ -4,9 +4,9 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPSide;
-import ru.gltexture.zpm3.engine.events.ZPEvent;
+import ru.gltexture.zpm3.engine.events.ZPSimpleEventClass;
 
-public class ZPPlayerLoggedInEvent implements ZPEvent<PlayerEvent.PlayerLoggedInEvent> {
+public class ZPPlayerLoggedInEvent implements ZPSimpleEventClass<PlayerEvent.PlayerLoggedInEvent> {
     @Override
     public void exec(PlayerEvent.@NotNull PlayerLoggedInEvent event) {
     }

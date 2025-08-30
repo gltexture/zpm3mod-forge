@@ -4,6 +4,7 @@ import com.mojang.blaze3d.shaders.Uniform;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ShaderInstance;
@@ -15,6 +16,7 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector2i;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL46;
 import ru.gltexture.zpm3.assets.common.utils.ZPCommonClientUtils;
@@ -97,7 +99,15 @@ public abstract class ClientRenderFunctions {
             texUnit++;
         }
 
+        GL46.glEnable(GL46.GL_DEPTH_TEST);
         GL46.glActiveTexture(GL46.GL_TEXTURE0);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
+    }
+
+    public static Vector2i getWindowSize() {
+        final Minecraft mc = Minecraft.getInstance();
+        final int w = mc.getWindow().getWidth();
+        final int h = mc.getWindow().getHeight();
+        return new Vector2i(w, h);
     }
 }

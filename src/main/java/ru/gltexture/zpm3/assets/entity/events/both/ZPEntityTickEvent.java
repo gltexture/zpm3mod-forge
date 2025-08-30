@@ -7,9 +7,9 @@ import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.entity.ZPEntityAsset;
 import ru.gltexture.zpm3.engine.core.ZPSide;
-import ru.gltexture.zpm3.engine.events.ZPEvent;
+import ru.gltexture.zpm3.engine.events.ZPSimpleEventClass;
 
-public class ZPEntityTickEvent implements ZPEvent<LivingEvent.LivingTickEvent> {
+public class ZPEntityTickEvent implements ZPSimpleEventClass<LivingEvent.LivingTickEvent> {
     public ZPEntityTickEvent() {
     }
 

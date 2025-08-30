@@ -12,7 +12,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
-import ru.gltexture.zpm3.engine.events.ZPAbstractEventMod;
+import ru.gltexture.zpm3.engine.events.mod.ZPAbstractEventMod;
 import ru.gltexture.zpm3.engine.helpers.ZPLootTableHelper;
 
 import java.util.Set;

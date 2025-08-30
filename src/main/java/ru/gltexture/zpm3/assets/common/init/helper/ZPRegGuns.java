@@ -24,7 +24,7 @@ public abstract class ZPRegGuns {
         ).postConsume(Dist.CLIENT, (e, utils) -> {
             utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
             utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
-            utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultPistolRenderer);
+            utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultPistolRenderer, ZPDefaultGunRenderers.defaultPistolRenderer);
         }).registryObject();
     }
 }

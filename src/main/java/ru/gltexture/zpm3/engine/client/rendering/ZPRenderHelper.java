@@ -5,6 +5,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.event.TickEvent;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL46;
+import ru.gltexture.zpm3.assets.guns.rendering.ZPGunLayersProcessing;
+import ru.gltexture.zpm3.assets.guns.rendering.basic.ZPDefaultGunMuzzleflashFX;
 import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
 import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacksManager;
 import ru.gltexture.zpm3.engine.client.rendering.crosshair.ZPClientCrosshairRecoilManager;

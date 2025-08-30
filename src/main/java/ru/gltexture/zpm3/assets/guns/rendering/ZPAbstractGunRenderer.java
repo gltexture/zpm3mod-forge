@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooks;
 
-public abstract class ZPAbstractGunRenderer implements ZPRenderHooks.ZPItemRenderingHook{
+public abstract class ZPAbstractGunRenderer implements ZPRenderHooks.ZPItemRendering1PersonHook, ZPRenderHooks.ZPItemRendering3PersonHook {
     protected ZPAbstractGunRenderer() {
     }
 

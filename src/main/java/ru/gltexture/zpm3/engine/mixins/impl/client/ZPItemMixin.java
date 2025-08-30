@@ -34,10 +34,10 @@ public class ZPItemMixin {
     @Inject(method = "renderArmWithItem", at = @At("HEAD"), cancellable = true)
     private void renderArmWithItem(AbstractClientPlayer pPlayer, float pPartialTicks, float pPitch, InteractionHand pHand, float pSwingProgress, ItemStack pStack, float pEquippedProgress, PoseStack pPoseStack, MultiBufferSource pBuffer, int pCombinedLight, CallbackInfo ci) {
         Item itemToRender = pStack.getItem();
-        ZPRenderHooks.ZPItemRenderingHook itemRenderingHook = ZPRenderHooksManager.INSTANCE.getItemRenderingHooks().get(itemToRender);
+        ZPRenderHooks.ZPItemRendering1PersonHook itemRenderingHook = ZPRenderHooksManager.INSTANCE.getItemRendering1PersonHooks().get(itemToRender);
 
         if (itemRenderingHook != null) {
-            itemRenderingHook.onRender(pPlayer, (float) ZPItemMixin.deltaTime, pPartialTicks, pPitch, pHand, pSwingProgress, pStack, pEquippedProgress, pPoseStack, pBuffer, pCombinedLight);
+            itemRenderingHook.onRenderItem1Person(pPlayer, (float) ZPItemMixin.deltaTime, pPartialTicks, pPitch, pHand, pSwingProgress, pStack, pEquippedProgress, pPoseStack, pBuffer, pCombinedLight);
             ci.cancel();
         }
     }
@@ -47,11 +47,11 @@ public class ZPItemMixin {
         double currentTime = GLFW.glfwGetTime();
         ZPItemMixin.deltaTime = currentTime - lastFrameTime;
         ZPItemMixin.lastFrameTime = currentTime;
-        ZPRenderHooksManager.INSTANCE.getItemSceneRenderingHooksPre().forEach(e -> e.onPreRender((float) ZPItemMixin.deltaTime, pPartialTicks, pPoseStack, pBuffer, pPlayerEntity, pCombinedLight));
+        ZPRenderHooksManager.INSTANCE.getItemSceneRendering1PersonHooksPre().forEach(e -> e.onPreRender1Person((float) ZPItemMixin.deltaTime, pPartialTicks, pPoseStack, pBuffer, pPlayerEntity, pCombinedLight));
     }
 
     @Inject(method = "renderHandsWithItems", at = @At("TAIL"))
     private void renderHandsWithItems2(float pPartialTicks, PoseStack pPoseStack, MultiBufferSource.BufferSource pBuffer, LocalPlayer pPlayerEntity, int pCombinedLight, CallbackInfo ci) {
-        ZPRenderHooksManager.INSTANCE.getItemSceneRenderingHooksPost().forEach(e -> e.onPostRender((float) ZPItemMixin.deltaTime, pPartialTicks, pPoseStack, pBuffer, pPlayerEntity, pCombinedLight));
+        ZPRenderHooksManager.INSTANCE.getItemSceneRendering1PersonHooksPost().forEach(e -> e.onPostRender1Person((float) ZPItemMixin.deltaTime, pPartialTicks, pPoseStack, pBuffer, pPlayerEntity, pCombinedLight));
     }
 }

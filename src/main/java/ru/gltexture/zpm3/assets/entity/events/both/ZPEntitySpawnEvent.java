@@ -6,10 +6,10 @@ import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPSide;
-import ru.gltexture.zpm3.engine.events.ZPEvent;
+import ru.gltexture.zpm3.engine.events.ZPSimpleEventClass;
 import ru.gltexture.zpm3.engine.nbt.entity.ZPEntityNBT;
 
-public class ZPEntitySpawnEvent implements ZPEvent<EntityJoinLevelEvent> {
+public class ZPEntitySpawnEvent implements ZPSimpleEventClass<EntityJoinLevelEvent> {
     @Override
     public void exec(@NotNull EntityJoinLevelEvent event) {
         ZPEntitySpawnEvent.registerNBT(event.getEntity());

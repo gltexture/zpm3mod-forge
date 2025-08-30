@@ -27,14 +27,16 @@ public abstract class ZPGunFXGlobalData {
         private @NotNull Matrix4f currentArmMatrix;
         private @NotNull Matrix4f gunReloadingTransformationTarget;
         private @NotNull Matrix4f armReloadingTransformationTarget;
-        private @NotNull Matrix4f mflashTransformationTarget;
+        private @NotNull Matrix4f mflash1spTransformationTarget;
+        private @NotNull Matrix4f mflash3dpTransformationTarget;
 
         public ClientGunRenderGlobalData() {
             this.currentGunItemMatrix = new Matrix4f().identity();
             this.currentArmMatrix = new Matrix4f().identity();
             this.gunReloadingTransformationTarget = new Matrix4f().identity();
             this.armReloadingTransformationTarget = new Matrix4f().identity();
-            this.mflashTransformationTarget = new Matrix4f().identity();
+            this.mflash1spTransformationTarget = new Matrix4f().identity();
+            this.mflash3dpTransformationTarget = new Matrix4f().identity();
         }
 
         public @NotNull Matrix4f getCurrentGunItemMatrix() {
@@ -73,12 +75,21 @@ public abstract class ZPGunFXGlobalData {
             return this;
         }
 
-        public @NotNull Matrix4f getMflashTransformationTarget() {
-            return new Matrix4f(this.mflashTransformationTarget);
+        public @NotNull Matrix4f getMflash1spTransformationTarget() {
+            return new Matrix4f(this.mflash1spTransformationTarget);
         }
 
-        public ClientGunRenderGlobalData setMflashTransformationTarget(@NotNull Matrix4f mflashTransformationTarget) {
-            this.mflashTransformationTarget = mflashTransformationTarget;
+        public ClientGunRenderGlobalData setMflash1spTransformationTarget(@NotNull Matrix4f mflash1spTransformationTarget) {
+            this.mflash1spTransformationTarget = mflash1spTransformationTarget;
+            return this;
+        }
+
+        public @NotNull Matrix4f getMflash3dpTransformationTarget() {
+            return this.mflash3dpTransformationTarget;
+        }
+
+        public ClientGunRenderGlobalData setMflash3dpTransformationTarget(@NotNull Matrix4f mflash3dpTransformationTarget) {
+            this.mflash3dpTransformationTarget = mflash3dpTransformationTarget;
             return this;
         }
     }

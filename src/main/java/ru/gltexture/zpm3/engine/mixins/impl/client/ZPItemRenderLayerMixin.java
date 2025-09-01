@@ -39,7 +39,7 @@ public abstract class ZPItemRenderLayerMixin<T extends LivingEntity, M extends E
         super(pRenderer);
     }
 
-    @Inject(method = "render*", at = @At("HEAD"))
+    @Inject(method = "render", at = @At("HEAD"))
     public void render1(PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, T pLivingEntity, float pLimbSwing, float pLimbSwingAmount, float pPartialTicks, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch, CallbackInfo ci) {
         double currentTime = GLFW.glfwGetTime();
         ZPItemRenderLayerMixin.deltaTime = currentTime - lastFrameTime;
@@ -47,14 +47,13 @@ public abstract class ZPItemRenderLayerMixin<T extends LivingEntity, M extends E
         ZPRenderHooksManager.INSTANCE.getItemSceneRendering3PersonHooksPre().forEach(e -> e.onPreRender3Person((float) ZPItemRenderLayerMixin.deltaTime, pPoseStack, pBuffer, pPackedLight, pLivingEntity, pLimbSwing, pLimbSwingAmount, pPartialTicks, pAgeInTicks, pNetHeadYaw, pHeadPitch));
     }
 
-    @Inject(method = "render*", at = @At("TAIL"))
+    @Inject(method = "render", at = @At("TAIL"))
     public void render2(PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, T pLivingEntity, float pLimbSwing, float pLimbSwingAmount, float pPartialTicks, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch, CallbackInfo ci) {
         ZPRenderHooksManager.INSTANCE.getItemSceneRendering3PersonHooksPost().forEach(e -> e.onPostRender3Person((float) ZPItemRenderLayerMixin.deltaTime, pPoseStack, pBuffer, pPackedLight, pLivingEntity, pLimbSwing, pLimbSwingAmount, pPartialTicks, pAgeInTicks, pNetHeadYaw, pHeadPitch));
     }
 
     @Inject(method = "renderArmWithItem", at = @At("HEAD"), cancellable = true)
     public void renderArmWithItem(LivingEntity pLivingEntity, ItemStack pItemStack, ItemDisplayContext pDisplayContext, HumanoidArm pArm, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, CallbackInfo ci) {
-
         if (!pItemStack.isEmpty()) {
             Item itemToRender = pItemStack.getItem();
             ZPRenderHooks.ZPItemRendering3PersonHook itemRenderingHook = ZPRenderHooksManager.INSTANCE.getItemRendering3PersonHooks().get(itemToRender);

@@ -1,6 +1,5 @@
 package ru.gltexture.zpm3.assets.guns.rendering;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
 import com.mojang.math.Transformation;
@@ -11,7 +10,6 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -23,17 +21,13 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
-import org.joml.Vector2i;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL46;
 import ru.gltexture.zpm3.assets.debug.imgui.DearUITRSInterface;
 import ru.gltexture.zpm3.assets.guns.rendering.basic.ZPDefaultGunMuzzleflashFX;
 import ru.gltexture.zpm3.assets.guns.rendering.fx.ZPGunFXGlobalData;
-import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPDefaultShaders;
-import ru.gltexture.zpm3.engine.client.utils.ClientRenderFunctions;
 
 import java.util.Objects;
-import java.util.function.Consumer;
 
 public class ZPDefaultPistolRenderer extends ZPAbstractGunRenderer {
     private static final Vector3f translationGunRight = new Vector3f(0.245f, -0.05f, -1.15f);
@@ -46,8 +40,11 @@ public class ZPDefaultPistolRenderer extends ZPAbstractGunRenderer {
     private static final Vector3f translationArmLeft = new Vector3f(-0.358f, -0.67f, 0.2f);
     private static final Vector3f rotationArmLeft = new Vector3f(-2.7f, 1.63f, 7.0f);
 
-    private static final Vector3f translationMuzzleflashRight = new Vector3f(0.06f, 0.41f, -0.23f);
-    private static final Vector3f translationMuzzleflashLeft = new Vector3f(-0.08f, 0.57f, 0.1f);
+    private static final Vector3f translationMuzzleflash3PRight = new Vector3f(-0.17f, 0.44f, 0.05f);
+    private static final Vector3f translationMuzzleflash3PLeft = translationMuzzleflash3PRight;
+
+    private static final Vector3f translationMuzzleflash1PRight = new Vector3f(0.06f, 0.41f, -0.23f);
+    private static final Vector3f translationMuzzleflash1PLeft = new Vector3f(-0.08f, 0.57f, 0.1f);
     private static final float muzzleflashScale = 0.75f;
 
     private static final Vector3f translationGunReloadingRight = new Vector3f(0.0f, -0.15f, 0.2f);
@@ -96,19 +93,27 @@ public class ZPDefaultPistolRenderer extends ZPAbstractGunRenderer {
                 .rotateZ((float) Math.toRadians(startRotation.z))
                 .scale(startScale);
         pPoseStack.mulPoseMatrix(transformation);
-
-        int ref = flag ? 0x01 : 0x02;
         final Matrix4f matrix = new Matrix4f(pPoseStack.last().pose());
-        GL46.glEnable(GL46.GL_STENCIL_TEST);
-        GL46.glStencilFunc(GL46.GL_ALWAYS, ref, 0xFF);
-        GL46.glStencilOp(GL46.GL_REPLACE, GL46.GL_KEEP, GL46.GL_REPLACE);
-        GL46.glDrawBuffers(new int[] {GL46.GL_COLOR_ATTACHMENT0});
-        MultiBufferSource.BufferSource bufferSource = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
-        boolean right = pArm.equals(HumanoidArm.RIGHT);
-        itemInHandRenderer.renderItem(pLivingEntity, pItemStack, right ? ItemDisplayContext.THIRD_PERSON_RIGHT_HAND : ItemDisplayContext.THIRD_PERSON_LEFT_HAND, right, pPoseStack, bufferSource, pPackedLight);
-        bufferSource.endBatch();
-        ZPGunFXGlobalData.getGunData(!flag).setMflash3dpTransformationTarget(matrix);
-        GL46.glDisable(GL46.GL_STENCIL_TEST);
+        boolean right = !flag;
+
+        if (ZPDefaultGunMuzzleflashFX.useFancyRendering3person()) {
+            int ref = flag ? 0x01 : 0x02;
+            GL46.glEnable(GL46.GL_STENCIL_TEST);
+            GL46.glStencilFunc(GL46.GL_ALWAYS, ref, 0xFF);
+            GL46.glStencilOp(GL46.GL_REPLACE, GL46.GL_KEEP, GL46.GL_REPLACE);
+            GL46.glDrawBuffers(new int[]{GL46.GL_COLOR_ATTACHMENT0});
+            MultiBufferSource.BufferSource bufferSource = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
+            itemInHandRenderer.renderItem(pLivingEntity, pItemStack, right ? ItemDisplayContext.THIRD_PERSON_RIGHT_HAND : ItemDisplayContext.THIRD_PERSON_LEFT_HAND, right, pPoseStack, bufferSource, pPackedLight);
+            bufferSource.endBatch();
+        } else {
+            itemInHandRenderer.renderItem(pLivingEntity, pItemStack, right ? ItemDisplayContext.THIRD_PERSON_RIGHT_HAND : ItemDisplayContext.THIRD_PERSON_LEFT_HAND, right, pPoseStack, pBuffer, pPackedLight);
+        }
+        matrix.translate(right ? ZPDefaultPistolRenderer.translationMuzzleflash3PRight : ZPDefaultPistolRenderer.translationMuzzleflash3PLeft);
+        matrix.scale(ZPDefaultPistolRenderer.muzzleflashScale);
+        ZPGunFXGlobalData.getGunData(right).setMflash3dpTransformationTarget(matrix);
+        if (ZPDefaultGunMuzzleflashFX.useFancyRendering3person()) {
+            GL46.glDisable(GL46.GL_STENCIL_TEST);
+        }
 
         pPoseStack.popPose();
     }
@@ -157,7 +162,7 @@ public class ZPDefaultPistolRenderer extends ZPAbstractGunRenderer {
         final @NotNull Matrix4f reloadingArmTarget = new Matrix4f().identity();
 
         {
-            final Vector3f mflashTranslation = new Vector3f(isRightHanded ? ZPDefaultPistolRenderer.translationMuzzleflashRight : ZPDefaultPistolRenderer.translationMuzzleflashLeft);
+            final Vector3f mflashTranslation = new Vector3f(isRightHanded ? ZPDefaultPistolRenderer.translationMuzzleflash1PRight : ZPDefaultPistolRenderer.translationMuzzleflash1PLeft);
             mflashTranslation.add(DearUITRSInterface.trsMFlash.position);
 
             final Vector3f mflashRotation = new Vector3f(0.0f);

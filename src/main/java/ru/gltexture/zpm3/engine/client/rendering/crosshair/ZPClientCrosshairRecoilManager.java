@@ -5,6 +5,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
+import ru.gltexture.zpm3.assets.debug.events.ZPFreeCameraEvents;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 
 import java.util.Objects;
@@ -46,6 +47,9 @@ public class ZPClientCrosshairRecoilManager {
     }
 
     public static float setVerticalRecoil(float recoilPitch) {
+        if (ZPFreeCameraEvents.enabled) {
+            return 0.0f;
+        }
         final int i = ZPRandom.getRandom().nextBoolean() ? 1 : -1;
 
         Minecraft minecraft = Minecraft.getInstance();

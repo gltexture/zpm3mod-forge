@@ -19,6 +19,7 @@ import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPResourcesReloader;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPShaderReloader;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.events.mod.ZPAbstractEventMod;
@@ -107,5 +108,6 @@ public final class ZPClientMod extends ZPAbstractEventMod {
     @SubscribeEvent
     public static void onRegisterReloadListeners(RegisterClientReloadListenersEvent event) {
         event.registerReloadListener(new ZPShaderReloader());
+        event.registerReloadListener(new ZPResourcesReloader());
     }
 }

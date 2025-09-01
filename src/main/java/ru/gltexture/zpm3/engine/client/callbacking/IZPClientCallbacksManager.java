@@ -33,4 +33,6 @@ public interface IZPClientCallbacksManager extends ZPClientCallbacks.ZPSetupReso
     void addGunShotCallback(@NotNull ZPClientCallbacks.ZPGunShotCallback cb);
 
     void addGunReloadStartCallback(@NotNull ZPClientCallbacks.ZPGunReloadStartCallback cb);
+
+    void addReloadGameResourcesCallback(@NotNull ZPClientCallbacks.ZPReloadGameResourcesCallback cb);
 }

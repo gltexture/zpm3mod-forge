@@ -29,10 +29,13 @@ public class DearUITRSInterface implements DearUIInterface {
     public static boolean emmitShells = false;
 
     public static int muzzleflashRenderingMode = 3;
-    public static int muzzleflashFboPingPongOperations = ZPDefaultGunMuzzleflashFX.DEFAULT_PINGPONG_FBO_OPERATIONS;
+    public static int muzzleflash1PersonFboPingPongOperations = ZPDefaultGunMuzzleflashFX.DEFAULT_PINGPONG_FBO_OPERATIONS_1P;
+    public static float muzzleFlash1PersonBlurring = ZPDefaultGunMuzzleflashFX.DEFAULT_BLURRING_1P;
+    public static int muzzleflash3PersonFboPingPongOperations = ZPDefaultGunMuzzleflashFX.DEFAULT_PINGPONG_FBO_OPERATIONS_3P;
+    public static float muzzleFlash3PersonBlurring = ZPDefaultGunMuzzleflashFX.DEFAULT_BLURRING_3P;
 
-    public static float muzzleFlashBlurring = ZPDefaultGunMuzzleflashFX.DEFAULT_BLURRING;
-    public static float scissor = 0.0f;
+    public static float scissor3P = 0.0f;
+    public static float scissor1P = 0.0f;
     public static float reloadProgression = 0.0f;
 
     public static class TRS {
@@ -53,9 +56,51 @@ public class DearUITRSInterface implements DearUIInterface {
 
         if (ImGui.collapsingHeader("Gun-Rendering")) {
             ImGui.treePush();
-            if (ImGui.collapsingHeader("Matrices")) {
-                ImGui.treePush();
-                if (ImGui.collapsingHeader("3d Person")) {
+
+            if (ImGui.checkbox("manual mflash", DearUITRSInterface.muzzleflashHandling)) {
+                DearUITRSInterface.muzzleflashHandling = !DearUITRSInterface.muzzleflashHandling;
+            }
+            if (ImGui.checkbox("emmit smoke", DearUITRSInterface.emmitSmoke)) {
+                DearUITRSInterface.emmitSmoke = !DearUITRSInterface.emmitSmoke;
+            }
+            if (ImGui.checkbox("emmit shells", DearUITRSInterface.emmitShells)) {
+                DearUITRSInterface.emmitShells = !DearUITRSInterface.emmitShells;
+            }
+            int[] mode = new int[] {DearUITRSInterface.muzzleflashRenderingMode};
+            ImGui.sliderInt("Quality", mode, 0, 3);
+            DearUITRSInterface.muzzleflashRenderingMode = mode[0];
+
+            if (ImGui.treeNode("Adjust Gun Render(1P)")) {
+                if (ImGui.collapsingHeader("Matrices")) {
+                    ImGui.treePush();
+                    ImGui.pushStyleColor(ImGuiCol.Text, 0xffff00ff);
+                    this.drawTRS(trsGun);
+                    this.drawTRS(trsArm);
+                    this.drawTRS(trsMFlash);
+                    this.drawTRS(trsReloadingGun);
+                    this.drawTRS(trsReloadingArm);
+                    ImGui.popStyleColor();
+                    ImGui.treePop();
+                }
+                float[] scissor = new float[] {DearUITRSInterface.scissor1P};
+                ImGui.sliderFloat("scissor", scissor, 0.0f, 1.0f);
+                DearUITRSInterface.scissor1P = scissor[0];
+
+                float[] reload = new float[] {DearUITRSInterface.reloadProgression};
+                ImGui.sliderFloat("reload", reload, 0.0f, 1.0f);
+                DearUITRSInterface.reloadProgression = reload[0];
+
+                float[] blur = new float[] {DearUITRSInterface.muzzleFlash1PersonBlurring};
+                ImGui.sliderFloat("blurring", blur, 1.0f, 12.0f);
+                DearUITRSInterface.muzzleFlash1PersonBlurring = blur[0];
+
+                int[] operations = new int[] {DearUITRSInterface.muzzleflash1PersonFboPingPongOperations};
+                ImGui.sliderInt("FBO-Operations", operations, 0, 128);
+                DearUITRSInterface.muzzleflash1PersonFboPingPongOperations = operations[0];
+                ImGui.treePop();
+            }
+            if (ImGui.treeNode("Adjust Gun Render(3P)")) {
+                if (ImGui.collapsingHeader("Matrices")) {
                     ImGui.treePush();
                     ImGui.pushStyleColor(ImGuiCol.Text, 0xffffaaaa);
                     this.drawTRS(trsGun3d);
@@ -63,59 +108,32 @@ public class DearUITRSInterface implements DearUIInterface {
                     ImGui.popStyleColor();
                     ImGui.treePop();
                 }
-                ImGui.pushStyleColor(ImGuiCol.Text, 0xffff00ff);
-                this.drawTRS(trsGun);
-                this.drawTRS(trsArm);
-                this.drawTRS(trsMFlash);
-                this.drawTRS(trsReloadingGun);
-                this.drawTRS(trsReloadingArm);
-                ImGui.popStyleColor();
-                ImGui.treePop();
-            }
 
-            if (ImGui.treeNode("Adjust Render")) {
-                if (ImGui.checkbox("manual mflash", DearUITRSInterface.muzzleflashHandling)) {
-                    DearUITRSInterface.muzzleflashHandling = !DearUITRSInterface.muzzleflashHandling;
-                }
-                if (ImGui.checkbox("emmit smoke", DearUITRSInterface.emmitSmoke)) {
-                    DearUITRSInterface.emmitSmoke = !DearUITRSInterface.emmitSmoke;
-                }
-                if (ImGui.checkbox("emmit shells", DearUITRSInterface.emmitShells)) {
-                    DearUITRSInterface.emmitShells = !DearUITRSInterface.emmitShells;
-                }
-
-                float[] scissor = new float[] {DearUITRSInterface.scissor};
+                float[] scissor = new float[] {DearUITRSInterface.scissor3P};
                 ImGui.sliderFloat("scissor", scissor, 0.0f, 1.0f);
-                DearUITRSInterface.scissor = scissor[0];
+                DearUITRSInterface.scissor3P = scissor[0];
 
-                float[] reload = new float[] {DearUITRSInterface.reloadProgression};
-                ImGui.sliderFloat("reload", reload, 0.0f, 1.0f);
-                DearUITRSInterface.reloadProgression = reload[0];
-
-                float[] blur = new float[] {DearUITRSInterface.muzzleFlashBlurring};
+                float[] blur = new float[] {DearUITRSInterface.muzzleFlash3PersonBlurring};
                 ImGui.sliderFloat("blurring", blur, 1.0f, 12.0f);
-                DearUITRSInterface.muzzleFlashBlurring = blur[0];
+                DearUITRSInterface.muzzleFlash3PersonBlurring = blur[0];
 
-                int[] mode = new int[] {DearUITRSInterface.muzzleflashRenderingMode};
-                ImGui.sliderInt("Quality", mode, 0, 3);
-                DearUITRSInterface.muzzleflashRenderingMode = mode[0];
-
-                int[] operations = new int[] {DearUITRSInterface.muzzleflashFboPingPongOperations};
+                int[] operations = new int[] {DearUITRSInterface.muzzleflash3PersonFboPingPongOperations};
                 ImGui.sliderInt("FBO-Operations", operations, 0, 128);
-                DearUITRSInterface.muzzleflashFboPingPongOperations = operations[0];
+                DearUITRSInterface.muzzleflash3PersonFboPingPongOperations = operations[0];
                 ImGui.treePop();
             }
-            if (ImGui.treeNode("FBO 1tp")) {
+
+            if (ImGui.treeNode("FBO buffers")) {
                 GL46.glScissor(0, 0, 1, 1);
+                ImGui.text("1 Person");
                 ImGui.image(ZPDefaultGunMuzzleflashFX.muzzleflashFBO.getTextureByIndex(0).getTextureId(), 300, 200, 0.0f, 1.0f, 1.0f, 0.0f);
                 ImGui.image(ZPDefaultGunMuzzleflashFX.muzzleflashFBO.getTextureByIndex(1).getTextureId(), 300, 200, 0.0f, 1.0f, 1.0f, 0.0f);
                 ImGui.image(ZPDefaultGunMuzzleflashFX.muzzleflashFBO.getTextureByIndex(2).getTextureId(), 300, 200, 0.0f, 1.0f, 1.0f, 0.0f);
                 ImGui.separator();
+                ImGui.text("Bloom");
                 ImGui.image(ZPDefaultGunMuzzleflashFX.muzzleflashBlurFBO.getTextureByIndex(0).getTextureId(), 300, 200, 0.0f, 1.0f, 1.0f, 0.0f);
-                ImGui.treePop();
-            }
-            if (ImGui.treeNode("FBO 3dp")) {
-                GL46.glScissor(0, 0, 1, 1);
+                ImGui.separator();
+                ImGui.text("3 Person");
                 ImGui.image(ZPDefaultGunMuzzleflashFX.muzzleflash3dpFBO.getTextureByIndex(0).getTextureId(), 300, 200, 0.0f, 1.0f, 1.0f, 0.0f);
                 ImGui.image(ZPDefaultGunMuzzleflashFX.muzzleflash3dpFBO.getTextureByIndex(1).getTextureId(), 300, 200, 0.0f, 1.0f, 1.0f, 0.0f);
                 ImGui.treePop();

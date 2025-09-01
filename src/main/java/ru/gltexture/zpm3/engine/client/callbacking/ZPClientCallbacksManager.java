@@ -32,6 +32,7 @@ public final class ZPClientCallbacksManager implements IZPClientCallbacksManager
     private final List<ZPClientCallbacks.@NotNull ZPClientTickCallback> onClientTickCallbacks;
     private final List<ZPClientCallbacks.@NotNull ZPGunShotCallback> onGunShotCallbacks;
     private final List<ZPClientCallbacks.@NotNull ZPGunReloadStartCallback> onGunReloadStartCallbacks;
+    private final List<ZPClientCallbacks.@NotNull ZPReloadGameResourcesCallback> onReloadGameResourcesCallbacks;
 
     private GLFWWindowSizeCallback windowCallback;
     private GLFWMouseButtonCallback mouseButtonCallback;
@@ -57,6 +58,7 @@ public final class ZPClientCallbacksManager implements IZPClientCallbacksManager
         this.onCharCallbacks = new ArrayList<>();
         this.onGunShotCallbacks = new ArrayList<>();
         this.onGunReloadStartCallbacks = new ArrayList<>();
+        this.onReloadGameResourcesCallbacks = new ArrayList<>();
 
         this.onSetupResourcesCallbacks = new ArrayList<>();
         this.onDestroyResourcesCallbacks = new ArrayList<>();
@@ -108,6 +110,7 @@ public final class ZPClientCallbacksManager implements IZPClientCallbacksManager
         this.onClientTickCallbacks.clear();
         this.onGunShotCallbacks.clear();
         this.onGunReloadStartCallbacks.clear();
+        this.onReloadGameResourcesCallbacks.clear();
     }
 
     @Override
@@ -202,6 +205,15 @@ public final class ZPClientCallbacksManager implements IZPClientCallbacksManager
         this.onGunReloadStartCallbacks.add(cb);
     }
 
+    @Override
+    public void addReloadGameResourcesCallback(@NotNull ZPClientCallbacks.ZPReloadGameResourcesCallback cb) {
+        ZombiePlague3.clientInitValidation();
+        this.onReloadGameResourcesCallbacks.add(cb);
+    }
+
+    public static void reloadResources(@NotNull Window w) {
+        ZPClientCallbacksManager.INSTANCE.getOnReloadGameResourcesCallbacks().forEach(e -> e.onReloadResources(w));
+    }
 
     public void tickClientCallbacks(@NotNull TickEvent.Phase phase) {
         this.onClientTickCallbacks.forEach(e -> e.onTick(phase));
@@ -356,5 +368,9 @@ public final class ZPClientCallbacksManager implements IZPClientCallbacksManager
 
     public List<ZPClientCallbacks.@NotNull ZPClientTickCallback> getOnClientTickCallbacks() {
         return this.onClientTickCallbacks;
+    }
+
+    public List<ZPClientCallbacks.@NotNull ZPReloadGameResourcesCallback> getOnReloadGameResourcesCallbacks() {
+        return this.onReloadGameResourcesCallbacks;
     }
 }

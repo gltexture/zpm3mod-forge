@@ -10,8 +10,8 @@ public abstract class ZPGunFXGlobalData {
     private ZPGunFXGlobalData() {
     }
 
-    public static @NotNull ClientGunRenderGlobalData getGunData(boolean right) {
-        return right ? ZPGunFXGlobalData.getRightGunData() : ZPGunFXGlobalData.getLeftGunData();
+    public static @NotNull ClientGunRenderGlobalData getGunData(boolean isRightHanded) {
+        return isRightHanded ? ZPGunFXGlobalData.getRightGunData() : ZPGunFXGlobalData.getLeftGunData();
     }
 
     public static @NotNull ClientGunRenderGlobalData getLeftGunData() {

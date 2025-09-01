@@ -17,6 +17,11 @@ public abstract class ZPClientCallbacks {
     }
 
     @FunctionalInterface
+    public interface ZPReloadGameResourcesCallback {
+        void onReloadResources(@NotNull Window window);
+    }
+
+    @FunctionalInterface
     public interface ZPWindowResizeCallback {
         void onWindowResizeAction(long descriptor, int width, int height);
     }

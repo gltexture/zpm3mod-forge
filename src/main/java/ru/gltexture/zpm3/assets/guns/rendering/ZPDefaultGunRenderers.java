@@ -34,7 +34,7 @@ public abstract class ZPDefaultGunRenderers {
 
     private static ZPClientCallbacks.ZPGunShotCallback gunShotCallback() {
         return ((player, baseGun, itemStack, gunFXData) ->  {
-            ZPDefaultGunRenderers.defaultMuzzleflashFXUniversal.triggerRecoil(baseGun, gunFXData);
+            ZPDefaultGunRenderers.defaultMuzzleflashFXUniversal.triggerMuzzleflash(baseGun, gunFXData);
             ZPDefaultGunRenderers.defaultRecoilFXUniversal.triggerRecoil(baseGun, gunFXData);
             ZPDefaultGunRenderers.defaultSmokeFX.triggerSmoke(player, baseGun, gunFXData);
         });

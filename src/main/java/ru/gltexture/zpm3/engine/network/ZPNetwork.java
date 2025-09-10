@@ -1,13 +1,19 @@
 package ru.gltexture.zpm3.engine.network;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -45,16 +51,20 @@ public class ZPNetwork {
             NetworkEvent.Context context = contextSupplier.get();
             context.enqueueWork(() -> {
                 if (context.getDirection().getReceptionSide().isServer()) {
-                    this.onServer();
+                    ServerPlayer player = context.getSender();
+                    if (player != null) {
+                        ServerLevel level = player.serverLevel();
+                        this.onServer(player, level);
+                    }
                 } else {
-                    this.onClient();
+                    this.onClient(Objects.requireNonNull(Minecraft.getInstance().player), Objects.requireNonNull(Minecraft.getInstance().level));
                 }
             });
             context.setPacketHandled(true);
         }
 
-        void onServer();
-        void onClient();
+        void onServer(@NotNull Player sender, @NotNull ServerLevel serverLevel);
+        void onClient(@NotNull Player localPlayer, @NotNull ClientLevel clientLevel);
 
         @FunctionalInterface
         interface Encoder<T extends ZPPacket> {

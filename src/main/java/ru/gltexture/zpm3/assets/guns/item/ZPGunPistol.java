@@ -17,9 +17,7 @@ public class ZPGunPistol extends ZPBaseGun {
         ZPUtility.sides().onlyClient(() -> {
             this.clientLogic = new ZPDefaultPistolClientLogic();
         });
-        ZPUtility.sides().onlyServer(() -> {
-            this.serverLogic = new ZPDefaultPistolServerLogic();
-        });
+        this.serverLogic = new ZPDefaultPistolServerLogic();
     }
 
     @OnlyIn(Dist.CLIENT)

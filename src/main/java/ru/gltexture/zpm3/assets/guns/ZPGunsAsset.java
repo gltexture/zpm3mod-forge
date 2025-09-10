@@ -1,5 +1,6 @@
 package ru.gltexture.zpm3.assets.guns;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -8,9 +9,10 @@ import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL46;
 import ru.gltexture.zpm3.assets.guns.events.ZPGunPostRender;
 import ru.gltexture.zpm3.assets.guns.events.ZPGunsUI;
-import ru.gltexture.zpm3.assets.guns.processing.input.ZPClientGunInputProcessing;
+import ru.gltexture.zpm3.assets.guns.processing.input.ZPClientGunClientTickProcessing;
 import ru.gltexture.zpm3.assets.guns.rendering.ZPDefaultGunRenderers;
 import ru.gltexture.zpm3.assets.guns.rendering.basic.ZPDefaultGunMuzzleflashFX;
+import ru.gltexture.zpm3.assets.guns.rendering.tracer.ZPBulletTracerManager;
 import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacksManager;
 import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
 import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooks;
@@ -41,9 +43,7 @@ public class ZPGunsAsset extends ZPAsset {
         ZPRenderHooksManager.INSTANCE.addItemSceneRendering3PersonHooks((ZPRenderHooks.ZPItemSceneRendering3PersonHooks) ZPDefaultGunRenderers.defaultMuzzleflashFXUniversal);
         ZPClientCallbacksManager.INSTANCE.addReloadGameResourcesCallback(((ZPDefaultGunMuzzleflashFX) ZPDefaultGunRenderers.defaultMuzzleflashFXUniversal).reloadGameResourcesCallback());
         ZPClientCallbacksManager.INSTANCE.addClientTickCallback(e -> {
-            if (e == TickEvent.Phase.START) {
-                ZPClientGunInputProcessing.INSTANCE.tick(Minecraft.getInstance());
-            }
+            ZPClientGunClientTickProcessing.INSTANCE.tick(Minecraft.getInstance(), e);
         });
         ZPRenderHooksManager.INSTANCE.addSceneRenderingHook(((renderStage, partialTicks, deltaTime, pNanoTime, pRenderLevel) -> {
             if (renderStage == ZPRenderHelper.RenderStage.PRE) {
@@ -54,7 +54,7 @@ public class ZPGunsAsset extends ZPAsset {
                     GL46.glDrawBuffers(new int[]{GL46.GL_COLOR_ATTACHMENT0});
                     ZPDefaultGunMuzzleflashFX.muzzleflash3dpFBO.unBindFBO();
                 }
-                ZPClientGunInputProcessing.INSTANCE.process(Minecraft.getInstance());
+                ZPClientGunClientTickProcessing.INSTANCE.process(Minecraft.getInstance());
             }
         }));
     }
@@ -69,7 +69,10 @@ public class ZPGunsAsset extends ZPAsset {
     public void initMixins(ZombiePlague3.@NotNull IMixinEntry mixinEntry) {
         mixinEntry.addMixinConfigData(new ZombiePlague3.IMixinEntry.MixinConfig("guns", "ru.gltexture.zpm3.assets.guns.mixins.impl"),
                 new ZombiePlague3.IMixinEntry.MixinClass("client.ZPHumanoidArmMixin", ZPSide.CLIENT),
-                new ZombiePlague3.IMixinEntry.MixinClass("client.ZPPlayerClientDataMixin", ZPSide.CLIENT)
+                new ZombiePlague3.IMixinEntry.MixinClass("client.ZPPlayerClientDataMixin", ZPSide.CLIENT),
+                new ZombiePlague3.IMixinEntry.MixinClass("client.ZPClientPacketListenerMixin", ZPSide.CLIENT),
+                new ZombiePlague3.IMixinEntry.MixinClass("both.ZPItemMixin", ZPSide.BOTH),
+                new ZombiePlague3.IMixinEntry.MixinClass("client.ZPItemStackClDataMixin", ZPSide.CLIENT)
         );
     }
 

@@ -43,7 +43,7 @@ public class ZPBlocks extends ZPRegistry<Block> implements IZPCollectRegistryObj
     public static RegistryObject<ZPToxicLiquidBlock> toxic_block;
 
     public ZPBlocks() {
-        super(ForgeRegistries.BLOCKS, ZPRegistryConveyor.Target.BLOCK);
+        super(ZPRegistryConveyor.Target.BLOCK);
     }
 
     @Override

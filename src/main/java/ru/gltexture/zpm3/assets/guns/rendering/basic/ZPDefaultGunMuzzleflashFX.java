@@ -11,6 +11,8 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
@@ -64,11 +66,14 @@ public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderH
     }
 
     @Override
-    public void triggerMuzzleflash(@NotNull ZPBaseGun baseGun, ZPClientCallbacks.ZPGunShotCallback.@NotNull GunFXData gunFXData) {
+    public void triggerMuzzleflash(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, @NotNull ZPClientCallbacks.ZPGunShotCallback.GunFXData gunFXData) {
+        if (gunFXData.muzzleflashTime() < 0.0f) {
+            return;
+        }
         this.muzzleflashTime1Person = gunFXData.muzzleflashTime();
-        this.muzzleflashScissor1Person[this.hand(gunFXData.isRightHand())] = 0.0f;
+        this.muzzleflashScissor1Person[this.hand(gunFXData.isRightHand())] = this.muzzleflashScissor1Person[this.hand(gunFXData.isRightHand())] > 0.01f ? 0.35f : 0.0f;
 
-        if (Minecraft.getInstance().player instanceof IZPPlayerClientDataExt playerClientDataExt) {
+        if (player instanceof IZPPlayerClientDataExt playerClientDataExt) {
             playerClientDataExt.getPlayerMuzzleflashScissor3Person()[this.hand(gunFXData.isRightHand())] = 0.0f;
         }
     }

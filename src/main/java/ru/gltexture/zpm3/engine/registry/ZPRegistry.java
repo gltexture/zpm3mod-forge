@@ -8,6 +8,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -45,6 +46,7 @@ import ru.gltexture.zpm3.engine.service.ZPPath;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -53,11 +55,11 @@ public abstract class ZPRegistry<T> {
     private final ZPRegistryConveyor.Target target;
     private @Nullable ZPRegistryObjectsCollector<T> zpRegistryObjectsCollector;
 
-    public ZPRegistry(@NotNull IForgeRegistry<T> registry, @NotNull ZPRegistryConveyor.Target target) {
-        this.deferredRegister = this.createDeferredRegister(registry);
+    @SuppressWarnings("all")
+    public ZPRegistry(@NotNull ZPRegistryConveyor.Target target) {
+        this.deferredRegister = this.createDeferredRegister((ResourceKey<? extends Registry<T>>) target.getRegistryKey());
         this.target = target;
     }
-
     public ZPRegistry(@NotNull ResourceKey<? extends Registry<T>> registry, @NotNull ZPRegistryConveyor.Target target) {
         this.deferredRegister = this.createDeferredRegister(registry);
         this.target = target;
@@ -76,10 +78,6 @@ public abstract class ZPRegistry<T> {
             this.zpRegistryObjectsCollector = new ZPRegistryObjectsCollector<>();
             ZPRegistryCollections.addNewEntry((Class<? extends ZPRegistry<?>>) this.getClass(), Objects.requireNonNull(this.getObjectsCollector()));
         }
-    }
-
-    protected @NotNull DeferredRegister<T> createDeferredRegister(IForgeRegistry<T> registry) {
-        return DeferredRegister.create(registry, ZombiePlague3.MOD_ID());
     }
 
     protected @NotNull DeferredRegister<T> createDeferredRegister(ResourceKey<? extends Registry<T>> registry) {
@@ -113,6 +111,19 @@ public abstract class ZPRegistry<T> {
 
     public abstract int priority();
     public abstract @NotNull String getID();
+
+    public boolean registerLater() {
+        return false;
+    }
+
+    @SuppressWarnings("all")
+    protected ResourceKey<T> createResourceKey(@NotNull String id, @Nullable Consumer<String> after) {
+        ResourceKey<T> resourceKey = ResourceKey.create((ResourceKey<? extends Registry<T>>) this.target.getRegistryKey(), ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, id));
+        if (after != null) {
+            after.accept(id);
+        }
+        return resourceKey;
+    }
 
     public ZPRegistryConveyor.Target getTarget() {
         return this.target;

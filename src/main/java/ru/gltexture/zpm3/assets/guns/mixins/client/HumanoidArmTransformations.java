@@ -4,7 +4,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import ru.gltexture.zpm3.assets.debug.imgui.DearUITRSInterface;
 import ru.gltexture.zpm3.assets.guns.item.ZPBaseGun;
+import ru.gltexture.zpm3.engine.nbt.ZPTagID;
 
 public abstract class HumanoidArmTransformations {
     public static void setupAnimZp(HumanoidModel<?> model, LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
@@ -36,6 +38,31 @@ public abstract class HumanoidArmTransformations {
             model.leftArm.zRot = 0.0F;
             model.leftArm.x = 5.0F;
             model.leftArm.y = 2.0F;
+        }
+
+        boolean reloadingRight = false;
+        boolean reloadingLeft = false;
+        if (mainHand.getItem() instanceof ZPBaseGun baseGun) {
+            if (baseGun.isUnloadingOrReloading(entity, mainHand)) {
+                reloadingRight = true;
+            }
+        }
+        if (offHand.getItem() instanceof ZPBaseGun baseGun) {
+            if (baseGun.isUnloadingOrReloading(entity, offHand)) {
+                reloadingLeft = true;
+            }
+        }
+
+        if (reloadingLeft) {
+            model.leftArm.xRot = -0.96f;
+            model.leftArm.yRot = -0.29f;
+            model.leftArm.zRot = 1.15f;
+        }
+
+        if (reloadingRight) {
+            model.rightArm.xRot = -0.93f;
+            model.rightArm.yRot = 0.0f;
+            model.rightArm.zRot = -0.69f;
         }
     }
 

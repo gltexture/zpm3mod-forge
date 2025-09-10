@@ -19,7 +19,7 @@ public class ZPTabs extends ZPRegistry<CreativeModeTab> {
     public static RegistryObject<CreativeModeTab> zp_blocks_tab;
 
     public ZPTabs() {
-        super(Registries.CREATIVE_MODE_TAB, ZPRegistryConveyor.Target.TAB);
+        super(ZPRegistryConveyor.Target.CREATIVE_MODE_TAB);
     }
 
     @Override

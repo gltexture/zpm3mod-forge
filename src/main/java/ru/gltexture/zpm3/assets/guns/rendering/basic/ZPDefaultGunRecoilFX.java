@@ -2,6 +2,8 @@ package ru.gltexture.zpm3.assets.guns.rendering.basic;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.TickEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -12,27 +14,33 @@ import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
 import ru.gltexture.zpm3.assets.guns.rendering.fx.IZPGunRecoilFX;
 import ru.gltexture.zpm3.assets.guns.item.ZPBaseGun;
 
-public class ZPDefaultGunRecoilXF implements IZPGunRecoilFX {
+public class ZPDefaultGunRecoilFX implements IZPGunRecoilFX {
     private final float[] recoilPrev;
     private final float[] recoil;
     private final float[] recoilStrengthLast;
+    private final boolean[] revoilProgression;
 
-    protected ZPDefaultGunRecoilXF() {
+    protected ZPDefaultGunRecoilFX() {
         this.recoilPrev = new float[] {0.0f, 0.0f};
         this.recoil = new float[] {0.0f, 0.0f};
         this.recoilStrengthLast = new float[] {0.0f, 0.0f};
+        this.revoilProgression = new boolean[] {false, false};
     }
 
-    public static ZPDefaultGunRecoilXF create() {
-        return new ZPDefaultGunRecoilXF();
+    public static ZPDefaultGunRecoilFX create() {
+        return new ZPDefaultGunRecoilFX();
     }
 
     @Override
-    public void triggerRecoil(@NotNull ZPBaseGun baseGun, ZPClientCallbacks.ZPGunShotCallback.@NotNull GunFXData gunFXData) {
+    public void triggerRecoil(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, ZPClientCallbacks.ZPGunShotCallback.@NotNull GunFXData gunFXData) {
+        if (!player.equals(Minecraft.getInstance().player)) {
+            return;
+        }
         final int id = gunFXData.isRightHand() ? 1 : 0;
-        this.recoilStrengthLast[id] = gunFXData.recoilStrength();
-        this.recoilPrev[id] = 0;
-        this.recoil[id] = 0;
+        this.recoilStrengthLast[id] = gunFXData.recoilStrength() < 0.0f ? -1.0f : gunFXData.recoilStrength();
+        this.recoilPrev[id] = this.recoil[id] > 0.0f ? 1.0f : 0;
+        this.recoil[id] = this.recoil[id] > 0.0f ? 0.5f : 0;
+        this.revoilProgression[id] = true;
     }
 
     @Override
@@ -41,7 +49,7 @@ public class ZPDefaultGunRecoilXF implements IZPGunRecoilFX {
         float translateConst = 0.05f;
         float rotateConst = 15.0f;
 
-        final float strength = Math.max(this.recoilStrengthLast[id] / 3.0f, 1.0f);
+        final float strength = this.recoilStrengthLast[id] < 0.0f ? 0.2f : Math.max((float) Math.sqrt(this.recoilStrengthLast[id] / 3.0f), 0.5f);
         final float recoilStage = Mth.lerp(partialTicks, this.recoilPrev[id], this.recoil[id]);
         final float scale = (float) Math.pow(recoilStage, 4.0f) * strength;
 
@@ -71,17 +79,17 @@ public class ZPDefaultGunRecoilXF implements IZPGunRecoilFX {
                     ZPDefaultGunParticlesFX.emmitParticleShell(false, Minecraft.getInstance().player);
                 }
                 if (DearUITRSInterface.emmitSmoke) {
-                    ZPDefaultGunParticlesFX.emmitParticleSmoke(true, Minecraft.getInstance().player);
-                    ZPDefaultGunParticlesFX.emmitParticleSmoke(false, Minecraft.getInstance().player);
+                    ZPDefaultGunParticlesFX.emmitParticleSmoke(true, Minecraft.getInstance().player, false);
+                    ZPDefaultGunParticlesFX.emmitParticleSmoke(false, Minecraft.getInstance().player, false);
                 }
             }
             for (int i = 0; i < 2; i++) {
                 this.recoilPrev[i] = this.recoil[i];
-                if (this.recoilStrengthLast[i] > 0.0f) {
+                if (this.revoilProgression[i]) {
                     this.recoil[i] += 0.5f;
                     if (this.recoil[i] >= 1.0f) {
                         this.recoil[i] = 1.0f;
-                        this.recoilStrengthLast[i] = 0.0f;
+                        this.revoilProgression[i] = false;
                     }
                 } else {
                     this.recoil[i] = Math.max(this.recoil[i] - 0.5f, 0.0f);

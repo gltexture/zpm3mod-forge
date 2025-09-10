@@ -5,18 +5,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.event.TickEvent;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL46;
-import ru.gltexture.zpm3.assets.guns.rendering.ZPGunLayersProcessing;
-import ru.gltexture.zpm3.assets.guns.rendering.basic.ZPDefaultGunMuzzleflashFX;
 import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
 import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacksManager;
 import ru.gltexture.zpm3.engine.client.rendering.crosshair.ZPClientCrosshairRecoilManager;
 import ru.gltexture.zpm3.engine.client.rendering.gl.programs.meshes.ZPScreenMesh;
-import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooks;
 import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooksManager;
-import ru.gltexture.zpm3.assets.guns.rendering.ZPDefaultGunRenderers;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPDefaultShaders;
 import ru.gltexture.zpm3.engine.client.rendering.ui.imgui.ZPDearUIRenderer;
-import ru.gltexture.zpm3.assets.guns.processing.input.ZPClientGunInputProcessing;
 
 public final class ZPRenderHelper implements ZPClientCallbacks.ZPClientResourceDependentObject {
     public static ZPRenderHelper INSTANCE = new ZPRenderHelper();

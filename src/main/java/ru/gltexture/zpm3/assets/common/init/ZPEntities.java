@@ -23,7 +23,7 @@ public class ZPEntities extends ZPRegistry<EntityType<?>> {
     public static RegistryObject<EntityType<ZPRockEntity>> rock_entity;
 
     public ZPEntities() {
-        super(ForgeRegistries.ENTITY_TYPES, ZPRegistryConveyor.Target.ENTITY);
+        super(ZPRegistryConveyor.Target.ENTITY_TYPE);
     }
 
     @Override

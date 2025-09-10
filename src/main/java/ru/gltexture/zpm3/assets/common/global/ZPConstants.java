@@ -10,6 +10,9 @@ public abstract class ZPConstants {
     public static float DEFAULT_PLATE_DAMAGE = 1.0f;
     public static float DEFAULT_ROCK_DAMAGE = 6.0f;
     public static float DEFAULT_ACID_BOTTLE_PACKET_RANGE = 128.0f;
+    public static float DEFAULT_GUN_ACTION_PACKET_RANGE = 256.0f;
+    public static float DEFAULT_BULLET_HIT_PACKET_RANGE = 256.0f;
+    public static int MAX_BULLET_BLOCK_HITS = 3;
 
     public static int ACID_DAMAGE_TICK_RATE = 4;
 

@@ -6,9 +6,11 @@ import org.lwjgl.glfw.GLFW;
 
 public final class ZPBaseKeyBindings extends ZPKeyBindingsManager {
     public static KeyMapping reloadKey;
+    public static KeyMapping unloadKey;
 
     @Override
     public void init() {
         ZPBaseKeyBindings.reloadKey = this.addKeyBinding(new KeyMapping("zpm.key.reload", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_R, "key.categories.zpm"));
+        ZPBaseKeyBindings.unloadKey = this.addKeyBinding(new KeyMapping("zpm.key.unloadKey", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_Y, "key.categories.zpm"));
     }
 }

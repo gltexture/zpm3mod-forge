@@ -23,6 +23,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
@@ -98,6 +99,7 @@ public final class ZombiePlague3 {
         this.createNet();
         this.initAssets();
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::completeSetup);
         this.initBaseKeyBindings();
         ZPUtility.sides().onlyClient(() -> {
             modEventBus.addListener(this::clientSetup);
@@ -278,6 +280,10 @@ public final class ZombiePlague3 {
             ZPSystemInit.clientRunDestroy(Minecraft.getInstance().getWindow());
             ZPRegistryCollections.clearAll();
         });
+    }
+
+    private void completeSetup(final FMLLoadCompleteEvent event) {
+        this.getZpRegistryConveyor().launchLaterList();
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {

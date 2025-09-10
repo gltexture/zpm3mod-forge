@@ -18,7 +18,7 @@ public class ZPParticles extends ZPRegistry<ParticleType<?>> {
     public static RegistryObject<GunShellType> gun_shell;
 
     public ZPParticles() {
-        super(ForgeRegistries.PARTICLE_TYPES, ZPRegistryConveyor.Target.FX);
+        super(ZPRegistryConveyor.Target.PARTICLE_TYPE);
     }
 
     @Override

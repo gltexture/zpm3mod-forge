@@ -51,10 +51,30 @@ public class ZPItems extends ZPRegistry<Item> implements IZPCollectRegistryObjec
     public static RegistryObject<ZPItemMedicine> vodka;
 
     //GUNS
+    public static RegistryObject<ZPGunPistol> handmade_pistol;
+    public static RegistryObject<ZPItem> _handmade_pistol;
+
     public static RegistryObject<ZPGunPistol> makarov;
+    public static RegistryObject<ZPItem> _makarov;
+
+    public static RegistryObject<ZPGunPistol> m1911;
+    public static RegistryObject<ZPItem> _m1911;
+
+    public static RegistryObject<ZPGunPistol> usp;
+    public static RegistryObject<ZPItem> _usp;
+
+    public static RegistryObject<ZPGunPistol> colt;
+    public static RegistryObject<ZPItem> _colt;
+
+    public static RegistryObject<ZPGunPistol> deagle;
+    public static RegistryObject<ZPGunPistol> golden_deagle;
+    public static RegistryObject<ZPItem> _deagle;
+
+    public static RegistryObject<ZPGunPistol> uzi;
+    public static RegistryObject<ZPItem> _uzi;
 
     public ZPItems() {
-        super(ForgeRegistries.ITEMS, ZPRegistryConveyor.Target.ITEM);
+        super(ZPRegistryConveyor.Target.ITEM);
     }
 
     @Override

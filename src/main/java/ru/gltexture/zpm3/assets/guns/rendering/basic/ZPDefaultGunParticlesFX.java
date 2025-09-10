@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.joml.*;
 import ru.gltexture.zpm3.assets.debug.imgui.DearUITRSInterface;
@@ -35,14 +36,21 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
     }
 
     @Override
-    public void triggerSmoke(@NotNull Player player, @NotNull ZPBaseGun baseGun, ZPClientCallbacks.ZPGunShotCallback.@NotNull GunFXData gunFXData) {
-        ZPDefaultGunParticlesFX.emmitParticleShell(gunFXData.isRightHand(), player);
-        for (int i = 0; i < Math.max(gunFXData.recoilStrength() / 3.0f, 1.0f) + ZPRandom.getRandom().nextInt(2); i++) {
-            ZPDefaultGunParticlesFX.emmitParticleSmoke(gunFXData.isRightHand(), player);
+    public void triggerParticles(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, ZPClientCallbacks.ZPGunShotCallback.@NotNull GunFXData gunFXData) {
+        if (ZPDefaultGunMuzzleflashFX.quality() <= 1) {
+            return;
+        }
+        if (gunFXData.muzzleflashTime() < 0.0f) {
+            return;
+        }
+        if (baseGun.getGunProperties().getCustomShotParticlesEmitter() != null) {
+            baseGun.getGunProperties().getCustomShotParticlesEmitter().emmit(player, baseGun, itemStack, gunFXData);
+        } else {
+            IZPGunParticlesFX.DEFAULT_PARTICLES_EMITTER.emmit(player, baseGun, itemStack, gunFXData);
         }
     }
 
-    public static void emmitParticleSmoke(boolean isRightHand, Player player) {
+    public static void emmitParticleSmoke(boolean isRightHand, Player player, boolean smoky) {
         final Minecraft mc = Minecraft.getInstance();
 
         Vector3f spawnPos = new Vector3f(0.0f);
@@ -86,12 +94,13 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
             motion = player.getLookAngle().toVector3f().mul(0.2f);
         }
 
-        motion.add(ZPRandom.instance.randomVector3f(0.05f, new Vector3f(0.1f, 0.1f, 0.1f)));
+        motion.mul(smoky ? 0.2f : 1.0f);
+        motion.add(ZPRandom.instance.randomVector3f(smoky ? 0.02f : 0.05f, new Vector3f(smoky ? 0.04f : 0.1f)));
 
-        final Vector3f color = new Vector3f(0.7f, 0.7f, 0.7f).add(ZPRandom.instance.randomVector3f(0.05f, new Vector3f(0.1f, 0.1f, 0.1f)));
-        final int lifetime = 10 + ZPRandom.getRandom().nextInt(10);
+        final Vector3f color = new Vector3f(smoky ? 0.9f : 0.7f).add(ZPRandom.instance.randomVector3f(0.05f, new Vector3f(0.1f, 0.1f, 0.1f)));
+        final int lifetime = (smoky ? 40 : 10) + ZPRandom.getRandom().nextInt(10);
 
-        Objects.requireNonNull(mc.level).addParticle(new ColoredSmokeOptions(ZPParticles.colored_cloud.get(), color, 0.8f, lifetime), false, spawnPos.x, spawnPos.y, spawnPos.z, motion.x(), motion.y() + 0.1f, motion.z());
+        Objects.requireNonNull(mc.level).addParticle(new ColoredSmokeOptions(ZPParticles.colored_cloud.get(), color, smoky ? 0.9f : 0.8f, lifetime), false, spawnPos.x, spawnPos.y, spawnPos.z, motion.x(), motion.y() + (smoky ? 0.02f : 0.1f), motion.z());
     }
 
     public static void emmitParticleShell(boolean isRightHand, Player player) {
@@ -134,12 +143,20 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
             motion.add(ZPRandom.instance.randomVector3f(0.05f, new Vector3f(0.1f, 0.1f, 0.1f)));
 
         } else {
-            Vector3f look = player.getLookAngle().toVector3f().normalize();
-            Vector3f up = new Vector3f(0.0f, 1.0f, 0.0f);
             float side = (isRightHand ? 1f : -1f);
             spawnPos = ZPDefaultGunParticlesFX.pickSpawnPosFor3Person(player, 0.675f, isRightHand);
 
-            motion = new Vector3f(look).cross(up).normalize().mul(side);
+            float yaw = -player.getYRot() * ((float) Math.PI / 180F);
+            float pitch = player.getXRot() * ((float) Math.PI / 180F);
+
+            final Matrix4f space = new Matrix4f().identity();
+            space.rotate(Axis.YP.rotation(yaw));
+            space.rotate(Axis.XP.rotation(pitch));
+
+            Vector4f auxPoint = new Vector4f(0.75f * -side, 0.0f, 0.0f, 1.0f);
+            space.transform(auxPoint);
+            motion = new Vector3f(auxPoint.x, auxPoint.y, auxPoint.z);
+
             motion.add(ZPRandom.instance.randomVector3f(0.05f, new Vector3f(0.1f, 0.1f, 0.1f)));
         }
 

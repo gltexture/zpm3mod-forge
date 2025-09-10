@@ -30,7 +30,7 @@ public class ZPFluidTypes extends ZPRegistry<FluidType> implements IZPCollectReg
     public static RegistryObject<ToxicFluidType> toxic_fluid_type;
 
     public ZPFluidTypes() {
-        super(ForgeRegistries.Keys.FLUID_TYPES, ZPRegistryConveyor.Target.FLUID_TYPE);
+        super(ZPRegistryConveyor.Target.FLUID_TYPE);
     }
 
     @Override

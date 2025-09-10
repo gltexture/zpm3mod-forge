@@ -14,26 +14,28 @@ import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
 import ru.gltexture.zpm3.assets.guns.rendering.fx.IZPGunReloadingFX;
 import ru.gltexture.zpm3.assets.guns.rendering.fx.ZPGunFXGlobalData;
 import ru.gltexture.zpm3.assets.guns.item.ZPBaseGun;
-import ru.gltexture.zpm3.engine.nbt.ZPTagID;
 
-public class ZPDefaultGunReloadingXF implements IZPGunReloadingFX {
+public class ZPDefaultGunReloadingFX implements IZPGunReloadingFX {
     private final float[] reloadPrev;
     private final float[] reload;
     private final boolean[] reloadProgression;
     private static final Matrix4f IDENT_MAT = new Matrix4f().identity();
 
-    protected ZPDefaultGunReloadingXF() {
+    protected ZPDefaultGunReloadingFX() {
         this.reloadPrev = new float[] {0.0f, 0.0f};
         this.reload = new float[] {0.0f, 0.0f};
         this.reloadProgression = new boolean[] {false, false};
     }
 
-    public static ZPDefaultGunReloadingXF create() {
-        return new ZPDefaultGunReloadingXF();
+    public static ZPDefaultGunReloadingFX create() {
+        return new ZPDefaultGunReloadingFX();
     }
 
     @Override
-    public void triggerReloadingStart(@NotNull ZPBaseGun baseGun, ZPClientCallbacks.ZPGunReloadStartCallback.@NotNull GunFXData gunFXData) {
+    public void triggerReloadingStart(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, @NotNull ZPClientCallbacks.ZPGunReloadStartCallback.GunFXData gunFXData) {
+        if (!player.equals(Minecraft.getInstance().player)) {
+            return;
+        }
         final int id = gunFXData.isRightHand() ? 1 : 0;
         this.reloadProgression[id] = true;
         this.reloadPrev[id] = 0;
@@ -47,7 +49,7 @@ public class ZPDefaultGunReloadingXF implements IZPGunReloadingFX {
         reloadingStage = Math.max(reloadingStage, DearUITRSInterface.reloadProgression);
 
         Matrix4f matrix4f = ZPGunFXGlobalData.getGunData(rightHand).getGunReloadingTransformationTarget();
-        return ZPDefaultGunReloadingXF.IDENT_MAT.lerp(matrix4f, reloadingStage, new Matrix4f());
+        return ZPDefaultGunReloadingFX.IDENT_MAT.lerp(matrix4f, reloadingStage, new Matrix4f());
     }
 
     @Override
@@ -57,7 +59,7 @@ public class ZPDefaultGunReloadingXF implements IZPGunReloadingFX {
         reloadingStage = Math.max(reloadingStage, DearUITRSInterface.reloadProgression);
 
         Matrix4f matrix4f = ZPGunFXGlobalData.getGunData(rightHand).getArmReloadingTransformationTarget();
-        return ZPDefaultGunReloadingXF.IDENT_MAT.lerp(matrix4f, reloadingStage, new Matrix4f());
+        return ZPDefaultGunReloadingFX.IDENT_MAT.lerp(matrix4f, reloadingStage, new Matrix4f());
     }
 
     private void stopReloadingAnim(int id) {
@@ -77,7 +79,7 @@ public class ZPDefaultGunReloadingXF implements IZPGunReloadingFX {
                         if (!(itemStack.getItem() instanceof ZPBaseGun zpBaseGun)) {
                             this.stopReloadingAnim(i);
                         } else {
-                            if (zpBaseGun.getClientNBT(itemStack).getTagInt(ZPTagID.GUN_RELOAD_COOLDOWN_TAG) <= 0) {
+                            if (!zpBaseGun.isUnloadingOrReloading(player, itemStack)) {
                                 this.stopReloadingAnim(i);
                             }
                         }

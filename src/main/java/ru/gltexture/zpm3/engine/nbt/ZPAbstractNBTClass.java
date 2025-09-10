@@ -99,4 +99,18 @@ public abstract class ZPAbstractNBTClass <T> {
     public void remove(@NotNull ZPTagID key) {
         this.getTag().remove(key.id());
     }
+
+    public static class ZPSimpleNBTClass <E> extends ZPAbstractNBTClass <E> {
+        private final CompoundTag compoundTag;
+
+        public ZPSimpleNBTClass(CompoundTag compoundTag) {
+            super(null);
+            this.compoundTag = compoundTag;
+        }
+
+        @Override
+        public CompoundTag getTag() {
+            return this.compoundTag;
+        }
+    }
 }

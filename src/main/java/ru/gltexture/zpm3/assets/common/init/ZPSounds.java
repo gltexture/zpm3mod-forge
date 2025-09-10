@@ -17,11 +17,31 @@ public class ZPSounds extends ZPRegistry<SoundEvent> {
     public static RegistryObject<SoundEvent> pills;
     public static RegistryObject<SoundEvent> bandage;
 
+    public static RegistryObject<SoundEvent> empty;
+
     public static RegistryObject<SoundEvent> makarov_fire;
     public static RegistryObject<SoundEvent> makarov_reload;
 
+    public static RegistryObject<SoundEvent> deagle_fire;
+    public static RegistryObject<SoundEvent> deagle_reload;
+
+    public static RegistryObject<SoundEvent> m1911_fire;
+    public static RegistryObject<SoundEvent> m1911_reload;
+
+    public static RegistryObject<SoundEvent> usp_fire;
+    public static RegistryObject<SoundEvent> usp_reload;
+
+    public static RegistryObject<SoundEvent> uzi_fire;
+    public static RegistryObject<SoundEvent> uzi_reload;
+
+    public static RegistryObject<SoundEvent> colt_fire;
+    public static RegistryObject<SoundEvent> colt_reload;
+
+    public static RegistryObject<SoundEvent> handmade_pistol_fire;
+    public static RegistryObject<SoundEvent> handmade_pistol_reload;
+
     public ZPSounds() {
-        super(Registries.SOUND_EVENT, ZPRegistryConveyor.Target.SOUNDS);
+        super(ZPRegistryConveyor.Target.SOUND_EVENT);
     }
 
     @Override

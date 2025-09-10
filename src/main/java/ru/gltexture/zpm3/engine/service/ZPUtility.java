@@ -7,6 +7,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
@@ -82,6 +85,27 @@ public final class ZPUtility {
     public static final class MEntity {
         private MEntity() {
         }
+
+        public int consumeItemFromInventory(@NotNull Inventory inventory, @NotNull Item item, int amount) {
+            int toRemove = amount;
+            int removed = 0;
+
+            for (int i = 0; i < inventory.items.size(); i++) {
+                ItemStack stack = inventory.items.get(i);
+                if (stack.getItem().equals(item)) {
+                    int stackSize = java.lang.Math.min(stack.getCount(), toRemove);
+                    inventory.removeItem(i, stackSize);
+                    removed += stackSize;
+                    toRemove -= stackSize;
+                    if (toRemove <= 0) {
+                        break;
+                    }
+                }
+            }
+
+            return removed;
+        }
+
 
         public boolean isCollidingWithBlock(@NotNull Entity entity, @NotNull Block targetBlock) {
             AABB box = entity.getBoundingBox();

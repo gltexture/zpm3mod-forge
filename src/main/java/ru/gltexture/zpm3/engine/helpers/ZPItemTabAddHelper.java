@@ -17,7 +17,7 @@ public abstract class ZPItemTabAddHelper {
 
     public static void onBuildContents(BuildCreativeModeTabContentsEvent event) {
         for (Map.Entry<RegistryObject<CreativeModeTab>, Set<RegistryObject<? extends Item>>> entry : ZPItemTabAddHelper.getItemMap().entrySet()) {
-            if (entry.getKey().isPresent() && entry.getKey().get() == event.getTab()) {
+            if (entry.getKey() != null && entry.getKey().isPresent() && entry.getKey().get() == event.getTab()) {
                 for (RegistryObject<? extends Item> item : entry.getValue()) {
                     event.accept(item.get());
                 }

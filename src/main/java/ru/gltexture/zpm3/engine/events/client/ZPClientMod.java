@@ -98,6 +98,7 @@ public final class ZPClientMod extends ZPAbstractEventMod {
         generator.addProvider(event.includeServer(), new ZPFluidTagsProvider(output, lookup, ZombiePlague3.MOD_ID, helper));
         generator.addProvider(event.includeServer(), new ZPSoundListProvider(generator, ZombiePlague3.MOD_ID));
         generator.addProvider(event.includeServer(), new ZPMixinConfigsProvider(generator, ZombiePlague3.MOD_ID));
+        generator.addProvider(event.includeServer(), new ZPDamageTypesProvider(generator, ZombiePlague3.MOD_ID));
 
         {
             ZPBlocksSubProvider subProvider1 = new ZPBlocksSubProvider(Collections.emptySet(), FeatureFlags.REGISTRY.allFlags(), ZPLootTableHelper.getLootPoolsToCreate());

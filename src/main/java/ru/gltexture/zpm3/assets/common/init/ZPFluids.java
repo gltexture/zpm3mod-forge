@@ -18,7 +18,7 @@ public class ZPFluids extends ZPRegistry<Fluid> implements IZPCollectRegistryObj
     public static RegistryObject<ForgeFlowingFluid.Flowing> toxic_flowing_fluid;
 
     public ZPFluids() {
-        super(ForgeRegistries.FLUIDS, ZPRegistryConveyor.Target.FLUID);
+        super(ZPRegistryConveyor.Target.FLUID);
     }
 
     @Override

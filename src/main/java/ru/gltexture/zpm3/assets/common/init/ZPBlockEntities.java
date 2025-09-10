@@ -20,7 +20,7 @@ public class ZPBlockEntities extends ZPRegistry<BlockEntityType<?>> {
     public static RegistryObject<BlockEntityType<ZPFadingBlockEntity>> fading_block_entity;
 
     public ZPBlockEntities() {
-        super(ForgeRegistries.BLOCK_ENTITY_TYPES, ZPRegistryConveyor.Target.BLOCK_ENTITY);
+        super(ZPRegistryConveyor.Target.BLOCK_ENTITY_TYPE);
     }
 
     @Override

@@ -30,15 +30,15 @@ import ru.gltexture.zpm3.assets.guns.rendering.fx.ZPGunFXGlobalData;
 import java.util.Objects;
 
 public class ZPDefaultPistolRenderer extends ZPAbstractGunRenderer {
-    private static final Vector3f translationGunRight = new Vector3f(0.245f, -0.05f, -1.15f);
+    private static final Vector3f translationGunRight = new Vector3f(0.245f, -0.05f, -1.1f);
     private static final Vector3f rotationGunRight = new Vector3f(-10.0f, 10.0f, 1.5f);
-    private static final Vector3f translationArmRight = new Vector3f(-0.22f, -0.39f, 0.71f);
+    private static final Vector3f translationArmRight = new Vector3f(-0.22f, -0.37f, 0.71f);
     private static final Vector3f rotationArmRight = new Vector3f(-57.0f, 173.1f, -6.0f);
 
-    private static final Vector3f translationGunLeft = new Vector3f(-0.44f, 0.18f, -0.96f);
+    private static final Vector3f translationGunLeft = new Vector3f(-0.44f, 0.18f, -0.91f);
     private static final Vector3f rotationGunLeft = new Vector3f(-61.8f, 188.6f, 9.0f);
-    private static final Vector3f translationArmLeft = new Vector3f(-0.358f, -0.67f, 0.2f);
-    private static final Vector3f rotationArmLeft = new Vector3f(-2.7f, 1.63f, 7.0f);
+    private static final Vector3f translationArmLeft = new Vector3f(-0.358f, -0.66f, 0.04f);
+    private static final Vector3f rotationArmLeft = new Vector3f(9.87f, 1.63f, 7.0f);
 
     private static final Vector3f translationMuzzleflash3PRight = new Vector3f(-0.17f, 0.44f, 0.05f);
     private static final Vector3f translationMuzzleflash3PLeft = translationMuzzleflash3PRight;

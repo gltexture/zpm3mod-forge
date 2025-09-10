@@ -76,6 +76,24 @@ public final class ZPNetworkHandler {
         }
     }
 
+    public void sendToDimensionRadius(ZPNetwork.ZPPacket packet, ResourceKey<Level> dimension, Vec3 center, double radius) {
+        final MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        if (server == null) {
+            return;
+        }
+
+        final ServerLevel level = server.getLevel(dimension);
+        if (level == null) {
+            return;
+        }
+
+        for (ServerPlayer player : level.players()) {
+            if (center.distanceTo(player.position()) <= radius) {
+                this.sendToPlayer(packet, player);
+            }
+        }
+    }
+
     public boolean isValid() {
         return this.network != null;
     }

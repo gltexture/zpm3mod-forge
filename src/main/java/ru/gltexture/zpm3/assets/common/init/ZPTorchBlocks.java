@@ -32,7 +32,7 @@ public class ZPTorchBlocks extends ZPRegistry<Block> implements IZPCollectRegist
     public static RegistryObject<ZPFadingBlockWall> torch5_wall;
 
     public ZPTorchBlocks() {
-        super(ForgeRegistries.BLOCKS, ZPRegistryConveyor.Target.BLOCK);
+        super(ZPRegistryConveyor.Target.BLOCK);
     }
 
     @Override

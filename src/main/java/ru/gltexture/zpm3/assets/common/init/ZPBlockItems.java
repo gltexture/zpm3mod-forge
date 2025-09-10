@@ -10,7 +10,7 @@ import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 
 public class ZPBlockItems extends ZPRegistry<Item> {
     public ZPBlockItems() {
-        super(ForgeRegistries.ITEMS, ZPRegistryConveyor.Target.ITEM);
+        super(ZPRegistryConveyor.Target.ITEM);
     }
 
     @Override

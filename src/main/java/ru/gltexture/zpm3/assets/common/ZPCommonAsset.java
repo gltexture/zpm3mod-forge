@@ -3,7 +3,6 @@ package ru.gltexture.zpm3.assets.common;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -17,13 +16,12 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.assets.common.events.both.ZPLivingKnockBack;
 import ru.gltexture.zpm3.assets.common.init.*;
-import ru.gltexture.zpm3.assets.common.instances.entities.ZPAcidBottleEntity;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.asset.ZPAsset;
 import ru.gltexture.zpm3.engine.core.asset.ZPAssetData;
-import ru.gltexture.zpm3.engine.helpers.ZPDispenseProjectileHelper;
 import ru.gltexture.zpm3.engine.instances.blocks.IHotLiquid;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
@@ -105,6 +103,9 @@ public class ZPCommonAsset extends ZPAsset {
         assetEntry.addRegistryClass(ZPBlockEntities.class);
         assetEntry.addRegistryClass(ZPFluids.class);
         assetEntry.addRegistryClass(ZPFluidTypes.class);
+        assetEntry.addRegistryClass(ZPDamageTypes.class);
+
+        assetEntry.addEventClass(ZPLivingKnockBack.class);
 
         ZPUtility.sides().onlyClient(() -> {
             assetEntry.addRegistryClass(ZPTabs.class);

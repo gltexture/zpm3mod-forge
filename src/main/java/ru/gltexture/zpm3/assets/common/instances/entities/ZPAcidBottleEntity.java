@@ -84,7 +84,6 @@ public class ZPAcidBottleEntity extends ZPThrowableEntity {
                 izpEntityExt.addAcidLevel(ZPConstants.DEFAULT_ACID_BOTTLE_AFFECT_TIME);
             }
             entity.hurt(this.damageSources().thrown(this, this.getOwner()), ZPConstants.DEFAULT_ACID_BOTTLE_DAMAGE);
-            //ZombiePlague3.net().sendToRadius(new AcidSpreadPacket(entity.getId(), ZPConstants.DEFAULT_ACID_BOTTLE_AFFECT_TIME), this.level(), this.position(), ZPConstants.DEFAULT_ACID_BOTTLE_PACKET_RANGE);
         }
     }
 

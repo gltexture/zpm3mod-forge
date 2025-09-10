@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import ru.gltexture.zpm3.assets.guns.item.ZPBaseGun;
-import ru.gltexture.zpm3.assets.guns.processing.input.ZPClientGunInputProcessing;
+import ru.gltexture.zpm3.assets.guns.processing.input.ZPClientGunClientTickProcessing;
 
 import javax.annotation.Nullable;
 
@@ -22,7 +22,7 @@ public class ZPMinecraftMixin {
     @Inject(method = "startAttack", at = @At("HEAD"), cancellable = true)
     private void startAttack(CallbackInfoReturnable<Boolean> ci) {
         if (this.player != null) {
-            if (ZPClientGunInputProcessing.shouldBlockRightHandAttack || this.player.getMainHandItem().getItem() instanceof ZPBaseGun) {
+            if (ZPClientGunClientTickProcessing.shouldBlockRightHandAttack || this.player.getMainHandItem().getItem() instanceof ZPBaseGun) {
                 ci.setReturnValue(false);
             }
         }

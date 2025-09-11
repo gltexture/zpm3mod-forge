@@ -49,7 +49,9 @@ public class ZPDefaultPistolServerLogic implements IGunLogicProcessor {
                 final Vector3f motion = new Vector3f(startPos.x, startPos.y, startPos.z).sub(new Vector3f(pos.x, pos.y, pos.z)).normalize();
                 ZombiePlague3.net().sendToDimensionRadius(new ZPBulletHitPacket(blockPos.x,blockPos.y, blockPos.z, motion.x, motion.y, motion.z, pos.x, pos.y, pos.z, virtualBulletHitResult.bulletHitType().getFlag()), serverLevel.dimension(), new Vec3(pos), ZPConstants.DEFAULT_GUN_ACTION_PACKET_RANGE);
                 ZombiePlague3.net().sendToPlayer(new ZPBulletTracePacket(pos.x, pos.y, pos.z, isRightHand), (ServerPlayer) player);
-         //       item.setCurrentAmmo(player, itemStack, currentAmmo - 1);
+                if (!player.isCreative()) {
+                    item.setCurrentAmmo(player, itemStack, currentAmmo - 1);
+                }
                 itemStack.hurtAndBreak(1, player, e -> {
                     e.broadcastBreakEvent(isRightHand ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
                 });

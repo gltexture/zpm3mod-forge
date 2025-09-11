@@ -138,6 +138,7 @@ public class ZPDefaultPistolClientLogic implements IGunLogicProcessor {
         }
 
         if (!pIsSelected && !offHand) {
+            item.setCurrentTimeBeforeShoot(pEntity, pStack, 10);
             item.setCurrentReloadCooldown(pEntity, pStack, 0);
             item.setReloading(pEntity, pStack, false);
             item.setUnloading(pEntity, pStack, false);

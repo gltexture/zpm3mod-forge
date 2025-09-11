@@ -259,7 +259,7 @@ public class ZPClientGunClientTickProcessing implements IZPGunInputProcessor {
                         if (rightFire) {
                             if (rightIsGun) {
                                 rightGun.getClientGunLogic().tryToShoot(level, player, rightGun, itemStackInRightHand, true);
-                                ZPClientGunClientTickProcessing.dualShootTickCounter = flag ? rightGun.getGunProperties().getShootCooldown() : Math.max(ZPClientGunClientTickProcessing.dualShootTickCounter, 1);
+                                ZPClientGunClientTickProcessing.dualShootTickCounter = flag ? rightGun.getGunProperties().getShootCooldown() : 0;
                                 ZPClientGunClientTickProcessing.lastShotLeft = false;
                             }
                         }
@@ -268,7 +268,7 @@ public class ZPClientGunClientTickProcessing implements IZPGunInputProcessor {
                         if (leftFire) {
                             if (leftIsGun) {
                                 leftGun.getClientGunLogic().tryToShoot(level, player, leftGun, itemStackInLeftHand, false);
-                                ZPClientGunClientTickProcessing.dualShootTickCounter = flag ? leftGun.getGunProperties().getShootCooldown() : Math.max(ZPClientGunClientTickProcessing.dualShootTickCounter, 1);
+                                ZPClientGunClientTickProcessing.dualShootTickCounter = flag ? leftGun.getGunProperties().getShootCooldown() : 0;
                                 ZPClientGunClientTickProcessing.lastShotLeft = true;
                             }
                         }

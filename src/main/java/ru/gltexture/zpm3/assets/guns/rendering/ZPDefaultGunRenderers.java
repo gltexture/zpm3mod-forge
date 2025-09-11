@@ -16,8 +16,7 @@ public abstract class ZPDefaultGunRenderers {
     public static final @NotNull IZPGunRecoilFX defaultRecoilFXUniversal = ZPDefaultGunRecoilFX.create();
     public static final @NotNull IZPGunMuzzleflashFX defaultMuzzleflashFXUniversal = ZPDefaultGunMuzzleflashFX.create();
     public static final @NotNull IZPGunReloadingFX defaultReloadingFXUniversal = ZPDefaultGunReloadingFX.create();
-
-    public static final @NotNull IZPGunParticlesFX defaultSmokeFX = ZPDefaultGunParticlesFX.create();
+    public static final @NotNull IZPGunParticlesFX defaultParticlesFX = ZPDefaultGunParticlesFX.create();
 
     private ZPDefaultGunRenderers() {
     }
@@ -30,13 +29,14 @@ public abstract class ZPDefaultGunRenderers {
         ZPClientCallbacksManager.INSTANCE.addGunReloadStartCallback(ZPDefaultGunRenderers.gunReloadStartCallback());
         ZPClientCallbacksManager.INSTANCE.addClientTickCallback(ZPDefaultGunRenderers.defaultRecoilFXUniversal);
         ZPClientCallbacksManager.INSTANCE.addClientTickCallback(ZPDefaultGunRenderers.defaultReloadingFXUniversal);
+        ZPClientCallbacksManager.INSTANCE.addClientTickCallback(ZPDefaultGunRenderers.defaultParticlesFX);
     }
 
     private static ZPClientCallbacks.ZPGunShotCallback gunShotCallback() {
         return ((player, baseGun, itemStack, gunFXData) ->  {
             ZPDefaultGunRenderers.defaultMuzzleflashFXUniversal.triggerMuzzleflash(player, baseGun, itemStack, gunFXData);
             ZPDefaultGunRenderers.defaultRecoilFXUniversal.triggerRecoil(player, baseGun, itemStack, gunFXData);
-            ZPDefaultGunRenderers.defaultSmokeFX.triggerParticles(player, baseGun, itemStack, gunFXData);
+            ZPDefaultGunRenderers.defaultParticlesFX.triggerParticles(player, baseGun, itemStack, gunFXData);
         });
     }
 

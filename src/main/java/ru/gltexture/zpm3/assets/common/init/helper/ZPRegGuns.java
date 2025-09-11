@@ -193,7 +193,6 @@ public abstract class ZPRegGuns {
             ZPItems.deagle = regSupplier.register("deagle",
                     () -> new ZPGunPistol(new Item.Properties(), new ZPBaseGun.GunProperties(ZPItems._deagle.get())
                             .setDamage(7)
-                            .setAuto(true)
                             .setDurability(300)
                             .setInaccuracy(2.25f)
                             .setMaxAmmo(7)
@@ -212,7 +211,6 @@ public abstract class ZPRegGuns {
             ZPItems.golden_deagle = regSupplier.register("golden_deagle",
                     () -> new ZPGunPistol(new Item.Properties(), new ZPBaseGun.GunProperties(ZPItems._deagle.get())
                             .setDamage(7)
-                            .setAuto(true)
                             .setDurability(500)
                             .setInaccuracy(2.25f)
                             .setMaxAmmo(9)

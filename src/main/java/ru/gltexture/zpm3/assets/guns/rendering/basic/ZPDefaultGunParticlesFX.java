@@ -6,15 +6,14 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
-import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.event.TickEvent;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joml.*;
-import ru.gltexture.zpm3.assets.debug.imgui.DearUITRSInterface;
 import ru.gltexture.zpm3.assets.fx.init.ZPParticles;
 import ru.gltexture.zpm3.assets.fx.particles.options.ColoredSmokeOptions;
 import ru.gltexture.zpm3.assets.fx.particles.options.GunShellOptions;
@@ -28,7 +27,10 @@ import java.lang.Math;
 import java.util.Objects;
 
 public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
+    private final float[] shotTicksAccumulator;
+
     protected ZPDefaultGunParticlesFX() {
+        this.shotTicksAccumulator = new float[] {0.0f, 0.0f};
     }
 
     public static ZPDefaultGunParticlesFX create() {
@@ -43,14 +45,22 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
         if (gunFXData.muzzleflashTime() < 0.0f) {
             return;
         }
+        final Minecraft mc = Minecraft.getInstance();
+        if (player.equals(mc.player)) {
+            this.shotTicksAccumulator[gunFXData.isRightHand() ? 1 : 0] = Math.min(this.shotTicksAccumulator[gunFXData.isRightHand() ? 1 : 0] + Math.max(gunFXData.recoilStrength() / 1.5f, 0.75f), 8.0f);
+        }
         if (baseGun.getGunProperties().getCustomShotParticlesEmitter() != null) {
-            baseGun.getGunProperties().getCustomShotParticlesEmitter().emmit(player, baseGun, itemStack, gunFXData);
+            baseGun.getGunProperties().getCustomShotParticlesEmitter().emmit(player, baseGun, itemStack, gunFXData, this.shotTicksAccumulator);
         } else {
-            IZPGunParticlesFX.DEFAULT_PARTICLES_EMITTER.emmit(player, baseGun, itemStack, gunFXData);
+            IZPGunParticlesFX.DEFAULT_PARTICLES_EMITTER.emmit(player, baseGun, itemStack, gunFXData, this.shotTicksAccumulator);
         }
     }
 
     public static void emmitParticleSmoke(boolean isRightHand, Player player, boolean smoky) {
+        ZPDefaultGunParticlesFX.emmitParticleSmoke(isRightHand, player, smoky, false);
+    }
+
+    public static void emmitParticleSmoke(boolean isRightHand, Player player, boolean smoky, boolean hotBarrel) {
         final Minecraft mc = Minecraft.getInstance();
 
         Vector3f spawnPos = new Vector3f(0.0f);
@@ -97,10 +107,16 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
         motion.mul(smoky ? 0.2f : 1.0f);
         motion.add(ZPRandom.instance.randomVector3f(smoky ? 0.02f : 0.05f, new Vector3f(smoky ? 0.04f : 0.1f)));
 
+        if (hotBarrel) {
+            motion.mul(0.0f).add(0.0f, 0.05f, 0.0f);
+        } else {
+            motion.add(0.0f, (smoky ? 0.02f : 0.1f), 0.0f);
+        }
+
         final Vector3f color = new Vector3f(smoky ? 0.9f : 0.7f).add(ZPRandom.instance.randomVector3f(0.05f, new Vector3f(0.1f, 0.1f, 0.1f)));
         final int lifetime = (smoky ? 40 : 10) + ZPRandom.getRandom().nextInt(10);
 
-        Objects.requireNonNull(mc.level).addParticle(new ColoredSmokeOptions(ZPParticles.colored_cloud.get(), color, smoky ? 0.9f : 0.8f, lifetime), false, spawnPos.x, spawnPos.y, spawnPos.z, motion.x(), motion.y() + (smoky ? 0.02f : 0.1f), motion.z());
+        Objects.requireNonNull(mc.level).addParticle(new ColoredSmokeOptions(ZPParticles.colored_cloud.get(), color, smoky ? 0.9f : 0.8f, lifetime), false, spawnPos.x, spawnPos.y, spawnPos.z, motion.x(), motion.y(), motion.z());
     }
 
     public static void emmitParticleShell(boolean isRightHand, Player player) {
@@ -194,5 +210,43 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
         }
 
         return spawnPos;
+    }
+
+    @Override
+    public void onTick(TickEvent.@NotNull Phase phase) {
+        if (phase == TickEvent.Phase.START) {
+            Player player = Minecraft.getInstance().player;
+            if (player != null) {
+                @Nullable final ItemStack itemStackInRightHand = player.getMainHandItem();
+                @Nullable final ItemStack itemStackInLeftHand = player.getOffhandItem();
+
+                if (itemStackInRightHand.getItem() instanceof ZPBaseGun baseGun) {
+                    if (baseGun.getCurrentTimeBeforeShoot(player, itemStackInRightHand) > 0) {
+                        this.shotTicksAccumulator[1] = 0.0f;
+                    }
+                } else {
+                    this.shotTicksAccumulator[1] = 0.0f;
+                }
+                if (itemStackInLeftHand.getItem() instanceof ZPBaseGun baseGun) {
+                    if (baseGun.getCurrentTimeBeforeShoot(player, itemStackInLeftHand) > 0) {
+                        this.shotTicksAccumulator[0] = 0.0f;
+                    }
+                } else {
+                    this.shotTicksAccumulator[0] = 0.0f;
+                }
+
+                if (player.tickCount % 3 == 0) {
+                    if (this.shotTicksAccumulator[0] >= 3.0f) {
+                        ZPDefaultGunParticlesFX.emmitParticleSmoke(false, player, false, true);
+                    }
+                    if (this.shotTicksAccumulator[1] >= 3.0f) {
+                        ZPDefaultGunParticlesFX.emmitParticleSmoke(true, player, false, true);
+                    }
+                }
+                final float tps = 0.2f;
+                this.shotTicksAccumulator[0] = Math.max(this.shotTicksAccumulator[0] - tps, 0.0f);
+                this.shotTicksAccumulator[1] = Math.max(this.shotTicksAccumulator[1] - tps, 0.0f);
+            }
+        }
     }
 }

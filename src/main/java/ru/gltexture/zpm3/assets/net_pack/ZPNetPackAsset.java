@@ -3,10 +3,7 @@ package ru.gltexture.zpm3.assets.net_pack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.assets.net_pack.packets.ZPAcidSpreadPacket;
-import ru.gltexture.zpm3.assets.net_pack.packets.ZPBulletHitPacket;
-import ru.gltexture.zpm3.assets.net_pack.packets.ZPBulletTracePacket;
-import ru.gltexture.zpm3.assets.net_pack.packets.ZPGunActionPacket;
+import ru.gltexture.zpm3.assets.net_pack.packets.*;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.asset.ZPAsset;
 import ru.gltexture.zpm3.engine.core.asset.ZPAssetData;
@@ -48,5 +45,6 @@ public class ZPNetPackAsset extends ZPAsset {
         assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(ZPGunActionPacket.class, ZPGunActionPacket.encoder(), ZPGunActionPacket.decoder()));
         assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(ZPBulletHitPacket.class, ZPBulletHitPacket.encoder(), ZPBulletHitPacket.decoder()));
         assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(ZPBulletTracePacket.class, ZPBulletTracePacket.encoder(), ZPBulletTracePacket.decoder()));
+        assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(ZPNetCheckPacket.class, ZPNetCheckPacket.encoder(), ZPNetCheckPacket.decoder()));
     }
 }

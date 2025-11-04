@@ -1,5 +1,6 @@
 package ru.gltexture.zpm3.assets.guns.rendering;
 
+import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.shaders.Uniform;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -51,7 +52,7 @@ public abstract class ZPGunLayersProcessing {
             GL46.glBlendFuncSeparate(GL46.GL_SRC_ALPHA, GL46.GL_ONE_MINUS_SRC_ALPHA, GL46.GL_ONE, GL46.GL_ONE_MINUS_SRC_ALPHA);
             mainFbo.bindFBO();
             GL46.glClearBufferfv(GL46.GL_COLOR, 0, new float[]{1.0f, 0.9f, 0.8f, 0.0f});
-            GL46.glViewport(0, 0, (int) (w * ZPDefaultGunMuzzleflashFX.MFLASH_FBO_SCALE), (int) (h * ZPDefaultGunMuzzleflashFX.MFLASH_FBO_SCALE));
+            GL46.glViewport(0, 0, (int) (w), (int) (h));
             {
                 ClientRenderFunctions.renderTextureIDScreenOverlayFromFBO(Objects.requireNonNull(ZPDefaultShaders.image.getShaderInstance()), (shaderToRender) -> {
                     Uniform mod = shaderToRender.getUniform("sModelViewMat");
@@ -141,74 +142,6 @@ public abstract class ZPGunLayersProcessing {
         GL46.glBlendFuncSeparate(GL46.GL_SRC_ALPHA, GL46.GL_ONE_MINUS_SRC_ALPHA, GL46.GL_ONE, GL46.GL_ONE_MINUS_SRC_ALPHA);
     }
 
-    public static void postRenderMflash3Person(@NotNull Matrix4f orthographic2D, @NotNull Matrix4f fullMatrix, @NotNull Matrix4f halfMatrix, ZPDefaultGunMuzzleflashFX defaultGunMuzzleflashFX) {
-        if (ZPDefaultGunMuzzleflashFX.muzzleflash3dpFBO.getTexturePrograms().isEmpty() || ZPDefaultShaders.image.getShaderInstance() == null) {
-            return;
-        }
-        final int w = ClientRenderFunctions.getWindowSize().x;
-        final int h = ClientRenderFunctions.getWindowSize().y;
-        final int iterations = DearUITRSInterface.muzzleflash3PersonFboPingPongOperations;
-        FBOTexture2DProgram mainFbo = ZPDefaultGunMuzzleflashFX.muzzleflashBlurFBO;
-        FBOTexture2DProgram secondFbo = ZPDefaultGunMuzzleflashFX.muzzleflashBlurFBOPingPong;
-        FBOTexture2DProgram temp = null;
-
-        {
-            GL46.glEnable(GL46.GL_BLEND);
-            GL46.glBlendEquation(GL46.GL_FUNC_ADD);
-            GL46.glBlendFuncSeparate(GL46.GL_SRC_ALPHA, GL46.GL_ONE_MINUS_SRC_ALPHA, GL46.GL_ONE, GL46.GL_ONE_MINUS_SRC_ALPHA);
-            mainFbo.bindFBO();
-            GL46.glClearBufferfv(GL46.GL_COLOR, 0, new float[]{1.0f, 0.9f, 0.8f, 0.0f});
-            {
-                ClientRenderFunctions.renderTextureIDScreenOverlayFromFBO(Objects.requireNonNull(ZPDefaultShaders.image.getShaderInstance()), (shaderToRender) -> {
-                    Uniform mod = shaderToRender.getUniform("sModelViewMat");
-                    Uniform proj = shaderToRender.getUniform("sProjMat");
-                    Objects.requireNonNull(proj).set(orthographic2D);
-                    Objects.requireNonNull(mod).set(fullMatrix);
-                }, List.of(Pair.of("texture_map", ZPDefaultGunMuzzleflashFX.muzzleflash3dpFBO.getTextureByIndex(1))));
-            }
-            mainFbo.unBindFBO();
-        }
-
-        { //BLOOM PING-PONG BLUR(BOX)
-            for (int i = 0; i < iterations; i++) {
-                mainFbo.bindFBO();
-                ClientRenderFunctions.renderTextureIDScreenOverlayFromFBO(Objects.requireNonNull(ZPDefaultShaders.blur_box.getShaderInstance()), (shaderToRender) -> {
-                    Uniform mod = shaderToRender.getUniform("sModelViewMat");
-                    Uniform proj = shaderToRender.getUniform("sProjMat");
-                    Uniform blur_radius = shaderToRender.getUniform("blur_radius");
-                    Objects.requireNonNull(blur_radius).set(DearUITRSInterface.muzzleFlash3PersonBlurring);
-                    Objects.requireNonNull(proj).set(orthographic2D);
-                    Objects.requireNonNull(mod).set(halfMatrix);
-                }, List.of(Pair.of("texture_map", mainFbo.getTextureByIndex(0))));
-                mainFbo.unBindFBO();
-
-                mainFbo.copyFBOtoFBOColor(secondFbo.getFrameBufferId(), new Pair[]{Pair.of(GL46.GL_COLOR_ATTACHMENT0, GL46.GL_COLOR_ATTACHMENT0)}
-                        , new Vector2i((int) (w * ZPDefaultGunMuzzleflashFX.MFLASH_FBO_SCALE), (int) (h * ZPDefaultGunMuzzleflashFX.MFLASH_FBO_SCALE))
-                        , new Vector2i((int) (w * ZPDefaultGunMuzzleflashFX.MFLASH_FBO_SCALE), (int) (h * ZPDefaultGunMuzzleflashFX.MFLASH_FBO_SCALE)));
-                temp = mainFbo;
-                mainFbo = secondFbo;
-                secondFbo = temp;
-            }
-        }
-
-        Minecraft.getInstance().getMainRenderTarget().bindWrite(true);
-        //GL46.glBlendFuncSeparate(GL46.GL_ONE, GL46.GL_ONE_MINUS_SRC_ALPHA, GL46.GL_ONE, GL46.GL_ONE_MINUS_SRC_ALPHA);
-        ClientRenderFunctions.renderTextureIDScreenOverlayFromFBO(Objects.requireNonNull(ZPDefaultShaders.image.getShaderInstance()), (shaderToRender) -> {
-            Uniform mod = shaderToRender.getUniform("sModelViewMat");
-            Uniform proj = shaderToRender.getUniform("sProjMat");
-            Objects.requireNonNull(proj).set(orthographic2D);
-            Objects.requireNonNull(mod).set(fullMatrix);
-        }, List.of(Pair.of("texture_map", ZPDefaultGunMuzzleflashFX.muzzleflash3dpFBO.getTextureByIndex(0))));
-
-        ClientRenderFunctions.renderTextureIDScreenOverlayFromFBO(Objects.requireNonNull(ZPDefaultShaders.image.getShaderInstance()), (shaderToRender) -> {
-            Uniform mod = shaderToRender.getUniform("sModelViewMat");
-            Uniform proj = shaderToRender.getUniform("sProjMat");
-            Objects.requireNonNull(proj).set(orthographic2D);
-            Objects.requireNonNull(mod).set(fullMatrix);
-        }, List.of(Pair.of("texture_map", ZPDefaultGunMuzzleflashFX.muzzleflashBlurFBO.getTextureByIndex(0))));
-        //GL46.glBlendFuncSeparate(GL46.GL_SRC_ALPHA, GL46.GL_ONE_MINUS_SRC_ALPHA, GL46.GL_ONE, GL46.GL_ONE_MINUS_SRC_ALPHA);
-    }
-
     public static void postRender(ZPDefaultGunMuzzleflashFX defaultMuzzleflashFXUniversal) {
         final int w = ClientRenderFunctions.getWindowSize().x;
         final int h = ClientRenderFunctions.getWindowSize().y;
@@ -218,9 +151,6 @@ public abstract class ZPGunLayersProcessing {
 
         if (ZPDefaultGunMuzzleflashFX.useFancyRendering1person()) {
             ZPGunLayersProcessing.postRenderMflash1Person(orthographic2D, fullMatrix, halfMatrix, defaultMuzzleflashFXUniversal);
-        }
-        if (ZPDefaultGunMuzzleflashFX.useFancyRendering3person()) {
-            ZPGunLayersProcessing.postRenderMflash3Person(orthographic2D, fullMatrix, halfMatrix, defaultMuzzleflashFXUniversal);
         }
     }
 }

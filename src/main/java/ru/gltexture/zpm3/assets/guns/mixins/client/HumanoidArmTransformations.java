@@ -4,9 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import ru.gltexture.zpm3.assets.debug.imgui.DearUITRSInterface;
 import ru.gltexture.zpm3.assets.guns.item.ZPBaseGun;
-import ru.gltexture.zpm3.engine.nbt.ZPTagID;
 
 public abstract class HumanoidArmTransformations {
     public static void setupAnimZp(HumanoidModel<?> model, LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
@@ -24,17 +22,32 @@ public abstract class HumanoidArmTransformations {
         ItemStack mainHand = entity.getMainHandItem();
         ItemStack offHand = entity.getOffhandItem();
 
-        if (HumanoidArmTransformations.isPistol(mainHand)) {
+        final boolean gunIsRight = HumanoidArmTransformations.isGun(mainHand);
+        final boolean gunIsLeft = HumanoidArmTransformations.isGun(offHand);
+        final boolean rifleIsRight = HumanoidArmTransformations.isRifleType(mainHand);
+        final boolean rifleIsLeft = HumanoidArmTransformations.isRifleType(offHand);
+
+        if (gunIsRight) {
             model.rightArm.xRot = -1.5F + headPitchRad;
             model.rightArm.yRot = headYawRad;
             model.rightArm.zRot = 0.0F;
             model.rightArm.x = -5.0F;
             model.rightArm.y = 2.0F;
         }
-
-        if (HumanoidArmTransformations.isPistol(offHand)) {
+        if (gunIsLeft) {
             model.leftArm.xRot = -1.5F + headPitchRad;
             model.leftArm.yRot = headYawRad;
+            model.leftArm.zRot = 0.0F;
+            model.leftArm.x = 5.0F;
+            model.leftArm.y = 2.0F;
+        }
+
+        if (rifleIsRight) {
+            model.leftArm.xRot = -1.5F + headPitchRad;
+            model.leftArm.yRot = headYawRad;
+            if (!gunIsLeft) {
+                model.leftArm.yRot += 0.5f;
+            }
             model.leftArm.zRot = 0.0F;
             model.leftArm.x = 5.0F;
             model.leftArm.y = 2.0F;
@@ -45,6 +58,9 @@ public abstract class HumanoidArmTransformations {
         if (mainHand.getItem() instanceof ZPBaseGun baseGun) {
             if (baseGun.isUnloadingOrReloading(entity, mainHand)) {
                 reloadingRight = true;
+                if (rifleIsRight || rifleIsLeft) {
+                    reloadingLeft = true;
+                }
             }
         }
         if (offHand.getItem() instanceof ZPBaseGun baseGun) {
@@ -66,7 +82,11 @@ public abstract class HumanoidArmTransformations {
         }
     }
 
-    private static boolean isPistol(ItemStack stack) {
+    private static boolean isGun(ItemStack stack) {
         return stack != null && stack.getItem() instanceof ZPBaseGun;
+    }
+
+    private static boolean isRifleType(ItemStack stack) {
+        return stack != null && stack.getItem() instanceof ZPBaseGun baseGun && baseGun.getGunProperties().getHeldType().equals(ZPBaseGun.GunProperties.HeldType.RIFLE);
     }
 }

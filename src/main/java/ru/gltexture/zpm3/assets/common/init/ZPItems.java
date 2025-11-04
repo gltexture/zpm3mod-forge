@@ -5,6 +5,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.init.helper.*;
+import ru.gltexture.zpm3.assets.guns.item.ZPGunClassicRifle;
+import ru.gltexture.zpm3.assets.guns.item.ZPGunShotgun;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.assets.guns.item.ZPGunPistol;
 import ru.gltexture.zpm3.engine.instances.items.*;
@@ -72,6 +74,15 @@ public class ZPItems extends ZPRegistry<Item> implements IZPCollectRegistryObjec
 
     public static RegistryObject<ZPGunPistol> uzi;
     public static RegistryObject<ZPItem> _uzi;
+
+    public static RegistryObject<ZPGunShotgun> shotgun;
+    public static RegistryObject<ZPItem> _shotgun;
+
+    public static RegistryObject<ZPGunPistol> akm;
+    public static RegistryObject<ZPItem> _akm;
+
+    public static RegistryObject<ZPGunClassicRifle> mosin;
+    public static RegistryObject<ZPItem> _mosin;
 
     public ZPItems() {
         super(ZPRegistryConveyor.Target.ITEM);

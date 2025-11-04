@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.ClipContext;
@@ -20,8 +21,11 @@ import org.joml.*;
 import ru.gltexture.zpm3.assets.common.damage.ZPDamageSources;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
+import ru.gltexture.zpm3.engine.mixins.ext.IZPEntityExt;
 
 import java.lang.Math;
+import java.util.Optional;
+import java.util.function.Predicate;
 
 import static net.minecraft.world.level.BlockGetter.traverseBlocks;
 
@@ -107,14 +111,26 @@ public class VirtualBullet {
 
         if (hitResult != null) {
             final AABB aabb = this.entity.getBoundingBox().expandTowards(new Vec3(direction.mul(this.maxDistance))).inflate(1.0D);
-            EntityHitResult entityHitResult = ProjectileUtil.getEntityHitResult(
-                    level,
-                    this.entity,
-                    new Vec3(startPoint),
-                    new Vec3(hitResult.hitPoint()),
-                    aabb,
-                    (target) -> !target.isSpectator() && target.isPickable() && target != this.entity,
-                    0.0f);
+            EntityHitResult entityHitResult = null;
+            if (entity instanceof ServerPlayer serverPlayer) {
+                entityHitResult = this.getEntityHitResult(serverPlayer,
+                        level,
+                        this.entity,
+                        new Vec3(startPoint),
+                        new Vec3(hitResult.hitPoint()),
+                        aabb,
+                        (target) -> !target.isSpectator() && target.isPickable() && target != this.entity,
+                        0.0f);
+            } else {
+                entityHitResult = ProjectileUtil.getEntityHitResult(
+                        level,
+                        this.entity,
+                        new Vec3(startPoint),
+                        new Vec3(hitResult.hitPoint()),
+                        aabb,
+                        (target) -> !target.isSpectator() && target.isPickable() && target != this.entity,
+                        0.0f);
+            }
 
             if (entityHitResult != null && entityHitResult.getType() == HitResult.Type.ENTITY) {
                 hitResult = new VirtualBulletHitResult(null, entityHitResult.getLocation().toVector3f(), entityHitResult.getEntity(), this.damageEntity(level, entityHitResult.getEntity(), this.entity, this.damage), VirtualBulletHitType.ENTITY);
@@ -122,6 +138,28 @@ public class VirtualBullet {
         }
 
         this.setVirtualBulletHitResult(hitResult);
+    }
+
+    private @Nullable EntityHitResult getEntityHitResult(@NotNull ServerPlayer serverPlayer, Level pLevel, Entity pProjectile, Vec3 pStartVec, Vec3 pEndVec, AABB pBoundingBox, Predicate<Entity> pFilter, float pInflationAmount) {
+        double d0 = Double.MAX_VALUE;
+        Entity entity = null;
+
+        for (Entity entity1 : pLevel.getEntities(pProjectile, pBoundingBox, pFilter)) {
+            if (!entity1.isAlive()) {
+                continue;
+            }
+            AABB aabb = ((IZPEntityExt) entity1).getAABBWithLagCompensation(entity1, serverPlayer).inflate(pInflationAmount);
+            Optional<Vec3> optional = aabb.clip(pStartVec, pEndVec);
+            if (optional.isPresent()) {
+                double d1 = pStartVec.distanceToSqr(optional.get());
+                if (d1 < d0) {
+                    entity = entity1;
+                    d0 = d1;
+                }
+            }
+        }
+
+        return entity == null ? null : new EntityHitResult(entity);
     }
 
     private float damageEntity(@NotNull Level level, @NotNull Entity entityToDamage, @NotNull Entity attacker, float amount) {

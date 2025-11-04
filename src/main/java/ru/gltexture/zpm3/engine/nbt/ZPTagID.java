@@ -11,8 +11,10 @@ public record ZPTagID(String id) {
     public static ZPTagID GUN_IS_UNLOADING_TAG = new ZPTagID("GUN_IS_UNLOADING_TAG");
     public static ZPTagID GUN_IS_RELOADING_TAG = new ZPTagID("GUN_IS_RELOADING_TAG");
     public static ZPTagID GUN_IS_JAMMED_TAG = new ZPTagID("GUN_IS_JAMMED_TAG");
+    public static ZPTagID GUN_AMMO_BEFORE_RELOAD = new ZPTagID("GUN_CL_AMMO_BEFORE_RELOAD");
 
     public static ZPTagID GUN_CL_TIME_BEFORE_SHOOT = new ZPTagID("GUN_CL_TIME_BEFORE_SHOOT");
+    public static ZPTagID GUN_CL_TIME_BEFORE_RELOAD = new ZPTagID("GUN_CL_TIME_BEFORE_RELOAD");
     public static ZPTagID GUN_CL_SYNC_COOLDOWN = new ZPTagID("GUN_CL_SYNC");
 
     // ENTITIES

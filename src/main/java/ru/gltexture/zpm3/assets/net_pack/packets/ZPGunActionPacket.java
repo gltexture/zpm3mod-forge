@@ -19,6 +19,7 @@ public class ZPGunActionPacket implements ZPNetwork.ZPPacket {
     public final static int SHOT = 0x01;
     public final static int RELOAD = 0x02;
     public final static int UNLOAD = 0x03;
+    public final static int RELOAD_STOP = 0x04;
 
     private final int entityId;
     private final int action;
@@ -65,7 +66,7 @@ public class ZPGunActionPacket implements ZPNetwork.ZPPacket {
                                 }
                             }
                         }
-                        case ZPGunActionPacket.RELOAD -> {
+                        case ZPGunActionPacket.RELOAD, ZPGunActionPacket.RELOAD_STOP -> {
                             if (baseGun.getServerGunLogic().tryToReload(serverLevel, sender, baseGun, stack, false, this.isRightHand)) {
                                 this.sendPacketFromServer(sender, serverLevel);
                             }

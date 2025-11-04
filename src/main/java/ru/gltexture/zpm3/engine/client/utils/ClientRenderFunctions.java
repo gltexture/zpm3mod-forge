@@ -16,6 +16,7 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL46;
@@ -97,6 +98,70 @@ public abstract class ClientRenderFunctions {
         for (Pair<String, ITexture2DProgram> pair : texturesWithUniforms) {
             pair.second().unBindSampler(texUnit);
             texUnit++;
+        }
+
+        GL46.glEnable(GL46.GL_DEPTH_TEST);
+        GL46.glActiveTexture(GL46.GL_TEXTURE0);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+    }
+
+    //TEMP
+    @Deprecated
+    public static void renderTextureIDScreenOverlayFromFBO2(@NotNull ShaderInstance shaderToRender, @NotNull Consumer<ShaderInstance> doUniforms, @Nullable List<Pair<String, ITexture2DProgram>> texturesWithUniforms, @Nullable List<Pair<String, Integer>> texturesWithUniforms2) {
+        shaderToRender.apply();
+
+        GL46.glDisable(GL46.GL_CULL_FACE);
+        GL46.glEnable(GL46.GL_BLEND);
+        GL46.glDisable(GL46.GL_DEPTH_TEST);
+
+        int texUnit = 0;
+        if (texturesWithUniforms != null) {
+            for (Pair<String, ITexture2DProgram> pair : texturesWithUniforms) {
+                String uniformName = pair.first();
+                ITexture2DProgram textureProgram = pair.second();
+
+                Uniform uniform = shaderToRender.getUniform(uniformName);
+                if (uniform != null) {
+                    uniform.set(texUnit);
+                }
+
+                GL46.glActiveTexture(GL46.GL_TEXTURE0 + texUnit);
+                textureProgram.bindSampler(texUnit);
+                textureProgram.bindTexture();
+                texUnit++;
+            }
+        }
+
+        if (texturesWithUniforms2 != null) {
+            int samplerDef = GL46.glGenSamplers();
+            GL46.glSamplerParameteri(samplerDef, GL46.GL_TEXTURE_MAG_FILTER, GL46.GL_NEAREST);
+            GL46.glSamplerParameteri(samplerDef, GL46.GL_TEXTURE_MIN_FILTER, GL46.GL_NEAREST);
+            GL46.glSamplerParameteri(samplerDef, GL46.GL_TEXTURE_WRAP_S, GL46.GL_CLAMP_TO_EDGE);
+            GL46.glSamplerParameteri(samplerDef, GL46.GL_TEXTURE_WRAP_T, GL46.GL_CLAMP_TO_EDGE);
+            for (Pair<String, Integer> pair : texturesWithUniforms2) {
+                String uniformName = pair.first();
+                Uniform uniform = shaderToRender.getUniform(uniformName);
+                if (uniform != null) {
+                    uniform.set(texUnit);
+                }
+
+                GL46.glActiveTexture(GL46.GL_TEXTURE0 + texUnit);
+                GL46.glBindSampler(texUnit, samplerDef);
+                GL46.glBindTexture(GL46.GL_TEXTURE_2D, pair.second());
+                texUnit++;
+            }
+            GL46.glDeleteSamplers(samplerDef);
+        }
+
+        doUniforms.accept(shaderToRender);
+        ZPRenderHelper.INSTANCE.renderZpScreenMesh();
+
+        if (texturesWithUniforms != null) {
+            texUnit = 0;
+            for (Pair<String, ITexture2DProgram> pair : texturesWithUniforms) {
+                pair.second().unBindSampler(texUnit);
+                texUnit++;
+            }
         }
 
         GL46.glEnable(GL46.GL_DEPTH_TEST);

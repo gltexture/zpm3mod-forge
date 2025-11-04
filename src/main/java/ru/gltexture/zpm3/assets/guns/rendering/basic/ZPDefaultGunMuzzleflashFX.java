@@ -13,6 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.event.TickEvent;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
@@ -20,7 +21,9 @@ import org.joml.Vector2i;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL46;
 import ru.gltexture.zpm3.assets.debug.imgui.DearUITRSInterface;
+import ru.gltexture.zpm3.assets.guns.events.ZPGunPostRender;
 import ru.gltexture.zpm3.assets.guns.mixins.ext.IZPPlayerClientDataExt;
+import ru.gltexture.zpm3.assets.guns.processing.input.ZPClientGunClientTickProcessing;
 import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
 import ru.gltexture.zpm3.engine.client.rendering.gl.programs.fbo.FBOTexture2DProgram;
 import ru.gltexture.zpm3.engine.client.rendering.gl.programs.fbo.attachments.T2DAttachmentContainer;
@@ -31,6 +34,7 @@ import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPDefaultShaders;
 import ru.gltexture.zpm3.engine.client.utils.ClientRenderFunctions;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.assets.guns.item.ZPBaseGun;
+import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 
 import java.util.Objects;
 
@@ -41,15 +45,18 @@ public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderH
     public static final float DEFAULT_BLURRING_3P = 2.0f;
     public static final float MUZZLEFLASH_3PERSON_TIME = 0.35f;
 
-    public static String MUZZLEFLASH_TEXTURE_DEF = "textures/fx/muzzleflash1.png";
+    public static String MUZZLEFLASH1_TEXTURE_DEF = "textures/fx/muzzleflash1.png";
+    public static String MUZZLEFLASH3_TEXTURE_DEF = "textures/fx/muzzleflash2.png";
+
     public static ResourceLocation muzzleFlash1;
+    public static ResourceLocation muzzleFlash3;
     public static FBOTexture2DProgram muzzleflashFBO;
-    public static FBOTexture2DProgram muzzleflash3dpFBO;
     public static FBOTexture2DProgram muzzleflashBlurFBO;
     public static FBOTexture2DProgram muzzleflashBlurFBOPingPong;
 
     public static final float MFLASH_FBO_SCALE = 0.1f;
 
+    private final float[] initialRotation;
     private final float[] muzzleflashScissor1Person;
     private float muzzleflashTime1Person;
 
@@ -57,8 +64,9 @@ public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderH
 
     protected ZPDefaultGunMuzzleflashFX() {
         this.muzzleflashTime1Person = 0.0f;
-        this.muzzleflashScissor1Person = new float[] {1.0f, 1.0f};
-        this.muzzleflashFinal1PersonTransformation = new Matrix4f[] {new Matrix4f().identity(), new Matrix4f().identity()};
+        this.muzzleflashScissor1Person = new float[]{1.0f, 1.0f};
+        this.initialRotation = new float[]{0.0f, 0.0f};
+        this.muzzleflashFinal1PersonTransformation = new Matrix4f[]{new Matrix4f().identity(), new Matrix4f().identity()};
     }
 
     public static ZPDefaultGunMuzzleflashFX create() {
@@ -66,21 +74,17 @@ public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderH
     }
 
     @Override
-    public void triggerMuzzleflash(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, @NotNull ZPClientCallbacks.ZPGunShotCallback.GunFXData gunFXData) {
+    public void onShot(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, @NotNull ZPClientCallbacks.ZPGunShotCallback.GunFXData gunFXData) {
         if (gunFXData.muzzleflashTime() < 0.0f) {
             return;
         }
+        final int id = this.hand(gunFXData.isRightHand());
         this.muzzleflashTime1Person = gunFXData.muzzleflashTime();
-        this.muzzleflashScissor1Person[this.hand(gunFXData.isRightHand())] = this.muzzleflashScissor1Person[this.hand(gunFXData.isRightHand())] > 0.01f ? 0.35f : 0.0f;
-
+        this.muzzleflashScissor1Person[id] = this.muzzleflashScissor1Person[id] > 0.01f ? 0.35f : 0.0f;
+        this.initialRotation[id] = ZPRandom.instance.randomFloat((float) Math.PI);
         if (player instanceof IZPPlayerClientDataExt playerClientDataExt) {
-            playerClientDataExt.getPlayerMuzzleflashScissor3Person()[this.hand(gunFXData.isRightHand())] = 0.0f;
+            playerClientDataExt.getPlayerMuzzleflashScissor3Person()[id] = 0.0f;
         }
-    }
-
-    @Override
-    public void onClientTick() {
-
     }
 
     private int hand(boolean hand) {
@@ -102,49 +106,40 @@ public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderH
                 int ref = isRightHanded ? 0x02 : 0x01;
                 GL46.glStencilFunc(GL46.GL_NOTEQUAL, ref, 0xFF);
                 GL46.glStencilOp(GL46.GL_KEEP, GL46.GL_KEEP, GL46.GL_KEEP);
-                GL46.glDrawBuffers(new int[]{GL46.GL_COLOR_ATTACHMENT0, GL46.GL_COLOR_ATTACHMENT1});
             }
-            GL46.glEnable(GL46.GL_BLEND);
-            GL46.glEnable(GL46.GL_DEPTH_TEST);
-            GL46.glBlendFunc(GL46.GL_SRC_ALPHA, GL46.GL_ONE);
-            GL46.glDepthMask(false);
             this.renderMuzzleflash3Person(player, buffer, deltaTicks, ZPGunFXGlobalData.getGunData(isRightHanded).getMflash3dpTransformationTarget(), isRightHanded);
-            GL46.glDepthMask(true);
-            GL46.glBlendFunc(GL46.GL_SRC_ALPHA, GL46.GL_ONE_MINUS_SRC_ALPHA);
-            GL46.glDisable(GL46.GL_DEPTH_TEST);
-            GL46.glDisable(GL46.GL_BLEND);
         }
     }
 
     private void renderMuzzleflash3Person(@NotNull IZPPlayerClientDataExt player, @NotNull MultiBufferSource buffer, float deltaTicks, @NotNull Matrix4f matrix, boolean isRightHanded) {
-        final Minecraft mc = Minecraft.getInstance();
-        final Camera camera = mc.gameRenderer.getMainCamera();
-        final Vector3f camPos = camera.getPosition().toVector3f();
-        final Quaternionf camRot = camera.rotation();
-
         //final Matrix4f viewMatrix = new Matrix4f().identity().rotate(camRot).translate(camPos.negate());
         {
             matrix.translate(DearUITRSInterface.trsMflash3d.position);
             matrix.setRotationXYZ(0.0f, (float) Math.PI, 0.0f);
         }
 
-        final float size = 0.3F;
+        float mul = (1.0f);
+        final float size = 0.2F;
+        float meshSize = size * mul;
+        float uvMin = 0.0f - (mul - 1.0f) * 0.5f;
+        float uvMax = 1.0f + (mul - 1.0f) * 0.5f;
+
         {
             ShaderInstance shader = ZPDefaultShaders.muzzleflash3dp.getShaderInstance();
 
             RenderSystem.setShader(() -> shader);
             GL46.glActiveTexture(GL46.GL_TEXTURE0);
-            RenderSystem.setShaderTexture(0, ZPDefaultGunMuzzleflashFX.muzzleFlash1);
+            RenderSystem.setShaderTexture(0, ZPDefaultGunMuzzleflashFX.muzzleFlash3);
 
             Objects.requireNonNull(Objects.requireNonNull(shader).getUniform("scissor")).set(player.getPlayerMuzzleflashScissor3Person()[this.hand(isRightHanded)]);
 
             BufferBuilder builder = Tesselator.getInstance().getBuilder();
             builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 
-            builder.vertex(matrix, -size, -size, 0.0F).uv(0.0F, 1.0F).color(255, 255, 255, 255).endVertex();
-            builder.vertex(matrix, -size, size, 0.0F).uv(0.0F, 0.0F).color(255, 255, 255, 255).endVertex();
-            builder.vertex(matrix, size, size, 0.0F).uv(1.0F, 0.0F).color(255, 255, 255, 255).endVertex();
-            builder.vertex(matrix, size, -size, 0.0F).uv(1.0F, 1.0F).color(255, 255, 255, 255).endVertex();
+            builder.vertex(matrix, -meshSize, -meshSize, 0.0F).uv(uvMin, uvMax).color(255, 255, 255, 255).endVertex();
+            builder.vertex(matrix, -meshSize, meshSize, 0.0F).uv(uvMin, uvMin).color(255, 255, 255, 255).endVertex();
+            builder.vertex(matrix, meshSize, meshSize, 0.0F).uv(uvMax, uvMin).color(255, 255, 255, 255).endVertex();
+            builder.vertex(matrix, meshSize, -meshSize, 0.0F).uv(uvMax, uvMax).color(255, 255, 255, 255).endVertex();
 
             BufferUploader.drawWithShader(builder.end());
         }
@@ -178,14 +173,18 @@ public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderH
         final Matrix4f gunTransformation = ZPGunFXGlobalData.getGunData(isRightHanded).getCurrentGunItemMatrix();
         final Matrix4f transformation = ZPGunFXGlobalData.getGunData(isRightHanded).getMflash1spTransformationTarget();
 
+        if (transformation == null) {
+            return;
+        }
+
         Vector3f pos = new Vector3f();
         Vector3f scale = new Vector3f();
         gunTransformation.mul(transformation);
         gunTransformation.getTranslation(pos);
         gunTransformation.getScale(scale);
         gunTransformation.identity().translate(pos).scale(scale);
-        gunTransformation.rotateY((float) Math.PI);
-//.rotateZ((float) (muzzleflashScissor * Math.PI * 3.0f))
+        gunTransformation.rotateY((float) Math.PI)
+                .rotateZ(this.initialRotation[this.hand(isRightHanded)]);
 
         this.muzzleflashFinal1PersonTransformation[this.hand(isRightHanded)] = gunTransformation;
 
@@ -235,7 +234,7 @@ public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderH
     }
 
     public static boolean useFancyRendering3person() {
-        return ZPDefaultGunMuzzleflashFX.quality() == 3 && ZPDefaultGunMuzzleflashFX.muzzleflash3dpFBO != null && !ZPDefaultGunMuzzleflashFX.muzzleflash3dpFBO.getTexturePrograms().isEmpty();
+        return ZPDefaultGunMuzzleflashFX.quality() == 3;
     }
 
     public static int quality() {
@@ -250,10 +249,6 @@ public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderH
     }
 
     private void destroyFBOs() {
-        if (ZPDefaultGunMuzzleflashFX.muzzleflash3dpFBO != null) {
-            ZPDefaultGunMuzzleflashFX.muzzleflash3dpFBO.clearFBO();
-            ZPDefaultGunMuzzleflashFX.muzzleflash3dpFBO = null;
-        }
         if (ZPDefaultGunMuzzleflashFX.muzzleflashFBO != null) {
             ZPDefaultGunMuzzleflashFX.muzzleflashFBO.clearFBO();
             ZPDefaultGunMuzzleflashFX.muzzleflashFBO = null;
@@ -273,13 +268,6 @@ public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderH
         T2DAttachmentContainer clr2 = new T2DAttachmentContainer() {{
             add(GL46.GL_COLOR_ATTACHMENT0, GL46.GL_RGBA, GL46.GL_RGBA);
         }};
-        T2DAttachmentContainer clr3 = new T2DAttachmentContainer() {{
-            add(GL46.GL_COLOR_ATTACHMENT0, GL46.GL_RGBA, GL46.GL_RGBA);
-            add(GL46.GL_COLOR_ATTACHMENT1, GL46.GL_RGBA, GL46.GL_RGBA);
-        }};
-
-        ZPDefaultGunMuzzleflashFX.muzzleflash3dpFBO = new FBOTexture2DProgram(true);
-        ZPDefaultGunMuzzleflashFX.muzzleflash3dpFBO.createFrameBuffer2DTexture(new Vector2i(width, height), clr3, true, GL46.GL_NEAREST, GL46.GL_NONE, GL46.GL_LESS, GL46.GL_CLAMP_TO_EDGE, null);
 
         ZPDefaultGunMuzzleflashFX.muzzleflashFBO = new FBOTexture2DProgram(true);
         ZPDefaultGunMuzzleflashFX.muzzleflashFBO.createFrameBuffer2DTexture(new Vector2i(width, height), clr, true, GL46.GL_NEAREST, GL46.GL_NONE, GL46.GL_LESS, GL46.GL_CLAMP_TO_EDGE, null);
@@ -298,7 +286,8 @@ public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderH
 
     @Override
     public void setupResources(@NotNull Window window) {
-        ZPDefaultGunMuzzleflashFX.muzzleFlash1 = ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), ZPDefaultGunMuzzleflashFX.MUZZLEFLASH_TEXTURE_DEF);
+        ZPDefaultGunMuzzleflashFX.muzzleFlash1 = ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), ZPDefaultGunMuzzleflashFX.MUZZLEFLASH1_TEXTURE_DEF);
+        ZPDefaultGunMuzzleflashFX.muzzleFlash3 = ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), ZPDefaultGunMuzzleflashFX.MUZZLEFLASH3_TEXTURE_DEF);
         this.createFBOs(window.getWidth(), window.getHeight());
     }
 
@@ -329,21 +318,21 @@ public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderH
     public void onPostRender3Person(float deltaTicks, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, LivingEntity pLivingEntity, float pLimbSwing, float pLimbSwingAmount, float pPartialTicks, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
         if (ZPDefaultGunMuzzleflashFX.renderMuzzleflash3Person()) {
             GL46.glEnable(GL46.GL_STENCIL_TEST);
-            this.render3Person(pLivingEntity, pBuffer, deltaTicks, true);
+            GL46.glEnable(GL46.GL_DEPTH_TEST);
+            GL46.glEnable(GL46.GL_BLEND);
+            GL46.glBlendEquation(GL46.GL_FUNC_ADD);
+            //GL46.glBlendFuncSeparate(GL46.GL_SRC_ALPHA, GL46.GL_ONE_MINUS_SRC_ALPHA, GL46.GL_ONE, GL46.GL_ONE_MINUS_SRC_ALPHA);
             this.render3Person(pLivingEntity, pBuffer, deltaTicks, false);
+            this.render3Person(pLivingEntity, pBuffer, deltaTicks, true);
+            //GL46.glBlendFuncSeparate(GL46.GL_SRC_ALPHA, GL46.GL_ONE_MINUS_SRC_ALPHA, GL46.GL_ONE, GL46.GL_ONE_MINUS_SRC_ALPHA);
+            GL46.glDisable(GL46.GL_BLEND);
+            GL46.glDisable(GL46.GL_DEPTH_TEST);
             GL46.glDisable(GL46.GL_STENCIL_TEST);
-            if (ZPDefaultGunMuzzleflashFX.useFancyRendering3person()) {
-                ZPDefaultGunMuzzleflashFX.muzzleflash3dpFBO.unBindFBO();
-            }
         }
     }
 
     @Override
     public void onPreRender3Person(float deltaTicks, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, LivingEntity pLivingEntity, float pLimbSwing, float pLimbSwingAmount, float pPartialTicks, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
-        if (ZPDefaultGunMuzzleflashFX.useFancyRendering3person()) {
-            Minecraft.getInstance().renderBuffers().bufferSource().endBatch();
-            ZPDefaultGunMuzzleflashFX.muzzleflash3dpFBO.copyFBODepthFrom(Minecraft.getInstance().getMainRenderTarget().frameBufferId, ClientRenderFunctions.getWindowSize());
-            ZPDefaultGunMuzzleflashFX.muzzleflash3dpFBO.bindFBO();
-        }
+        GL46.glClear(GL46.GL_STENCIL_BUFFER_BIT);
     }
 }

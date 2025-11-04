@@ -69,16 +69,16 @@ public class ZPGunsUI implements ZPSimpleEventClass<RenderGuiOverlayEvent.Post> 
         String ammo = zpBaseGun.getCurrentAmmo(player, stack) + " / " + zpBaseGun.getGunProperties().getMaxAmmo();
         int color = 0xffffff;
         if (zpBaseGun.isReloading(player, stack) && zpBaseGun.isJammed(player, stack)) {
-            ammo = "[UnJamming]";
+            ammo = "[UnJamming " + ammo + "]";
             color = 0x00ff00;
         } else if (zpBaseGun.isReloading(player, stack)) {
-            ammo = "[Reloading]";
+            ammo = "[Reloading " +ammo + "]";
             color = 0x00ff00;
         } else if (zpBaseGun.isUnloading(player, stack)) {
-            ammo = "[Unloading]";
+            ammo = "[Unloading " + ammo + "]";
             color = 0x00ffff;
         } else if (zpBaseGun.isJammed(player, stack)) {
-            ammo = "[Jam]";
+            ammo = "[Jam " + ammo + "]";
             color = 0xff0000;
         }
 

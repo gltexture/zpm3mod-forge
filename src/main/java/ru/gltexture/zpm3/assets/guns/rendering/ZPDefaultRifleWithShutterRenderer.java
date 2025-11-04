@@ -1,6 +1,6 @@
 package ru.gltexture.zpm3.assets.guns.rendering;
 
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Transformation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
@@ -18,18 +18,20 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import ru.gltexture.zpm3.assets.debug.imgui.DearUITRSInterface;
-import ru.gltexture.zpm3.assets.guns.events.ZPGunPostRender;
 import ru.gltexture.zpm3.assets.guns.item.ZPBaseGun;
 import ru.gltexture.zpm3.assets.guns.rendering.fx.ZPGunFXGlobalData;
 import ru.gltexture.zpm3.assets.guns.rendering.transforms.AbstractGunTransforms;
 import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
 import ru.gltexture.zpm3.engine.exceptions.ZPNullException;
+import ru.gltexture.zpm3.engine.service.Pair;
 
 import java.util.Objects;
 
-public class ZPDefaultPistolRenderer extends ZPAbstractGunRenderer {
-    protected ZPDefaultPistolRenderer() {
-        super();
+public class ZPDefaultRifleWithShutterRenderer extends ZPAbstractGunRenderer {
+    private final float[] timerShutter;
+
+    public ZPDefaultRifleWithShutterRenderer() {
+        this.timerShutter = new float[] {-1.0f, -1.0f};
     }
 
     @Override
@@ -42,67 +44,67 @@ public class ZPDefaultPistolRenderer extends ZPAbstractGunRenderer {
 
             @Override
             public Vector3f scalingGun3P() {
-                return new Vector3f(1.0f);
+                return new Vector3f(1.5f);
             }
 
             @Override
             public Vector3f translationGunRight() {
-                return new Vector3f(0.245f, -0.05f, -1.1f);
+                return new Vector3f(0.213f, 0.139f, -0.607f);
             }
 
             @Override
             public Vector3f rotationGunRight() {
-                return new Vector3f(-6.5f, 10.0f, 1.5f);
+                return new Vector3f(-6.21f, 8.5f, 0.82f);
             }
 
             @Override
             public Vector3f translationArmRight() {
-                return new Vector3f(-0.22f, -0.37f, 0.71f);
+                return new Vector3f(ZPDefaultRifleRenderer.rightArmTranslationCurrent);
             }
 
             @Override
             public Vector3f rotationArmRight() {
-                return new Vector3f(-57.0f, 173.1f, -6.0f);
+                return new Vector3f(ZPDefaultRifleRenderer.rightArmRotationCurrent);
             }
 
             @Override
             public Vector3f translationGunLeft() {
-                return new Vector3f(-0.44f, 0.16f, -0.91f);
+                return new Vector3f(-0.35f, 0.3f, -0.4f);
             }
 
             @Override
             public Vector3f rotationGunLeft() {
-                return new Vector3f(-58.5f, 183.5f, 9.0f);
+                return new Vector3f(-55.0f, 185.0f, 6.2f);
             }
 
             @Override
             public Vector3f translationArmLeft() {
-                return new Vector3f(-0.358f, -0.66f, 0.04f);
+                return new Vector3f(ZPDefaultRifleRenderer.leftArmTranslationCurrent);
             }
 
             @Override
             public Vector3f rotationArmLeft() {
-                return new Vector3f(9.87f, 1.63f, 7.0f);
+                return new Vector3f(ZPDefaultRifleRenderer.leftArmRotationCurrent);
             }
 
             @Override
             public Vector3f translationMuzzleflash3PRight() {
-                return new Vector3f(-0.17f, 0.44f, 0.06f);
+                return new Vector3f(-0.28f, 0.47f, 0.065f);
             }
 
             @Override
             public Vector3f translationMuzzleflash3PLeft() {
-                return this.translationMuzzleflash3PRight();
+                return new Vector3f(-0.28f, 0.47f, 0.065f);
             }
 
             @Override
             public Vector3f translationMuzzleflash1PRight() {
-                return new Vector3f(0.04f, 0.42f, -0.23f);
+                return new Vector3f(0.06f, 0.37f, -0.38f);
             }
 
             @Override
             public Vector3f translationMuzzleflash1PLeft() {
-                return new Vector3f(-0.09f, 0.58f, 0.1f);
+                return new Vector3f(-0.074f, 0.6666f, 0.242f);
             }
 
             @Override
@@ -132,65 +134,111 @@ public class ZPDefaultPistolRenderer extends ZPAbstractGunRenderer {
 
             @Override
             public Vector3f translationArmReloadingRight() {
-                return new Vector3f(0.0f, 0.0f, 0.0f);
+                return new Vector3f(0.0f);
             }
 
             @Override
             public Vector3f rotationArmReloadingRight() {
-                return new Vector3f(0.0f, 0.0f, 0.0f);
+                return new Vector3f(0.0f);
             }
 
             @Override
             public Vector3f translationArmReloadingLeft() {
-                return new Vector3f(0.0f, 0.0f, 0.0f);
+                return new Vector3f(0.0f);
             }
 
             @Override
             public Vector3f rotationArmReloadingLeft() {
-                return new Vector3f(0.0f, 0.0f, 0.0f);
+                return new Vector3f(0.0f);
             }
 
             @Override
             public Vector3f scaleArmLeft() {
-                return new Vector3f(1.0f);
+                return new Vector3f(ZPDefaultRifleRenderer.leftArmCurrentScaling);
             }
 
             @Override
             public Vector3f scaleArmRight() {
-                return new Vector3f(1.0f);
+                return new Vector3f(ZPDefaultRifleRenderer.rightArmCurrentScaling);
             }
         };
     }
 
-    static ZPDefaultPistolRenderer create() {
-        return new ZPDefaultPistolRenderer();
+    static ZPDefaultRifleWithShutterRenderer create() {
+        return new ZPDefaultRifleWithShutterRenderer();
+    }
+
+    private int hand(boolean isRight) {
+        return isRight ? 1 : 0;
     }
 
     @Override
     public void onRenderItem3Person(@NotNull ItemInHandRenderer itemInHandRenderer, float deltaTicks, @NotNull EntityModel<?> entityModel, LivingEntity pLivingEntity, ItemStack pItemStack, ItemDisplayContext pDisplayContext, HumanoidArm pArm, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) {
-        PoseStack poseStack = new PoseStack();
-        poseStack.setIdentity();
-        poseStack.mulPoseMatrix(pPoseStack.last().pose());
-        super.onDefaultRenderItem3Person(itemInHandRenderer, deltaTicks, entityModel, pLivingEntity, pItemStack, pDisplayContext, pArm, poseStack, pBuffer, pPackedLight);
+        super.onDefaultRenderItem3Person(itemInHandRenderer, deltaTicks, entityModel, pLivingEntity, pItemStack, pDisplayContext, pArm, pPoseStack, pBuffer, pPackedLight);
+        if (Objects.requireNonNull(Minecraft.getInstance().player).equals(pLivingEntity) && !Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
+            this.timerShutter[this.hand(pArm.equals(HumanoidArm.RIGHT))] = -1.0f;
+        }
     }
 
     @Override
     public void onRenderItem1Person(AbstractClientPlayer pPlayer, float deltaTicks, float pPartialTicks, float pPitch, InteractionHand pHand, float pSwingProgress, ItemStack pStack, float pEquippedProgress, PoseStack pPoseStack, MultiBufferSource pBuffer, int pCombinedLight) {
+        final boolean isRightHanded = pHand == InteractionHand.MAIN_HAND;
+        if (pStack.getItem() instanceof ZPBaseGun baseGun) {
+            final int id = this.hand(isRightHanded);
+            if (baseGun.getCurrentTimeBeforeShoot(pPlayer, pStack) > 0) {
+                this.timerShutter[id] = -1.0f;
+            }
+            if (this.timerShutter[id] >= 0.0f) {
+                this.timerShutter[id] += deltaTicks;
+                if (this.timerShutter[id] > (baseGun.getGunProperties().getShootCooldown() / 20.0f) / 2.0f) {
+                    ZPDefaultGunRenderers.defaultShotgunShutterFXUniversal.onTrigger(pPlayer, baseGun, pStack, isRightHanded);
+                    this.timerShutter[id] = -1.0f;
+                }
+            }
+            ZPDefaultRifleRenderer.onRenderItem1PersonRifle(this, pPlayer, deltaTicks, pPartialTicks, pPitch, pHand, pSwingProgress, pStack, pEquippedProgress, pPoseStack, pBuffer, pCombinedLight);
+        }
+    }
+
+    @Override
+    public void onReloadStart(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, ZPClientCallbacks.ZPGunReloadStartCallback.@NotNull GunFXData gunFXData) {
+    }
+
+    @Override
+    public void onShot(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, ZPClientCallbacks.ZPGunShotCallback.@NotNull GunFXData gunFXData) {
+        if (baseGun.getCurrentShootCooldown(player, itemStack) > 4) {
+            this.timerShutter[this.hand(gunFXData.isRightHand())] = 0.0f;
+        }
+    }
+}
+/*
+@Override
+    public void onRenderItem1Person(AbstractClientPlayer pPlayer, float deltaTicks, float pPartialTicks, float pPitch, InteractionHand pHand, float pSwingProgress, ItemStack pStack, float pEquippedProgress, PoseStack pPoseStack, MultiBufferSource pBuffer, int pCombinedLight) {
         try {
+            final boolean isRightHanded = pHand == InteractionHand.MAIN_HAND;
             if (pStack.getItem() instanceof ZPBaseGun baseGun) {
+                final int id = this.hand(isRightHanded);
+                if (baseGun.getCurrentTimeBeforeShoot(pPlayer, pStack) > 0) {
+                    this.timerShutter[id] = -1.0f;
+                }
+                if (this.timerShutter[id] >= 0.0f) {
+                    this.timerShutter[id] += deltaTicks;
+                    if (this.timerShutter[id] > (baseGun.getGunProperties().getShootCooldown() / 20.0f) / 2.0f) {
+                        ZPDefaultGunRenderers.defaultShotgunShutterFXUniversal.onTrigger(pPlayer, baseGun, pStack, isRightHanded);
+                        this.timerShutter[id] = -1.0f;
+                    }
+                }
+
                 pPoseStack.pushPose();
-                final boolean isRightHanded = pHand == InteractionHand.MAIN_HAND;
                 final float equippedConst = -0.6F + pEquippedProgress * -0.6F;
                 final Matrix4f transformation = new Matrix4f().identity();
 
                 final Vector3f startTranslation = Objects.requireNonNull(isRightHanded ? this.gunTransforms().translationGunRight() : this.gunTransforms().translationGunLeft());
                 startTranslation.add(0.0f, equippedConst, 0.0f);
-                //startTranslation.add(DearUITRSInterface.trsGun.position);
+                startTranslation.add(DearUITRSInterface.trsGun.position);
 
                 final Vector3f startRotation = Objects.requireNonNull(isRightHanded ? this.gunTransforms().rotationGunRight() : this.gunTransforms().rotationGunLeft());
-                //startRotation.add(DearUITRSInterface.trsGun.rotation);
+                startRotation.add(DearUITRSInterface.trsGun.rotation);
 
-                pPoseStack = new PoseStack();
                 pPoseStack.setIdentity();
                 this.translateStack(pPoseStack, pPartialTicks);
                 transformation
@@ -198,7 +246,7 @@ public class ZPDefaultPistolRenderer extends ZPAbstractGunRenderer {
                         .rotateX((float) Math.toRadians(startRotation.x))
                         .rotateY((float) Math.toRadians(startRotation.y))
                         .rotateZ((float) Math.toRadians(startRotation.z))
-                        .scale(Objects.requireNonNull(this.gunTransforms().scalingGun1P()).add(new Vector3f(DearUITRSInterface.trsGun.scale).sub(new Vector3f(1.0f))));
+                        .scale(Objects.requireNonNull(this.gunTransforms().scalingGun1P()));
                 pPoseStack.pushTransformation(new Transformation(transformation));
 
                 @Nullable Matrix4f reloading = ZPDefaultGunRenderers.defaultReloadingFXUniversal.getCurrentGunReloadingTransformation(isRightHanded, pPartialTicks);
@@ -206,17 +254,50 @@ public class ZPDefaultPistolRenderer extends ZPAbstractGunRenderer {
                     pPoseStack.pushTransformation(new Transformation(reloading));
                 }
 
+                @Nullable Pair<Matrix4f, Matrix4f> shutter = ZPDefaultGunRenderers.defaultShotgunShutterFXUniversal.getCurrentShutterTransformationGunArm(pPlayer, baseGun, pStack, isRightHanded, deltaTicks);
+                if (shutter != null) {
+                    pPoseStack.pushTransformation(new Transformation(shutter.first()));
+                }
                 final Matrix4f matrixGun = new Matrix4f(pPoseStack.last().pose());
-                @Nullable Matrix4f recoil = ZPDefaultGunRenderers.defaultRecoilFXUniversal.getCurrentRecoilTransformation(pPlayer, baseGun, pStack, isRightHanded, pPartialTicks);
+                @Nullable Matrix4f recoil = ZPDefaultGunRenderers.defaultRecoilFXUniversal.getCurrentRecoilTransformation(isRightHanded, pPartialTicks);
                 if (recoil != null) {
                     pPoseStack.pushTransformation(new Transformation(recoil));
                 }
 
                 this.renderItem(Minecraft.getInstance().getItemRenderer(), pPlayer, pStack, isRightHanded ? ItemDisplayContext.FIRST_PERSON_RIGHT_HAND : ItemDisplayContext.FIRST_PERSON_LEFT_HAND, !isRightHanded, pPoseStack, pBuffer, pCombinedLight);
-                this.renderPlayerArm(pPlayer, pPartialTicks, pPoseStack, pBuffer, pCombinedLight, pEquippedProgress, pSwingProgress, isRightHanded);
-                final Matrix4f matrixArm = new Matrix4f(pPoseStack.last().pose());
+                if (shutter != null) {
+                    pPoseStack.pushTransformation(new Transformation(shutter.second()));
+                }
+                final Matrix4f matrixArm = new Matrix4f();
+                if (isRightHanded) {
+                    final boolean leftIsEmpty = pPlayer.getOffhandItem().isEmpty();
+                    if (leftIsEmpty) {
+                        ZPDefaultRifleWithShutterRenderer.leftArmCurrentScaling = ZPDefaultRifleWithShutterRenderer.armScaling2;
+                        ZPDefaultRifleWithShutterRenderer.leftArmTranslationCurrent = ZPDefaultRifleWithShutterRenderer.leftArmTranslation1;
+                        ZPDefaultRifleWithShutterRenderer.leftArmRotationCurrent = ZPDefaultRifleWithShutterRenderer.leftArmRotation1;
+                    } else {
+                        ZPDefaultRifleWithShutterRenderer.leftArmCurrentScaling = ZPDefaultRifleWithShutterRenderer.armScaling1;
+                        ZPDefaultRifleWithShutterRenderer.leftArmTranslationCurrent = ZPDefaultRifleWithShutterRenderer.leftArmTranslation2;
+                        ZPDefaultRifleWithShutterRenderer.leftArmRotationCurrent = ZPDefaultRifleWithShutterRenderer.leftArmRotation2;
+                    }
+                    ZPDefaultRifleWithShutterRenderer.rightArmCurrentScaling = ZPDefaultRifleWithShutterRenderer.armScaling1;
+                    ZPDefaultRifleWithShutterRenderer.rightArmTranslationCurrent = ZPDefaultRifleWithShutterRenderer.rightArmTranslation2;
+                    ZPDefaultRifleWithShutterRenderer.rightArmRotationCurrent = ZPDefaultRifleWithShutterRenderer.rightArmRotation2;
+                    this.renderPlayerArm(pPlayer, pPartialTicks, pPoseStack, pBuffer, pCombinedLight, pEquippedProgress, pSwingProgress, true);
+                    matrixArm.set(new Matrix4f(pPoseStack.last().pose()));
+                    if (leftIsEmpty) {
+                        this.renderPlayerArm(pPlayer, pPartialTicks, pPoseStack, pBuffer, pCombinedLight, pEquippedProgress, pSwingProgress, false);
+                    }
+                } else {
+                    final boolean rightIsEmpty = pPlayer.getMainHandItem().isEmpty();
+                    ZPDefaultRifleWithShutterRenderer.leftArmCurrentScaling = ZPDefaultRifleWithShutterRenderer.armScaling1;
+                    ZPDefaultRifleWithShutterRenderer.leftArmTranslationCurrent = ZPDefaultRifleWithShutterRenderer.leftArmTranslation2;
+                    ZPDefaultRifleWithShutterRenderer.leftArmRotationCurrent = ZPDefaultRifleWithShutterRenderer.leftArmRotation2;
+                    this.renderPlayerArm(pPlayer, pPartialTicks, pPoseStack, pBuffer, pCombinedLight, pEquippedProgress, pSwingProgress, false);
+                    matrixArm.set(new Matrix4f(pPoseStack.last().pose()));
+                }
 
-                final @NotNull Matrix4f muzzleflashTransformationTarget = new Matrix4f().identity();
+                final @Nullable Matrix4f muzzleflashTransformationTarget = new Matrix4f().identity();
                 final @NotNull Matrix4f reloadingGunTarget = new Matrix4f().identity();
                 final @NotNull Matrix4f reloadingArmTarget = new Matrix4f().identity();
 
@@ -231,12 +312,14 @@ public class ZPDefaultPistolRenderer extends ZPAbstractGunRenderer {
                     final Vector3f mflashScale = new Vector3f(Objects.requireNonNull(this.gunTransforms().muzzleflashScale()), Objects.requireNonNull(this.gunTransforms().muzzleflashScale()), 1.0f);
                     mflashScale.add(new Vector3f(DearUITRSInterface.trsMFlash.scale).sub(new Vector3f(1.0f)));
 
-                    muzzleflashTransformationTarget
-                            .translate(mflashTranslation)
-                            .rotateX((float) Math.toRadians(mflashRotation.x))
-                            .rotateY((float) Math.toRadians(mflashRotation.y))
-                            .rotateZ((float) Math.toRadians(mflashRotation.z))
-                            .scale(mflashScale);
+                    if (muzzleflashTransformationTarget != null) {
+                        muzzleflashTransformationTarget
+                                .translate(mflashTranslation)
+                                .rotateX((float) Math.toRadians(mflashRotation.x))
+                                .rotateY((float) Math.toRadians(mflashRotation.y))
+                                .rotateZ((float) Math.toRadians(mflashRotation.z))
+                                .scale(mflashScale);
+                    }
 
                     final Vector3f reloadingGunTranslation = Objects.requireNonNull(isRightHanded ? this.gunTransforms().translationGunReloadingRight() : this.gunTransforms().translationGunReloadingLeft());
                     reloadingGunTranslation.add(DearUITRSInterface.trsReloadingGun.position);
@@ -260,7 +343,8 @@ public class ZPDefaultPistolRenderer extends ZPAbstractGunRenderer {
                             .translate(reloadingArmTranslation)
                             .rotateX((float) Math.toRadians((reloadingArmRotation).x))
                             .rotateY((float) Math.toRadians((reloadingArmRotation).y))
-                            .rotateZ((float) Math.toRadians((reloadingArmRotation).z));
+                            .rotateZ((float) Math.toRadians((reloadingArmRotation).z))
+                            .scale(0.8f);
                 }
 
                 ZPGunFXGlobalData.getGunData(isRightHanded)
@@ -276,14 +360,4 @@ public class ZPDefaultPistolRenderer extends ZPAbstractGunRenderer {
             throw new ZPNullException(e);
         }
     }
-
-    @Override
-    public void onReloadStart(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, ZPClientCallbacks.ZPGunReloadStartCallback.@NotNull GunFXData gunFXData) {
-
-    }
-
-    @Override
-    public void onShot(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, ZPClientCallbacks.ZPGunShotCallback.@NotNull GunFXData gunFXData) {
-
-    }
-}
+ */

@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import ru.gltexture.zpm3.assets.guns.item.ZPBaseGun;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin {
+public abstract class ZPLivingEntityMixin {
     @Shadow public abstract ItemStack getMainHandItem();
 
     @Inject(method = "swing*", at = @At("HEAD"), cancellable = true)

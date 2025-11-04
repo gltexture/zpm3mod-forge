@@ -5,8 +5,9 @@
   "plugin": "ru.gltexture.zpm3.engine.mixins.ZPMixinPlugin",
   "refmap": "zpm3.refmap.json",
   "mixins": [
-    "both.EntityMixin",
-    "both.LivingEntityMixin"
+    "both.ZPEntityMixin",
+    "both.ZPLivingEntityMixin",
+    "both.ZPPlayerMixin"
   ],
   "client": [
     "client.ZPGameRendererMixin",

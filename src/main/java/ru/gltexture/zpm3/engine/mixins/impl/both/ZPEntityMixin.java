@@ -10,6 +10,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -17,22 +18,29 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.common.init.ZPBlocks;
 import ru.gltexture.zpm3.engine.mixins.ext.ZPEntityExtTicking;
 import ru.gltexture.zpm3.engine.mixins.ext.IZPEntityExt;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 @Mixin(Entity.class)
-public abstract class EntityMixin implements IZPEntityExt {
+public abstract class ZPEntityMixin implements IZPEntityExt {
     @Shadow public abstract void fillCrashReportCategory(CrashReportCategory pCategory);
     @Shadow public abstract Level level();
     @Shadow public abstract SynchedEntityData getEntityData();
+
+    @Shadow public abstract AABB getBoundingBox();
 
     @Unique private static final EntityDataAccessor<Integer> ACID_LEVEL = SynchedEntityData.defineId(Entity.class, EntityDataSerializers.INT);
     @Unique private static final EntityDataAccessor<Integer> INTOXICATION_LEVEL = SynchedEntityData.defineId(Entity.class, EntityDataSerializers.INT);
 
     @Unique private boolean touchesAcidBlock;
     @Unique private boolean touchesToxicBlock;
+    @Unique private Deque<Snapshot> aabbDeque = new ArrayDeque<>(20);
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void onConstructed(EntityType<?> type, Level world, CallbackInfo ci) {
@@ -51,6 +59,11 @@ public abstract class EntityMixin implements IZPEntityExt {
         if (this.level().isClientSide()) {
             ZPEntityExtTicking.clientEntityTickPre((Entity) (Object) this, this);
         } else {
+            AABB aabb = this.getBoundingBox();
+            this.aabbDeque.addFirst(new Snapshot(System.currentTimeMillis(), aabb));
+            if (this.aabbDeque.size() > ZPConstants.ENTITY_MAX_AABB_MEMORY_ANTILAG) {
+                this.aabbDeque.removeLast();
+            }
             if (ZPUtility.entity().isCollidingWithBlock((Entity) (Object) this, ZPBlocks.acid_block.get())) {
                 this.touchesAcidBlock = true;
             }
@@ -96,6 +109,11 @@ public abstract class EntityMixin implements IZPEntityExt {
             this.fillCrashReportCategory(crashreportcategory);
             throw new ReportedException(crashreport);
         }
+    }
+
+    @Override
+    public Deque<Snapshot> getAabbDeque() {
+        return this.aabbDeque;
     }
 
     @Override

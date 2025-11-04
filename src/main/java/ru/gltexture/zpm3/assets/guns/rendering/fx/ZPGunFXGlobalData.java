@@ -1,6 +1,7 @@
 package ru.gltexture.zpm3.assets.guns.rendering.fx;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 
 public abstract class ZPGunFXGlobalData {
@@ -27,7 +28,7 @@ public abstract class ZPGunFXGlobalData {
         private @NotNull Matrix4f currentArmMatrix;
         private @NotNull Matrix4f gunReloadingTransformationTarget;
         private @NotNull Matrix4f armReloadingTransformationTarget;
-        private @NotNull Matrix4f mflash1spTransformationTarget;
+        private @Nullable Matrix4f mflash1spTransformationTarget;
         private @NotNull Matrix4f mflash3dpTransformationTarget;
 
         public ClientGunRenderGlobalData() {
@@ -75,22 +76,20 @@ public abstract class ZPGunFXGlobalData {
             return this;
         }
 
-        public @NotNull Matrix4f getMflash1spTransformationTarget() {
+        public @Nullable Matrix4f getMflash1spTransformationTarget() {
             return new Matrix4f(this.mflash1spTransformationTarget);
         }
 
-        public ClientGunRenderGlobalData setMflash1spTransformationTarget(@NotNull Matrix4f mflash1spTransformationTarget) {
+        public void setMflash1spTransformationTarget(@Nullable Matrix4f mflash1spTransformationTarget) {
             this.mflash1spTransformationTarget = mflash1spTransformationTarget;
-            return this;
         }
 
         public @NotNull Matrix4f getMflash3dpTransformationTarget() {
             return this.mflash3dpTransformationTarget;
         }
 
-        public ClientGunRenderGlobalData setMflash3dpTransformationTarget(@NotNull Matrix4f mflash3dpTransformationTarget) {
+        public void setMflash3dpTransformationTarget(@NotNull Matrix4f mflash3dpTransformationTarget) {
             this.mflash3dpTransformationTarget = mflash3dpTransformationTarget;
-            return this;
         }
     }
 }

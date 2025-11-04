@@ -1,6 +1,7 @@
 package ru.gltexture.zpm3.assets.common.global;
 
 public abstract class ZPConstants {
+    public static final int PLAYER_PING_PACKET_FREQ = 20;
     public static int DEFAULT_ITEMS_THROW_COOLDOWN = 20;
     public static float DEFAULT_ITEMS_THROW_VELOCITY = 1.2f;
     public static float DEFAULT_ITEMS_THROW_INACCURACY = 8.0f;
@@ -13,6 +14,7 @@ public abstract class ZPConstants {
     public static float DEFAULT_GUN_ACTION_PACKET_RANGE = 256.0f;
     public static float DEFAULT_BULLET_HIT_PACKET_RANGE = 256.0f;
     public static int MAX_BULLET_BLOCK_HITS = 3;
+    public static int ENTITY_MAX_AABB_MEMORY_ANTILAG = 20;
 
     public static int ACID_DAMAGE_TICK_RATE = 4;
 

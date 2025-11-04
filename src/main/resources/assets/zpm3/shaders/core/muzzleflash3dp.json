@@ -12,6 +12,7 @@
     }
   ],
   "uniforms": [
+    { "name": "ColorModulator", "type": "float", "count": 4, "values": [ 1.0, 1.0, 1.0, 1.0 ] },
     {
       "name": "scissor",
       "type": "float",

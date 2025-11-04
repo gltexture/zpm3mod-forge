@@ -7,6 +7,9 @@ uniform sampler2D texture_map;
 uniform sampler2D mfash_map;
 uniform sampler2D mfash_bloom_map;
 
+uniform sampler2D Sampler4;
+uniform sampler2D Sampler5;
+
 uniform vec3 mflash_posRight;
 uniform vec3 mflash_posLeft;
 uniform float mflash_scissorRight;
@@ -44,12 +47,12 @@ vec4 getItemColFixed(vec4 color, vec2 texelSize) {
 
 void main()
 {
-  vec4 gun = getItemColFixed(texture(texture_map, uv_coordinates), vec2(1.) / textureSize(texture_map, 0));
-  vec4 mflash = texture(mfash_map, uv_coordinates);
-  vec4 bloom = texture(mfash_bloom_map, uv_coordinates);
+    vec4 gun = getItemColFixed(texture(texture_map, uv_coordinates), vec2(1.) / textureSize(texture_map, 0));
+    vec4 mflash = texture(mfash_map, uv_coordinates);
+    vec4 bloom = texture(mfash_bloom_map, uv_coordinates);
 
-  vec3 finalColor = (calcMFlashBlink(uv_coordinates, mflash_posLeft) * scissorFactor(mflash_scissorLeft) + calcMFlashBlink(uv_coordinates, mflash_posRight) * scissorFactor(mflash_scissorRight)) * gun.a;
+    vec3 finalColor = (calcMFlashBlink(uv_coordinates, mflash_posLeft) * scissorFactor(mflash_scissorLeft) + calcMFlashBlink(uv_coordinates, mflash_posRight) * scissorFactor(mflash_scissorRight)) * gun.a;
 
-  vec4 mixedGunMFlash = mix(gun + vec4(finalColor, gun.a), vec4(bloom.rgb, 1.0), bloom.a);
-  frag_color = mixedGunMFlash + mflash;
+    vec4 mixedGunMFlash = mix(gun + vec4(finalColor, gun.a), vec4(bloom.rgb, 1.0), bloom.a);
+    frag_color = mixedGunMFlash + mflash;
 }

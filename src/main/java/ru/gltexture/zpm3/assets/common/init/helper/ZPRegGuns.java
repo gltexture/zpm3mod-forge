@@ -6,6 +6,8 @@ import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.init.ZPItems;
 import ru.gltexture.zpm3.assets.common.init.ZPSounds;
 import ru.gltexture.zpm3.assets.common.init.ZPTabs;
+import ru.gltexture.zpm3.assets.guns.item.ZPGunClassicRifle;
+import ru.gltexture.zpm3.assets.guns.item.ZPGunShotgun;
 import ru.gltexture.zpm3.assets.guns.rendering.ZPDefaultGunRenderers;
 import ru.gltexture.zpm3.assets.guns.rendering.fx.IZPGunParticlesFX;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
@@ -26,10 +28,10 @@ public abstract class ZPRegGuns {
             }).registryObject();
 
             ZPItems.makarov = regSupplier.register("makarov",
-                    () -> new ZPGunPistol(new Item.Properties(), new ZPBaseGun.GunProperties(ZPItems._makarov.get())
+                    () -> new ZPGunPistol(new Item.Properties(), new ZPBaseGun.GunProperties(ZPItems._makarov.get(), ZPBaseGun.GunProperties.HeldType.PISTOL)
                             .setDamage(4)
                             .setDurability(180)
-                            .setInaccuracy(2.0f)
+                            .setInaccuracy(1.5f)
                             .setMaxAmmo(8)
                             .setReloadTime(40)
                             .setShootCooldown(4)
@@ -53,7 +55,7 @@ public abstract class ZPRegGuns {
             }).registryObject();
 
             ZPItems.handmade_pistol = regSupplier.register("handmade_pistol",
-                    () -> new ZPGunPistol(new Item.Properties(), new ZPBaseGun.GunProperties(ZPItems._handmade_pistol.get())
+                    () -> new ZPGunPistol(new Item.Properties(), new ZPBaseGun.GunProperties(ZPItems._handmade_pistol.get(), ZPBaseGun.GunProperties.HeldType.PISTOL)
                             .setCustomShotParticlesEmitter(IZPGunParticlesFX.DEFAULT_PARTICLES_EMITTER_SUPER_SMOKY_NO_SHELL)
                             .setDamage(6)
                             .setDurability(60)
@@ -81,11 +83,11 @@ public abstract class ZPRegGuns {
             }).registryObject();
 
             ZPItems.colt = regSupplier.register("colt",
-                    () -> new ZPGunPistol(new Item.Properties(), new ZPBaseGun.GunProperties(ZPItems._colt.get())
+                    () -> new ZPGunPistol(new Item.Properties(), new ZPBaseGun.GunProperties(ZPItems._colt.get(), ZPBaseGun.GunProperties.HeldType.PISTOL)
                             .setCustomShotParticlesEmitter(IZPGunParticlesFX.DEFAULT_PARTICLES_EMITTER_NO_SHELL)
                             .setDamage(6)
                             .setDurability(260)
-                            .setInaccuracy(1.0f)
+                            .setInaccuracy(0.9f)
                             .setMaxAmmo(6)
                             .setReloadTime(70)
                             .setShootCooldown(5)
@@ -109,10 +111,10 @@ public abstract class ZPRegGuns {
             }).registryObject();
 
             ZPItems.m1911 = regSupplier.register("m1911",
-                    () -> new ZPGunPistol(new Item.Properties(), new ZPBaseGun.GunProperties(ZPItems._m1911.get())
+                    () -> new ZPGunPistol(new Item.Properties(), new ZPBaseGun.GunProperties(ZPItems._m1911.get(), ZPBaseGun.GunProperties.HeldType.PISTOL)
                             .setDamage(5)
                             .setDurability(220)
-                            .setInaccuracy(2.25f)
+                            .setInaccuracy(1.0f)
                             .setMaxAmmo(7)
                             .setReloadTime(40)
                             .setShootCooldown(4)
@@ -136,10 +138,10 @@ public abstract class ZPRegGuns {
             }).registryObject();
 
             ZPItems.usp = regSupplier.register("usp",
-                    () -> new ZPGunPistol(new Item.Properties(), new ZPBaseGun.GunProperties(ZPItems._usp.get())
+                    () -> new ZPGunPistol(new Item.Properties(), new ZPBaseGun.GunProperties(ZPItems._usp.get(), ZPBaseGun.GunProperties.HeldType.PISTOL)
                             .setDamage(4)
                             .setDurability(310)
-                            .setInaccuracy(2.85f)
+                            .setInaccuracy(1.25f)
                             .setMaxAmmo(12)
                             .setReloadTime(60)
                             .setShootCooldown(3)
@@ -163,11 +165,11 @@ public abstract class ZPRegGuns {
             }).registryObject();
 
             ZPItems.uzi = regSupplier.register("uzi",
-                    () -> new ZPGunPistol(new Item.Properties(), new ZPBaseGun.GunProperties(ZPItems._uzi.get())
+                    () -> new ZPGunPistol(new Item.Properties(), new ZPBaseGun.GunProperties(ZPItems._uzi.get(), ZPBaseGun.GunProperties.HeldType.PISTOL)
                             .setDamage(3)
                             .setAuto(true)
                             .setDurability(400)
-                            .setInaccuracy(3.25f)
+                            .setInaccuracy(2.25f)
                             .setMaxAmmo(30)
                             .setReloadTime(60)
                             .setShootCooldown(2)
@@ -191,10 +193,10 @@ public abstract class ZPRegGuns {
             }).registryObject();
 
             ZPItems.deagle = regSupplier.register("deagle",
-                    () -> new ZPGunPistol(new Item.Properties(), new ZPBaseGun.GunProperties(ZPItems._deagle.get())
+                    () -> new ZPGunPistol(new Item.Properties(), new ZPBaseGun.GunProperties(ZPItems._deagle.get(), ZPBaseGun.GunProperties.HeldType.PISTOL)
                             .setDamage(7)
                             .setDurability(300)
-                            .setInaccuracy(2.25f)
+                            .setInaccuracy(0.75f)
                             .setMaxAmmo(7)
                             .setReloadTime(80)
                             .setShootCooldown(5)
@@ -209,10 +211,10 @@ public abstract class ZPRegGuns {
             }).registryObject();
 
             ZPItems.golden_deagle = regSupplier.register("golden_deagle",
-                    () -> new ZPGunPistol(new Item.Properties(), new ZPBaseGun.GunProperties(ZPItems._deagle.get())
+                    () -> new ZPGunPistol(new Item.Properties(), new ZPBaseGun.GunProperties(ZPItems._deagle.get(), ZPBaseGun.GunProperties.HeldType.PISTOL)
                             .setDamage(7)
                             .setDurability(500)
-                            .setInaccuracy(2.25f)
+                            .setInaccuracy(0.75f)
                             .setMaxAmmo(9)
                             .setReloadTime(80)
                             .setShootCooldown(5)
@@ -224,6 +226,88 @@ public abstract class ZPRegGuns {
                 utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
                 utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultPistolRenderer, ZPDefaultGunRenderers.defaultPistolRenderer);
+            }).registryObject();
+        }
+
+        {
+            ZPItems._shotgun = regSupplier.register("_shotgun",
+                    () -> new ZPItem(new Item.Properties().stacksTo(32))
+            ).postConsume(Dist.CLIENT, (e, utils) -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+            }).registryObject();
+
+            ZPItems.shotgun = regSupplier.register("shotgun",
+                    () -> new ZPGunShotgun(new Item.Properties(), new ZPBaseGun.GunProperties(ZPItems._shotgun.get(), ZPBaseGun.GunProperties.HeldType.RIFLE)
+                            .setDamage(1)
+                            .setDurability(140)
+                            .setInaccuracy(8.0f)
+                            .setMaxAmmo(6)
+                            .setReloadTime(15)
+                            .setShootCooldown(20)
+                            .setClientRecoil(9.5f)
+                            .setReloadSound(() -> ZPSounds.shotgun_reload.get())
+                            .setFireSound(() -> ZPSounds.shotgun_fire.get())
+                    )
+            ).postConsume(Dist.CLIENT, (e, utils) -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+                utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultShutterRifleRenderer, ZPDefaultGunRenderers.defaultShutterRifleRenderer);
+            }).registryObject();
+        }
+
+        {
+            ZPItems._mosin = regSupplier.register("_mosin",
+                    () -> new ZPItem(new Item.Properties().stacksTo(32))
+            ).postConsume(Dist.CLIENT, (e, utils) -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+            }).registryObject();
+
+            ZPItems.mosin = regSupplier.register("mosin",
+                    () -> new ZPGunClassicRifle(new Item.Properties(), new ZPBaseGun.GunProperties(ZPItems._mosin.get(), ZPBaseGun.GunProperties.HeldType.RIFLE)
+                            .setDamage(10)
+                            .setDurability(180)
+                            .setInaccuracy(0.25f)
+                            .setMaxAmmo(5)
+                            .setReloadTime(18)
+                            .setShootCooldown(22)
+                            .setClientRecoil(7.0f)
+                            .setReloadSound(() -> ZPSounds.rifle_shutter.get())
+                            .setFireSound(() -> ZPSounds.mosin_fire.get())
+                    )
+            ).postConsume(Dist.CLIENT, (e, utils) -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+                utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultShutterRifleRenderer, ZPDefaultGunRenderers.defaultShutterRifleRenderer);
+            }).registryObject();
+        }
+
+        {
+            ZPItems._akm = regSupplier.register("_akm",
+                    () -> new ZPItem(new Item.Properties().stacksTo(32))
+            ).postConsume(Dist.CLIENT, (e, utils) -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+            }).registryObject();
+
+            ZPItems.akm = regSupplier.register("akm",
+                    () -> new ZPGunPistol(new Item.Properties(), new ZPBaseGun.GunProperties(ZPItems._akm.get(), ZPBaseGun.GunProperties.HeldType.RIFLE)
+                            .setDamage(3)
+                            .setAuto(true)
+                            .setDurability(180)
+                            .setInaccuracy(1.5f)
+                            .setMaxAmmo(30)
+                            .setReloadTime(76)
+                            .setShootCooldown(2)
+                            .setClientRecoil(1.5f)
+                            .setReloadSound(() -> ZPSounds.akm_reload.get())
+                            .setFireSound(() -> ZPSounds.akm_fire.get())
+                    )
+            ).postConsume(Dist.CLIENT, (e, utils) -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+                utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultRifleRenderer, ZPDefaultGunRenderers.defaultRifleRenderer);
             }).registryObject();
         }
     }

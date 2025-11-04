@@ -40,6 +40,16 @@ public class ZPSounds extends ZPRegistry<SoundEvent> {
     public static RegistryObject<SoundEvent> handmade_pistol_fire;
     public static RegistryObject<SoundEvent> handmade_pistol_reload;
 
+    public static RegistryObject<SoundEvent> shotgun_fire;
+    public static RegistryObject<SoundEvent> shotgun_reload;
+    public static RegistryObject<SoundEvent> shell_insert;
+    public static RegistryObject<SoundEvent> shotgun_shutter;
+    public static RegistryObject<SoundEvent> rifle_shutter;
+    public static RegistryObject<SoundEvent> shell_insert2;
+    public static RegistryObject<SoundEvent> akm_fire;
+    public static RegistryObject<SoundEvent> akm_reload;
+    public static RegistryObject<SoundEvent> mosin_fire;
+
     public ZPSounds() {
         super(ZPRegistryConveyor.Target.SOUND_EVENT);
     }

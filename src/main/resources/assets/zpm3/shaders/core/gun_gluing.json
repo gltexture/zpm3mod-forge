@@ -49,6 +49,18 @@
       "values": [0]
     },
     {
+      "name": "Sampler4",
+      "type": "int",
+      "count": 1,
+      "values": [0]
+    },
+    {
+      "name": "Sampler5",
+      "type": "int",
+      "count": 1,
+      "values": [0]
+    },
+    {
       "name": "sModelViewMat",
       "type": "matrix4x4",
       "count": 16,

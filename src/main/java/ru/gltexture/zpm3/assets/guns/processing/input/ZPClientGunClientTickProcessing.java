@@ -25,7 +25,6 @@ public class ZPClientGunClientTickProcessing implements IZPGunInputProcessor {
     public static ZPClientGunClientTickProcessing INSTANCE = new ZPClientGunClientTickProcessing();
     private static boolean rightClickedFirst;
     private static boolean tryToShootOnlyRight;
-    public static boolean shouldBlockRightHandAttack;
 
     private static boolean uiShouldBlockMouseScan; //BUG FIX
     private static int dualShootTickCounter = 0;
@@ -57,9 +56,6 @@ public class ZPClientGunClientTickProcessing implements IZPGunInputProcessor {
     }
 
     public static boolean showLeftMouseIndicator(@NotNull Minecraft minecraft) {
-        if (ZPClientGunClientTickProcessing.isAnythingReloading(Minecraft.getInstance())) {
-            return false;
-        }
         @Nullable Player player = minecraft.player;
         if (player != null) {
             @Nullable final ItemStack itemStackInRightHand = player.getMainHandItem();
@@ -73,9 +69,6 @@ public class ZPClientGunClientTickProcessing implements IZPGunInputProcessor {
     }
 
     public static boolean showRightMouseIndicator(@NotNull Minecraft minecraft) {
-        if (ZPClientGunClientTickProcessing.isAnythingReloading(Minecraft.getInstance())) {
-            return false;
-        }
         @Nullable Player player = minecraft.player;
         if (player != null) {
             @Nullable final ItemStack itemStackInRightHand = player.getMainHandItem();
@@ -105,34 +98,14 @@ public class ZPClientGunClientTickProcessing implements IZPGunInputProcessor {
         return false;
     }
 
-    public static boolean isAnythingReloading(@NotNull Minecraft minecraft) {
-        @Nullable Player player = minecraft.player;
-        if (player != null) {
-            @Nullable final ItemStack itemStackInRightHand = player.getMainHandItem();
-            @Nullable final ItemStack itemStackInLeftHand = player.getOffhandItem();
-
-            if (itemStackInRightHand.getItem() instanceof ZPBaseGun baseGun) {
-                if (baseGun.isUnloadingOrReloading(player, itemStackInRightHand)) {
-                    return true;
-                }
-            }
-
-            if (itemStackInLeftHand.getItem() instanceof ZPBaseGun baseGun) {
-                if (baseGun.isUnloadingOrReloading(player, itemStackInLeftHand)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
     @Override
     public void process(@NotNull Minecraft minecraft) {
         @Nullable Player player = minecraft.player;
         ClientLevel level = minecraft.level;
 
         if (level != null && player != null) {
+            boolean rightPressed = minecraft.mouseHandler.isRightPressed();
+            boolean leftPressed = minecraft.mouseHandler.isLeftPressed();
             if (minecraft.screen == null && minecraft.getOverlay() == null) {
                 @Nullable final ItemStack itemStackInRightHand = player.getMainHandItem();
                 @Nullable final ItemStack itemStackInLeftHand = player.getOffhandItem();
@@ -142,9 +115,7 @@ public class ZPClientGunClientTickProcessing implements IZPGunInputProcessor {
                 final boolean rightIsGun = rightGun != null;
                 final boolean leftIsGun = leftGun != null;
 
-                ZPClientGunClientTickProcessing.tryToShootOnlyRight = leftIsGun && ZPClientGunClientTickProcessing.triesToShotOnlyRightGun(minecraft);
-                boolean rightPressed = minecraft.mouseHandler.isRightPressed();
-                boolean leftPressed = minecraft.mouseHandler.isLeftPressed();
+                ZPClientGunClientTickProcessing.tryToShootOnlyRight = (leftIsGun && !rightIsGun) && ZPClientGunClientTickProcessing.tryShotOnlyLeftGunWhileRightIsEmpty(minecraft);
                 final boolean flagRightTemp = ZPClientGunClientTickProcessing.wasPressedRight;
                 final boolean flagLeftTemp = ZPClientGunClientTickProcessing.wasPressedLeft;
                 ZPClientGunClientTickProcessing.wasPressedRight = rightPressed;
@@ -174,15 +145,6 @@ public class ZPClientGunClientTickProcessing implements IZPGunInputProcessor {
                     }
                 }
 
-                ZPClientGunClientTickProcessing.shouldBlockRightHandAttack = bothAreGuns || (leftIsGun && rightPressed);
-
-                if ((rightPressed || leftPressed) && ZPClientGunClientTickProcessing.uiShouldBlockMouseScan) {
-                    rightPressed = false;
-                    leftPressed = false;
-                } else {
-                    ZPClientGunClientTickProcessing.uiShouldBlockMouseScan = false;
-                }
-
                 boolean rightFire = leftPressed;
                 boolean leftFire = rightPressed;
                 boolean bothArePressed = rightFire && leftFire;
@@ -192,8 +154,9 @@ public class ZPClientGunClientTickProcessing implements IZPGunInputProcessor {
                     rightFire = leftFire;
                     leftFire = temp;
                 } else {
-                    if (leftIsGun && !ZPClientGunClientTickProcessing.tryToShootOnlyRight) {
-                        leftFire = false;
+                    if (leftIsGun) {
+                        final boolean flag = ZPClientGunClientTickProcessing.tryToShootOnlyRight && (!flagLeftTemp || leftGun.getGunProperties().isAuto());
+                        leftFire = flag;
                     }
                 }
 
@@ -224,7 +187,7 @@ public class ZPClientGunClientTickProcessing implements IZPGunInputProcessor {
                     }
                 }
 
-                if (ZPClientGunClientTickProcessing.unloadOrReloadIsPressed() && !ZPClientGunClientTickProcessing.isAnythingReloading(minecraft)) {
+                if (ZPClientGunClientTickProcessing.unloadOrReloadIsPressed()) {
                     boolean unLoad = !ZPBaseKeyBindings.reloadKey.isDown() && ZPBaseKeyBindings.unloadKey.isDown();
                     boolean reloadRightGun = false;
                     boolean reloadLeftGun = false;
@@ -274,13 +237,16 @@ public class ZPClientGunClientTickProcessing implements IZPGunInputProcessor {
                         }
                     }
                 }
-            } else {
-                ZPClientGunClientTickProcessing.uiShouldBlockMouseScan = true;
             }
         }
     }
 
-    private static boolean triesToShotOnlyRightGun(@NotNull Minecraft minecraft) {
+    public static boolean shouldBlockMouseAttack(@NotNull Minecraft minecraft) {
+        boolean leftPressed = minecraft.mouseHandler.isLeftPressed();
+        return ZPClientGunClientTickProcessing.rightClickedFirst && leftPressed;
+    }
+
+    private static boolean tryShotOnlyLeftGunWhileRightIsEmpty(@NotNull Minecraft minecraft) {
         boolean rightPressed = minecraft.mouseHandler.isRightPressed();
         boolean leftPressed = minecraft.mouseHandler.isLeftPressed();
 

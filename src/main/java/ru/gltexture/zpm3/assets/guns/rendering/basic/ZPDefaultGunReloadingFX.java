@@ -1,5 +1,6 @@
 package ru.gltexture.zpm3.assets.guns.rendering.basic;
 
+import com.mojang.blaze3d.platform.Window;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -32,7 +33,7 @@ public class ZPDefaultGunReloadingFX implements IZPGunReloadingFX {
     }
 
     @Override
-    public void triggerReloadingStart(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, @NotNull ZPClientCallbacks.ZPGunReloadStartCallback.GunFXData gunFXData) {
+    public void onReloadStart(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, @NotNull ZPClientCallbacks.ZPGunReloadStartCallback.GunFXData gunFXData) {
         if (!player.equals(Minecraft.getInstance().player)) {
             return;
         }
@@ -71,17 +72,21 @@ public class ZPDefaultGunReloadingFX implements IZPGunReloadingFX {
         if (phase == TickEvent.Phase.START) {
             final float speed = 0.25f;
             for (int i = 0; i < 2; i++) {
-                if (this.reloadProgression[i]) {
-                    Minecraft minecraft = Minecraft.getInstance();
-                    Player player = minecraft.player;
-                    if (player != null) {
-                        ItemStack itemStack = player.getItemInHand(i == 1 ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND);
+                Minecraft minecraft = Minecraft.getInstance();
+                Player player = minecraft.player;
+                if (player != null) {
+                    ItemStack itemStack = player.getItemInHand(i == 1 ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND);
+                    if (this.reloadProgression[i]) {
                         if (!(itemStack.getItem() instanceof ZPBaseGun zpBaseGun)) {
                             this.stopReloadingAnim(i);
                         } else {
                             if (!zpBaseGun.isUnloadingOrReloading(player, itemStack)) {
                                 this.stopReloadingAnim(i);
                             }
+                        }
+                    } else if (itemStack.getItem() instanceof ZPBaseGun zpBaseGun) {
+                        if (zpBaseGun.isUnloadingOrReloading(player, itemStack)) {
+                            this.reloadProgression[i] = true;
                         }
                     }
                 }

@@ -1,5 +1,6 @@
 package ru.gltexture.zpm3.assets.guns.rendering.basic;
 
+import com.mojang.blaze3d.platform.Window;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
@@ -32,19 +33,19 @@ public class ZPDefaultGunRecoilFX implements IZPGunRecoilFX {
     }
 
     @Override
-    public void triggerRecoil(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, ZPClientCallbacks.ZPGunShotCallback.@NotNull GunFXData gunFXData) {
+    public void onShot(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, ZPClientCallbacks.ZPGunShotCallback.@NotNull GunFXData gunFXData) {
         if (!player.equals(Minecraft.getInstance().player)) {
             return;
         }
         final int id = gunFXData.isRightHand() ? 1 : 0;
-        this.recoilStrengthLast[id] = gunFXData.recoilStrength() < 0.0f ? -1.0f : gunFXData.recoilStrength();
+        this.recoilStrengthLast[id] = Math.min(gunFXData.recoilStrength() < 0.0f ? -1.0f : gunFXData.recoilStrength(), 16.0f);
         this.recoilPrev[id] = this.recoil[id] > 0.0f ? 1.0f : 0;
         this.recoil[id] = this.recoil[id] > 0.0f ? 0.5f : 0;
         this.revoilProgression[id] = true;
     }
 
     @Override
-    public @Nullable Matrix4f getCurrentRecoilTransformation(boolean rightHand, float partialTicks) {
+    public @Nullable Matrix4f getCurrentRecoilTransformation(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, boolean rightHand, float partialTicks) {
         final int id = rightHand ? 1 : 0;
         float translateConst = 0.05f;
         float rotateConst = 15.0f;
@@ -58,8 +59,13 @@ public class ZPDefaultGunRecoilFX implements IZPGunRecoilFX {
             translateConst *= -1.0f;
         }
 
+        float yTranslation = scale * translateConst;
+        if (baseGun.getGunProperties().getHeldType().equals(ZPBaseGun.GunProperties.HeldType.RIFLE) && player.getOffhandItem().isEmpty()) {
+            yTranslation *= -0.5f;
+        }
+
         Matrix4f matrix4f = new Matrix4f().identity();
-        Vector3f translate = new Vector3f(0.0f, scale * translateConst, scale * translateConst);
+        Vector3f translate = new Vector3f(0.0f, yTranslation, scale * translateConst);
         Vector3f rotate = new Vector3f(scale * rotateConst, 0.0f, 0.0f);
 
         matrix4f.translate(translate)
@@ -73,16 +79,6 @@ public class ZPDefaultGunRecoilFX implements IZPGunRecoilFX {
     @Override
     public void onTick(TickEvent.@NotNull Phase phase) {
         if (phase == TickEvent.Phase.START) {
-            if (Minecraft.getInstance().player != null) {
-                if (DearUITRSInterface.emmitShells) {
-                    ZPDefaultGunParticlesFX.emmitParticleShell(true, Minecraft.getInstance().player);
-                    ZPDefaultGunParticlesFX.emmitParticleShell(false, Minecraft.getInstance().player);
-                }
-                if (DearUITRSInterface.emmitSmoke) {
-                    ZPDefaultGunParticlesFX.emmitParticleSmoke(true, Minecraft.getInstance().player, false);
-                    ZPDefaultGunParticlesFX.emmitParticleSmoke(false, Minecraft.getInstance().player, false);
-                }
-            }
             for (int i = 0; i < 2; i++) {
                 this.recoilPrev[i] = this.recoil[i];
                 if (this.revoilProgression[i]) {

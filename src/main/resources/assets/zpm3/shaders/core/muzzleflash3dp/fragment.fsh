@@ -5,8 +5,8 @@ in vec2 uv_coordinates;
 in vec4 out_color;
 
 layout(location = 0) out vec4 frag_color;
-layout(location = 1) out vec4 bright_color;
 
+uniform vec4 ColorModulator;
 uniform sampler2D Sampler0;
 uniform float scissor;
 
@@ -17,6 +17,7 @@ void main()
 
     vec4 frag_mult = vec4(1. + pow((cicle <= 1.) ? cicle : (2. - cicle), 6.));
     frag_color *= frag_mult;
+
     float dist = distance(uv_coordinates, vec2(0.5));
     float radius = scissor;
     float fade = 1.0;
@@ -26,10 +27,15 @@ void main()
         fade = smoothstep(radius, radius - smoothNess, dist);
     }
     else {
+        //dist > (0.5 - smoothNess) ? 1. :
         float shrinkRadius = 1.0 - (scissor - 0.5) * 2.0;
-        fade = smoothstep(shrinkRadius, shrinkRadius - smoothNess, 1. - dist);
+        fade = smoothstep(shrinkRadius, shrinkRadius - smoothNess, clamp(1.0 - dist, 0.0, 1.0));
     }
 
     frag_color *= vec4(vec3(fade), fade);
-    bright_color = frag_color;
+    frag_color *= ColorModulator;
+
+    if (frag_color.a < 0.5) {
+        discard;
+    }
 }

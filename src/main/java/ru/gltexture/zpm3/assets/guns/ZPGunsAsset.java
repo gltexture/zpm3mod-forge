@@ -8,6 +8,7 @@ import net.minecraftforge.event.TickEvent;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL46;
 import ru.gltexture.zpm3.assets.guns.events.ZPGunPostRender;
+import ru.gltexture.zpm3.assets.guns.events.ZPGunTossEvent;
 import ru.gltexture.zpm3.assets.guns.events.ZPGunsUI;
 import ru.gltexture.zpm3.assets.guns.processing.input.ZPClientGunClientTickProcessing;
 import ru.gltexture.zpm3.assets.guns.rendering.ZPDefaultGunRenderers;
@@ -47,13 +48,6 @@ public class ZPGunsAsset extends ZPAsset {
         });
         ZPRenderHooksManager.INSTANCE.addSceneRenderingHook(((renderStage, partialTicks, deltaTime, pNanoTime, pRenderLevel) -> {
             if (renderStage == ZPRenderHelper.RenderStage.PRE) {
-                if (ZPDefaultGunMuzzleflashFX.muzzleflash3dpFBO != null) {
-                    ZPDefaultGunMuzzleflashFX.muzzleflash3dpFBO.bindFBO();
-                    GL46.glDrawBuffers(new int[]{GL46.GL_COLOR_ATTACHMENT0, GL46.GL_COLOR_ATTACHMENT1});
-                    GL46.glClear(GL46.GL_COLOR_BUFFER_BIT | GL46.GL_DEPTH_BUFFER_BIT | GL46.GL_STENCIL_BUFFER_BIT);
-                    GL46.glDrawBuffers(new int[]{GL46.GL_COLOR_ATTACHMENT0});
-                    ZPDefaultGunMuzzleflashFX.muzzleflash3dpFBO.unBindFBO();
-                }
                 ZPClientGunClientTickProcessing.INSTANCE.process(Minecraft.getInstance());
             }
         }));
@@ -80,5 +74,6 @@ public class ZPGunsAsset extends ZPAsset {
     public void initAsset(ZombiePlague3.@NotNull IAssetEntry assetEntry) {
         assetEntry.addEventClass(ZPGunsUI.class);
         assetEntry.addEventClass(ZPGunPostRender.class);
+        assetEntry.addEventClass(ZPGunTossEvent.class);
     }
 }

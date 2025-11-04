@@ -100,6 +100,14 @@ public abstract class ZPBaseGun extends ZPItem {
         }
     }
 
+    public int getAmmoBeforeReload(@NotNull Entity entity, @NotNull ItemStack itemStack) {
+        if (entity.level().isClientSide()) {
+            return this.getClientData(itemStack).getTagInt(ZPTagID.GUN_AMMO_BEFORE_RELOAD);
+        } else {
+            return this.getServerData(itemStack).getTagInt(ZPTagID.GUN_AMMO_BEFORE_RELOAD);
+        }
+    }
+
     public boolean isReloading(@NotNull Entity entity, @NotNull ItemStack itemStack) {
         if (entity.level().isClientSide()) {
             return this.getClientData(itemStack).getTagBoolean(ZPTagID.GUN_IS_RELOADING_TAG);
@@ -160,6 +168,13 @@ public abstract class ZPBaseGun extends ZPItem {
         }
     }
 
+    public void setAmmoBeforeReload(@NotNull Entity entity, @NotNull ItemStack itemStack, int value) {
+        if (entity.level().isClientSide()) {
+            this.getClientData(itemStack).putTagInt(Pair.of(ZPTagID.GUN_AMMO_BEFORE_RELOAD, value));
+        } else {
+            this.getServerData(itemStack).putTagInt(Pair.of(ZPTagID.GUN_AMMO_BEFORE_RELOAD, value));
+        }
+    }
 
     public boolean isJammed(@NotNull Entity entity, @NotNull ItemStack itemStack) {
         return this.getServerData(itemStack).getTagBoolean(ZPTagID.GUN_IS_JAMMED_TAG);
@@ -170,9 +185,20 @@ public abstract class ZPBaseGun extends ZPItem {
     }
 
 
+
     @OnlyIn(Dist.CLIENT)
     public void setCurrentTimeBeforeShoot(@NotNull Entity entity, @NotNull ItemStack itemStack, int value) {
         this.getClientData(itemStack).putTagInt(Pair.of(ZPTagID.GUN_CL_TIME_BEFORE_SHOOT, value));
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public void setCurrentTimeBeforeReload(@NotNull Entity entity, @NotNull ItemStack itemStack, int value) {
+        this.getClientData(itemStack).putTagInt(Pair.of(ZPTagID.GUN_CL_TIME_BEFORE_RELOAD, value));
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public int getCurrentTimeBeforeReload(@NotNull Entity entity, @NotNull ItemStack itemStack) {
+        return this.getClientData(itemStack).getTagInt(ZPTagID.GUN_CL_TIME_BEFORE_RELOAD);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -180,11 +206,12 @@ public abstract class ZPBaseGun extends ZPItem {
         return this.getClientData(itemStack).getTagInt(ZPTagID.GUN_CL_TIME_BEFORE_SHOOT);
     }
 
-
     @OnlyIn(Dist.CLIENT)
     public int getGunClientSyncCooldown(@NotNull ItemStack itemStack) {
         return this.getClientData(itemStack).getTagInt(ZPTagID.GUN_CL_SYNC_COOLDOWN);
     }
+
+
 
     @OnlyIn(Dist.CLIENT)
     public void setClientSyncCooldown(@NotNull ItemStack itemStack, int ticks) {
@@ -213,10 +240,12 @@ public abstract class ZPBaseGun extends ZPItem {
     public abstract IGunLogicProcessor getServerGunLogic();
 
     public static class GunProperties {
-        private @Nullable IZPGunParticlesFX.ParticlesEmitter customShotParticlesEmitter;
+        private final @NotNull AnimationData animationData;
+        private @Nullable IZPGunParticlesFX.ParticlesEmitterPack customShotParticlesEmitter;
         private int shootCooldown;
         private int reloadTime;
         private int damage;
+        private HeldType heldType;
 
         private int maxAmmo;
 
@@ -230,8 +259,10 @@ public abstract class ZPBaseGun extends ZPItem {
         private @Nullable Supplier<@NotNull SoundEvent> reloadSound;
         private final @NotNull Item ammo;
 
-        public GunProperties(@NotNull Item ammo) {
+        public GunProperties(@NotNull Item ammo, @NotNull HeldType heldType) {
+            this.animationData = new AnimationData(false);
             this.setDefaults();
+            this.heldType = heldType;
             this.ammo = ammo;
         }
 
@@ -252,11 +283,24 @@ public abstract class ZPBaseGun extends ZPItem {
             this.fireSound = null;
         }
 
-        public @Nullable IZPGunParticlesFX.ParticlesEmitter getCustomShotParticlesEmitter() {
+        public @NotNull AnimationData getAnimationData() {
+            return this.animationData;
+        }
+
+        public HeldType getHeldType() {
+            return this.heldType;
+        }
+
+        public GunProperties setHeldType(HeldType heldType) {
+            this.heldType = heldType;
+            return this;
+        }
+
+        public @Nullable IZPGunParticlesFX.ParticlesEmitterPack getCustomShotParticlesEmitter() {
             return this.customShotParticlesEmitter;
         }
 
-        public GunProperties setCustomShotParticlesEmitter(@Nullable IZPGunParticlesFX.ParticlesEmitter customShotParticlesEmitter) {
+        public GunProperties setCustomShotParticlesEmitter(@Nullable IZPGunParticlesFX.ParticlesEmitterPack customShotParticlesEmitter) {
             this.customShotParticlesEmitter = customShotParticlesEmitter;
             return this;
         }
@@ -357,6 +401,62 @@ public abstract class ZPBaseGun extends ZPItem {
         public GunProperties setReloadSound(@Nullable Supplier<@NotNull SoundEvent> reloadSound) {
             this.reloadSound = reloadSound;
             return this;
+        }
+
+        public enum HeldType {
+            PISTOL,
+            RIFLE
+        }
+
+        public static class AnimationData {
+            private boolean hasShutterAnimation;
+            private SoundEvent shutterSound;
+            private ShutterAnimationType shutterAnimationType;
+            private float shutterAnimationSpeed;
+
+            public AnimationData(boolean hasShutterAnimation) {
+                this.hasShutterAnimation = hasShutterAnimation;
+                this.shutterAnimationType = null;
+                this.shutterSound = ZPSounds.shotgun_shutter.get();
+                this.shutterAnimationSpeed = 4.0f;
+            }
+
+            public float getShutterAnimationSpeed() {
+                return this.shutterAnimationSpeed;
+            }
+
+            public AnimationData setShutterAnimationSpeed(float shutterAnimationSpeed) {
+                this.shutterAnimationSpeed = shutterAnimationSpeed;
+                return this;
+            }
+
+            public SoundEvent getShutterSound() {
+                return this.shutterSound;
+            }
+
+            public AnimationData setShutterSound(SoundEvent shutterSound) {
+                this.shutterSound = shutterSound;
+                return this;
+            }
+
+            public boolean isHasShutterAnimation() {
+                return this.hasShutterAnimation;
+            }
+
+            public ShutterAnimationType getShutterAnimationType() {
+                return this.shutterAnimationType;
+            }
+
+            public AnimationData setHasShutterAnimation(boolean hasShutterAnimation, @Nullable ShutterAnimationType shutterAnimationType) {
+                this.hasShutterAnimation = hasShutterAnimation;
+                this.shutterAnimationType = shutterAnimationType;
+                return this;
+            }
+
+            public enum ShutterAnimationType {
+                SHOTGUN,
+                CLASSIC
+            }
         }
     }
 }

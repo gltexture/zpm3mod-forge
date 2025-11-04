@@ -92,5 +92,42 @@ public abstract class ZPRegSounds {
         ZPSounds.empty = regSupplier.register("empty", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "empty"))).postConsume(Dist.CLIENT, (e, utils) -> {
             utils.sounds().addNewSound(new ZPSoundListProvider.ZPSoundEvent("empty", false, "sounds.zpm3.empty", List.of(new ZPSoundListProvider.SoundData("guns/empty"))));
         }).registryObject();
+
+
+        ZPSounds.shotgun_reload = regSupplier.register("shotgun_reload", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "shotgun_reload"))).postConsume(Dist.CLIENT, (e, utils) -> {
+            utils.sounds().addNewSound(new ZPSoundListProvider.ZPSoundEvent("shotgun_reload", false, "sounds.zpm3.shotgun_reload", List.of(new ZPSoundListProvider.SoundData("guns/shotgun_reload"))));
+        }).registryObject();
+
+        ZPSounds.shotgun_fire = regSupplier.register("shotgun_fire", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "shotgun_fire"))).postConsume(Dist.CLIENT, (e, utils) -> {
+            utils.sounds().addNewSound(new ZPSoundListProvider.ZPSoundEvent("shotgun_fire", false, "sounds.zpm3.shotgun_fire", List.of(new ZPSoundListProvider.SoundData("guns/shotgun_fire"))));
+        }).registryObject();
+
+        ZPSounds.shell_insert = regSupplier.register("shell_insert", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "shell_insert"))).postConsume(Dist.CLIENT, (e, utils) -> {
+            utils.sounds().addNewSound(new ZPSoundListProvider.ZPSoundEvent("shell_insert", false, "sounds.zpm3.shell_insert", List.of(new ZPSoundListProvider.SoundData("guns/shell_insert"))));
+        }).registryObject();
+
+        ZPSounds.shotgun_shutter = regSupplier.register("shotgun_shutter", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "shotgun_shutter"))).postConsume(Dist.CLIENT, (e, utils) -> {
+            utils.sounds().addNewSound(new ZPSoundListProvider.ZPSoundEvent("shotgun_shutter", false, "sounds.zpm3.shotgun_shutter", List.of(new ZPSoundListProvider.SoundData("guns/shotgun_shutter"))));
+        }).registryObject();
+
+        ZPSounds.shell_insert2 = regSupplier.register("shell_insert2", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "shell_insert2"))).postConsume(Dist.CLIENT, (e, utils) -> {
+            utils.sounds().addNewSound(new ZPSoundListProvider.ZPSoundEvent("shell_insert2", false, "sounds.zpm3.shell_insert2", List.of(new ZPSoundListProvider.SoundData("guns/shell_insert2"))));
+        }).registryObject();
+
+        ZPSounds.rifle_shutter = regSupplier.register("rifle_shutter", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "rifle_shutter"))).postConsume(Dist.CLIENT, (e, utils) -> {
+            utils.sounds().addNewSound(new ZPSoundListProvider.ZPSoundEvent("rifle_shutter", false, "sounds.zpm3.rifle_shutter", List.of(new ZPSoundListProvider.SoundData("guns/rifle_shutter"))));
+        }).registryObject();
+
+        ZPSounds.akm_fire = regSupplier.register("akm_fire", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "akm_fire"))).postConsume(Dist.CLIENT, (e, utils) -> {
+            utils.sounds().addNewSound(new ZPSoundListProvider.ZPSoundEvent("akm_fire", false, "sounds.zpm3.akm_fire", List.of(new ZPSoundListProvider.SoundData("guns/akm_fire"))));
+        }).registryObject();
+
+        ZPSounds.akm_reload = regSupplier.register("akm_reload", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "akm_reload"))).postConsume(Dist.CLIENT, (e, utils) -> {
+            utils.sounds().addNewSound(new ZPSoundListProvider.ZPSoundEvent("akm_reload", false, "sounds.zpm3.akm_reload", List.of(new ZPSoundListProvider.SoundData("guns/akm_reload"))));
+        }).registryObject();
+
+        ZPSounds.mosin_fire = regSupplier.register("mosin_fire", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "mosin_fire"))).postConsume(Dist.CLIENT, (e, utils) -> {
+            utils.sounds().addNewSound(new ZPSoundListProvider.ZPSoundEvent("mosin_fire", false, "sounds.zpm3.mosin_fire", List.of(new ZPSoundListProvider.SoundData("guns/mosin_fire"))));
+        }).registryObject();
     }
 }

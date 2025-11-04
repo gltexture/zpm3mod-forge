@@ -88,11 +88,11 @@ public abstract class ZPClientCallbacks {
         record GunFXData(boolean isRightHand) {}
     }
 
-    @FunctionalInterface
-    public interface ZPGunReloadEndCallback {
-        void onReloadEnd(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, @NotNull GunFXData gunFXData);
-        record GunFXData(boolean isRightHand) {}
-    }
+    //@FunctionalInterface
+    //public interface ZPGunReloadEndCallback {
+    //    void onReloadEnd(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, @NotNull GunFXData gunFXData);
+    //    record GunFXData(boolean isRightHand) {}
+    //}
 
     public interface ZPClientResourceDependentObject extends ZPSetupResourcesCallback, ZPDestroyResourcesCallback, ZPWindowResizeCallback {
     }

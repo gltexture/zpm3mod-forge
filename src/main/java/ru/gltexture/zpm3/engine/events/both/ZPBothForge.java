@@ -1,7 +1,12 @@
 package ru.gltexture.zpm3.engine.events.both;
 
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
+import net.minecraftforge.event.entity.living.LivingSwapItemsEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -39,7 +44,6 @@ public class ZPBothForge {
             event.setCanceled(true);
         }
     }
-
 
     private static boolean shouldCancelInteraction(@NotNull Player player) {
         ItemStack stack = player.getMainHandItem();

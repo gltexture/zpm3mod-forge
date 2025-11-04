@@ -88,7 +88,7 @@ public class FBOTexture2DProgram {
     public void copyFBODepthFrom(int fboFrom, Vector2i dimension) {
         GL46.glBindFramebuffer(GL46.GL_READ_FRAMEBUFFER, fboFrom);
         GL46.glBindFramebuffer(GL46.GL_DRAW_FRAMEBUFFER, this.getFrameBufferId());
-        GL46.glBlitFramebuffer(0, 0, dimension.x, dimension.y, 0, 0, dimension.x, dimension.y, GL46.GL_DEPTH_BUFFER_BIT | GL46.GL_STENCIL_BUFFER_BIT, GL46.GL_NEAREST);
+        GL46.glBlitFramebuffer(0, 0, dimension.x, dimension.y, 0, 0, dimension.x, dimension.y, GL46.GL_DEPTH_BUFFER_BIT, GL46.GL_NEAREST);
         GL46.glBindFramebuffer(GL46.GL_FRAMEBUFFER, 0);
     }
 

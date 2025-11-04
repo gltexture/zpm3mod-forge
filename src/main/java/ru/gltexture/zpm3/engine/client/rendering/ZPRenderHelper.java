@@ -60,6 +60,7 @@ public final class ZPRenderHelper implements ZPClientCallbacks.ZPClientResourceD
     @Override
     public void setupResources(@NotNull Window window) {
         this.screenMesh = new ZPScreenMesh();
+        Minecraft.getInstance().getMainRenderTarget().enableStencil();
     }
 
     @Override

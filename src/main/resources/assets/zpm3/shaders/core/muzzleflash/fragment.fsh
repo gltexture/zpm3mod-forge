@@ -31,5 +31,10 @@ void main()
     }
 
     frag_color *= vec4(vec3(fade), fade);
+
+    if (frag_color.a < 0.05) {
+        discard;
+    }
+
     bright_color = frag_color.a >= 1.25 ? vec4(frag_color.rgb, 1.) : vec4(vec3(1.), 0.);
 }

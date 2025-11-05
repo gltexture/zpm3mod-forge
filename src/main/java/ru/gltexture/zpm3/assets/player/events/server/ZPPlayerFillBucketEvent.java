@@ -81,7 +81,7 @@ public class ZPPlayerFillBucketEvent implements ZPSimpleEventClass<FillBucketEve
 
     @Override
     public @NotNull ZPSide getSide() {
-        return ZPSide.SERVER;
+        return ZPSide.DEDICATED_SERVER;
     }
 
     @Override

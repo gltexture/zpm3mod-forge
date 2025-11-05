@@ -40,7 +40,7 @@ public class ZPNetPackAsset extends ZPAsset {
     }
 
     @Override
-    public void initAsset(ZombiePlague3.@NotNull IAssetEntry assetEntry) {
+    public void initializeAsset(ZombiePlague3.@NotNull IAssetEntry assetEntry) {
         assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(ZPAcidSpreadPacket.class, ZPAcidSpreadPacket.encoder(), ZPAcidSpreadPacket.decoder()));
         assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(ZPGunActionPacket.class, ZPGunActionPacket.encoder(), ZPGunActionPacket.decoder()));
         assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(ZPBulletHitPacket.class, ZPBulletHitPacket.encoder(), ZPBulletHitPacket.decoder()));

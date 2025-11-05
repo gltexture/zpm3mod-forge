@@ -87,7 +87,7 @@ public class ZPDefaultPistolRenderer extends ZPAbstractGunRenderer {
 
             @Override
             public Vector3f translationMuzzleflash3PRight() {
-                return new Vector3f(-0.17f, 0.44f, 0.06f);
+                return new Vector3f(-0.17f, 0.47f, 0.06f);
             }
 
             @Override

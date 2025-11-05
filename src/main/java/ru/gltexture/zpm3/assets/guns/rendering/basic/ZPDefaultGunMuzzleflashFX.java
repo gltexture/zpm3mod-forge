@@ -48,6 +48,11 @@ public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderH
     public static String MUZZLEFLASH1_TEXTURE_DEF = "textures/fx/muzzleflash1.png";
     public static String MUZZLEFLASH3_TEXTURE_DEF = "textures/fx/muzzleflash2.png";
 
+    //TEMP
+    static {
+        MUZZLEFLASH1_TEXTURE_DEF = MUZZLEFLASH3_TEXTURE_DEF;
+    }
+
     public static ResourceLocation muzzleFlash1;
     public static ResourceLocation muzzleFlash3;
     public static FBOTexture2DProgram muzzleflashFBO;
@@ -188,13 +193,13 @@ public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderH
 
         this.muzzleflashFinal1PersonTransformation[this.hand(isRightHanded)] = gunTransformation;
 
-        final float size = 0.3F;
+        final float size = 0.2F;
         {
             ShaderInstance shader = ZPDefaultShaders.muzzleflash.getShaderInstance();
 
             RenderSystem.setShader(() -> shader);
             GL46.glActiveTexture(GL46.GL_TEXTURE0);
-            RenderSystem.setShaderTexture(0, ZPDefaultGunMuzzleflashFX.muzzleFlash1);
+            RenderSystem.setShaderTexture(0, ZPDefaultGunMuzzleflashFX.muzzleFlash3);
 
             Objects.requireNonNull(Objects.requireNonNull(shader).getUniform("scissor")).set(muzzleflashScissor);
 

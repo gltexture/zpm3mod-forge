@@ -3,8 +3,8 @@ package ru.gltexture.zpm3.assets.entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.assets.entity.events.both.ZPEntitySpawnEvent;
-import ru.gltexture.zpm3.assets.entity.events.both.ZPEntityTickEvent;
+import ru.gltexture.zpm3.assets.entity.events.common.ZPEntitySpawnEvent;
+import ru.gltexture.zpm3.assets.entity.events.common.ZPEntityTickEvent;
 import ru.gltexture.zpm3.assets.entity.logic.EntityBothSidesLogic;
 import ru.gltexture.zpm3.assets.entity.logic.EntityClientSideLogic;
 import ru.gltexture.zpm3.assets.entity.logic.EntityServerSideLogic;
@@ -48,7 +48,7 @@ public class ZPEntityAsset extends ZPAsset {
     }
 
     @Override
-    public void initAsset(ZombiePlague3.@NotNull IAssetEntry assetEntry) {
+    public void initializeAsset(ZombiePlague3.@NotNull IAssetEntry assetEntry) {
         assetEntry.addEventClass(ZPEntitySpawnEvent.class);
         assetEntry.addEventClass(ZPEntityTickEvent.class);
     }

@@ -35,6 +35,6 @@ public class ZPGunTossEvent implements ZPSimpleEventClass<ItemTossEvent> {
 
     @Override
     public @NotNull ZPSide getSide() {
-        return ZPSide.BOTH;
+        return ZPSide.COMMON;
     }
 }

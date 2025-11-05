@@ -18,7 +18,7 @@ public class ZPPlayerLoggedInEvent implements ZPSimpleEventClass<PlayerEvent.Pla
 
     @Override
     public @NotNull ZPSide getSide() {
-        return ZPSide.SERVER;
+        return ZPSide.DEDICATED_SERVER;
     }
 
     @Override

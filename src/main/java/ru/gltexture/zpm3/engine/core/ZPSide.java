@@ -1,7 +1,7 @@
 package ru.gltexture.zpm3.engine.core;
 
 public enum ZPSide {
-    SERVER,
+    DEDICATED_SERVER,
     CLIENT,
-    BOTH
+    COMMON
 }

@@ -30,10 +30,10 @@ displayName = "${mod_name}" #mandatory
 #credits="Thanks for this example mod goes to Java" #optional
 # A text field displayed in the mod UI
 authors = "${mod_authors}" #optional
-# Display Test controls the display for your mod in the both connection screen
-# MATCH_VERSION means that your mod will cause a red X if the versions on client and both differ. This is the default behaviour and should be what you choose if you have both and client elements to your mod.
-# IGNORE_SERVER_VERSION means that your mod will not cause a red X if it's present on the both but not on the client. This is what you should use if you're a both only mod.
-# IGNORE_ALL_VERSION means that your mod will not cause a red X if it's present on the client or the both. This is a special case and should only be used if your mod has no both component.
+# Display Test controls the display for your mod in the common connection screen
+# MATCH_VERSION means that your mod will cause a red X if the versions on client and common differ. This is the default behaviour and should be what you choose if you have common and client elements to your mod.
+# IGNORE_SERVER_VERSION means that your mod will not cause a red X if it's present on the common but not on the client. This is what you should use if you're a common only mod.
+# IGNORE_ALL_VERSION means that your mod will not cause a red X if it's present on the client or the common. This is a special case and should only be used if your mod has no common component.
 # NONE means that no display test is set on your mod. You need to do this yourself, see IExtensionPoint.DisplayTest for more information. You can define any scheme you wish with this value.
 # IMPORTANT NOTE: this is NOT an instruction as to which environments (CLIENT or DEDICATED SERVER) your mod loads on. Your mod should load (and maybe do nothing!) whereever it finds itself.
 #displayTest="MATCH_VERSION" # MATCH_VERSION is the default if nothing is specified (#optional)

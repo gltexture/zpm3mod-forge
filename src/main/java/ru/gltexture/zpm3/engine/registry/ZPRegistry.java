@@ -21,7 +21,6 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -182,7 +181,7 @@ public abstract class ZPRegistry<T> {
             }
             switch (side) {
                 case CLIENT -> ZPUtility.sides().onlyClient(() -> registryObjectConsumer.accept(this.registryObject(), zpRegUtils));
-                case DEDICATED_SERVER -> ZPUtility.sides().onlyServer(() -> registryObjectConsumer.accept(this.registryObject(), zpRegUtils));
+                case DEDICATED_SERVER -> ZPUtility.sides().onlyDedicatedServer(() -> registryObjectConsumer.accept(this.registryObject(), zpRegUtils));
             }
             return this;
         }

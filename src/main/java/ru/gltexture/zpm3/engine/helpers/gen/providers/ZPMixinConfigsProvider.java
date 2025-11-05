@@ -63,18 +63,18 @@ public class ZPMixinConfigsProvider implements DataProvider {
             for (ZombiePlague3.IMixinEntry.MixinClass mc : mixins) {
                 ZPSide side = mc.side();
                 String name = mc.name();
-                if (side == ZPSide.BOTH) {
+                if (side == ZPSide.COMMON) {
                     mixinsArr.add(name);
                 } else if (side == ZPSide.CLIENT) {
                     clientArr.add(name);
-                } else if (side == ZPSide.SERVER) {
+                } else if (side == ZPSide.DEDICATED_SERVER) {
                     serverArr.add(name);
                 }
             }
 
             json.add("mixins", mixinsArr);
             json.add("client", clientArr);
-            json.add("both", serverArr);
+            json.add("common", serverArr);
 
             Path outPath = generator.getPackOutput().getOutputFolder().resolve(ZPMixinPlugin.pathToMixinsCfg + config.name() + ".json");
             futures.add(DataProvider.saveStable(pOutput, json, outPath));

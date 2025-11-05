@@ -1,4 +1,4 @@
-package ru.gltexture.zpm3.assets.entity.events.both;
+package ru.gltexture.zpm3.assets.entity.events.common;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
@@ -30,7 +30,7 @@ public class ZPEntitySpawnEvent implements ZPSimpleEventClass<EntityJoinLevelEve
 
     @Override
     public @NotNull ZPSide getSide() {
-        return ZPSide.BOTH;
+        return ZPSide.COMMON;
     }
 
     @Override

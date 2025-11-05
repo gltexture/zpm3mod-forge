@@ -44,7 +44,7 @@ public class ZPDebugAsset extends ZPAsset {
     }
 
     @Override
-    public void initAsset(ZombiePlague3.@NotNull IAssetEntry assetEntry) {
+    public void initializeAsset(ZombiePlague3.@NotNull IAssetEntry assetEntry) {
         assetEntry.addEventClass(ZPFreeCameraEvents.class);
     }
 }

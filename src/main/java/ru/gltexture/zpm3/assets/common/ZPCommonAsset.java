@@ -16,8 +16,9 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.assets.common.events.both.ZPLivingKnockBack;
+import ru.gltexture.zpm3.assets.common.events.common.ZPLivingKnockBack;
 import ru.gltexture.zpm3.assets.common.init.*;
+import ru.gltexture.zpm3.assets.common.population.SetupPopulation;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.asset.ZPAsset;
@@ -85,15 +86,17 @@ public class ZPCommonAsset extends ZPAsset {
     @Override
     public void initMixins(ZombiePlague3.@NotNull IMixinEntry mixinEntry) {
         mixinEntry.addMixinConfigData(new ZombiePlague3.IMixinEntry.MixinConfig("common", "ru.gltexture.zpm3.assets.common.mixins.impl"),
-                new ZombiePlague3.IMixinEntry.MixinClass("both.TorchMixin", ZPSide.BOTH),
-                new ZombiePlague3.IMixinEntry.MixinClass("both.WallTorchMixin", ZPSide.BOTH),
-                new ZombiePlague3.IMixinEntry.MixinClass("both.PumpkinMixin", ZPSide.BOTH),
-                new ZombiePlague3.IMixinEntry.MixinClass("both.LavaMixin", ZPSide.BOTH)
+                new ZombiePlague3.IMixinEntry.MixinClass("common.TorchMixin", ZPSide.COMMON),
+                new ZombiePlague3.IMixinEntry.MixinClass("common.WallTorchMixin", ZPSide.COMMON),
+                new ZombiePlague3.IMixinEntry.MixinClass("common.PumpkinMixin", ZPSide.COMMON),
+                new ZombiePlague3.IMixinEntry.MixinClass("common.LavaMixin", ZPSide.COMMON)
         );
     }
 
     @Override
-    public void initAsset(ZombiePlague3.@NotNull IAssetEntry assetEntry) {
+    public void initializeAsset(ZombiePlague3.@NotNull IAssetEntry assetEntry) {
+        SetupPopulation.setup(ZombiePlague3.getPopulationController());
+
         assetEntry.addRegistryClass(ZPSounds.class);
         assetEntry.addRegistryClass(ZPItems.class);
         assetEntry.addRegistryClass(ZPBlockItems.class);

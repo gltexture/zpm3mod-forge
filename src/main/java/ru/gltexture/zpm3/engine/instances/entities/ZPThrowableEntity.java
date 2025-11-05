@@ -24,7 +24,7 @@ public abstract class ZPThrowableEntity extends ThrowableItemProjectile {
 
     private void initFromConstructor() {
         ZPUtility.sides().onlyClient(this::initClient);
-        ZPUtility.sides().onlyServer(this::initServer);
+        ZPUtility.sides().onlyDedicatedServer(this::initServer);
     }
 
     protected void initClient() { }

@@ -1,19 +1,15 @@
 package ru.gltexture.zpm3.assets.guns;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.TickEvent;
 import org.jetbrains.annotations.NotNull;
-import org.lwjgl.opengl.GL46;
 import ru.gltexture.zpm3.assets.guns.events.ZPGunPostRender;
 import ru.gltexture.zpm3.assets.guns.events.ZPGunTossEvent;
 import ru.gltexture.zpm3.assets.guns.events.ZPGunsUI;
 import ru.gltexture.zpm3.assets.guns.processing.input.ZPClientGunClientTickProcessing;
 import ru.gltexture.zpm3.assets.guns.rendering.ZPDefaultGunRenderers;
 import ru.gltexture.zpm3.assets.guns.rendering.basic.ZPDefaultGunMuzzleflashFX;
-import ru.gltexture.zpm3.assets.guns.rendering.tracer.ZPBulletTracerManager;
 import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacksManager;
 import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
 import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooks;
@@ -65,13 +61,13 @@ public class ZPGunsAsset extends ZPAsset {
                 new ZombiePlague3.IMixinEntry.MixinClass("client.ZPHumanoidArmMixin", ZPSide.CLIENT),
                 new ZombiePlague3.IMixinEntry.MixinClass("client.ZPPlayerClientDataMixin", ZPSide.CLIENT),
                 new ZombiePlague3.IMixinEntry.MixinClass("client.ZPClientPacketListenerMixin", ZPSide.CLIENT),
-                new ZombiePlague3.IMixinEntry.MixinClass("both.ZPItemMixin", ZPSide.BOTH),
+                new ZombiePlague3.IMixinEntry.MixinClass("common.ZPItemMixin", ZPSide.COMMON),
                 new ZombiePlague3.IMixinEntry.MixinClass("client.ZPItemStackClDataMixin", ZPSide.CLIENT)
         );
     }
 
     @Override
-    public void initAsset(ZombiePlague3.@NotNull IAssetEntry assetEntry) {
+    public void initializeAsset(ZombiePlague3.@NotNull IAssetEntry assetEntry) {
         assetEntry.addEventClass(ZPGunsUI.class);
         assetEntry.addEventClass(ZPGunPostRender.class);
         assetEntry.addEventClass(ZPGunTossEvent.class);

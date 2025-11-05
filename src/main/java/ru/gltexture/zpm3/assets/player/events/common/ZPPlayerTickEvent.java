@@ -1,4 +1,4 @@
-package ru.gltexture.zpm3.assets.player.events.both;
+package ru.gltexture.zpm3.assets.player.events.common;
 
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.fml.LogicalSide;
@@ -34,7 +34,7 @@ public class ZPPlayerTickEvent implements ZPSimpleEventClass<TickEvent.PlayerTic
 
     @Override
     public @NotNull ZPSide getSide() {
-        return ZPSide.BOTH;
+        return ZPSide.COMMON;
     }
 
     @Override

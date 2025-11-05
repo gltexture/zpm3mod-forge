@@ -33,11 +33,12 @@ import org.slf4j.LoggerFactory;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPDefaultShaders;
 import ru.gltexture.zpm3.engine.core.asset.ZPAsset;
 import ru.gltexture.zpm3.engine.core.asset.ZPAssetData;
+import ru.gltexture.zpm3.engine.core.population.ZPPopulationController;
 import ru.gltexture.zpm3.engine.core.init.ZPSystemInit;
 import ru.gltexture.zpm3.engine.events.ZPEventClass;
 import ru.gltexture.zpm3.engine.events.ZPSimpleEventClass;
-import ru.gltexture.zpm3.engine.events.both.ZPBothForge;
-import ru.gltexture.zpm3.engine.events.both.ZPBothMod;
+import ru.gltexture.zpm3.engine.events.common.ZPCommonForge;
+import ru.gltexture.zpm3.engine.events.common.ZPCommonMod;
 import ru.gltexture.zpm3.engine.events.client.ZPClientForge;
 import ru.gltexture.zpm3.engine.events.client.ZPClientMod;
 import ru.gltexture.zpm3.engine.events.server.ZPServerForge;
@@ -71,6 +72,11 @@ public final class ZombiePlague3 {
     private final ZPRegistryConveyor zpRegistryConveyor;
     private final List<ZPAsset> assets;
     private ZPNetwork zpNetwork;
+    private static ZPPopulationController populationController;
+
+    static {
+        ZombiePlague3.populationController = new ZPPopulationController();
+    }
 
     private static boolean commonInitSwitch = true;
     @OnlyIn(Dist.CLIENT) private static boolean clientInitSwitch = true;
@@ -133,7 +139,7 @@ public final class ZombiePlague3 {
         for (ZPAsset zpAsset : this.assets) {
             ZPLogger.info("Init asset: " + zpAsset);
             AssetEntry assetEntry = new AssetEntry();
-            zpAsset.initAsset(assetEntry);
+            zpAsset.initializeAsset(assetEntry);
             this.getZpNetwork().register(assetEntry.getPacketDataSet());
             this.getZpRegistryConveyor().launch(assetEntry.getRegistrySet());
 
@@ -144,8 +150,8 @@ public final class ZombiePlague3 {
                     ZPSide result = (ZPSide) getDistMethod.invoke(instance);
                     switch (result) {
                         case CLIENT -> simpleClientEvents.add(instance);
-                        case SERVER -> simpleServerEvents.add(instance);
-                        case BOTH -> {
+                        case DEDICATED_SERVER -> simpleServerEvents.add(instance);
+                        case COMMON -> {
                             simpleClientEvents.add(instance);
                             simpleServerEvents.add(instance);
                         }
@@ -162,8 +168,8 @@ public final class ZombiePlague3 {
                     ZPSide result = (ZPSide) getDistMethod.invoke(instance);
                     switch (result) {
                         case CLIENT -> clientEvents.add(instance);
-                        case SERVER -> serverEvents.add(instance);
-                        case BOTH -> {
+                        case DEDICATED_SERVER -> serverEvents.add(instance);
+                        case COMMON -> {
                             clientEvents.add(instance);
                             serverEvents.add(instance);
                         }
@@ -188,7 +194,7 @@ public final class ZombiePlague3 {
             MinecraftForge.EVENT_BUS.register(zpClientForge);
         });
 
-        ZPUtility.sides().onlyServer(() -> {
+        ZPUtility.sides().onlyDedicatedServer(() -> {
             final ZPServerMod zpServerMod = new ZPServerMod();
             final ZPServerForge zpServerForge = new ZPServerForge();
             simpleServerEvents.forEach(e -> {
@@ -202,8 +208,8 @@ public final class ZombiePlague3 {
             MinecraftForge.EVENT_BUS.register(zpServerForge);
         });
 
-        MinecraftForge.EVENT_BUS.register(new ZPBothMod());
-        MinecraftForge.EVENT_BUS.register(new ZPBothForge());
+        MinecraftForge.EVENT_BUS.register(new ZPCommonMod());
+        MinecraftForge.EVENT_BUS.register(new ZPCommonForge());
     }
 
     private void readAssetsJSON(List<ZPAsset> assets) {
@@ -339,6 +345,10 @@ public final class ZombiePlague3 {
                 }
             });
         }
+    }
+
+    public static ZPPopulationController getPopulationController() {
+        return ZombiePlague3.populationController;
     }
 
     public static ZPNetworkHandler net() {

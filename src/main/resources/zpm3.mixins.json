@@ -1,13 +1,15 @@
 {
+  "verbose": true,
   "required": true,
   "minVersion": "0.8",
   "compatibilityLevel": "JAVA_17",
   "plugin": "ru.gltexture.zpm3.engine.mixins.ZPMixinPlugin",
   "refmap": "zpm3.refmap.json",
   "mixins": [
-    "both.ZPEntityMixin",
-    "both.ZPLivingEntityMixin",
-    "both.ZPPlayerMixin"
+    "common.ZPDefaultBiomeFeaturesMixin",
+    "common.ZPEntityMixin",
+    "common.ZPLivingEntityMixin",
+    "common.ZPPlayerMixin"
   ],
   "client": [
     "client.ZPGameRendererMixin",

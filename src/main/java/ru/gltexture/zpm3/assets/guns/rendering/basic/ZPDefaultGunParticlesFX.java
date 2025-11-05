@@ -144,8 +144,8 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
             final Vector3f camPos = camera.getPosition().toVector3f();
             final Quaternionf camRot = camera.rotation();
             final boolean isRifle = baseGun.getGunProperties().getHeldType().equals(ZPBaseGun.GunProperties.HeldType.RIFLE);
-            final float xOff = isRifle ? 0.2f : 0.1f;
-            float distanceToGun = ZPGunFXGlobalData.getGunData(isRightHand).getCurrentGunItemMatrix().getScale(new Vector3f()).z / 2.0f;
+            final float xOff = isRifle ? 0.0f : 0.5f;
+            float distanceToGun = ZPGunFXGlobalData.getGunData(isRightHand).getCurrentGunItemMatrix().getScale(new Vector3f()).z / (xOff + 2.0f);
 
             Vector4f muzzle = isRightHand ? new Vector4f(0.0f,  -distanceToGun / 4.0f, -distanceToGun, 1.0f) : new Vector4f(0.0f, -distanceToGun * 1.25f, distanceToGun / 1.75f, 1.0f);
             Objects.requireNonNull(ZPGunFXGlobalData.getGunData(isRightHand).getMflash1spTransformationTarget()).transform(muzzle);

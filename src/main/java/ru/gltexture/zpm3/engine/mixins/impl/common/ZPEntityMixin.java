@@ -1,4 +1,4 @@
-package ru.gltexture.zpm3.engine.mixins.impl.both;
+package ru.gltexture.zpm3.engine.mixins.impl.common;
 
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;

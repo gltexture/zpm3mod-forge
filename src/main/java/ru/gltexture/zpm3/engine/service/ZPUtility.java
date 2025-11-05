@@ -1,6 +1,5 @@
 package ru.gltexture.zpm3.engine.service;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
@@ -17,9 +16,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.BooleanOp;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.DistExecutor;
@@ -225,7 +221,8 @@ public final class ZPUtility {
             DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> runnable);
         }
 
-        public void onlyServer(Runnable runnable) {
+        // WARN ONLY DEDICATED!!!!!!!!!!!!!!!!!!!!!!!!!
+        public void onlyDedicatedServer(Runnable runnable) {
             DistExecutor.unsafeRunWhenOn(Dist.DEDICATED_SERVER, () -> runnable);
         }
     }

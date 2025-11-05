@@ -25,7 +25,7 @@ public abstract class ZPAsset {
     public abstract void clientDestroy();
 
     public abstract void initMixins(@NotNull ZombiePlague3.IMixinEntry mixinEntry);
-    public abstract void initAsset(@NotNull ZombiePlague3.IAssetEntry assetEntry);
+    public abstract void initializeAsset(@NotNull ZombiePlague3.IAssetEntry assetEntry);
 
     public ZPAssetData getZpAssetData() {
         return this.zpAssetData;

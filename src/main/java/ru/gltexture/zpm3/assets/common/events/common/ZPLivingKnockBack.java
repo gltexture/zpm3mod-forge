@@ -1,9 +1,8 @@
-package ru.gltexture.zpm3.assets.common.events.both;
+package ru.gltexture.zpm3.assets.common.events.common;
 
 import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.assets.common.init.ZPDamageTypes;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.events.ZPSimpleEventClass;
 
@@ -23,7 +22,7 @@ public class ZPLivingKnockBack implements ZPSimpleEventClass<LivingKnockBackEven
 
     @Override
     public @NotNull ZPSide getSide() {
-        return ZPSide.BOTH;
+        return ZPSide.COMMON;
     }
 
     @Override

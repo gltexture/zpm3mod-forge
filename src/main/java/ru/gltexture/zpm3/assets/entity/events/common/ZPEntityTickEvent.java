@@ -1,4 +1,4 @@
-package ru.gltexture.zpm3.assets.entity.events.both;
+package ru.gltexture.zpm3.assets.entity.events.common;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -34,7 +34,7 @@ public class ZPEntityTickEvent implements ZPSimpleEventClass<LivingEvent.LivingT
 
     @Override
     public @NotNull ZPSide getSide() {
-        return ZPSide.BOTH;
+        return ZPSide.COMMON;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package ru.gltexture.zpm3.assets.common.mixins.impl.both;
+package ru.gltexture.zpm3.assets.common.mixins.impl.common;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;

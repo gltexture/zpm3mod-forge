@@ -17,6 +17,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.events.common.ZPLivingKnockBack;
+import ru.gltexture.zpm3.assets.common.events.common.ZPMobAttributes;
 import ru.gltexture.zpm3.assets.common.init.*;
 import ru.gltexture.zpm3.assets.common.population.SetupPopulation;
 import ru.gltexture.zpm3.engine.core.ZPSide;
@@ -109,6 +110,7 @@ public class ZPCommonAsset extends ZPAsset {
         assetEntry.addRegistryClass(ZPDamageTypes.class);
 
         assetEntry.addEventClass(ZPLivingKnockBack.class);
+        assetEntry.addEventClass(ZPMobAttributes.class);
 
         ZPUtility.sides().onlyClient(() -> {
             assetEntry.addRegistryClass(ZPTabs.class);

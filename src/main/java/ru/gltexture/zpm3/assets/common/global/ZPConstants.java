@@ -1,6 +1,8 @@
 package ru.gltexture.zpm3.assets.common.global;
 
 public abstract class ZPConstants {
+    public static int TOTAL_COMMON_ZOMBIE_TEXTURES = 353;
+
     public static final int PLAYER_PING_PACKET_FREQ = 20;
     public static int DEFAULT_ITEMS_THROW_COOLDOWN = 20;
     public static float DEFAULT_ITEMS_THROW_VELOCITY = 1.2f;

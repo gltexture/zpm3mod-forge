@@ -6,4 +6,5 @@ import ru.gltexture.zpm3.engine.core.ZPSide;
 
 public interface ZPEventClass {
     @NotNull ZPSide getSide();
+    @NotNull Mod.EventBusSubscriber.Bus getBus();
 }

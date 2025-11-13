@@ -40,6 +40,8 @@ public abstract class ZPDataGenHelper {
 
     public static final VanillaMCModelRef DEFAULT_BLOCK_PILLAR = new VanillaMCModelRef("block/cube_column");
 
+    public static final VanillaMCModelRef DEFAULT_SPAWN_EGG = new VanillaMCModelRef("item/template_spawn_egg");
+
     public static final VanillaMCModelRef DEFAULT_FOOD = new VanillaMCModelRef("item/bread");
     public static final VanillaMCModelRef DEFAULT_ITEM = new VanillaMCModelRef("item/diamond");
     public static final VanillaMCModelRef DEFAULT_MELEE = new VanillaMCModelRef("item/diamond_sword");

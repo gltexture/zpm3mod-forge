@@ -22,7 +22,6 @@ import net.minecraftforge.fml.common.Mod;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPResourcesReloader;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPShaderReloader;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.events.mod.ZPAbstractEventMod;
 import ru.gltexture.zpm3.engine.helpers.*;
 import ru.gltexture.zpm3.engine.helpers.gen.providers.*;
 import ru.gltexture.zpm3.engine.helpers.gen.sub_providers.ZPBlocksSubProvider;
@@ -31,22 +30,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-@Mod.EventBusSubscriber(modid = ZombiePlague3.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-public final class ZPClientMod extends ZPAbstractEventMod {
-    public ZPClientMod() {
-        super();
-    }
-
-    @Override
+public final class ZPClientMod {
     @SubscribeEvent
-    public void onAnyZPEvent(Event event) {
-        super.defaultExec(event);
-    }
-
-    //***************************************
-
-    @SubscribeEvent
-    public static void onRegisterBindings(RegisterKeyMappingsEvent event) {
+    public void onRegisterBindings(RegisterKeyMappingsEvent event) {
         ZPKeyBindingsRegistryHelper.getAllKeyBindings().forEach(e -> {
             e.init();
             e.getKeyMappingList().forEach(event::register);
@@ -55,7 +41,7 @@ public final class ZPClientMod extends ZPAbstractEventMod {
     }
 
     @SubscribeEvent
-    public static void onRegisterEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+    public void onRegisterEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         for (ZPEntityRenderMatchHelper.EntityRenderPair<?> pair : ZPEntityRenderMatchHelper.getEntityRendererPairs()) {
             ZPClientMod.registerEntityRender(event, pair);
         }
@@ -63,7 +49,7 @@ public final class ZPClientMod extends ZPAbstractEventMod {
     }
 
     @SubscribeEvent
-    public static void onRegisterParticleRenderers(RegisterParticleProvidersEvent event) {
+    public void onRegisterParticleRenderers(RegisterParticleProvidersEvent event) {
         for (ZPParticleRenderHelper.ParticleRenderPairSet<?> pair : ZPParticleRenderHelper.getParticleRendererPairSets()) {
             ZPClientMod.registerParticleRenderSet(event, pair);
         }
@@ -80,12 +66,12 @@ public final class ZPClientMod extends ZPAbstractEventMod {
 
 
     @SubscribeEvent
-    public static void onBuildContents(BuildCreativeModeTabContentsEvent event) {
+    public void onBuildContents(BuildCreativeModeTabContentsEvent event) {
         ZPItemTabAddHelper.onBuildContents(event);
     }
 
     @SubscribeEvent
-    public static void gatherData(GatherDataEvent event) {
+    public void gatherData(GatherDataEvent event) {
         DataGenerator generator = event.getGenerator();
         PackOutput output = generator.getPackOutput();
         ExistingFileHelper helper = event.getExistingFileHelper();
@@ -108,7 +94,7 @@ public final class ZPClientMod extends ZPAbstractEventMod {
     }
 
     @SubscribeEvent
-    public static void onRegisterReloadListeners(RegisterClientReloadListenersEvent event) {
+    public void onRegisterReloadListeners(RegisterClientReloadListenersEvent event) {
         event.registerReloadListener(new ZPShaderReloader());
         event.registerReloadListener(new ZPResourcesReloader());
     }

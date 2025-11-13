@@ -7,6 +7,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.assets.common.instances.entities.mobs.ZPCommonZombie;
 
 import java.util.*;
 

@@ -16,7 +16,6 @@ import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.events.ZPEventClass;
 
-@Mod.EventBusSubscriber(modid = ZombiePlague3.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class ZPFreeCameraEvents implements ZPEventClass {
     public static boolean enabled = false;
     public static Vec3 freecamPos = new Vec3(0, 70, 0);
@@ -34,6 +33,11 @@ public class ZPFreeCameraEvents implements ZPEventClass {
         return ZPSide.CLIENT;
     }
 
+    @Override
+    public @NotNull Mod.EventBusSubscriber.Bus getBus() {
+        return Mod.EventBusSubscriber.Bus.FORGE;
+    }
+
     @SubscribeEvent
     public static void onKeyInput(InputEvent.Key event) {
         if (event.getKey() == GLFW.GLFW_KEY_F6 && event.getAction() == GLFW.GLFW_PRESS) {
@@ -48,7 +52,7 @@ public class ZPFreeCameraEvents implements ZPEventClass {
     }
 
     @SubscribeEvent
-    public static void onClientTick(TickEvent.ClientTickEvent event) {
+    public void onClientTick(TickEvent.ClientTickEvent event) {
         if (!enabled || event.phase != TickEvent.Phase.END) {
             return;
         }

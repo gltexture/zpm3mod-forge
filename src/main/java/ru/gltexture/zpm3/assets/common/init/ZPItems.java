@@ -1,6 +1,8 @@
 package ru.gltexture.zpm3.assets.common.init;
 
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SpawnEggItem;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
@@ -14,6 +16,9 @@ import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.registry.collection.IZPCollectRegistryObjects;
 
 public class ZPItems extends ZPRegistry<Item> implements IZPCollectRegistryObjects {
+    // SPAWNS
+    public static RegistryObject<ForgeSpawnEggItem> common_zm_spawn;
+
     // ITEMS
     public static RegistryObject<ZPItemThrowable> acid_bottle;
     public static RegistryObject<ZPItemThrowable> plate;
@@ -96,6 +101,7 @@ public class ZPItems extends ZPRegistry<Item> implements IZPCollectRegistryObjec
         ZPRegFood.init(regSupplier);
         ZPRegMedicine.init(this, regSupplier);
         ZPRegGuns.init(regSupplier);
+        ZPRegSpawns.init(regSupplier);
     }
 
     @Override

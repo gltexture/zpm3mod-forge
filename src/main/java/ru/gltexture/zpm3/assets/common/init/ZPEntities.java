@@ -3,24 +3,29 @@ package ru.gltexture.zpm3.assets.common.init;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.assets.common.events.common.ZPMobAttributes;
 import ru.gltexture.zpm3.assets.common.instances.entities.ZPAcidBottleEntity;
 import ru.gltexture.zpm3.assets.common.instances.entities.ZPPlateEntity;
 import ru.gltexture.zpm3.assets.common.instances.entities.ZPRockEntity;
+import ru.gltexture.zpm3.assets.common.instances.entities.mobs.ZPCommonZombie;
+import ru.gltexture.zpm3.engine.client.rendering.entities.zombies.ZPCommonZombieRender;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.helpers.ZPEntityRenderMatchHelper;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
-import ru.gltexture.zpm3.engine.client.rendering.entities.ZPThrowableEntityRender;
+import ru.gltexture.zpm3.engine.client.rendering.entities.misc.ZPThrowableEntityRender;
 
 public class ZPEntities extends ZPRegistry<EntityType<?>> {
     public static RegistryObject<EntityType<ZPAcidBottleEntity>> acid_bottle_entity;
     public static RegistryObject<EntityType<ZPPlateEntity>> plate_entity;
     public static RegistryObject<EntityType<ZPRockEntity>> rock_entity;
+
+    public static RegistryObject<EntityType<ZPCommonZombie>> zp_common_zombie_entity;
 
     public ZPEntities() {
         super(ZPRegistryConveyor.Target.ENTITY_TYPE);
@@ -39,6 +44,15 @@ public class ZPEntities extends ZPRegistry<EntityType<?>> {
         ZPEntities.rock_entity = regSupplier.register("rock_entity", () -> EntityType.Builder.<ZPRockEntity>of(ZPRockEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "rock_entity").toString())).postConsume(Dist.CLIENT, (e, utils) -> {
             ZPEntityRenderMatchHelper.matchEntityRendering(e, ZPThrowableEntityRender::new);
         }).registryObject();
+
+        ZPEntities.zp_common_zombie_entity = regSupplier.register("zp_common_zombie_entity", () -> EntityType.Builder.<ZPCommonZombie>of(ZPCommonZombie::new, MobCategory.MONSTER)
+                        .sized(0.6f, 1.95f)
+                        .clientTrackingRange(8)
+                        .build(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "zp_common_zombie_entity").toString()))
+                .postConsume(Dist.CLIENT, (e, utils) -> {
+                    ZPEntityRenderMatchHelper.matchEntityRendering(e, ZPCommonZombieRender::new);
+                    ZPMobAttributes.addNewAttributeCreationUnsafe(e, ZPCommonZombie::createAttributes);
+                }).registryObject();
     }
 
     @Override

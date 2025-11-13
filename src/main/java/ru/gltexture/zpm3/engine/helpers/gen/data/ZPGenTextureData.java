@@ -11,6 +11,8 @@ import java.util.function.Supplier;
 
 public class ZPGenTextureData {
     public static final String LAYER0_KEY = "layer0";
+    public static final String LAYER1_KEY = "layer1";
+    public static final String LAYER2_KEY = "layer2";
     public static final String ALL_KEY = "all";
     public static final String CROSS_KEY = "cross";
     public static final String BOTTOM_KEY = "bottom";
@@ -64,9 +66,9 @@ public class ZPGenTextureData {
         return new ZPGenTextureData(vanillaModelReference, zpGenTextureData.getTextures());
     }
 
-    public Supplier<ZPPath> getTextureByKey(@NotNull String key) {
+    public @Nullable Supplier<ZPPath> getTextureByKey(@NotNull String key) {
         if (!this.getTextures().containsKey(key)) {
-            throw new ZPRuntimeException("TextureData object doesn't contains texture: " + key);
+            return null;
         }
         return this.getTextures().get(key);
     }

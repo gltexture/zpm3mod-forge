@@ -15,17 +15,20 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPSide;
+import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
-import ru.gltexture.zpm3.engine.events.ZPSimpleEventClass;
+import ru.gltexture.zpm3.engine.events.ZPEventClass;
 import ru.gltexture.zpm3.engine.instances.blocks.IHotLiquid;
 
-public class ZPPlayerFillBucketEvent implements ZPSimpleEventClass<FillBucketEvent> {
-    @Override
-    public void exec(@NotNull FillBucketEvent event) {
+public class ZPPlayerFillBucketEvent implements ZPEventClass {
+    @SubscribeEvent
+    public static void exec(@NotNull FillBucketEvent event) {
         if (event.getEmptyBucket().getItem().equals(Items.BUCKET)) {
             if (event.getLevel().isClientSide()) {
                 event.getEntity().swing(event.getEntity().getUsedItemHand());
@@ -51,7 +54,7 @@ public class ZPPlayerFillBucketEvent implements ZPSimpleEventClass<FillBucketEve
                         player.level().playSound(null, player.blockPosition(), SoundEvents.FIRE_EXTINGUISH, SoundSource.PLAYERS, 0.5F, 0.885F);
                         player.level().playSound(null, player.blockPosition(), SoundEvents.ITEM_BREAK, SoundSource.PLAYERS, 1.0F, 1.0F);
                         player.swing(InteractionHand.MAIN_HAND);
-                        this.spawnItemParticles(player);
+                        ZPPlayerFillBucketEvent.spawnItemParticles(player);
                         event.setCanceled(true);
                     }
                 }
@@ -59,7 +62,7 @@ public class ZPPlayerFillBucketEvent implements ZPSimpleEventClass<FillBucketEve
         }
     }
 
-    private void spawnItemParticles(@NotNull Entity entity) {
+    private static void spawnItemParticles(@NotNull Entity entity) {
         for (int i = 0; i < 16; ++i) {
             Vec3 vec3 = new Vec3(((double) ZPRandom.getRandom().nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
             vec3 = vec3.xRot(-entity.getXRot() * ((float) Math.PI / 180F));
@@ -75,17 +78,12 @@ public class ZPPlayerFillBucketEvent implements ZPSimpleEventClass<FillBucketEve
     }
 
     @Override
-    public @NotNull Class<FillBucketEvent> getEventType() {
-        return FillBucketEvent.class;
-    }
-
-    @Override
     public @NotNull ZPSide getSide() {
-        return ZPSide.DEDICATED_SERVER;
+        return ZPSide.COMMON;
     }
 
     @Override
-    public Mod.EventBusSubscriber.@NotNull Bus getBus() {
-        return Mod.EventBusSubscriber.Bus.MOD;
+    public @NotNull Mod.EventBusSubscriber.Bus getBus() {
+        return Mod.EventBusSubscriber.Bus.FORGE;
     }
 }

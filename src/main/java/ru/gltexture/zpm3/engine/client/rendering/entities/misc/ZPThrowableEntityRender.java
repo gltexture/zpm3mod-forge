@@ -1,4 +1,4 @@
-package ru.gltexture.zpm3.engine.client.rendering.entities;
+package ru.gltexture.zpm3.engine.client.rendering.entities.misc;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;

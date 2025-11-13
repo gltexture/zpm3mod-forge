@@ -1,19 +1,22 @@
 package ru.gltexture.zpm3.assets.player.events.common;
 
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.player.ZPPlayerAsset;
 import ru.gltexture.zpm3.engine.core.ZPSide;
-import ru.gltexture.zpm3.engine.events.ZPSimpleEventClass;
+import ru.gltexture.zpm3.engine.core.ZombiePlague3;
+import ru.gltexture.zpm3.engine.events.ZPEventClass;
 
-public class ZPPlayerTickEvent implements ZPSimpleEventClass<TickEvent.PlayerTickEvent> {
+public class ZPPlayerTickEvent implements ZPEventClass {
     public ZPPlayerTickEvent() {
     }
 
-    @Override
-    public void exec(TickEvent.@NotNull PlayerTickEvent event) {
+    @SubscribeEvent
+    public static void exec(TickEvent.@NotNull PlayerTickEvent event) {
         if (event.phase != TickEvent.Phase.END) {
             return;
         }
@@ -28,17 +31,12 @@ public class ZPPlayerTickEvent implements ZPSimpleEventClass<TickEvent.PlayerTic
     }
 
     @Override
-    public @NotNull Class<TickEvent.PlayerTickEvent> getEventType() {
-        return TickEvent.PlayerTickEvent.class;
-    }
-
-    @Override
     public @NotNull ZPSide getSide() {
         return ZPSide.COMMON;
     }
 
     @Override
-    public Mod.EventBusSubscriber.@NotNull Bus getBus() {
-        return Mod.EventBusSubscriber.Bus.MOD;
+    public @NotNull Mod.EventBusSubscriber.Bus getBus() {
+        return Mod.EventBusSubscriber.Bus.FORGE;
     }
 }

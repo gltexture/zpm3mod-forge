@@ -3,9 +3,7 @@ package ru.gltexture.zpm3.assets.player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.assets.player.events.client.ZPClientJoinEvent;
 import ru.gltexture.zpm3.assets.player.events.server.ZPPlayerFillBucketEvent;
-import ru.gltexture.zpm3.assets.player.events.server.ZPPlayerLoggedInEvent;
 import ru.gltexture.zpm3.assets.player.events.common.ZPPlayerTickEvent;
 import ru.gltexture.zpm3.assets.player.logic.PlayerBothSidesLogic;
 import ru.gltexture.zpm3.assets.player.logic.PlayerClientSideLogic;
@@ -55,9 +53,7 @@ public class ZPPlayerAsset extends ZPAsset {
 
     @Override
     public void initializeAsset(ZombiePlague3.@NotNull IAssetEntry assetEntry) {
-        assetEntry.addEventClass(ZPPlayerLoggedInEvent.class);
         assetEntry.addEventClass(ZPPlayerTickEvent.class);
-        assetEntry.addEventClass(ZPClientJoinEvent.class);
         assetEntry.addEventClass(ZPPlayerFillBucketEvent.class);
     }
 }

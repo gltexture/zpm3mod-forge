@@ -49,13 +49,16 @@ public class ZPItemModelProvider extends ItemModelProvider {
         }
 
         String modelRef = genTextureData.getVanillaModelReference().reference();
-        ZPPath texture = Objects.requireNonNull(genTextureData.getTextureByKey(ZPGenTextureData.LAYER0_KEY)).get();
-        if (texture == null) {
-            throw new ZPRuntimeException("Multi-textured item must have layer0");
+        Supplier<ZPPath> supplier = genTextureData.getTextureByKey(ZPGenTextureData.LAYER0_KEY);
+        if (supplier != null) {
+            ZPPath texture = supplier.get();
+            if (texture != null) {
+                String texturePath = texture.getFullPath();
+                this.withExistingParent(name, this.mcLoc(modelRef)).texture(ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.locate(this, texturePath));
+                return;
+            }
         }
-
-        String texturePath = texture.getFullPath();
-        this.withExistingParent(name, this.mcLoc(modelRef)).texture(ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.locate(this, texturePath));
+        this.withExistingParent(name, this.mcLoc(modelRef));
     }
 
     public static Supplier<ZPGenTextureData> getTextureData(@NotNull RegistryObject<? extends Item> registryObject) {

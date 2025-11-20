@@ -14,7 +14,7 @@ import ru.gltexture.zpm3.engine.nbt.entity.ZPEntityNBT;
 
 public class ZPEntitySpawnEvent implements ZPEventClass {
     @SubscribeEvent
-    public void exec(@NotNull EntityJoinLevelEvent event) {
+    public static void exec(@NotNull EntityJoinLevelEvent event) {
         ZPEntitySpawnEvent.registerNBT(event.getEntity());
     }
 

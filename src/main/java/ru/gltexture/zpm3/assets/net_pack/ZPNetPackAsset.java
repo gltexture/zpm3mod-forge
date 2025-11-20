@@ -46,5 +46,6 @@ public class ZPNetPackAsset extends ZPAsset {
         assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(ZPBulletHitPacket.class, ZPBulletHitPacket.encoder(), ZPBulletHitPacket.decoder()));
         assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(ZPBulletTracePacket.class, ZPBulletTracePacket.encoder(), ZPBulletTracePacket.decoder()));
         assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(ZPNetCheckPacket.class, ZPNetCheckPacket.encoder(), ZPNetCheckPacket.decoder()));
+        assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(ZPBlockCrack.class, ZPBlockCrack.encoder(), ZPBlockCrack.decoder()));
     }
 }

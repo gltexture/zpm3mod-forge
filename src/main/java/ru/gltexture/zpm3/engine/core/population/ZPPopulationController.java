@@ -9,6 +9,8 @@ import ru.gltexture.zpm3.engine.service.Pair;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public final class ZPPopulationController {
     private final VanillaBiomePopulationManager vanillaBiomePopulationManager;
@@ -23,15 +25,15 @@ public final class ZPPopulationController {
         this.vanillaBiomePopulationManager = new VanillaBiomePopulationManager();
     }
 
-    public <T extends Entity> void addAND_Rule(EntityType<T> entityType, @Nullable SpawnPlacements.Type placementType, @Nullable Heightmap.Types heightmap, SpawnPlacements.SpawnPredicate<T> spawnPredicate) {
+    public <T extends Entity> void addAND_Rule(Supplier<EntityType<T>> entityType, @Nullable SpawnPlacements.Type placementType, @Nullable Heightmap.Types heightmap, SpawnPlacements.SpawnPredicate<T> spawnPredicate) {
         this.AND_SpawnRulesMap.add(new PopulationData<>(entityType, placementType, heightmap, spawnPredicate, SpawnPlacementRegisterEvent.Operation.AND));
     }
 
-    public <T extends Entity> void addOR_Rule(EntityType<T> entityType, @Nullable SpawnPlacements.Type placementType, @Nullable Heightmap.Types heightmap, SpawnPlacements.SpawnPredicate<T> spawnPredicate) {
+    public <T extends Entity> void addOR_Rule(Supplier<EntityType<T>> entityType, @Nullable SpawnPlacements.Type placementType, @Nullable Heightmap.Types heightmap, SpawnPlacements.SpawnPredicate<T> spawnPredicate) {
         this.OR_SpawnRulesMap.add(new PopulationData<>(entityType, placementType, heightmap, spawnPredicate, SpawnPlacementRegisterEvent.Operation.OR));
     }
 
-    public <T extends Entity> void addREPLACE_Rule(EntityType<T> entityType, @Nullable SpawnPlacements.Type placementType, @Nullable Heightmap.Types heightmap, SpawnPlacements.SpawnPredicate<T> spawnPredicate) {
+    public <T extends Entity> void addREPLACE_Rule(Supplier<EntityType<T>> entityType, @Nullable SpawnPlacements.Type placementType, @Nullable Heightmap.Types heightmap, SpawnPlacements.SpawnPredicate<T> spawnPredicate) {
         this.REPLACE_SpawnRulesMap.add(new PopulationData<>(entityType, placementType, heightmap, spawnPredicate, SpawnPlacementRegisterEvent.Operation.REPLACE));
     }
 
@@ -66,7 +68,7 @@ public final class ZPPopulationController {
 
     public void eventPopulation(SpawnPlacementRegisterEvent event) {
         this.listOfAll().forEach(e -> {
-            event.register(e.entityType(), e.placementType(), e.heightmap(), e.spawnPredicate(), e.operation());
+            event.register(e.entityType().get(), e.placementType(), e.heightmap(), e.spawnPredicate(), e.operation());
         });
         this.AND_SpawnRulesMap.clear();
         this.OR_SpawnRulesMap.clear();
@@ -77,6 +79,6 @@ public final class ZPPopulationController {
         return this.vanillaBiomePopulationManager;
     }
 
-    public record PopulationData<E extends Entity>(EntityType<E> entityType, @Nullable SpawnPlacements.Type placementType, @Nullable Heightmap.Types heightmap, SpawnPlacements.SpawnPredicate<E> spawnPredicate, SpawnPlacementRegisterEvent.Operation operation) {
+    public record PopulationData<E extends Entity>(Supplier<EntityType<E>> entityType, @Nullable SpawnPlacements.Type placementType, @Nullable Heightmap.Types heightmap, SpawnPlacements.SpawnPredicate<E> spawnPredicate, SpawnPlacementRegisterEvent.Operation operation) {
     }
 }

@@ -257,9 +257,9 @@ public abstract class ZPBaseGun extends ZPItem {
 
         private @Nullable Supplier<@NotNull SoundEvent> fireSound;
         private @Nullable Supplier<@NotNull SoundEvent> reloadSound;
-        private final @NotNull Item ammo;
+        private final @Nullable Item ammo;
 
-        public GunProperties(@NotNull Item ammo, @NotNull HeldType heldType) {
+        public GunProperties(@Nullable Item ammo, @NotNull HeldType heldType) {
             this.animationData = new AnimationData(false);
             this.setDefaults();
             this.heldType = heldType;
@@ -318,7 +318,7 @@ public abstract class ZPBaseGun extends ZPItem {
             return this;
         }
 
-        public @NotNull Item getAmmo() {
+        public @Nullable Item getAmmo() {
             return this.ammo;
         }
 

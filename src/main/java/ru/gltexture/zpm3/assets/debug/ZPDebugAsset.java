@@ -4,6 +4,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.debug.events.ZPFreeCameraEvents;
+import ru.gltexture.zpm3.assets.debug.events.ZPRenderStuffEvent;
 import ru.gltexture.zpm3.assets.debug.imgui.DearUITRSInterface;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.init.ZPClientInitManager;
@@ -43,8 +44,13 @@ public class ZPDebugAsset extends ZPAsset {
                 new ZombiePlague3.IMixinEntry.MixinClass("client.ZPInputMixin", ZPSide.CLIENT));
     }
 
+    public static void addNewLineToDraw(@NotNull ZPRenderStuffEvent.LineRequest lineRequest) {
+        ZPRenderStuffEvent.addNewLineToDraw(lineRequest);
+    }
+
     @Override
     public void initializeAsset(ZombiePlague3.@NotNull IAssetEntry assetEntry) {
         assetEntry.addEventClass(ZPFreeCameraEvents.class);
+        assetEntry.addEventClass(ZPRenderStuffEvent.class);
     }
 }

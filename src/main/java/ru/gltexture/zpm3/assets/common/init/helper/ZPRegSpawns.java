@@ -19,5 +19,17 @@ public abstract class ZPRegSpawns {
             utils.items().addItemInTab(e, ZPTabs.zp_spawns_tab);
             utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_SPAWN_EGG);
         }).registryObject();
+
+        ZPItems.miner_zm_spawn = regSupplier.register("miner_zm_spawn", () -> new ForgeSpawnEggItem((() -> ZPEntities.zp_miner_zombie_entity.get()), 0xA63B36, 0x7C9F65, new Item.Properties())
+        ).postConsume(Dist.CLIENT, (e, utils) -> {
+            utils.items().addItemInTab(e, ZPTabs.zp_spawns_tab);
+            utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_SPAWN_EGG);
+        }).registryObject();
+
+        ZPItems.dog_zm_spawn = regSupplier.register("dog_zm_spawn", () -> new ForgeSpawnEggItem((() -> ZPEntities.zp_dog_zombie_entity.get()), 0xC8C8C8, 0xDD0205, new Item.Properties())
+        ).postConsume(Dist.CLIENT, (e, utils) -> {
+            utils.items().addItemInTab(e, ZPTabs.zp_spawns_tab);
+            utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_SPAWN_EGG);
+        }).registryObject();
     }
 }

@@ -3,22 +3,30 @@ package ru.gltexture.zpm3.assets.common;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DispensibleContainerItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BucketPickup;
 import net.minecraft.world.level.block.DispenserBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.DispenserBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.assets.common.events.common.ZPLivingKnockBack;
+import ru.gltexture.zpm3.assets.common.events.common.ZPLivingEvents;
 import ru.gltexture.zpm3.assets.common.events.common.ZPMobAttributes;
 import ru.gltexture.zpm3.assets.common.init.*;
+import ru.gltexture.zpm3.assets.common.instances.block_entities.ZPFadingBlockEntity;
 import ru.gltexture.zpm3.assets.common.population.SetupPopulation;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
@@ -37,6 +45,29 @@ public class ZPCommonAsset extends ZPAsset {
 
     @Override
     public void commonSetup() {
+        DispenserBlock.registerBehavior(Items.LAVA_BUCKET, new DefaultDispenseItemBehavior() {
+            private final DefaultDispenseItemBehavior defaultDispenseItemBehavior = new DefaultDispenseItemBehavior();
+
+            public @NotNull ItemStack execute(@NotNull BlockSource p_123561_, @NotNull ItemStack p_123562_) {
+                DispensibleContainerItem dispensiblecontaineritem = (DispensibleContainerItem) p_123562_.getItem();
+                BlockPos blockpos = p_123561_.getPos().relative(p_123561_.getBlockState().getValue(DispenserBlock.FACING));
+                Level level = p_123561_.getLevel();
+                if (dispensiblecontaineritem.emptyContents(null, level, blockpos, null, p_123562_)) {
+                    dispensiblecontaineritem.checkExtraContent(null, level, p_123562_, blockpos);
+                    if (level instanceof ServerLevel) {
+                        BlockEntity be = level.getBlockEntity(blockpos);
+                        if (be != null) {
+                            if (be instanceof ZPFadingBlockEntity zpFadingBlock) {
+                                zpFadingBlock.setActive(true);
+                            }
+                        }
+                    }
+                    return new ItemStack(Items.BUCKET);
+                } else {
+                    return this.defaultDispenseItemBehavior.dispense(p_123561_, p_123562_);
+                }
+            }
+        });
         DispenserBlock.registerBehavior(Items.BUCKET, new DefaultDispenseItemBehavior() {
             private final DefaultDispenseItemBehavior defaultDispenseItemBehavior = new DefaultDispenseItemBehavior();
 
@@ -87,10 +118,12 @@ public class ZPCommonAsset extends ZPAsset {
     @Override
     public void initMixins(ZombiePlague3.@NotNull IMixinEntry mixinEntry) {
         mixinEntry.addMixinConfigData(new ZombiePlague3.IMixinEntry.MixinConfig("common", "ru.gltexture.zpm3.assets.common.mixins.impl"),
-                new ZombiePlague3.IMixinEntry.MixinClass("common.TorchMixin", ZPSide.COMMON),
-                new ZombiePlague3.IMixinEntry.MixinClass("common.WallTorchMixin", ZPSide.COMMON),
-                new ZombiePlague3.IMixinEntry.MixinClass("common.PumpkinMixin", ZPSide.COMMON),
-                new ZombiePlague3.IMixinEntry.MixinClass("common.LavaMixin", ZPSide.COMMON)
+                new ZombiePlague3.IMixinEntry.MixinClass("common.ZPTorchMixin", ZPSide.COMMON),
+                new ZombiePlague3.IMixinEntry.MixinClass("common.ZPWallTorchMixin", ZPSide.COMMON),
+                new ZombiePlague3.IMixinEntry.MixinClass("common.ZPPumpkinMixin", ZPSide.COMMON),
+                new ZombiePlague3.IMixinEntry.MixinClass("common.ZPLavaMixin", ZPSide.COMMON),
+                new ZombiePlague3.IMixinEntry.MixinClass("common.ZPFluidPlacedMixin", ZPSide.COMMON),
+                new ZombiePlague3.IMixinEntry.MixinClass("common.ZPMobCategoryMixin", ZPSide.COMMON)
         );
     }
 
@@ -103,13 +136,14 @@ public class ZPCommonAsset extends ZPAsset {
         assetEntry.addRegistryClass(ZPBlockItems.class);
         assetEntry.addRegistryClass(ZPBlocks.class);
         assetEntry.addRegistryClass(ZPTorchBlocks.class);
+        assetEntry.addRegistryClass(ZPEntityAttributes.class);
         assetEntry.addRegistryClass(ZPEntities.class);
         assetEntry.addRegistryClass(ZPBlockEntities.class);
         assetEntry.addRegistryClass(ZPFluids.class);
         assetEntry.addRegistryClass(ZPFluidTypes.class);
         assetEntry.addRegistryClass(ZPDamageTypes.class);
 
-        assetEntry.addEventClass(ZPLivingKnockBack.class);
+        assetEntry.addEventClass(ZPLivingEvents.class);
         assetEntry.addEventClass(ZPMobAttributes.class);
 
         ZPUtility.sides().onlyClient(() -> {

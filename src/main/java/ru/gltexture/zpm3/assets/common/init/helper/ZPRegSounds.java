@@ -13,6 +13,14 @@ import java.util.List;
 
 public abstract class ZPRegSounds {
     public static void init(@NotNull ZPRegistry.ZPRegSupplier<SoundEvent> regSupplier) {
+        ZPSounds.zm_miner_hurt = regSupplier.register("zm_miner_hurt", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "zm_miner_hurt"))).postConsume(Dist.CLIENT, (e, utils) -> {
+            utils.sounds().addNewSound(new ZPSoundListProvider.ZPSoundEvent("zm_miner_hurt", false, "sounds.zpm3.zm_miner_hurt", List.of(new ZPSoundListProvider.SoundData("zombie/miner/hurt1"))));
+            utils.sounds().addNewSound(new ZPSoundListProvider.ZPSoundEvent("zm_miner_hurt", false, "sounds.zpm3.zm_miner_hurt", List.of(new ZPSoundListProvider.SoundData("zombie/miner/hurt2"))));
+            utils.sounds().addNewSound(new ZPSoundListProvider.ZPSoundEvent("zm_miner_hurt", false, "sounds.zpm3.zm_miner_hurt", List.of(new ZPSoundListProvider.SoundData("zombie/miner/hurt3"))));
+            utils.sounds().addNewSound(new ZPSoundListProvider.ZPSoundEvent("zm_miner_hurt", false, "sounds.zpm3.zm_miner_hurt", List.of(new ZPSoundListProvider.SoundData("zombie/miner/hurt4"))));
+        }).registryObject();
+
+
         ZPSounds.syringe = regSupplier.register("syringe", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "syringe"))).postConsume(Dist.CLIENT, (e, utils) -> {
             utils.sounds().addNewSound(new ZPSoundListProvider.ZPSoundEvent("syringe", false, "sounds.zpm3.syringe", List.of(new ZPSoundListProvider.SoundData("medicine/syringe"))));
         }).registryObject();
@@ -128,6 +136,10 @@ public abstract class ZPRegSounds {
 
         ZPSounds.mosin_fire = regSupplier.register("mosin_fire", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "mosin_fire"))).postConsume(Dist.CLIENT, (e, utils) -> {
             utils.sounds().addNewSound(new ZPSoundListProvider.ZPSoundEvent("mosin_fire", false, "sounds.zpm3.mosin_fire", List.of(new ZPSoundListProvider.SoundData("guns/mosin_fire"))));
+        }).registryObject();
+
+        ZPSounds.impactmeat = regSupplier.register("impactmeat", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "impactmeat"))).postConsume(Dist.CLIENT, (e, utils) -> {
+            utils.sounds().addNewSound(new ZPSoundListProvider.ZPSoundEvent("impactmeat", false, "sounds.zpm3.impactmeat", List.of(new ZPSoundListProvider.SoundData("effects/impactmeat"))));
         }).registryObject();
     }
 }

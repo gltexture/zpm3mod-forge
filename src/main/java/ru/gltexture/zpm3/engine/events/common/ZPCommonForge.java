@@ -1,8 +1,10 @@
 package ru.gltexture.zpm3.engine.events.common;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -38,6 +40,16 @@ public class ZPCommonForge {
         if (ZPCommonForge.shouldCancelInteraction(event.getEntity())) {
             event.setCanceled(true);
         }
+    }
+
+    @SubscribeEvent
+    public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
+        ServerPlayer player = (ServerPlayer) event.getEntity();
+    }
+
+    @SubscribeEvent
+    public void onPlayerChangeDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
+        ServerPlayer player = (ServerPlayer) event.getEntity();
     }
 
     private static boolean shouldCancelInteraction(@NotNull Player player) {

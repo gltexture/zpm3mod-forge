@@ -52,7 +52,7 @@ public class ZPFreeCameraEvents implements ZPEventClass {
     }
 
     @SubscribeEvent
-    public void onClientTick(TickEvent.ClientTickEvent event) {
+    public static void onClientTick(TickEvent.ClientTickEvent event) {
         if (!enabled || event.phase != TickEvent.Phase.END) {
             return;
         }

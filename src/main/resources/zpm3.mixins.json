@@ -9,7 +9,9 @@
     "common.ZPDefaultBiomeFeaturesMixin",
     "common.ZPEntityMixin",
     "common.ZPLivingEntityMixin",
-    "common.ZPPlayerMixin"
+    "common.ZPPlayerMixin",
+    "common.ZPServerLevelMixin",
+    "common.ZPServerPlayerGameMixin"
   ],
   "client": [
     "client.ZPGameRendererMixin",

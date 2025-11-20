@@ -1,0 +1,22 @@
+package ru.gltexture.zpm3.assets.common.mixins.impl.common;
+
+import net.minecraft.world.entity.MobCategory;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import ru.gltexture.zpm3.assets.common.global.ZPConstants;
+
+@Mixin(MobCategory.class)
+public class ZPMobCategoryMixin {
+    @Final @Shadow public static MobCategory MONSTER;
+
+    @Inject(method = "getMaxInstancesPerChunk", at = @At("HEAD"), cancellable = true)
+    public void getMaxInstancesPerChunk(CallbackInfoReturnable<Integer> cir) {
+        if ((Object) this == MONSTER) {
+            cir.setReturnValue(ZPConstants.MAX_ZOMBIES_IN_CHUNK);
+        }
+    }
+}

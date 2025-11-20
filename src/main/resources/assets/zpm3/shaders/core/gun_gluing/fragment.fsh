@@ -37,10 +37,10 @@ vec4 getItemColFixed(vec4 color, vec2 texelSize) {
   vec4 downLeft = texture(texture_map, uv_coordinates + vec2(-texelSize.x, -texelSize.y));
   vec4 downRight = texture(texture_map, uv_coordinates + vec2(texelSize.x, -texelSize.y));
 
-  if (up.a > 0.0 && down.a > 0.0) return vec4((up.rgb + down.rgb) * 0.5, 1.0);
-  if (left.a > 0.0 && right.a > 0.0) return vec4((left.rgb + right.rgb) * 0.5, 1.0);
-  if (upLeft.a > 0.0 && downRight.a > 0.0) return vec4((upLeft.rgb + downRight.rgb) * 0.5, 1.0);
-  if (upRight.a > 0.0 && downLeft.a > 0.0) return vec4((upRight.rgb + downLeft.rgb) * 0.5, 1.0);
+  if (up.a > 0.0 && down.a > 0.0) return vec4((up.rgb + down.rgb) * 0.5, up.a);
+  if (left.a > 0.0 && right.a > 0.0) return vec4((left.rgb + right.rgb) * 0.5, left.a);
+  if (upLeft.a > 0.0 && downRight.a > 0.0) return vec4((upLeft.rgb + downRight.rgb) * 0.5, upLeft.a);
+  if (upRight.a > 0.0 && downLeft.a > 0.0) return vec4((upRight.rgb + downLeft.rgb) * 0.5, upRight.a);
 
   return color;
 }
@@ -53,6 +53,6 @@ void main()
 
     vec3 finalColor = (calcMFlashBlink(uv_coordinates, mflash_posLeft) * scissorFactor(mflash_scissorLeft) + calcMFlashBlink(uv_coordinates, mflash_posRight) * scissorFactor(mflash_scissorRight)) * gun.a;
 
-    vec4 mixedGunMFlash = mix(gun + vec4(finalColor, gun.a), vec4(bloom.rgb, 1.0), bloom.a);
+    vec4 mixedGunMFlash = mix(gun + vec4(finalColor, 0.0), vec4(bloom.rgb, 1.0), bloom.a);
     frag_color = mixedGunMFlash + mflash;
 }

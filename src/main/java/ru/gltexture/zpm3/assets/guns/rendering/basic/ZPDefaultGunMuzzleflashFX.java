@@ -158,6 +158,7 @@ public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderH
             this.muzzleflashScissor1Person[0] = this.muzzleflashScissor1Person[1] = DearUITRSInterface.scissor1P;
         }
         if (ZPDefaultGunMuzzleflashFX.useFancyRendering1person()) {
+            GL46.glBlendFuncSeparate(GL46.GL_SRC_ALPHA, GL46.GL_ONE_MINUS_SRC_ALPHA, GL46.GL_ONE, GL46.GL_ONE_MINUS_SRC_ALPHA);
             ZPDefaultGunMuzzleflashFX.muzzleflashFBO.bindFBO();
             GL46.glDrawBuffers(new int[]{GL46.GL_COLOR_ATTACHMENT1, GL46.GL_COLOR_ATTACHMENT2});
             GL46.glClear(GL46.GL_COLOR_BUFFER_BIT);
@@ -166,7 +167,7 @@ public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderH
         GL46.glEnable(GL46.GL_DEPTH_TEST);
         this.renderMuzzleFlash1Person(this.muzzleflashScissor1Person[0], false);
         this.renderMuzzleFlash1Person(this.muzzleflashScissor1Person[1], true);
-        GL46.glDisable(GL46.GL_BLEND);
+       // GL46.glDisable(GL46.GL_BLEND);
         GL46.glDisable(GL46.GL_DEPTH_TEST);
     }
 
@@ -305,6 +306,7 @@ public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderH
     @Override
     public void onPreRender1Person(float deltaTicks, float pPartialTicks, PoseStack pPoseStack, MultiBufferSource.BufferSource pBuffer, LocalPlayer pPlayerEntity, int pCombinedLight) {
         if (ZPDefaultGunMuzzleflashFX.useFancyRendering1person()) {
+            GL46.glBlendFuncSeparate(GL46.GL_SRC_ALPHA, GL46.GL_ONE_MINUS_SRC_ALPHA, GL46.GL_ONE, GL46.GL_ONE_MINUS_SRC_ALPHA);
             ZPDefaultGunMuzzleflashFX.muzzleflashFBO.bindFBO();
             GL46.glClear(GL46.GL_DEPTH_BUFFER_BIT | GL46.GL_STENCIL_BUFFER_BIT);
             GL46.glDrawBuffers(new int[]{GL46.GL_COLOR_ATTACHMENT0});
@@ -316,6 +318,10 @@ public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderH
     public void onPostRender1Person(float deltaTicks, float pPartialTicks, PoseStack pPoseStack, MultiBufferSource.BufferSource pBuffer, LocalPlayer pPlayerEntity, int pCombinedLight) {
         if (ZPDefaultGunMuzzleflashFX.renderMuzzleflash1Person()) {
             this.render1Person(pBuffer, pPartialTicks, deltaTicks);
+        }
+
+        if (ZPDefaultGunMuzzleflashFX.useFancyRendering1person()) {
+            ZPDefaultGunMuzzleflashFX.muzzleflashFBO.unBindFBO();
         }
     }
 

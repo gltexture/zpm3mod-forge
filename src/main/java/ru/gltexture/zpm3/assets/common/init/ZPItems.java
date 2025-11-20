@@ -1,9 +1,7 @@
 package ru.gltexture.zpm3.assets.common.init;
 
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.SpawnEggItem;
 import net.minecraftforge.common.ForgeSpawnEggItem;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.init.helper.*;
@@ -18,6 +16,8 @@ import ru.gltexture.zpm3.engine.registry.collection.IZPCollectRegistryObjects;
 public class ZPItems extends ZPRegistry<Item> implements IZPCollectRegistryObjects {
     // SPAWNS
     public static RegistryObject<ForgeSpawnEggItem> common_zm_spawn;
+    public static RegistryObject<ForgeSpawnEggItem> miner_zm_spawn;
+    public static RegistryObject<ForgeSpawnEggItem> dog_zm_spawn;
 
     // ITEMS
     public static RegistryObject<ZPItemThrowable> acid_bottle;
@@ -60,6 +60,8 @@ public class ZPItems extends ZPRegistry<Item> implements IZPCollectRegistryObjec
     //GUNS
     public static RegistryObject<ZPGunPistol> handmade_pistol;
     public static RegistryObject<ZPItem> _handmade_pistol;
+
+    public static RegistryObject<ZPGunPistol> admin_pistol;
 
     public static RegistryObject<ZPGunPistol> makarov;
     public static RegistryObject<ZPItem> _makarov;

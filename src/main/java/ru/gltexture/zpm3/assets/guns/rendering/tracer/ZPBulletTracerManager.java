@@ -41,7 +41,7 @@ public final class ZPBulletTracerManager {
         Iterator<Tracer> tracerIterator = this.tracerSet.iterator();
         while (tracerIterator.hasNext()) {
             Tracer tracer = tracerIterator.next();
-            this.drawLine(poseStack, tracer.getTracerPath().start, tracer.getTracerPath().end, tracer.getCurrentPos(), 1.0f, 1.0f, 0.85f, 0.65f);
+            ZPBulletTracerManager.drawShortLine(poseStack, tracer.getTracerPath().start, tracer.getTracerPath().end, tracer.getCurrentPos(), 1.0f, 1.0f, 0.85f, 0.65f);
             final float speed = this.tracerSpeed;
             final float distance = tracer.getTracerPath().end.distance(tracer.getTracerPath().start);
             final float deltaProgress = (speed / distance) * deltaTicks;
@@ -53,7 +53,24 @@ public final class ZPBulletTracerManager {
         }
     }
 
-    private void drawLine(PoseStack poseStack, Vector3f start, Vector3f end, float pos, float r, float g, float b, float a) {
+    public static void drawLine(PoseStack poseStack, Vector3f start, Vector3f end, float r, float g, float b, float a) {
+        Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
+        Vec3 camPos = camera.getPosition();
+
+        final Vector3f s = new Vector3f(start).sub((float) camPos.x, (float) camPos.y, (float) camPos.z);
+        final Vector3f e = new Vector3f(end).sub((float) camPos.x, (float) camPos.y, (float) camPos.z);
+
+        Matrix4f matrix = poseStack.last().pose();
+        MultiBufferSource.BufferSource bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
+        VertexConsumer builder = bufferSource.getBuffer(RenderType.lines());
+        for (Direction direction : LevelRenderer.DIRECTIONS) {
+            builder.vertex(matrix, s.x(), s.y(), s.z()).color(r, g, b, a).normal(direction.getStepX(), direction.getStepY(), direction.getStepZ()).endVertex();
+            builder.vertex(matrix, e.x(), e.y(), e.z()).color(r, g, b, a).normal(direction.getStepX(), direction.getStepY(), direction.getStepZ()).endVertex();
+        }
+        bufferSource.endBatch(RenderType.lines());
+    }
+
+    public static void drawShortLine(PoseStack poseStack, Vector3f start, Vector3f end, float pos, float r, float g, float b, float a) {
         Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
         Vec3 camPos = camera.getPosition();
 

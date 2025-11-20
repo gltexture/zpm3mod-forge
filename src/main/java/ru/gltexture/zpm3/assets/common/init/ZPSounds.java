@@ -13,6 +13,8 @@ import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 
 public class ZPSounds extends ZPRegistry<SoundEvent> {
+    public static RegistryObject<SoundEvent> zm_miner_hurt;
+
     public static RegistryObject<SoundEvent> syringe;
     public static RegistryObject<SoundEvent> pills;
     public static RegistryObject<SoundEvent> bandage;
@@ -49,6 +51,7 @@ public class ZPSounds extends ZPRegistry<SoundEvent> {
     public static RegistryObject<SoundEvent> akm_fire;
     public static RegistryObject<SoundEvent> akm_reload;
     public static RegistryObject<SoundEvent> mosin_fire;
+    public static RegistryObject<SoundEvent> impactmeat;
 
     public ZPSounds() {
         super(ZPRegistryConveyor.Target.SOUND_EVENT);

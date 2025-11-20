@@ -17,19 +17,34 @@ import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public class ZPFadingBlockEntity extends ZPBlockEntity {
     public static final String NBT_TIMELOCK = "timeLock";
+    public static final String NBT_ACTIVE = "active";
+    public static final String NBT_FADING_TIME = "fadingTime";
     private long timeLock;
+    private boolean active;
+    private int fadingTime;
+
+    public ZPFadingBlockEntity(BlockPos pPos, BlockState pBlockState, int fadingTime, boolean active) {
+        super(ZPBlockEntities.fading_block_entity.get(), pPos, pBlockState);
+        this.timeLock = 0L;
+        this.active = active;
+        this.fadingTime = fadingTime;
+    }
 
     public ZPFadingBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ZPBlockEntities.fading_block_entity.get(), pPos, pBlockState);
-        this.timeLock = 0L;
+        this.active = false;
+        this.fadingTime = 1;
     }
 
     public static void tick(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull ZPFadingBlockEntity blockEntity) {
         if (blockEntity.isServer()) {
             if (state.getBlock() instanceof IFadingBlock fadingBlock) {
+                if (!blockEntity.active) {
+                    return;
+                }
                 if (fadingBlock.getTurnInto() != null) {
                     if (blockEntity.timeLock <= 0L && blockEntity.isServer()) {
-                        blockEntity.setTime(level, ZPConstants.TORCH_FADING_TIME, ZPConstants.TORCH_FADING_TIME_SALT);
+                        blockEntity.setTime(level, blockEntity.fadingTime, blockEntity.fadingTime / 4);
                         return;
                     }
                     boolean flag = (ZPUtility.blocks().isRainingOnBlock(level, pos) && level.getGameTime() % 40 == 0);
@@ -41,11 +56,20 @@ public class ZPFadingBlockEntity extends ZPBlockEntity {
                         newState = ZPUtility.blocks().copyProperties(state, newState);
                         level.setBlock(pos, newState, Block.UPDATE_ALL);
                         level.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 1.0F, 1.0F);
-                        blockEntity.setTime(level, ZPConstants.TORCH_FADING_TIME, ZPConstants.TORCH_FADING_TIME_SALT);
+                        blockEntity.setTime(level, blockEntity.fadingTime, blockEntity.fadingTime / 4);
                     }
                 }
             }
         }
+    }
+
+    public boolean isActive() {
+        return this.active;
+    }
+
+    public ZPFadingBlockEntity setActive(boolean active) {
+        this.active = active;
+        return this;
     }
 
     public void setTime(@NotNull Level level, long exact, long salt) {
@@ -58,6 +82,12 @@ public class ZPFadingBlockEntity extends ZPBlockEntity {
         if (pTag.contains(ZPFadingBlockEntity.NBT_TIMELOCK)) {
             this.timeLock = pTag.getLong(ZPFadingBlockEntity.NBT_TIMELOCK);
         }
+        if (pTag.contains(ZPFadingBlockEntity.NBT_ACTIVE)) {
+            this.active = pTag.getBoolean(ZPFadingBlockEntity.NBT_ACTIVE);
+        }
+        if (pTag.contains(ZPFadingBlockEntity.NBT_FADING_TIME)) {
+            this.fadingTime = pTag.getInt(ZPFadingBlockEntity.NBT_FADING_TIME);
+        }
     }
 
     @Override
@@ -65,6 +95,8 @@ public class ZPFadingBlockEntity extends ZPBlockEntity {
         super.saveAdditional(pTag);
         if (this.isServer()) {
             pTag.putLong(ZPFadingBlockEntity.NBT_TIMELOCK, this.timeLock);
+            pTag.putBoolean(ZPFadingBlockEntity.NBT_ACTIVE, this.active);
+            pTag.putInt(ZPFadingBlockEntity.NBT_FADING_TIME, this.fadingTime);
         }
     }
 

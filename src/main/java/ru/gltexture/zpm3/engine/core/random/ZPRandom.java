@@ -38,11 +38,11 @@ public final class ZPRandom {
     }
 
     public float randomFloat(float range) {
-        return ZPRandom.getRandom().nextFloat(range);
+        return range == 0.0f ? 0.0f : ZPRandom.getRandom().nextFloat(range);
     }
 
     public float randomFloatDuo(float range) {
-        return ZPRandom.getRandom().nextFloat(range * 2.0f) - range;
+        return range == 0.0f ? 0.0f : ZPRandom.getRandom().nextFloat(range * 2.0f) - range;
     }
 
     public float randomInt(int from, int to) {

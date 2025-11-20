@@ -11,7 +11,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.common.init.ZPEntities;
-import ru.gltexture.zpm3.assets.common.instances.entities.ZPAcidBottleEntity;
+import ru.gltexture.zpm3.assets.common.instances.entities.throwables.ZPAcidBottleEntity;
 import ru.gltexture.zpm3.engine.instances.entities.ZPThrowableEntity;
 
 public class ZPItemThrowable extends ZPItem {

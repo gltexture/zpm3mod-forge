@@ -69,7 +69,7 @@ public abstract class ClientRenderFunctions {
     public static void renderTextureIDScreenOverlayFromFBO(@NotNull ShaderInstance shaderToRender, @NotNull Consumer<ShaderInstance> doUniforms, @NotNull List<Pair<String, ITexture2DProgram>> texturesWithUniforms) {
         shaderToRender.apply();
 
-        GL46.glDisable(GL46.GL_CULL_FACE);
+      //  GL46.glDisable(GL46.GL_CULL_FACE);
         GL46.glEnable(GL46.GL_BLEND);
         GL46.glDisable(GL46.GL_DEPTH_TEST);
 

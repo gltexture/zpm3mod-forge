@@ -20,6 +20,25 @@ import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 public abstract class ZPRegGuns {
     public static void init(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
         {
+            ZPItems.admin_pistol = regSupplier.register("admin_pistol",
+                    () -> new ZPGunPistol(new Item.Properties(), new ZPBaseGun.GunProperties(null, ZPBaseGun.GunProperties.HeldType.PISTOL)
+                            .setDamage(999)
+                            .setDurability(9999)
+                            .setInaccuracy(0.0f)
+                            .setMaxAmmo(9999)
+                            .setReloadTime(40)
+                            .setShootCooldown(1)
+                            .setClientRecoil(0.0f)
+                            .setAuto(true)
+                            .setReloadSound(() -> ZPSounds.uzi_reload.get())
+                            .setFireSound(() -> ZPSounds.usp_fire.get())
+                    )
+            ).postConsume(Dist.CLIENT, (e, utils) -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+                utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultPistolRenderer, ZPDefaultGunRenderers.defaultPistolRenderer);
+            }).registryObject();
+
             ZPItems._makarov = regSupplier.register("_makarov",
                     () -> new ZPItem(new Item.Properties().stacksTo(32))
             ).postConsume(Dist.CLIENT, (e, utils) -> {

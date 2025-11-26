@@ -22,6 +22,7 @@ import ru.gltexture.zpm3.engine.mixins.ext.IZPLevelRendererExt;
 @OnlyIn(Dist.CLIENT)
 public class ZPMultiplayerGameModeMixin {
     @Shadow private float destroyProgress;
+
     @Inject(method = "continueDestroyBlock", at = @At("HEAD"), cancellable = true)
     private void continueDestroyBlock(BlockPos pPosBlock, Direction pDirectionFacing, CallbackInfoReturnable<Boolean> ci) {
         ClientLevel clientLevel = Minecraft.getInstance().level;

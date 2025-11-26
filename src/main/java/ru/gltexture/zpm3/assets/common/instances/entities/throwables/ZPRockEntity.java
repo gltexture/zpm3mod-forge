@@ -83,7 +83,7 @@ public class ZPRockEntity extends ZPThrowableEntity {
                 BlockPos pos = blockHit.getBlockPos();
                 if (!this.level().isEmptyBlock(pos)) {
                     if (this.level() instanceof IZPLevelExt ext) {
-                        ext.getGlobalBLocksDestroyMemory().addNewEntryLongMem(this.level(), pos, (5.0f + ZPRandom.getRandom().nextFloat(5.0f)) * ZPConstants.THROWABLES_BLOCK_BREAK_MULTIPLIER);
+                        ext.getGlobalBlocksDestroyMemory().addNewEntryLongMem(this.level(), pos, (5.0f + ZPRandom.getRandom().nextFloat(5.0f)) * ZPConstants.THROWABLES_BLOCK_BREAK_MULTIPLIER);
                     }
                 }
             }

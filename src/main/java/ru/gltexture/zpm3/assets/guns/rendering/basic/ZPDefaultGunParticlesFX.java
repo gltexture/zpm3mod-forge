@@ -53,7 +53,7 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
 
     @Override
     public void onEmmitSmoke(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, boolean isRightHand) {
-        if (ZPDefaultGunMuzzleflashFX.quality() <= 1) {
+        if (ZPDefaultGunMuzzleflashFX.minQuality() <= 1) {
             return;
         }
         final Minecraft mc = Minecraft.getInstance();

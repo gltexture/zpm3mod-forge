@@ -2,14 +2,9 @@ package ru.gltexture.zpm3.engine.mixins.impl.common;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
-import net.minecraft.network.protocol.game.ServerboundPlayerActionPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.ServerPlayerGameMode;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.joml.Vector3i;
@@ -19,12 +14,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import ru.gltexture.zpm3.engine.mixins.ext.IZPLevelExt;
 
 import javax.annotation.Nullable;
-import java.util.Objects;
 
 @Mixin(ServerPlayerGameMode.class)
 public abstract class ZPServerPlayerGameMixin {
@@ -46,9 +39,11 @@ public abstract class ZPServerPlayerGameMixin {
     private void incrementDestroyProgress(BlockState pState, BlockPos pPos, int pStartTick, CallbackInfoReturnable<Float> cir) {
         float blockProgressFromGlobal = 0.0f;
         if (this.level instanceof IZPLevelExt ext) {
-            float f = ext.getGlobalBLocksDestroyMemory().getBlockProgressFromMemOrNegative(new Vector3i(pPos.getX(), pPos.getY(), pPos.getZ()));
+            final Vector3i pos = new Vector3i(pPos.getX(), pPos.getY(), pPos.getZ());
+            float f = ext.getGlobalBlocksDestroyMemory().getBlockProgressFromMemOrNegative(pos);
             if (f > 0.0f) {
                 blockProgressFromGlobal = f / (pState.getDestroySpeed(this.level, pPos));
+                ext.getGlobalBlocksDestroyMemory().resetTicks(this.level, pos);
             }
         }
 

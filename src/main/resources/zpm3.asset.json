@@ -15,7 +15,6 @@
       "version": "0.0",
       "class": "ru.gltexture.zpm3.assets.fx.ZPFXAsset"
     },
-
     {
       "name": "ZP3CommonAsset",
       "version": "0.0",
@@ -35,6 +34,11 @@
       "name": "ZP3GunsAsset",
       "version": "0.0",
       "class": "ru.gltexture.zpm3.assets.guns.ZPGunsAsset"
+    },
+    {
+      "name": "ZP3LootCasesAsset",
+      "version": "0.0",
+      "class": "ru.gltexture.zpm3.assets.loot_cases.ZPLootCasesAsset"
     }
   ]
 }

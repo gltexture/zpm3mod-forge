@@ -1,6 +1,9 @@
 package ru.gltexture.zpm3.assets.common.global;
 
 public abstract class ZPConstants {
+    public static boolean ENABLE_HARDCORE_DARKNESS_SERVER_SIDE = true;
+    public static float DARKNESS_GAMMA_STATIC_FACTOR_SERVER_SIDE = -0.45f;
+
     public static final int ZOMBIE_MAX_ANGRY_PERSISTENCE_TICKS = 1200;
     public static final int ZOMBIE_EATING_TIME = 200;
     public static final float THROWABLES_BLOCK_BREAK_MULTIPLIER = 1.0f;

@@ -3,6 +3,7 @@ package ru.gltexture.zpm3.engine.registry;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
@@ -15,6 +16,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
@@ -33,7 +36,7 @@ import ru.gltexture.zpm3.engine.helpers.*;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
 import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockItemModelExecutors;
 import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockModelExecutors;
-import ru.gltexture.zpm3.engine.helpers.gen.data.VanillaMCModelRef;
+import ru.gltexture.zpm3.engine.helpers.gen.data.VanillaMinecraftModelParentReference;
 import ru.gltexture.zpm3.engine.helpers.gen.data.ZPGenTextureData;
 import ru.gltexture.zpm3.engine.helpers.gen.providers.ZPBlockModelProvider;
 import ru.gltexture.zpm3.engine.helpers.gen.providers.ZPItemModelProvider;
@@ -92,7 +95,7 @@ public abstract class ZPRegistry<T> {
     }
 
     @SuppressWarnings("all")
-    public void startCollectingInto(@NotNull String id) throws ZPRuntimeException {
+    public void pushInstanceCollecting(@NotNull String id) throws ZPRuntimeException {
         if (!this.hasCollector()) {
             throw new ZPRuntimeException("Couldn't continue collecting, because collector wasn't attached");
         }
@@ -197,6 +200,7 @@ public abstract class ZPRegistry<T> {
             this.blocks = new Blocks();
             this.particles = new Particles();
             this.entities = new Entities();
+            this.blockEntities = new BlockEntities();
             this.loot = new Loot();
             this.sounds = new Sounds();
             this.fluids = new Fluids();
@@ -211,6 +215,7 @@ public abstract class ZPRegistry<T> {
         private final Fluids fluids;
         private final Particles particles;
         private final Entities entities;
+        private final BlockEntities blockEntities;
         private final Loot loot;
         private final Sounds sounds;
 
@@ -232,6 +237,10 @@ public abstract class ZPRegistry<T> {
 
         public Entities entities() {
             return this.entities;
+        }
+
+        public BlockEntities blockEntities() {
+            return this.blockEntities;
         }
 
         public Loot loot() {
@@ -276,18 +285,18 @@ public abstract class ZPRegistry<T> {
                 ZPDataGenHelper.addItemDefaultModel(item, itemTextureData);
             }
 
-            public void addItemModel(@NotNull RegistryObject<? extends Item> item, @NotNull VanillaMCModelRef vanillaMCModelRef, @NotNull String mainTextureKey, @NotNull ZPPath textureDirectory) {
+            public void addItemModel(@NotNull RegistryObject<? extends Item> item, @NotNull VanillaMinecraftModelParentReference vanillaMinecraftModelRef, @NotNull String mainTextureKey, @NotNull ZPPath textureDirectory) {
                 final String textureName = Objects.requireNonNull(item.getId()).getPath();
-                this.addItemModel(item, () -> ZPGenTextureData.of(vanillaMCModelRef, mainTextureKey, () -> new ZPPath(textureDirectory, textureName)));
+                this.addItemModel(item, () -> ZPGenTextureData.of(vanillaMinecraftModelRef, mainTextureKey, () -> new ZPPath(textureDirectory, textureName)));
             }
 
             @SafeVarargs
-            public final void addItemModel(@NotNull RegistryObject<? extends Item> item, @NotNull VanillaMCModelRef vanillaMCModelRef, @NotNull Pair<@NotNull String, @NotNull Supplier<ZPPath>>... descriptors) {
-                this.addItemModel(item, () -> ZPGenTextureData.of(vanillaMCModelRef, descriptors));
+            public final void addItemModel(@NotNull RegistryObject<? extends Item> item, @NotNull VanillaMinecraftModelParentReference vanillaMinecraftModelRef, @NotNull Pair<@NotNull String, @NotNull Supplier<ZPPath>>... descriptors) {
+                this.addItemModel(item, () -> ZPGenTextureData.of(vanillaMinecraftModelRef, descriptors));
             }
 
-            public void addItemModel(@NotNull RegistryObject<? extends Item> item, @NotNull VanillaMCModelRef vanillaMCModelRef, @NotNull RegistryObject<? extends Item> textureLike) {
-                this.addItemModel(item, () -> ZPGenTextureData.copy(vanillaMCModelRef, ZPItemModelProvider.getTextureData(textureLike).get()));
+            public void addItemModel(@NotNull RegistryObject<? extends Item> item, @NotNull VanillaMinecraftModelParentReference vanillaMinecraftModelRef, @NotNull RegistryObject<? extends Item> textureLike) {
+                this.addItemModel(item, () -> ZPGenTextureData.copy(vanillaMinecraftModelRef, ZPItemModelProvider.getTextureData(textureLike).get()));
             }
 
             public void addItemInTab(@NotNull RegistryObject<? extends Item> item, @NotNull RegistryObject<CreativeModeTab> creativeModeTab) {
@@ -308,27 +317,22 @@ public abstract class ZPRegistry<T> {
                 ZPBlocksRenderLayerHelper.addBlockRenderLayerData(new ZPBlocksRenderLayerHelper.BlockPair(block, renderType));
             }
 
-            public void addBlockModel(@NotNull RegistryObject<? extends Block> block, @NotNull Supplier<ZPGenTextureData> blockTextureData) {
+            public void addBlockModelWitchGenTextureData(@NotNull RegistryObject<? extends Block> block, @NotNull Supplier<ZPGenTextureData> blockTextureData) {
                 ZPDataGenHelper.addBlockDefaultModel(block, blockTextureData);
             }
 
-            public void addBlockModel(@NotNull RegistryObject<? extends Block> block, @Nullable VanillaMCModelRef vanillaMCModelRef, @NotNull String mainTextureKey, @NotNull ZPPath textureDirectory) {
+            public void addBlockModelSimpleOneTexture(@NotNull RegistryObject<? extends Block> block, @Nullable VanillaMinecraftModelParentReference vanillaMinecraftModelRef, @NotNull String mainTextureKey, @NotNull ZPPath textureDirectory) {
                 final String textureName = Objects.requireNonNull(block.getId()).getPath();
-                this.addBlockModel(block, () -> ZPGenTextureData.of(vanillaMCModelRef, mainTextureKey, () -> new ZPPath(textureDirectory, textureName)));
-            }
-
-            public void addBlockModel(@NotNull RegistryObject<? extends Block> block, @NotNull String mainTextureKey, @NotNull ZPPath textureDirectory) {
-                final String textureName = Objects.requireNonNull(block.getId()).getPath();
-                this.addBlockModel(block, () -> ZPGenTextureData.of(null, mainTextureKey, () -> new ZPPath(textureDirectory, textureName)));
+                this.addBlockModelWitchGenTextureData(block, () -> ZPGenTextureData.of(vanillaMinecraftModelRef, mainTextureKey, () -> new ZPPath(textureDirectory, textureName)));
             }
 
             @SafeVarargs
-            public final void addBlockModel(@NotNull RegistryObject<? extends Block> block, @Nullable VanillaMCModelRef vanillaMCModelRef, Pair<@NotNull String, @NotNull Supplier<ZPPath>>... descriptors) {
-                this.addBlockModel(block, () -> ZPGenTextureData.of(vanillaMCModelRef, descriptors));
+            public final void addBlockModelKey_ValueArray(@NotNull RegistryObject<? extends Block> block, @Nullable VanillaMinecraftModelParentReference vanillaMinecraftModelRef, Pair<@NotNull String, @NotNull Supplier<ZPPath>>... descriptors) {
+                this.addBlockModelWitchGenTextureData(block, () -> ZPGenTextureData.of(vanillaMinecraftModelRef, descriptors));
             }
 
-            public void addBlockModel(@NotNull RegistryObject<? extends Block> block, @Nullable VanillaMCModelRef vanillaMCModelRef, @NotNull RegistryObject<? extends Block> textureLike) {
-                this.addBlockModel(block, () -> ZPGenTextureData.copy(vanillaMCModelRef, ZPBlockModelProvider.getTextureData(textureLike).get()));
+            public void addBlockModelWithCopiedTexture(@NotNull RegistryObject<? extends Block> block, @Nullable VanillaMinecraftModelParentReference vanillaMinecraftModelRef, @NotNull RegistryObject<? extends Block> textureLike) {
+                this.addBlockModelWitchGenTextureData(block, () -> ZPGenTextureData.copy(vanillaMinecraftModelRef, ZPBlockModelProvider.getTextureData(textureLike).get()));
             }
 
             public <T extends Block> void addModelExecutor(@NotNull Class<T> clazz, @NotNull ZPBlockModelProvider.BlockModelExecutor blockModelExecutor) {
@@ -375,6 +379,15 @@ public abstract class ZPRegistry<T> {
 
             public <T extends Entity> void matchEntityRendering(@NotNull RegistryObject<EntityType<T>> registryObject, @NotNull EntityRendererProvider<T> entityRenderer) {
                 ZPEntityRenderMatchHelper.matchEntityRendering(registryObject, entityRenderer);
+            }
+        }
+
+        public static final class BlockEntities {
+            private BlockEntities() {
+            }
+
+            public <T extends BlockEntity> void matchBlockEntityRendering(@NotNull RegistryObject<BlockEntityType<T>> registryObject, @NotNull BlockEntityRendererProvider<T> entityRenderer) {
+                ZPBlockEntityRenderMatchHelper.matchBlockEntityRendering(registryObject, entityRenderer);
             }
         }
 

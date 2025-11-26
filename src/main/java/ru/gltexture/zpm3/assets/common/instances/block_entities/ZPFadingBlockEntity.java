@@ -43,7 +43,7 @@ public class ZPFadingBlockEntity extends ZPBlockEntity {
                     return;
                 }
                 if (fadingBlock.getTurnInto() != null) {
-                    if (blockEntity.timeLock <= 0L && blockEntity.isServer()) {
+                    if (blockEntity.timeLock <= 0L) {
                         blockEntity.setTime(level, blockEntity.fadingTime, blockEntity.fadingTime / 4);
                         return;
                     }

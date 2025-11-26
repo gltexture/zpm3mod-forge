@@ -4,6 +4,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.player.events.common.ZPPlaceLiquidEvent;
+import ru.gltexture.zpm3.assets.player.events.common.ZPPlayerJoinEvent;
 import ru.gltexture.zpm3.assets.player.events.server.ZPPlayerFillBucketEvent;
 import ru.gltexture.zpm3.assets.player.events.common.ZPPlayerTickEvent;
 import ru.gltexture.zpm3.assets.player.logic.PlayerBothSidesLogic;
@@ -57,5 +58,6 @@ public class ZPPlayerAsset extends ZPAsset {
         assetEntry.addEventClass(ZPPlayerTickEvent.class);
         assetEntry.addEventClass(ZPPlayerFillBucketEvent.class);
         assetEntry.addEventClass(ZPPlaceLiquidEvent.class);
+        assetEntry.addEventClass(ZPPlayerJoinEvent.class);
     }
 }

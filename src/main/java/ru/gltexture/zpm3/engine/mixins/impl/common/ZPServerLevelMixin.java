@@ -21,11 +21,11 @@ public abstract class ZPServerLevelMixin implements IZPLevelExt {
 
     @Inject(method = "tick", at = @At("TAIL"))
     private void tickPost(BooleanSupplier pHasTimeLeft, CallbackInfo ci) {
-        this.getGlobalBLocksDestroyMemory().refreshMemory(this.getLevel());
+        this.getGlobalBlocksDestroyMemory().refreshMemory(this.getLevel());
     }
 
     @Override
-    public GlobalBlocksDestroyMemory getGlobalBLocksDestroyMemory() {
+    public GlobalBlocksDestroyMemory getGlobalBlocksDestroyMemory() {
         return this.globalBlocksDestroyMemory;
     }
 }

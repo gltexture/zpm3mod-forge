@@ -1,7 +1,6 @@
 package ru.gltexture.zpm3.assets.common.init;
 
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.init.helper.ZPRegCommonBlocks;
@@ -48,7 +47,7 @@ public class ZPBlocks extends ZPRegistry<Block> implements IZPCollectRegistryObj
 
     @Override
     protected void runRegister(@NotNull ZPRegSupplier<Block> regSupplier) {
-        this.startCollectingInto("blocks");
+        this.pushInstanceCollecting("blocks");
         ZPRegCommonBlocks.init(regSupplier);
         this.stopCollecting();
         ZPRegFluidBlocks.init(regSupplier);

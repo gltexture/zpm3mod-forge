@@ -185,10 +185,10 @@ public class ZPDefaultPistolRenderer extends ZPAbstractGunRenderer {
 
                 final Vector3f startTranslation = Objects.requireNonNull(isRightHanded ? this.gunTransforms().translationGunRight() : this.gunTransforms().translationGunLeft());
                 startTranslation.add(0.0f, equippedConst, 0.0f);
-                //startTranslation.add(DearUITRSInterface.trsGun.position);
+                startTranslation.add(DearUITRSInterface.trsGun.position);
 
                 final Vector3f startRotation = Objects.requireNonNull(isRightHanded ? this.gunTransforms().rotationGunRight() : this.gunTransforms().rotationGunLeft());
-                //startRotation.add(DearUITRSInterface.trsGun.rotation);
+                startRotation.add(DearUITRSInterface.trsGun.rotation);
 
                 pPoseStack = new PoseStack();
                 pPoseStack.setIdentity();

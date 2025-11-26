@@ -29,7 +29,7 @@ public abstract class ZPRegMedicine {
     }
 
     public static void init(ZPItems zpItems, @NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
-        zpItems.startCollectingInto("medicine");
+        zpItems.pushInstanceCollecting("medicine");
 
         ZPItems.adrenaline = regSupplier.register("adrenaline", () -> new ZPItemMedicine(new Item.Properties().stacksTo(1), ZPRegMedicine.ADRENALINE, new ZPItemMedicine.ZPMedicineProperties()
                 .setMedicineAnim(ZPItemMedicine.MedicineAnim.BLOCK)

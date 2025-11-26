@@ -18,10 +18,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.TierSortingRegistry;
-import net.minecraftforge.eventbus.EventBus;
-import net.minecraftforge.eventbus.ListenerList;
-import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.eventbus.api.EventListenerHelper;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -31,8 +27,10 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.gltexture.zpm3.assets.loot_cases.registry.ZPLootTablesRegistry;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPDefaultShaders;
 import ru.gltexture.zpm3.engine.core.asset.ZPAsset;
 import ru.gltexture.zpm3.engine.core.asset.ZPAssetData;
@@ -155,6 +153,10 @@ public final class ZombiePlague3 {
             assetEntry.getEventClassObjects().forEach(e -> {
                 this.registerSomeEvents(e, e.getBus(), e.getSide());
             });
+
+            if (assetEntry.getZpLootTablesRegistry() != null) {
+                ZPLootTablesRegistry.REG(assetEntry.getZpLootTablesRegistry());
+            }
         }
 
         ZPUtility.sides().onlyClient(() -> {
@@ -380,6 +382,7 @@ public final class ZombiePlague3 {
         void addEventClass(Class<? extends ZPEventClass> clazz);
         void addEventClassObject(ZPEventClass object);
         void addNetworkPacket(ZPNetwork.PacketData<?> packetData);
+        void setLootTablesRegistry(ZPLootTablesRegistry object);
 
         default void registerTier(@NotNull ZPTierData tier) {
             ZombiePlague3.registerTier(tier);
@@ -391,12 +394,14 @@ public final class ZombiePlague3 {
         private final Set<Class<? extends ZPEventClass>> eventClasses;
         private final Set<ZPEventClass> eventClassObjects;
         private final Set<ZPNetwork.PacketData<?>> packetDataSet;
+        private @Nullable ZPLootTablesRegistry zpLootTablesRegistry;
 
         public AssetEntry() {
             this.registrySet = new HashSet<>();
             this.eventClasses = new HashSet<>();
             this.eventClassObjects = new HashSet<>();
             this.packetDataSet = new HashSet<>();
+            this.zpLootTablesRegistry = null;
         }
 
         @Override
@@ -417,6 +422,15 @@ public final class ZombiePlague3 {
         @Override
         public void addNetworkPacket(ZPNetwork.PacketData<?> packetData) {
             this.getPacketDataSet().add(packetData);
+        }
+
+        @Override
+        public void setLootTablesRegistry(ZPLootTablesRegistry object) {
+            this.zpLootTablesRegistry = object;
+        }
+
+        public @Nullable ZPLootTablesRegistry getZpLootTablesRegistry() {
+            return this.zpLootTablesRegistry;
         }
 
         public Set<ZPNetwork.PacketData<?>> getPacketDataSet() {

@@ -24,7 +24,8 @@
     "client.ZPMultiplayerGameModeMixin",
     "client.ZPPlayerRenderMixin",
     "client.ZPRenderMixin",
-    "client.ZPScreenEffectMixin"
+    "client.ZPScreenEffectMixin",
+    "client.ZPGameLightMapMixin"
   ],
   "server": [
     "server.ZPServerPlayerMixin"

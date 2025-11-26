@@ -13,18 +13,13 @@ import ru.gltexture.zpm3.assets.common.init.ZPTorchBlocks;
 import ru.gltexture.zpm3.engine.core.ZPLogger;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.engine.helpers.ZPItemBlockHelper;
+import ru.gltexture.zpm3.engine.instances.ZPBlockItemsRegistry;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.registry.ZPRegistryCollections;
 
 import java.util.*;
 
 public abstract class ZPRegBlockItems {
-    private static final Map<@NotNull RegistryObject<? extends Block>, @NotNull RegistryObject<BlockItem>> registryObjectMap = new HashMap<>();
-
-    public static RegistryObject<BlockItem> getBlockItem(@NotNull RegistryObject<? extends Block> registryObject) {
-        return ZPRegBlockItems.registryObjectMap.get(registryObject);
-    }
-
     public static void init(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
         ZPRegBlockItems.commonBlocks(regSupplier);
         ZPRegBlockItems.regTorchBlocks(regSupplier);
@@ -48,7 +43,7 @@ public abstract class ZPRegBlockItems {
                 ).postConsume(Dist.CLIENT, (e, utils) -> {
                     utils.items().addItemInTab(e, tabToAdd);
                 }).registryObject();
-                ZPRegBlockItems.registryObjectMap.put(registryObject, blockItemRegistryObject);
+                ZPBlockItemsRegistry.putNewEntry(registryObject, blockItemRegistryObject);
             }
         } catch (ZPRuntimeException e) {
             ZPLogger.warn(e.getMessage());
@@ -63,6 +58,6 @@ public abstract class ZPRegBlockItems {
             utils.items().addItemInTab(e, tabToAdd);
         }).registryObject();
 
-        ZPRegBlockItems.registryObjectMap.put(block, blockItemRegistryObject);
+        ZPBlockItemsRegistry.putNewEntry(block, blockItemRegistryObject);
     }
 }

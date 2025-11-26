@@ -42,6 +42,9 @@ public class DearUITRSInterface implements DearUIInterface {
     public static float scissor1P = 0.0f;
     public static float reloadProgression = 0.0f;
 
+    public static boolean debugDarknessValueEnable;
+    public static float debugDarknessValue;
+
     public static class TRS {
         public final String label;
         public final Vector3f position = new Vector3f(0.0f);
@@ -145,7 +148,14 @@ public class DearUITRSInterface implements DearUIInterface {
             }
             ImGui.treePop();
         }
-
+        if (ImGui.collapsingHeader("Debug Darkness")) {
+            if (ImGui.checkbox("Enable", DearUITRSInterface.debugDarknessValueEnable)) {
+                DearUITRSInterface.debugDarknessValueEnable = !DearUITRSInterface.debugDarknessValueEnable;
+            }
+            float[] v = new float[] {DearUITRSInterface.debugDarknessValue};
+            ImGui.sliderFloat("Value", v, -10.0f, 1.0f);
+            DearUITRSInterface.debugDarknessValue = v[0];
+        }
         ImGui.end();
     }
 

@@ -93,7 +93,7 @@ public class ZPRottenFleshEntity extends ZPThrowableEntity {
                 BlockPos pos = blockHit.getBlockPos();
                 if (!this.level().isEmptyBlock(pos)) {
                     if (this.level() instanceof IZPLevelExt ext) {
-                        ext.getGlobalBLocksDestroyMemory().addNewEntryLongMem(this.level(), pos, (0.5f + ZPRandom.getRandom().nextFloat(1.5f)) * ZPConstants.THROWABLES_BLOCK_BREAK_MULTIPLIER);
+                        ext.getGlobalBlocksDestroyMemory().addNewEntryLongMem(this.level(), pos, (0.5f + ZPRandom.getRandom().nextFloat(1.5f)) * ZPConstants.THROWABLES_BLOCK_BREAK_MULTIPLIER);
                     }
                 }
             }

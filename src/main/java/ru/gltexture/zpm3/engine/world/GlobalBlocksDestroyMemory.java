@@ -43,6 +43,13 @@ public class GlobalBlocksDestroyMemory {
         blockMemory.progress += progressInc;
     }
 
+    public void resetTicks(@NotNull Level level, @NotNull Vector3i pos) {
+        if (this.memory.containsKey(pos)) {
+            BlockMemory memory1 = this.memory.get(pos);
+            memory1.timeStamp = level.getGameTime();
+        }
+    }
+
     public float getBlockProgressFromMemOrNegative(@NotNull Vector3i pos) {
         if (this.memory.containsKey(pos)) {
             return this.memory.get(pos).progress;

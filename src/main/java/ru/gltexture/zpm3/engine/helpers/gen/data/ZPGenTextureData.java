@@ -2,7 +2,6 @@ package ru.gltexture.zpm3.engine.helpers.gen.data;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.engine.service.Pair;
 import ru.gltexture.zpm3.engine.service.ZPPath;
 
@@ -21,16 +20,16 @@ public class ZPGenTextureData {
     public static final String TOP_KEY = "top";
 
     private final Map<@Nullable String, @NotNull Supplier<ZPPath>> textures;
-    private final VanillaMCModelRef vanillaModelReference;
+    private final VanillaMinecraftModelParentReference vanillaModelReference;
     private ZPGenTextureData parent;
 
-    protected ZPGenTextureData(@Nullable VanillaMCModelRef vanillaModelReference) {
+    protected ZPGenTextureData(@Nullable VanillaMinecraftModelParentReference vanillaModelReference) {
         this.textures = new HashMap<>();
         this.vanillaModelReference = vanillaModelReference;
         this.parent = null;
     }
 
-    protected ZPGenTextureData(@Nullable VanillaMCModelRef vanillaModelReference, @Nullable Map<@Nullable String, @NotNull Supplier<ZPPath>> supplierMap) {
+    protected ZPGenTextureData(@Nullable VanillaMinecraftModelParentReference vanillaModelReference, @Nullable Map<@Nullable String, @NotNull Supplier<ZPPath>> supplierMap) {
         this.textures = supplierMap;
         this.vanillaModelReference = vanillaModelReference;
         this.parent = null;
@@ -42,7 +41,7 @@ public class ZPGenTextureData {
     }
 
     @SafeVarargs
-    public static ZPGenTextureData of(@Nullable VanillaMCModelRef vanillaModelReference, Pair<@NotNull String, @NotNull Supplier<ZPPath>>... descriptors) {
+    public static ZPGenTextureData of(@Nullable VanillaMinecraftModelParentReference vanillaModelReference, Pair<@NotNull String, @NotNull Supplier<ZPPath>>... descriptors) {
         ZPGenTextureData zpGenTextureData = new ZPGenTextureData(vanillaModelReference);
         for (Pair<String, Supplier<ZPPath>> descriptor : descriptors) {
             zpGenTextureData.textures.put(descriptor.first(), descriptor.second());
@@ -50,11 +49,11 @@ public class ZPGenTextureData {
         return zpGenTextureData;
     }
 
-    public static ZPGenTextureData of(@Nullable VanillaMCModelRef vanillaModelReference, @NotNull Supplier<ZPPath> path) {
+    public static ZPGenTextureData of(@Nullable VanillaMinecraftModelParentReference vanillaModelReference, @NotNull Supplier<ZPPath> path) {
         return ZPGenTextureData.of(vanillaModelReference, Pair.of(ZPGenTextureData.ALL_KEY, path));
     }
 
-    public static ZPGenTextureData of(@Nullable VanillaMCModelRef vanillaModelReference, @NotNull String key, @NotNull Supplier<ZPPath> path) {
+    public static ZPGenTextureData of(@Nullable VanillaMinecraftModelParentReference vanillaModelReference, @NotNull String key, @NotNull Supplier<ZPPath> path) {
         return ZPGenTextureData.of(vanillaModelReference, Pair.of(key, path));
     }
 
@@ -62,7 +61,7 @@ public class ZPGenTextureData {
         return new ZPGenTextureData(zpGenTextureData);
     }
 
-    public static ZPGenTextureData copy(@Nullable VanillaMCModelRef vanillaModelReference, @NotNull ZPGenTextureData zpGenTextureData) {
+    public static ZPGenTextureData copy(@Nullable VanillaMinecraftModelParentReference vanillaModelReference, @NotNull ZPGenTextureData zpGenTextureData) {
         return new ZPGenTextureData(vanillaModelReference, zpGenTextureData.getTextures());
     }
 
@@ -84,7 +83,7 @@ public class ZPGenTextureData {
         return new HashMap<>(this.textures);
     }
 
-    public @Nullable VanillaMCModelRef getVanillaModelReference() {
+    public @Nullable VanillaMinecraftModelParentReference getVanillaModelReference() {
         return this.vanillaModelReference;
     }
 

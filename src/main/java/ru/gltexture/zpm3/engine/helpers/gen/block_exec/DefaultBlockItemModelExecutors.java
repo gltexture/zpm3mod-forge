@@ -5,10 +5,17 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
+import ru.gltexture.zpm3.engine.helpers.gen.data.VanillaMinecraftModelParentReference;
 import ru.gltexture.zpm3.engine.helpers.gen.data.ZPGenTextureData;
 import ru.gltexture.zpm3.engine.helpers.gen.providers.ZPBlockModelProvider;
 
 public abstract class DefaultBlockItemModelExecutors {
+    public static @NotNull ZPBlockModelProvider.BlockModelExecutor.EItem<? extends Block> getDefaultItemAsVanillaParent(@NotNull VanillaMinecraftModelParentReference reference) {
+        return (blockStateProvider, block, name, textureData) -> {
+            blockStateProvider.itemModels().withExistingParent(name, blockStateProvider.mcLoc(reference.reference()));
+        };
+    }
+
     public static @NotNull ZPBlockModelProvider.BlockModelExecutor.EItem<? extends Block> getDefaultItemAsBlock() {
         return (blockStateProvider, block, name, textureData) -> {
             blockStateProvider.itemModels().withExistingParent(name, blockStateProvider.modLoc("block/" + name));

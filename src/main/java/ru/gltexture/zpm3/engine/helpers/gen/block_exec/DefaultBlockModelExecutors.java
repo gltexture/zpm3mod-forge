@@ -26,7 +26,6 @@ public abstract class DefaultBlockModelExecutors {
     public static final @NotNull ZPBlockModelProvider.BlockModelExecutor DEFAULT_FLAT_ITEM_BLOCK_EXEC_PAIR = () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(DefaultBlockModelExecutors.getDefault(), DefaultBlockItemModelExecutors.getDefaultItemAsItem());
 
     public static final @NotNull ZPBlockModelProvider.BlockModelExecutor SLAB_BLOCK_EXEC_PAIR = () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(DefaultBlockModelExecutors.getSlab(), DefaultBlockItemModelExecutors.getDefaultItemAsBlock());
-
     public static final @NotNull ZPBlockModelProvider.BlockModelExecutor STAIR_BLOCK_EXEC_PAIR = () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(DefaultBlockModelExecutors.getStairs(), DefaultBlockItemModelExecutors.getDefaultItemAsBlock());
     public static final @NotNull ZPBlockModelProvider.BlockModelExecutor TORCH_BLOCK_EXEC_PAIR = () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(DefaultBlockModelExecutors.getDefaultTorch(), DefaultBlockItemModelExecutors.getDefaultItemAsItem());
     public static final @NotNull ZPBlockModelProvider.BlockModelExecutor TORCH_WALL_BLOCK_EXEC_PAIR = () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(DefaultBlockModelExecutors.getDefaultWallTorch(), DefaultBlockItemModelExecutors.getDefaultItemAsItem());

@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Camera;
+import net.minecraft.client.GraphicsStatus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
@@ -227,20 +228,39 @@ public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderH
         return this.muzzleflashScissor1Person;
     }
 
+    public static int minecraftGraphicSetting() {
+        GraphicsStatus graphics = Minecraft.getInstance().options.graphicsMode().get();
+        switch (graphics) {
+            case FABULOUS -> {
+                return 3;
+            }
+            case FANCY -> {
+                return 2;
+            }
+            default -> {
+                return 1;
+            }
+        }
+    }
+
+    public static int minQuality() {
+        return Math.min(ZPDefaultGunMuzzleflashFX.quality(), ZPDefaultGunMuzzleflashFX.minecraftGraphicSetting());
+    }
+
     public static boolean renderMuzzleflash1Person() {
-        return ZPDefaultGunMuzzleflashFX.quality() >= 2;
+        return ZPDefaultGunMuzzleflashFX.minQuality() >= 2;
     }
 
     public static boolean renderMuzzleflash3Person() {
-        return ZPDefaultGunMuzzleflashFX.quality() >= 2;
+        return ZPDefaultGunMuzzleflashFX.minQuality() >= 2;
     }
 
     public static boolean useFancyRendering1person() {
-        return ZPDefaultGunMuzzleflashFX.quality() == 3 && ZPDefaultGunMuzzleflashFX.muzzleflashFBO != null && !ZPDefaultGunMuzzleflashFX.muzzleflashFBO.getTexturePrograms().isEmpty();
+        return ZPDefaultGunMuzzleflashFX.minQuality() == 3 && ZPDefaultGunMuzzleflashFX.muzzleflashFBO != null && !ZPDefaultGunMuzzleflashFX.muzzleflashFBO.getTexturePrograms().isEmpty();
     }
 
     public static boolean useFancyRendering3person() {
-        return ZPDefaultGunMuzzleflashFX.quality() == 3;
+        return ZPDefaultGunMuzzleflashFX.minQuality() == 3;
     }
 
     public static int quality() {

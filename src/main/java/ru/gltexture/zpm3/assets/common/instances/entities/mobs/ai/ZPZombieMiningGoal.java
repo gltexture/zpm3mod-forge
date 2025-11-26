@@ -13,7 +13,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DeadBushBlock;
-import net.minecraft.world.level.block.GrassBlock;
 import net.minecraft.world.level.block.TallGrassBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -173,7 +172,7 @@ public class ZPZombieMiningGoal extends Goal {
 
             if (ZPConstants.USE_ZOMBIE_MINING_SHARED_MEM) {
                 if (this.mob.level() instanceof IZPLevelExt ext) {
-                    ext.getGlobalBLocksDestroyMemory().addNewEntryShortMem(this.mob.level(), blockToMine, this.getMiningSpeedWithBonus(state, blockToMine, this.mob));
+                    ext.getGlobalBlocksDestroyMemory().addNewEntryShortMem(this.mob.level(), blockToMine, this.getMiningSpeedWithBonus(state, blockToMine, this.mob));
                 }
             } else {
                 this.miningTicks += this.getMiningSpeedWithBonus(state, blockToMine, this.mob);
@@ -209,7 +208,7 @@ public class ZPZombieMiningGoal extends Goal {
     @Override
     public void stop() {
         this.mineDir = null;
-        this.ticksBeforeCanMine = 60;
+        this.ticksBeforeCanMine = 40 + ZPRandom.getRandom().nextInt(41);
         this.miningTicks = 0;
         this.targetMob = null;
     }
@@ -244,7 +243,9 @@ public class ZPZombieMiningGoal extends Goal {
                 vector3fs.add(new Vector3f(rayCenter).add(angle4.normalize().mul(dirLength)));
 
                 if ((abstractZombie.getNavigation().getPath() != null && abstractZombie.getNavigation().getPath().isDone()) || dy < 0.0f) {
-                    vector3fs.add(new Vector3f(rayCenter).add(angle5.normalize().mul(dirLength)));
+                    if (abstractZombie.onGround() && !abstractZombie.isSwimming() && !abstractZombie.onClimbable()) {
+                        vector3fs.add(new Vector3f(rayCenter).add(angle5.normalize().mul(dirLength)));
+                    }
                 }
                 if (Math.abs(vector6N.dot(lookAt)) < 0.7f) {
                     vector3fs.add(new Vector3f(rayCenter).add(vector6N.mul(dirLength)));

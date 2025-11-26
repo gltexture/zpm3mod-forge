@@ -150,14 +150,6 @@ public abstract class ZPGunLayersProcessing {
         final Matrix4f halfMatrix = (new Matrix4f().identity().translate(new Vector3f(0, h, 0f)).scaleXY(w * ZPDefaultGunMuzzleflashFX.MFLASH_FBO_SCALE, -h * ZPDefaultGunMuzzleflashFX.MFLASH_FBO_SCALE));
 
         if (ZPDefaultGunMuzzleflashFX.useFancyRendering1person()) {
-            if (true) {
-                ClientRenderFunctions.renderTextureIDScreenOverlayFromFBO(Objects.requireNonNull(ZPDefaultShaders.image.getShaderInstance()), (shaderToRender) -> {
-                    Uniform mod = shaderToRender.getUniform("sModelViewMat");
-                    Uniform proj = shaderToRender.getUniform("sProjMat");
-                    Objects.requireNonNull(proj).set(orthographic2D);
-                    Objects.requireNonNull(mod).set(halfMatrix);
-                }, List.of(Pair.of("texture_map", ZPDefaultGunMuzzleflashFX.muzzleflashFBO.getTextureByIndex(2))));
-            }
             ZPGunLayersProcessing.postRenderMflash1Person(orthographic2D, fullMatrix, halfMatrix, defaultMuzzleflashFXUniversal);
         }
     }

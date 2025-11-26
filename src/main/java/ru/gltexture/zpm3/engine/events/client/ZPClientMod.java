@@ -7,8 +7,8 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.flag.FeatureFlags;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
@@ -16,9 +16,7 @@ import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
-import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPResourcesReloader;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPShaderReloader;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
@@ -42,10 +40,19 @@ public final class ZPClientMod {
 
     @SubscribeEvent
     public void onRegisterEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        for (ZPEntityRenderMatchHelper.EntityRenderPair<?> pair : ZPEntityRenderMatchHelper.getEntityRendererPairs()) {
-            ZPClientMod.registerEntityRender(event, pair);
+        {
+            for (ZPEntityRenderMatchHelper.EntityRenderPair<?> pair : ZPEntityRenderMatchHelper.getEntityRendererPairs()) {
+                ZPClientMod.registerEntityRender(event, pair);
+            }
+            ZPEntityRenderMatchHelper.clear();
         }
-        ZPEntityRenderMatchHelper.clear();
+
+        {
+            for (ZPBlockEntityRenderMatchHelper.BlockEntityRenderPair<?> pair : ZPBlockEntityRenderMatchHelper.getBlockEntityRendererPairs()) {
+                ZPClientMod.registerEntityRenderBlock(event, pair);
+            }
+            ZPBlockEntityRenderMatchHelper.clear();
+        }
     }
 
     @SubscribeEvent
@@ -54,6 +61,10 @@ public final class ZPClientMod {
             ZPClientMod.registerParticleRenderSet(event, pair);
         }
         ZPParticleRenderHelper.clear();
+    }
+
+    public static <R extends BlockEntity> void registerEntityRenderBlock(EntityRenderersEvent.RegisterRenderers event, ZPBlockEntityRenderMatchHelper.BlockEntityRenderPair<R> pair) {
+        event.registerBlockEntityRenderer(pair.registryObject().get(), pair.provider());
     }
 
     public static <R extends Entity> void registerEntityRender(EntityRenderersEvent.RegisterRenderers event, ZPEntityRenderMatchHelper.EntityRenderPair<R> pair) {

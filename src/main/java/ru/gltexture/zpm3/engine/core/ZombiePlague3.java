@@ -283,6 +283,7 @@ public final class ZombiePlague3 {
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
+        ZPRegistry.execLaterConsumers();
         for (ZPAsset zpAsset : this.assets) {
             zpAsset.commonSetup();
         }
@@ -378,7 +379,7 @@ public final class ZombiePlague3 {
     }
 
     public interface IAssetEntry {
-        void addRegistryClass(Class<? extends ZPRegistry<?>> zpRegistryProcessorClass);
+        void addZP3RegistryClass(Class<? extends ZPRegistry<?>> zpRegistryProcessorClass);
         void addEventClass(Class<? extends ZPEventClass> clazz);
         void addEventClassObject(ZPEventClass object);
         void addNetworkPacket(ZPNetwork.PacketData<?> packetData);
@@ -405,7 +406,7 @@ public final class ZombiePlague3 {
         }
 
         @Override
-        public final void addRegistryClass(@NotNull Class<? extends ZPRegistry<?>> zpRegistryClass) {
+        public final void addZP3RegistryClass(@NotNull Class<? extends ZPRegistry<?>> zpRegistryClass) {
             this.getRegistrySet().add(zpRegistryClass);
         }
 

@@ -31,12 +31,10 @@ public class ZPNetPackAsset extends ZPAsset {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void clientDestroy() {
-
     }
 
     @Override
     public void initMixins(ZombiePlague3.@NotNull IMixinEntry mixinEntry) {
-
     }
 
     @Override
@@ -48,5 +46,6 @@ public class ZPNetPackAsset extends ZPAsset {
         assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(ZPNetCheckPacket.class, ZPNetCheckPacket.encoder(), ZPNetCheckPacket.decoder()));
         assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(ZPBlockCrack.class, ZPBlockCrack.encoder(), ZPBlockCrack.decoder()));
         assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(ZPSendGlobalSettingsToClients.class, ZPSendGlobalSettingsToClients.encoder(), ZPSendGlobalSettingsToClients.decoder()));
+        assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(ZPBloodPainFXPacket.class, ZPBloodPainFXPacket.encoder(), ZPBloodPainFXPacket.decoder()));
     }
 }

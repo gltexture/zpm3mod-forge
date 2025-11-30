@@ -8,8 +8,6 @@ import ru.gltexture.zpm3.assets.loot_cases.init.ZPBlockLootCaseEntities;
 import ru.gltexture.zpm3.assets.loot_cases.init.ZPLootCaseBlockItems;
 import ru.gltexture.zpm3.assets.loot_cases.init.ZPLootCases;
 import ru.gltexture.zpm3.assets.loot_cases.loot_tables.ZPLootTable;
-import ru.gltexture.zpm3.assets.loot_cases.registry.ZPLootTablesCollection;
-import ru.gltexture.zpm3.assets.loot_cases.registry.ZPLootTablesReader;
 import ru.gltexture.zpm3.assets.loot_cases.registry.ZPLootTablesRegistry;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.asset.ZPAsset;
@@ -52,9 +50,9 @@ public class ZPLootCasesAsset extends ZPAsset {
 
         assetEntry.setLootTablesRegistry(new ZPDefaultLootTables());
 
-        assetEntry.addRegistryClass(ZPLootCases.class);
-        assetEntry.addRegistryClass(ZPBlockLootCaseEntities.class);
-        assetEntry.addRegistryClass(ZPLootCaseBlockItems.class);
+        assetEntry.addZP3RegistryClass(ZPLootCases.class);
+        assetEntry.addZP3RegistryClass(ZPBlockLootCaseEntities.class);
+        assetEntry.addZP3RegistryClass(ZPLootCaseBlockItems.class);
     }
 
     public static class ZPDefaultLootTables extends ZPLootTablesRegistry {

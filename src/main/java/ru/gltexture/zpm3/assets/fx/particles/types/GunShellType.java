@@ -9,7 +9,6 @@ import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
-import ru.gltexture.zpm3.assets.fx.particles.options.ColoredSmokeOptions;
 import ru.gltexture.zpm3.assets.fx.particles.options.GunShellOptions;
 
 public class GunShellType extends ParticleType<GunShellOptions> {

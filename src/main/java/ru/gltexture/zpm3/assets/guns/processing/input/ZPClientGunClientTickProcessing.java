@@ -106,6 +106,7 @@ public class ZPClientGunClientTickProcessing implements IZPGunInputProcessor {
         if (level != null && player != null) {
             boolean rightPressed = minecraft.mouseHandler.isRightPressed();
             boolean leftPressed = minecraft.mouseHandler.isLeftPressed();
+
             if (minecraft.screen == null && minecraft.getOverlay() == null) {
                 @Nullable final ItemStack itemStackInRightHand = player.getMainHandItem();
                 @Nullable final ItemStack itemStackInLeftHand = player.getOffhandItem();

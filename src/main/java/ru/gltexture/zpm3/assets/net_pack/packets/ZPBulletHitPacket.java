@@ -13,8 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import ru.gltexture.zpm3.assets.fx.init.ZPParticles;
-import ru.gltexture.zpm3.assets.fx.particles.options.ColoredSmokeOptions;
-import ru.gltexture.zpm3.assets.guns.rendering.tracer.ZPBulletTracerManager;
+import ru.gltexture.zpm3.assets.fx.particles.options.ColoredDefaultParticleOptions;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.network.ZPNetwork;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
@@ -105,7 +104,7 @@ public class ZPBulletHitPacket implements ZPNetwork.ZPPacket {
                     final Vector3f posToSpawn = new Vector3f(this.hitX, this.hitY, this.hitZ);
                     posToSpawn.add(new Vector3f(motion).mul(0.25f));
                     motion.mul(0.025f).add(ZPRandom.instance.randomVector3f(0.05f, new Vector3f(0.1f)));
-                    Objects.requireNonNull(Minecraft.getInstance().level).addParticle(new ColoredSmokeOptions(ZPParticles.colored_cloud.get(), color, 0.65f, lifetime), true,
+                    Objects.requireNonNull(Minecraft.getInstance().level).addParticle(new ColoredDefaultParticleOptions(ZPParticles.colored_cloud.get(), color, 0.65f, lifetime), true,
                             posToSpawn.x, posToSpawn.y, posToSpawn.z,
                             motion.x, motion.y, motion.z);
                 }

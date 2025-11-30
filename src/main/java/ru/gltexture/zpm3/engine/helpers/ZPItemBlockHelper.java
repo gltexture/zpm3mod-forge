@@ -5,6 +5,8 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
@@ -34,6 +36,7 @@ public abstract class ZPItemBlockHelper {
         }
         return regSupplier.register(block.getId().getPath(), () -> new BlockItem(block.get(), new Item.Properties()) {
             @Override
+            @OnlyIn(Dist.CLIENT)
             public void initializeClient(@NotNull Consumer<IClientItemExtensions> consumer) {
                 customConsumer.accept(consumer);
             }

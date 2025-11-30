@@ -47,6 +47,9 @@ import ru.gltexture.zpm3.engine.service.Pair;
 import ru.gltexture.zpm3.engine.service.ZPPath;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.*;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -174,17 +177,27 @@ public abstract class ZPRegistry<T> {
         return this.getID();
     }
 
-    public record ZPRegistryObject<S>(RegistryObject<S> registryObject) {
-        public ZPRegistryObject<S> postConsume(@Nullable Dist side, @NotNull Consumer<@NotNull RegistryObject<S>> registryObjectConsumer) {
-            final ZPRegUtils zpRegUtils = ZPRegUtils.create();
+    public static void execLaterConsumers() {
+        for (Map.Entry<Dist, List<Consumer<Void>>> entrySet : ZPRegistry.ZPRegUtils.execLater.entrySet()) {
+            switch (entrySet.getKey()) {
+                case CLIENT -> ZPUtility.sides().onlyClient(() -> entrySet.getValue().forEach(e -> e.accept(null)));
+                case DEDICATED_SERVER -> ZPUtility.sides().onlyDedicatedServer(() -> entrySet.getValue().forEach(e -> e.accept(null)));
+            }
+        }
+        ZPRegistry.ZPRegUtils.execLater.clear();
+    }
+
+    public record ZPRegistryObject<S>(RegistryObject<S> end) {
+        public ZPRegistryObject<S> afterObjectCreated(@Nullable Dist side, @NotNull Consumer<@NotNull RegistryObject<S>> registryObjectConsumer) {
+            final ZPRegUtils zpRegUtils = ZPRegUtils.create(side);
 
             if (side == null) {
-                registryObjectConsumer.accept(this.registryObject(), zpRegUtils);
+                registryObjectConsumer.accept(this.end(), zpRegUtils);
                 return this;
             }
             switch (side) {
-                case CLIENT -> ZPUtility.sides().onlyClient(() -> registryObjectConsumer.accept(this.registryObject(), zpRegUtils));
-                case DEDICATED_SERVER -> ZPUtility.sides().onlyDedicatedServer(() -> registryObjectConsumer.accept(this.registryObject(), zpRegUtils));
+                case CLIENT -> ZPUtility.sides().onlyClient(() -> registryObjectConsumer.accept(this.end(), zpRegUtils));
+                case DEDICATED_SERVER -> ZPUtility.sides().onlyDedicatedServer(() -> registryObjectConsumer.accept(this.end(), zpRegUtils));
             }
             return this;
         }
@@ -195,7 +208,11 @@ public abstract class ZPRegistry<T> {
     }
 
     public static final class ZPRegUtils {
-        private ZPRegUtils() {
+        private final Dist dist;
+        static Map<Dist, List<Consumer<Void>>> execLater = new HashMap<>();
+
+        private ZPRegUtils(Dist dist) {
+            this.dist = dist;
             this.items = new Items();
             this.blocks = new Blocks();
             this.particles = new Particles();
@@ -206,8 +223,15 @@ public abstract class ZPRegistry<T> {
             this.fluids = new Fluids();
         }
 
-        public static ZPRegUtils create() {
-            return new ZPRegUtils();
+        public void execLater(@NotNull Consumer<Void> consumer) {
+            if (!ZPRegUtils.execLater.containsKey(this.dist)) {
+               ZPRegUtils.execLater.put(this.dist, new ArrayList<>());
+            }
+            ZPRegUtils.execLater.get(this.dist).add(consumer);
+        }
+
+        public static ZPRegUtils create(Dist dist) {
+            return new ZPRegUtils(dist);
         }
 
         private final Items items;
@@ -400,7 +424,7 @@ public abstract class ZPRegistry<T> {
             }
 
             public void addSelfDropLootTable(@NotNull RegistryObject<? extends Block> e) {
-                addBlockLootTable(e, () -> new LootPool.Builder().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(e.get())));
+                this.addBlockLootTable(e, () -> new LootPool.Builder().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(e.get())));
             }
         }
 

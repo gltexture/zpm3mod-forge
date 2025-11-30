@@ -40,7 +40,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
+import ru.gltexture.zpm3.assets.common.init.ZPDamageTypes;
 import ru.gltexture.zpm3.assets.common.init.ZPEntityAttributes;
+import ru.gltexture.zpm3.assets.mob_effects.init.ZPMobEffects;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.instances.items.ZPItemFood;
 
@@ -166,6 +168,9 @@ public abstract class ZPAbstractZombie extends Monster {
     }
 
     public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
+        if (this.level() instanceof ServerLevel serverLevel && pSource.type().equals(ZPDamageTypes.getDamageType(serverLevel, ZPDamageTypes.zp_bullet).get())) {
+            pAmount *= ZPConstants.ZOMBIE_BULLET_DAMAGE_MULTIPLIER;
+        }
         if (!super.hurt(pSource, pAmount)) {
             return false;
         } else {
@@ -387,7 +392,11 @@ public abstract class ZPAbstractZombie extends Monster {
             return;
         }
 
-        double roll = ZPRandom.getRandom().nextDouble();
+        if (ZPRandom.getRandom().nextFloat() <= 0.03f * ZPConstants.ZOMBIE_PLAGUE_EFFECT_CHANCE_MULTIPLIER) {
+            entity.addEffect(new MobEffectInstance(ZPMobEffects.zombie_plague.get(), 12000, 0, false, false));
+        }
+
+        float roll = ZPRandom.getRandom().nextFloat();
         MobEffectInstance effect;
 
         if (roll < 0.30) {

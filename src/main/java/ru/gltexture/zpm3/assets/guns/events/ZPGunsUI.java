@@ -94,7 +94,7 @@ public class ZPGunsUI implements ZPEventClass {
 
     private static void tip(@NotNull GuiGraphics graphics, @NotNull ResourceLocation location, @NotNull Vector2i pos, @NotNull Vector2i offset, @NotNull Vector2i size) {
         GL46.glEnable(GL46.GL_BLEND);
-        GL46.glBlendFuncSeparate(GL46.GL_ONE_MINUS_DST_COLOR, GL46.GL_ONE_MINUS_SRC_COLOR, GL46.GL_ONE, GL46.GL_ZERO);
+        //GL46.glBlendFuncSeparate(GL46.GL_ONE_MINUS_DST_COLOR, GL46.GL_ONE_MINUS_SRC_COLOR, GL46.GL_ONE, GL46.GL_ZERO);
         graphics.blit(location, pos.x, pos.y, 0, 0, offset.x, offset.y, size.x, size.y);
         GL46.glDisable(GL46.GL_BLEND);
     }

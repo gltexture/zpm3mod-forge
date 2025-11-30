@@ -11,7 +11,6 @@ import ru.gltexture.zpm3.assets.common.init.ZPBlocks;
 import ru.gltexture.zpm3.assets.common.init.ZPFluids;
 import ru.gltexture.zpm3.assets.common.instances.blocks.ZPAcidLiquidBlock;
 import ru.gltexture.zpm3.assets.common.instances.blocks.ZPToxicLiquidBlock;
-import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 
 public abstract class ZPRegFluidBlocks {
@@ -19,13 +18,13 @@ public abstract class ZPRegFluidBlocks {
     public static void init(@NotNull ZPRegistry.ZPRegSupplier<Block> regSupplier) {
         ZPBlocks.acid_block = regSupplier.register("acid_block", () -> new ZPAcidLiquidBlock(() -> ZPFluids.acid_fluid.get(), BlockBehaviour.Properties.of()
                 .mapColor(MapColor.WATER).replaceable().noCollission().strength(100.0F).pushReaction(PushReaction.DESTROY).noLootTable().liquid().sound(SoundType.EMPTY))
-        ).postConsume(Dist.CLIENT, (e, utils) -> {
-        }).registryObject();
+        ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
+        }).end();
 
         ZPBlocks.toxic_block = regSupplier.register("toxic_block", () -> new ZPToxicLiquidBlock(() -> ZPFluids.toxic_fluid.get(), BlockBehaviour.Properties.of()
                 .mapColor(MapColor.WATER).replaceable().noCollission().strength(100.0F).pushReaction(PushReaction.DESTROY).noLootTable().liquid().sound(SoundType.EMPTY))
-        ).postConsume(Dist.CLIENT, (e, utils) -> {
-        }).registryObject();
+        ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
+        }).end();
     }
 
     /*

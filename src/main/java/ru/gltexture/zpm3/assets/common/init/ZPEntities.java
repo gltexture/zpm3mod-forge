@@ -18,7 +18,6 @@ import ru.gltexture.zpm3.assets.common.rendering.entities.zombies.ZPDogZombieRen
 import ru.gltexture.zpm3.assets.common.rendering.entities.zombies.ZPMinerZombieRender;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.helpers.ZPEntityRenderMatchHelper;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.assets.common.rendering.entities.misc.ZPThrowableEntityRender;
 
@@ -39,52 +38,52 @@ public class ZPEntities extends ZPRegistry<EntityType<?>> {
 
     @Override
     protected void runRegister(@NotNull ZPRegSupplier<EntityType<? extends Entity>> regSupplier) {
-        ZPEntities.acid_bottle_entity = regSupplier.register("acid_bottle_entity", () -> EntityType.Builder.<ZPAcidBottleEntity>of(ZPAcidBottleEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "acid_bottle_entity").toString())).postConsume(Dist.CLIENT, (e, utils) -> {
+        ZPEntities.acid_bottle_entity = regSupplier.register("acid_bottle_entity", () -> EntityType.Builder.<ZPAcidBottleEntity>of(ZPAcidBottleEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "acid_bottle_entity").toString())).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
             utils.entities().matchEntityRendering(e, ZPThrowableEntityRender::new);
-        }).registryObject();
+        }).end();
 
-        ZPEntities.plate_entity = regSupplier.register("plate_entity", () -> EntityType.Builder.<ZPPlateEntity>of(ZPPlateEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "plate_entity").toString())).postConsume(Dist.CLIENT, (e, utils) -> {
+        ZPEntities.plate_entity = regSupplier.register("plate_entity", () -> EntityType.Builder.<ZPPlateEntity>of(ZPPlateEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "plate_entity").toString())).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
             utils.entities().matchEntityRendering(e, ZPThrowableEntityRender::new);
-        }).registryObject();
+        }).end();
 
-        ZPEntities.rock_entity = regSupplier.register("rock_entity", () -> EntityType.Builder.<ZPRockEntity>of(ZPRockEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "rock_entity").toString())).postConsume(Dist.CLIENT, (e, utils) -> {
+        ZPEntities.rock_entity = regSupplier.register("rock_entity", () -> EntityType.Builder.<ZPRockEntity>of(ZPRockEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "rock_entity").toString())).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
             utils.entities().matchEntityRendering(e, ZPThrowableEntityRender::new);
-        }).registryObject();
+        }).end();
 
-        ZPEntities.brock_entity = regSupplier.register("brock_entity", () -> EntityType.Builder.<ZPBrickEntity>of(ZPBrickEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "brock_entity").toString())).postConsume(Dist.CLIENT, (e, utils) -> {
+        ZPEntities.brock_entity = regSupplier.register("brock_entity", () -> EntityType.Builder.<ZPBrickEntity>of(ZPBrickEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "brock_entity").toString())).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
             utils.entities().matchEntityRendering(e, ZPThrowableEntityRender::new);
-        }).registryObject();
+        }).end();
 
-        ZPEntities.rotten_flesh_entity = regSupplier.register("rotten_flesh_entity", () -> EntityType.Builder.<ZPRottenFleshEntity>of(ZPRottenFleshEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "rotten_flesh_entity").toString())).postConsume(Dist.CLIENT, (e, utils) -> {
+        ZPEntities.rotten_flesh_entity = regSupplier.register("rotten_flesh_entity", () -> EntityType.Builder.<ZPRottenFleshEntity>of(ZPRottenFleshEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "rotten_flesh_entity").toString())).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
             utils.entities().matchEntityRendering(e, ZPThrowableEntityRender::new);
-        }).registryObject();
+        }).end();
 
         ZPEntities.zp_common_zombie_entity = regSupplier.register("zp_common_zombie_entity", () -> EntityType.Builder.<ZPCommonZombie>of(ZPCommonZombie::new, MobCategory.MONSTER)
                         .sized(0.6f, 1.95f)
                         .clientTrackingRange(8)
                         .build(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "zp_common_zombie_entity").toString()))
-                .postConsume(Dist.CLIENT, (e, utils) -> {
+                .afterObjectCreated(Dist.CLIENT, (e, utils) -> {
                     utils.entities().matchEntityRendering(e, (c) -> new ZPCommonZombieRender(c, "textures/entity/zombie_common/citizen%d.png", ZPConstants.TOTAL_COMMON_ZOMBIE_TEXTURES));
                     ZPMobAttributes.addNewAttributeCreationUnsafe(e, ZPCommonZombie::createAttributes);
-                }).registryObject();
+                }).end();
 
         ZPEntities.zp_miner_zombie_entity = regSupplier.register("zp_miner_zombie_entity", () -> EntityType.Builder.<ZPMinerZombie>of(ZPMinerZombie::new, MobCategory.MONSTER)
                         .sized(0.6f, 1.95f)
                         .clientTrackingRange(8)
                         .build(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "zp_miner_zombie_entity").toString()))
-                .postConsume(Dist.CLIENT, (e, utils) -> {
+                .afterObjectCreated(Dist.CLIENT, (e, utils) -> {
                     utils.entities().matchEntityRendering(e, (c) -> new ZPMinerZombieRender(c, "textures/entity/zombie_miner/miner%d.png", ZPConstants.TOTAL_MINER_ZOMBIE_TEXTURES));
                     ZPMobAttributes.addNewAttributeCreationUnsafe(e, ZPMinerZombie::createAttributes);
-                }).registryObject();
+                }).end();
 
         ZPEntities.zp_dog_zombie_entity = regSupplier.register("zp_dog_zombie_entity", () -> EntityType.Builder.<ZPDogZombie>of(ZPDogZombie::new, MobCategory.MONSTER)
                         .sized(0.6f, 0.85f)
                         .clientTrackingRange(8)
                         .build(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "zp_dog_zombie_entity").toString()))
-                .postConsume(Dist.CLIENT, (e, utils) -> {
+                .afterObjectCreated(Dist.CLIENT, (e, utils) -> {
                     utils.entities().matchEntityRendering(e, ZPDogZombieRenderer::new);
                     ZPMobAttributes.addNewAttributeCreationUnsafe(e, ZPDogZombie::createAttributes);
-                }).registryObject();
+                }).end();
     }
 
     @Override

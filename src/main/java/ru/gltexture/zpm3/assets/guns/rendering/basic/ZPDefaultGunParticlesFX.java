@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.*;
 import ru.gltexture.zpm3.assets.debug.imgui.DearUITRSInterface;
 import ru.gltexture.zpm3.assets.fx.init.ZPParticles;
-import ru.gltexture.zpm3.assets.fx.particles.options.ColoredSmokeOptions;
+import ru.gltexture.zpm3.assets.fx.particles.options.ColoredDefaultParticleOptions;
 import ru.gltexture.zpm3.assets.fx.particles.options.GunShellOptions;
 import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
 import ru.gltexture.zpm3.assets.guns.rendering.fx.IZPGunParticlesFX;
@@ -123,7 +123,7 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
         final Vector3f color = new Vector3f(smoky ? 0.9f : 0.7f).add(ZPRandom.instance.randomVector3f(0.05f, new Vector3f(0.1f, 0.1f, 0.1f)));
         final int lifetime = (smoky ? 40 : 10) + ZPRandom.getRandom().nextInt(10);
 
-        Objects.requireNonNull(mc.level).addParticle(new ColoredSmokeOptions(ZPParticles.colored_cloud.get(), color, smoky ? 0.9f : 0.8f, lifetime), false, spawnPos.x, spawnPos.y, spawnPos.z, motion.x(), motion.y(), motion.z());
+        Objects.requireNonNull(mc.level).addParticle(new ColoredDefaultParticleOptions(ZPParticles.colored_cloud.get(), color, smoky ? 0.9f : 0.8f, lifetime), false, spawnPos.x, spawnPos.y, spawnPos.z, motion.x(), motion.y(), motion.z());
     }
 
     public static void emmitParticleShell(boolean isRightHand, Player player, ZPBaseGun baseGun) {

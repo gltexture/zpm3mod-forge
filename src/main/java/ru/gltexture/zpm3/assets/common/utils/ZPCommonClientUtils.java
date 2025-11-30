@@ -12,7 +12,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import ru.gltexture.zpm3.assets.fx.init.ZPParticles;
-import ru.gltexture.zpm3.assets.fx.particles.options.ColoredSmokeOptions;
+import ru.gltexture.zpm3.assets.fx.particles.options.ColoredDefaultParticleOptions;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 
 import java.util.Objects;
@@ -25,7 +25,7 @@ public abstract class ZPCommonClientUtils {
         final double x = position.x;
         final double y = position.y;
         final double z = position.z;
-        Objects.requireNonNull(Minecraft.getInstance().level).addParticle(new ColoredSmokeOptions(ZPParticles.colored_cloud.get(), color, scale, lifetime), true, x, y, z, velocity.x(), velocity.y(), velocity.z());
+        Objects.requireNonNull(Minecraft.getInstance().level).addParticle(new ColoredDefaultParticleOptions(ZPParticles.colored_cloud.get(), color, scale, lifetime), true, x, y, z, velocity.x(), velocity.y(), velocity.z());
     }
 
     public static void emmitToxicParticle(final float scale, final @NotNull Vector3f position, final @NotNull Vector3f velocity) {
@@ -34,7 +34,7 @@ public abstract class ZPCommonClientUtils {
         final double x = position.x;
         final double y = position.y;
         final double z = position.z;
-        Objects.requireNonNull(Minecraft.getInstance().level).addParticle(new ColoredSmokeOptions(ZPParticles.colored_cloud.get(), color, scale, lifetime), true, x, y, z, velocity.x(), velocity.y(), velocity.z());
+        Objects.requireNonNull(Minecraft.getInstance().level).addParticle(new ColoredDefaultParticleOptions(ZPParticles.colored_cloud.get(), color, scale, lifetime), true, x, y, z, velocity.x(), velocity.y(), velocity.z());
     }
 
     public static void emmitAcidParticle(final float scale, final @NotNull Vector3f position, final @NotNull Vector3f velocity) {
@@ -43,7 +43,7 @@ public abstract class ZPCommonClientUtils {
         final double x = position.x;
         final double y = position.y;
         final double z = position.z;
-        Objects.requireNonNull(Minecraft.getInstance().level).addParticle(new ColoredSmokeOptions(ZPParticles.colored_cloud.get(), color, scale, lifetime), true, x, y, z, velocity.x(), velocity.y(), velocity.z());
+        Objects.requireNonNull(Minecraft.getInstance().level).addParticle(new ColoredDefaultParticleOptions(ZPParticles.colored_cloud.get(), color, scale, lifetime), true, x, y, z, velocity.x(), velocity.y(), velocity.z());
     }
 
     public static void emmitItemBreakParticle(final @NotNull ItemStack item, final @NotNull Vector3f position, final @NotNull Vector3f entityMotion) {

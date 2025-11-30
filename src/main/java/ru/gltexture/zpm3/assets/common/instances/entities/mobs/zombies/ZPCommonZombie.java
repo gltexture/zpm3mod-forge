@@ -67,9 +67,9 @@ public class ZPCommonZombie extends ZPAbstractZombie {
         return Monster.createMonsterAttributes()
                 .add(ForgeMod.SWIM_SPEED.get(), 1.0f)
                 .add(Attributes.MAX_HEALTH, 40.0f)
-                .add(Attributes.FOLLOW_RANGE, 40.0f)
+                .add(Attributes.FOLLOW_RANGE, ZPConstants.ZOMBIE_FOLLOW_RANGE)
                 .add(Attributes.MOVEMENT_SPEED, 0.23f)
-                .add(Attributes.ATTACK_DAMAGE, 5.0f)
+                .add(Attributes.ATTACK_DAMAGE, 2.0f)
                 .add(Attributes.ARMOR, 4.0f)
                 .add(ZPEntityAttributes.zm_attack_range_multiplier.get(), 0.3f)
                 .add(ZPEntityAttributes.zm_mining_speed.get(), 0.005f)
@@ -93,7 +93,7 @@ public class ZPCommonZombie extends ZPAbstractZombie {
         this.addRandomAttributeValue(Attributes.MAX_HEALTH, ZPAbstractZombie.getRandomSalt(0.0f, 21.0f));
         this.addRandomAttributeValue(Attributes.FOLLOW_RANGE, ZPAbstractZombie.getRandomSalt(-2.0f, 2.0f));
         this.addRandomAttributeValue(Attributes.MOVEMENT_SPEED, ZPAbstractZombie.getRandomSalt(-0.005f, 0.01f));
-        this.addRandomAttributeValue(Attributes.ATTACK_DAMAGE, ZPAbstractZombie.getRandomSalt(0.0f, 2.0f));
+        this.addRandomAttributeValue(Attributes.ATTACK_DAMAGE, ZPAbstractZombie.getRandomSalt(0.0f, 0.5f));
         //this.addRandomAttributeValue(Attributes.ARMOR, 4.0f);
         //this.addRandomAttributeValue(Attributes.SPAWN_REINFORCEMENTS_CHANCE, 0.3f);
         this.addRandomAttributeValue(ZPEntityAttributes.zm_attack_range_multiplier.get(), ZPAbstractZombie.getRandomSalt(-0.05f, 0.05f));

@@ -35,67 +35,67 @@ public abstract class ZPRegMedicine {
                 .setMedicineAnim(ZPItemMedicine.MedicineAnim.BLOCK)
                 .setCanBeAffectedOnOther(true)
                 .setSoundToPlayOnConsume(() -> ZPSounds.syringe.get())
-        )).postConsume(Dist.CLIENT, (e, utils) -> {
+        )).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
             utils.items().addItemInTab(e, ZPTabs.zp_medicine_tab);
             utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_FOOD, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MEDICINE_ITEMS_DIRECTORY);
-        }).registryObject();
+        }).end();
 
         ZPItems.morphine = regSupplier.register("morphine", () -> new ZPItemMedicine(new Item.Properties().stacksTo(1), ZPRegMedicine.MORPHINE, new ZPItemMedicine.ZPMedicineProperties()
                 .setMedicineAnim(ZPItemMedicine.MedicineAnim.BLOCK)
                 .setCanBeAffectedOnOther(true)
                 .setSoundToPlayOnConsume(() -> ZPSounds.syringe.get())
-        )).postConsume(Dist.CLIENT, (e, utils) -> {
+        )).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
             utils.items().addItemInTab(e, ZPTabs.zp_medicine_tab);
             utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_FOOD, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MEDICINE_ITEMS_DIRECTORY);
-        }).registryObject();
+        }).end();
 
         ZPItems.antidote = regSupplier.register("antidote", () -> new ZPItemMedicine(new Item.Properties().stacksTo(4), ZPRegMedicine.ANTIDOTE, new ZPItemMedicine.ZPMedicineProperties()
                 .setMedicineAnim(ZPItemMedicine.MedicineAnim.BLOCK)
                 .setCanBeAffectedOnOther(true)
                 .setSoundToPlayOnConsume(() -> ZPSounds.syringe.get())
-        )).postConsume(Dist.CLIENT, (e, utils) -> {
+        )).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
             utils.items().addItemInTab(e, ZPTabs.zp_medicine_tab);
             utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_FOOD, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MEDICINE_ITEMS_DIRECTORY);
-        }).registryObject();
+        }).end();
 
         ZPItems.calmexin = regSupplier.register("calmexin", () -> new ZPItemMedicine(new Item.Properties().durability(8), ZPRegMedicine.CALMEXIN, new ZPItemMedicine.ZPMedicineProperties()
                 .setMedicineAnim(ZPItemMedicine.MedicineAnim.BLOCK)
                 .setSoundToPlayOnConsume(() -> ZPSounds.pills.get())
-        )).postConsume(Dist.CLIENT, (e, utils) -> {
+        )).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
             utils.items().addItemInTab(e, ZPTabs.zp_medicine_tab);
             utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_FOOD, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MEDICINE_ITEMS_DIRECTORY);
-        }).registryObject();
+        }).end();
 
         ZPItems.bandage = regSupplier.register("bandage", () -> new ZPItemMedicine(new Item.Properties().durability(8), ZPRegMedicine.BANDAGE, new ZPItemMedicine.ZPMedicineProperties()
                 .setMedicineAnim(ZPItemMedicine.MedicineAnim.BLOCK)
                 .setSoundToPlayOnConsume(() -> ZPSounds.bandage.get())
-        )).postConsume(Dist.CLIENT, (e, utils) -> {
+        )).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
             utils.items().addItemInTab(e, ZPTabs.zp_medicine_tab);
             utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_FOOD, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MEDICINE_ITEMS_DIRECTORY);
-        }).registryObject();
+        }).end();
 
         ZPItems.carbocid = regSupplier.register("carbocid", () -> new ZPItemMedicine(new Item.Properties().durability(8), ZPRegMedicine.CARBOCID, new ZPItemMedicine.ZPMedicineProperties()
                 .setMedicineAnim(ZPItemMedicine.MedicineAnim.BLOCK)
                 .setSoundToPlayOnConsume(() -> ZPSounds.pills.get())
-        )).postConsume(Dist.CLIENT, (e, utils) -> {
+        )).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
             utils.items().addItemInTab(e, ZPTabs.zp_medicine_tab);
             utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_FOOD, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MEDICINE_ITEMS_DIRECTORY);
-        }).registryObject();
+        }).end();
 
         ZPItems.infectonol = regSupplier.register("infectonol", () -> new ZPItemMedicine(new Item.Properties().durability(8), ZPRegMedicine.INFECTONOL, new ZPItemMedicine.ZPMedicineProperties()
                 .setMedicineAnim(ZPItemMedicine.MedicineAnim.BLOCK)
                 .setSoundToPlayOnConsume(() -> ZPSounds.pills.get())
-        )).postConsume(Dist.CLIENT, (e, utils) -> {
+        )).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
             utils.items().addItemInTab(e, ZPTabs.zp_medicine_tab);
             utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_FOOD, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MEDICINE_ITEMS_DIRECTORY);
-        }).registryObject();
+        }).end();
 
         ZPItems.vodka = regSupplier.register("vodka", () -> new ZPItemMedicine(new Item.Properties().durability(8), ZPRegMedicine.ALCOHOL, new ZPItemMedicine.ZPMedicineProperties()
                 .setMedicineAnim(ZPItemMedicine.MedicineAnim.DRINK)
-        )).postConsume(Dist.CLIENT, (e, utils) -> {
+        )).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
             utils.items().addItemInTab(e, ZPTabs.zp_medicine_tab);
             utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_FOOD, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MEDICINE_ITEMS_DIRECTORY);
-        }).registryObject();
+        }).end();
 
         zpItems.stopCollecting();
     }

@@ -36,9 +36,9 @@ public abstract class ZPRegLootCaseItems {
                                 return new ZPLootCaseItemRenderer(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels(), registryObject.get());
                             }
                         }))
-                ).postConsume(Dist.CLIENT, (e, utils) -> {
+                ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
                     utils.items().addItemInTab(e, tabToAdd);
-                }).registryObject();
+                }).end();
                 ZPBlockItemsRegistry.putNewEntry(registryObject, blockItemRegistryObject);
             }
         } catch (ZPRuntimeException e) {

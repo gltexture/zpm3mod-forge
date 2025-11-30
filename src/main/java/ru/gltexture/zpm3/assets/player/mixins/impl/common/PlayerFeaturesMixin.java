@@ -1,4 +1,4 @@
-package ru.gltexture.zpm3.assets.player.mixins.impl.both;
+package ru.gltexture.zpm3.assets.player.mixins.impl.common;
 
 import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;

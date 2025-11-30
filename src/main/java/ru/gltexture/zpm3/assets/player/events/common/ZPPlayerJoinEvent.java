@@ -1,6 +1,8 @@
 package ru.gltexture.zpm3.assets.player.events.common;
 
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.common.extensions.IForgePlayer;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -15,6 +17,8 @@ import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.events.ZPEventClass;
 
+import java.util.Objects;
+
 public class ZPPlayerJoinEvent implements ZPEventClass {
     public ZPPlayerJoinEvent() {
     }
@@ -26,6 +30,10 @@ public class ZPPlayerJoinEvent implements ZPEventClass {
         }
 
         ZombiePlague3.net().sendToPlayer(new ZPSendGlobalSettingsToClients(ZPConstants.ENABLE_HARDCORE_DARKNESS_SERVER_SIDE, ZPConstants.DARKNESS_GAMMA_STATIC_FACTOR_SERVER_SIDE), sp);
+
+        if (event.getEntity().getAttribute(ForgeMod.ENTITY_REACH.get()) != null) {
+            Objects.requireNonNull(event.getEntity().getAttribute(ForgeMod.ENTITY_REACH.get())).setBaseValue(ZPConstants.PLAYER_DEFAULT_HAND_REACH);
+        }
     }
 
     @Override

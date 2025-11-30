@@ -1,6 +1,18 @@
 package ru.gltexture.zpm3.assets.common.global;
 
 public abstract class ZPConstants {
+    public static int ZOMBIE_PLAGUE_VIRUS_EFFECT_TIME_TICKS = 20 * (20 * 60);
+    public static final float ZOMBIE_BULLET_DAMAGE_MULTIPLIER = 3.0f;
+
+    public static final float PLAYER_DEFAULT_HAND_REACH = 2.0f;
+    public static final float ZOMBIE_DEFAULT_HAND_REACH = 4.0f;
+    public static final float FRACTURE_CHANCE_MULTIPLIER = 1.0f;
+    public static final float ZOMBIE_FOLLOW_RANGE = 48.0f;
+    public static final float ZOMBIE_PLAGUE_EFFECT_CHANCE_MULTIPLIER = 1.0f;
+
+    public static boolean BLEEDING_ONLY_FOR_PLAYERS = false;
+    public static float BLEEDING_CHANCE_MULTIPLIER = 1.0f;
+
     public static boolean ENABLE_HARDCORE_DARKNESS_SERVER_SIDE = true;
     public static float DARKNESS_GAMMA_STATIC_FACTOR_SERVER_SIDE = -0.45f;
 

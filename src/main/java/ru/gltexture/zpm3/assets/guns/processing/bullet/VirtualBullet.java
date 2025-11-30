@@ -163,7 +163,7 @@ public class VirtualBullet {
     }
 
     private float damageEntity(@NotNull Level level, @NotNull Entity entityToDamage, @NotNull Entity attacker, float amount) {
-        if (entityToDamage.hurt(ZPDamageSources.bullet(attacker), amount)) {
+        if (entityToDamage.hurt(ZPDamageSources.bullet((ServerLevel) level, attacker), amount)) {
             entityToDamage.invulnerableTime = 0;
             return amount;
         }

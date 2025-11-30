@@ -24,12 +24,12 @@ public abstract class ZPRegThrowable {
                     throwable.shootFromRotation(pPlayer, pPlayer.getXRot(), pPlayer.getYRot(), 0.0F, velocity, inaccuracy);
                     return throwable;
                 }), new Item.Properties().stacksTo(1))
-        ).postConsume(Dist.CLIENT, (e, utils) -> {
+        ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
             utils.items().addItemInTab(e, ZPTabs.zp_items_tab);
             utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ITEMS_ITEMS_DIRECTORY);
-        }).postConsume(Dist.DEDICATED_SERVER, (e, utils) -> {
+        }).afterObjectCreated(Dist.DEDICATED_SERVER, (e, utils) -> {
             utils.items().addDispenserData(e, new ZPDispenseProjectileHelper.ProjectileData((pLevel, pPosition, pStack) -> new ZPAcidBottleEntity(ZPEntities.acid_bottle_entity.get(), pPosition.x(), pPosition.y(), pPosition.z(), pLevel), 0.5f, 1.5f));
-        }).registryObject();
+        }).end();
 
         ZPItems.plate = regSupplier.register("plate",
                 () -> new ZPItemThrowable(((inaccuracy, velocity, itemstack, pLevel, pPlayer, pHand) -> {
@@ -38,12 +38,12 @@ public abstract class ZPRegThrowable {
                     throwable.shootFromRotation(pPlayer, pPlayer.getXRot(), pPlayer.getYRot(), 0.0F, velocity, inaccuracy);
                     return throwable;
                 }), new Item.Properties().stacksTo(16))
-        ).postConsume(Dist.CLIENT, (e, utils) -> {
+        ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
             utils.items().addItemInTab(e, ZPTabs.zp_items_tab);
             utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ITEMS_ITEMS_DIRECTORY);
-        }).postConsume(Dist.DEDICATED_SERVER, (e, utils) -> {
+        }).afterObjectCreated(Dist.DEDICATED_SERVER, (e, utils) -> {
             utils.items().addDispenserData(e, new ZPDispenseProjectileHelper.ProjectileData((pLevel, pPosition, pStack) -> new ZPPlateEntity(ZPEntities.plate_entity.get(), pPosition.x(), pPosition.y(), pPosition.z(), pLevel), 0.5f, 1.5f));
-        }).registryObject();
+        }).end();
 
         ZPItems.rock = regSupplier.register("rock",
                 () -> new ZPItemThrowable(((inaccuracy, velocity, itemstack, pLevel, pPlayer, pHand) -> {
@@ -52,11 +52,11 @@ public abstract class ZPRegThrowable {
                     throwable.shootFromRotation(pPlayer, pPlayer.getXRot(), pPlayer.getYRot(), 0.0F, velocity, inaccuracy);
                     return throwable;
                 }), new Item.Properties().stacksTo(3))
-        ).postConsume(Dist.CLIENT, (e, utils) -> {
+        ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
             utils.items().addItemInTab(e, ZPTabs.zp_items_tab);
             utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ITEMS_ITEMS_DIRECTORY);
-        }).postConsume(Dist.DEDICATED_SERVER, (e, utils) -> {
+        }).afterObjectCreated(Dist.DEDICATED_SERVER, (e, utils) -> {
             utils.items().addDispenserData(e, new ZPDispenseProjectileHelper.ProjectileData((pLevel, pPosition, pStack) -> new ZPRockEntity(ZPEntities.rock_entity.get(), pPosition.x(), pPosition.y(), pPosition.z(), pLevel), 0.5f, 1.5f));
-        }).registryObject();
+        }).end();
     }
 }

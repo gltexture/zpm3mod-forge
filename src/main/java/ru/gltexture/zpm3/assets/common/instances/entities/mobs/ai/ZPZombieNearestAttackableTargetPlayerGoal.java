@@ -59,7 +59,7 @@ public class ZPZombieNearestAttackableTargetPlayerGoal extends TargetGoal {
 
     @Override
     protected double getFollowDistance() {
-        return super.getFollowDistance() * this.searchRangeMultiplier;
+        return (super.getFollowDistance() * 0.75f) * this.searchRangeMultiplier;
     }
 
     protected LivingEntity checkForCloseEntities() {

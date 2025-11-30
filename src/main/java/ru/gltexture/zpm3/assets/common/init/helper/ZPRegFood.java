@@ -24,40 +24,40 @@ public abstract class ZPRegFood {
     public static final FoodProperties WATER = (new FoodProperties.Builder()).nutrition(3).saturationMod(0.6F).build();
 
     public static void init(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
-        ZPItems.bean = regSupplier.register("bean", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.BEAN, new ZPItemFood.ZPFoodProperties())).postConsume(Dist.CLIENT, (e, utils) -> {
+        ZPItems.bean = regSupplier.register("bean", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.BEAN, new ZPItemFood.ZPFoodProperties())).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
             utils.items().addItemInTab(e, ZPTabs.zp_food_tab);
             utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_FOOD, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.FOOD_ITEMS_DIRECTORY);
-        }).registryObject();
+        }).end();
 
-        ZPItems.jam = regSupplier.register("jam", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.JAM, new ZPItemFood.ZPFoodProperties())).postConsume(Dist.CLIENT, (e, utils) -> {
+        ZPItems.jam = regSupplier.register("jam", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.JAM, new ZPItemFood.ZPFoodProperties())).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
             utils.items().addItemInTab(e, ZPTabs.zp_food_tab);
             utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_FOOD, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.FOOD_ITEMS_DIRECTORY);
-        }).registryObject();
+        }).end();
 
-        ZPItems.mysterious_can = regSupplier.register("mysterious_can", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.MYSTERIOUS_CAN, new ZPItemFood.ZPFoodProperties())).postConsume(Dist.CLIENT, (e, utils) -> {
+        ZPItems.mysterious_can = regSupplier.register("mysterious_can", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.MYSTERIOUS_CAN, new ZPItemFood.ZPFoodProperties())).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
             ZPItemTabAddHelper.addItemInTab(e, ZPTabs.zp_food_tab);
             utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_FOOD, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.FOOD_ITEMS_DIRECTORY);
-        }).registryObject();
+        }).end();
 
-        ZPItems.peaches = regSupplier.register("peaches", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.PEACHES, new ZPItemFood.ZPFoodProperties())).postConsume(Dist.CLIENT, (e, utils) -> {
+        ZPItems.peaches = regSupplier.register("peaches", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.PEACHES, new ZPItemFood.ZPFoodProperties())).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
             utils.items().addItemInTab(e, ZPTabs.zp_food_tab);
             utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_FOOD, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.FOOD_ITEMS_DIRECTORY);
-        }).registryObject();
+        }).end();
 
-        ZPItems.soda = regSupplier.register("soda", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.SODA, new ZPItemFood.ZPFoodProperties().setDrinkable(true).setEatTime(16))).postConsume(Dist.CLIENT, (e, utils) -> {
+        ZPItems.soda = regSupplier.register("soda", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.SODA, new ZPItemFood.ZPFoodProperties().setDrinkable(true).setEatTime(16))).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
             utils.items().addItemInTab(e, ZPTabs.zp_food_tab);
             utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_FOOD, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.FOOD_ITEMS_DIRECTORY);
-        }).registryObject();
+        }).end();
 
-        ZPItems.sprats = regSupplier.register("sprats", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.SPRATS, new ZPItemFood.ZPFoodProperties())).postConsume(Dist.CLIENT, (e, utils) -> {
+        ZPItems.sprats = regSupplier.register("sprats", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.SPRATS, new ZPItemFood.ZPFoodProperties())).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
             utils.items().addItemInTab(e, ZPTabs.zp_food_tab);
             utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_FOOD, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.FOOD_ITEMS_DIRECTORY);
-        }).registryObject();
+        }).end();
 
-        ZPItems.water = regSupplier.register("water", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.WATER, new ZPItemFood.ZPFoodProperties().setDrinkable(true))).postConsume(Dist.CLIENT, (e, utils) -> {
+        ZPItems.water = regSupplier.register("water", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.WATER, new ZPItemFood.ZPFoodProperties().setDrinkable(true))).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
             utils.items().addItemInTab(e, ZPTabs.zp_food_tab);
             utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_FOOD, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.FOOD_ITEMS_DIRECTORY);
-        }).registryObject();
+        }).end();
     }
 
     /*

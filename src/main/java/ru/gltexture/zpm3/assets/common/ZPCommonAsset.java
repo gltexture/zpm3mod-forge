@@ -4,7 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DispensibleContainerItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -12,14 +11,12 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BucketPickup;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.DispenserBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
@@ -131,23 +128,23 @@ public class ZPCommonAsset extends ZPAsset {
     public void initializeAsset(ZombiePlague3.@NotNull IAssetEntry assetEntry) {
         SetupPopulation.setup(ZombiePlague3.getPopulationController());
 
-        assetEntry.addRegistryClass(ZPSounds.class);
-        assetEntry.addRegistryClass(ZPItems.class);
-        assetEntry.addRegistryClass(ZPBlockItems.class);
-        assetEntry.addRegistryClass(ZPBlocks.class);
-        assetEntry.addRegistryClass(ZPTorchBlocks.class);
-        assetEntry.addRegistryClass(ZPEntityAttributes.class);
-        assetEntry.addRegistryClass(ZPEntities.class);
-        assetEntry.addRegistryClass(ZPBlockEntities.class);
-        assetEntry.addRegistryClass(ZPFluids.class);
-        assetEntry.addRegistryClass(ZPFluidTypes.class);
-        assetEntry.addRegistryClass(ZPDamageTypes.class);
+        assetEntry.addZP3RegistryClass(ZPSounds.class);
+        assetEntry.addZP3RegistryClass(ZPItems.class);
+        assetEntry.addZP3RegistryClass(ZPBlockItems.class);
+        assetEntry.addZP3RegistryClass(ZPBlocks.class);
+        assetEntry.addZP3RegistryClass(ZPTorchBlocks.class);
+        assetEntry.addZP3RegistryClass(ZPEntityAttributes.class);
+        assetEntry.addZP3RegistryClass(ZPEntities.class);
+        assetEntry.addZP3RegistryClass(ZPBlockEntities.class);
+        assetEntry.addZP3RegistryClass(ZPFluids.class);
+        assetEntry.addZP3RegistryClass(ZPFluidTypes.class);
+        assetEntry.addZP3RegistryClass(ZPDamageTypes.class);
 
         assetEntry.addEventClass(ZPLivingEvents.class);
         assetEntry.addEventClass(ZPMobAttributes.class);
 
         ZPUtility.sides().onlyClient(() -> {
-            assetEntry.addRegistryClass(ZPTabs.class);
+            assetEntry.addZP3RegistryClass(ZPTabs.class);
         });
     }
 }

@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -19,6 +20,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.debug.imgui.DearUITRSInterface;
+import ru.gltexture.zpm3.assets.mob_effects.init.ZPMobEffects;
+import ru.gltexture.zpm3.assets.mob_effects.utils.ZPEffectUtils;
 import ru.gltexture.zpm3.assets.player.client.ZPClientGlobalSettings;
 
 @Mixin(LightTexture.class)
@@ -37,6 +40,20 @@ public abstract class ZPGameLightMapMixin {
 
     private static void clampColor(Vector3f pColor) {
         pColor.set(Mth.clamp(pColor.x, 0.0F, 1.0F), Mth.clamp(pColor.y, 0.0F, 1.0F), Mth.clamp(pColor.z, 0.0F, 1.0F));
+    }
+
+    private static float getPlagueProgressPercent() {
+        if (Minecraft.getInstance().player == null) return 0f;
+
+        MobEffectInstance effect = Minecraft.getInstance().player.getEffect(ZPMobEffects.zombie_plague.get());
+        if (effect == null) {
+            return 0f;
+        }
+
+        int duration = effect.getDuration();
+        int maxDuration = ZPConstants.ZOMBIE_PLAGUE_VIRUS_EFFECT_TIME_TICKS;
+
+        return 1.0f - Mth.clamp((float) duration / (float) maxDuration, 0f, 1f);
     }
 
     public void updateLightTexture(float pPartialTicks) {
@@ -119,6 +136,13 @@ public abstract class ZPGameLightMapMixin {
                                     f14 = DearUITRSInterface.debugDarknessValue;
                                 }
                             }
+                            if (ZPEffectUtils.isBetterVisioned(this.minecraft.player)) {
+                                f14 = Math.min(f14, -0.2f);
+                            }
+                        }
+                        {
+                            final float plag = 1.0f - (ZPGameLightMapMixin.getPlagueProgressPercent() * 0.25f);
+                            vector3f1.mul(1.0f, plag, plag);
                         }
                         Vector3f vector3f4 = new Vector3f(this.notGamma(vector3f1.x), this.notGamma(vector3f1.y), this.notGamma(vector3f1.z));
                         vector3f1.lerp(vector3f4, Math.max(-10.0F, f14 - f3));

@@ -43,6 +43,7 @@ public class ZPZombieHurtByMobGoal extends TargetGoal {
         this.mob.setTarget(this.mob.getLastHurtByMob());
         this.targetMob = this.mob.getTarget();
         this.timestamp = this.mob.getLastHurtByMobTimestamp();
+        this.unseenMemoryTicks = 300;
         this.alertOthers();
         super.start();
     }

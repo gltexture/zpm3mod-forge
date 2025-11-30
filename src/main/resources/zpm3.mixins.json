@@ -14,6 +14,7 @@
     "common.ZPServerPlayerGameMixin"
   ],
   "client": [
+    "client.ZPGameLightMapMixin",
     "client.ZPGameRendererMixin",
     "client.ZPItemHookMixin",
     "client.ZPItemMixin",
@@ -21,11 +22,11 @@
     "client.ZPLevelRenderMixin",
     "client.ZPLocalPlayerMixin",
     "client.ZPMinecraftMixin",
+    "client.ZPMouseHandlerMixin",
     "client.ZPMultiplayerGameModeMixin",
     "client.ZPPlayerRenderMixin",
     "client.ZPRenderMixin",
-    "client.ZPScreenEffectMixin",
-    "client.ZPGameLightMapMixin"
+    "client.ZPScreenEffectMixin"
   ],
   "server": [
     "server.ZPServerPlayerMixin"

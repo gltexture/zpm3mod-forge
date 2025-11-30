@@ -19,6 +19,7 @@ import java.util.logging.Level;
 
 public class ZPDamageTypes extends ZPRegistry<DamageType> {
     public static ResourceKey<DamageType> zp_bullet;
+    public static ResourceKey<DamageType> zp_bleeding;
 
     public ZPDamageTypes() {
         super(ZPRegistryConveyor.Target.DAMAGE_TYPE);
@@ -28,6 +29,10 @@ public class ZPDamageTypes extends ZPRegistry<DamageType> {
     protected void runRegister(@NotNull ZPRegSupplier<DamageType> regSupplier) {
         ZPDamageTypes.zp_bullet = this.createResourceKey("zp_bullet", (s) -> {
             ZPDamageTypesProvider.addDamageTypeToGen(new ZPDamageTypesProvider.ZPDamageTypeGenData(s, false, false, false, false, 0.0f, "never"));
+        });
+
+        ZPDamageTypes.zp_bleeding = this.createResourceKey("zp_bleeding", (s) -> {
+            ZPDamageTypesProvider.addDamageTypeToGen(new ZPDamageTypesProvider.ZPDamageTypeGenData(s, true, false, false, false, 0.0f, "never"));
         });
     }
 

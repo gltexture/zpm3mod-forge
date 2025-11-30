@@ -4,7 +4,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.BlockEntityType.Builder;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.instances.block_entities.ZPFadingBlockEntity;
@@ -34,7 +33,7 @@ public class ZPBlockEntities extends ZPRegistry<BlockEntityType<?>> {
                             .toArray(ZPBlock[]::new);
                     Block[] allBlocks = Stream.concat(Arrays.stream(zpBlocks), Stream.of(Blocks.TORCH, Blocks.WALL_TORCH, Blocks.JACK_O_LANTERN, Blocks.LAVA)).toArray(Block[]::new);
                     return Builder.of(ZPFadingBlockEntity::new, allBlocks).build(null);
-                }).registryObject();
+                }).end();
     }
 
     @Override

@@ -5,7 +5,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.loot_cases.instances.blocks.ZPDefaultBlockLootCase;
 import ru.gltexture.zpm3.assets.loot_cases.loot_tables.ZPLootTable;
 import ru.gltexture.zpm3.assets.loot_cases.registry.ZPLootTablesCollection;
@@ -34,10 +33,10 @@ public class ZPLootCases extends ZPRegistry<ZPDefaultBlockLootCase> implements I
             final boolean isUnbreakable = lootTable.getLootCaseData().isUnbreakable();
             final int lootRespawnTime = lootTable.getLootCaseData().respawnTime();
             RegistryObject<ZPDefaultBlockLootCase> syntheticLootCase = regSupplier.register(lootCaseName, () -> new ZPDefaultBlockLootCase(BlockBehaviour.Properties.of().strength(isUnbreakable ? -1.0f : 5.0f, isUnbreakable ? Float.MAX_VALUE : 5.0f).sound(SoundType.WOOD), lootTable.getLootCaseData().textureId(), lootTable, lootRespawnTime)
-            ).postConsume(Dist.CLIENT, (e, utils) -> {
+            ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
                 utils.blocks().addBlockModelKey_ValueArray(e, ZPDataGenHelper.DEFAULT_CHEST_BLOCK, Pair.of("particle", () -> new ZPPath(ZPDataGenHelper.MINECRAFT_VANILLA_ROOT, "oak_planks")));
                 utils.blocks().setBlockItemModelExecutor(e, DefaultBlockItemModelExecutors.getDefaultItemAsVanillaParent(ZPDataGenHelper.DEFAULT_CHEST_ITEM));
-            }).registryObject();
+            }).end();
             ZPLootCases.generatedLootCases.put(lootCaseName, syntheticLootCase);
         }
         this.stopCollecting();

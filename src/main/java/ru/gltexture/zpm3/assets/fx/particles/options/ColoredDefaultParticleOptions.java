@@ -5,8 +5,13 @@ import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
+import ru.gltexture.zpm3.assets.fx.particles.types.ColoredDefaultParticleType;
 
-public record ColoredSmokeOptions(@NotNull ParticleType<ColoredSmokeOptions> particleType, @NotNull Vector3f color, float scale, int lifeTime) implements ParticleOptions {
+public record ColoredDefaultParticleOptions(@NotNull ParticleType<ColoredDefaultParticleOptions> particleType, @NotNull Vector3f color, float scale, int lifeTime, float gravity) implements ParticleOptions {
+    public ColoredDefaultParticleOptions(@NotNull ColoredDefaultParticleType coloredDefaultParticleType, Vector3f color, float scale, int lifetime) {
+        this(coloredDefaultParticleType, color, scale, lifetime, -0.01f);
+    }
+
     @Override
     public @NotNull ParticleType<?> getType() {
         return this.particleType();
@@ -19,10 +24,11 @@ public record ColoredSmokeOptions(@NotNull ParticleType<ColoredSmokeOptions> par
         pBuffer.writeFloat(this.color().z());
         pBuffer.writeFloat(this.scale());
         pBuffer.writeInt(this.lifeTime());
+        pBuffer.writeFloat(this.gravity());
     }
 
     @Override
     public @NotNull String writeToString() {
-        return String.format("%f %f %f %f %d", color.x(), color.y(), color.z(), scale, lifeTime);
+        return String.format("%f %f %f %f %d %f", color.x(), color.y(), color.z(), scale, lifeTime, gravity);
     }
 }

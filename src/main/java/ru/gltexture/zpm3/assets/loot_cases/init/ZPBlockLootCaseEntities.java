@@ -1,19 +1,15 @@
 package ru.gltexture.zpm3.assets.loot_cases.init;
 
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.BlockEntityType.Builder;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.assets.common.init.ZPTorchBlocks;
 import ru.gltexture.zpm3.assets.loot_cases.instances.block_entities.ZPLootCaseBlockEntity;
 import ru.gltexture.zpm3.assets.loot_cases.instances.blocks.ZPDefaultBlockLootCase;
 import ru.gltexture.zpm3.assets.loot_cases.rendering.ZPLootCaseRenderer;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
-import ru.gltexture.zpm3.engine.helpers.ZPBlockEntityRenderMatchHelper;
-import ru.gltexture.zpm3.engine.instances.blocks.ZPBlock;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.registry.ZPRegistryCollections;
 
@@ -36,9 +32,9 @@ public class ZPBlockLootCaseEntities extends ZPRegistry<BlockEntityType<?>> {
                             .map(RegistryObject::get)
                             .toArray(ZPDefaultBlockLootCase[]::new);
                     return Builder.of(ZPLootCaseBlockEntity::new, Arrays.stream(zpBlocks).toArray(Block[]::new)).build(null);
-                }).postConsume(Dist.CLIENT, (e, utils) -> {
+                }).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
             utils.blockEntities().matchBlockEntityRendering(e, ZPLootCaseRenderer::new);
-        }).registryObject();
+        }).end();
     }
 
     @Override

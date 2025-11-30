@@ -4,27 +4,17 @@ import com.mojang.math.Axis;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.BlockParticleOption;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
-import ru.gltexture.zpm3.assets.fx.init.ZPParticles;
-import ru.gltexture.zpm3.assets.fx.particles.options.ColoredSmokeOptions;
 import ru.gltexture.zpm3.assets.guns.rendering.tracer.ZPBulletTracerManager;
-import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.network.ZPNetwork;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
-
-import java.util.Objects;
 
 public class ZPBulletTracePacket implements ZPNetwork.ZPPacket {
     private final float hitX;

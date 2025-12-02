@@ -78,7 +78,7 @@ public class ZPRottenFleshEntity extends ZPThrowableEntity {
         super.onHitEntity(pResult);
         Entity entity = pResult.getEntity();
         if (!entity.level().isClientSide()) {
-            entity.hurt(this.damageSources().thrown(this, this.getOwner()), ZPConstants.DEFAULT_ROTTEN_FLESH_DAMAGE);
+            entity.hurt(this.damageSources().thrown(this, this.getOwner()), ZPConstants.ROTTEN_FLESH_DAMAGE);
             if (entity instanceof LivingEntity livingEntity) {
                 ZPAbstractZombie.applyRandomEffect(livingEntity);
             }

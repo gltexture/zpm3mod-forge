@@ -56,7 +56,7 @@ public class ZPZombieThrowAGiftGoal extends Goal {
         if (this.ticksBeforeThrowSomething-- <= 0) {
             int zombiesAround = this.computeZombiesAround(this.mob.level());
             this.zombiesAroundMul = 1.0f + (Math.min(zombiesAround, 10) * 0.05f);
-            if (ZPRandom.getRandom().nextFloat() <= this.getThrowChance(this.mob) * this.zombiesAroundMul) {
+            if (ZPRandom.getRandom().nextFloat() <= this.getThrowChance(this.mob) * this.zombiesAroundMul * ZPConstants.ZOMBIE_THROW_A_GIFT_CHANCE) {
                 this.ticksBeforeThrowSomething = (int) ((ZPConstants.ZOMBIE_THROW_A_GIFT_TRY_DEFAULT_COOLDOWN - this.zombiesAroundMul * 80) + ZPRandom.getRandom().nextInt(201));
                 return true;
             }

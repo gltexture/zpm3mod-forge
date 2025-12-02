@@ -24,6 +24,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
@@ -34,6 +35,7 @@ import ru.gltexture.zpm3.assets.loot_cases.registry.ZPLootTablesRegistry;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPDefaultShaders;
 import ru.gltexture.zpm3.engine.core.asset.ZPAsset;
 import ru.gltexture.zpm3.engine.core.asset.ZPAssetData;
+import ru.gltexture.zpm3.engine.core.config.ZPConfigurator;
 import ru.gltexture.zpm3.engine.core.population.ZPPopulationController;
 import ru.gltexture.zpm3.engine.core.init.ZPSystemInit;
 import ru.gltexture.zpm3.engine.events.ZPEventClass;
@@ -65,6 +67,8 @@ import java.util.*;
 
 @Mod(ZombiePlague3.MOD_ID)
 public final class ZombiePlague3 {
+    public static final String ZP_MAIN_DIR = "zpm3_files";
+
     public static final String assetsJsonPath = "zpm3.asset.json";
     public static final String MOD_ID = "zpm3";
     static final Logger LOGGER = LoggerFactory.getLogger(ZombiePlague3.MOD_ID);
@@ -73,9 +77,11 @@ public final class ZombiePlague3 {
     private final List<ZPAsset> assets;
     private ZPNetwork zpNetwork;
     private static ZPPopulationController populationController;
+    private static ZPConfigurator configurator;
 
     static {
         ZombiePlague3.populationController = new ZPPopulationController();
+        ZombiePlague3.configurator = new ZPConfigurator();
     }
 
     private static boolean commonInitSwitch = true;
@@ -113,6 +119,10 @@ public final class ZombiePlague3 {
         ZPLogger.info(this + " END INIT");
     }
 
+    static void addConfigClass(@NotNull ZPConfigurator.ZPClassWithConfConstants zpClassWithConfConstants) {
+        ZombiePlague3.configurator.addClass(zpClassWithConfConstants);
+    }
+
     private void initDefaultTiers() {
         ZPLogger.info(this + " INIT DEFAULT ZP TIERS");
         Arrays.stream(ZPTiers.values()).forEach(e -> e.init().forEach(ZombiePlague3::registerTier));
@@ -126,9 +136,25 @@ public final class ZombiePlague3 {
         this.initKeyBindings(new ZPBaseKeyBindings());
     }
 
+    public static void processConfigurations() {
+        ZombiePlague3.configurator.processConfiguration(new ZPPath(FMLPaths.GAMEDIR.get().toString(), ZombiePlague3.ZP_MAIN_DIR));
+    }
+
     private void initAssets() {
         ZPLogger.info(this + " Assets setup");
         this.readAssetsJSON(this.assets);
+
+        for (ZPAsset zpAsset : this.assets) {
+            if (zpAsset.zpClassWithConfConstants() != null) {
+                for (ZPConfigurator.ZPClassWithConfConstants constants : zpAsset.zpClassWithConfConstants()) {
+                    ZombiePlague3.configurator.addClass(constants);
+                }
+            }
+        }
+
+        {
+            ZombiePlague3.processConfigurations();
+        }
 
         for (ZPAsset zpAsset : this.assets) {
             ZPLogger.info("Init asset: " + zpAsset);

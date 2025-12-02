@@ -10,7 +10,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.*;
@@ -53,9 +53,15 @@ public class VirtualBullet {
 
     @SuppressWarnings("all")
     private boolean isBlockFragile(@NotNull ServerLevel serverLevel, @NotNull BlockPos blockPos) {
-        float hardness = serverLevel.getBlockState(blockPos).getDestroySpeed(serverLevel, blockPos);
-        if (hardness >= 0 && hardness <= 0.5f) {
-            return true;
+        if (!ZPConstants.CAN_BULLET_BREAK_BLOCK) {
+            return false;
+        }
+        BlockState blockState = serverLevel.getBlockState(blockPos);
+        if (blockState.getBlock() instanceof StainedGlassBlock || blockState.getBlock() instanceof StainedGlassPaneBlock || blockState.getBlock() instanceof GlassBlock || blockState.getBlock() instanceof LeavesBlock || blockState.getBlock() instanceof StemGrownBlock || blockState.getBlock() instanceof IceBlock) {
+            float hardness = blockState.getDestroySpeed(serverLevel, blockPos);
+            if (hardness >= 0 && hardness <= 0.5f) {
+                return true;
+            }
         }
         return false;
     }

@@ -71,7 +71,7 @@ public class ZPPlateEntity extends ZPThrowableEntity {
         super.onHitEntity(pResult);
         Entity entity = pResult.getEntity();
         if (!entity.level().isClientSide()) {
-            entity.hurt(this.damageSources().thrown(this, this.getOwner()), ZPConstants.DEFAULT_PLATE_DAMAGE);
+            entity.hurt(this.damageSources().thrown(this, this.getOwner()), ZPConstants.PLATE_DAMAGE);
         }
     }
 

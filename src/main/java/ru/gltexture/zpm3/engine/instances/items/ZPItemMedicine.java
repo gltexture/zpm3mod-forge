@@ -44,7 +44,7 @@ public class ZPItemMedicine extends ZPItem {
     protected void cooldownForMedicine(@NotNull Player player) {
         try {
             for (RegistryObject<Item> registryObject : ZPRegistryCollections.getCollectionById(ZPItems.class, "medicine")) {
-                player.getCooldowns().addCooldown(registryObject.get(), ZPConstants.MEDICINE_COOLDOWN_USE);
+                player.getCooldowns().addCooldown(registryObject.get(), ZPConstants.MEDICINE_USE_COOLDOWN);
             }
         } catch (ZPRuntimeException e) {
             ZPLogger.warn(e.getMessage());

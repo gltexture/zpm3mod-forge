@@ -342,7 +342,7 @@ public abstract class ZPDefaultLogicFunctions {
                 Vector3i blockPos = virtualBulletHitResult.blockPos() == null ? new Vector3i(0) : new Vector3i(virtualBulletHitResult.blockPos().x, virtualBulletHitResult.blockPos().y, virtualBulletHitResult.blockPos().z);
                 ServerLevel serverLevel = (ServerLevel) player.level();
                 final Vector3f motion = new Vector3f(startPos.x, startPos.y, startPos.z).sub(new Vector3f(pos.x, pos.y, pos.z)).normalize();
-                ZombiePlague3.net().sendToDimensionRadius(new ZPBulletHitPacket(blockPos.x, blockPos.y, blockPos.z, motion.x, motion.y, motion.z, pos.x, pos.y, pos.z, virtualBulletHitResult.bulletHitType().getFlag()), serverLevel.dimension(), new Vec3(pos), ZPConstants.DEFAULT_GUN_ACTION_PACKET_RANGE);
+                ZombiePlague3.net().sendToDimensionRadius(new ZPBulletHitPacket(blockPos.x, blockPos.y, blockPos.z, motion.x, motion.y, motion.z, pos.x, pos.y, pos.z, virtualBulletHitResult.bulletHitType().getFlag()), serverLevel.dimension(), new Vec3(pos), ZPConstants.BULLET_HIT_PACKET_RANGE);
                 ZombiePlague3.net().sendToPlayer(new ZPBulletTracePacket(pos.x, pos.y, pos.z, isRightHand), (ServerPlayer) player);
             }
             if (!player.isCreative()) {
@@ -377,7 +377,7 @@ public abstract class ZPDefaultLogicFunctions {
                     Vector3i blockPos = virtualBulletHitResult.blockPos() == null ? new Vector3i(0) : new Vector3i(virtualBulletHitResult.blockPos().x, virtualBulletHitResult.blockPos().y, virtualBulletHitResult.blockPos().z);
                     ServerLevel serverLevel = (ServerLevel) player.level();
                     final Vector3f motion = new Vector3f(startPos.x, startPos.y, startPos.z).sub(new Vector3f(pos.x, pos.y, pos.z)).normalize();
-                    ZombiePlague3.net().sendToDimensionRadius(new ZPBulletHitPacket(blockPos.x, blockPos.y, blockPos.z, motion.x, motion.y, motion.z, pos.x, pos.y, pos.z, virtualBulletHitResult.bulletHitType().getFlag()), serverLevel.dimension(), new Vec3(pos), ZPConstants.DEFAULT_GUN_ACTION_PACKET_RANGE);
+                    ZombiePlague3.net().sendToDimensionRadius(new ZPBulletHitPacket(blockPos.x, blockPos.y, blockPos.z, motion.x, motion.y, motion.z, pos.x, pos.y, pos.z, virtualBulletHitResult.bulletHitType().getFlag()), serverLevel.dimension(), new Vec3(pos), ZPConstants.BULLET_HIT_PACKET_RANGE);
                     ZombiePlague3.net().sendToPlayer(new ZPBulletTracePacket(pos.x, pos.y, pos.z, isRightHand), (ServerPlayer) player);
                 }
             }

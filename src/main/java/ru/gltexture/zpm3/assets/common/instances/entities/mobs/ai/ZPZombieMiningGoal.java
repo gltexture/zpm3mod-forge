@@ -170,7 +170,7 @@ public class ZPZombieMiningGoal extends Goal {
                 ZombiePlague3.net().sendToDimensionRadius(new ZPBlockCrack(blockToMine.getX(), blockToMine.getY(), blockToMine.getZ()), this.mob.level().dimension(), blockToMine.getCenter(), 64.0f);
             }
 
-            if (ZPConstants.USE_ZOMBIE_MINING_SHARED_MEM) {
+            if (ZPConstants.USE_ZOMBIE_MINING_SHARED_GLOBAL_MEM) {
                 if (this.mob.level() instanceof IZPLevelExt ext) {
                     ext.getGlobalBlocksDestroyMemory().addNewEntryShortMem(this.mob.level(), blockToMine, this.getMiningSpeedWithBonus(state, blockToMine, this.mob));
                 }

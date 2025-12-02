@@ -83,7 +83,7 @@ public class ZPGunActionPacket implements ZPNetwork.ZPPacket {
     }
 
     private void sendPacketFromServer(@NotNull Player sender, @NotNull ServerLevel serverLevel) {
-        ZombiePlague3.net().sendToDimensionRadius(new ZPGunActionPacket(sender.getId(), this.action, this.isRightHand), serverLevel.dimension(), sender.position(), ZPConstants.DEFAULT_GUN_ACTION_PACKET_RANGE);
+        ZombiePlague3.net().sendToDimensionRadius(new ZPGunActionPacket(sender.getId(), this.action, this.isRightHand), serverLevel.dimension(), sender.position(), ZPConstants.GUN_ACTION_PACKET_RANGE);
     }
 
     @Override

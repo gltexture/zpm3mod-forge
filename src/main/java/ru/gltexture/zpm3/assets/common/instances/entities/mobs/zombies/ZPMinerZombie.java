@@ -60,8 +60,8 @@ public class ZPMinerZombie extends ZPAbstractZombie {
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(8, new ZPZombieRandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, (new ZPZombieHurtByMobGoal(this)));
-        this.targetSelector.addGoal(2, new ZPZombieNearestAttackableTargetPlayerGoal(this, 1.0f, true, 10, (e) -> true));
-        this.targetSelector.addGoal(3, new ZPZombieNearestAttackableTargetLivingGoal(this, List.of(AbstractVillager.class), 0.5f, true, 20, (e) -> true));
+        this.targetSelector.addGoal(2, new ZPZombieNearestAttackableTargetPlayerGoal(this, 1.0f, ZPConstants.ZOMBIE_XRAY_LOOK, 10, (e) -> true));
+        this.targetSelector.addGoal(3, new ZPZombieNearestAttackableTargetLivingGoal(this, List.of(AbstractVillager.class), 0.5f, ZPConstants.ZOMBIE_XRAY_LOOK, 20, (e) -> true));
         this.targetSelector.addGoal(4, new ZPZombieNearestAttackableTargetLivingGoal(this, List.of(Cow.class, IronGolem.class, Horse.class, Sheep.class, Pig.class), 0.4f, false, 60, (e) -> true));
         this.targetSelector.addGoal(5, new ZPZombieAngryGoal(this));
     }

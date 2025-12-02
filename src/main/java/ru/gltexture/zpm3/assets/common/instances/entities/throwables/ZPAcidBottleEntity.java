@@ -90,9 +90,9 @@ public class ZPAcidBottleEntity extends ZPThrowableEntity {
         Entity entity = pResult.getEntity();
         if (!entity.level().isClientSide()) {
             if (entity instanceof IZPEntityExt izpEntityExt) {
-                izpEntityExt.addAcidLevel(ZPConstants.DEFAULT_ACID_BOTTLE_AFFECT_TIME);
+                izpEntityExt.addAcidLevel(ZPConstants.ACID_BOTTLE_AFFECT_TIME);
             }
-            entity.hurt(this.damageSources().thrown(this, this.getOwner()), ZPConstants.DEFAULT_ACID_BOTTLE_DAMAGE);
+            entity.hurt(this.damageSources().thrown(this, this.getOwner()), ZPConstants.ACID_BOTTLE_DAMAGE);
         }
     }
 

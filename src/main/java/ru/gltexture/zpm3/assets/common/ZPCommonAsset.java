@@ -22,6 +22,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.events.common.ZPLivingEvents;
 import ru.gltexture.zpm3.assets.common.events.common.ZPMobAttributes;
+import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.common.init.*;
 import ru.gltexture.zpm3.assets.common.instances.block_entities.ZPFadingBlockEntity;
 import ru.gltexture.zpm3.assets.common.population.SetupPopulation;
@@ -29,6 +30,7 @@ import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.asset.ZPAsset;
 import ru.gltexture.zpm3.engine.core.asset.ZPAssetData;
+import ru.gltexture.zpm3.engine.core.config.ZPConfigurator;
 import ru.gltexture.zpm3.engine.instances.blocks.IHotLiquid;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
@@ -110,6 +112,11 @@ public class ZPCommonAsset extends ZPAsset {
     @Override
     public void clientDestroy() {
 
+    }
+
+    @Override
+    public ZPConfigurator.ZPClassWithConfConstants[] zpClassWithConfConstants() {
+        return new ZPConfigurator.ZPClassWithConfConstants[] { new ZPConstants() };
     }
 
     @Override

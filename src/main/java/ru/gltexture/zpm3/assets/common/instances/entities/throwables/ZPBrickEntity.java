@@ -71,7 +71,7 @@ public class ZPBrickEntity extends ZPThrowableEntity {
         super.onHitEntity(pResult);
         Entity entity = pResult.getEntity();
         if (!entity.level().isClientSide()) {
-            entity.hurt(this.damageSources().thrown(this, this.getOwner()), ZPConstants.DEFAULT_BRICK_DAMAGE);
+            entity.hurt(this.damageSources().thrown(this, this.getOwner()), ZPConstants.BRICK_DAMAGE);
         }
     }
 

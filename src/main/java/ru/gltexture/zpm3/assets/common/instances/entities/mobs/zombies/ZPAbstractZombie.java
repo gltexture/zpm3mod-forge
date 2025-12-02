@@ -108,13 +108,12 @@ public abstract class ZPAbstractZombie extends Monster {
                     this.stopDespawning += 1;
                 }
             } else {
-                if (!this.hasImportantLoot()) {
-                    if (this.stopDespawning > ZPConstants.ZOMBIE_MAX_ANGRY_PERSISTENCE_TICKS) {
-                        this.stopDespawning = ZPConstants.ZOMBIE_MAX_ANGRY_PERSISTENCE_TICKS;
+                if (ZPConstants.ZOMBIE_STOP_DESPAWNING_IF_HAS_IMPORTANT_LOOT && this.hasImportantLoot()) {
+                    this.stopDespawning = ZPConstants.ZOMBIE_MAX_ANGRY_PERSISTENCE_TICKS;
+                } else {
+                    if (this.stopDespawning > 0) {
+                        this.stopDespawning -= 1;
                     }
-                }
-                if (this.stopDespawning > 0) {
-                    this.stopDespawning -= 1;
                 }
             }
             if (this.isEating()) {
@@ -180,7 +179,7 @@ public abstract class ZPAbstractZombie extends Monster {
 
     public boolean doHurtTarget(@NotNull Entity pEntity) {
         boolean b1 = super.doHurtTarget(pEntity);
-        if (ZPRandom.getRandom().nextFloat() <= this.getAttributes().getBaseValue(ZPEntityAttributes.zm_random_effect_chance.get())) {
+        if (ZPRandom.getRandom().nextFloat() <= this.getAttributes().getBaseValue(ZPEntityAttributes.zm_random_effect_chance.get()) * ZPConstants.ZOMBIE_APPLY_NEGATIVE_EFFECT_ON_ENTITY_CHANCE_MULTIPLIER) {
             if (pEntity instanceof LivingEntity livingEntity) {
                 ZPAbstractZombie.applyRandomEffect(livingEntity);
             }
@@ -279,17 +278,17 @@ public abstract class ZPAbstractZombie extends Monster {
 
     @Override
     public boolean canHoldItem(@NotNull ItemStack pStack) {
-        return true;
+        return ZPConstants.ZOMBIE_CAN_PICK_UP_LOOT;
     }
 
     @Override
     public boolean wantsToPickUp(@NotNull ItemStack pStack) {
-        return true;
+        return ZPConstants.ZOMBIE_CAN_PICK_UP_LOOT;
     }
 
     @Override
     public boolean canPickUpLoot() {
-        return true;
+        return ZPConstants.ZOMBIE_CAN_PICK_UP_LOOT;
     }
 
     @Override
@@ -392,8 +391,8 @@ public abstract class ZPAbstractZombie extends Monster {
             return;
         }
 
-        if (ZPRandom.getRandom().nextFloat() <= 0.03f * ZPConstants.ZOMBIE_PLAGUE_EFFECT_CHANCE_MULTIPLIER) {
-            entity.addEffect(new MobEffectInstance(ZPMobEffects.zombie_plague.get(), 12000, 0, false, false));
+        if (entity instanceof Player && ZPRandom.getRandom().nextFloat() <= 0.03f * ZPConstants.ZOMBIE_PLAGUE_EFFECT_CHANCE_MULTIPLIER) {
+            entity.addEffect(new MobEffectInstance(ZPMobEffects.zombie_plague.get(), ZPConstants.ZOMBIE_PLAGUE_VIRUS_EFFECT_TIME_TICKS, 0, false, false));
         }
 
         float roll = ZPRandom.getRandom().nextFloat();

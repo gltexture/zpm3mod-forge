@@ -1,7 +1,10 @@
 package ru.gltexture.zpm3.engine.mixins.impl.common;
 
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -30,6 +33,18 @@ public abstract class ZPPlayerMixin implements IZPPlayerMixinExt {
 
     @Unique
     private int gotPackets = 0;
+
+    @Unique
+    private boolean enabledPickUpOnF;
+
+    @Override
+    public boolean enabledPickUpOnF() {
+        return this.enabledPickUpOnF;
+    }
+
+    public void setEnabledPickUpOnF(boolean enabledPickUpOnF) {
+        this.enabledPickUpOnF = enabledPickUpOnF;
+    }
 
     @Inject(method = "tick", at = @At("TAIL"))
     private void onTick(CallbackInfo ci) {

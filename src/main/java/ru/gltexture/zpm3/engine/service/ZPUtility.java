@@ -32,7 +32,6 @@ public final class ZPUtility {
     private final Files files;
     private final Sides sides;
     private final Sounds sounds;
-    private final Client client;
     private final Math math;
     private final MEntity entity;
 
@@ -41,7 +40,6 @@ public final class ZPUtility {
         this.files = new Files();
         this.sides = new Sides();
         this.sounds = new Sounds();
-        this.client = new Client();
         this.math = new Math();
         this.entity = new MEntity();
     }
@@ -60,10 +58,6 @@ public final class ZPUtility {
 
     public static Sounds sounds() {
         return ZPUtility.instance.sounds;
-    }
-
-    public static Client client() {
-        return ZPUtility.instance.client;
     }
 
     public static Math math() {
@@ -204,26 +198,32 @@ public final class ZPUtility {
         }
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public static final class Client {
-        public void ifClientLevelValid(Runnable runnable) {
-            if (Minecraft.getInstance().level != null) {
-                runnable.run();
-            }
-        }
-    }
-
     public static final class Sides {
         private Sides() {
         }
 
-        public void onlyClient(Runnable runnable) {
-            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> runnable);
+        @OnlyIn(Dist.CLIENT)
+        public static CRun wrapClient(CRun runnable) {
+            return runnable;
+        }
+
+        public void onlyClient(CRun runnable) {
+            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> runnable::run);
         }
 
         // WARN ONLY DEDICATED!!!!!!!!!!!!!!!!!!!!!!!!!
-        public void onlyDedicatedServer(Runnable runnable) {
-            DistExecutor.unsafeRunWhenOn(Dist.DEDICATED_SERVER, () -> runnable);
+        public void onlyDedicatedServer(SRun runnable) {
+            DistExecutor.unsafeRunWhenOn(Dist.DEDICATED_SERVER, () -> runnable::run);
+        }
+
+        @FunctionalInterface
+        public interface CRun {
+            void run();
+        }
+
+        @FunctionalInterface
+        public interface SRun {
+            void run();
         }
     }
 }

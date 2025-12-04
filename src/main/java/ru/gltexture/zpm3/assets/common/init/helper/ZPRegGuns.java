@@ -16,6 +16,7 @@ import ru.gltexture.zpm3.assets.guns.item.ZPBaseGun;
 import ru.gltexture.zpm3.assets.guns.item.ZPGunPistol;
 import ru.gltexture.zpm3.engine.instances.items.ZPItem;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
+import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public abstract class ZPRegGuns {
     public static void init(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
@@ -33,17 +34,21 @@ public abstract class ZPRegGuns {
                             .setReloadSound(() -> ZPSounds.uzi_reload.get())
                             .setFireSound(() -> ZPSounds.usp_fire.get())
                     )
-            ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-                utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
-                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
-                utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultPistolRenderer, ZPDefaultGunRenderers.defaultPistolRenderer);
+            ).afterCreated((e, utils) -> {
+                ZPUtility.sides().onlyClient(() -> {
+                    utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                    utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+                    utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultPistolRenderer, ZPDefaultGunRenderers.defaultPistolRenderer);
+                });
             }).end();
 
             ZPItems._makarov = regSupplier.register("_makarov",
                     () -> new ZPItem(new Item.Properties().stacksTo(32))
-            ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-                utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
-                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+            ).afterCreated((e, utils) -> {
+                ZPUtility.sides().onlyClient(() -> {
+                    utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                    utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+                });
             }).end();
 
             ZPItems.makarov = regSupplier.register("makarov",
@@ -58,19 +63,23 @@ public abstract class ZPRegGuns {
                             .setReloadSound(() -> ZPSounds.makarov_reload.get())
                             .setFireSound(() -> ZPSounds.makarov_fire.get())
                     )
-            ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-                utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
-                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
-                utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultPistolRenderer, ZPDefaultGunRenderers.defaultPistolRenderer);
+            ).afterCreated((e, utils) -> {
+                ZPUtility.sides().onlyClient(() -> {
+                    utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                    utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+                    utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultPistolRenderer, ZPDefaultGunRenderers.defaultPistolRenderer);
+                });
             }).end();
         }
 
         {
             ZPItems._handmade_pistol = regSupplier.register("_handmade_pistol",
                     () -> new ZPItem(new Item.Properties().stacksTo(32))
-            ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-                utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
-                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+            ).afterCreated((e, utils) -> {
+                ZPUtility.sides().onlyClient(() -> {
+                    utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                    utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+                });
             }).end();
 
             ZPItems.handmade_pistol = regSupplier.register("handmade_pistol",
@@ -86,19 +95,23 @@ public abstract class ZPRegGuns {
                             .setReloadSound(() -> ZPSounds.handmade_pistol_reload.get())
                             .setFireSound(() -> ZPSounds.handmade_pistol_fire.get())
                     )
-            ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-                utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
-                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
-                utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultPistolRenderer, ZPDefaultGunRenderers.defaultPistolRenderer);
+            ).afterCreated((e, utils) -> {
+                ZPUtility.sides().onlyClient(() -> {
+                    utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                    utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+                    utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultPistolRenderer, ZPDefaultGunRenderers.defaultPistolRenderer);
+                });
             }).end();
         }
 
         {
             ZPItems._colt = regSupplier.register("_colt",
                     () -> new ZPItem(new Item.Properties().stacksTo(32))
-            ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-                utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
-                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+            ).afterCreated((e, utils) -> {
+                ZPUtility.sides().onlyClient(() -> {
+                    utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                    utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+                });
             }).end();
 
             ZPItems.colt = regSupplier.register("colt",
@@ -114,19 +127,23 @@ public abstract class ZPRegGuns {
                             .setReloadSound(() -> ZPSounds.colt_reload.get())
                             .setFireSound(() -> ZPSounds.colt_fire.get())
                     )
-            ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-                utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
-                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
-                utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultPistolRenderer, ZPDefaultGunRenderers.defaultPistolRenderer);
+            ).afterCreated((e, utils) -> {
+                ZPUtility.sides().onlyClient(() -> {
+                    utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                    utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+                    utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultPistolRenderer, ZPDefaultGunRenderers.defaultPistolRenderer);
+                });
             }).end();
         }
 
         {
             ZPItems._m1911 = regSupplier.register("_m1911",
                     () -> new ZPItem(new Item.Properties().stacksTo(32))
-            ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-                utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
-                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+            ).afterCreated((e, utils) -> {
+                ZPUtility.sides().onlyClient(() -> {
+                    utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                    utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+                });
             }).end();
 
             ZPItems.m1911 = regSupplier.register("m1911",
@@ -141,19 +158,23 @@ public abstract class ZPRegGuns {
                             .setReloadSound(() -> ZPSounds.m1911_reload.get())
                             .setFireSound(() -> ZPSounds.m1911_fire.get())
                     )
-            ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-                utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
-                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
-                utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultPistolRenderer, ZPDefaultGunRenderers.defaultPistolRenderer);
+            ).afterCreated((e, utils) -> {
+                ZPUtility.sides().onlyClient(() -> {
+                    utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                    utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+                    utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultPistolRenderer, ZPDefaultGunRenderers.defaultPistolRenderer);
+                });
             }).end();
         }
 
         {
             ZPItems._usp = regSupplier.register("_usp",
                     () -> new ZPItem(new Item.Properties().stacksTo(32))
-            ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-                utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
-                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+            ).afterCreated((e, utils) -> {
+                ZPUtility.sides().onlyClient(() -> {
+                    utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                    utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+                });
             }).end();
 
             ZPItems.usp = regSupplier.register("usp",
@@ -168,19 +189,23 @@ public abstract class ZPRegGuns {
                             .setReloadSound(() -> ZPSounds.usp_reload.get())
                             .setFireSound(() -> ZPSounds.usp_fire.get())
                     )
-            ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-                utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
-                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
-                utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultPistolRenderer, ZPDefaultGunRenderers.defaultPistolRenderer);
+            ).afterCreated((e, utils) -> {
+                ZPUtility.sides().onlyClient(() -> {
+                    utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                    utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+                    utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultPistolRenderer, ZPDefaultGunRenderers.defaultPistolRenderer);
+                });
             }).end();
         }
 
         {
             ZPItems._uzi = regSupplier.register("_uzi",
                     () -> new ZPItem(new Item.Properties().stacksTo(32))
-            ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-                utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
-                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+            ).afterCreated((e, utils) -> {
+                ZPUtility.sides().onlyClient(() -> {
+                    utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                    utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+                });
             }).end();
 
             ZPItems.uzi = regSupplier.register("uzi",
@@ -196,19 +221,23 @@ public abstract class ZPRegGuns {
                             .setReloadSound(() -> ZPSounds.uzi_reload.get())
                             .setFireSound(() -> ZPSounds.uzi_fire.get())
                     )
-            ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-                utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
-                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
-                utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultPistolRenderer, ZPDefaultGunRenderers.defaultPistolRenderer);
+            ).afterCreated((e, utils) -> {
+                ZPUtility.sides().onlyClient(() -> {
+                    utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                    utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+                    utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultPistolRenderer, ZPDefaultGunRenderers.defaultPistolRenderer);
+                });
             }).end();
         }
 
         {
             ZPItems._deagle = regSupplier.register("_deagle",
                     () -> new ZPItem(new Item.Properties().stacksTo(32))
-            ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-                utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
-                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+            ).afterCreated((e, utils) -> {
+                ZPUtility.sides().onlyClient(() -> {
+                    utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                    utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+                });
             }).end();
 
             ZPItems.deagle = regSupplier.register("deagle",
@@ -223,10 +252,12 @@ public abstract class ZPRegGuns {
                             .setReloadSound(() -> ZPSounds.deagle_reload.get())
                             .setFireSound(() -> ZPSounds.deagle_fire.get())
                     )
-            ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-                utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
-                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
-                utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultPistolRenderer, ZPDefaultGunRenderers.defaultPistolRenderer);
+            ).afterCreated((e, utils) -> {
+                ZPUtility.sides().onlyClient(() -> {
+                    utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                    utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+                    utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultPistolRenderer, ZPDefaultGunRenderers.defaultPistolRenderer);
+                });
             }).end();
 
             ZPItems.golden_deagle = regSupplier.register("golden_deagle",
@@ -241,19 +272,23 @@ public abstract class ZPRegGuns {
                             .setReloadSound(() -> ZPSounds.deagle_reload.get())
                             .setFireSound(() -> ZPSounds.deagle_fire.get())
                     )
-            ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-                utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
-                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
-                utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultPistolRenderer, ZPDefaultGunRenderers.defaultPistolRenderer);
+            ).afterCreated((e, utils) -> {
+                ZPUtility.sides().onlyClient(() -> {
+                    utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                    utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+                    utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultPistolRenderer, ZPDefaultGunRenderers.defaultPistolRenderer);
+                });
             }).end();
         }
 
         {
             ZPItems._shotgun = regSupplier.register("_shotgun",
                     () -> new ZPItem(new Item.Properties().stacksTo(32))
-            ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-                utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
-                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+            ).afterCreated((e, utils) -> {
+                ZPUtility.sides().onlyClient(() -> {
+                    utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                    utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+                });
             }).end();
 
             ZPItems.shotgun = regSupplier.register("shotgun",
@@ -268,19 +303,23 @@ public abstract class ZPRegGuns {
                             .setReloadSound(() -> ZPSounds.shotgun_reload.get())
                             .setFireSound(() -> ZPSounds.shotgun_fire.get())
                     )
-            ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-                utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
-                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
-                utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultShutterRifleRenderer, ZPDefaultGunRenderers.defaultShutterRifleRenderer);
+            ).afterCreated((e, utils) -> {
+                ZPUtility.sides().onlyClient(() -> {
+                    utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                    utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+                    utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultShutterRifleRenderer, ZPDefaultGunRenderers.defaultShutterRifleRenderer);
+                });
             }).end();
         }
 
         {
             ZPItems._mosin = regSupplier.register("_mosin",
                     () -> new ZPItem(new Item.Properties().stacksTo(32))
-            ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-                utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
-                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+            ).afterCreated((e, utils) -> {
+                ZPUtility.sides().onlyClient(() -> {
+                    utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                    utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+                });
             }).end();
 
             ZPItems.mosin = regSupplier.register("mosin",
@@ -295,19 +334,23 @@ public abstract class ZPRegGuns {
                             .setReloadSound(() -> ZPSounds.rifle_shutter.get())
                             .setFireSound(() -> ZPSounds.mosin_fire.get())
                     )
-            ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-                utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
-                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
-                utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultShutterRifleRenderer, ZPDefaultGunRenderers.defaultShutterRifleRenderer);
+            ).afterCreated((e, utils) -> {
+                ZPUtility.sides().onlyClient(() -> {
+                    utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                    utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+                    utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultShutterRifleRenderer, ZPDefaultGunRenderers.defaultShutterRifleRenderer);
+                });
             }).end();
         }
 
         {
             ZPItems._akm = regSupplier.register("_akm",
                     () -> new ZPItem(new Item.Properties().stacksTo(32))
-            ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-                utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
-                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+            ).afterCreated((e, utils) -> {
+                ZPUtility.sides().onlyClient(() -> {
+                    utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                    utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+                });
             }).end();
 
             ZPItems.akm = regSupplier.register("akm",
@@ -323,10 +366,12 @@ public abstract class ZPRegGuns {
                             .setReloadSound(() -> ZPSounds.akm_reload.get())
                             .setFireSound(() -> ZPSounds.akm_fire.get())
                     )
-            ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-                utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
-                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
-                utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultRifleRenderer, ZPDefaultGunRenderers.defaultRifleRenderer);
+            ).afterCreated((e, utils) -> {
+                ZPUtility.sides().onlyClient(() -> {
+                    utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                    utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+                    utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultRifleRenderer, ZPDefaultGunRenderers.defaultRifleRenderer);
+                });
             }).end();
         }
     }

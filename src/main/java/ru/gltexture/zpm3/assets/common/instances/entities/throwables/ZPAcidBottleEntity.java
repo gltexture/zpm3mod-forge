@@ -20,7 +20,6 @@ import ru.gltexture.zpm3.assets.common.utils.ZPCommonClientUtils;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.mixins.ext.IZPEntityExt;
 import ru.gltexture.zpm3.engine.instances.entities.ZPThrowableEntity;
-import ru.gltexture.zpm3.engine.sound.ZPPositionedSound;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public class ZPAcidBottleEntity extends ZPThrowableEntity {
@@ -51,20 +50,18 @@ public class ZPAcidBottleEntity extends ZPThrowableEntity {
         super.tick();
 
         if (this.level().isClientSide) {
-            ZPUtility.client().ifClientLevelValid(() -> {
-                final Vector3f randomVector = ZPRandom.instance.randomVector3f(0.05f, new Vector3f(0.1f, 0.0f, 0.1f)).add(0.0f, 0.05f, 0.0f);
-                ZPCommonClientUtils.emmitAcidParticle(1.2f + ZPRandom.getRandom().nextFloat(0.3f), this.position().toVector3f().add(0.0f, this.getBbHeight() + 0.4f, 0.0f), randomVector);
-                if (this.tickCount % 3 == 0) {
-                    ZPUtility.sounds().play(new ZPPositionedSound(SoundEvents.FIRE_EXTINGUISH, SoundSource.MASTER, 0.375f, 1.15f, this.position().toVector3f(), 0L));
-                }
-            });
+            final Vector3f randomVector = ZPRandom.instance.randomVector3f(0.05f, new Vector3f(0.1f, 0.0f, 0.1f)).add(0.0f, 0.05f, 0.0f);
+            ZPCommonClientUtils.emmitAcidParticle(1.2f + ZPRandom.getRandom().nextFloat(0.3f), this.position().toVector3f().add(0.0f, this.getBbHeight() + 0.4f, 0.0f), randomVector);
+            if (this.tickCount % 3 == 0) {
+                this.level().playLocalSound(this.getOnPos(), SoundEvents.FIRE_EXTINGUISH, SoundSource.MASTER, 0.375f, 1.15f, false);
+            }
         }
     }
 
     public void handleEntityEvent(byte pId) {
         if (pId == 3) {
-            ZPUtility.sounds().play(new ZPPositionedSound(SoundEvents.FIRE_EXTINGUISH, SoundSource.MASTER, 0.8f, 0.75f, this.position().toVector3f(), 0L));
-            ZPUtility.sounds().play(new ZPPositionedSound(SoundEvents.GLASS_BREAK, SoundSource.MASTER, 0.8f, 1.0f, this.position().toVector3f(), 0L));
+            this.level().playLocalSound(this.getOnPos(), SoundEvents.FIRE_EXTINGUISH, SoundSource.MASTER, 0.8f, 0.75f, false);
+            this.level().playLocalSound(this.getOnPos(), SoundEvents.GLASS_BREAK, SoundSource.MASTER, 0.8f, 1.0f, false);
 
             for (int i = 0; i < 40; i++) {
                 final Vector3f randomVector = ZPRandom.instance.randomVector3f(0.1f, new Vector3f(0.2f, 0.075f, 0.2f));

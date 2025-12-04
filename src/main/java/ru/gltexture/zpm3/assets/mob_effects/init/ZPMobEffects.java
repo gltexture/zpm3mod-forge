@@ -22,20 +22,15 @@ public class ZPMobEffects extends ZPRegistry<MobEffect> {
 
     @Override
     protected void runRegister(@NotNull ZPRegSupplier<MobEffect> regSupplier) {
-        ZPMobEffects.bleeding = regSupplier.register("bleeding", () -> new ZPBleedingEffect(MobEffectCategory.HARMFUL, 0xff0000)).afterObjectCreated(Dist.CLIENT, (e, u) -> {
-        }).end();
+        ZPMobEffects.bleeding = regSupplier.register("bleeding", () -> new ZPBleedingEffect(MobEffectCategory.HARMFUL, 0xff0000)).end();
 
-        ZPMobEffects.zombie_plague = regSupplier.register("zombie_plague", () -> new ZPZombiePlagueEffect(MobEffectCategory.HARMFUL, 0x3cff11)).afterObjectCreated(Dist.CLIENT, (e, u) -> {
-        }).end();
+        ZPMobEffects.zombie_plague = regSupplier.register("zombie_plague", () -> new ZPZombiePlagueEffect(MobEffectCategory.HARMFUL, 0x3cff11)).end();
 
-        ZPMobEffects.fracture = regSupplier.register("fracture", () -> new ZPFractureEffect(MobEffectCategory.HARMFUL, 0xffffff)).afterObjectCreated(Dist.CLIENT, (e, u) -> {
-        }).end();
+        ZPMobEffects.fracture = regSupplier.register("fracture", () -> new ZPFractureEffect(MobEffectCategory.HARMFUL, 0xffffff)).end();
 
-        ZPMobEffects.adrenaline = regSupplier.register("adrenaline", () -> new ZPAdrenalineEffect(MobEffectCategory.BENEFICIAL, 0xff00ff)).afterObjectCreated(Dist.CLIENT, (e, u) -> {
-        }).end();
+        ZPMobEffects.adrenaline = regSupplier.register("adrenaline", () -> new ZPAdrenalineEffect(MobEffectCategory.BENEFICIAL, 0xff00ff)).end();
 
-        ZPMobEffects.better_vision = regSupplier.register("better_vision", () -> new ZPBetterVisionEffect(MobEffectCategory.BENEFICIAL, 0x00ffff)).afterObjectCreated(Dist.CLIENT, (e, u) -> {
-        }).end();
+        ZPMobEffects.better_vision = regSupplier.register("better_vision", () -> new ZPBetterVisionEffect(MobEffectCategory.BENEFICIAL, 0x00ffff)).end();
     }
 
     @Override

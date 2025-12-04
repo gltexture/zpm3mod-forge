@@ -12,6 +12,7 @@ import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.asset.ZPAsset;
 import ru.gltexture.zpm3.engine.core.asset.ZPAssetData;
+import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public class ZPDebugAsset extends ZPAsset {
     public ZPDebugAsset(@NotNull ZPAssetData zpAssetData) {
@@ -50,7 +51,14 @@ public class ZPDebugAsset extends ZPAsset {
 
     @Override
     public void initializeAsset(ZombiePlague3.@NotNull IAssetEntry assetEntry) {
-        assetEntry.addEventClass(ZPFreeCameraEvents.class);
-        assetEntry.addEventClass(ZPRenderStuffEvent.class);
+        ZPUtility.sides().onlyClient(() -> {
+            assetEntry.addEventClass(ZPFreeCameraEvents.class);
+            assetEntry.addEventClass(ZPRenderStuffEvent.class);
+        });
+    }
+
+    @Override
+    public void preCommonInitializeAsset() {
+
     }
 }

@@ -5,10 +5,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.mob_effects.events.common.ZPEntityEffectActionsEvent;
 import ru.gltexture.zpm3.assets.mob_effects.init.ZPMobEffects;
-import ru.gltexture.zpm3.assets.player.logic.PlayerBothSidesLogic;
-import ru.gltexture.zpm3.assets.player.logic.PlayerClientSideLogic;
-import ru.gltexture.zpm3.assets.player.logic.PlayerServerSideLogic;
-import ru.gltexture.zpm3.assets.player.logic.PlayerTickEventLogic;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.asset.ZPAsset;
@@ -21,10 +17,6 @@ public class ZPMobEffectsAsset extends ZPAsset {
 
     public ZPMobEffectsAsset() {
     }
-
-    public static final @NotNull PlayerTickEventLogic bothSidesLogic = new PlayerBothSidesLogic();
-    public static final @NotNull PlayerTickEventLogic clientSideLogic = new PlayerClientSideLogic();
-    public static final @NotNull PlayerTickEventLogic serverSideLogic = new PlayerServerSideLogic();
 
     @Override
     public void commonSetup() {
@@ -53,5 +45,10 @@ public class ZPMobEffectsAsset extends ZPAsset {
     public void initializeAsset(ZombiePlague3.@NotNull IAssetEntry assetEntry) {
         assetEntry.addZP3RegistryClass(ZPMobEffects.class);
         assetEntry.addEventClass(ZPEntityEffectActionsEvent.class);
+    }
+
+    @Override
+    public void preCommonInitializeAsset() {
+
     }
 }

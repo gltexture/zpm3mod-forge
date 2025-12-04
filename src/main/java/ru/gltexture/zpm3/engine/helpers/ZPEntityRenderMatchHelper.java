@@ -9,12 +9,13 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.function.Supplier;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class ZPEntityRenderMatchHelper {
     private static final Set<EntityRenderPair<? extends Entity>> entityRendererPairs = new HashSet<>();
 
-    public static <T extends Entity> void matchEntityRendering(@NotNull RegistryObject<EntityType<T>> registryObject, @NotNull EntityRendererProvider<T> entityRenderer) {
+    public static <T extends Entity> void matchEntityRendering(@NotNull Supplier<EntityType<T>> registryObject, @NotNull EntityRendererProvider<T> entityRenderer) {
         ZPEntityRenderMatchHelper.entityRendererPairs.add(new EntityRenderPair<>(registryObject, entityRenderer));
     }
 
@@ -26,5 +27,5 @@ public abstract class ZPEntityRenderMatchHelper {
         ZPEntityRenderMatchHelper.entityRendererPairs.clear();
     }
 
-    public record EntityRenderPair<T extends Entity> (@NotNull RegistryObject<EntityType<T>> registryObject, @NotNull EntityRendererProvider<T> provider) {}
+    public record EntityRenderPair<T extends Entity> (@NotNull Supplier<EntityType<T>> registryObject, @NotNull EntityRendererProvider<T> provider) {}
 }

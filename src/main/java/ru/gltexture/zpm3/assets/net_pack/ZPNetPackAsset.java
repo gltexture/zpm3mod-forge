@@ -39,13 +39,20 @@ public class ZPNetPackAsset extends ZPAsset {
 
     @Override
     public void initializeAsset(ZombiePlague3.@NotNull IAssetEntry assetEntry) {
-        assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(ZPAcidSpreadPacket.class, ZPAcidSpreadPacket.encoder(), ZPAcidSpreadPacket.decoder()));
-        assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(ZPGunActionPacket.class, ZPGunActionPacket.encoder(), ZPGunActionPacket.decoder()));
-        assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(ZPBulletHitPacket.class, ZPBulletHitPacket.encoder(), ZPBulletHitPacket.decoder()));
-        assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(ZPBulletTracePacket.class, ZPBulletTracePacket.encoder(), ZPBulletTracePacket.decoder()));
-        assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(ZPNetCheckPacket.class, ZPNetCheckPacket.encoder(), ZPNetCheckPacket.decoder()));
-        assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(ZPBlockCrack.class, ZPBlockCrack.encoder(), ZPBlockCrack.decoder()));
-        assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(ZPSendGlobalSettingsToClients.class, ZPSendGlobalSettingsToClients.encoder(), ZPSendGlobalSettingsToClients.decoder()));
-        assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(ZPBloodPainFXPacket.class, ZPBloodPainFXPacket.encoder(), ZPBloodPainFXPacket.decoder()));
+        assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(0, ZPAcidSpreadPacket.class, ZPAcidSpreadPacket.encoder(), ZPAcidSpreadPacket.decoder()));
+        assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(1, ZPGunActionPacket.class, ZPGunActionPacket.encoder(), ZPGunActionPacket.decoder()));
+        assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(2, ZPBulletHitPacket.class, ZPBulletHitPacket.encoder(), ZPBulletHitPacket.decoder()));
+        assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(3, ZPBulletTracePacket.class, ZPBulletTracePacket.encoder(), ZPBulletTracePacket.decoder()));
+        assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(4, ZPNetCheckPacket.class, ZPNetCheckPacket.encoder(), ZPNetCheckPacket.decoder()));
+        assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(5, ZPBlockCrack.class, ZPBlockCrack.encoder(), ZPBlockCrack.decoder()));
+        assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(6, ZPSendGlobalSettings_StoC.class, ZPSendGlobalSettings_StoC.encoder(), ZPSendGlobalSettings_StoC.decoder()));
+        assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(7, ZPBloodPainFXPacket.class, ZPBloodPainFXPacket.encoder(), ZPBloodPainFXPacket.decoder()));
+        assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(8, ZPSendGlobalSettings_CtoS.class, ZPSendGlobalSettings_CtoS.encoder(), ZPSendGlobalSettings_CtoS.decoder()));
+        assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(9, ZPPlayerWantToPickUpItem.class, ZPPlayerWantToPickUpItem.encoder(), ZPPlayerWantToPickUpItem.decoder()));
+    }
+
+    @Override
+    public void preCommonInitializeAsset() {
+
     }
 }

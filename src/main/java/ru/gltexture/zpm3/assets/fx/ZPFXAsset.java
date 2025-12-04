@@ -42,4 +42,9 @@ public class ZPFXAsset extends ZPAsset {
     public void initializeAsset(ZombiePlague3.@NotNull IAssetEntry assetEntry) {
         assetEntry.addZP3RegistryClass(ZPParticles.class);
     }
+
+    @Override
+    public void preCommonInitializeAsset() {
+
+    }
 }

@@ -16,7 +16,7 @@ import net.minecraftforge.event.TickEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.assets.guns.item.ZPBaseGun;
-import ru.gltexture.zpm3.engine.keybind.ZPBaseKeyBindings;
+import ru.gltexture.zpm3.assets.guns.keybind.ZPGunKeyBindings;
 
 @OnlyIn(Dist.CLIENT)
 public class ZPClientGunClientTickProcessing implements IZPGunInputProcessor {
@@ -37,7 +37,7 @@ public class ZPClientGunClientTickProcessing implements IZPGunInputProcessor {
     }
 
     private static boolean unloadOrReloadIsPressed() {
-        return ZPBaseKeyBindings.reloadKey.isDown() || ZPBaseKeyBindings.unloadKey.isDown();
+        return ZPGunKeyBindings.reloadKey.isDown() || ZPGunKeyBindings.unloadKey.isDown();
     }
 
     public void tick(@NotNull Minecraft minecraft, TickEvent.Phase phase) {
@@ -189,7 +189,7 @@ public class ZPClientGunClientTickProcessing implements IZPGunInputProcessor {
                 }
 
                 if (ZPClientGunClientTickProcessing.unloadOrReloadIsPressed()) {
-                    boolean unLoad = !ZPBaseKeyBindings.reloadKey.isDown() && ZPBaseKeyBindings.unloadKey.isDown();
+                    boolean unLoad = !ZPGunKeyBindings.reloadKey.isDown() && ZPGunKeyBindings.unloadKey.isDown();
                     boolean reloadRightGun = false;
                     boolean reloadLeftGun = false;
 

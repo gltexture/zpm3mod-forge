@@ -21,6 +21,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.TickEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -28,6 +30,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL46;
 import ru.gltexture.zpm3.assets.debug.imgui.DearUITRSInterface;
+import ru.gltexture.zpm3.assets.guns.ZPGunsAsset;
 import ru.gltexture.zpm3.assets.guns.rendering.basic.ZPDefaultGunMuzzleflashFX;
 import ru.gltexture.zpm3.assets.guns.rendering.fx.ZPGunFXGlobalData;
 import ru.gltexture.zpm3.assets.guns.rendering.transforms.AbstractGunTransforms;
@@ -106,6 +109,10 @@ public abstract class ZPAbstractGunRenderer implements ZPRenderHooks.ZPItemRende
 
 
     protected void translateStack(PoseStack pPoseStack, float pPartialTicks) {
+        if (Minecraft.getInstance().player != null) {
+            ZPAbstractGunRenderer.breathEffect(pPartialTicks, pPoseStack);
+        }
+
         LocalPlayer localPlayer = Objects.requireNonNull(Minecraft.getInstance().player);
         final float f2 = Mth.lerp(pPartialTicks, localPlayer.xBobO, localPlayer.xBob);
         final float f3 = Mth.lerp(pPartialTicks, localPlayer.yBobO, localPlayer.yBob);
@@ -115,6 +122,17 @@ public abstract class ZPAbstractGunRenderer implements ZPRenderHooks.ZPItemRende
         this.bobHurt(pPoseStack, pPartialTicks);
         if (Minecraft.getInstance().options.bobView().get()) {
             this.bobView(pPoseStack, pPartialTicks);
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static void breathEffect(float partialTicks, @NotNull PoseStack poseStack) {
+        Player player = Minecraft.getInstance().player;
+        if (player != null) {
+            float f = player.tickCount + partialTicks;
+            float f2 = Mth.cos(f * 0.05f) * 0.15f;
+            poseStack.mulPose(Axis.XP.rotationDegrees((float) (Math.PI * f2)));
+            poseStack.mulPose(Axis.YP.rotationDegrees((float) (Math.PI * f2 * 0.3f)));
         }
     }
 

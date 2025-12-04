@@ -6,6 +6,8 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPLogger;
 import ru.gltexture.zpm3.engine.network.ZPNetwork;
@@ -43,15 +45,15 @@ public class ZPAcidSpreadPacket implements ZPNetwork.ZPPacket {
 
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
-    public void onClient(@NotNull Player localPlayer, @NotNull ClientLevel clientLevel) {
-        ZPUtility.client().ifClientLevelValid(() -> {
-            Entity entity = Objects.requireNonNull(Minecraft.getInstance().level).getEntity(this.entityId);
-            if (entity != null) {
-               // new ZPItemStackNBT(entity).incrementInt(ZPEntityTagsList.ACID_AFFECT_COOLDOWN, this.acidLevel);
-            } else {
-                ZPLogger.warn("Received entity-id: " + this.entityId + ", but entity is NULL");
-            }
-        });
+    public void onClient(@NotNull Player localPlayer) {
+        ClientLevel clientLevel = Objects.requireNonNull(Minecraft.getInstance().level);
+        Entity entity = Objects.requireNonNull(Minecraft.getInstance().level).getEntity(this.entityId);
+        if (entity != null) {
+            // new ZPItemStackNBT(entity).incrementInt(ZPEntityTagsList.ACID_AFFECT_COOLDOWN, this.acidLevel);
+        } else {
+            ZPLogger.warn("Received entity-id: " + this.entityId + ", but entity is NULL");
+        }
     }
 }

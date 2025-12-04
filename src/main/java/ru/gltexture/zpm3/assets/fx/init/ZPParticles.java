@@ -7,13 +7,11 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.fx.particles.ZPDefaultColoredParticle;
 import ru.gltexture.zpm3.assets.fx.particles.ParticleGunShell;
-import ru.gltexture.zpm3.assets.fx.particles.options.GunShellOptions;
 import ru.gltexture.zpm3.assets.fx.particles.types.ColoredDefaultParticleType;
 import ru.gltexture.zpm3.assets.fx.particles.types.GunShellType;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
-
-import java.util.Objects;
+import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public class ZPParticles extends ZPRegistry<ParticleType<?>> {
     public static RegistryObject<ColoredDefaultParticleType> colored_cloud;
@@ -26,20 +24,29 @@ public class ZPParticles extends ZPRegistry<ParticleType<?>> {
 
     @Override
     protected void runRegister(@NotNull ZPRegSupplier<ParticleType<? extends ParticleOptions>> regSupplier) {
-        ZPParticles.blood_fx = regSupplier.register("blood_fx", () -> new ColoredDefaultParticleType(false)).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-            utils.particles().matchParticleRenderingSet(e, ZPDefaultColoredParticle.ColoredDefaultParticleProvider::new);
-            utils.particles().addParticlesTexturesData(e, "zpm3:blood", 4);
-        }).end();
+        ZPParticles.blood_fx = regSupplier.register("blood_fx", () -> new ColoredDefaultParticleType(false))
+                .afterCreated((e, utils) -> {
+                    ZPUtility.sides().onlyClient(() -> {
+                        utils.particles().matchParticleRenderingSet(e, ZPDefaultColoredParticle.ColoredDefaultParticleProvider::new);
+                        utils.particles().addParticlesTexturesData(e, "zpm3:blood", 4);
+                    });
+                }).end();
 
-        ZPParticles.colored_cloud = regSupplier.register("colored_cloud", () -> new ColoredDefaultParticleType(false)).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-            utils.particles().matchParticleRenderingSet(e, ZPDefaultColoredParticle.ColoredDefaultParticleProvider::new);
-            utils.particles().addParticlesTexturesData(e, "minecraft:generic_", 8);
-        }).end();
+        ZPParticles.colored_cloud = regSupplier.register("colored_cloud", () -> new ColoredDefaultParticleType(false))
+                .afterCreated((e, utils) -> {
+                    ZPUtility.sides().onlyClient(() -> {
+                        utils.particles().matchParticleRenderingSet(e, ZPDefaultColoredParticle.ColoredDefaultParticleProvider::new);
+                        utils.particles().addParticlesTexturesData(e, "minecraft:generic_", 8);
+                    });
+                }).end();
 
-        ZPParticles.gun_shell = regSupplier.register("gun_shell", () -> new GunShellType(false)).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-            utils.particles().matchParticleRenderingSet(e, ParticleGunShell.GunShellParticleProvider::new);
-            utils.particles().addParticlesTexturesData(e, "zpm3:gun_shell", 1);
-        }).end();
+        ZPParticles.gun_shell = regSupplier.register("gun_shell", () -> new GunShellType(false))
+                .afterCreated((e, utils) -> {
+                    ZPUtility.sides().onlyClient(() -> {
+                        utils.particles().matchParticleRenderingSet(e, ParticleGunShell.GunShellParticleProvider::new);
+                        utils.particles().addParticlesTexturesData(e, "zpm3:gun_shell", 1);
+                    });
+                }).end();
     }
 
     @Override

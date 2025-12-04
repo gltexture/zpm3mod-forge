@@ -5,10 +5,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.entity.events.common.ZPEntitySpawnEvent;
 import ru.gltexture.zpm3.assets.entity.events.common.ZPEntityTickEvent;
-import ru.gltexture.zpm3.assets.entity.logic.EntityBothSidesLogic;
-import ru.gltexture.zpm3.assets.entity.logic.EntityClientSideLogic;
-import ru.gltexture.zpm3.assets.entity.logic.EntityServerSideLogic;
-import ru.gltexture.zpm3.assets.entity.logic.EntityTickEventLogic;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.asset.ZPAsset;
 import ru.gltexture.zpm3.engine.core.asset.ZPAssetData;
@@ -20,10 +16,6 @@ public class ZPEntityAsset extends ZPAsset {
 
     public ZPEntityAsset() {
     }
-
-    public static final @NotNull EntityTickEventLogic bothSidesLogic = new EntityBothSidesLogic();
-    public static final @NotNull EntityTickEventLogic clientSideLogic = new EntityClientSideLogic();
-    public static final @NotNull EntityTickEventLogic serverSideLogic = new EntityServerSideLogic();
 
     @Override
     public void commonSetup() {
@@ -51,5 +43,10 @@ public class ZPEntityAsset extends ZPAsset {
     public void initializeAsset(ZombiePlague3.@NotNull IAssetEntry assetEntry) {
         assetEntry.addEventClass(ZPEntitySpawnEvent.class);
         assetEntry.addEventClass(ZPEntityTickEvent.class);
+    }
+
+    @Override
+    public void preCommonInitializeAsset() {
+
     }
 }

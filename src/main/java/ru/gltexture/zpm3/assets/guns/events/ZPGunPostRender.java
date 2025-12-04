@@ -1,5 +1,7 @@
 package ru.gltexture.zpm3.assets.guns.events;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -12,6 +14,7 @@ import ru.gltexture.zpm3.assets.guns.rendering.tracer.ZPBulletTracerManager;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.events.ZPEventClass;
 
+@OnlyIn(Dist.CLIENT)
 public class ZPGunPostRender implements ZPEventClass {
     private static double lastFrameTime = 0.0f;
     private static double deltaTime = -1.0f;

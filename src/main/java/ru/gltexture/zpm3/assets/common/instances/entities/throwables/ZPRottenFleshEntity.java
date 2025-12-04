@@ -52,16 +52,14 @@ public class ZPRottenFleshEntity extends ZPThrowableEntity {
     public void tick() {
         super.tick();
         if (this.level().isClientSide) {
-            ZPUtility.client().ifClientLevelValid(() -> {
-                final Vector3f randomVector = ZPRandom.instance.randomVector3f(0.01f, new Vector3f(0.05f, 0.0f, 0.05f)).add(0.0f, 0.05f, 0.0f);
-                ZPCommonClientUtils.emmitToxicParticle(0.6f + ZPRandom.getRandom().nextFloat(0.3f), this.position().toVector3f().add(0.0f, this.getBbHeight() + 0.4f, 0.0f), randomVector);
-            });
+            final Vector3f randomVector = ZPRandom.instance.randomVector3f(0.01f, new Vector3f(0.05f, 0.0f, 0.05f)).add(0.0f, 0.05f, 0.0f);
+            ZPCommonClientUtils.emmitToxicParticle(0.6f + ZPRandom.getRandom().nextFloat(0.3f), this.position().toVector3f().add(0.0f, this.getBbHeight() + 0.4f, 0.0f), randomVector);
         }
     }
 
     public void handleEntityEvent(byte pId) {
         if (pId == 3) {
-            ZPUtility.sounds().play(new ZPPositionedSound(SoundEvents.SLIME_BLOCK_BREAK, SoundSource.MASTER, 1.0f, 0.6f, this.position().toVector3f(), 0L));
+            this.level().playLocalSound(this.getOnPos(), SoundEvents.SLIME_BLOCK_BREAK, SoundSource.MASTER, 1.0f, 0.6f, false);
             ZPCommonClientUtils.emmitItemBreakParticle(this.getItem(), this.position().toVector3f(), this.getDeltaMovement().toVector3f());
         }
     }

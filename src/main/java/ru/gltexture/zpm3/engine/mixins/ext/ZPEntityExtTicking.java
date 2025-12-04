@@ -60,7 +60,7 @@ public abstract class ZPEntityExtTicking {
         if (izpEntityExt.getAcidLevel() > 0) {
             ClientRenderFunctions.addAcidParticles(entity);
             if (entity.tickCount % 3 == 0) {
-                ZPUtility.sounds().play(new ZPPositionedSound(SoundEvents.FIRE_EXTINGUISH, SoundSource.MASTER, 0.375f, 1.15f, entity.position().toVector3f(), 0L));
+                entity.level().playLocalSound(entity.getOnPos(), SoundEvents.FIRE_EXTINGUISH, SoundSource.MASTER, 0.375f, 1.15f, false);
             }
         }
     }

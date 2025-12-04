@@ -23,6 +23,7 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
@@ -188,17 +189,9 @@ public abstract class ZPRegistry<T> {
     }
 
     public record ZPRegistryObject<S>(RegistryObject<S> end) {
-        public ZPRegistryObject<S> afterObjectCreated(@Nullable Dist side, @NotNull Consumer<@NotNull RegistryObject<S>> registryObjectConsumer) {
-            final ZPRegUtils zpRegUtils = ZPRegUtils.create(side);
-
-            if (side == null) {
-                registryObjectConsumer.accept(this.end(), zpRegUtils);
-                return this;
-            }
-            switch (side) {
-                case CLIENT -> ZPUtility.sides().onlyClient(() -> registryObjectConsumer.accept(this.end(), zpRegUtils));
-                case DEDICATED_SERVER -> ZPUtility.sides().onlyDedicatedServer(() -> registryObjectConsumer.accept(this.end(), zpRegUtils));
-            }
+        public ZPRegistryObject<S> afterCreated(@NotNull Consumer<@NotNull RegistryObject<S>> registryObjectConsumer) {
+            final ZPRegUtils zpRegUtils = new ZPRegUtils();
+            registryObjectConsumer.accept(this.end(), zpRegUtils);
             return this;
         }
 
@@ -208,11 +201,9 @@ public abstract class ZPRegistry<T> {
     }
 
     public static final class ZPRegUtils {
-        private final Dist dist;
         static Map<Dist, List<Consumer<Void>>> execLater = new HashMap<>();
 
-        private ZPRegUtils(Dist dist) {
-            this.dist = dist;
+        private ZPRegUtils() {
             this.items = new Items();
             this.blocks = new Blocks();
             this.particles = new Particles();
@@ -223,15 +214,11 @@ public abstract class ZPRegistry<T> {
             this.fluids = new Fluids();
         }
 
-        public void execLater(@NotNull Consumer<Void> consumer) {
-            if (!ZPRegUtils.execLater.containsKey(this.dist)) {
-               ZPRegUtils.execLater.put(this.dist, new ArrayList<>());
+        public void execLater(@NotNull Dist dist, @NotNull Consumer<Void> consumer) {
+            if (!ZPRegUtils.execLater.containsKey(dist)) {
+               ZPRegUtils.execLater.put(dist, new ArrayList<>());
             }
-            ZPRegUtils.execLater.get(this.dist).add(consumer);
-        }
-
-        public static ZPRegUtils create(Dist dist) {
-            return new ZPRegUtils(dist);
+            ZPRegUtils.execLater.get(dist).add(consumer);
         }
 
         private final Items items;
@@ -279,6 +266,7 @@ public abstract class ZPRegistry<T> {
             private Fluids() {
             }
 
+            @OnlyIn(Dist.CLIENT)
             public void setFluidRenderLayer(@NotNull Supplier<Fluid> liquid, @NotNull RenderType renderType) {
                 ZPBlocksRenderLayerHelper.addLiquidRenderLayerData(new ZPBlocksRenderLayerHelper.LiquidPair(liquid, renderType));
             }
@@ -292,37 +280,45 @@ public abstract class ZPRegistry<T> {
             private Items() {
             }
 
+            @OnlyIn(Dist.CLIENT)
             public void setItemRenderer(@NotNull RegistryObject<? extends Item> item, @NotNull ZPRenderHooks.ZPItemRendering1PersonHook itemRenderingProcessor1, @NotNull ZPRenderHooks.ZPItemRendering3PersonHook itemRenderingProcessor3) {
                 ZPRenderHooksManager.INSTANCE.addItemRendering1PersonHook(item::get, itemRenderingProcessor1);
                 ZPRenderHooksManager.INSTANCE.addItemRendering3PersonHook(item::get, itemRenderingProcessor3);
             }
 
+            @OnlyIn(Dist.CLIENT)
             public void setItemRenderer1Person(@NotNull RegistryObject<? extends Item> item, @NotNull ZPRenderHooks.ZPItemRendering1PersonHook itemRenderingProcessor) {
                 ZPRenderHooksManager.INSTANCE.addItemRendering1PersonHook(item::get, itemRenderingProcessor);
             }
 
+            @OnlyIn(Dist.CLIENT)
             public void setItemRenderer3Person(@NotNull RegistryObject<? extends Item> item, @NotNull ZPRenderHooks.ZPItemRendering3PersonHook itemRenderingProcessor) {
                 ZPRenderHooksManager.INSTANCE.addItemRendering3PersonHook(item::get, itemRenderingProcessor);
             }
 
+            @OnlyIn(Dist.CLIENT)
             public void addItemModel(@NotNull RegistryObject<? extends Item> item, @NotNull Supplier<ZPGenTextureData> itemTextureData) {
                 ZPDataGenHelper.addItemDefaultModel(item, itemTextureData);
             }
 
+            @OnlyIn(Dist.CLIENT)
             public void addItemModel(@NotNull RegistryObject<? extends Item> item, @NotNull VanillaMinecraftModelParentReference vanillaMinecraftModelRef, @NotNull String mainTextureKey, @NotNull ZPPath textureDirectory) {
                 final String textureName = Objects.requireNonNull(item.getId()).getPath();
                 this.addItemModel(item, () -> ZPGenTextureData.of(vanillaMinecraftModelRef, mainTextureKey, () -> new ZPPath(textureDirectory, textureName)));
             }
 
+            @OnlyIn(Dist.CLIENT)
             @SafeVarargs
             public final void addItemModel(@NotNull RegistryObject<? extends Item> item, @NotNull VanillaMinecraftModelParentReference vanillaMinecraftModelRef, @NotNull Pair<@NotNull String, @NotNull Supplier<ZPPath>>... descriptors) {
                 this.addItemModel(item, () -> ZPGenTextureData.of(vanillaMinecraftModelRef, descriptors));
             }
 
+            @OnlyIn(Dist.CLIENT)
             public void addItemModel(@NotNull RegistryObject<? extends Item> item, @NotNull VanillaMinecraftModelParentReference vanillaMinecraftModelRef, @NotNull RegistryObject<? extends Item> textureLike) {
                 this.addItemModel(item, () -> ZPGenTextureData.copy(vanillaMinecraftModelRef, ZPItemModelProvider.getTextureData(textureLike).get()));
             }
 
+            @OnlyIn(Dist.CLIENT)
             public void addItemInTab(@NotNull RegistryObject<? extends Item> item, @NotNull RegistryObject<CreativeModeTab> creativeModeTab) {
                 ZPItemTabAddHelper.addItemInTab(item, creativeModeTab);
             }
@@ -336,45 +332,55 @@ public abstract class ZPRegistry<T> {
             private Blocks() {
             }
 
+            @OnlyIn(Dist.CLIENT)
             @Deprecated
             public void setBlockRenderLayer(@NotNull Supplier<Block> block, @NotNull RenderType renderType) {
                 ZPBlocksRenderLayerHelper.addBlockRenderLayerData(new ZPBlocksRenderLayerHelper.BlockPair(block, renderType));
             }
 
+            @OnlyIn(Dist.CLIENT)
             public void addBlockModelWitchGenTextureData(@NotNull RegistryObject<? extends Block> block, @NotNull Supplier<ZPGenTextureData> blockTextureData) {
                 ZPDataGenHelper.addBlockDefaultModel(block, blockTextureData);
             }
 
+            @OnlyIn(Dist.CLIENT)
             public void addBlockModelSimpleOneTexture(@NotNull RegistryObject<? extends Block> block, @Nullable VanillaMinecraftModelParentReference vanillaMinecraftModelRef, @NotNull String mainTextureKey, @NotNull ZPPath textureDirectory) {
                 final String textureName = Objects.requireNonNull(block.getId()).getPath();
                 this.addBlockModelWitchGenTextureData(block, () -> ZPGenTextureData.of(vanillaMinecraftModelRef, mainTextureKey, () -> new ZPPath(textureDirectory, textureName)));
             }
 
+            @OnlyIn(Dist.CLIENT)
             @SafeVarargs
             public final void addBlockModelKey_ValueArray(@NotNull RegistryObject<? extends Block> block, @Nullable VanillaMinecraftModelParentReference vanillaMinecraftModelRef, Pair<@NotNull String, @NotNull Supplier<ZPPath>>... descriptors) {
                 this.addBlockModelWitchGenTextureData(block, () -> ZPGenTextureData.of(vanillaMinecraftModelRef, descriptors));
             }
 
+            @OnlyIn(Dist.CLIENT)
             public void addBlockModelWithCopiedTexture(@NotNull RegistryObject<? extends Block> block, @Nullable VanillaMinecraftModelParentReference vanillaMinecraftModelRef, @NotNull RegistryObject<? extends Block> textureLike) {
                 this.addBlockModelWitchGenTextureData(block, () -> ZPGenTextureData.copy(vanillaMinecraftModelRef, ZPBlockModelProvider.getTextureData(textureLike).get()));
             }
 
+            @OnlyIn(Dist.CLIENT)
             public <T extends Block> void addModelExecutor(@NotNull Class<T> clazz, @NotNull ZPBlockModelProvider.BlockModelExecutor blockModelExecutor) {
                 ZPDataGenHelper.addBlockModelExecutor(clazz, blockModelExecutor);
             }
 
+            @OnlyIn(Dist.CLIENT)
             public void setBlockModelExecutor(@NotNull RegistryObject<? extends Block> block, @NotNull ZPBlockModelProvider.BlockModelExecutor blockModelExecutor) {
                 ZPDataGenHelper.setBlockModelExecutor(block, blockModelExecutor);
             }
 
+            @OnlyIn(Dist.CLIENT)
             public void setBlockModelExecutor(@NotNull RegistryObject<? extends Block> block, @NotNull ZPBlockModelProvider.BlockModelExecutor.EBlock<?> blockModelExecutor) {
                 ZPDataGenHelper.setBlockModelExecutor(block, () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(blockModelExecutor, DefaultBlockItemModelExecutors.getDefaultItemAsBlock()));
             }
 
+            @OnlyIn(Dist.CLIENT)
             public void setBlockItemModelExecutor(@NotNull RegistryObject<? extends Block> block, @Nullable ZPBlockModelProvider.BlockModelExecutor.EItem<?> itemModelExecutor) {
                 ZPDataGenHelper.setBlockModelExecutor(block, () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(DefaultBlockModelExecutors.getDefault(), itemModelExecutor));
             }
 
+            @OnlyIn(Dist.CLIENT)
             public void setBlockRenderType(@NotNull RegistryObject<? extends Block> block, @NotNull String renderType) {
                 ZPDataGenHelper.setBlockRenderType(block, renderType);
             }
@@ -388,10 +394,12 @@ public abstract class ZPRegistry<T> {
             private Particles() {
             }
 
+            @OnlyIn(Dist.CLIENT)
             public <T extends ParticleOptions> void matchParticleRenderingSet(@NotNull RegistryObject<? extends ParticleType<T>> type, @NotNull Function<SpriteSet, @NotNull ParticleProvider<T>> particleProvider) {
                 ZPParticleRenderHelper.matchParticleRenderingSet(type, particleProvider);
             }
 
+            @OnlyIn(Dist.CLIENT)
             public <T extends ParticleOptions> void addParticlesTexturesData(@NotNull RegistryObject<? extends ParticleType<T>> typeRegistryObject, @NotNull String texturesLink, int arraySize) {
                 ZPDataGenHelper.addParticlesTexturesData(typeRegistryObject, texturesLink, arraySize);
             }
@@ -401,6 +409,7 @@ public abstract class ZPRegistry<T> {
             private Entities() {
             }
 
+            @OnlyIn(Dist.CLIENT)
             public <T extends Entity> void matchEntityRendering(@NotNull RegistryObject<EntityType<T>> registryObject, @NotNull EntityRendererProvider<T> entityRenderer) {
                 ZPEntityRenderMatchHelper.matchEntityRendering(registryObject, entityRenderer);
             }
@@ -410,6 +419,7 @@ public abstract class ZPRegistry<T> {
             private BlockEntities() {
             }
 
+            @OnlyIn(Dist.CLIENT)
             public <T extends BlockEntity> void matchBlockEntityRendering(@NotNull RegistryObject<BlockEntityType<T>> registryObject, @NotNull BlockEntityRendererProvider<T> entityRenderer) {
                 ZPBlockEntityRenderMatchHelper.matchBlockEntityRendering(registryObject, entityRenderer);
             }

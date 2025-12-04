@@ -57,9 +57,9 @@ public class VirtualBullet {
             return false;
         }
         BlockState blockState = serverLevel.getBlockState(blockPos);
-        if (blockState.getBlock() instanceof StainedGlassBlock || blockState.getBlock() instanceof StainedGlassPaneBlock || blockState.getBlock() instanceof GlassBlock || blockState.getBlock() instanceof LeavesBlock || blockState.getBlock() instanceof StemGrownBlock || blockState.getBlock() instanceof IceBlock) {
+        if (blockState.getBlock() instanceof AbstractGlassBlock || blockState.getBlock() instanceof StainedGlassPaneBlock || blockState.getBlock() instanceof LeavesBlock || blockState.getBlock() instanceof StemGrownBlock || blockState.getBlock() instanceof IceBlock) {
             float hardness = blockState.getDestroySpeed(serverLevel, blockPos);
-            if (hardness >= 0 && hardness <= 0.5f) {
+            if (hardness >= 0 && hardness <= ZPConstants.MAX_BULLET_HIT_BLOCK_HARDNESS) {
                 return true;
             }
         }
@@ -108,6 +108,7 @@ public class VirtualBullet {
                 break;
             } else {
                 if (this.isBlockFragile(level, blockHitResult.getBlockPos()) && this.breakFragileBlocks(level, blockHitResult.getBlockPos())) {
+                    hitResult = new VirtualBulletHitResult(new Vector3i(blockHitResult.getBlockPos().getX(), blockHitResult.getBlockPos().getY(), blockHitResult.getBlockPos().getZ()), blockHitResult.getLocation().toVector3f(), null, 1.0f, VirtualBulletHitType.MISS);
                     localStart = new Vector3f(blockHitResult.getLocation().toVector3f());
                 } else {
                     hitResult = new VirtualBulletHitResult(new Vector3i(blockHitResult.getBlockPos().getX(), blockHitResult.getBlockPos().getY(), blockHitResult.getBlockPos().getZ()), blockHitResult.getLocation().toVector3f(), null, 1.0f, VirtualBulletHitType.BLOCK);

@@ -20,6 +20,7 @@ import ru.gltexture.zpm3.engine.nbt.ZPAbstractNBTClass;
 import ru.gltexture.zpm3.engine.nbt.ZPTagID;
 import ru.gltexture.zpm3.engine.nbt.itemstack.ZPItemStackNBT;
 import ru.gltexture.zpm3.engine.service.Pair;
+import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 import java.util.function.Supplier;
 
@@ -33,25 +34,27 @@ public abstract class ZPBaseGun extends ZPItem {
 
     @Override
     public final void inventoryTick(@NotNull ItemStack pStack, @NotNull Level pLevel, @NotNull Entity pEntity, int pSlotId, boolean pIsSelected) {
-        boolean offHand = false;
+        boolean offHand;
         if (pEntity instanceof Player player) {
-            if (player.getItemInHand(InteractionHand.OFF_HAND).equals(pStack)) {
-                offHand = true;
-            }
+            offHand = player.getItemInHand(InteractionHand.OFF_HAND).equals(pStack);
+        } else {
+            offHand = false;
         }
         if (!pLevel.isClientSide()) {
             if (this.getServerGunLogic() != null) {
                 this.getServerGunLogic().onTickInventory(pStack, pLevel, this, pEntity, pSlotId, pIsSelected, offHand);
             }
         } else {
-            if (this.getClientGunLogic() != null) {
-                if (this.getGunClientSyncCooldown(pStack) <= 0) {
-                    this.makeHardSync(pStack);
-                } else {
-                    this.subClientSync(pStack);
+            ZPUtility.sides().onlyClient(() -> {
+                if (this.getClientGunLogic() != null) {
+                    if (this.getGunClientSyncCooldown(pStack) <= 0) {
+                        this.makeHardSync(pStack);
+                    } else {
+                        this.subClientSync(pStack);
+                    }
+                    this.getClientGunLogic().onTickInventory(pStack, pLevel, this, pEntity, pSlotId, pIsSelected, offHand);
                 }
-                this.getClientGunLogic().onTickInventory(pStack, pLevel, this, pEntity, pSlotId, pIsSelected, offHand);
-            }
+            });
         }
     }
 

@@ -1,5 +1,6 @@
 package ru.gltexture.zpm3.assets.net_pack.packets;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -9,11 +10,16 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.guns.item.ZPBaseGun;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.network.ZPNetwork;
+import ru.gltexture.zpm3.engine.service.ZPUtility;
+
+import java.util.Objects;
 
 public class ZPGunActionPacket implements ZPNetwork.ZPPacket {
     public final static int SHOT = 0x01;
@@ -86,24 +92,28 @@ public class ZPGunActionPacket implements ZPNetwork.ZPPacket {
         ZombiePlague3.net().sendToDimensionRadius(new ZPGunActionPacket(sender.getId(), this.action, this.isRightHand), serverLevel.dimension(), sender.position(), ZPConstants.GUN_ACTION_PACKET_RANGE);
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
-    public void onClient(@NotNull Player localPlayer, @NotNull ClientLevel clientLevel) {
-        Entity entity = clientLevel.getEntity(this.entityId);
-        if ((entity instanceof Player player) && !entity.equals(localPlayer)) {
-            ItemStack stack = player.getItemInHand(this.isRightHand ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND);
-            if (stack.getItem() instanceof ZPBaseGun baseGun) {
-                switch (this.action) {
-                    case ZPGunActionPacket.SHOT -> {
-                        baseGun.getClientGunLogic().tryToShoot(clientLevel, player, baseGun, stack, this.isRightHand);
-                    }
-                    case ZPGunActionPacket.RELOAD -> {
-                        baseGun.getClientGunLogic().tryToReload(clientLevel, player, baseGun, stack, false, this.isRightHand);
-                    }
-                    case ZPGunActionPacket.UNLOAD -> {
-                        baseGun.getClientGunLogic().tryToReload(clientLevel, player, baseGun, stack, true, this.isRightHand);
+    public void onClient(@NotNull Player localPlayer) {
+        ZPUtility.sides().onlyClient(() -> {
+            ClientLevel clientLevel = Objects.requireNonNull(Minecraft.getInstance().level);
+            Entity entity = clientLevel.getEntity(this.entityId);
+            if ((entity instanceof Player player) && !entity.equals(localPlayer)) {
+                ItemStack stack = player.getItemInHand(this.isRightHand ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND);
+                if (stack.getItem() instanceof ZPBaseGun baseGun) {
+                    switch (this.action) {
+                        case ZPGunActionPacket.SHOT -> {
+                            baseGun.getClientGunLogic().tryToShoot(clientLevel, player, baseGun, stack, this.isRightHand);
+                        }
+                        case ZPGunActionPacket.RELOAD -> {
+                            baseGun.getClientGunLogic().tryToReload(clientLevel, player, baseGun, stack, false, this.isRightHand);
+                        }
+                        case ZPGunActionPacket.UNLOAD -> {
+                            baseGun.getClientGunLogic().tryToReload(clientLevel, player, baseGun, stack, true, this.isRightHand);
+                        }
                     }
                 }
             }
-        }
+        });
     }
 }

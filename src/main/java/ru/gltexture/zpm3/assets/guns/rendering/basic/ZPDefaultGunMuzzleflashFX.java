@@ -85,11 +85,15 @@ public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderH
             return;
         }
         final int id = this.hand(gunFXData.isRightHand());
+        if (player.equals(Minecraft.getInstance().player)) {
         this.muzzleflashTime1Person = gunFXData.muzzleflashTime();
         this.muzzleflashScissor1Person[id] = this.muzzleflashScissor1Person[id] > 0.01f ? 0.35f : 0.0f;
+        }
         this.initialRotation[id] = ZPRandom.instance.randomFloat((float) Math.PI);
         if (player instanceof IZPPlayerClientDataExt playerClientDataExt) {
-            playerClientDataExt.getPlayerMuzzleflashScissor3Person()[id] = 0.0f;
+            if (!player.equals(Minecraft.getInstance().player) || !Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
+                playerClientDataExt.getPlayerMuzzleflashScissor3Person()[id] = 0.0f;
+            }
         }
     }
 

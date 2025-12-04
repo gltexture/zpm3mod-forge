@@ -54,7 +54,7 @@ public class ZPPlateEntity extends ZPThrowableEntity {
 
     public void handleEntityEvent(byte pId) {
         if (pId == 3) {
-            ZPUtility.sounds().play(new ZPPositionedSound(SoundEvents.GLASS_BREAK, SoundSource.MASTER, 0.8f, 1.0f, this.position().toVector3f(), 0L));
+            this.level().playLocalSound(this.getOnPos(), SoundEvents.GLASS_BREAK, SoundSource.MASTER, 0.8f, 1.0f, false);
             ZPCommonClientUtils.emmitItemBreakParticle(this.getItem(), this.position().toVector3f(), this.getDeltaMovement().toVector3f());
         }
     }

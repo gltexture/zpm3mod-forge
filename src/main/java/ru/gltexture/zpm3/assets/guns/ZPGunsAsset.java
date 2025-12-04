@@ -1,13 +1,23 @@
 package ru.gltexture.zpm3.assets.guns;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.assets.common.keybind.ZPCommonKeyBindings;
+import ru.gltexture.zpm3.assets.common.rendering.entities.misc.ZPRenderEntityItem;
 import ru.gltexture.zpm3.assets.guns.events.ZPGunPostRender;
 import ru.gltexture.zpm3.assets.guns.events.ZPGunTossEvent;
 import ru.gltexture.zpm3.assets.guns.events.ZPGunsUI;
+import ru.gltexture.zpm3.assets.guns.keybind.ZPGunKeyBindings;
 import ru.gltexture.zpm3.assets.guns.processing.input.ZPClientGunClientTickProcessing;
+import ru.gltexture.zpm3.assets.guns.rendering.ZPAbstractGunRenderer;
 import ru.gltexture.zpm3.assets.guns.rendering.ZPDefaultGunRenderers;
 import ru.gltexture.zpm3.assets.guns.rendering.basic.ZPDefaultGunMuzzleflashFX;
 import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacksManager;
@@ -18,6 +28,8 @@ import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.asset.ZPAsset;
 import ru.gltexture.zpm3.engine.core.asset.ZPAssetData;
+import ru.gltexture.zpm3.engine.helpers.ZPEntityRenderMatchHelper;
+import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public class ZPGunsAsset extends ZPAsset {
     public ZPGunsAsset(@NotNull ZPAssetData zpAssetData) {
@@ -42,6 +54,9 @@ public class ZPGunsAsset extends ZPAsset {
         ZPClientCallbacksManager.INSTANCE.addClientTickCallback(e -> {
             ZPClientGunClientTickProcessing.INSTANCE.tick(Minecraft.getInstance(), e);
         });
+        ZPRenderHooksManager.INSTANCE.addItemSceneRendering1PersonHookPre(((deltaTicks, pPartialTicks, pPoseStack, pBuffer, pPlayerEntity, pCombinedLight) -> {
+            ZPAbstractGunRenderer.breathEffect(pPartialTicks, pPoseStack);
+        }));
         ZPRenderHooksManager.INSTANCE.addSceneRenderingHook(((renderStage, partialTicks, deltaTime, pNanoTime, pRenderLevel) -> {
             if (renderStage == ZPRenderHelper.RenderStage.PRE) {
                 ZPClientGunClientTickProcessing.INSTANCE.process(Minecraft.getInstance());
@@ -68,8 +83,17 @@ public class ZPGunsAsset extends ZPAsset {
 
     @Override
     public void initializeAsset(ZombiePlague3.@NotNull IAssetEntry assetEntry) {
-        assetEntry.addEventClass(ZPGunsUI.class);
-        assetEntry.addEventClass(ZPGunPostRender.class);
+        ZPUtility.sides().onlyClient(() -> {
+            assetEntry.addEventClass(ZPGunsUI.class);
+            assetEntry.addEventClass(ZPGunPostRender.class);
+        });
         assetEntry.addEventClass(ZPGunTossEvent.class);
+    }
+
+    @Override
+    public void preCommonInitializeAsset() {
+        ZPUtility.sides().onlyClient(() -> {
+            ZombiePlague3.registerKeyBindings(new ZPGunKeyBindings());
+        });
     }
 }

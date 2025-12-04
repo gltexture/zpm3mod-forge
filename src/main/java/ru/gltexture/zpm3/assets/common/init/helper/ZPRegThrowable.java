@@ -14,6 +14,7 @@ import ru.gltexture.zpm3.engine.instances.items.ZPItemThrowable;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
 import ru.gltexture.zpm3.engine.helpers.ZPDispenseProjectileHelper;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
+import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public abstract class ZPRegThrowable {
     public static void init(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
@@ -24,11 +25,12 @@ public abstract class ZPRegThrowable {
                     throwable.shootFromRotation(pPlayer, pPlayer.getXRot(), pPlayer.getYRot(), 0.0F, velocity, inaccuracy);
                     return throwable;
                 }), new Item.Properties().stacksTo(1))
-        ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-            utils.items().addItemInTab(e, ZPTabs.zp_items_tab);
-            utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ITEMS_ITEMS_DIRECTORY);
-        }).afterObjectCreated(Dist.DEDICATED_SERVER, (e, utils) -> {
+        ).afterCreated((e, utils) -> {
             utils.items().addDispenserData(e, new ZPDispenseProjectileHelper.ProjectileData((pLevel, pPosition, pStack) -> new ZPAcidBottleEntity(ZPEntities.acid_bottle_entity.get(), pPosition.x(), pPosition.y(), pPosition.z(), pLevel), 0.5f, 1.5f));
+            ZPUtility.sides().onlyClient(() -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_items_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ITEMS_ITEMS_DIRECTORY);
+            });
         }).end();
 
         ZPItems.plate = regSupplier.register("plate",
@@ -38,11 +40,13 @@ public abstract class ZPRegThrowable {
                     throwable.shootFromRotation(pPlayer, pPlayer.getXRot(), pPlayer.getYRot(), 0.0F, velocity, inaccuracy);
                     return throwable;
                 }), new Item.Properties().stacksTo(16))
-        ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-            utils.items().addItemInTab(e, ZPTabs.zp_items_tab);
-            utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ITEMS_ITEMS_DIRECTORY);
-        }).afterObjectCreated(Dist.DEDICATED_SERVER, (e, utils) -> {
+        ).afterCreated((e, utils) -> {
             utils.items().addDispenserData(e, new ZPDispenseProjectileHelper.ProjectileData((pLevel, pPosition, pStack) -> new ZPPlateEntity(ZPEntities.plate_entity.get(), pPosition.x(), pPosition.y(), pPosition.z(), pLevel), 0.5f, 1.5f));
+
+            ZPUtility.sides().onlyClient(() -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_items_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ITEMS_ITEMS_DIRECTORY);
+            });
         }).end();
 
         ZPItems.rock = regSupplier.register("rock",
@@ -52,11 +56,12 @@ public abstract class ZPRegThrowable {
                     throwable.shootFromRotation(pPlayer, pPlayer.getXRot(), pPlayer.getYRot(), 0.0F, velocity, inaccuracy);
                     return throwable;
                 }), new Item.Properties().stacksTo(3))
-        ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-            utils.items().addItemInTab(e, ZPTabs.zp_items_tab);
-            utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ITEMS_ITEMS_DIRECTORY);
-        }).afterObjectCreated(Dist.DEDICATED_SERVER, (e, utils) -> {
+        ).afterCreated((e, utils) -> {
             utils.items().addDispenserData(e, new ZPDispenseProjectileHelper.ProjectileData((pLevel, pPosition, pStack) -> new ZPRockEntity(ZPEntities.rock_entity.get(), pPosition.x(), pPosition.y(), pPosition.z(), pLevel), 0.5f, 1.5f));
+            ZPUtility.sides().onlyClient(() -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_items_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ITEMS_ITEMS_DIRECTORY);
+            });
         }).end();
     }
 }

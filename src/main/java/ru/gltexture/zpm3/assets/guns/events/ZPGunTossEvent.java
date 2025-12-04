@@ -19,7 +19,6 @@ public class ZPGunTossEvent implements ZPEventClass {
         ItemStack stack = entity.getItem();
 
         if (stack.getItem() instanceof ZPBaseGun baseGun) {
-            baseGun.setCurrentTimeBeforeReload(itemTossEvent.getPlayer(), stack, 10);
             baseGun.setReloading(itemTossEvent.getPlayer(), stack, false);
             baseGun.setUnloading(itemTossEvent.getPlayer(), stack, false);
             baseGun.setCurrentReloadCooldown(itemTossEvent.getPlayer(), stack, 0);

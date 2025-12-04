@@ -35,7 +35,7 @@ import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 import ru.gltexture.zpm3.engine.sound.ZPPositionedSound;
 
-public abstract class ZPDefaultLogicFunctions {
+public abstract class ZPDefaultGunLogicFunctions {
     // CLIENT
     @OnlyIn(Dist.CLIENT) public static boolean CLIENT_SHUTTER_ANIMATED_GUN_SHOT(@NotNull IGunLogicProcessor gunLogicProcessor, @NotNull Level level, @NotNull Player player, @NotNull ZPBaseGun item, @NotNull ItemStack itemStack, boolean isRightHand) {
         final int shootCooldownNominal = item.getGunProperties().getShootCooldown();
@@ -49,7 +49,7 @@ public abstract class ZPDefaultLogicFunctions {
                 ZombiePlague3.net().sendToServer(new ZPGunActionPacket(player.getId(), ZPGunActionPacket.SHOT, isRightHand));
                 if (currentAmmo > 0 && !item.isJammed(player, itemStack)) {
                     if (item.getGunProperties().getFireSound() != null) {
-                        ZPDefaultLogicFunctions.localSound(item.getGunProperties().getFireSound().get(), item);
+                        ZPDefaultGunLogicFunctions.localSound(item.getGunProperties().getFireSound().get(), item);
                     }
                     float recoil = item.getGunProperties().getClientVerticalRecoil();
                     if (item.getGunProperties().getHeldType().equals(ZPBaseGun.GunProperties.HeldType.RIFLE)) {
@@ -71,7 +71,7 @@ public abstract class ZPDefaultLogicFunctions {
                             }
                         }
                     }
-                    ZPDefaultLogicFunctions.localSound(item.emptyAmmoSound(), item);
+                    ZPDefaultGunLogicFunctions.localSound(item.emptyAmmoSound(), item);
                     ZPClientCallbacksManager.INSTANCE.triggerGunShots(player, item, itemStack, new ZPClientCallbacks.ZPGunShotCallback.GunFXData(isRightHand, -1.0f, -1.0f));
                     item.setCurrentShootCooldown(player, itemStack, 4);
                 }
@@ -79,7 +79,7 @@ public abstract class ZPDefaultLogicFunctions {
             }
         } else {
             if (item.getGunProperties().getFireSound() != null) {
-                ZPDefaultLogicFunctions.globalSound(item.getGunProperties().getFireSound().get(), item, player);
+                ZPDefaultGunLogicFunctions.globalSound(item.getGunProperties().getFireSound().get(), item, player);
             }
             ZPClientCallbacksManager.INSTANCE.triggerGunShots(player, item, itemStack, new ZPClientCallbacks.ZPGunShotCallback.GunFXData(isRightHand, item.getGunProperties().getClientVerticalRecoil(), 0.25f));
             return true;
@@ -98,7 +98,7 @@ public abstract class ZPDefaultLogicFunctions {
                 ZombiePlague3.net().sendToServer(new ZPGunActionPacket(player.getId(), ZPGunActionPacket.SHOT, isRightHand));
                 if (currentAmmo > 0 && !item.isJammed(player, itemStack)) {
                     if (item.getGunProperties().getFireSound() != null) {
-                        ZPDefaultLogicFunctions.localSound(item.getGunProperties().getFireSound().get(), item);
+                        ZPDefaultGunLogicFunctions.localSound(item.getGunProperties().getFireSound().get(), item);
                     }
                     float recoil = item.getGunProperties().getClientVerticalRecoil();
                     if (item.getGunProperties().getHeldType().equals(ZPBaseGun.GunProperties.HeldType.RIFLE)) {
@@ -120,7 +120,7 @@ public abstract class ZPDefaultLogicFunctions {
                             }
                         }
                     }
-                    ZPDefaultLogicFunctions.localSound(item.emptyAmmoSound(), item);
+                    ZPDefaultGunLogicFunctions.localSound(item.emptyAmmoSound(), item);
                     ZPClientCallbacksManager.INSTANCE.triggerGunShots(player, item, itemStack, new ZPClientCallbacks.ZPGunShotCallback.GunFXData(isRightHand, -1.0f, -1.0f));
                     item.setCurrentShootCooldown(player, itemStack, 4);
                 }
@@ -128,7 +128,7 @@ public abstract class ZPDefaultLogicFunctions {
             }
         } else {
             if (item.getGunProperties().getFireSound() != null) {
-                ZPDefaultLogicFunctions.globalSound(item.getGunProperties().getFireSound().get(), item, player);
+                ZPDefaultGunLogicFunctions.globalSound(item.getGunProperties().getFireSound().get(), item, player);
             }
             ZPClientCallbacksManager.INSTANCE.triggerGunShots(player, item, itemStack, new ZPClientCallbacks.ZPGunShotCallback.GunFXData(isRightHand, item.getGunProperties().getClientVerticalRecoil(), 0.25f));
             return true;
@@ -144,7 +144,7 @@ public abstract class ZPDefaultLogicFunctions {
             }
             final int currentAmmo = item.getCurrentAmmo(player, itemStack);
             final int ammoBeforeLoad = item.getAmmoBeforeReload(player, itemStack);
-            if (!ZPDefaultLogicFunctions.isAnythingReloading(player)) {
+            if (!ZPDefaultGunLogicFunctions.isAnythingReloading(player)) {
                 if (item.isJammed(player, itemStack) && unload) {
                     return false;
                 }
@@ -159,7 +159,7 @@ public abstract class ZPDefaultLogicFunctions {
                 }
                 ZombiePlague3.net().sendToServer(new ZPGunActionPacket(player.getId(), unload ? ZPGunActionPacket.UNLOAD : ZPGunActionPacket.RELOAD, isRightHand));
                 if (item.getGunProperties().getReloadSound() != null) {
-                    ZPDefaultLogicFunctions.localSound(item.getGunProperties().getReloadSound().get(), item);
+                    ZPDefaultGunLogicFunctions.localSound(item.getGunProperties().getReloadSound().get(), item);
                 }
                 ZPClientCallbacksManager.INSTANCE.triggerReloadingStart(player, item, itemStack, new ZPClientCallbacks.ZPGunReloadStartCallback.GunFXData(isRightHand));
                 if (unload) {
@@ -178,7 +178,7 @@ public abstract class ZPDefaultLogicFunctions {
             }
         } else {
             if (item.getGunProperties().getReloadSound() != null) {
-                ZPDefaultLogicFunctions.globalSound(item.getGunProperties().getReloadSound().get(), item, player);
+                ZPDefaultGunLogicFunctions.globalSound(item.getGunProperties().getReloadSound().get(), item, player);
             }
             ZPClientCallbacksManager.INSTANCE.triggerReloadingStart(player, item, itemStack, new ZPClientCallbacks.ZPGunReloadStartCallback.GunFXData(isRightHand));
             return true;
@@ -208,7 +208,7 @@ public abstract class ZPDefaultLogicFunctions {
 
     @OnlyIn(Dist.CLIENT) public static boolean CLIENT_DEFAULT_RELOAD(@NotNull IGunLogicProcessor gunLogicProcessor, @NotNull Level level, @NotNull Player player, @NotNull ZPBaseGun item, @NotNull ItemStack itemStack, boolean unload, boolean isRightHand) {
         if (player.equals(Minecraft.getInstance().player)) {
-            if (!ZPDefaultLogicFunctions.isAnythingReloading(player)) {
+            if (!ZPDefaultGunLogicFunctions.isAnythingReloading(player)) {
                 if (item.getCurrentTimeBeforeReload(player, itemStack) > 0) {
                     return false;
                 }
@@ -227,7 +227,7 @@ public abstract class ZPDefaultLogicFunctions {
                 }
                 ZombiePlague3.net().sendToServer(new ZPGunActionPacket(player.getId(), unload ? ZPGunActionPacket.UNLOAD : ZPGunActionPacket.RELOAD, isRightHand));
                 if (item.getGunProperties().getReloadSound() != null) {
-                    ZPDefaultLogicFunctions.localSound(item.getGunProperties().getReloadSound().get(), item);
+                    ZPDefaultGunLogicFunctions.localSound(item.getGunProperties().getReloadSound().get(), item);
                 }
                 ZPClientCallbacksManager.INSTANCE.triggerReloadingStart(player, item, itemStack, new ZPClientCallbacks.ZPGunReloadStartCallback.GunFXData(isRightHand));
                 if (unload) {
@@ -240,7 +240,7 @@ public abstract class ZPDefaultLogicFunctions {
             }
         } else {
             if (item.getGunProperties().getReloadSound() != null) {
-                ZPDefaultLogicFunctions.globalSound(item.getGunProperties().getReloadSound().get(), item, player);
+                ZPDefaultGunLogicFunctions.globalSound(item.getGunProperties().getReloadSound().get(), item, player);
             }
             ZPClientCallbacksManager.INSTANCE.triggerReloadingStart(player, item, itemStack, new ZPClientCallbacks.ZPGunReloadStartCallback.GunFXData(isRightHand));
             return true;
@@ -267,13 +267,13 @@ public abstract class ZPDefaultLogicFunctions {
             final int currentAmmo = item.getCurrentAmmo(pEntity, pStack);
 
             if (!item.isJammed(pEntity, pStack) && ammoBeforeReload != currentAmmo) {
-                ZPDefaultLogicFunctions.localSound(ZPSounds.shell_insert.get(), item);
+                ZPDefaultGunLogicFunctions.localSound(ZPSounds.shell_insert.get(), item);
             }
             item.setAmmoBeforeReload(pEntity, pStack, currentAmmo);
 
             if (!item.isUnloadingOrReloading(pEntity, pStack)) {
                 if (props.getReloadSound() != null) {
-                    ZPDefaultLogicFunctions.localSound(props.getReloadSound().get(), item);
+                    ZPDefaultGunLogicFunctions.localSound(props.getReloadSound().get(), item);
                 }
                 item.setCurrentReloadCooldown(pEntity, pStack, 0);
             }
@@ -402,7 +402,7 @@ public abstract class ZPDefaultLogicFunctions {
     public static boolean SERVER_DEFAULT_RELOAD(@NotNull IGunLogicProcessor gunLogicProcessor, @NotNull Level level, @NotNull Player player, @NotNull ZPBaseGun item, @NotNull ItemStack itemStack, boolean unload, boolean isRightHand) {
         final int reloadTimeNominal = item.getGunProperties().getReloadTime();
 
-        if (!ZPDefaultLogicFunctions.isAnythingReloading(player)) {
+        if (!ZPDefaultGunLogicFunctions.isAnythingReloading(player)) {
             if (unload) {
                 final int currentAmmo = item.getCurrentAmmo(player, itemStack);
                 if (currentAmmo <= 0) {
@@ -425,11 +425,11 @@ public abstract class ZPDefaultLogicFunctions {
         return false;
     }
     public static boolean SERVER_DEFAULT_SHUTTER_ANIMATED_GUN_RELOAD(@NotNull IGunLogicProcessor gunLogicProcessor, @NotNull Level level, @NotNull Player player, @NotNull ZPBaseGun item, @NotNull ItemStack itemStack, boolean unload, boolean isRightHand) {
-        final int reloadTimeNominal = ZPDefaultLogicFunctions.reloadTimeNominalShutterAnimatedGun(item, player, itemStack, unload);
+        final int reloadTimeNominal = ZPDefaultGunLogicFunctions.reloadTimeNominalShutterAnimatedGun(item, player, itemStack, unload);
         final int currentAmmo = item.getCurrentAmmo(player, itemStack);
         final int ammoBeforeLoad = item.getAmmoBeforeReload(player, itemStack);
 
-        if (!ZPDefaultLogicFunctions.isAnythingReloading(player)) {
+        if (!ZPDefaultGunLogicFunctions.isAnythingReloading(player)) {
             if (unload) {
                 if (currentAmmo <= 0) {
                     return false;
@@ -464,7 +464,7 @@ public abstract class ZPDefaultLogicFunctions {
             item.setCurrentReloadCooldown(pEntity, pStack, item.getCurrentReloadCooldown(pEntity, pStack) - 1);
             if (item.getCurrentReloadCooldown(pEntity, pStack) == 0) {
                 if (!item.isJammed(pEntity, pStack)) {
-                    ZPDefaultLogicFunctions.reloadActionDefault(pStack, pLevel, item, pEntity);
+                    ZPDefaultGunLogicFunctions.reloadActionDefault(pStack, pLevel, item, pEntity);
                 }
                 item.setReloading(pEntity, pStack, false);
                 item.setUnloading(pEntity, pStack, false);
@@ -484,13 +484,13 @@ public abstract class ZPDefaultLogicFunctions {
         }
 
         boolean isUnloading = item.isUnloading(pEntity, pStack);
-        final int reloadTimeNominal = ZPDefaultLogicFunctions.reloadTimeNominalShutterAnimatedGun(item, pEntity, pStack, isUnloading);
+        final int reloadTimeNominal = ZPDefaultGunLogicFunctions.reloadTimeNominalShutterAnimatedGun(item, pEntity, pStack, isUnloading);
         final int currentReloadCooldown = item.getCurrentReloadCooldown(pEntity, pStack);
         if (currentReloadCooldown > 0) {
             item.setCurrentReloadCooldown(pEntity, pStack, item.getCurrentReloadCooldown(pEntity, pStack) - 1);
             if (!item.isJammed(pEntity, pStack)) {
                 if (currentReloadCooldown <= (reloadTimeNominal - item.getGunProperties().getReloadTime()) && currentReloadCooldown % item.getGunProperties().getReloadTime() == 0) {
-                    if (!ZPDefaultLogicFunctions.reloadActionDefaultShutterAnimatedGun(pStack, pLevel, item, pEntity)) {
+                    if (!ZPDefaultGunLogicFunctions.reloadActionDefaultShutterAnimatedGun(pStack, pLevel, item, pEntity)) {
                         item.setCurrentReloadCooldown(pEntity, pStack, 0);
                     } else {
                         if (pEntity instanceof Player player) {
@@ -579,7 +579,6 @@ public abstract class ZPDefaultLogicFunctions {
 
     @OnlyIn(Dist.CLIENT)
     private static void globalSound(SoundEvent soundEvent, @NotNull ZPBaseGun item, @NotNull Entity entity) {
-        ZPPositionedSound sound = new ZPPositionedSound(soundEvent, SoundSource.MASTER, (float) (double) item.getGunProperties().getDamage() * 16.0f, 1.0f, entity.position().toVector3f(), 0L);
-        ZPUtility.sounds().play(sound);
+        entity.level().playLocalSound(entity.getOnPos(), soundEvent, SoundSource.MASTER, (float) (double) item.getGunProperties().getDamage() * 16.0f, 1.0f, true);
     }
 }

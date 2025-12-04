@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.Unique;
 import ru.gltexture.zpm3.assets.guns.item.ZPBaseGun;
 import ru.gltexture.zpm3.assets.guns.mixins.ext.IZPItemStackClientDataExt;
 import ru.gltexture.zpm3.engine.nbt.ZPAbstractNBTClass;
+import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 @OnlyIn(Dist.CLIENT)
 @Mixin(ItemStack.class)
@@ -28,7 +29,9 @@ public abstract class ZPItemStackClDataMixin implements IZPItemStackClientDataEx
         if (this.clientData == null) {
             this.clientData = new ZPAbstractNBTClass.ZPSimpleNBTClass<>(new CompoundTag());
             if (this.getItem() instanceof ZPBaseGun baseGun) {
-                baseGun.makeHardSync((ItemStack) (Object) this);
+                ZPUtility.sides().onlyClient(() -> {
+                    baseGun.makeHardSync((ItemStack) (Object) this);
+                });
             }
         }
         return this.clientData;

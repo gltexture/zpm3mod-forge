@@ -36,7 +36,7 @@ public final class ZPConfigurator {
             int i = 1;
             try (FileWriter fileWriter = new FileWriter(file)) {
                 final Map<String, List<ClassFieldData>> readClassFields = this.getClassFieldDataSet(e);
-                fileWriter.write("#REFRESHED: " + LocalDate.now() + "\n");
+                fileWriter.write("#AUTO_GENERATED: " + LocalDate.now() + "\n");
                 // FILE-PROCESSING
                 {
                     for (Map.Entry<String, List<ClassFieldData>> entry : readClassFields.entrySet()) {

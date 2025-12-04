@@ -50,7 +50,6 @@ import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.engine.helpers.ZPBlocksRenderLayerHelper;
 import ru.gltexture.zpm3.engine.helpers.ZPDispenseProjectileHelper;
 import ru.gltexture.zpm3.engine.helpers.ZPKeyBindingsRegistryHelper;
-import ru.gltexture.zpm3.engine.keybind.ZPBaseKeyBindings;
 import ru.gltexture.zpm3.engine.keybind.ZPKeyBindingsManager;
 import ru.gltexture.zpm3.engine.network.ZPNetwork;
 import ru.gltexture.zpm3.engine.instances.items.tier.ZPTierData;
@@ -85,7 +84,7 @@ public final class ZombiePlague3 {
     }
 
     private static boolean commonInitSwitch = true;
-    @OnlyIn(Dist.CLIENT) private static boolean clientInitSwitch = true;
+    private static boolean clientInitSwitch = true;
 
     public ZombiePlague3() {
         this.assets = new ArrayList<>();
@@ -112,32 +111,37 @@ public final class ZombiePlague3 {
         this.initAssets();
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::completeSetup);
-        this.initBaseKeyBindings();
         ZPUtility.sides().onlyClient(() -> {
             modEventBus.addListener(this::clientSetup);
         });
         ZPLogger.info(this + " END INIT");
     }
 
-    static void addConfigClass(@NotNull ZPConfigurator.ZPClassWithConfConstants zpClassWithConfConstants) {
+
+    public static void registerConfigClass(@NotNull ZPConfigurator.ZPClassWithConfConstants zpClassWithConfConstants) {
         ZombiePlague3.configurator.addClass(zpClassWithConfConstants);
     }
 
-    private void initDefaultTiers() {
-        ZPLogger.info(this + " INIT DEFAULT ZP TIERS");
-        Arrays.stream(ZPTiers.values()).forEach(e -> e.init().forEach(ZombiePlague3::registerTier));
-    }
-
-    public void initKeyBindings(@NotNull ZPKeyBindingsManager keyBindingsManager) {
+    public static void registerKeyBindings(@NotNull ZPKeyBindingsManager keyBindingsManager) {
         ZPKeyBindingsRegistryHelper.addNewKeybinding(keyBindingsManager);
-    }
-
-    private void initBaseKeyBindings() {
-        this.initKeyBindings(new ZPBaseKeyBindings());
     }
 
     public static void processConfigurations() {
         ZombiePlague3.configurator.processConfiguration(new ZPPath(FMLPaths.GAMEDIR.get().toString(), ZombiePlague3.ZP_MAIN_DIR));
+    }
+
+    public static void registerTier(@NotNull ZPTierData tier) {
+        TierSortingRegistry.registerTier(tier.tier(), ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), tier.name()), tier.after(), tier.before());
+    }
+
+    public static void registerDeferred(DeferredRegister<?> deferredRegister) {
+        deferredRegister.register(ZombiePlague3.getModEventBus());
+    }
+
+
+    private void initDefaultTiers() {
+        ZPLogger.info(this + " INIT DEFAULT ZP TIERS");
+        Arrays.stream(ZPTiers.values()).forEach(e -> e.init().forEach(ZombiePlague3::registerTier));
     }
 
     private void initAssets() {
@@ -145,11 +149,7 @@ public final class ZombiePlague3 {
         this.readAssetsJSON(this.assets);
 
         for (ZPAsset zpAsset : this.assets) {
-            if (zpAsset.zpClassWithConfConstants() != null) {
-                for (ZPConfigurator.ZPClassWithConfConstants constants : zpAsset.zpClassWithConfConstants()) {
-                    ZombiePlague3.configurator.addClass(constants);
-                }
-            }
+            zpAsset.preCommonInitializeAsset();
         }
 
         {
@@ -258,14 +258,6 @@ public final class ZombiePlague3 {
                 throw new ZPRuntimeException(e);
             }
         }
-    }
-
-    public static void registerTier(@NotNull ZPTierData tier) {
-        TierSortingRegistry.registerTier(tier.tier(), ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), tier.name()), tier.after(), tier.before());
-    }
-
-    public static void registerDeferred(DeferredRegister<?> deferredRegister) {
-        deferredRegister.register(ZombiePlague3.getModEventBus());
     }
 
     @SuppressWarnings("removal")

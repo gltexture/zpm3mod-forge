@@ -10,21 +10,26 @@ import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
 import ru.gltexture.zpm3.engine.helpers.gen.data.ZPGenTextureData;
 import ru.gltexture.zpm3.engine.instances.items.ZPItemBucket;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
+import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public abstract class ZPRegItems {
     public static void init(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
         ZPItems.acid_bucket = regSupplier.register("acid_bucket",
                 () -> new ZPItemBucket(() -> ZPFluids.acid_fluid.get(), new Item.Properties().stacksTo(1))
-        ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-            utils.items().addItemInTab(e, ZPTabs.zp_items_tab);
-            utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ITEMS_ITEMS_DIRECTORY);
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_items_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ITEMS_ITEMS_DIRECTORY);
+            });
         }).end();
 
         ZPItems.toxicwater_bucket = regSupplier.register("toxicwater_bucket",
                 () -> new ZPItemBucket(() -> ZPFluids.toxic_fluid.get(), new Item.Properties().stacksTo(1))
-        ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-            utils.items().addItemInTab(e, ZPTabs.zp_items_tab);
-            utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ITEMS_ITEMS_DIRECTORY);
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_items_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ITEMS_ITEMS_DIRECTORY);
+            });
         }).end();
     }
 }

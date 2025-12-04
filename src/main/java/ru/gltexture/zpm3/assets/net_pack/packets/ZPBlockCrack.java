@@ -1,5 +1,6 @@
 package ru.gltexture.zpm3.assets.net_pack.packets;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -53,27 +54,26 @@ public class ZPBlockCrack implements ZPNetwork.ZPPacket {
 
     @SuppressWarnings("deprecation")
     @Override
-    public void onClient(@NotNull Player localPlayer, @NotNull ClientLevel clientLevel) {
-        ZPUtility.client().ifClientLevelValid(() -> {
-            for (Direction dir : Direction.values()) {
-                for (int i = 0; i < 5 + ZPRandom.getRandom().nextInt(5); i++) {
-                    double x = this.blockX + (dir == Direction.WEST ? -0.1 : dir == Direction.EAST ? 1.1 : ZPRandom.getRandom().nextDouble());
-                    double y = this.blockY + (dir == Direction.DOWN ? -0.1 : dir == Direction.UP ? 1.1 : ZPRandom.getRandom().nextDouble());
-                    double z = this.blockZ + (dir == Direction.NORTH ? -0.1 : dir == Direction.SOUTH ? 1.1 : ZPRandom.getRandom().nextDouble());
+    public void onClient(@NotNull Player localPlayer) {
+        ClientLevel clientLevel = Objects.requireNonNull(Minecraft.getInstance().level);
+        for (Direction dir : Direction.values()) {
+            for (int i = 0; i < 5 + ZPRandom.getRandom().nextInt(5); i++) {
+                double x = this.blockX + (dir == Direction.WEST ? -0.1 : dir == Direction.EAST ? 1.1 : ZPRandom.getRandom().nextDouble());
+                double y = this.blockY + (dir == Direction.DOWN ? -0.1 : dir == Direction.UP ? 1.1 : ZPRandom.getRandom().nextDouble());
+                double z = this.blockZ + (dir == Direction.NORTH ? -0.1 : dir == Direction.SOUTH ? 1.1 : ZPRandom.getRandom().nextDouble());
 
-                    BlockPos checkPos = new BlockPos((int) x, (int) y, (int) z);
-                    BlockState checkState = localPlayer.level().getBlockState(checkPos);
-                    if (checkState.isSolid()) {
-                        continue;
-                    }
-
-                    double vx = (ZPRandom.getRandom().nextDouble() - 0.5) * 0.05;
-                    double vy = (ZPRandom.getRandom().nextDouble() - 0.5) * 0.05;
-                    double vz = (ZPRandom.getRandom().nextDouble() - 0.5) * 0.05;
-
-                    clientLevel.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, localPlayer.level().getBlockState(new BlockPos(this.blockX, this.blockY, this.blockZ))), x, y, z, vx, vy, vz);
+                BlockPos checkPos = new BlockPos((int) x, (int) y, (int) z);
+                BlockState checkState = localPlayer.level().getBlockState(checkPos);
+                if (checkState.isSolid()) {
+                    continue;
                 }
+
+                double vx = (ZPRandom.getRandom().nextDouble() - 0.5) * 0.05;
+                double vy = (ZPRandom.getRandom().nextDouble() - 0.5) * 0.05;
+                double vz = (ZPRandom.getRandom().nextDouble() - 0.5) * 0.05;
+
+                clientLevel.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, localPlayer.level().getBlockState(new BlockPos(this.blockX, this.blockY, this.blockZ))), x, y, z, vx, vy, vz);
             }
-        });
+        }
     }
 }

@@ -6,6 +6,8 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.mixins.ext.IZPPlayerMixinExt;
 import ru.gltexture.zpm3.engine.network.ZPNetwork;
@@ -45,10 +47,10 @@ public class ZPNetCheckPacket implements ZPNetwork.ZPPacket {
         }
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
-    public void onClient(@NotNull Player localPlayer, @NotNull ClientLevel clientLevel) {
-        ZPUtility.client().ifClientLevelValid(() -> {
-            ((IZPPlayerMixinExt) localPlayer).getResultFromServer();
-        });
+    public void onClient(@NotNull Player localPlayer) {
+        ClientLevel clientLevel = Objects.requireNonNull(Minecraft.getInstance().level);
+        ((IZPPlayerMixinExt) localPlayer).getResultFromServer();
     }
 }

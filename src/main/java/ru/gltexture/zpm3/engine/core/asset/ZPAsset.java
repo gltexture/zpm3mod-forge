@@ -27,10 +27,7 @@ public abstract class ZPAsset {
 
     public abstract void initMixins(@NotNull ZombiePlague3.IMixinEntry mixinEntry);
     public abstract void initializeAsset(@NotNull ZombiePlague3.IAssetEntry assetEntry);
-
-    public ZPConfigurator.ZPClassWithConfConstants[] zpClassWithConfConstants() {
-        return null;
-    }
+    public abstract void preCommonInitializeAsset();
 
     public ZPAssetData getZpAssetData() {
         return this.zpAssetData;

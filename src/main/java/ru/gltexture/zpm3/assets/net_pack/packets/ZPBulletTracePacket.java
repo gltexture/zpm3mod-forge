@@ -8,13 +8,16 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import ru.gltexture.zpm3.assets.guns.rendering.tracer.ZPBulletTracerManager;
 import ru.gltexture.zpm3.engine.network.ZPNetwork;
-import ru.gltexture.zpm3.engine.service.ZPUtility;
+
+import java.util.Objects;
 
 public class ZPBulletTracePacket implements ZPNetwork.ZPPacket {
     private final float hitX;
@@ -54,28 +57,28 @@ public class ZPBulletTracePacket implements ZPNetwork.ZPPacket {
 
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
-    public void onClient(@NotNull Player localPlayer, @NotNull ClientLevel clientLevel) {
-        ZPUtility.client().ifClientLevelValid(() -> {
-            Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
-            Vec3 camPos = camera.getPosition();
-            Vector3f pos = camPos.toVector3f();
+    public void onClient(@NotNull Player localPlayer) {
+        ClientLevel clientLevel = Objects.requireNonNull(Minecraft.getInstance().level);
+        Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
+        Vec3 camPos = camera.getPosition();
+        Vector3f pos = camPos.toVector3f();
 
-            Vector4f pointInSpace = new Vector4f(localPlayer.position().toVector3f().add(0.0f, localPlayer.getEyeHeight() * 0.75f, 0.0f), 1.0f);
+        Vector4f pointInSpace = new Vector4f(localPlayer.position().toVector3f().add(0.0f, localPlayer.getEyeHeight() * 0.75f, 0.0f), 1.0f);
 
-            if (Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
-                float yaw = -localPlayer.getYRot() * ((float) Math.PI / 180F);
-                float pitch = localPlayer.getXRot() * ((float) Math.PI / 180F);
-                final Matrix4f space = new Matrix4f().identity();
-                space.translate(pos);
-                space.rotate(Axis.YP.rotation(yaw));
-                space.rotate(Axis.XP.rotation(pitch));
-                float interval = 1.0f;
-                pointInSpace = new Vector4f(this.rightHand ? -interval : interval, -1.25f, 8.0f, 1.0f);
-                space.transform(pointInSpace);
-            }
+        if (Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
+            float yaw = -localPlayer.getYRot() * ((float) Math.PI / 180F);
+            float pitch = localPlayer.getXRot() * ((float) Math.PI / 180F);
+            final Matrix4f space = new Matrix4f().identity();
+            space.translate(pos);
+            space.rotate(Axis.YP.rotation(yaw));
+            space.rotate(Axis.XP.rotation(pitch));
+            float interval = 1.0f;
+            pointInSpace = new Vector4f(this.rightHand ? -interval : interval, -1.25f, 8.0f, 1.0f);
+            space.transform(pointInSpace);
+        }
 
-            ZPBulletTracerManager.INSTANCE.addNew(new Vector3f(pointInSpace.x, pointInSpace.y, pointInSpace.z), new Vector3f(this.hitX, this.hitY, this.hitZ));
-        });
+        ZPBulletTracerManager.INSTANCE.addNew(new Vector3f(pointInSpace.x, pointInSpace.y, pointInSpace.z), new Vector3f(this.hitX, this.hitY, this.hitZ));
     }
 }

@@ -15,117 +15,130 @@ import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockItemModelExec
 import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockModelExecutors;
 import ru.gltexture.zpm3.engine.instances.blocks.*;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
+import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public abstract class ZPRegTorchBlocks {
     public static void init(ZPTorchBlocks torchBlocks, @NotNull ZPRegistry.ZPRegSupplier<Block> regSupplier) {
         torchBlocks.pushInstanceCollecting("torches");
         
         ZPTorchBlocks.torch2 = regSupplier.register("torch2", () -> new ZPFadingTorchBlock(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 12).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), ParticleTypes.FLAME, 1.0f, () -> ZPTorchBlocks.torch3.get())
-        ).afterObjectCreated(Dist.DEDICATED_SERVER, (e, utils) -> {
+        ).afterCreated((e, utils) -> {
             utils.loot().addSelfDropLootTable(e);
-        }).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-            utils.blocks().setBlockModelExecutor(e, DefaultBlockModelExecutors.getDefaultTorch());
-            utils.blocks().setBlockItemModelExecutor(e, DefaultBlockItemModelExecutors.getDefaultItemAsItem());
-            utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_TORCH, "torch", ZPDataGenHelper.TORCH_BLOCKS_DIRECTORY);
-            utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
+            ZPUtility.sides().onlyClient(() -> {
+                utils.blocks().setBlockModelExecutor(e, DefaultBlockModelExecutors.getDefaultTorch());
+                utils.blocks().setBlockItemModelExecutor(e, DefaultBlockItemModelExecutors.getDefaultItemAsItem());
+                utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_TORCH, "torch", ZPDataGenHelper.TORCH_BLOCKS_DIRECTORY);
+                utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
+            });
         }).end();
 
         ZPTorchBlocks.torch2_wall = regSupplier.register("torch2_wall", () -> new ZPFadingTorchBlockWall(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 12).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), ParticleTypes.FLAME, 1.0f, () -> ZPTorchBlocks.torch3_wall.get())
-        ).afterObjectCreated(Dist.DEDICATED_SERVER, (e, utils) -> {
+        ).afterCreated((e, utils) -> {
             utils.loot().addSelfDropLootTable(e);
-        }).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
             utils.blocks().setBlockModelExecutor(e, DefaultBlockModelExecutors.getDefaultWallTorch());
             utils.blocks().addBlockModelWithCopiedTexture(e, ZPDataGenHelper.DEFAULT_TORCH_WALL, ZPTorchBlocks.torch2);
             utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
+            });
         }).end();
 
         ZPTorchBlocks.torch3 = regSupplier.register("torch3", () -> new ZPFadingTorchBlock(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 9).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), ParticleTypes.FLAME, 0.45f, () -> ZPTorchBlocks.torch4.get())
-        ).afterObjectCreated(Dist.DEDICATED_SERVER, (e, utils) -> {
+        ).afterCreated((e, utils) -> {
             utils.loot().addSelfDropLootTable(e);
-        }).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
             utils.blocks().setBlockModelExecutor(e, DefaultBlockModelExecutors.getDefaultTorch());
             utils.blocks().setBlockItemModelExecutor(e, DefaultBlockItemModelExecutors.getDefaultItemAsItem());
             utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_TORCH, "torch", ZPDataGenHelper.TORCH_BLOCKS_DIRECTORY);
             utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
+            });
         }).end();
 
         ZPTorchBlocks.torch3_wall = regSupplier.register("torch3_wall", () -> new ZPFadingTorchBlockWall(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 9).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), ParticleTypes.FLAME, 0.45f, () -> ZPTorchBlocks.torch4_wall.get())
-        ).afterObjectCreated(Dist.DEDICATED_SERVER, (e, utils) -> {
+        ).afterCreated((e, utils) -> {
             utils.loot().addSelfDropLootTable(e);
-        }).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
             utils.blocks().setBlockModelExecutor(e, DefaultBlockModelExecutors.getDefaultWallTorch());
             utils.blocks().addBlockModelWithCopiedTexture(e, ZPDataGenHelper.DEFAULT_TORCH_WALL, ZPTorchBlocks.torch3);
             utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
+            });
         }).end();
 
         ZPTorchBlocks.torch4 = regSupplier.register("torch4", () -> new ZPFadingTorchBlock(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 6).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), ParticleTypes.FLAME, 0.15f, () -> ZPTorchBlocks.torch5.get())
-        ).afterObjectCreated(Dist.DEDICATED_SERVER, (e, utils) -> {
-        }).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
             utils.blocks().setBlockModelExecutor(e, DefaultBlockModelExecutors.getDefaultTorch());
             utils.blocks().setBlockItemModelExecutor(e, DefaultBlockItemModelExecutors.getDefaultItemAsItem());
             utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_TORCH, "torch", ZPDataGenHelper.TORCH_BLOCKS_DIRECTORY);
             utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
+            });
         }).end();
 
         ZPTorchBlocks.torch4_wall = regSupplier.register("torch4_wall", () -> new ZPFadingTorchBlockWall(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 6).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), ParticleTypes.FLAME, 0.15f, () -> ZPTorchBlocks.torch5_wall.get())
-        ).afterObjectCreated(Dist.DEDICATED_SERVER, (e, utils) -> {
-        }).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
             utils.blocks().setBlockModelExecutor(e, DefaultBlockModelExecutors.getDefaultWallTorch());
             utils.blocks().addBlockModelWithCopiedTexture(e, ZPDataGenHelper.DEFAULT_TORCH_WALL, ZPTorchBlocks.torch4);
             utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
+            });
         }).end();
 
         ZPTorchBlocks.torch5 = regSupplier.register("torch5", () -> new ZPFadingTorchBlock(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 2).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), null, 0.0f, null)
-        ).afterObjectCreated(Dist.DEDICATED_SERVER, (e, utils) -> {
-        }).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
             utils.blocks().setBlockModelExecutor(e, DefaultBlockModelExecutors.getDefaultTorch());
             utils.blocks().setBlockItemModelExecutor(e, DefaultBlockItemModelExecutors.getDefaultItemAsItem());
             utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_TORCH, "torch", ZPDataGenHelper.TORCH_BLOCKS_DIRECTORY);
             utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
+            });
         }).end();
 
         ZPTorchBlocks.torch5_wall = regSupplier.register("torch5_wall", () -> new ZPFadingTorchBlockWall(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 2).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), null, 0.0f, null)
-        ).afterObjectCreated(Dist.DEDICATED_SERVER, (e, utils) -> {
-        }).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
             utils.blocks().setBlockModelExecutor(e, DefaultBlockModelExecutors.getDefaultWallTorch());
             utils.blocks().addBlockModelWithCopiedTexture(e, ZPDataGenHelper.DEFAULT_TORCH_WALL, ZPTorchBlocks.torch5);
             utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
+            });
         }).end();
 
         torchBlocks.stopCollecting();
 
         ZPTorchBlocks.wall_lamp = regSupplier.register("wall_lamp", () -> new ZPTorchBlock(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 15).sound(SoundType.GLASS).pushReaction(PushReaction.DESTROY), null, 0.0f) //ParticleTypes.FLAME
-        ).afterObjectCreated(Dist.DEDICATED_SERVER, (e, utils) -> {
-        }).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
             utils.blocks().setBlockModelExecutor(e, DefaultBlockModelExecutors.getDefaultTorch());
             utils.blocks().setBlockItemModelExecutor(e, DefaultBlockItemModelExecutors.getDefaultItemAsItem());
             utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_TORCH, "torch", ZPDataGenHelper.TORCH_BLOCKS_DIRECTORY);
             utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
+            });
         }).end();
 
         ZPTorchBlocks.wall_lamp_wall = regSupplier.register("wall_lamp_wall", () -> new ZPWallTorchBlock(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 15).sound(SoundType.GLASS).pushReaction(PushReaction.DESTROY), null, 0.0f) //ParticleTypes.FLAME
-        ).afterObjectCreated(Dist.DEDICATED_SERVER, (e, utils) -> {
-        }).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
             utils.blocks().setBlockModelExecutor(e, DefaultBlockModelExecutors.getDefaultWallTorch());
             utils.blocks().addBlockModelWithCopiedTexture(e, ZPDataGenHelper.DEFAULT_TORCH_WALL, ZPTorchBlocks.wall_lamp);
             utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
+            });
         }).end();
 
         ZPTorchBlocks.wall_lamp_off = regSupplier.register("wall_lamp_off", () -> new ZPTorchBlock(BlockBehaviour.Properties.of().noCollission().instabreak().sound(SoundType.GLASS).pushReaction(PushReaction.DESTROY), null, 0.0f) //ParticleTypes.FLAME
-        ).afterObjectCreated(Dist.DEDICATED_SERVER, (e, utils) -> {
-        }).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
             utils.blocks().setBlockModelExecutor(e, DefaultBlockModelExecutors.getDefaultTorch());
             utils.blocks().setBlockItemModelExecutor(e, DefaultBlockItemModelExecutors.getDefaultItemAsItem());
             utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_TORCH, "torch", ZPDataGenHelper.TORCH_BLOCKS_DIRECTORY);
             utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
+            });
         }).end();
 
         ZPTorchBlocks.wall_lamp_off_wall = regSupplier.register("wall_lamp_off_wall", () -> new ZPWallTorchBlock(BlockBehaviour.Properties.of().noCollission().instabreak().sound(SoundType.GLASS).pushReaction(PushReaction.DESTROY), null, 0.0f) //ParticleTypes.FLAME
-        ).afterObjectCreated(Dist.DEDICATED_SERVER, (e, utils) -> {
-        }).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
             utils.blocks().setBlockModelExecutor(e, DefaultBlockModelExecutors.getDefaultWallTorch());
             utils.blocks().addBlockModelWithCopiedTexture(e, ZPDataGenHelper.DEFAULT_TORCH_WALL, ZPTorchBlocks.wall_lamp);
             utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
+            });
         }).end();
     }
 

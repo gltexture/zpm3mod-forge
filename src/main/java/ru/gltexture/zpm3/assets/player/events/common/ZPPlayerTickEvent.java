@@ -17,17 +17,6 @@ public class ZPPlayerTickEvent implements ZPEventClass {
 
     @SubscribeEvent
     public static void exec(TickEvent.@NotNull PlayerTickEvent event) {
-        if (event.phase != TickEvent.Phase.END) {
-            return;
-        }
-
-        if (event.side == LogicalSide.SERVER) {
-            ZPPlayerAsset.serverSideLogic.onTickPlayer(event.phase, event.player);
-        }
-        if (event.side == LogicalSide.CLIENT) {
-            ZPPlayerAsset.clientSideLogic.onTickPlayer(event.phase, event.player);
-        }
-        ZPPlayerAsset.bothSidesLogic.onTickPlayer(event.phase, event.player);
     }
 
     @Override

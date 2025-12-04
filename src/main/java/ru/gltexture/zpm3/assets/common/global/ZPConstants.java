@@ -11,7 +11,7 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public static final String GROUP_COMBAT = "Combat";
     public static final String GROUP_NETWORK = "Network";
     public static final String GROUP_WORLD = "World";
-
+    public static final String GROUP_CLIENT = "Client";
 
     // ===== ZOMBIE =====
     @ZPConfigurableConstant(
@@ -299,6 +299,15 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public static float BLEEDING_CHANCE_MULTIPLIER = 1.0f;
 
     @ZPConfigurableConstant(
+            description = "New entity-item lifespan.",
+            group = ZPConstants.GROUP_WORLD,
+            type = ZPConfigurableConstant.TYPES.INT,
+            min = 0.0,
+            max = Float.MAX_VALUE
+    )
+    public static int ENTITY_ITEM_LIFESPAN = 16000;
+
+    @ZPConfigurableConstant(
             description = "If enabled, server applies extreme darkness shader gamma reduction for all players regardless of client settings.",
             group = ZPConstants.GROUP_WORLD,
             type = ZPConfigurableConstant.TYPES.BOOLEAN
@@ -335,6 +344,12 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     )
     public static boolean CAN_BULLET_BREAK_BLOCK = true;
 
+    @ZPConfigurableConstant(
+            description = "Maximum block's hardness, that can be broken by bullet.",
+            group = ZPConstants.GROUP_COMBAT,
+            type = ZPConfigurableConstant.TYPES.FLOAT
+    )
+    public static float MAX_BULLET_HIT_BLOCK_HARDNESS = 1.0f;
 
     // ===== WORLD / ENVIRONMENT =====
     @ZPConfigurableConstant(
@@ -402,6 +417,20 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     )
     public static int ITEMS_THROW_COOLDOWN = 20;
 
+    // ===== CLIENT =====
+    @ZPConfigurableConstant(
+            description = "Pick Up on F or another key.",
+            group = ZPConstants.GROUP_CLIENT,
+            type = ZPConfigurableConstant.TYPES.BOOLEAN
+    )
+    public static boolean PICK_UP_ON_F = true;
+
+    @ZPConfigurableConstant(
+            description = "Fancy ZP item-entity animation.",
+            group = ZPConstants.GROUP_CLIENT,
+            type = ZPConfigurableConstant.TYPES.BOOLEAN
+    )
+    public static boolean FANCY_ITEM_ENTITIES = true;
 
     @Override
     public String configName() {

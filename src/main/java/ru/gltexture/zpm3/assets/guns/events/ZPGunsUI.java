@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -20,6 +21,7 @@ import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.events.ZPEventClass;
 
+@OnlyIn(Dist.CLIENT)
 public class ZPGunsUI implements ZPEventClass {
     private static final ResourceLocation mouse_left = ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "textures/ui/mouse_left.png");
     private static final ResourceLocation mouse_right = ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "textures/ui/mouse_right.png");

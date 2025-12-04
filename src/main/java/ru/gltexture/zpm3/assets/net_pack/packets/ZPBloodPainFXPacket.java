@@ -6,6 +6,8 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import ru.gltexture.zpm3.assets.fx.init.ZPParticles;
@@ -46,20 +48,20 @@ public class ZPBloodPainFXPacket implements ZPNetwork.ZPPacket {
     public void onServer(@NotNull Player sender, @NotNull ServerLevel serverLevel) {
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
-    public void onClient(@NotNull Player localPlayer, @NotNull ClientLevel clientLevel) {
-        ZPUtility.client().ifClientLevelValid(() -> {
-            Entity entity = Objects.requireNonNull(Minecraft.getInstance().level).getEntity(this.entityHit);
-            if (entity != null) {
-                Vector3f pos = entity.position().toVector3f();
-                pos.add((float) (entity.getLookAngle().x * 0.5f), entity.getEyeHeight() / 2.0f, (float) (entity.getLookAngle().z * 0.5f));
-                for (int is = 0; is < (this.bleeding ? 3 : (6 + ZPRandom.getRandom().nextInt(5))); is++) {
-                    Vector3f motion = ZPRandom.instance.randomVector3f(0.05f, new Vector3f(0.1f));
-                    Objects.requireNonNull(clientLevel).addParticle(new ColoredDefaultParticleOptions(ZPParticles.blood_fx.get(), new Vector3f(0.6f + ZPRandom.getRandom().nextFloat(0.2f), 0.0f, 0.0f), this.bleeding ? 0.6f : 0.8f, this.bleeding ? 60 : 12, 0.9f), false, pos.x, pos.y, pos.z, motion.x(), motion.y() + 0.25f, motion.z());
-                }
-            } else {
-                ZPLogger.warn("Received entity-id: " + this.entityHit + ", but entity is NULL");
+    public void onClient(@NotNull Player localPlayer) {
+        ClientLevel clientLevel = Objects.requireNonNull(Minecraft.getInstance().level);
+        Entity entity = Objects.requireNonNull(Minecraft.getInstance().level).getEntity(this.entityHit);
+        if (entity != null) {
+            Vector3f pos = entity.position().toVector3f();
+            pos.add((float) (entity.getLookAngle().x * 0.5f), entity.getEyeHeight() / 2.0f, (float) (entity.getLookAngle().z * 0.5f));
+            for (int is = 0; is < (this.bleeding ? 3 : (6 + ZPRandom.getRandom().nextInt(5))); is++) {
+                Vector3f motion = ZPRandom.instance.randomVector3f(0.05f, new Vector3f(0.1f));
+                Objects.requireNonNull(clientLevel).addParticle(new ColoredDefaultParticleOptions(ZPParticles.blood_fx.get(), new Vector3f(0.6f + ZPRandom.getRandom().nextFloat(0.2f), 0.0f, 0.0f), this.bleeding ? 0.6f : 0.8f, this.bleeding ? 60 : 12, 0.9f), false, pos.x, pos.y, pos.z, motion.x(), motion.y() + 0.25f, motion.z());
             }
-        });
+        } else {
+            ZPLogger.warn("Received entity-id: " + this.entityHit + ", but entity is NULL");
+        }
     }
 }

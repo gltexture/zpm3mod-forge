@@ -7,6 +7,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -20,6 +22,7 @@ import ru.gltexture.zpm3.engine.events.ZPEventClass;
 import java.util.ArrayList;
 import java.util.List;
 
+@OnlyIn(Dist.CLIENT)
 public class ZPRenderStuffEvent implements ZPEventClass {
     private static List<LineRequest> lineRequestList = new ArrayList<>();
 

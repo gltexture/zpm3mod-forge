@@ -13,55 +13,72 @@ import ru.gltexture.zpm3.engine.instances.items.tier.ZPTiers;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
 import ru.gltexture.zpm3.engine.helpers.ZPItemTabAddHelper;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
+import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public abstract class ZPRegMelee {
     public static void init(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
         ZPItems.bat = regSupplier.register("bat", () -> new ZPItemSword(ZPTiers.ZP_WOOD, 6, -3.2F, new Item.Properties())
-        ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-            ZPItemTabAddHelper.addItemInTab(e, ZPTabs.zp_melee_tab);
-            utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_MELEE, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MELEE_ITEMS_DIRECTORY);
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                ZPItemTabAddHelper.addItemInTab(e, ZPTabs.zp_melee_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_MELEE, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MELEE_ITEMS_DIRECTORY);
+            });
         }).end();
 
         ZPItems.iron_club = regSupplier.register("iron_club", () -> new ZPItemSword(ZPTiers.ZP_IRON_2, 3, -1.2F, new Item.Properties())
-        ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-            utils.items().addItemInTab(e, ZPTabs.zp_melee_tab);
-            utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_MELEE, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MELEE_ITEMS_DIRECTORY);
+        ).afterCreated((e, utils) -> {
+                    ZPUtility.sides().onlyClient(() -> {
+                        utils.items().addItemInTab(e, ZPTabs.zp_melee_tab);
+                        utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_MELEE, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MELEE_ITEMS_DIRECTORY);
+                    });
         }).end();
 
         ZPItems.pipe = regSupplier.register("pipe", () -> new ZPItemSword(ZPTiers.ZP_IRON_1, 3, -2.8F, new Item.Properties())
-        ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-            utils.items().addItemInTab(e, ZPTabs.zp_melee_tab);
-            utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_MELEE, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MELEE_ITEMS_DIRECTORY);
+        ).afterCreated((e, utils) -> {
+                    ZPUtility.sides().onlyClient(() -> {
+                        utils.items().addItemInTab(e, ZPTabs.zp_melee_tab);
+                        utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_MELEE, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MELEE_ITEMS_DIRECTORY);
+                    });
         }).end();
 
         ZPItems.golf_club = regSupplier.register("golf_club", () -> new ZPItemSword(ZPTiers.ZP_IRON_1, 4, -1.8F, new Item.Properties())
-        ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-            utils.items().addItemInTab(e, ZPTabs.zp_melee_tab);
-            utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_MELEE, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MELEE_ITEMS_DIRECTORY);
+        ).afterCreated((e, utils) -> {
+                    ZPUtility.sides().onlyClient(() -> {
+                        utils.items().addItemInTab(e, ZPTabs.zp_melee_tab);
+                        utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_MELEE, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MELEE_ITEMS_DIRECTORY);
+                    });
         }).end();
 
         ZPItems.crowbar = regSupplier.register("crowbar", () -> new ZPItemSword(ZPTiers.ZP_IRON_2, 4, -1.8F, new Item.Properties())
-        ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-            utils.items().addItemInTab(e, ZPTabs.zp_melee_tab);
-            utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_MELEE, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MELEE_ITEMS_DIRECTORY);
+        ).afterCreated((e, utils) -> {
+                    ZPUtility.sides().onlyClient(() -> {
+                        utils.items().addItemInTab(e, ZPTabs.zp_melee_tab);
+                        utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_MELEE, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MELEE_ITEMS_DIRECTORY);
+                    });
         }).end();
 
         ZPItems.cleaver = regSupplier.register("cleaver", () -> new ZPItemSword(ZPTiers.ZP_IRON_1, 2, -0.2F, new Item.Properties())
-        ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-            utils.items().addItemInTab(e, ZPTabs.zp_melee_tab);
-            utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_MELEE, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MELEE_ITEMS_DIRECTORY);
+        ).afterCreated((e, utils) -> {
+                    ZPUtility.sides().onlyClient(() -> {
+                        utils.items().addItemInTab(e, ZPTabs.zp_melee_tab);
+                        utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_MELEE, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MELEE_ITEMS_DIRECTORY);
+                    });
         }).end();
 
         ZPItems.hatchet = regSupplier.register("hatchet", () -> new ZPItemAxe(ZPTiers.ZP_IRON_3, 5.0f, -3.2F, new Item.Properties())
-        ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-            utils.items().addItemInTab(e, ZPTabs.zp_melee_tab);
-            utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_MELEE, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MELEE_ITEMS_DIRECTORY);
+        ).afterCreated((e, utils) -> {
+                    ZPUtility.sides().onlyClient(() -> {
+                        utils.items().addItemInTab(e, ZPTabs.zp_melee_tab);
+                        utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_MELEE, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MELEE_ITEMS_DIRECTORY);
+                    });
         }).end();
 
         ZPItems.sledgehammer = regSupplier.register("sledgehammer", () -> new ZPItemPickaxe(ZPTiers.ZP_IRON_3, 5, -3.2F, new Item.Properties())
-        ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-            utils.items().addItemInTab(e, ZPTabs.zp_melee_tab);
-            utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_MELEE, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MELEE_ITEMS_DIRECTORY);
+        ).afterCreated((e, utils) -> {
+                    ZPUtility.sides().onlyClient(() -> {
+                        utils.items().addItemInTab(e, ZPTabs.zp_melee_tab);
+                        utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_MELEE, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MELEE_ITEMS_DIRECTORY);
+                    });
         }).end();
     }
 

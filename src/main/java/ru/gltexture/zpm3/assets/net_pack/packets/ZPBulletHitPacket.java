@@ -10,6 +10,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import ru.gltexture.zpm3.assets.fx.init.ZPParticles;
@@ -88,41 +90,41 @@ public class ZPBulletHitPacket implements ZPNetwork.ZPPacket {
 
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
-    public void onClient(@NotNull Player localPlayer, @NotNull ClientLevel clientLevel) {
-        ZPUtility.client().ifClientLevelValid(() -> {
-            if (this.hitType == ZPBulletHitPacket.BLOCK) {
-                float pitch = 1.5f;
-                BlockPos hitPos = new BlockPos(this.blockX, this.blockY, this.blockZ);
-                BlockState state = clientLevel.getBlockState(hitPos);
-                clientLevel.playSound(null, hitPos, state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 1.0f, pitch);
+    public void onClient(@NotNull Player localPlayer) {
+        ClientLevel clientLevel = Objects.requireNonNull(Minecraft.getInstance().level);
+        if (this.hitType == ZPBulletHitPacket.BLOCK) {
+            float pitch = 1.5f;
+            BlockPos hitPos = new BlockPos(this.blockX, this.blockY, this.blockZ);
+            BlockState state = clientLevel.getBlockState(hitPos);
+            clientLevel.playLocalSound(hitPos, state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 0.65f, pitch, false);
 
-                for (int i = 0; i < 6; i++) {
-                    final Vector3f color = new Vector3f(0.3f).add(ZPRandom.instance.randomVector3f(0.05f, new Vector3f(0.1f)));
-                    final int lifetime = 10 + ZPRandom.getRandom().nextInt(6);
-                    final Vector3f motion = new Vector3f(this.vectorFromX, this.vectorFromY, this.vectorFromZ);
-                    final Vector3f posToSpawn = new Vector3f(this.hitX, this.hitY, this.hitZ);
-                    posToSpawn.add(new Vector3f(motion).mul(0.25f));
-                    motion.mul(0.025f).add(ZPRandom.instance.randomVector3f(0.05f, new Vector3f(0.1f)));
-                    Objects.requireNonNull(Minecraft.getInstance().level).addParticle(new ColoredDefaultParticleOptions(ZPParticles.colored_cloud.get(), color, 0.65f, lifetime), true,
-                            posToSpawn.x, posToSpawn.y, posToSpawn.z,
-                            motion.x, motion.y, motion.z);
-                }
-
-                for (int i = 0; i < 12; i++) {
-                    final Vector3f blockCenter = new Vector3f(this.hitX + 0.5f, this.hitY + 0.5f, this.hitZ + 0.5f);
-                    final Vector3f posToSpawn = new Vector3f(this.hitX, this.hitY, this.hitZ);
-                    final Vector3f motion = new Vector3f(posToSpawn).sub(blockCenter).normalize();
-
-                    motion.mul(0.1f).add(ZPRandom.instance.randomVector3f(0.02f, new Vector3f(0.05f)));
-
-                    Objects.requireNonNull(Minecraft.getInstance().level).addParticle(
-                            new BlockParticleOption(ParticleTypes.BLOCK, Minecraft.getInstance().level.getBlockState(new BlockPos(this.blockX, this.blockY, this.blockZ))),
-                            posToSpawn.x, posToSpawn.y, posToSpawn.z,
-                            motion.x, motion.y, motion.z
-                    );
-                }
+            for (int i = 0; i < 6; i++) {
+                final Vector3f color = new Vector3f(0.3f).add(ZPRandom.instance.randomVector3f(0.05f, new Vector3f(0.1f)));
+                final int lifetime = 10 + ZPRandom.getRandom().nextInt(6);
+                final Vector3f motion = new Vector3f(this.vectorFromX, this.vectorFromY, this.vectorFromZ);
+                final Vector3f posToSpawn = new Vector3f(this.hitX, this.hitY, this.hitZ);
+                posToSpawn.add(new Vector3f(motion).mul(0.25f));
+                motion.mul(0.025f).add(ZPRandom.instance.randomVector3f(0.05f, new Vector3f(0.1f)));
+                Objects.requireNonNull(Minecraft.getInstance().level).addParticle(new ColoredDefaultParticleOptions(ZPParticles.colored_cloud.get(), color, 0.65f, lifetime), true,
+                        posToSpawn.x, posToSpawn.y, posToSpawn.z,
+                        motion.x, motion.y, motion.z);
             }
-        });
+
+            for (int i = 0; i < 12; i++) {
+                final Vector3f blockCenter = new Vector3f(this.hitX + 0.5f, this.hitY + 0.5f, this.hitZ + 0.5f);
+                final Vector3f posToSpawn = new Vector3f(this.hitX, this.hitY, this.hitZ);
+                final Vector3f motion = new Vector3f(posToSpawn).sub(blockCenter).normalize();
+
+                motion.mul(0.1f).add(ZPRandom.instance.randomVector3f(0.02f, new Vector3f(0.05f)));
+
+                Objects.requireNonNull(Minecraft.getInstance().level).addParticle(
+                        new BlockParticleOption(ParticleTypes.BLOCK, Minecraft.getInstance().level.getBlockState(new BlockPos(this.blockX, this.blockY, this.blockZ))), true,
+                        posToSpawn.x, posToSpawn.y, posToSpawn.z,
+                        motion.x, motion.y, motion.z
+                );
+            }
+        }
     }
 }

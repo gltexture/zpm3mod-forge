@@ -16,6 +16,8 @@ import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.registry.collection.IZPCollectRegistryObjects;
 import ru.gltexture.zpm3.engine.service.Pair;
 import ru.gltexture.zpm3.engine.service.ZPPath;
+import ru.gltexture.zpm3.engine.service.ZPUtility;
+
 import java.util.*;
 
 public class ZPLootCases extends ZPRegistry<ZPDefaultBlockLootCase> implements IZPCollectRegistryObjects {
@@ -33,9 +35,11 @@ public class ZPLootCases extends ZPRegistry<ZPDefaultBlockLootCase> implements I
             final boolean isUnbreakable = lootTable.getLootCaseData().isUnbreakable();
             final int lootRespawnTime = lootTable.getLootCaseData().respawnTime();
             RegistryObject<ZPDefaultBlockLootCase> syntheticLootCase = regSupplier.register(lootCaseName, () -> new ZPDefaultBlockLootCase(BlockBehaviour.Properties.of().strength(isUnbreakable ? -1.0f : 5.0f, isUnbreakable ? Float.MAX_VALUE : 5.0f).sound(SoundType.WOOD), lootTable.getLootCaseData().textureId(), lootTable, lootRespawnTime)
-            ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-                utils.blocks().addBlockModelKey_ValueArray(e, ZPDataGenHelper.DEFAULT_CHEST_BLOCK, Pair.of("particle", () -> new ZPPath(ZPDataGenHelper.MINECRAFT_VANILLA_ROOT, "oak_planks")));
-                utils.blocks().setBlockItemModelExecutor(e, DefaultBlockItemModelExecutors.getDefaultItemAsVanillaParent(ZPDataGenHelper.DEFAULT_CHEST_ITEM));
+            ).afterCreated((e, utils) -> {
+                ZPUtility.sides().onlyClient(() -> {
+                    utils.blocks().addBlockModelKey_ValueArray(e, ZPDataGenHelper.DEFAULT_CHEST_BLOCK, Pair.of("particle", () -> new ZPPath(ZPDataGenHelper.MINECRAFT_VANILLA_ROOT, "oak_planks")));
+                    utils.blocks().setBlockItemModelExecutor(e, DefaultBlockItemModelExecutors.getDefaultItemAsVanillaParent(ZPDataGenHelper.DEFAULT_CHEST_ITEM));
+                });
             }).end();
             ZPLootCases.generatedLootCases.put(lootCaseName, syntheticLootCase);
         }

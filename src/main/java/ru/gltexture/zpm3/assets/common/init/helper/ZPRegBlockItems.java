@@ -16,6 +16,7 @@ import ru.gltexture.zpm3.engine.helpers.ZPItemBlockHelper;
 import ru.gltexture.zpm3.engine.instances.ZPBlockItemsRegistry;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.registry.ZPRegistryCollections;
+import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public abstract class ZPRegBlockItems {
     public static void init(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
@@ -38,8 +39,10 @@ public abstract class ZPRegBlockItems {
         try {
             for (RegistryObject<Block> registryObject : ZPRegistryCollections.getCollectionById(ZPBlocks.class, "blocks")) {
                 RegistryObject<BlockItem> blockItemRegistryObject = ZPItemBlockHelper.createBlockItem(regSupplier, registryObject
-                ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-                    utils.items().addItemInTab(e, tabToAdd);
+                ).afterCreated((e, utils) -> {
+                    ZPUtility.sides().onlyClient(() -> {
+                        utils.items().addItemInTab(e, tabToAdd);
+                    });
                 }).end();
                 ZPBlockItemsRegistry.putNewEntry(registryObject, blockItemRegistryObject);
             }
@@ -52,8 +55,10 @@ public abstract class ZPRegBlockItems {
         final RegistryObject<CreativeModeTab> tabToAdd = ZPTabs.zp_blocks_tab;
 
         RegistryObject<BlockItem> blockItemRegistryObject = ZPItemBlockHelper.createWallBlockItem(regSupplier, block, wallBlock
-        ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-            utils.items().addItemInTab(e, tabToAdd);
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.items().addItemInTab(e, tabToAdd);
+            });
         }).end();
 
         ZPBlockItemsRegistry.putNewEntry(block, blockItemRegistryObject);

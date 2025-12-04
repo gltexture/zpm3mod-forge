@@ -55,6 +55,11 @@ public class ZPLootCasesAsset extends ZPAsset {
         assetEntry.addZP3RegistryClass(ZPLootCaseBlockItems.class);
     }
 
+    @Override
+    public void preCommonInitializeAsset() {
+
+    }
+
     public static class ZPDefaultLootTables extends ZPLootTablesRegistry {
         private static ZPLootTable loot_debris = ZPLootTable.builder("loot_debris")
                 .commonGroup("trash", 20, (g) -> g

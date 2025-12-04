@@ -19,6 +19,7 @@ import ru.gltexture.zpm3.engine.helpers.ZPItemBlockHelper;
 import ru.gltexture.zpm3.engine.instances.ZPBlockItemsRegistry;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.registry.ZPRegistryCollections;
+import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public abstract class ZPRegLootCaseItems {
     public static void init(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
@@ -36,8 +37,10 @@ public abstract class ZPRegLootCaseItems {
                                 return new ZPLootCaseItemRenderer(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels(), registryObject.get());
                             }
                         }))
-                ).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-                    utils.items().addItemInTab(e, tabToAdd);
+                ).afterCreated((e, utils) -> {
+                    ZPUtility.sides().onlyClient(() -> {
+                        utils.items().addItemInTab(e, tabToAdd);
+                    });
                 }).end();
                 ZPBlockItemsRegistry.putNewEntry(registryObject, blockItemRegistryObject);
             }

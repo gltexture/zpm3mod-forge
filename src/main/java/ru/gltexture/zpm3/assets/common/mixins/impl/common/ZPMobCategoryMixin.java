@@ -11,11 +11,9 @@ import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 
 @Mixin(MobCategory.class)
 public class ZPMobCategoryMixin {
-    @Final @Shadow public static MobCategory MONSTER;
-
     @Inject(method = "getMaxInstancesPerChunk", at = @At("HEAD"), cancellable = true)
     public void getMaxInstancesPerChunk(CallbackInfoReturnable<Integer> cir) {
-        if ((Object) this == MONSTER) {
+        if ((Object) this == MobCategory.MONSTER) {
             cir.setReturnValue(ZPConstants.MAX_ZOMBIES_IN_CHUNK);
         }
     }

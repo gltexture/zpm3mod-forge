@@ -12,6 +12,7 @@ import ru.gltexture.zpm3.assets.loot_cases.rendering.ZPLootCaseRenderer;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.registry.ZPRegistryCollections;
+import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 import java.util.Arrays;
 
@@ -32,8 +33,10 @@ public class ZPBlockLootCaseEntities extends ZPRegistry<BlockEntityType<?>> {
                             .map(RegistryObject::get)
                             .toArray(ZPDefaultBlockLootCase[]::new);
                     return Builder.of(ZPLootCaseBlockEntity::new, Arrays.stream(zpBlocks).toArray(Block[]::new)).build(null);
-                }).afterObjectCreated(Dist.CLIENT, (e, utils) -> {
-            utils.blockEntities().matchBlockEntityRendering(e, ZPLootCaseRenderer::new);
+                }).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.blockEntities().matchBlockEntityRendering(e, ZPLootCaseRenderer::new);
+            });
         }).end();
     }
 

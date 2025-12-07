@@ -6,14 +6,17 @@
   "plugin": "ru.gltexture.zpm3.engine.mixins.ZPMixinPlugin",
   "refmap": "zpm3.refmap.json",
   "mixins": [
-    "common.ZPEntityMixin",
+    "common.ZPCookingRecipeMixin",
     "common.ZPDefaultBiomeFeaturesMixin",
+    "common.ZPEntityMixin",
     "common.ZPLivingEntityMixin",
     "common.ZPPlayerMixin",
+    "common.ZPRecipeManagerMixin",
     "common.ZPServerLevelMixin",
     "common.ZPServerPlayerGameMixin"
   ],
   "client": [
+    "client.TranslatableContentsFixMixin",
     "client.ZPEntityRendererMixin",
     "client.ZPGameLightMapMixin",
     "client.ZPGameRendererMixin",

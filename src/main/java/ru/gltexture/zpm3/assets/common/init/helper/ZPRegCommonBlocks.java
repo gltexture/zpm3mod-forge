@@ -3,14 +3,17 @@ package ru.gltexture.zpm3.assets.common.init.helper;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.api.distmarker.Dist;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.init.ZPBlocks;
+import ru.gltexture.zpm3.assets.common.init.ZPItems;
 import ru.gltexture.zpm3.assets.common.instances.blocks.ZPBarbaredWireBlock;
 import ru.gltexture.zpm3.engine.instances.blocks.*;
 import ru.gltexture.zpm3.assets.common.instances.blocks.ZPFallingBlock;
@@ -75,7 +78,7 @@ public abstract class ZPRegCommonBlocks {
 
         ZPBlocks.scrap = regSupplier.register("scrap", () -> new ZPBlock(BlockBehaviour.Properties.of().strength(3.0F, 3.0F).sound(SoundType.METAL))
         ).afterCreated((e, utils) -> {
-            utils.loot().addBlockLootTable(e, () -> new LootPool.Builder().setRolls(UniformGenerator.between(0, 2)).add(LootItem.lootTableItem(Items.IRON_NUGGET)));
+            utils.loot().addBlockLootTable(e, () -> new LootPool.Builder().setRolls(UniformGenerator.between(0, 2)).add(LootItem.lootTableItem(ZPItems.scrap_material.get())));
             utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
             ZPUtility.sides().onlyClient(() -> {
                 utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_BLOCK_CUBE, ZPGenTextureData.ALL_KEY, ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY);

@@ -35,6 +35,10 @@ public class ZPRenderWorldEventWithPickUpCheck implements ZPEventClass {
         return Mod.EventBusSubscriber.Bus.FORGE;
     }
 
+    public static boolean canBePickedUp(@NotNull ItemEntity entity) {
+        return entity.isAlive() && entity.tickCount > 20;
+    }
+
     @SubscribeEvent
     public static void onRenderWorld(RenderLevelStageEvent event) {
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SOLID_BLOCKS) {
@@ -48,13 +52,15 @@ public class ZPRenderWorldEventWithPickUpCheck implements ZPEventClass {
             BlockHitResult blockHit = mc.level.clip(new ClipContext(mc.player.getEyePosition(), targetPos, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, mc.player));
             Vec3 rayEnd = blockHit.getType() == HitResult.Type.BLOCK ? blockHit.getLocation() : targetPos;
             EntityHitResult ehr = ProjectileUtil.getEntityHitResult(mc.level, mc.player, mc.player.getEyePosition(), rayEnd, mc.player.getBoundingBox().expandTowards(mc.player.getLookAngle().scale(dist)).inflate(1.0),
-                    e -> e instanceof ItemEntity entity && entity.isAlive() && entity.tickCount > 10
+                    e -> e instanceof ItemEntity p && p.tickCount > 5
             , 0.3f);
             if (ehr != null && ehr.getEntity() instanceof ItemEntity entity) {
                 ZPRenderWorldEventWithPickUpCheck.entityToPickUp = entity;
             }
             if (ZPRenderWorldEventWithPickUpCheck.entityToPickUp != null && ZPCommonKeyBindings.pickItem.isDown()) {
-                ZombiePlague3.net().sendToServer(new ZPPlayerWantToPickUpItem(ZPRenderWorldEventWithPickUpCheck.entityToPickUp.getId()));
+                if (ZPRenderWorldEventWithPickUpCheck.canBePickedUp(ZPRenderWorldEventWithPickUpCheck.entityToPickUp)) {
+                    ZombiePlague3.net().sendToServer(new ZPPlayerWantToPickUpItem(ZPRenderWorldEventWithPickUpCheck.entityToPickUp.getId()));
+                }
             }
         }
     }

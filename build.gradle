@@ -33,6 +33,7 @@ java {
 }
 
 minecraft {
+    accessTransformer = file('src/main/resources/META-INF/zpm3.access.cfg')
     mappings channel: mapping_channel, version: mapping_version
     copyIdeResources = true
     runs {

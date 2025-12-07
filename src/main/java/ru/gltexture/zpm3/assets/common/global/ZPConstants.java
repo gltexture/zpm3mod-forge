@@ -299,6 +299,14 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public static float BLEEDING_CHANCE_MULTIPLIER = 1.0f;
 
     @ZPConfigurableConstant(
+            description = "New vanilla's concrete destroy speed",
+            group = ZPConstants.GROUP_WORLD,
+            type = ZPConfigurableConstant.TYPES.FLOAT,
+            min = 0.0
+    )
+    public static float ZP_VANILLA_CONCRETE_DESTROY_SPEED = 300.0f;
+
+    @ZPConfigurableConstant(
             description = "New entity-item lifespan.",
             group = ZPConstants.GROUP_WORLD,
             type = ZPConfigurableConstant.TYPES.INT,
@@ -352,6 +360,14 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public static float MAX_BULLET_HIT_BLOCK_HARDNESS = 1.0f;
 
     // ===== WORLD / ENVIRONMENT =====
+
+    @ZPConfigurableConstant(
+            description = "Increases cooking time. References to all vanilla crafting blocks (furnace, campfire etc.).",
+            group = ZPConstants.GROUP_WORLD,
+            type = ZPConfigurableConstant.TYPES.FLOAT
+    )
+    public static float ZP_COOKING_TIME_ALL_CRAFTING_BLOCKS_MULTIPLIER = 2.0f;
+
     @ZPConfigurableConstant(
             description = "Duration in ticks before a placed torch light source fades.",
             group = ZPConstants.GROUP_WORLD,

@@ -1,17 +1,27 @@
 package ru.gltexture.zpm3.engine.events.common;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.assets.guns.item.ZPBaseGun;
+import ru.gltexture.zpm3.engine.mixins.ext.IZPRecipesManagerExt;
+import ru.gltexture.zpm3.engine.mixins.impl.common.ZPRecipeManagerMixin;
+import ru.gltexture.zpm3.engine.recipes.ZPRecipesController;
+import ru.gltexture.zpm3.engine.recipes.ZPRecipesRegistry;
+
+import java.util.Collection;
+import java.util.Map;
 
 public class ZPCommonForge {
     @SubscribeEvent
@@ -55,5 +65,15 @@ public class ZPCommonForge {
     private static boolean shouldCancelInteraction(@NotNull Player player) {
         ItemStack stack = player.getMainHandItem();
         return stack.getItem() instanceof ZPBaseGun;
+    }
+
+    @SubscribeEvent
+    public void onServerStarted(ServerStartedEvent event) {
+        RecipeManager manager = event.getServer().getRecipeManager();
+        if (manager instanceof IZPRecipesManagerExt ext) {
+            ZombiePlague3.getRecipesController().getRegistries().forEach(e -> {
+                ext.removeRecipes(e.getRecipesToRemove());
+            });
+        }
     }
 }

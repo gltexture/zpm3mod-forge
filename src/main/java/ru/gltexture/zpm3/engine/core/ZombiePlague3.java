@@ -13,7 +13,10 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DispenserBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
@@ -31,12 +34,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.gltexture.zpm3.assets.common.population.ZPSetupPopulation;
 import ru.gltexture.zpm3.assets.loot_cases.registry.ZPLootTablesRegistry;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPDefaultShaders;
 import ru.gltexture.zpm3.engine.core.asset.ZPAsset;
 import ru.gltexture.zpm3.engine.core.asset.ZPAssetData;
 import ru.gltexture.zpm3.engine.core.config.ZPConfigurator;
-import ru.gltexture.zpm3.engine.core.population.ZPPopulationController;
+import ru.gltexture.zpm3.engine.population.ZPPopulationController;
 import ru.gltexture.zpm3.engine.core.init.ZPSystemInit;
 import ru.gltexture.zpm3.engine.events.ZPEventClass;
 import ru.gltexture.zpm3.engine.events.common.ZPCommonForge;
@@ -54,6 +58,8 @@ import ru.gltexture.zpm3.engine.keybind.ZPKeyBindingsManager;
 import ru.gltexture.zpm3.engine.network.ZPNetwork;
 import ru.gltexture.zpm3.engine.instances.items.tier.ZPTierData;
 import ru.gltexture.zpm3.engine.instances.items.tier.ZPTiers;
+import ru.gltexture.zpm3.engine.recipes.ZPRecipesController;
+import ru.gltexture.zpm3.engine.recipes.ZPRecipesRegistry;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.registry.ZPRegistryCollections;
 import ru.gltexture.zpm3.engine.service.ZPPath;
@@ -77,10 +83,12 @@ public final class ZombiePlague3 {
     private ZPNetwork zpNetwork;
     private static ZPPopulationController populationController;
     private static ZPConfigurator configurator;
+    private static ZPRecipesController recipesController;
 
     static {
         ZombiePlague3.populationController = new ZPPopulationController();
         ZombiePlague3.configurator = new ZPConfigurator();
+        ZombiePlague3.recipesController = new ZPRecipesController();
     }
 
     private static boolean commonInitSwitch = true;
@@ -116,7 +124,6 @@ public final class ZombiePlague3 {
         });
         ZPLogger.info(this + " END INIT");
     }
-
 
     public static void registerConfigClass(@NotNull ZPConfigurator.ZPClassWithConfConstants zpClassWithConfConstants) {
         ZombiePlague3.configurator.addClass(zpClassWithConfConstants);
@@ -360,6 +367,14 @@ public final class ZombiePlague3 {
         return ZombiePlague3.populationController;
     }
 
+    public static ZPConfigurator getConfigurator() {
+        return configurator;
+    }
+
+    public static ZPRecipesController getRecipesController() {
+        return recipesController;
+    }
+
     public static ZPNetworkHandler net() {
         return ZPNetworkHandler.instance;
     }
@@ -402,6 +417,8 @@ public final class ZombiePlague3 {
         void addEventClassObject(ZPEventClass object);
         void addNetworkPacket(ZPNetwork.PacketData<?> packetData);
         void setLootTablesRegistry(ZPLootTablesRegistry object);
+        void setRecipesRegistry(ZPRecipesRegistry... recipesRegistries);
+        void setPopulationSetup(ZPSetupPopulation setup);
 
         default void registerTier(@NotNull ZPTierData tier) {
             ZombiePlague3.registerTier(tier);
@@ -446,6 +463,16 @@ public final class ZombiePlague3 {
         @Override
         public void setLootTablesRegistry(ZPLootTablesRegistry object) {
             this.zpLootTablesRegistry = object;
+        }
+
+        @Override
+        public void setRecipesRegistry(ZPRecipesRegistry... recipesRegistries) {
+            ZombiePlague3.recipesController.getRegistries().addAll(List.of(recipesRegistries));
+        }
+
+        @Override
+        public void setPopulationSetup(ZPSetupPopulation setup) {
+            setup.setup(ZombiePlague3.getPopulationController());
         }
 
         public @Nullable ZPLootTablesRegistry getZpLootTablesRegistry() {

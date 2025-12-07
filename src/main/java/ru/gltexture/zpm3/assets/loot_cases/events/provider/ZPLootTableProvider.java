@@ -39,7 +39,8 @@ public class ZPLootTableProvider implements DataProvider {
             reg.init();
             allTables.addAll(reg.getZpLootTableList());
         });
-
+        ZPLootTablesRegistry.CLEAR_REG();
+        
         List<CompletableFuture<?>> futures = new ArrayList<>();
 
         for (ZPLootTable table : allTables) {

@@ -20,6 +20,8 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
@@ -45,7 +47,7 @@ public class ZPRenderEntityItem extends ItemEntityRenderer {
         return super.shouldRender(pLivingEntity, pCamera, pCamX, pCamY, pCamZ);
     }
 
-    protected void renderPickUpTip(Entity pEntity, PoseStack pPoseStack, MultiBufferSource pBuffer, float itScale) {
+    protected void renderPickUpTip(ItemEntity pEntity, PoseStack pPoseStack, MultiBufferSource pBuffer, float itScale) {
         KeyMapping km = ZPCommonKeyBindings.pickItem;
         int keyCode = km.getKey().getValue();
         String letter = GLFW.glfwGetKeyName(keyCode, 0);
@@ -62,7 +64,7 @@ public class ZPRenderEntityItem extends ItemEntityRenderer {
         Matrix4f matrix4f = pPoseStack.last().pose();
         Font font = this.getFont();
         float f2 = (float) (-font.width(text) / 2);
-        font.drawInBatch(text, f2, 10.0f, 0x00ff00, true, matrix4f, pBuffer, Font.DisplayMode.NORMAL, 0x00aaaaaa, 255);
+        font.drawInBatch(text, f2, 10.0f, ZPRenderWorldEventWithPickUpCheck.canBePickedUp(pEntity) ? 0x00ff00 : 0xc8c8c8, true, matrix4f, pBuffer, Font.DisplayMode.NORMAL, 0x00aaaaaa, 255);
         pPoseStack.popPose();
     }
 

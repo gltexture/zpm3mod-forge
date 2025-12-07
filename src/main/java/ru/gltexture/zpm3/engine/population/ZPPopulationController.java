@@ -1,4 +1,4 @@
-package ru.gltexture.zpm3.engine.core.population;
+package ru.gltexture.zpm3.engine.population;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -9,7 +9,6 @@ import ru.gltexture.zpm3.engine.service.Pair;
 
 import javax.annotation.Nullable;
 import java.util.*;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public final class ZPPopulationController {

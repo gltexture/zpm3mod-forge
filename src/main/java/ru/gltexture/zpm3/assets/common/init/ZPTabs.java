@@ -12,6 +12,7 @@ import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 public class ZPTabs extends ZPRegistry<CreativeModeTab> {
     public static RegistryObject<CreativeModeTab> zp_guns_tab;
     public static RegistryObject<CreativeModeTab> zp_items_tab;
+    public static RegistryObject<CreativeModeTab> zp_misc_tab;
     public static RegistryObject<CreativeModeTab> zp_melee_tab;
     public static RegistryObject<CreativeModeTab> zp_food_tab;
     public static RegistryObject<CreativeModeTab> zp_medicine_tab;
@@ -31,6 +32,7 @@ public class ZPTabs extends ZPRegistry<CreativeModeTab> {
         ZPTabs.zp_food_tab = regSupplier.register("zp_food_tab", () -> CreativeModeTab.builder().title(Component.translatable("tab.zpm3.food")).icon(() -> new ItemStack(ZPItems.soda.get())).build()).end();
         ZPTabs.zp_medicine_tab = regSupplier.register("zp_medicine_tab", () -> CreativeModeTab.builder().title(Component.translatable("tab.zpm3.medicine")).icon(() -> new ItemStack(ZPItems.adrenaline.get())).build()).end();
         ZPTabs.zp_spawns_tab = regSupplier.register("zp_spawns_tab", () -> CreativeModeTab.builder().title(Component.translatable("tab.zpm3.spawns")).icon(() -> new ItemStack(ZPItems.common_zm_spawn.get())).build()).end();
+        ZPTabs.zp_misc_tab = regSupplier.register("zp_misc_tab", () -> CreativeModeTab.builder().title(Component.translatable("tab.zpm3.misc")).icon(() -> new ItemStack(ZPItems.cement_material.get())).build()).end();
     }
 
     @Override

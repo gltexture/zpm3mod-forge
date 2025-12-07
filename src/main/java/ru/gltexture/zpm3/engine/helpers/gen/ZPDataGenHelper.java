@@ -62,6 +62,7 @@ public abstract class ZPDataGenHelper {
     public static final ZPPath GUN_ITEMS_DIRECTORY = new ZPPath("guns");
     public static final ZPPath FOOD_ITEMS_DIRECTORY = new ZPPath("food");
     public static final ZPPath ITEMS_ITEMS_DIRECTORY = new ZPPath("items");
+    public static final ZPPath MISC_ITEMS_DIRECTORY = new ZPPath("misc");
     public static final ZPPath MELEE_ITEMS_DIRECTORY = new ZPPath("melee");
     public static final ZPPath MEDICINE_ITEMS_DIRECTORY = new ZPPath("medicine");
 

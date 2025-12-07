@@ -15,7 +15,7 @@ import ru.gltexture.zpm3.assets.guns.item.ZPBaseGun;
 public abstract class ZPLivingEntityMixin {
     @Shadow public abstract ItemStack getMainHandItem();
 
-    @Inject(method = "swing(Lnet/minecraft/world/InteractionHand;Z)V", at = @At("HEAD"))
+    @Inject(method = "swing(Lnet/minecraft/world/InteractionHand;Z)V", at = @At("HEAD"), cancellable = true)
     public void swing(InteractionHand pHand, boolean pUpdateSelf, CallbackInfo ci) {
         if (pHand == InteractionHand.MAIN_HAND) {
             ItemStack itemStack = this.getMainHandItem();

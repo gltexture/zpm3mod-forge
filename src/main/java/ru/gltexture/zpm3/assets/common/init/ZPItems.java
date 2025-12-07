@@ -14,6 +14,14 @@ import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.registry.collection.IZPCollectRegistryObjects;
 
 public class ZPItems extends ZPRegistry<Item> implements IZPCollectRegistryObjects {
+    // MISC
+    public static RegistryObject<ZPItem> cement_material;
+    public static RegistryObject<ZPItem> chisel_material;
+    public static RegistryObject<ZPItem> scrap_material;
+    public static RegistryObject<ZPItem> scrap_stack_material;
+    public static RegistryObject<ZPItem> shelves_material;
+    public static RegistryObject<ZPItem> table_material;
+
     // SPAWNS
     public static RegistryObject<ForgeSpawnEggItem> common_zm_spawn;
     public static RegistryObject<ForgeSpawnEggItem> miner_zm_spawn;

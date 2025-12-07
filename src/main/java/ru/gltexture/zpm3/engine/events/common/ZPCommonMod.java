@@ -10,5 +10,4 @@ public class ZPCommonMod {
     public void populationControl(SpawnPlacementRegisterEvent event) {
         ZombiePlague3.getPopulationController().eventPopulation(event);
     }
-
 }

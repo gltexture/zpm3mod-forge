@@ -1,4 +1,4 @@
-package ru.gltexture.zpm3.engine.core.population;
+package ru.gltexture.zpm3.engine.population;
 
 import com.mojang.datafixers.util.Function3;
 import com.mojang.datafixers.util.Function4;

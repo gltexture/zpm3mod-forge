@@ -91,6 +91,7 @@ public final class ZPClientMod {
         generator.addProvider(event.includeClient(), new ZPItemModelProvider(output, helper));
         generator.addProvider(event.includeClient(), new ZPBlockModelProvider(output, helper));
         generator.addProvider(event.includeClient(), new ZPParticleTextureProvider(generator, ZombiePlague3.MOD_ID));
+        generator.addProvider(event.includeServer(), new ZPRecipeDataProvider(output));
         generator.addProvider(event.includeServer(), new ZPBlockTagsProvider(output, lookup, ZombiePlague3.MOD_ID, helper));
         generator.addProvider(event.includeServer(), new ZPFluidTagsProvider(output, lookup, ZombiePlague3.MOD_ID, helper));
         generator.addProvider(event.includeServer(), new ZPSoundListProvider(generator, ZombiePlague3.MOD_ID));

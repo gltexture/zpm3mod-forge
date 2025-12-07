@@ -42,7 +42,6 @@ public class ZPAcidBottleEntity extends ZPThrowableEntity {
 
     @Override
     protected void initServer() {
-
     }
 
     @Override

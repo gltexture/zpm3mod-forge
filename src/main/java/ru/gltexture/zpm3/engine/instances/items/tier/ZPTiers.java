@@ -11,6 +11,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.gltexture.zpm3.assets.common.init.ZPTags;
 import ru.gltexture.zpm3.engine.instances.items.harvest.ZPHarvestLevel;
 
 import java.util.ArrayList;
@@ -24,13 +25,15 @@ public enum ZPTiers implements Tier {
     ZP_IRON_3(ZPHarvestLevel.HARVEST_IRON, 560, 6.0F, 2.5F, 15, () -> Ingredient.of(Items.IRON_INGOT)),
     ZP_IRON_4(ZPHarvestLevel.HARVEST_DIAMOND, 560, 8.0F, 3.5F, 15, () -> Ingredient.of(Items.IRON_INGOT)),
     ZP_IRON_5(ZPHarvestLevel.HARVEST_DIAMOND, 728, 8.0F, 4.0F, 15, () -> Ingredient.of(Items.IRON_INGOT)),
-    ZP_IRON_6(ZPHarvestLevel.HARVEST_DIAMOND, 1024, 8.0F, 4.5F, 15, () -> Ingredient.of(Items.IRON_INGOT));
+    ZP_IRON_6(ZPHarvestLevel.HARVEST_DIAMOND, 1024, 8.0F, 4.5F, 15, () -> Ingredient.of(Items.IRON_INGOT)),
+    ZP_WRENCH(ZPHarvestLevel.HARVEST_IRON, 128, 8.0F, 0.0F, 15, () -> Ingredient.of(ItemTags.PLANKS));
 
     public static TagKey<Block> getTagFromHarvestLevel(ZPHarvestLevel level) {
         return switch (level) {
             case HARVEST_STONE -> BlockTags.NEEDS_STONE_TOOL;
             case HARVEST_IRON -> BlockTags.NEEDS_IRON_TOOL;
             case HARVEST_DIAMOND, HARVEST_OBSIDIAN, HARVEST_ALL -> BlockTags.NEEDS_DIAMOND_TOOL;
+            // case ZP_WRENCH -> ZPTags.B_MINEABLE_WITH_WRENCH;
         };
     }
 

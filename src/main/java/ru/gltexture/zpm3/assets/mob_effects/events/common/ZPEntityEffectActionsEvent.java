@@ -58,6 +58,7 @@ public class ZPEntityEffectActionsEvent implements ZPEventClass {
                         if (ZPEffectUtils.isBleeding(entity)) {
                             int durationO = Objects.requireNonNull(entity.getEffect(ZPMobEffects.bleeding.get())).getDuration();
                             int ampO = Objects.requireNonNull(entity.getEffect(ZPMobEffects.bleeding.get())).getAmplifier();
+                            entity.removeEffect(ZPMobEffects.bleeding.get());
                             entity.addEffect(new MobEffectInstance(ZPMobEffects.bleeding.get(), (int) (durationO * 0.25f + duration), ampO + 1));
                         } else {
                             entity.addEffect(new MobEffectInstance(ZPMobEffects.bleeding.get(), duration));

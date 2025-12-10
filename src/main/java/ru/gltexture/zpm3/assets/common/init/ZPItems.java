@@ -5,6 +5,8 @@ import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.init.helper.*;
+import ru.gltexture.zpm3.assets.common.instances.items.ZPMatches;
+import ru.gltexture.zpm3.assets.common.instances.items.ZPWrenchTool;
 import ru.gltexture.zpm3.assets.guns.item.ZPGunClassicRifle;
 import ru.gltexture.zpm3.assets.guns.item.ZPGunShotgun;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
@@ -34,6 +36,10 @@ public class ZPItems extends ZPRegistry<Item> implements IZPCollectRegistryObjec
     public static RegistryObject<ZPItemBucket> acid_bucket;
     public static RegistryObject<ZPItemBucket> toxicwater_bucket;
 
+    // TOOLS
+    public static RegistryObject<ZPWrenchTool> wrench;
+    public static RegistryObject<ZPMatches> matches;
+
     // MELEE
     public static RegistryObject<ZPItemSword> bat;
     public static RegistryObject<ZPItemSword> iron_club;
@@ -55,15 +61,21 @@ public class ZPItems extends ZPRegistry<Item> implements IZPCollectRegistryObjec
     public static RegistryObject<ZPItemFood> water;
 
     //MEDICINE
-    public static RegistryObject<ZPItemMedicine> adrenaline;
-    public static RegistryObject<ZPItemMedicine> morphine;
-    public static RegistryObject<ZPItemMedicine> antidote;
-    public static RegistryObject<ZPItemMedicine> aquaclear;
+    public static RegistryObject<ZPItemMedicine> adrenaline_syringe;
+    public static RegistryObject<ZPItemMedicine> morphine_syringe;
+    public static RegistryObject<ZPItemMedicine> antibiotics_syringe;
+    public static RegistryObject<ZPItemMedicine> anti_headache_pill;
+    public static RegistryObject<ZPItemMedicine> anti_hunger_pill;
+    public static RegistryObject<ZPItemMedicine> anti_poison_pill;
+    public static RegistryObject<ZPItemMedicine> anti_zplague_syringe;
+    public static RegistryObject<ZPItemMedicine> zplague_syringe;
+    public static RegistryObject<ZPItemMedicine> tire;
     public static RegistryObject<ZPItemMedicine> bandage;
-    public static RegistryObject<ZPItemMedicine> calmexin;
-    public static RegistryObject<ZPItemMedicine> carbocid;
-    public static RegistryObject<ZPItemMedicine> infectonol;
-    public static RegistryObject<ZPItemMedicine> vodka;
+    public static RegistryObject<ZPItemMedicine> military_bandage;
+    public static RegistryObject<ZPItemMedicine> meth_pill;
+    public static RegistryObject<ZPItemMedicine> healing_pill;
+    public static RegistryObject<ZPItemMedicine> better_vision_pill;
+    public static RegistryObject<ZPItemMedicine> aid_kit;
 
     //GUNS
     public static RegistryObject<ZPGunPistol> handmade_pistol;

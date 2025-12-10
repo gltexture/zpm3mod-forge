@@ -190,7 +190,8 @@ public class ZPCommonAsset extends ZPAsset {
                 new ZombiePlague3.IMixinEntry.MixinClass("common.ZPLavaMixin", ZPSide.COMMON),
                 new ZombiePlague3.IMixinEntry.MixinClass("common.ZPFluidPlacedMixin", ZPSide.COMMON),
                 new ZombiePlague3.IMixinEntry.MixinClass("common.ZPMobCategoryMixin", ZPSide.COMMON),
-                new ZombiePlague3.IMixinEntry.MixinClass("common.ZPForgeItemMixin", ZPSide.COMMON)
+                new ZombiePlague3.IMixinEntry.MixinClass("common.ZPForgeItemMixin", ZPSide.COMMON),
+                new ZombiePlague3.IMixinEntry.MixinClass("common.ZPMilkMixin", ZPSide.COMMON)
         );
     }
 
@@ -341,7 +342,7 @@ public class ZPCommonAsset extends ZPAsset {
             }
 
             recipeToAdd.add((writer -> {
-                ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ZPItems.chisel_material.get())
+                ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ZPItems.chisel_material.get())
                         .pattern("S").pattern("T")
                         .define('S', Items.STICK)
                         .define('T', Items.FLINT)
@@ -350,7 +351,7 @@ public class ZPCommonAsset extends ZPAsset {
             }));
 
             recipeToAdd.add((writer -> {
-                ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ZPItems.shelves_material.get())
+                ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ZPItems.shelves_material.get())
                         .pattern("SS").pattern("SS")
                         .define('S', ZPItems.table_material.get())
                         .unlockedBy("has_rf", IZPRecipeSpec.has(ZPItems.table_material.get()))
@@ -358,7 +359,7 @@ public class ZPCommonAsset extends ZPAsset {
             }));
 
             recipeToAdd.add((writer -> {
-                ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ZPItems.table_material.get())
+                ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ZPItems.table_material.get())
                         .pattern("SS").pattern("SS")
                         .define('S', Items.STICK)
                         .unlockedBy("has_rf", IZPRecipeSpec.has(Items.STICK))
@@ -366,7 +367,7 @@ public class ZPCommonAsset extends ZPAsset {
             }));
 
             recipeToAdd.add((writer -> {
-                ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, Blocks.CRAFTING_TABLE.asItem())
+                ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, Blocks.CRAFTING_TABLE.asItem())
                         .pattern("CS").pattern("LL")
                         .define('C', ZPItems.chisel_material.get())
                         .define('S', ZPItems.shelves_material.get())
@@ -376,7 +377,7 @@ public class ZPCommonAsset extends ZPAsset {
             }));
 
             recipeToAdd.add((writer -> {
-                ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ZPItems.scrap_stack_material.get())
+                ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ZPItems.scrap_stack_material.get())
                         .pattern("SSS").pattern("SSS").pattern("SSS")
                         .define('S', ZPItems.scrap_material.get())
                         .unlockedBy("has_rf", IZPRecipeSpec.has(ZPItems.scrap_material.get()))
@@ -384,7 +385,45 @@ public class ZPCommonAsset extends ZPAsset {
             }));
 
             recipeToAdd.add((writer -> {
-                SimpleCookingRecipeBuilder.smelting(Ingredient.of(ZPItems.scrap_stack_material.get()), RecipeCategory.TOOLS, Items.IRON_INGOT, 0.5f, 300)
+                ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ZPItems._handmade_pistol.get(), 8)
+                        .pattern("F").pattern("P").pattern("I")
+                        .define('F', Items.FLINT)
+                        .define('P', Items.GUNPOWDER)
+                        .define('I', Items.IRON_INGOT)
+                        .unlockedBy("has_rf", IZPRecipeSpec.has(Items.IRON_INGOT))
+                        .save(writer, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "_handmade_pistol"));
+            }));
+
+            recipeToAdd.add((writer -> {
+                ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ZPItems.handmade_pistol.get())
+                        .pattern("III").pattern("FFP")
+                        .define('F', ItemTags.LOGS)
+                        .define('P', Blocks.LEVER.asItem())
+                        .define('I', Items.IRON_INGOT)
+                        .unlockedBy("has_rf", IZPRecipeSpec.has(Items.IRON_INGOT))
+                        .save(writer, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "handmade_pistol"));
+            }));
+
+            recipeToAdd.add((writer -> {
+                ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ZPItems.wrench.get())
+                        .pattern("I I").pattern(" I ").pattern(" I ")
+                        .define('I', Items.IRON_INGOT)
+                        .unlockedBy("has_rf", IZPRecipeSpec.has(Items.IRON_INGOT))
+                        .save(writer, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "wrench"));
+            }));
+
+            recipeToAdd.add((writer -> {
+                ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ZPItems.matches.get())
+                        .pattern("CS").pattern("PP")
+                        .define('C', Items.COAL)
+                        .define('S', Items.STICK)
+                        .define('P', Items.PAPER)
+                        .unlockedBy("has_rf", IZPRecipeSpec.has(Items.COAL))
+                        .save(writer, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "matches"));
+            }));
+
+            recipeToAdd.add((writer -> {
+                SimpleCookingRecipeBuilder.smelting(Ingredient.of(ZPItems.scrap_stack_material.get()), RecipeCategory.MISC, Items.IRON_INGOT, 0.5f, 300)
                         .unlockedBy("has_rf", IZPRecipeSpec.has(ZPItems.scrap_material.get()))
                         .save(writer, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "iron_scrap_smelting"));
             }));

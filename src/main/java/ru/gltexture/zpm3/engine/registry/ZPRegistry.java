@@ -326,6 +326,10 @@ public abstract class ZPRegistry<T> {
             public void addDispenserData(@NotNull RegistryObject<? extends Item> registryObject, @NotNull ZPDispenseProjectileHelper.ProjectileData projectileData) {
                 ZPDispenseProjectileHelper.addDispenserData(registryObject, projectileData);
             }
+
+            public void addTagToItem(@NotNull RegistryObject<? extends Item> registryObject, @NotNull TagKey<Item> tagKey) {
+                ZPDataGenHelper.addTagToItem(registryObject, tagKey);
+            }
         }
 
         public static final class Blocks {

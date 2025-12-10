@@ -30,10 +30,9 @@ public class ZPTabs extends ZPRegistry<CreativeModeTab> {
         ZPTabs.zp_blocks_tab = regSupplier.register("zp_blocks_tab", () -> CreativeModeTab.builder().title(Component.translatable("tab.zpm3.blocks")).icon(() -> new ItemStack(ZPBlockItemsRegistry.getBlockItem(ZPBlocks.block_lamp).get())).build()).end();
         ZPTabs.zp_melee_tab = regSupplier.register("zp_melee_tab", () -> CreativeModeTab.builder().title(Component.translatable("tab.zpm3.melee")).icon(() -> new ItemStack(ZPItems.crowbar.get())).build()).end();
         ZPTabs.zp_food_tab = regSupplier.register("zp_food_tab", () -> CreativeModeTab.builder().title(Component.translatable("tab.zpm3.food")).icon(() -> new ItemStack(ZPItems.soda.get())).build()).end();
-        ZPTabs.zp_medicine_tab = regSupplier.register("zp_medicine_tab", () -> CreativeModeTab.builder().title(Component.translatable("tab.zpm3.medicine")).icon(() -> new ItemStack(ZPItems.adrenaline.get())).build()).end();
+        ZPTabs.zp_medicine_tab = regSupplier.register("zp_medicine_tab", () -> CreativeModeTab.builder().title(Component.translatable("tab.zpm3.medicine")).icon(() -> new ItemStack(ZPItems.aid_kit.get())).build()).end();
         ZPTabs.zp_spawns_tab = regSupplier.register("zp_spawns_tab", () -> CreativeModeTab.builder().title(Component.translatable("tab.zpm3.spawns")).icon(() -> new ItemStack(ZPItems.common_zm_spawn.get())).build()).end();
-        ZPTabs.zp_misc_tab = regSupplier.register("zp_misc_tab", () -> CreativeModeTab.builder().title(Component.translatable("tab.zpm3.misc")).icon(() -> new ItemStack(ZPItems.cement_material.get())).build()).end();
-    }
+        ZPTabs.zp_misc_tab = regSupplier.register("zp_misc_tab", () -> CreativeModeTab.builder().title(Component.translatable("tab.zpm3.misc")).icon(() -> new ItemStack(ZPItems.cement_material.get())).build()).end();}
 
     @Override
     protected void postRegister(String name, RegistryObject<CreativeModeTab> object) {

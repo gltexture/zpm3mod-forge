@@ -17,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.common.init.ZPItems;
+import ru.gltexture.zpm3.assets.mob_effects.init.ZPMobEffects;
 import ru.gltexture.zpm3.engine.core.ZPLogger;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.engine.registry.ZPRegistryCollections;
@@ -92,7 +93,12 @@ public class ZPItemMedicine extends ZPItem {
                 if (!pLevel.isClientSide && pair.getFirst() != null && pLevel.random.nextFloat() < pair.getSecond()) {
                     MobEffectInstance mobEffectInstance = new MobEffectInstance(pair.getFirst());
                     if (mobEffectInstance.getDuration() < 0) {
+                        int currentAmp = mobEffectInstance.getAmplifier();
+                        int ampTo = currentAmp - (-mobEffectInstance.getDuration());
                         pLivingEntity.removeEffect(mobEffectInstance.getEffect());
+                        if (ampTo >= 0) {
+                            pLivingEntity.addEffect(new MobEffectInstance(mobEffectInstance.getEffect(), mobEffectInstance.getDuration(), ampTo));
+                        }
                     } else {
                         pLivingEntity.addEffect(mobEffectInstance);
                     }

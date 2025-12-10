@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.engine.helpers.ZPBlockTagsHelper;
 import ru.gltexture.zpm3.engine.helpers.ZPFluidTagsHelper;
+import ru.gltexture.zpm3.engine.helpers.ZPItemTagsHelper;
 import ru.gltexture.zpm3.engine.helpers.ZPLootTableHelper;
 import ru.gltexture.zpm3.engine.helpers.gen.data.VanillaMinecraftModelParentReference;
 import ru.gltexture.zpm3.engine.helpers.gen.data.ZPGenTextureData;
@@ -62,6 +63,7 @@ public abstract class ZPDataGenHelper {
     public static final ZPPath GUN_ITEMS_DIRECTORY = new ZPPath("guns");
     public static final ZPPath FOOD_ITEMS_DIRECTORY = new ZPPath("food");
     public static final ZPPath ITEMS_ITEMS_DIRECTORY = new ZPPath("items");
+    public static final ZPPath TOOLS_ITEMS_DIRECTORY = new ZPPath("tools");
     public static final ZPPath MISC_ITEMS_DIRECTORY = new ZPPath("misc");
     public static final ZPPath MELEE_ITEMS_DIRECTORY = new ZPPath("melee");
     public static final ZPPath MEDICINE_ITEMS_DIRECTORY = new ZPPath("medicine");
@@ -80,6 +82,10 @@ public abstract class ZPDataGenHelper {
 
     public static void addTagToBlock(@NotNull RegistryObject<? extends Block> registryObject, @NotNull TagKey<Block> tagKey) {
         ZPBlockTagsHelper.addTagToBlock(registryObject, tagKey);
+    }
+
+    public static void addTagToItem(@NotNull RegistryObject<? extends Item> registryObject, @NotNull TagKey<Item> tagKey) {
+        ZPItemTagsHelper.addTagToItem(registryObject, tagKey);
     }
 
     public static void addTagToFluid(@NotNull RegistryObject<? extends Fluid> registryObject, @NotNull TagKey<Fluid> tagKey) {

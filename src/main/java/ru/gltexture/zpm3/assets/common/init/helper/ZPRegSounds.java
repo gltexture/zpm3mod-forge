@@ -15,12 +15,24 @@ public abstract class ZPRegSounds {
     public static void init(@NotNull ZPRegistry.ZPRegSupplier<SoundEvent> regSupplier) {
         ZPSounds.zm_miner_hurt = regSupplier.register("zm_miner_hurt", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "zm_miner_hurt")))
                 .afterCreated((e, utils) -> {
-            utils.sounds().addNewSound(new ZPSoundListProvider.ZPSoundEvent("zm_miner_hurt", false, "sounds.zpm3.zm_miner_hurt", List.of(new ZPSoundListProvider.SoundData("zombie/miner/hurt1"))));
-            utils.sounds().addNewSound(new ZPSoundListProvider.ZPSoundEvent("zm_miner_hurt", false, "sounds.zpm3.zm_miner_hurt", List.of(new ZPSoundListProvider.SoundData("zombie/miner/hurt2"))));
-            utils.sounds().addNewSound(new ZPSoundListProvider.ZPSoundEvent("zm_miner_hurt", false, "sounds.zpm3.zm_miner_hurt", List.of(new ZPSoundListProvider.SoundData("zombie/miner/hurt3"))));
-            utils.sounds().addNewSound(new ZPSoundListProvider.ZPSoundEvent("zm_miner_hurt", false, "sounds.zpm3.zm_miner_hurt", List.of(new ZPSoundListProvider.SoundData("zombie/miner/hurt4"))));
+            utils.sounds().addNewSound(new ZPSoundListProvider.ZPSoundEvent("zm_miner_hurt", false, "sounds.zpm3.zm_miner_hurt", List.of(
+                    new ZPSoundListProvider.SoundData("zombie/miner/hurt1"),
+                    new ZPSoundListProvider.SoundData("zombie/miner/hurt2"),
+                    new ZPSoundListProvider.SoundData("zombie/miner/hurt3"),
+                    new ZPSoundListProvider.SoundData("zombie/miner/hurt4")
+            )));
         }).end();
 
+        ZPSounds.headshot = regSupplier.register("headshot", () -> SoundEvent.createVariableRangeEvent(
+                        ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "headshot")))
+                .afterCreated((e, utils) -> {
+                    utils.sounds().addNewSound(new ZPSoundListProvider.ZPSoundEvent("headshot", false, "sounds.zpm3.headshot",
+                            List.of(
+                                    new ZPSoundListProvider.SoundData("effects/headshot2"),
+                                    new ZPSoundListProvider.SoundData("effects/headshot3")
+                            )
+                    ));
+                }).end();
 
         ZPSounds.syringe = regSupplier.register("syringe", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "syringe")))
                 .afterCreated((e, utils) -> {

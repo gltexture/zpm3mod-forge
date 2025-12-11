@@ -1,17 +1,9 @@
 package ru.gltexture.zpm3.assets.guns;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.assets.common.keybind.ZPCommonKeyBindings;
-import ru.gltexture.zpm3.assets.common.rendering.entities.misc.ZPRenderEntityItem;
 import ru.gltexture.zpm3.assets.guns.events.ZPGunPostRender;
 import ru.gltexture.zpm3.assets.guns.events.ZPGunTossEvent;
 import ru.gltexture.zpm3.assets.guns.events.ZPGunsUI;
@@ -28,7 +20,6 @@ import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.asset.ZPAsset;
 import ru.gltexture.zpm3.engine.core.asset.ZPAssetData;
-import ru.gltexture.zpm3.engine.helpers.ZPEntityRenderMatchHelper;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public class ZPGunsAsset extends ZPAsset {
@@ -95,5 +86,10 @@ public class ZPGunsAsset extends ZPAsset {
         ZPUtility.sides().onlyClient(() -> {
             ZombiePlague3.registerKeyBindings(new ZPGunKeyBindings());
         });
+    }
+
+    @Override
+    public void postCommonInitializeAsset() {
+
     }
 }

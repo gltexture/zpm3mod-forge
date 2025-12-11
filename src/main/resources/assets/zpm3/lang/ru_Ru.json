@@ -24,5 +24,6 @@
   "item.zpm3.soda": "Газировка",
   "item.zpm3.water": "Минеральная вода",
 
-  "block.zpm3.block_lamp": "Городская лампа"
+  "block.zpm3.block_lamp": "Городская лампа",
+  "tooltip.zpm3.weapon.hand_bonus": " Бонус дистанции: %s"
 }

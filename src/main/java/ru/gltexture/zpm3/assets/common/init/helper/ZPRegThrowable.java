@@ -1,14 +1,13 @@
 package ru.gltexture.zpm3.assets.common.init.helper;
 
 import net.minecraft.world.item.Item;
-import net.minecraftforge.api.distmarker.Dist;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.init.ZPEntities;
 import ru.gltexture.zpm3.assets.common.init.ZPItems;
 import ru.gltexture.zpm3.assets.common.init.ZPTabs;
-import ru.gltexture.zpm3.assets.common.instances.entities.throwables.ZPAcidBottleEntity;
-import ru.gltexture.zpm3.assets.common.instances.entities.throwables.ZPPlateEntity;
-import ru.gltexture.zpm3.assets.common.instances.entities.throwables.ZPRockEntity;
+import ru.gltexture.zpm3.assets.entity.instances.throwables.ZPAcidBottleEntity;
+import ru.gltexture.zpm3.assets.entity.instances.throwables.ZPPlateEntity;
+import ru.gltexture.zpm3.assets.entity.instances.throwables.ZPRockEntity;
 import ru.gltexture.zpm3.engine.helpers.gen.data.ZPGenTextureData;
 import ru.gltexture.zpm3.engine.instances.items.ZPItemThrowable;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;

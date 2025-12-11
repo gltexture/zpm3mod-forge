@@ -283,7 +283,16 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public static float FRACTURE_CHANCE_MULTIPLIER = 1.0f;
 
     @ZPConfigurableConstant(
-            description = "If enabled, only players can receive bleeding debuffs from attacks. Zombies and other entities are immune.",
+            description = "Multiplier, that used to reduce damage by armor on entity.",
+            group = ZPConstants.GROUP_COMBAT,
+            type = ZPConfigurableConstant.TYPES.FLOAT,
+            min = 0.0,
+            max = 1.0
+    )
+    public static float ARMOR_BULLET_DAMAGE_REDUCTION_MULTIPLIER = 0.75f;
+
+    @ZPConfigurableConstant(
+            description = "If enabled, only players can receive bleeding debuffs from attacks. Zombies and other instances are immune.",
             group = ZPConstants.GROUP_COMBAT,
             type = ZPConfigurableConstant.TYPES.BOOLEAN
     )
@@ -337,6 +346,20 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
             type = ZPConfigurableConstant.TYPES.FLOAT
     )
     public static float THROWABLES_BLOCK_BREAK_MULTIPLIER = 1.0f;
+
+    @ZPConfigurableConstant(
+            description = "Send a net-packet headshot and bullet entity-hit effects (blood + sound).",
+            group = ZPConstants.GROUP_COMBAT,
+            type = ZPConfigurableConstant.TYPES.BOOLEAN
+    )
+    public static boolean SEND_PACKET_ABOUT_BULLET_ENTITY_HIT = true;
+
+    @ZPConfigurableConstant(
+            description = "Bonus damage, caused by headshot.",
+            group = ZPConstants.GROUP_COMBAT,
+            type = ZPConfigurableConstant.TYPES.FLOAT
+    )
+    public static float BULLET_HEADSHOT_BONUS_DAMAGE = 2.0f;
 
     @ZPConfigurableConstant(
             description = "Cooldown in ticks before a medicine item can be used again. Prevents spamming heals or cures.",

@@ -5,6 +5,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -63,5 +64,12 @@ public class ZPBloodPainFXPacket implements ZPNetwork.ZPPacket {
         } else {
             ZPLogger.warn("Received entity-id: " + this.entityHit + ", but entity is NULL");
         }
+    }
+
+    public static boolean hasBlood(@NotNull Entity entity) {
+        if (entity instanceof IronGolem) {
+            return false;
+        }
+        return true;
     }
 }

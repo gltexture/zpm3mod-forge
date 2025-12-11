@@ -32,7 +32,7 @@ public class ZPEntityRendererMixin {
                 return !(squareDistance > (attribute.getValue() * attribute.getValue()));
             }
         }
-        return !(squareDistance > 64);
+        return !(squareDistance > 36);
     }
 
     @Inject(method = "renderNameTag", at = @At("HEAD"))

@@ -2,8 +2,6 @@ package ru.gltexture.zpm3.assets.common.init.helper;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.Tiers;
-import net.minecraftforge.api.distmarker.Dist;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.init.ZPFluids;
 import ru.gltexture.zpm3.assets.common.init.ZPItems;
@@ -15,14 +13,14 @@ import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
 import ru.gltexture.zpm3.engine.helpers.gen.data.ZPGenTextureData;
 import ru.gltexture.zpm3.engine.instances.items.ZPItem;
 import ru.gltexture.zpm3.engine.instances.items.ZPItemBucket;
-import ru.gltexture.zpm3.engine.instances.items.tier.ZPTiers;
+import ru.gltexture.zpm3.assets.common.tiers.ZPCommonTiers;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public abstract class ZPRegItems {
     public static void init(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
         ZPItems.wrench = regSupplier.register("wrench",
-                () -> new ZPWrenchTool(ZPTiers.ZP_WRENCH, 1, -3.8F, new Item.Properties())
+                () -> new ZPWrenchTool(ZPCommonTiers.ZP_WRENCH, 1, -3.8F, new Item.Properties())
         ).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addTagToItem(e, ZPTags.I_MINEABLE_WITH_WRENCH);

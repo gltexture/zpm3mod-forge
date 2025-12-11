@@ -13,10 +13,7 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DispenserBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
@@ -34,12 +31,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.gltexture.zpm3.assets.common.population.ZPSetupPopulation;
+import ru.gltexture.zpm3.assets.entity.population.ZPSetupPopulation;
 import ru.gltexture.zpm3.assets.loot_cases.registry.ZPLootTablesRegistry;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPDefaultShaders;
 import ru.gltexture.zpm3.engine.core.asset.ZPAsset;
 import ru.gltexture.zpm3.engine.core.asset.ZPAssetData;
 import ru.gltexture.zpm3.engine.core.config.ZPConfigurator;
+import ru.gltexture.zpm3.engine.helpers.ZPTiersRegistryHelper;
+import ru.gltexture.zpm3.engine.instances.items.tier.ZPTier;
 import ru.gltexture.zpm3.engine.population.ZPPopulationController;
 import ru.gltexture.zpm3.engine.core.init.ZPSystemInit;
 import ru.gltexture.zpm3.engine.events.ZPEventClass;
@@ -57,7 +56,6 @@ import ru.gltexture.zpm3.engine.helpers.ZPKeyBindingsRegistryHelper;
 import ru.gltexture.zpm3.engine.keybind.ZPKeyBindingsManager;
 import ru.gltexture.zpm3.engine.network.ZPNetwork;
 import ru.gltexture.zpm3.engine.instances.items.tier.ZPTierData;
-import ru.gltexture.zpm3.engine.instances.items.tier.ZPTiers;
 import ru.gltexture.zpm3.engine.recipes.ZPRecipesController;
 import ru.gltexture.zpm3.engine.recipes.ZPRecipesRegistry;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
@@ -113,10 +111,10 @@ public final class ZombiePlague3 {
 
     private void init() {
         ZPLogger.info(this + " INIT");
-        this.initDefaultTiers();
         final IEventBus modEventBus = ZombiePlague3.getModEventBus();
         this.createNet();
         this.initAssets();
+        this.registerTiers();
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::completeSetup);
         ZPUtility.sides().onlyClient(() -> {
@@ -146,9 +144,9 @@ public final class ZombiePlague3 {
     }
 
 
-    private void initDefaultTiers() {
-        ZPLogger.info(this + " INIT DEFAULT ZP TIERS");
-        Arrays.stream(ZPTiers.values()).forEach(e -> e.init().forEach(ZombiePlague3::registerTier));
+    private void registerTiers() {
+        ZPTiersRegistryHelper.tierSet.forEach(e -> Arrays.stream(e).forEach(s -> s.init().forEach(ZombiePlague3::registerTier)));
+        ZPTiersRegistryHelper.clear();
     }
 
     private void initAssets() {
@@ -205,6 +203,10 @@ public final class ZombiePlague3 {
         {
             ZombiePlague3.getModEventBus().register(new ZPCommonMod());
             MinecraftForge.EVENT_BUS.register(new ZPCommonForge());
+        }
+
+        for (ZPAsset zpAsset : this.assets) {
+            zpAsset.postCommonInitializeAsset();
         }
     }
 
@@ -419,6 +421,7 @@ public final class ZombiePlague3 {
         void setLootTablesRegistry(ZPLootTablesRegistry object);
         void setRecipesRegistry(ZPRecipesRegistry... recipesRegistries);
         void setPopulationSetup(ZPSetupPopulation setup);
+        void addTier(ZPTier[] tier);
 
         default void registerTier(@NotNull ZPTierData tier) {
             ZombiePlague3.registerTier(tier);
@@ -473,6 +476,11 @@ public final class ZombiePlague3 {
         @Override
         public void setPopulationSetup(ZPSetupPopulation setup) {
             setup.setup(ZombiePlague3.getPopulationController());
+        }
+
+        @Override
+        public void addTier(ZPTier[] tier) {
+            ZPTiersRegistryHelper.addToRegister(tier);
         }
 
         public @Nullable ZPLootTablesRegistry getZpLootTablesRegistry() {

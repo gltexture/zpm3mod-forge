@@ -24,5 +24,6 @@
   "item.zpm3.soda": "Soda",
   "item.zpm3.water": "Mineral Water",
 
-  "block.zpm3.block_lamp": "City Lamp"
+  "block.zpm3.block_lamp": "City Lamp",
+  "tooltip.zpm3.weapon.hand_bonus": " Distance Bonus: %s"
 }

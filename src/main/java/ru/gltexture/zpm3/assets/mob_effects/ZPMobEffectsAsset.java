@@ -51,4 +51,9 @@ public class ZPMobEffectsAsset extends ZPAsset {
     public void preCommonInitializeAsset() {
 
     }
+
+    @Override
+    public void postCommonInitializeAsset() {
+
+    }
 }

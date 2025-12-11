@@ -20,17 +20,20 @@ import ru.gltexture.zpm3.engine.service.ZPUtility;
 import java.util.Objects;
 
 public class ZPBlockCrack implements ZPNetwork.ZPPacket {
+    private final int num;
     private final int blockX;
     private final int blockY;
     private final int blockZ;
 
-    public ZPBlockCrack(int blockX, int blockY, int blockZ) {
+    public ZPBlockCrack(int num, int blockX, int blockY, int blockZ) {
+        this.num = num;
         this.blockX = blockX;
         this.blockY = blockY;
         this.blockZ = blockZ;
     }
 
     public ZPBlockCrack(FriendlyByteBuf buf) {
+        this.num = buf.readVarInt();
         this.blockX = buf.readVarInt();
         this.blockY = buf.readVarInt();
         this.blockZ = buf.readVarInt();
@@ -38,6 +41,7 @@ public class ZPBlockCrack implements ZPNetwork.ZPPacket {
 
     public static Encoder<ZPBlockCrack> encoder() {
         return (packet, buf) -> {
+            buf.writeVarInt(packet.num);
             buf.writeVarInt(packet.blockX);
             buf.writeVarInt(packet.blockY);
             buf.writeVarInt(packet.blockZ);
@@ -56,13 +60,14 @@ public class ZPBlockCrack implements ZPNetwork.ZPPacket {
     @Override
     public void onClient(@NotNull Player localPlayer) {
         ClientLevel clientLevel = Objects.requireNonNull(Minecraft.getInstance().level);
+        final int nNum = Math.min(num, 5);
         for (Direction dir : Direction.values()) {
-            for (int i = 0; i < 5 + ZPRandom.getRandom().nextInt(5); i++) {
-                double x = this.blockX + (dir == Direction.WEST ? -0.1 : dir == Direction.EAST ? 1.1 : ZPRandom.getRandom().nextDouble());
+            for (int i = 0; i < 1 + (nNum * 2) + ZPRandom.getRandom().nextInt(5); i++) {
+                double x = this.blockX + (dir == Direction.WEST ? -0.2 : dir == Direction.EAST ? 1.1 : ZPRandom.getRandom().nextDouble());
                 double y = this.blockY + (dir == Direction.DOWN ? -0.1 : dir == Direction.UP ? 1.1 : ZPRandom.getRandom().nextDouble());
                 double z = this.blockZ + (dir == Direction.NORTH ? -0.1 : dir == Direction.SOUTH ? 1.1 : ZPRandom.getRandom().nextDouble());
 
-                BlockPos checkPos = new BlockPos((int) x, (int) y, (int) z);
+                BlockPos checkPos = new BlockPos((int) Math.floor(x), (int) Math.floor(y), (int) Math.floor(z));
                 BlockState checkState = localPlayer.level().getBlockState(checkPos);
                 if (checkState.isSolid()) {
                     continue;

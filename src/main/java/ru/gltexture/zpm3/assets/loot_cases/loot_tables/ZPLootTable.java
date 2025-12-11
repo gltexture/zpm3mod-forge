@@ -59,10 +59,10 @@ public class ZPLootTable {
 
     public record LootCaseData(@NotNull String name, @NotNull String textureId, boolean isUnbreakable, int respawnTime) {};
 
-    public record LootGroupsDataSet(int minRolls, int maxRolls, float nextRollChanceMultiplier, @Nullable List<LootCommonGroupData> lootCommonGroupDataList, @Nullable List<LootBonusGroupData> lootBonusGroupDataList) {};
+    public record LootGroupsDataSet(int minRolls, int maxRolls, float chanceToStartRolling, float nextRollChanceMultiplier, @Nullable List<LootCommonGroupData> lootCommonGroupDataList, @Nullable List<LootBonusGroupData> lootBonusGroupDataList) {};
 
-    public record LootCommonGroupData(@NotNull LootGroup lootGroup, int spawnWeight) {};
-    public record LootBonusGroupData(@NotNull LootGroup lootGroup, float spawnChance) {};
+    public record LootCommonGroupData(@NotNull LootGroup lootGroup, int maxSpawnTimes, float nextSpawnChanceMultiplier, int spawnWeight) {};
+    public record LootBonusGroupData(@NotNull LootGroup lootGroup, int maxSpawnTimes, float nextSpawnChanceMultiplier, float spawnChance) {};
 
     public record LootGroup(@NotNull String groupName, List<LootItemNonBreakable> nonBreakable, List<LootItemBreakable> breakable) {};
 
@@ -104,11 +104,14 @@ public class ZPLootTable {
             }
             ItemStack stack = new ItemStack(item);
             if (stack.isDamageableItem()) {
+                int damageValue = 0;
                 int max = stack.getMaxDamage();
-                float r = ZPRandom.getRandom().nextFloat();
-                float k = (float) Math.pow(r, damageRandomizeGrade);
-                float damageFrac = minDamage + (maxDamage - minDamage) * k;
-                int damageValue = (int) (damageFrac * max);
+                if (ZPRandom.getRandom().nextFloat() > 0.005f) {
+                    float r = ZPRandom.getRandom().nextFloat();
+                    float k = (float) Math.pow(r, damageRandomizeGrade);
+                    float damageFrac = minDamage + (maxDamage - minDamage) * k;
+                    damageValue = (int) (damageFrac * max);
+                }
                 stack.setDamageValue(Mth.clamp(damageValue, 0, max - 1));
             }
             return stack;
@@ -156,23 +159,37 @@ public class ZPLootTable {
         public Builder commonGroup(@NotNull String name, int weight, @NotNull Consumer<LootGroupBuilder> consumer) {
             LootGroupBuilder builder = new LootGroupBuilder(name);
             consumer.accept(builder);
-            commonGroups.add(new LootCommonGroupData(builder.build(), weight));
+            commonGroups.add(new LootCommonGroupData(builder.build(), 1, 1.0f, weight));
             return this;
         }
 
         public Builder bonusGroup(@NotNull String name, float chance, @NotNull Consumer<LootGroupBuilder> consumer) {
             LootGroupBuilder builder = new LootGroupBuilder(name);
             consumer.accept(builder);
-            bonusGroups.add(new LootBonusGroupData(builder.build(), chance));
+            bonusGroups.add(new LootBonusGroupData(builder.build(), 1, 1.0f, chance));
             return this;
         }
 
-        public ZPLootTable build(int maxRolls, float nextRollChanceMultiplier) {
-            return this.build(1, maxRolls, nextRollChanceMultiplier);
+        public Builder commonGroup(@NotNull String name, int maxSpawnTimes, float nextSpawnChanceMultiplier, int weight, @NotNull Consumer<LootGroupBuilder> consumer) {
+            LootGroupBuilder builder = new LootGroupBuilder(name);
+            consumer.accept(builder);
+            commonGroups.add(new LootCommonGroupData(builder.build(), maxSpawnTimes, nextSpawnChanceMultiplier, weight));
+            return this;
         }
 
-        public ZPLootTable build(int minRolls, int maxRolls, float nextRollChanceMultiplier) {
-            LootGroupsDataSet groups = new LootGroupsDataSet(minRolls, maxRolls, nextRollChanceMultiplier,
+        public Builder bonusGroup(@NotNull String name, int maxSpawnTimes, float nextSpawnChanceMultiplier, float chance, @NotNull Consumer<LootGroupBuilder> consumer) {
+            LootGroupBuilder builder = new LootGroupBuilder(name);
+            consumer.accept(builder);
+            bonusGroups.add(new LootBonusGroupData(builder.build(), maxSpawnTimes, nextSpawnChanceMultiplier, chance));
+            return this;
+        }
+
+        public ZPLootTable build(int maxRolls, float chanceToStartRolling, float nextRollChanceMultiplier) {
+            return this.build(1, maxRolls, chanceToStartRolling, nextRollChanceMultiplier);
+        }
+
+        public ZPLootTable build(int minRolls, int maxRolls, float chanceToStartRolling, float nextRollChanceMultiplier) {
+            LootGroupsDataSet groups = new LootGroupsDataSet(minRolls, maxRolls, chanceToStartRolling, nextRollChanceMultiplier,
                     commonGroups.isEmpty() ? null : commonGroups,
                     bonusGroups.isEmpty() ? null : bonusGroups
             );

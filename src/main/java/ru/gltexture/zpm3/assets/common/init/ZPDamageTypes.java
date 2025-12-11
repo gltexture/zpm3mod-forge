@@ -28,7 +28,7 @@ public class ZPDamageTypes extends ZPRegistry<DamageType> {
     @Override
     protected void runRegister(@NotNull ZPRegSupplier<DamageType> regSupplier) {
         ZPDamageTypes.zp_bullet = this.createResourceKey("zp_bullet", (s) -> {
-            ZPDamageTypesProvider.addDamageTypeToGen(new ZPDamageTypesProvider.ZPDamageTypeGenData(s, false, false, false, false, 0.0f, "never"));
+            ZPDamageTypesProvider.addDamageTypeToGen(new ZPDamageTypesProvider.ZPDamageTypeGenData(s, true, false, false, false, 0.0f, "never"));
         });
 
         ZPDamageTypes.zp_bleeding = this.createResourceKey("zp_bleeding", (s) -> {

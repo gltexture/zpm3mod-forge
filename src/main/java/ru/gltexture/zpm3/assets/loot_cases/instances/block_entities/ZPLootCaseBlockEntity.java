@@ -15,6 +15,7 @@ import ru.gltexture.zpm3.assets.loot_cases.instances.blocks.ZPDefaultBlockLootCa
 import ru.gltexture.zpm3.assets.loot_cases.loot_tables.ZPLootTable;
 import ru.gltexture.zpm3.assets.loot_cases.registry.ZPLootTablesCollection;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
+import ru.gltexture.zpm3.engine.service.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,19 +84,22 @@ public class ZPLootCaseBlockEntity extends ChestBlockEntity {
             return;
         }
 
-        float rollChance = 1.0f;
+        float rollChance = dataSet.chanceToStartRolling();
 
+        L0:
         for (int roll = 0; roll < minRolls + (maxRolls - minRolls); roll++) {
             if (ZPRandom.getRandom().nextFloat() > rollChance) {
                 break;
             }
 
             if (dataSet.lootCommonGroupDataList() != null && !dataSet.lootCommonGroupDataList().isEmpty()) {
-                ZPLootTable.LootGroup group = this.pickWeightedCommonGroup(dataSet.lootCommonGroupDataList());
+                Pair<Integer, ZPLootTable.LootGroup> group = this.pickWeightedCommonGroup(dataSet.lootCommonGroupDataList());
                 if (group != null) {
-                    this.fillFromGroup(group, freeSlots);
-                    if (freeSlots.isEmpty()) {
-                        break;
+                    for (int o = 0; o < group.first(); o++) {
+                        this.fillFromGroup(group.second(), freeSlots);
+                        if (freeSlots.isEmpty()) {
+                            break L0;
+                        }
                     }
                 }
             }
@@ -103,9 +107,19 @@ public class ZPLootCaseBlockEntity extends ChestBlockEntity {
             if (dataSet.lootBonusGroupDataList() != null) {
                 for (ZPLootTable.LootBonusGroupData bonus : dataSet.lootBonusGroupDataList()) {
                     if (ZPRandom.getRandom().nextFloat() <= bonus.spawnChance()) {
-                        this.fillFromGroup(bonus.lootGroup(), freeSlots);
-                        if (freeSlots.isEmpty()) {
-                            break;
+                        int spawnTimes = 1;
+                        float c = bonus.nextSpawnChanceMultiplier();
+                        for (int i = 0; i < bonus.maxSpawnTimes() - 1; i++) {
+                            if (ZPRandom.getRandom().nextFloat() <= c) {
+                                spawnTimes += 1;
+                            }
+                            c *= bonus.nextSpawnChanceMultiplier();
+                        }
+                        for (int o = 0; o < spawnTimes; o++) {
+                            this.fillFromGroup(bonus.lootGroup(), freeSlots);
+                            if (freeSlots.isEmpty()) {
+                                break L0;
+                            }
                         }
                     }
                 }
@@ -152,7 +166,7 @@ public class ZPLootCaseBlockEntity extends ChestBlockEntity {
         this.putItemRandom(stack, freeSlots);
     }
 
-    private ZPLootTable.LootGroup pickWeightedCommonGroup(List<ZPLootTable.LootCommonGroupData> list) {
+    private Pair<Integer, ZPLootTable.LootGroup> pickWeightedCommonGroup(List<ZPLootTable.LootCommonGroupData> list) {
         int totalWeight = 0;
         for (ZPLootTable.LootCommonGroupData g : list) {
             totalWeight += g.spawnWeight();
@@ -164,7 +178,15 @@ public class ZPLootCaseBlockEntity extends ChestBlockEntity {
         for (ZPLootTable.LootCommonGroupData g : list) {
             r -= g.spawnWeight();
             if (r < 0) {
-                return g.lootGroup();
+                int spawnTimes = 1;
+                float c = g.nextSpawnChanceMultiplier();
+                for (int i = 0; i < g.maxSpawnTimes() - 1; i++) {
+                    if (ZPRandom.getRandom().nextFloat() <= c) {
+                        spawnTimes += 1;
+                    }
+                    c *= g.nextSpawnChanceMultiplier();
+                }
+                return Pair.of(spawnTimes, g.lootGroup());
             }
         }
         return null;

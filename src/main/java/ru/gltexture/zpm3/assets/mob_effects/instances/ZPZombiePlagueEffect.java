@@ -1,8 +1,6 @@
 package ru.gltexture.zpm3.assets.mob_effects.instances;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -16,7 +14,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientMobEffectExtensions;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
-import ru.gltexture.zpm3.assets.common.instances.entities.mobs.zombies.ZPCommonZombie;
+import ru.gltexture.zpm3.assets.entity.instances.mobs.zombies.ZPCommonZombie;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 
 import java.util.Objects;

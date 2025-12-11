@@ -61,4 +61,9 @@ public class ZPDebugAsset extends ZPAsset {
     public void preCommonInitializeAsset() {
 
     }
+
+    @Override
+    public void postCommonInitializeAsset() {
+
+    }
 }

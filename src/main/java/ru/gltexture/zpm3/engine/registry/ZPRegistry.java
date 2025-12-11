@@ -28,6 +28,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.gltexture.zpm3.assets.player.misc.ZPDefaultItemsHandReach;
 import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooks;
 import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooksManager;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
@@ -329,6 +330,10 @@ public abstract class ZPRegistry<T> {
 
             public void addTagToItem(@NotNull RegistryObject<? extends Item> registryObject, @NotNull TagKey<Item> tagKey) {
                 ZPDataGenHelper.addTagToItem(registryObject, tagKey);
+            }
+
+            public void setItemDistanceBonus(ResourceLocation path, float v) {
+                ZPDefaultItemsHandReach.SET(path, v);
             }
         }
 

@@ -33,7 +33,6 @@
     "client.ZPScreenEffectMixin"
   ],
   "server": [
-    "server.ZPServerPlayerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

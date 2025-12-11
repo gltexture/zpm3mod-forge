@@ -2,58 +2,39 @@ package ru.gltexture.zpm3.assets.common;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
-import net.minecraft.core.Registry;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BucketPickup;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.DispenserBlockEntity;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.assets.common.events.client.ZPRenderWorldEventWithPickUpCheck;
-import ru.gltexture.zpm3.assets.common.events.common.ZPEntityItemEvent;
-import ru.gltexture.zpm3.assets.common.events.common.ZPLivingEvents;
-import ru.gltexture.zpm3.assets.common.events.common.ZPMobAttributes;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.common.init.*;
 import ru.gltexture.zpm3.assets.common.instances.block_entities.ZPFadingBlockEntity;
-import ru.gltexture.zpm3.assets.common.instances.entities.mobs.zombies.ZPAbstractZombie;
-import ru.gltexture.zpm3.assets.common.keybind.ZPCommonKeyBindings;
-import ru.gltexture.zpm3.assets.common.population.ZPSetupPopulation;
-import ru.gltexture.zpm3.assets.common.rendering.entities.misc.ZPRenderEntityItem;
+import ru.gltexture.zpm3.assets.common.tiers.ZPCommonTiers;
+import ru.gltexture.zpm3.assets.player.misc.ZPDefaultItemsHandReach;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.asset.ZPAsset;
 import ru.gltexture.zpm3.engine.core.asset.ZPAssetData;
-import ru.gltexture.zpm3.engine.core.random.ZPRandom;
-import ru.gltexture.zpm3.engine.helpers.ZPEntityRenderMatchHelper;
 import ru.gltexture.zpm3.engine.instances.blocks.IHotLiquid;
-import ru.gltexture.zpm3.engine.population.ZPPopulationController;
 import ru.gltexture.zpm3.engine.recipes.ZPRecipesController;
 import ru.gltexture.zpm3.engine.recipes.ZPRecipesRegistry;
 import ru.gltexture.zpm3.engine.recipes.IZPRecipeSpec;
@@ -109,6 +90,12 @@ public class ZPCommonAsset extends ZPAsset {
             Blocks.GREEN_CONCRETE.defaultBlockState().destroySpeed = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
             Blocks.RED_CONCRETE.defaultBlockState().destroySpeed = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
             Blocks.BLACK_CONCRETE.defaultBlockState().destroySpeed = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
+
+            Blocks.BRICKS.defaultBlockState().destroySpeed = 4.0F;
+            Blocks.BRICKS.explosionResistance = 12.0f;
+
+            Blocks.IRON_BARS.defaultBlockState().destroySpeed = 10.0F;
+            Blocks.IRON_BARS.explosionResistance = 12.0f;
         }
 
         DispenserBlock.registerBehavior(Items.LAVA_BUCKET, new DefaultDispenseItemBehavior() {
@@ -190,14 +177,13 @@ public class ZPCommonAsset extends ZPAsset {
                 new ZombiePlague3.IMixinEntry.MixinClass("common.ZPLavaMixin", ZPSide.COMMON),
                 new ZombiePlague3.IMixinEntry.MixinClass("common.ZPFluidPlacedMixin", ZPSide.COMMON),
                 new ZombiePlague3.IMixinEntry.MixinClass("common.ZPMobCategoryMixin", ZPSide.COMMON),
-                new ZombiePlague3.IMixinEntry.MixinClass("common.ZPForgeItemMixin", ZPSide.COMMON),
                 new ZombiePlague3.IMixinEntry.MixinClass("common.ZPMilkMixin", ZPSide.COMMON)
         );
     }
 
     @Override
     public void initializeAsset(ZombiePlague3.@NotNull IAssetEntry assetEntry) {
-        assetEntry.setPopulationSetup(new ZPCommonPopulationSetup());
+        assetEntry.addTier(ZPCommonTiers.values());
         assetEntry.setRecipesRegistry(new ZPCommonRecipeRegistry());
         assetEntry.addZP3RegistryClass(ZPSounds.class);
         assetEntry.addZP3RegistryClass(ZPItems.class);
@@ -212,13 +198,6 @@ public class ZPCommonAsset extends ZPAsset {
         assetEntry.addZP3RegistryClass(ZPDamageTypes.class);
 
         ZPUtility.sides().onlyClient(() -> {
-            assetEntry.addEventClass(ZPRenderWorldEventWithPickUpCheck.class);
-        });
-        assetEntry.addEventClass(ZPLivingEvents.class);
-        assetEntry.addEventClass(ZPMobAttributes.class);
-        assetEntry.addEventClass(ZPEntityItemEvent.class);
-
-        ZPUtility.sides().onlyClient(() -> {
             assetEntry.addZP3RegistryClass(ZPTabs.class);
         });
     }
@@ -226,67 +205,10 @@ public class ZPCommonAsset extends ZPAsset {
     @Override
     public void preCommonInitializeAsset() {
         ZombiePlague3.registerConfigClass(new ZPConstants());
-        ZPUtility.sides().onlyClient(() -> {
-            ZPEntityRenderMatchHelper.matchEntityRendering(() -> EntityType.ITEM, ZPRenderEntityItem::new);
-            ZombiePlague3.registerKeyBindings(new ZPCommonKeyBindings());;
-        });
     }
 
-    private static class ZPCommonPopulationSetup extends ZPSetupPopulation {
-        public static void caveSpawns(MobSpawnSettings.Builder pBuilder) {
-            pBuilder.addSpawn(MobCategory.AMBIENT, new MobSpawnSettings.SpawnerData(EntityType.BAT, 10, 8, 8));
-            pBuilder.addSpawn(MobCategory.UNDERGROUND_WATER_CREATURE, new MobSpawnSettings.SpawnerData(EntityType.GLOW_SQUID, 10, 4, 6));
-        }
-
-        @Override
-        public void setup(@NotNull ZPPopulationController controller) {
-            {
-                controller.getVanillaBiomePopulationManager().setCancelVanilla_monsters_Method(true);
-                controller.getVanillaBiomePopulationManager().addMonster_Consumer(((pBuilder, pZombieWeight, pZombieVillageWeight,pSkeletonWeight,pIsUnderwater) -> {
-                    pBuilder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ZPEntities.zp_common_zombie_entity.get(), 100, 1, 4));
-                    pBuilder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ZPEntities.zp_miner_zombie_entity.get(), 80, 1, 2));
-                    pBuilder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ZPEntities.zp_dog_zombie_entity.get(), 20, 2, 5));
-                    return null;
-                }));
-
-                controller.getVanillaBiomePopulationManager().setCancelVanilla_oceanSpawns_Method(true);
-                controller.getVanillaBiomePopulationManager().addOceanSpawn_Consumer((pBuilder, pSquidWeight, pSquidMaxCount, pCodWeight) -> {
-                    pBuilder.addSpawn(MobCategory.WATER_CREATURE, new MobSpawnSettings.SpawnerData(EntityType.SQUID, pSquidWeight, 1, pSquidMaxCount));
-                    pBuilder.addSpawn(MobCategory.WATER_AMBIENT, new MobSpawnSettings.SpawnerData(EntityType.COD, pCodWeight, 3, 6));
-                    return null;
-                });
-
-                controller.getVanillaBiomePopulationManager().setCancelVanilla_warmOceanSpawns_Method(true);
-                controller.getVanillaBiomePopulationManager().addWarmOceanSpawn_Consumer((pBuilder, pSquidWeight, pSquidMinCount) -> {
-                    pBuilder.addSpawn(MobCategory.WATER_CREATURE, new MobSpawnSettings.SpawnerData(EntityType.SQUID, pSquidWeight, pSquidMinCount, 4));
-                    pBuilder.addSpawn(MobCategory.WATER_AMBIENT, new MobSpawnSettings.SpawnerData(EntityType.TROPICAL_FISH, 25, 8, 8));
-                    pBuilder.addSpawn(MobCategory.WATER_CREATURE, new MobSpawnSettings.SpawnerData(EntityType.DOLPHIN, 2, 1, 2));
-                    return null;
-                });
-
-                controller.getVanillaBiomePopulationManager().setCancelVanilla_snowySpawns_Method(true);
-                controller.getVanillaBiomePopulationManager().addSnowySpawn_Consumer((pBuilder) -> {
-                    pBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.RABBIT, 10, 2, 3));
-                    pBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.POLAR_BEAR, 1, 1, 2));
-                    caveSpawns(pBuilder);
-                });
-
-                controller.getVanillaBiomePopulationManager().setCancelVanilla_desertSpawns_Method(true);
-                controller.getVanillaBiomePopulationManager().addDesertSpawn_Consumer((pBuilder) -> {
-                    pBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.RABBIT, 4, 2, 3));
-                    caveSpawns(pBuilder);
-                });
-
-                controller.getVanillaBiomePopulationManager().setCancelVanilla_dripstoneCavesSpawns_Method(true);
-                controller.getVanillaBiomePopulationManager().addDripstoneCaveSpawn_Consumer((pBuilder) -> {
-                    caveSpawns(pBuilder);
-                });
-
-                controller.addREPLACE_Rule(() -> ZPEntities.zp_common_zombie_entity.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ZPAbstractZombie::checkZombieSpawnRules);
-                controller.addREPLACE_Rule(() -> ZPEntities.zp_miner_zombie_entity.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (entityType, level, spawnType, pos, random) -> (level.getBlockState(pos).is(Blocks.CAVE_AIR) || ZPRandom.getRandom().nextFloat() <= 0.01f) && ZPAbstractZombie.checkZombieSpawnRules(entityType, level, spawnType, pos, random));
-                controller.addREPLACE_Rule(() -> ZPEntities.zp_dog_zombie_entity.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (entityType, level, spawnType, pos, random) -> (!level.getBlockState(pos).is(Blocks.CAVE_AIR)) && ZPAbstractZombie.checkZombieSpawnRules(entityType, level, spawnType, pos, random));
-            }
-        }
+    @Override
+    public void postCommonInitializeAsset() {
     }
 
     private static class ZPCommonRecipeRegistry extends ZPRecipesRegistry {

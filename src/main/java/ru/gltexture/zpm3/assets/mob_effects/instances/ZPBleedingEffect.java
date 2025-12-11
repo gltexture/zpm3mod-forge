@@ -8,6 +8,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientMobEffectExtensions;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.damage.ZPDamageSources;
+import ru.gltexture.zpm3.assets.net_pack.packets.ZPBloodPainFXPacket;
 
 import java.util.function.Consumer;
 
@@ -25,7 +26,9 @@ public class ZPBleedingEffect extends ZPDefaultMobEffect {
     @Override
     public void applyEffectTick(@NotNull LivingEntity pLivingEntity, int pAmplifier) {
         if (!pLivingEntity.level().isClientSide()) {
-            pLivingEntity.hurt(ZPDamageSources.bleed((ServerLevel) pLivingEntity.level()), 1);
+            if (ZPBloodPainFXPacket.hasBlood(pLivingEntity)) {
+                pLivingEntity.hurt(ZPDamageSources.bleed((ServerLevel) pLivingEntity.level()), 1);
+            }
         }
     }
 

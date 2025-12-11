@@ -6,25 +6,22 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.assets.common.events.common.ZPMobAttributes;
+import ru.gltexture.zpm3.assets.entity.instances.throwables.*;
+import ru.gltexture.zpm3.assets.entity.events.common.ZPEntityMobAttributes;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
-import ru.gltexture.zpm3.assets.common.instances.entities.mobs.zombies.ZPDogZombie;
-import ru.gltexture.zpm3.assets.common.instances.entities.mobs.zombies.ZPMinerZombie;
-import ru.gltexture.zpm3.assets.common.instances.entities.throwables.*;
-import ru.gltexture.zpm3.assets.common.instances.entities.mobs.zombies.ZPCommonZombie;
-import ru.gltexture.zpm3.assets.common.rendering.entities.misc.ZPThrowableEntityRender;
-import ru.gltexture.zpm3.assets.common.rendering.entities.zombies.ZPCommonZombieRender;
-import ru.gltexture.zpm3.assets.common.rendering.entities.zombies.ZPDogZombieRenderer;
-import ru.gltexture.zpm3.assets.common.rendering.entities.zombies.ZPMinerZombieRender;
+import ru.gltexture.zpm3.assets.entity.instances.mobs.zombies.ZPDogZombie;
+import ru.gltexture.zpm3.assets.entity.instances.mobs.zombies.ZPMinerZombie;
+import ru.gltexture.zpm3.assets.entity.instances.mobs.zombies.ZPCommonZombie;
+import ru.gltexture.zpm3.assets.entity.rendering.entities.misc.ZPThrowableEntityRender;
+import ru.gltexture.zpm3.assets.entity.rendering.entities.zombies.ZPCommonZombieRender;
+import ru.gltexture.zpm3.assets.entity.rendering.entities.zombies.ZPDogZombieRenderer;
+import ru.gltexture.zpm3.assets.entity.rendering.entities.zombies.ZPMinerZombieRender;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
-
-import java.util.function.Supplier;
 
 public class ZPEntities extends ZPRegistry<EntityType<?>> {
     public static RegistryObject<EntityType<ZPAcidBottleEntity>> acid_bottle_entity;
@@ -95,7 +92,7 @@ public class ZPEntities extends ZPRegistry<EntityType<?>> {
                         .build(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "zp_common_zombie_entity").toString()))
                 .afterCreated((e, utils) -> {
                     ZPUtility.sides().onlyClient(() -> ZPEntities.registerZombieRenderer(e, utils));
-                    ZPMobAttributes.addNewAttributeCreationUnsafe(e, ZPCommonZombie::createAttributes);
+                    ZPEntityMobAttributes.addNewAttributeCreationUnsafe(e, ZPCommonZombie::createAttributes);
                 }).end();
 
         ZPEntities.zp_miner_zombie_entity = regSupplier.register("zp_miner_zombie_entity", () -> EntityType.Builder.<ZPMinerZombie>of(ZPMinerZombie::new, MobCategory.MONSTER)
@@ -104,7 +101,7 @@ public class ZPEntities extends ZPRegistry<EntityType<?>> {
                         .build(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "zp_miner_zombie_entity").toString()))
                 .afterCreated((e, utils) -> {
                     ZPUtility.sides().onlyClient(() -> ZPEntities.registerMinerZombieRenderer(e, utils));
-                    ZPMobAttributes.addNewAttributeCreationUnsafe(e, ZPCommonZombie::createAttributes);
+                    ZPEntityMobAttributes.addNewAttributeCreationUnsafe(e, ZPCommonZombie::createAttributes);
                 }).end();
 
         ZPEntities.zp_dog_zombie_entity = regSupplier.register("zp_dog_zombie_entity", () -> EntityType.Builder.<ZPDogZombie>of(ZPDogZombie::new, MobCategory.MONSTER)
@@ -113,7 +110,7 @@ public class ZPEntities extends ZPRegistry<EntityType<?>> {
                         .build(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "zp_dog_zombie_entity").toString()))
                 .afterCreated((e, utils) -> {
                     ZPUtility.sides().onlyClient(() -> ZPEntities.registerDogZombieRenderer(e, utils));
-                    ZPMobAttributes.addNewAttributeCreationUnsafe(e, ZPMinerZombie::createAttributes);
+                    ZPEntityMobAttributes.addNewAttributeCreationUnsafe(e, ZPMinerZombie::createAttributes);
                 }).end();
     }
 

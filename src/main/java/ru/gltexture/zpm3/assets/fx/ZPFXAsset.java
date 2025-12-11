@@ -47,4 +47,9 @@ public class ZPFXAsset extends ZPAsset {
     public void preCommonInitializeAsset() {
 
     }
+
+    @Override
+    public void postCommonInitializeAsset() {
+
+    }
 }

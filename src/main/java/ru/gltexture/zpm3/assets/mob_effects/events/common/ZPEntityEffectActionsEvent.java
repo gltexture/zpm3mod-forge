@@ -2,13 +2,10 @@ package ru.gltexture.zpm3.assets.mob_effects.events.common;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -16,7 +13,7 @@ import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.common.init.ZPDamageTypes;
-import ru.gltexture.zpm3.assets.common.instances.entities.mobs.zombies.ZPAbstractZombie;
+import ru.gltexture.zpm3.assets.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.assets.mob_effects.init.ZPMobEffects;
 import ru.gltexture.zpm3.assets.mob_effects.utils.ZPEffectUtils;
 import ru.gltexture.zpm3.assets.net_pack.packets.ZPBloodPainFXPacket;
@@ -31,7 +28,7 @@ public class ZPEntityEffectActionsEvent implements ZPEventClass {
     @SubscribeEvent
     public static void exec(@NotNull LivingEvent.LivingTickEvent event) {
         if (event.getEntity().level().isClientSide()) {
-            if (ZPEffectUtils.isBleeding(event.getEntity())) {
+            if (ZPBloodPainFXPacket.hasBlood(event.getEntity()) && ZPEffectUtils.isBleeding(event.getEntity())) {
                 if (event.getEntity().tickCount % 10 == 0) {
                     ZombiePlague3.net().sendToDimensionRadius(new ZPBloodPainFXPacket(event.getEntity().getId(), true), event.getEntity().getCommandSenderWorld().dimension(), event.getEntity().position(), 64.0f);
                 }
@@ -42,7 +39,9 @@ public class ZPEntityEffectActionsEvent implements ZPEventClass {
     @SubscribeEvent
     public static void exec(@NotNull LivingDamageEvent event) {
         if (!event.getEntity().level().isClientSide()) {
-            ZombiePlague3.net().sendToDimensionRadius(new ZPBloodPainFXPacket(event.getEntity().getId(), false), event.getEntity().getCommandSenderWorld().dimension(), event.getEntity().position(), 64.0f);
+            if (ZPBloodPainFXPacket.hasBlood(event.getEntity())) {
+                ZombiePlague3.net().sendToDimensionRadius(new ZPBloodPainFXPacket(event.getEntity().getId(), false), event.getEntity().getCommandSenderWorld().dimension(), event.getEntity().position(), 64.0f);
+            }
 
             LivingEntity entity = event.getEntity();
             if (!ZPConstants.BLEEDING_ONLY_FOR_PLAYERS || (entity instanceof Player)) {

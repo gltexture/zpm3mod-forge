@@ -52,6 +52,7 @@ public class ZPSounds extends ZPRegistry<SoundEvent> {
     public static RegistryObject<SoundEvent> akm_reload;
     public static RegistryObject<SoundEvent> mosin_fire;
     public static RegistryObject<SoundEvent> impactmeat;
+    public static RegistryObject<SoundEvent> headshot;
 
     public ZPSounds() {
         super(ZPRegistryConveyor.Target.SOUND_EVENT);

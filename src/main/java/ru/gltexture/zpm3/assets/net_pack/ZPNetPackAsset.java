@@ -49,10 +49,16 @@ public class ZPNetPackAsset extends ZPAsset {
         assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(7, ZPBloodPainFXPacket.class, ZPBloodPainFXPacket.encoder(), ZPBloodPainFXPacket.decoder()));
         assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(8, ZPSendGlobalSettings_CtoS.class, ZPSendGlobalSettings_CtoS.encoder(), ZPSendGlobalSettings_CtoS.decoder()));
         assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(9, ZPPlayerWantToPickUpItem.class, ZPPlayerWantToPickUpItem.encoder(), ZPPlayerWantToPickUpItem.decoder()));
+        assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(10, ZPBulletBloodFXPacket.class, ZPBulletBloodFXPacket.encoder(), ZPBulletBloodFXPacket.decoder()));
     }
 
     @Override
     public void preCommonInitializeAsset() {
+
+    }
+
+    @Override
+    public void postCommonInitializeAsset() {
 
     }
 }

@@ -142,10 +142,10 @@ public abstract class ZPAbstractGunRenderer implements ZPRenderHooks.ZPItemRende
             final Matrix4f transformation = new Matrix4f().identity();
 
             final Vector3f startTranslation = new Vector3f(Objects.requireNonNull(isRightHanded ? this.gunTransforms().translationArmRight() : this.gunTransforms().translationArmLeft()));
-           // startTranslation.add(DearUITRSInterface.trsArm.position);
+            startTranslation.add(DearUITRSInterface.trsArm.position);
 
             final Vector3f startRotation = new Vector3f(Objects.requireNonNull(isRightHanded ? this.gunTransforms().rotationArmRight() : this.gunTransforms().rotationArmLeft()));
-           // startRotation.add(DearUITRSInterface.trsArm.rotation);
+            startRotation.add(DearUITRSInterface.trsArm.rotation);
 
             final Vector3f startScale = new Vector3f(Objects.requireNonNull(isRightHanded ? this.gunTransforms().scaleArmRight() : this.gunTransforms().scaleArmLeft()));
             startScale.add(new Vector3f(DearUITRSInterface.trsArm.scale).sub(new Vector3f(1.0f)));

@@ -34,8 +34,10 @@ public class ZPDefaultRifleRenderer extends ZPAbstractGunRenderer {
     public static final float armScaling1 = 0.5f; // EMPTY
     public static final float armScaling2 = 1.25f; // NOT EMPTY
 
+    //.add(1.10f, 1.48f, -0.254f)
+
     public static final Vector3f leftArmTranslation1 = new Vector3f(-1.17f, 0.55f, -0.21f); //EMPTY
-    public static final Vector3f leftArmRotation1 = new Vector3f(10.17f, 14.05f, -10.11f);
+    public static final Vector3f leftArmRotation1 = new Vector3f(13.17f, 15.15f, -10.2f);
     public static final Vector3f leftArmTranslation2 = new Vector3f(-0.2f, -0.33f, 0.12f); //NOT EMPTY
     public static final Vector3f leftArmRotation2 = new Vector3f(-1.31f, -4.56f, 12.0f);
 

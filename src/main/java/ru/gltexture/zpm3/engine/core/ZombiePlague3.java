@@ -27,6 +27,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
@@ -101,6 +102,10 @@ public final class ZombiePlague3 {
         this.assets = new ArrayList<>();
         this.zpRegistryConveyor = new ZPRegistryConveyor();
         this.init();
+    }
+
+    public static boolean isDevEnvironment() {
+        return !FMLLoader.isProduction();
     }
 
     @SuppressWarnings("all")

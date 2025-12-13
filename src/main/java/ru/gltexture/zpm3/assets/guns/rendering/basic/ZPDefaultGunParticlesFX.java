@@ -84,6 +84,12 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
         ZPDefaultGunParticlesFX.emmitParticleSmoke(isRightHand, player, smoky, false, baseGun);
     }
 
+    private static float getFovScale(Minecraft mc) {
+        double fov = 70.0f;
+        double currentFov = mc.options.fov().get();
+        return (float)(currentFov / fov);
+    }
+
     public static void emmitParticleSmoke(boolean isRightHand, Player player, boolean smoky, boolean hotBarrel, ZPBaseGun baseGun) {
         final Minecraft mc = Minecraft.getInstance();
 
@@ -101,7 +107,8 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
             muzzle.mul(-1.0f, 1.0f, -1.0f, 1.0f);
             muzzle.add(0.0f, 0.05f, 0.0f, 0.0f);
 
-            Vector3f itemSpace = new Vector3f(muzzle.x, muzzle.y, muzzle.z);
+            final float fovScale = ZPDefaultGunParticlesFX.getFovScale(mc);
+            Vector3f itemSpace = new Vector3f(muzzle.x, muzzle.y,muzzle.z + (0.9f - fovScale * 0.9f));
             Vector3f worldOffset = camRot.transform(itemSpace, new Vector3f());
             spawnPos = camPos.add(worldOffset);
 
@@ -154,7 +161,8 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
             muzzle.mul(-1.0f, 1.0f, -1.0f, 1.0f);
             muzzle.add(0.0f, 0.0f, 0.0f, 0.0f);
 
-            Vector3f itemSpace = new Vector3f(muzzle.x, muzzle.y, muzzle.z);
+            final float fovScale = ZPDefaultGunParticlesFX.getFovScale(mc);
+            Vector3f itemSpace = new Vector3f(muzzle.x, muzzle.y,muzzle.z + (0.47f - fovScale * 0.47f));
             Vector3f worldOffset = camRot.transform(itemSpace, new Vector3f());
             spawnPos = camPos.add(worldOffset);
 

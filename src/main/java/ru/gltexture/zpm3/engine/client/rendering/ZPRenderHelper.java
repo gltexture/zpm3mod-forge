@@ -13,6 +13,7 @@ import ru.gltexture.zpm3.engine.client.rendering.gl.programs.meshes.ZPScreenMesh
 import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooksManager;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPDefaultShaders;
 import ru.gltexture.zpm3.engine.client.rendering.ui.imgui.ZPDearUIRenderer;
+import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 
 public final class ZPRenderHelper implements ZPClientCallbacks.ZPClientResourceDependentObject {
     public static ZPRenderHelper INSTANCE = new ZPRenderHelper();
@@ -30,7 +31,7 @@ public final class ZPRenderHelper implements ZPClientCallbacks.ZPClientResourceD
 
         ZPRenderHooksManager.INSTANCE.addSceneRenderingHook(((renderStage, partialTicks, deltaTime, pNanoTime, pRenderLevel) -> {
             if (renderStage == RenderStage.POST) {
-                if (SharedConstants.IS_RUNNING_IN_IDE) {
+                if (ZombiePlague3.isDevEnvironment()) {
                     if (!Minecraft.getInstance().isPaused()) {
                         this.getDearUIRenderer().getInterfacesManager().renderAll(Minecraft.getInstance().getWindow(), deltaTime);
                     }

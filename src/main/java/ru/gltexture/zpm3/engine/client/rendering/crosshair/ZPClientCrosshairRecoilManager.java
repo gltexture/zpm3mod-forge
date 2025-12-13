@@ -20,7 +20,7 @@ public class ZPClientCrosshairRecoilManager {
         ZPClientCrosshairRecoilManager.cameraTransformPrev = new Vector3f(0.0f);
     }
 
-    public static float recoilDecaySpeed = 0.25f;
+    public static float recoilDecaySpeed = 0.3f;
 
     public static void onClientTick(@NotNull Minecraft minecraft) {
         if (minecraft.player == null || minecraft.isPaused()) {

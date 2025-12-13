@@ -41,7 +41,7 @@ public class ZPFreeCameraEvents implements ZPEventClass {
 
     @SubscribeEvent
     public static void onKeyInput(InputEvent.Key event) {
-        if (SharedConstants.IS_RUNNING_IN_IDE && event.getKey() == GLFW.GLFW_KEY_F6 && event.getAction() == GLFW.GLFW_PRESS) {
+        if (ZombiePlague3.isDevEnvironment() && event.getKey() == GLFW.GLFW_KEY_F6 && event.getAction() == GLFW.GLFW_PRESS) {
             ZPFreeCameraEvents.enabled = !ZPFreeCameraEvents.enabled;
             Minecraft mc = Minecraft.getInstance();
             if (enabled && mc.player != null) {

@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
+import ru.gltexture.zpm3.assets.player.client.ZPClientGlobalSettings;
 import ru.gltexture.zpm3.assets.player.events.client.ZPRenderWorldEventWithPickUpCheck;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.player.keybind.ZPPickUpKeyBindings;
@@ -115,7 +116,7 @@ public class ZPRenderEntityItem extends ItemEntityRenderer {
         } else {
             super.render(pEntity, pEntityYaw, pPartialTicks, pPoseStack, pBuffer, pPackedLight);
         }
-        if (ZPRenderWorldEventWithPickUpCheck.entityToPickUp != null && ZPRenderWorldEventWithPickUpCheck.entityToPickUp.equals(pEntity)) {
+        if (ZPConstants.PICK_UP_ON_F && ZPClientGlobalSettings.SERVER_PICK_UP_ON_F && ZPRenderWorldEventWithPickUpCheck.entityToPickUp != null && ZPRenderWorldEventWithPickUpCheck.entityToPickUp.equals(pEntity)) {
             this.renderPickUpTip(pEntity, pPoseStack, pBuffer, scale);
         }
     }

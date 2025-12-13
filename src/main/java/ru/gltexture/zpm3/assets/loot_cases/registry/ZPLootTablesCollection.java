@@ -22,6 +22,7 @@ public class ZPLootTablesCollection {
     }
 
     public void putInMap(@NotNull ZPLootTable lootTable) {
+        this.lootTableMap.remove(lootTable.getUniqueId());
         this.lootTableMap.put(lootTable.getUniqueId(), lootTable);
     }
 }

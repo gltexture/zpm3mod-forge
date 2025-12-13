@@ -36,7 +36,7 @@ public class ZPPlayerJoinOrSpawnEvent implements ZPEventClass {
         if (!(event.getEntity() instanceof ServerPlayer sp)) {
             return;
         }
-        ZombiePlague3.net().sendToPlayer(new ZPSendGlobalSettings_StoC(ZPConstants.ENABLE_HARDCORE_DARKNESS_SERVER_SIDE, ZPConstants.DARKNESS_GAMMA_STATIC_FACTOR_SERVER_SIDE), sp);
+        ZombiePlague3.net().sendToPlayer(ZPSendGlobalSettings_StoC.create(), sp);
         if (event.getEntity().getAttribute(ForgeMod.ENTITY_REACH.get()) != null) {
             Objects.requireNonNull(event.getEntity().getAttribute(ForgeMod.ENTITY_REACH.get())).setBaseValue(ZPConstants.PLAYER_DEFAULT_HAND_REACH);
         }

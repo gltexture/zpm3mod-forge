@@ -1,6 +1,7 @@
 package ru.gltexture.zpm3.engine.core.config;
 
 import net.minecraft.util.Mth;
+import org.checkerframework.checker.units.qual.C;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.engine.core.ZPLogger;
@@ -17,6 +18,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public final class ZPConfigurator {
+    private static Map<String, List<ClassFieldData>> CACHED = null;
     private final List<ZPClassWithConfConstants> classList;
 
     public ZPConfigurator() {
@@ -35,7 +37,8 @@ public final class ZPConfigurator {
             File file = new File(path.getFullPath());
             int i = 1;
             try (FileWriter fileWriter = new FileWriter(file)) {
-                final Map<String, List<ClassFieldData>> readClassFields = this.getClassFieldDataSet(e);
+                final Map<String, List<ClassFieldData>> readClassFields = CACHED == null ? this.getClassFieldDataSet(e) : CACHED;
+                CACHED = readClassFields;
                 fileWriter.write("#AUTO_GENERATED: " + LocalDate.now() + "\n");
                 // FILE-PROCESSING
                 {

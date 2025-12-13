@@ -1,5 +1,6 @@
 package ru.gltexture.zpm3.engine.mixins.ext;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -11,9 +12,11 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.assets.commands.zones.ZPZoneChecks;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.common.utils.ZPCommonServerUtils;
 import ru.gltexture.zpm3.engine.client.utils.ClientRenderFunctions;
+import ru.gltexture.zpm3.engine.fake.ZPFakePlayer;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 import ru.gltexture.zpm3.engine.sound.ZPPositionedSound;
 
@@ -24,19 +27,21 @@ public abstract class ZPEntityExtTicking {
                 itemEntity.kill();
             }
         }
-        if (izpEntityExt.touchesAcidBlock() && entity.tickCount % 2 == 0) {
-            izpEntityExt.addAcidLevel(1);
-            if (entity instanceof LivingEntity livingEntity) {
-                livingEntity.hurt(livingEntity.damageSources().generic(), 2.0f);
+        if (!ZPZoneChecks.INSTANCE.isNoAcidInvDmg((ServerLevel) entity.level(), entity.getOnPos())) {
+            if (izpEntityExt.touchesAcidBlock() && entity.tickCount % 2 == 0) {
+                izpEntityExt.addAcidLevel(1);
+                if (entity instanceof LivingEntity livingEntity) {
+                    livingEntity.hurt(livingEntity.damageSources().generic(), 2.0f);
+                }
             }
-        }
-        if (izpEntityExt.getAcidLevel() > 3000) {
-            if (entity instanceof LivingEntity livingEntity && izpEntityExt.touchesAcidBlock()) {
-                livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON, 60));
+            if (izpEntityExt.getAcidLevel() > 3000) {
+                if (entity instanceof LivingEntity livingEntity && izpEntityExt.touchesAcidBlock()) {
+                    livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON, 60));
+                }
             }
-        }
-        if (izpEntityExt.getAcidLevel() > 0) {
-            ZPEntityExtTicking.damageItemsEveryTick(entity);
+            if (izpEntityExt.getAcidLevel() > 0) {
+                ZPEntityExtTicking.damageItemsEveryTick(entity);
+            }
         }
     }
 

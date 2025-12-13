@@ -68,6 +68,22 @@ public class ZPLootCasesAsset extends ZPAsset {
     }
 
     public static class ZPDefaultLootTables extends ZPLootTablesRegistry {
+        private static ZPLootTable sample = ZPLootTable.builder("sample")
+                .lootCase("tier1", false, 1200)
+                .extendBy("loot_debris")
+                .commonGroup("sample1", 20, (g) -> g
+                        .addNonBreakable("minecraft:dead_bush",           1,  1, 32, 1.5f)
+                        .addBreakable("minecraft:wooden_sword",           1, 0.0f, 1.0f, 1.5f)
+                )
+                .commonGroup("sample2", 4, 0.5f, 2, (g) -> g
+                        .addNonBreakable("minecraft:diamond",           1,  1, 32, 1.5f)
+                        .addBreakable("minecraft:diamond_sword",           1, 0.0f, 1.0f, 1.5f)
+                )
+                .bonusGroup("bonus", 1, 10, 0.5f, (g) -> g
+                        .addNonBreakable("minecraft:bone",                    1, 1, 12, 1.0f)
+                )
+                .build(1, 8, 0.8f, 0.5f);
+
         private static ZPLootTable loot_debris = ZPLootTable.builder("loot_debris")
                 .commonGroup("trash", 20, (g) -> g
                         .addNonBreakable("minecraft:dead_bush",           24,  1, 1, 1.0f)
@@ -460,6 +476,7 @@ public class ZPLootCasesAsset extends ZPAsset {
 
         @Override
         public void init() {
+            this.register(ZPDefaultLootTables.sample);
             this.register(ZPDefaultLootTables.loot_case_tier_low);
             this.register(ZPDefaultLootTables.loot_case_tier_mid);
             this.register(ZPDefaultLootTables.loot_case_tier_hi);

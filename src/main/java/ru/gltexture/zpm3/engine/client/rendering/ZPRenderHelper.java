@@ -1,6 +1,7 @@
 package ru.gltexture.zpm3.engine.client.rendering;
 
 import com.mojang.blaze3d.platform.Window;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.event.TickEvent;
 import org.jetbrains.annotations.NotNull;
@@ -29,7 +30,7 @@ public final class ZPRenderHelper implements ZPClientCallbacks.ZPClientResourceD
 
         ZPRenderHooksManager.INSTANCE.addSceneRenderingHook(((renderStage, partialTicks, deltaTime, pNanoTime, pRenderLevel) -> {
             if (renderStage == RenderStage.POST) {
-                if (!Minecraft.getInstance().isPaused()) {
+                if (!Minecraft.getInstance().isPaused() && !SharedConstants.IS_RUNNING_IN_IDE) {
                     this.getDearUIRenderer().getInterfacesManager().renderAll(Minecraft.getInstance().getWindow(), deltaTime);
                 }
             }

@@ -1,6 +1,7 @@
 package ru.gltexture.zpm3.assets.entity.instances.throwables;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
@@ -16,8 +17,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
+import ru.gltexture.zpm3.assets.commands.zones.ZPZoneChecks;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.entity.instances.mobs.zombies.ZPAbstractZombie;
+import ru.gltexture.zpm3.engine.fake.ZPFakePlayer;
 import ru.gltexture.zpm3.engine.mixins.ext.IZPLevelExt;
 import ru.gltexture.zpm3.assets.common.utils.ZPCommonClientUtils;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
@@ -89,7 +92,9 @@ public class ZPRottenFleshEntity extends ZPThrowableEntity {
                 BlockPos pos = blockHit.getBlockPos();
                 if (!this.level().isEmptyBlock(pos)) {
                     if (this.level() instanceof IZPLevelExt ext) {
-                        ext.getGlobalBlocksDestroyMemory().addNewEntryLongMem(this.level(), pos, (0.5f + ZPRandom.getRandom().nextFloat(1.5f)) * ZPConstants.THROWABLES_BLOCK_BREAK_MULTIPLIER);
+                        if (ZPFakePlayer.canBreakBlock((ServerLevel) this.level(), pos) && !ZPZoneChecks.INSTANCE.isNoThrowableBlockDamage((ServerLevel) this.level(), pos)) {
+                            ext.getGlobalBlocksDestroyMemory().addNewEntryLongMem(this.level(), pos, (0.5f + ZPRandom.getRandom().nextFloat(1.5f)) * ZPConstants.THROWABLES_BLOCK_BREAK_MULTIPLIER);
+                        }
                     }
                 }
             }

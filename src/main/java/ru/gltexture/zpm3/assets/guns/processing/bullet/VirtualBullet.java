@@ -25,10 +25,12 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.*;
+import ru.gltexture.zpm3.assets.commands.zones.ZPZoneChecks;
 import ru.gltexture.zpm3.assets.common.damage.ZPDamageSources;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
+import ru.gltexture.zpm3.engine.fake.ZPFakePlayer;
 import ru.gltexture.zpm3.engine.mixins.ext.IZPEntityExt;
 
 import java.lang.Math;
@@ -64,8 +66,14 @@ public class VirtualBullet {
         if (!ZPConstants.CAN_BULLET_BREAK_BLOCK) {
             return false;
         }
+        if (!ZPFakePlayer.canBreakBlock((ServerLevel) serverLevel, blockPos)) {
+            return false;
+        }
+        if (ZPZoneChecks.INSTANCE.isNoBulletBlockDmg((ServerLevel) serverLevel, blockPos)) {
+            return false;
+        }
         BlockState blockState = serverLevel.getBlockState(blockPos);
-        if (blockState.getBlock() instanceof AbstractGlassBlock || blockState.getBlock() instanceof StainedGlassPaneBlock || blockState.getBlock() instanceof LeavesBlock || blockState.getBlock() instanceof StemGrownBlock || blockState.getBlock() instanceof IceBlock) {
+        if (blockState.getBlock().soundType.equals(SoundType.GLASS)) {
             float hardness = blockState.getDestroySpeed(serverLevel, blockPos);
             if (hardness >= 0 && hardness <= ZPConstants.MAX_BULLET_HIT_BLOCK_HARDNESS) {
                 return true;
@@ -250,9 +258,15 @@ public class VirtualBullet {
 
             BlockHitResult blockHitResult = d0 <= d1 ? blockhitresult : blockhitresult1;
 
-            if (blockHitResult != null && level.getBlockState(blockHitResult.getBlockPos()).getBlock() == Blocks.IRON_BARS) {
-                if (ZPRandom.getRandom().nextBoolean()) {
+            if (blockHitResult != null) {
+                if (level.getBlockState(blockHitResult.getBlockPos()).getBlock() instanceof LeavesBlock) {
                     return null;
+                }
+
+                if (level.getBlockState(blockHitResult.getBlockPos()).getBlock() == Blocks.IRON_BARS) {
+                    if (ZPRandom.getRandom().nextBoolean()) {
+                        return null;
+                    }
                 }
             }
 

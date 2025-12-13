@@ -44,6 +44,11 @@
       "name": "ZP3LootCasesAsset",
       "version": "0.0",
       "class": "ru.gltexture.zpm3.assets.loot_cases.ZPLootCasesAsset"
+    },
+    {
+      "name": "ZP3CommandsAsset",
+      "version": "0.0",
+      "class": "ru.gltexture.zpm3.assets.commands.ZPCommandsAsset"
     }
   ]
 }

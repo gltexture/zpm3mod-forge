@@ -308,7 +308,25 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public static float BLEEDING_CHANCE_MULTIPLIER = 1.0f;
 
     @ZPConfigurableConstant(
-            description = "New vanilla's concrete destroy speed",
+            description = "Night time progression divider. During night, the world time is incremented once every N server ticks. Higher values slow down night duration.",
+            group = ZPConstants.GROUP_WORLD,
+            type = ZPConfigurableConstant.TYPES.INT,
+            min = 1.0,
+            max = Float.MAX_VALUE
+    )
+    public static int WORLD_NIGHT_TIME_SLOWDOWN_CYCLE_TICKING = 2;
+
+    @ZPConfigurableConstant(
+            description = "Day time progression divider. During day, the world time is incremented once every N server ticks. Higher values slow down day duration.",
+            group = ZPConstants.GROUP_WORLD,
+            type = ZPConfigurableConstant.TYPES.INT,
+            min = 1.0,
+            max = Float.MAX_VALUE
+    )
+    public static int WORLD_DAY_TIME_SLOWDOWN_CYCLE_TICKING = 2;
+
+    @ZPConfigurableConstant(
+            description = "New vanilla's concrete destroy speed.",
             group = ZPConstants.GROUP_WORLD,
             type = ZPConfigurableConstant.TYPES.FLOAT,
             min = 0.0
@@ -323,6 +341,13 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
             max = Float.MAX_VALUE
     )
     public static int ENTITY_ITEM_LIFESPAN = 16000;
+
+    @ZPConfigurableConstant(
+            description = "Enables item pickup via the <key>. Works on both client and server. If disabled on the server, the feature is forcibly disabled on all clients.",
+            group = ZPConstants.GROUP_WORLD,
+            type = ZPConfigurableConstant.TYPES.BOOLEAN
+    )
+    public static boolean PICK_UP_ON_F = true;
 
     @ZPConfigurableConstant(
             description = "If enabled, server applies extreme darkness shader gamma reduction for all players regardless of client settings.",
@@ -457,15 +482,9 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public static int ITEMS_THROW_COOLDOWN = 20;
 
     // ===== CLIENT =====
-    @ZPConfigurableConstant(
-            description = "Pick Up on F or another key.",
-            group = ZPConstants.GROUP_CLIENT,
-            type = ZPConfigurableConstant.TYPES.BOOLEAN
-    )
-    public static boolean PICK_UP_ON_F = true;
 
     @ZPConfigurableConstant(
-            description = "Fancy ZP item-entity animation.",
+            description = "(ONLY CLIENT) Fancy ZP item-entity animation.",
             group = ZPConstants.GROUP_CLIENT,
             type = ZPConfigurableConstant.TYPES.BOOLEAN
     )

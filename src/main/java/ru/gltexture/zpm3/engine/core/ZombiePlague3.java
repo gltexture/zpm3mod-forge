@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.core.Position;
 import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
@@ -16,9 +17,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.TierSortingRegistry;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -72,10 +75,12 @@ import java.util.*;
 public final class ZombiePlague3 {
     public static final String ZP_MAIN_DIR = "zpm3_files";
 
+    public static boolean DEV_PREVIEW = true;
+
     public static final String assetsJsonPath = "zpm3.asset.json";
     public static final String MOD_ID = "zpm3";
     static final Logger LOGGER = LoggerFactory.getLogger(ZombiePlague3.MOD_ID);
-    private static final ZPProject MOD_INFO = new ZPProject("ZombiePlague3Engine", ZombiePlague3.MOD_ID, "In Development");
+    private static final ZPProject MOD_INFO = new ZPProject("ZombiePlague3Engine", ZombiePlague3.MOD_ID, "0.1 Alpha");
     private final ZPRegistryConveyor zpRegistryConveyor;
     private final List<ZPAsset> assets;
     private ZPNetwork zpNetwork;
@@ -119,6 +124,7 @@ public final class ZombiePlague3 {
         modEventBus.addListener(this::completeSetup);
         ZPUtility.sides().onlyClient(() -> {
             modEventBus.addListener(this::clientSetup);
+            MinecraftForge.EVENT_BUS.register(new ZPDevOverlay());
         });
         ZPLogger.info(this + " END INIT");
     }
@@ -143,6 +149,22 @@ public final class ZombiePlague3 {
         deferredRegister.register(ZombiePlague3.getModEventBus());
     }
 
+    public static class ZPDevOverlay {
+        @OnlyIn(Dist.CLIENT)
+        @SubscribeEvent
+        public void onRenderGui(RenderGuiOverlayEvent.Post event) {
+            if (!ZombiePlague3.DEV_PREVIEW) {
+                return;
+            }
+            Minecraft mc = Minecraft.getInstance();
+            GuiGraphics gg = event.getGuiGraphics();
+            String text = "Dev Preview" + " | " + ZombiePlague3.MOD_VERSION();
+            int screenWidth = event.getWindow().getGuiScaledWidth();
+            int x = screenWidth - mc.font.width(text) - 6;
+            int y = 6;
+            gg.drawString(mc.font, text, x, y, 0xFF0000, true);
+        }
+    }
 
     private void registerTiers() {
         ZPTiersRegistryHelper.tierSet.forEach(e -> Arrays.stream(e).forEach(s -> s.init().forEach(ZombiePlague3::registerTier)));

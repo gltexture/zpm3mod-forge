@@ -3,6 +3,7 @@ package ru.gltexture.zpm3.assets.entity.instances.mobs.ai;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
@@ -20,12 +21,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ForgeHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+import ru.gltexture.zpm3.assets.commands.zones.ZPZoneChecks;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.common.init.ZPEntityAttributes;
 import ru.gltexture.zpm3.assets.entity.instances.mobs.zombies.ZPAbstractZombie;
+import ru.gltexture.zpm3.engine.fake.ZPFakePlayer;
 import ru.gltexture.zpm3.engine.mixins.ext.IZPLevelExt;
 import ru.gltexture.zpm3.assets.net_pack.packets.ZPBlockCrack;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
@@ -161,6 +165,13 @@ public class ZPZombieMiningGoal extends Goal {
         }
 
         if (blockToMine != null) {
+            if (!ZPFakePlayer.canBreakBlock((ServerLevel) this.mob.level(), blockToMine)) {
+                return;
+            }
+            if (ZPZoneChecks.INSTANCE.isNoZombieMining((ServerLevel) this.mob.level(), blockToMine)) {
+                return;
+            }
+
             final Level level = this.mob.level();
             final BlockState state = level.getBlockState(blockToMine);
 

@@ -17,6 +17,7 @@
   ],
   "client": [
     "client.TranslatableContentsFixMixin",
+    "client.ZPClientLevelMixin",
     "client.ZPEntityRendererMixin",
     "client.ZPGameLightMapMixin",
     "client.ZPGameRendererMixin",

@@ -30,8 +30,10 @@ public final class ZPRenderHelper implements ZPClientCallbacks.ZPClientResourceD
 
         ZPRenderHooksManager.INSTANCE.addSceneRenderingHook(((renderStage, partialTicks, deltaTime, pNanoTime, pRenderLevel) -> {
             if (renderStage == RenderStage.POST) {
-                if (!Minecraft.getInstance().isPaused() && !SharedConstants.IS_RUNNING_IN_IDE) {
-                    this.getDearUIRenderer().getInterfacesManager().renderAll(Minecraft.getInstance().getWindow(), deltaTime);
+                if (SharedConstants.IS_RUNNING_IN_IDE) {
+                    if (!Minecraft.getInstance().isPaused()) {
+                        this.getDearUIRenderer().getInterfacesManager().renderAll(Minecraft.getInstance().getWindow(), deltaTime);
+                    }
                 }
             }
         }));

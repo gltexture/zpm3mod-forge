@@ -29,6 +29,8 @@ import ru.gltexture.zpm3.assets.commands.zones.ZPZoneChecks;
 import ru.gltexture.zpm3.assets.common.damage.ZPDamageSources;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.entity.instances.mobs.zombies.ZPAbstractZombie;
+import ru.gltexture.zpm3.assets.entity.instances.mobs.zombies.ZPCommonZombie;
+import ru.gltexture.zpm3.assets.entity.instances.mobs.zombies.ZPMinerZombie;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.fake.ZPFakePlayer;
 import ru.gltexture.zpm3.engine.mixins.ext.IZPEntityExt;
@@ -206,7 +208,7 @@ public class VirtualBullet {
         if (ZPConstants.BULLET_HEADSHOT_BONUS_DAMAGE <= 0) {
             return false;
         }
-        if (!(entity instanceof Player) && !(entity instanceof Villager) && !(entity instanceof ZPAbstractZombie)) {
+        if (!(entity instanceof Player) && !(entity instanceof Villager) && !(entity instanceof ZPCommonZombie) && !(entity instanceof ZPMinerZombie)) {
             return false;
         }
         AABB box = entity.getBoundingBox();

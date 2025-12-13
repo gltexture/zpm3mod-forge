@@ -1,6 +1,7 @@
 package ru.gltexture.zpm3.assets.debug.events;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.Input;
 import net.minecraft.world.phys.Vec3;
@@ -40,7 +41,7 @@ public class ZPFreeCameraEvents implements ZPEventClass {
 
     @SubscribeEvent
     public static void onKeyInput(InputEvent.Key event) {
-        if (event.getKey() == GLFW.GLFW_KEY_F6 && event.getAction() == GLFW.GLFW_PRESS) {
+        if (SharedConstants.IS_RUNNING_IN_IDE && event.getKey() == GLFW.GLFW_KEY_F6 && event.getAction() == GLFW.GLFW_PRESS) {
             ZPFreeCameraEvents.enabled = !ZPFreeCameraEvents.enabled;
             Minecraft mc = Minecraft.getInstance();
             if (enabled && mc.player != null) {

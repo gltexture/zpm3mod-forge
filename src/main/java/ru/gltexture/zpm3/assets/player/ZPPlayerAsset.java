@@ -3,6 +3,7 @@ package ru.gltexture.zpm3.assets.player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.assets.player.events.client.ZPMenuPatchEvent;
 import ru.gltexture.zpm3.assets.player.events.client.ZPPlayerItemToolTips;
 import ru.gltexture.zpm3.assets.player.keybind.ZPPickUpKeyBindings;
 import ru.gltexture.zpm3.assets.player.events.client.ZPRenderWorldEventWithPickUpCheck;
@@ -57,6 +58,7 @@ public class ZPPlayerAsset extends ZPAsset {
             assetEntry.addEventClass(ZPPlayerItemToolTips.class);
         });
 
+        assetEntry.addEventClass(ZPMenuPatchEvent.class);
         assetEntry.addEventClass(ZPPlayerEntityItemEvent.class);
         assetEntry.addEventClass(ZPPlayerTickEvent.class);
         assetEntry.addEventClass(ZPPlayerFillBucketEvent.class);

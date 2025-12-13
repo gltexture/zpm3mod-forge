@@ -108,17 +108,17 @@ public class ZPCommandsAsset extends ZPAsset {
                                         return 0;
                                     })
                             )
-                            .then(Commands.literal("refreshLootTables")
-                                    .executes(ctx -> {
-                                        ServerPlayer player = ctx.getSource().getPlayerOrException();
-                                        if (player.hasPermissions(4)) {
-                                            ZPLootTablesReader.READ_FILES();
-                                            ctx.getSource().sendSuccess(() -> Component.literal("Success!"), false);
-                                            return 1;
-                                        }
-                                        return 0;
-                                    })
-                            )
+                            //.then(Commands.literal("refreshLootTables")
+                            //        .executes(ctx -> {
+                            //            ServerPlayer player = ctx.getSource().getPlayerOrException();
+                            //            if (player.hasPermissions(4)) {
+                            //                ZPLootTablesReader.READ_FILES();
+                            //                ctx.getSource().sendSuccess(() -> Component.literal("Success!"), false);
+                            //                return 1;
+                            //            }
+                            //            return 0;
+                            //        })
+                            //)
                             .then(Commands.literal("zoneCreate")
                                     .then(Commands.argument("id", StringArgumentType.string())
                                             .then(Commands.argument("x1", IntegerArgumentType.integer())

@@ -25,5 +25,11 @@
   "item.zpm3.water": "Mineral Water",
 
   "block.zpm3.block_lamp": "City Lamp",
-  "tooltip.zpm3.weapon.hand_bonus": " Distance Bonus: %s"
+  "tooltip.zpm3.weapon.hand_bonus": " Distance Bonus: %s",
+
+  "death.attack.zp_bullet": "%1$s was shot!",
+  "death.attack.zp_bullet.player": "%1$s was shot by %2$s!",
+
+  "death.attack.zp_bleeding": "%1$s bled out!",
+  "death.attack.zp_bleeding.player": "%1$s bled out due to %2$s!"
 }

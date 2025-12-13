@@ -20,22 +20,29 @@ plugins {
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
     id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
-
 tasks.register('zpShadow', ShadowJar) {
     archiveClassifier.set('prod')
     from sourceSets.main.output
-    configurations = [project.configurations.runtimeClasspath]
-    dependencies {
-        include(dependency('io.github.spair:imgui-java-binding:.*'))
-        include(dependency('io.github.spair:imgui-java-lwjgl3:.*'))
-        include(dependency('io.github.spair:imgui-java-natives-.*:1.86.12'))
+    from {
+        project.configurations.minecraftLibrary.findAll {
+            it.name.contains('imgui-java-binding') || it.name.contains('imgui-java-lwjgl3')
+        }.collect { it.isDirectory() ? it : zipTree(it) }
     }
-    exclude { fileTreeElement ->
-        !fileTreeElement.path.contains('imgui')
+    from {
+        project.configurations.minecraftLibrary.findAll {
+            it.name.contains('imgui-java-natives-')
+        }.collect { it.isDirectory() ? it : zipTree(it) }
     }
-    minimize()
+    manifest {
+        attributes(["Specification-Title"     : mod_id,
+                    "Specification-Vendor"    : mod_authors,
+                    "Specification-Version"   : "1",
+                    "Implementation-Title"    : project.name,
+                    "Implementation-Version"  : project.jar.archiveVersion,
+                    "Implementation-Vendor"   : mod_authors,
+                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")])
+    }
 }
-
 apply plugin: 'org.spongepowered.mixin'
 
 group = mod_group_id
@@ -133,6 +140,13 @@ tasks.named('processResources', ProcessResources).configure {
 }
 
 tasks.named('jar', Jar).configure {
+    from sourceSets.main.output
+    from {
+        project.configurations.minecraftLibrary.findAll {
+            it.name.contains('imgui-java-')
+        }.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     manifest {
         attributes(["Specification-Title"     : mod_id,
                     "Specification-Vendor"    : mod_authors,

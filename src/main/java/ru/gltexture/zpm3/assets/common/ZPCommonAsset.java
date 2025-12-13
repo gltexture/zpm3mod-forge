@@ -146,7 +146,6 @@ public class ZPCommonAsset extends ZPAsset {
                             if (pSource.<DispenserBlockEntity>getEntity().addItem(new ItemStack(item)) < 0) {
                                 this.defaultDispenseItemBehavior.dispense(pSource, new ItemStack(item));
                             }
-
                             return pStack;
                         }
                     }
@@ -304,6 +303,31 @@ public class ZPCommonAsset extends ZPAsset {
                         .define('S', ZPItems.scrap_material.get())
                         .unlockedBy("has_rf", IZPRecipeSpec.has(ZPItems.scrap_material.get()))
                         .save(writer, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "scrap_stack_material"));
+            }));
+
+            recipeToAdd.add((writer -> {
+                ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ZPBlocks.sandbag.get(), 1)
+                        .pattern("FSF").pattern("FSF").pattern("FSF")
+                        .define('F', Blocks.SAND)
+                        .define('S', Items.LEATHER)
+                        .unlockedBy("has_rf", IZPRecipeSpec.has(Items.LEATHER))
+                        .save(writer, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "sandbag_block"));
+            }));
+
+            recipeToAdd.add((writer -> {
+                ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ZPBlocks.scrap.get(), 1)
+                        .pattern("FFF").pattern("FFF").pattern("FFF")
+                        .define('F', ZPItems.scrap_material.get())
+                        .unlockedBy("has_rf", IZPRecipeSpec.has(ZPItems.scrap_material.get()))
+                        .save(writer, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "scrap_block"));
+            }));
+
+            recipeToAdd.add((writer -> {
+                ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ZPBlocks.barbared_wire.get(), 4)
+                        .pattern("F F").pattern(" F ").pattern("F F")
+                        .define('F', Items.IRON_INGOT)
+                        .unlockedBy("has_rf", IZPRecipeSpec.has(Items.IRON_INGOT))
+                        .save(writer, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "barbared_wire"));
             }));
 
             recipeToAdd.add((writer -> {

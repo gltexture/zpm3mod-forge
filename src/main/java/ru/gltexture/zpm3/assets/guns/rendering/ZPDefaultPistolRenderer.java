@@ -1,5 +1,6 @@
 package ru.gltexture.zpm3.assets.guns.rendering;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Transformation;
 import net.minecraft.client.Minecraft;
@@ -212,7 +213,10 @@ public class ZPDefaultPistolRenderer extends ZPAbstractGunRenderer {
                     pPoseStack.pushTransformation(new Transformation(recoil));
                 }
 
+                RenderSystem.backupProjectionMatrix();
+               // RenderSystem.setProjectionMatrix(new Matrix4f().identity(), VertexSorting.ORTHOGRAPHIC_Z);
                 this.renderItem(Minecraft.getInstance().getItemRenderer(), pPlayer, pStack, isRightHanded ? ItemDisplayContext.FIRST_PERSON_RIGHT_HAND : ItemDisplayContext.FIRST_PERSON_LEFT_HAND, !isRightHanded, pPoseStack, pBuffer, pCombinedLight);
+                RenderSystem.restoreProjectionMatrix();
                 this.renderPlayerArm(pPlayer, pPartialTicks, pPoseStack, pBuffer, pCombinedLight, pEquippedProgress, pSwingProgress, isRightHanded);
                 final Matrix4f matrixArm = new Matrix4f(pPoseStack.last().pose());
 

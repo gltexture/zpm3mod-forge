@@ -101,6 +101,8 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
             final Vector3f camPos = camera.getPosition().toVector3f();
             final Quaternionf camRot = camera.rotation();
 
+            final boolean isRifle = baseGun.getGunProperties().getHeldType().equals(ZPBaseGun.GunProperties.HeldType.RIFLE);
+
             Vector4f muzzle = new Vector4f(0.0f, 0.0f, 0.0f, 1.0f);
             Objects.requireNonNull(ZPGunFXGlobalData.getGunData(isRightHand).getMflash1spTransformationTarget()).transform(muzzle);
             ZPGunFXGlobalData.getGunData(isRightHand).getCurrentGunItemMatrix().transform(muzzle);
@@ -110,8 +112,8 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
             final float fovScale = ZPDefaultGunParticlesFX.getFovScale(mc);
             float offset = 0.0f;
             {
-                final float fScl = fovScale < 1.0f ? 2.5f : 0.9f;
-                offset = (fScl - fovScale * fScl);
+                final float fScl = fovScale < 1.0f ? -1.0f : 1.0f;
+                //offset = (fScl - fovScale * fScl);
             }
             Vector3f itemSpace = new Vector3f(muzzle.x, muzzle.y,muzzle.z + offset);
             Vector3f worldOffset = camRot.transform(itemSpace, new Vector3f());
@@ -169,8 +171,8 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
             final float fovScale = ZPDefaultGunParticlesFX.getFovScale(mc);
             float offset = 0.0f;
             {
-                final float fScl = fovScale < 1.0f ? 1.47f : 0.47f;
-                offset = (fScl - fovScale * fScl);
+                final float fScl = fovScale < 1.0f ? -0.5f : 0.5f;
+                //offset = (fScl - fovScale * fScl);
             }
             Vector3f itemSpace = new Vector3f(muzzle.x, muzzle.y,muzzle.z + offset);
             Vector3f worldOffset = camRot.transform(itemSpace, new Vector3f());

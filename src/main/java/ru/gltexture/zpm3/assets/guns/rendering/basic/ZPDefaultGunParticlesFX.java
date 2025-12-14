@@ -108,7 +108,12 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
             muzzle.add(0.0f, 0.05f, 0.0f, 0.0f);
 
             final float fovScale = ZPDefaultGunParticlesFX.getFovScale(mc);
-            Vector3f itemSpace = new Vector3f(muzzle.x, muzzle.y,muzzle.z + (0.9f - fovScale * 0.9f));
+            float offset = 0.0f;
+            {
+                final float fScl = fovScale < 1.0f ? 2.5f : 0.9f;
+                offset = (fScl - fovScale * fScl);
+            }
+            Vector3f itemSpace = new Vector3f(muzzle.x, muzzle.y,muzzle.z + offset);
             Vector3f worldOffset = camRot.transform(itemSpace, new Vector3f());
             spawnPos = camPos.add(worldOffset);
 
@@ -162,7 +167,12 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
             muzzle.add(0.0f, 0.0f, 0.0f, 0.0f);
 
             final float fovScale = ZPDefaultGunParticlesFX.getFovScale(mc);
-            Vector3f itemSpace = new Vector3f(muzzle.x, muzzle.y,muzzle.z + (0.47f - fovScale * 0.47f));
+            float offset = 0.0f;
+            {
+                final float fScl = fovScale < 1.0f ? 1.47f : 0.47f;
+                offset = (fScl - fovScale * fScl);
+            }
+            Vector3f itemSpace = new Vector3f(muzzle.x, muzzle.y,muzzle.z + offset);
             Vector3f worldOffset = camRot.transform(itemSpace, new Vector3f());
             spawnPos = camPos.add(worldOffset);
 

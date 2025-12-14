@@ -34,10 +34,6 @@ public class ZPNetPackAsset extends ZPAsset {
     }
 
     @Override
-    public void initMixins(ZombiePlague3.@NotNull IMixinEntry mixinEntry) {
-    }
-
-    @Override
     public void initializeAsset(ZombiePlague3.@NotNull IAssetEntry assetEntry) {
         assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(0, ZPAcidSpreadPacket.class, ZPAcidSpreadPacket.encoder(), ZPAcidSpreadPacket.decoder()));
         assetEntry.addNetworkPacket(new ZPNetwork.PacketData<>(1, ZPGunActionPacket.class, ZPGunActionPacket.encoder(), ZPGunActionPacket.decoder()));

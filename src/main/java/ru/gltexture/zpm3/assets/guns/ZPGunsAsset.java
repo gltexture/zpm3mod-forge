@@ -61,16 +61,16 @@ public class ZPGunsAsset extends ZPAsset {
 
     }
 
-    @Override
-    public void initMixins(ZombiePlague3.@NotNull IMixinEntry mixinEntry) {
-        mixinEntry.addMixinConfigData(new ZombiePlague3.IMixinEntry.MixinConfig("guns", "ru.gltexture.zpm3.assets.guns.mixins.impl"),
-                new ZombiePlague3.IMixinEntry.MixinClass("client.ZPHumanoidArmMixin", ZPSide.CLIENT),
-                new ZombiePlague3.IMixinEntry.MixinClass("client.ZPPlayerClientDataMixin", ZPSide.CLIENT),
-                new ZombiePlague3.IMixinEntry.MixinClass("client.ZPClientPacketListenerMixin", ZPSide.CLIENT),
-                new ZombiePlague3.IMixinEntry.MixinClass("common.ZPItemMixin", ZPSide.COMMON),
-                new ZombiePlague3.IMixinEntry.MixinClass("client.ZPItemStackClDataMixin", ZPSide.CLIENT)
-        );
-    }
+    //@Override
+    //public void initMixins(ZombiePlague3.@NotNull IMixinEntry mixinEntry) {
+    //    mixinEntry.addMixinConfigData(new ZombiePlague3.IMixinEntry.MixinConfig("guns", "ru.gltexture.zpm3.assets.guns.mixins.impl"),
+    //            new ZombiePlague3.IMixinEntry.MixinClass("client.ZPHumanoidArmMixin", ZPSide.CLIENT),
+    //            new ZombiePlague3.IMixinEntry.MixinClass("client.ZPPlayerClientDataMixin", ZPSide.CLIENT),
+    //            new ZombiePlague3.IMixinEntry.MixinClass("client.ZPClientPacketListenerMixin", ZPSide.CLIENT),
+    //            new ZombiePlague3.IMixinEntry.MixinClass("common.ZPItemMixin", ZPSide.COMMON),
+    //            new ZombiePlague3.IMixinEntry.MixinClass("client.ZPItemStackClDataMixin", ZPSide.CLIENT)
+    //    );
+    //}
 
     @Override
     public void initializeAsset(ZombiePlague3.@NotNull IAssetEntry assetEntry) {

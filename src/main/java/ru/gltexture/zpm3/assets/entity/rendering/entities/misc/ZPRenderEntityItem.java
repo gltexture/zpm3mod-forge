@@ -2,7 +2,9 @@ package ru.gltexture.zpm3.assets.entity.rendering.entities.misc;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import net.minecraft.client.GraphicsStatus;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -67,7 +69,7 @@ public class ZPRenderEntityItem extends ItemEntityRenderer {
     @Override
     public void render(@NotNull ItemEntity pEntity, float pEntityYaw, float pPartialTicks, @NotNull PoseStack pPoseStack, @NotNull MultiBufferSource pBuffer, int pPackedLight) {
         float scale = 0.0f;
-        if (ZPConstants.FANCY_ITEM_ENTITIES) {
+        if (Minecraft.getInstance().options.graphicsMode().get() != GraphicsStatus.FAST &&  ZPConstants.FANCY_ITEM_ENTITIES) {
             pPoseStack.pushPose();
             ItemStack itemstack = pEntity.getItem();
             int itemId = Item.getId(itemstack.getItem()) * pEntity.getId();

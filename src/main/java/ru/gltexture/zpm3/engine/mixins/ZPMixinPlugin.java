@@ -61,7 +61,7 @@ public class ZPMixinPlugin implements IMixinConfigPlugin {
         }
     }
 
-    private void registerMixinConfigs() {
+    private static void registerMixinConfigs() {
         List<ZPAsset> assets = new ArrayList<>();
         ZPMixinPlugin.readAssetsJSON(assets);
         for (ZPAsset zpAsset : assets) {
@@ -72,14 +72,12 @@ public class ZPMixinPlugin implements IMixinConfigPlugin {
         }
     }
 
-    @Override
-    public void onLoad(String mixinPackage) {
-        this.registerMixinConfigs();
-
+    public static void initLibs() {
+        ZPMixinPlugin.registerMixinConfigs();
         if (!ZPUtility.isDataGen()) {
             ZPMixinPlugin.mixins.forEach(e -> {
                 final String path = ZPMixinPlugin.pathToMixinsCfg + e + ".json";
-                try (InputStream ignored = this.getClass().getResourceAsStream(path)) {
+                try (InputStream ignored = ZPMixinPlugin.class.getResourceAsStream(path)) {
                     ZPLogger.info("Got mixin config: " + path);
                 } catch (IOException ex) {
                     throw new ZPRuntimeException(ex);
@@ -87,6 +85,14 @@ public class ZPMixinPlugin implements IMixinConfigPlugin {
                 Mixins.addConfiguration(path);
             });
         }
+    }
+
+    static {
+    }
+
+    @Override
+    public void onLoad(String mixinPackage) {
+        ZPMixinPlugin.initLibs();
     }
 
     @Override
@@ -101,13 +107,14 @@ public class ZPMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public void acceptTargets(Set<String> myTargets, Set<String> otherTargets) {
-
     }
 
     @Override
     public List<String> getMixins() {
         return List.of();
     }
+
+
 
     @Override
     public void preApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {

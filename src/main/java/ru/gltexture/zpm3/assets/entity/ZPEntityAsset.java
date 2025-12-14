@@ -48,12 +48,12 @@ public class ZPEntityAsset extends ZPAsset {
 
     }
 
-    @Override
-    public void initMixins(ZombiePlague3.@NotNull IMixinEntry mixinEntry) {
-        mixinEntry.addMixinConfigData(new ZombiePlague3.IMixinEntry.MixinConfig("common", "ru.gltexture.zpm3.assets.entity.mixins.impl"),
-                new ZombiePlague3.IMixinEntry.MixinClass("common.ZPForgeItemMixin", ZPSide.COMMON)
-        );
-    }
+    //@Override
+    //public void initMixins(ZombiePlague3.@NotNull IMixinEntry mixinEntry) {
+    //    mixinEntry.addMixinConfigData(new ZombiePlague3.IMixinEntry.MixinConfig("entities", "ru.gltexture.zpm3.assets.entity.mixins.impl"),
+    //            new ZombiePlague3.IMixinEntry.MixinClass("entity.ZPForgeItemMixin", ZPSide.COMMON)
+    //    );
+    //}
 
     @Override
     public void initializeAsset(ZombiePlague3.@NotNull IAssetEntry assetEntry) {

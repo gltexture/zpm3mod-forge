@@ -25,7 +25,8 @@ public abstract class ZPAsset {
     @OnlyIn(Dist.CLIENT)
     public abstract void clientDestroy();
 
-    public abstract void initMixins(@NotNull ZombiePlague3.IMixinEntry mixinEntry);
+    @Deprecated
+    public void initMixins(@NotNull ZombiePlague3.IMixinEntry mixinEntry) { }
     public abstract void initializeAsset(@NotNull ZombiePlague3.IAssetEntry assetEntry);
     public abstract void preCommonInitializeAsset();
     public abstract void postCommonInitializeAsset();

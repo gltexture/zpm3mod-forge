@@ -32,14 +32,14 @@ public abstract class HumanoidArmTransformations {
             model.rightArm.yRot = headYawRad;
             model.rightArm.zRot = 0.0F;
             model.rightArm.x = -5.0F;
-            model.rightArm.y = 2.0F;
+            model.rightArm.y = entity.isCrouching() ? 5.0f : 2.0F;
         }
         if (gunIsLeft) {
             model.leftArm.xRot = -1.5F + headPitchRad;
             model.leftArm.yRot = headYawRad;
             model.leftArm.zRot = 0.0F;
             model.leftArm.x = 5.0F;
-            model.leftArm.y = 2.0F;
+            model.leftArm.y = entity.isCrouching() ? 5.0f : 2.0F;
         }
 
         if (rifleIsRight) {
@@ -50,7 +50,7 @@ public abstract class HumanoidArmTransformations {
             }
             model.leftArm.zRot = 0.0F;
             model.leftArm.x = 5.0F;
-            model.leftArm.y = 2.0F;
+            model.leftArm.y = entity.isCrouching() ? 5.0f : 2.0F;
         }
 
         boolean reloadingRight = false;

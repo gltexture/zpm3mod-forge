@@ -34,11 +34,6 @@ public class ZPFXAsset extends ZPAsset {
     }
 
     @Override
-    public void initMixins(ZombiePlague3.@NotNull IMixinEntry mixinEntry) {
-
-    }
-
-    @Override
     public void initializeAsset(ZombiePlague3.@NotNull IAssetEntry assetEntry) {
         assetEntry.addZP3RegistryClass(ZPParticles.class);
     }

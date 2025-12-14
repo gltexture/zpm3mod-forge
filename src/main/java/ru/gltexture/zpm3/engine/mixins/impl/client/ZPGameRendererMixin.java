@@ -16,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.engine.client.rendering.crosshair.ZPClientCrosshairRecoilManager;
 
 @Mixin(GameRenderer.class)
@@ -44,24 +45,26 @@ public class ZPGameRendererMixin {
 
     @Inject(method = "getFov", at = @At("HEAD"), cancellable = true)
     private void getFov(Camera pActiveRenderInfo, float pPartialTicks, boolean pUseFOVSetting, CallbackInfoReturnable<Double> cir) {
-        if (this.panoramicMode) {
-            cir.setReturnValue(90.0D);
-        } else {
-            double d0 = 70.0D;
-            d0 = this.minecraft.options.fov().get().intValue();
-            d0 *= Mth.lerp(pPartialTicks, this.oldFov, this.fov);
+        if (ZPConstants.FOV_ITEM_SCALING) {
+            if (this.panoramicMode) {
+                cir.setReturnValue(90.0D);
+            } else {
+                double d0 = 70.0D;
+                d0 = this.minecraft.options.fov().get().intValue();
+                d0 *= Mth.lerp(pPartialTicks, this.oldFov, this.fov);
 
-            if (pActiveRenderInfo.getEntity() instanceof LivingEntity && ((LivingEntity)pActiveRenderInfo.getEntity()).isDeadOrDying()) {
-                float f = Math.min((float)((LivingEntity)pActiveRenderInfo.getEntity()).deathTime + pPartialTicks, 20.0F);
-                d0 /= (double)((1.0F - 500.0F / (f + 500.0F)) * 2.0F + 1.0F);
+                if (pActiveRenderInfo.getEntity() instanceof LivingEntity && ((LivingEntity) pActiveRenderInfo.getEntity()).isDeadOrDying()) {
+                    float f = Math.min((float) ((LivingEntity) pActiveRenderInfo.getEntity()).deathTime + pPartialTicks, 20.0F);
+                    d0 /= (double) ((1.0F - 500.0F / (f + 500.0F)) * 2.0F + 1.0F);
+                }
+
+                FogType fogtype = pActiveRenderInfo.getFluidInCamera();
+                if (fogtype == FogType.LAVA || fogtype == FogType.WATER) {
+                    d0 *= Mth.lerp(this.minecraft.options.fovEffectScale().get(), 1.0D, 0.85714287F);
+                }
+
+                cir.setReturnValue(net.minecraftforge.client.ForgeHooksClient.getFieldOfView((GameRenderer) (Object) this, pActiveRenderInfo, pPartialTicks, d0, true));
             }
-
-            FogType fogtype = pActiveRenderInfo.getFluidInCamera();
-            if (fogtype == FogType.LAVA || fogtype == FogType.WATER) {
-                d0 *= Mth.lerp(this.minecraft.options.fovEffectScale().get(), 1.0D, (double)0.85714287F);
-            }
-
-            cir.setReturnValue(net.minecraftforge.client.ForgeHooksClient.getFieldOfView((GameRenderer) (Object) this, pActiveRenderInfo, pPartialTicks, d0, true));
         }
     }
 }

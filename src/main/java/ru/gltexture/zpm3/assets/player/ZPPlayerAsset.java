@@ -43,13 +43,13 @@ public class ZPPlayerAsset extends ZPAsset {
 
     }
 
-    @Override
-    public void initMixins(ZombiePlague3.@NotNull IMixinEntry mixinEntry) {
-        mixinEntry.addMixinConfigData(new ZombiePlague3.IMixinEntry.MixinConfig("player", "ru.gltexture.zpm3.assets.player.mixins.impl"),
-                new ZombiePlague3.IMixinEntry.MixinClass("common.PlayerFeaturesMixin", ZPSide.COMMON),
-                new ZombiePlague3.IMixinEntry.MixinClass("client.CPlayerFeaturesMixin", ZPSide.CLIENT),
-                new ZombiePlague3.IMixinEntry.MixinClass("client.PlayerItemMixin", ZPSide.CLIENT));
-    }
+    //@Override
+    //public void initMixins(ZombiePlague3.@NotNull IMixinEntry mixinEntry) {
+    //    mixinEntry.addMixinConfigData(new ZombiePlague3.IMixinEntry.MixinConfig("player", "ru.gltexture.zpm3.assets.player.mixins.impl"),
+    //            new ZombiePlague3.IMixinEntry.MixinClass("common.PlayerFeaturesMixin", ZPSide.COMMON),
+    //            new ZombiePlague3.IMixinEntry.MixinClass("client.CPlayerFeaturesMixin", ZPSide.CLIENT),
+    //            new ZombiePlague3.IMixinEntry.MixinClass("client.PlayerItemMixin", ZPSide.CLIENT));
+    //}
 
     @Override
     public void initializeAsset(ZombiePlague3.@NotNull IAssetEntry assetEntry) {

@@ -490,6 +490,13 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     )
     public static boolean FANCY_ITEM_ENTITIES = true;
 
+    @ZPConfigurableConstant(
+            description = "(ONLY CLIENT) Fob Item Scaling.",
+            group = ZPConstants.GROUP_CLIENT,
+            type = ZPConfigurableConstant.TYPES.BOOLEAN
+    )
+    public static boolean FOV_ITEM_SCALING = true;
+
     @Override
     public String configName() {
         return "default_zp3_ver1";

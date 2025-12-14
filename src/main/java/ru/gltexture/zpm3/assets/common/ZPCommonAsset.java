@@ -167,18 +167,18 @@ public class ZPCommonAsset extends ZPAsset {
 
     }
 
-    @Override
-    public void initMixins(ZombiePlague3.@NotNull IMixinEntry mixinEntry) {
-        mixinEntry.addMixinConfigData(new ZombiePlague3.IMixinEntry.MixinConfig("common", "ru.gltexture.zpm3.assets.common.mixins.impl"),
-                new ZombiePlague3.IMixinEntry.MixinClass("common.ZPTorchMixin", ZPSide.COMMON),
-                new ZombiePlague3.IMixinEntry.MixinClass("common.ZPWallTorchMixin", ZPSide.COMMON),
-                new ZombiePlague3.IMixinEntry.MixinClass("common.ZPPumpkinMixin", ZPSide.COMMON),
-                new ZombiePlague3.IMixinEntry.MixinClass("common.ZPLavaMixin", ZPSide.COMMON),
-                new ZombiePlague3.IMixinEntry.MixinClass("common.ZPFluidPlacedMixin", ZPSide.COMMON),
-                new ZombiePlague3.IMixinEntry.MixinClass("common.ZPMobCategoryMixin", ZPSide.COMMON),
-                new ZombiePlague3.IMixinEntry.MixinClass("common.ZPMilkMixin", ZPSide.COMMON)
-        );
-    }
+    //@Override
+    //public void initMixins(ZombiePlague3.@NotNull IMixinEntry mixinEntry) {
+    //    mixinEntry.addMixinConfigData(new ZombiePlague3.IMixinEntry.MixinConfig("common", "ru.gltexture.zpm3.assets.common.mixins.impl"),
+    //            new ZombiePlague3.IMixinEntry.MixinClass("common.ZPTorchMixin", ZPSide.COMMON),
+    //            new ZombiePlague3.IMixinEntry.MixinClass("common.ZPWallTorchMixin", ZPSide.COMMON),
+    //            new ZombiePlague3.IMixinEntry.MixinClass("common.ZPPumpkinMixin", ZPSide.COMMON),
+    //            new ZombiePlague3.IMixinEntry.MixinClass("common.ZPLavaMixin", ZPSide.COMMON),
+    //            new ZombiePlague3.IMixinEntry.MixinClass("common.ZPFluidPlacedMixin", ZPSide.COMMON),
+    //            new ZombiePlague3.IMixinEntry.MixinClass("common.ZPMobCategoryMixin", ZPSide.COMMON),
+    //            new ZombiePlague3.IMixinEntry.MixinClass("common.ZPMilkMixin", ZPSide.COMMON)
+    //    );
+    //}
 
     @Override
     public void initializeAsset(ZombiePlague3.@NotNull IAssetEntry assetEntry) {

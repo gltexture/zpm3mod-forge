@@ -97,7 +97,12 @@ minecraft {
 
 mixin {
     add sourceSets.main, "${mod_id}.refmap.json"
-    config "${mod_id}.mixins.json"
+    config "zpm3.guns.mixins.json"
+    config "zpm3.main.mixins.json"
+    config "zpm3.common.mixins.json"
+    config "zpm3.mob_effects.mixins.json"
+    config "zpm3.player.mixins.json"
+    config "zpm3.debug.mixins.json"
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }

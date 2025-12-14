@@ -32,14 +32,14 @@ public class ZPMobEffectsAsset extends ZPAsset {
     public void clientDestroy() {
     }
 
-    @Override
-    public void initMixins(ZombiePlague3.@NotNull IMixinEntry mixinEntry) {
-        mixinEntry.addMixinConfigData(new ZombiePlague3.IMixinEntry.MixinConfig("mob_effects", "ru.gltexture.zpm3.assets.mob_effects.mixins.impl"),
-                new ZombiePlague3.IMixinEntry.MixinClass("common.ZPEntitySprintMixin", ZPSide.COMMON),
-                new ZombiePlague3.IMixinEntry.MixinClass("common.ZPLivingEntitySprintMixin", ZPSide.COMMON),
-                new ZombiePlague3.IMixinEntry.MixinClass("common.ZPPlayerSoundsMixin", ZPSide.COMMON)
-        );
-    }
+    //@Override
+    //public void initMixins(ZombiePlague3.@NotNull IMixinEntry mixinEntry) {
+    //    mixinEntry.addMixinConfigData(new ZombiePlague3.IMixinEntry.MixinConfig("mob_effects", "ru.gltexture.zpm3.assets.mob_effects.mixins.impl"),
+    //            new ZombiePlague3.IMixinEntry.MixinClass("common.ZPEntitySprintMixin", ZPSide.COMMON),
+    //            new ZombiePlague3.IMixinEntry.MixinClass("common.ZPLivingEntitySprintMixin", ZPSide.COMMON),
+    //            new ZombiePlague3.IMixinEntry.MixinClass("common.ZPPlayerSoundsMixin", ZPSide.COMMON)
+    //    );
+    //}
 
     @Override
     public void initializeAsset(ZombiePlague3.@NotNull IAssetEntry assetEntry) {

@@ -23,7 +23,7 @@ public abstract class ZPRegMelee {
                 ZPItemTabAddHelper.addItemInTab(e, ZPTabs.zp_melee_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_MELEE, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MELEE_ITEMS_DIRECTORY);
             });
-            utils.items().setItemDistanceBonus(e.getId(), 0.05f);
+            utils.items().setItemDistanceBonus(e.getId(), 0.1f);
         }).end();
 
         ZPItems.iron_club = regSupplier.register("iron_club", () -> new ZPItemSword(ZPCommonTiers.ZP_IRON_2, 3, -1.2F, new Item.Properties())
@@ -32,7 +32,7 @@ public abstract class ZPRegMelee {
                         utils.items().addItemInTab(e, ZPTabs.zp_melee_tab);
                         utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_MELEE, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MELEE_ITEMS_DIRECTORY);
                     });
-            utils.items().setItemDistanceBonus(e.getId(),0.1f);
+            utils.items().setItemDistanceBonus(e.getId(),0.3f);
         }).end();
 
         ZPItems.pipe = regSupplier.register("pipe", () -> new ZPItemSword(ZPCommonTiers.ZP_IRON_1, 3, -2.8F, new Item.Properties())
@@ -41,7 +41,7 @@ public abstract class ZPRegMelee {
                         utils.items().addItemInTab(e, ZPTabs.zp_melee_tab);
                         utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_MELEE, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MELEE_ITEMS_DIRECTORY);
                     });
-            utils.items().setItemDistanceBonus(e.getId(),0.25f);
+            utils.items().setItemDistanceBonus(e.getId(),0.2f);
         }).end();
 
         ZPItems.golf_club = regSupplier.register("golf_club", () -> new ZPItemSword(ZPCommonTiers.ZP_IRON_1, 4, -1.8F, new Item.Properties())
@@ -50,7 +50,7 @@ public abstract class ZPRegMelee {
                         utils.items().addItemInTab(e, ZPTabs.zp_melee_tab);
                         utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_MELEE, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MELEE_ITEMS_DIRECTORY);
                     });
-            utils.items().setItemDistanceBonus(e.getId(), 0.225f);
+            utils.items().setItemDistanceBonus(e.getId(), 0.3f);
         }).end();
 
         ZPItems.crowbar = regSupplier.register("crowbar", () -> new ZPItemSword(ZPCommonTiers.ZP_IRON_2, 4, -0.8F, new Item.Properties())
@@ -77,6 +77,7 @@ public abstract class ZPRegMelee {
                         utils.items().addItemInTab(e, ZPTabs.zp_melee_tab);
                         utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_MELEE, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MELEE_ITEMS_DIRECTORY);
                     });
+            utils.items().setItemDistanceBonus(e.getId(), 0.1f);
         }).end();
 
         ZPItems.sledgehammer = regSupplier.register("sledgehammer", () -> new ZPItemPickaxe(ZPCommonTiers.ZP_IRON_3, 5, -3.2F, new Item.Properties())
@@ -85,6 +86,7 @@ public abstract class ZPRegMelee {
                         utils.items().addItemInTab(e, ZPTabs.zp_melee_tab);
                         utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_MELEE, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MELEE_ITEMS_DIRECTORY);
                     });
+            utils.items().setItemDistanceBonus(e.getId(), 0.1f);
         }).end();
     }
 

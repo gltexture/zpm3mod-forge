@@ -1,15 +1,15 @@
-package ru.gltexture.zpm3.assets.entity.instances.mobs.ai;
+package ru.gltexture.zpm3.assets.entity.instances.mobs.ai.attack;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.entity.instances.mobs.zombies.ZPAbstractZombie;
 
-public class ZPZombieAttackGoal extends MeleeAttackGoal {
+public class ZPZombieAttackGoalVanilla extends MeleeAttackGoal {
     private final ZPAbstractZombie zombie;
     private int raiseArmTicks;
 
-    public ZPZombieAttackGoal(ZPAbstractZombie pZombie, double pSpeedModifier, boolean pFollowingTargetEvenIfNotSeen) {
+    public ZPZombieAttackGoalVanilla(ZPAbstractZombie pZombie, double pSpeedModifier, boolean pFollowingTargetEvenIfNotSeen) {
         super(pZombie, pSpeedModifier, pFollowingTargetEvenIfNotSeen);
         this.zombie = pZombie;
     }

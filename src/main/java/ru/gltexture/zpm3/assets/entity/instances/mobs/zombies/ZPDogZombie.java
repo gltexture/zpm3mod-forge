@@ -34,6 +34,8 @@ import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.common.init.ZPEntities;
 import ru.gltexture.zpm3.assets.common.init.ZPEntityAttributes;
 import ru.gltexture.zpm3.assets.entity.instances.mobs.ai.*;
+import ru.gltexture.zpm3.assets.entity.instances.mobs.ai.attack.ZPZombieAttackGoalRewrite;
+import ru.gltexture.zpm3.assets.entity.instances.mobs.ai.attack.ZPZombieAttackGoalVanilla;
 
 import java.util.List;
 import java.util.Objects;
@@ -51,7 +53,11 @@ public class ZPDogZombie extends ZPAbstractZombie {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(3, new ZPZombieAttackGoal(this, 1.0D, true));
+        if (ZPConstants.ZP_PATH_UPDATER_ALG == 0) {
+            this.goalSelector.addGoal(3, new ZPZombieAttackGoalVanilla(this, 1.0D, true));
+        } else {
+            this.goalSelector.addGoal(3, new ZPZombieAttackGoalRewrite(this, 1.0D, true));
+        }
         this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
         this.goalSelector.addGoal(5, (new ZPZombieEatingGoal(this)));
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));
@@ -72,7 +78,7 @@ public class ZPDogZombie extends ZPAbstractZombie {
                 .add(Attributes.MOVEMENT_SPEED, 0.34f)
                 .add(Attributes.ATTACK_DAMAGE, 2.0f)
                 .add(Attributes.ARMOR, 2.0f)
-                .add(ZPEntityAttributes.zm_attack_range_multiplier.get(), 0.9f)
+                .add(ZPEntityAttributes.zm_attack_range_multiplier.get(), 1.0f)
                 .add(ZPEntityAttributes.zm_mining_speed.get(), 0.0f)
                 .add(ZPEntityAttributes.zm_random_effect_chance.get(), 0.025f)
                 .add(ZPEntityAttributes.zm_throw_a_gift_chance.get(), 0.0f);
@@ -127,7 +133,7 @@ public class ZPDogZombie extends ZPAbstractZombie {
 
     @Override
     protected void randomizeAttributes() {
-        this.addRandomAttributeValue(Attributes.MAX_HEALTH, ZPAbstractZombie.getRandomSalt(0.0f, 21.0f));
+        this.addRandomAttributeValue(Attributes.MAX_HEALTH, ZPAbstractZombie.getRandomSalt(0.0f, 11.0f));
         this.addRandomAttributeValue(Attributes.FOLLOW_RANGE, ZPAbstractZombie.getRandomSalt(-2.0f, 2.0f));
         this.addRandomAttributeValue(Attributes.MOVEMENT_SPEED, ZPAbstractZombie.getRandomSalt(-0.005f, 0.01f));
         this.addRandomAttributeValue(Attributes.ATTACK_DAMAGE, ZPAbstractZombie.getRandomSalt(0.0f, 0.5f));

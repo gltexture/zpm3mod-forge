@@ -98,7 +98,7 @@ public class ZPBulletHitPacket implements ZPNetwork.ZPPacket {
             float pitch = 1.5f;
             BlockPos hitPos = new BlockPos(this.blockX, this.blockY, this.blockZ);
             BlockState state = clientLevel.getBlockState(hitPos);
-            clientLevel.playLocalSound(hitPos, state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 0.65f, pitch, false);
+            clientLevel.playSound(null, hitPos, state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 0.8f, pitch);
 
             for (int i = 0; i < 6; i++) {
                 final Vector3f color = new Vector3f(0.3f).add(ZPRandom.instance.randomVector3f(0.05f, new Vector3f(0.1f)));

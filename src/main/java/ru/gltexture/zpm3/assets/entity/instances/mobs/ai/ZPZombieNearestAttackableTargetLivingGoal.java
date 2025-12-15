@@ -31,10 +31,18 @@ public class ZPZombieNearestAttackableTargetLivingGoal extends TargetGoal {
         this.setFlags(EnumSet.of(Flag.TARGET));
         this.ticksToUpdateTargetSearching = 0;
         this.searchUpdateInterval = searchUpdateInterval;
-        this.closePlaceConditions = TargetingConditions.forCombat().range(6.0f).selector(pTargetPredicate);
-        this.directViewConditions = TargetingConditions.forCombat().range(this.getFollowDistance()).selector(pTargetPredicate);
-        this.xRayViewConditions = canUseXRayView ? TargetingConditions.forCombat().ignoreLineOfSight().range(this.getReducedFollowDistanceForXRay()).selector(pTargetPredicate) : null;
+        this.closePlaceConditions = TargetingConditions.forCombat().selector(pTargetPredicate);
+        this.directViewConditions = TargetingConditions.forCombat().selector(pTargetPredicate);
+        this.xRayViewConditions = canUseXRayView ? TargetingConditions.forCombat().ignoreLineOfSight().selector(pTargetPredicate) : null;
         this.searchRangeMultiplier = searchRangeMultiplier;
+    }
+
+    private void setRanges() {
+        this.closePlaceConditions.range(6.0f);
+        this.directViewConditions.range(this.getFollowDistance());
+        if (this.xRayViewConditions != null) {
+            this.xRayViewConditions.range(this.getReducedFollowDistanceForXRay());
+        }
     }
 
     public boolean canUse() {
@@ -78,6 +86,7 @@ public class ZPZombieNearestAttackableTargetLivingGoal extends TargetGoal {
     }
 
     protected boolean findTarget() {
+        this.setRanges();
         LivingEntity livingEntity = null;
         livingEntity = this.mob.level().getNearestEntity(this.mob.level().getEntitiesOfClass(LivingEntity.class, this.getTargetSearchArea(this.getFollowDistance()), (p) -> this.targetTypes.stream().anyMatch(e -> e.isAssignableFrom(p.getClass()))), this.directViewConditions, this.mob, this.mob.getX(), this.mob.getEyeY(), this.mob.getZ());
         if (livingEntity == null) {

@@ -3,6 +3,7 @@ package ru.gltexture.zpm3.assets.entity.events.common;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -12,6 +13,7 @@ import ru.gltexture.zpm3.assets.entity.instances.mobs.ai.ZPZombieMiningGoal;
 import ru.gltexture.zpm3.assets.net_pack.packets.ZPBlockCrack;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
+import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.events.ZPEventClass;
 import ru.gltexture.zpm3.engine.service.Pair;
 
@@ -42,7 +44,7 @@ public class ZPWorldTickEvent implements ZPEventClass {
                 if (data.second().equals(dim)) {
                     BlockPos pos = e.getKey();
                     int strength = data.first();
-                    event.level.playSound(null, pos, event.level.getBlockState(pos).getSoundType().getBreakSound(), SoundSource.BLOCKS, Math.min(strength, 3.0f), 0.5f + Math.min(strength, 4.0f) * 0.1f);
+                    event.level.playSound(null, pos, event.level.getBlockState(pos).getSoundType().getBreakSound(), SoundSource.BLOCKS, Mth.clamp(0.5f + strength * 0.05f, 0.25f, 1.0f), 0.65f + ZPRandom.getRandom().nextFloat(0.25f));
                     ZombiePlague3.net().sendToDimensionRadius(new ZPBlockCrack(strength / updTicks, pos.getX(), pos.getY(), pos.getZ()), dim, pos.getCenter(), 64.0f);
                     it.remove();
                 }

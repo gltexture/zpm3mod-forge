@@ -116,7 +116,7 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
             group = ZPConstants.GROUP_ZOMBIE,
             type = ZPConfigurableConstant.TYPES.INT
     )
-    public static int MAX_ZOMBIES_IN_CHUNK = 140;
+    public static int MAX_ZOMBIES_IN_CHUNK = 120;
 
     @ZPConfigurableConstant(
             description = "Block hardness multiplier applied when zombies mine or break blocks.",
@@ -306,6 +306,15 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
             max = 5.0
     )
     public static float BLEEDING_CHANCE_MULTIPLIER = 1.0f;
+
+    @ZPConfigurableConstant(
+            description = "Path-update (NOT PATHGEN) algorithm. 0=Vanilla 1=Rewrote.",
+            group = ZPConstants.GROUP_WORLD,
+            type = ZPConfigurableConstant.TYPES.INT,
+            min = 0.0,
+            max = 1.0
+    )
+    public static int ZP_PATH_UPDATER_ALG = 1;
 
     @ZPConfigurableConstant(
             description = "Night time progression divider. During night, the world time is incremented once every N server ticks. Higher values slow down night duration.",

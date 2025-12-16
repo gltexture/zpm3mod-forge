@@ -112,6 +112,20 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public static int ZOMBIE_THROW_A_GIFT_TRY_DEFAULT_COOLDOWN = 300;
 
     @ZPConfigurableConstant(
+            description = "Maximum height of zombie's mining system.",
+            group = ZPConstants.GROUP_ZOMBIE,
+            type = ZPConfigurableConstant.TYPES.FLOAT
+    )
+    public static float ZOMBIE_MAX_MINING_HEIGHT = 9999999.0f;
+
+    @ZPConfigurableConstant(
+            description = "Minimum height of zombie's mining system.",
+            group = ZPConstants.GROUP_ZOMBIE,
+            type = ZPConfigurableConstant.TYPES.FLOAT
+    )
+    public static float ZOMBIE_MIN_MINING_HEIGHT = -9999999.0f;
+
+    @ZPConfigurableConstant(
             description = "Maximum number of zombies allowed in one chunk to limit overcrowding and AI performance load.",
             group = ZPConstants.GROUP_ZOMBIE,
             type = ZPConfigurableConstant.TYPES.INT

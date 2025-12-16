@@ -54,9 +54,9 @@ public class ZPDogZombie extends ZPAbstractZombie {
     @Override
     protected void registerGoals() {
         if (ZPConstants.ZP_PATH_UPDATER_ALG == 0) {
-            this.goalSelector.addGoal(3, new ZPZombieAttackGoalVanilla(this, 1.0D, true));
+            this.goalSelector.addGoal(3, new ZPZombieAttackGoalVanilla(this, 1.0D, false));
         } else {
-            this.goalSelector.addGoal(3, new ZPZombieAttackGoalRewrite(this, 1.0D, true));
+            this.goalSelector.addGoal(3, new ZPZombieAttackGoalRewrite(this, 1.0D, false));
         }
         this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
         this.goalSelector.addGoal(5, (new ZPZombieEatingGoal(this)));
@@ -73,7 +73,7 @@ public class ZPDogZombie extends ZPAbstractZombie {
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
                 .add(ForgeMod.SWIM_SPEED.get(), 1.75f)
-                .add(Attributes.MAX_HEALTH, 20.0f)
+                .add(Attributes.MAX_HEALTH, 25.0f)
                 .add(Attributes.FOLLOW_RANGE, ZPConstants.ZOMBIE_FOLLOW_RANGE)
                 .add(Attributes.MOVEMENT_SPEED, 0.34f)
                 .add(Attributes.ATTACK_DAMAGE, 2.0f)

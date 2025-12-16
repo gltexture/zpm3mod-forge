@@ -78,6 +78,12 @@ public class ZPZombieMiningGoal extends Goal {
 
     public static Predicate<Pair<BlockPos, ZPAbstractZombie>> DEFAULT_MINING_CONDITION(final float maxBlockStrength) {
         return (p) -> {
+            if (p.first().getY() > ZPConstants.ZOMBIE_MAX_MINING_HEIGHT) {
+                return false;
+            }
+            if (p.first().getY() < ZPConstants.ZOMBIE_MIN_MINING_HEIGHT) {
+                return false;
+            }
             float f = maxBlockStrength;
             BlockState blockState = p.second().level().getBlockState(p.first());
             ItemStack held = p.second().getMainHandItem();

@@ -21,6 +21,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.*;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
@@ -39,6 +40,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.common.init.ZPDamageTypes;
 import ru.gltexture.zpm3.assets.common.init.ZPEntityAttributes;
@@ -46,7 +48,6 @@ import ru.gltexture.zpm3.assets.mob_effects.init.ZPMobEffects;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.instances.items.ZPItemFood;
 
-import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.function.Function;
 
@@ -56,6 +57,7 @@ public abstract class ZPAbstractZombie extends Monster {
     public int attackTicks;
     private int stopDespawning;
     private int eatingTime;
+    private @Nullable ItemStack stolenStack;
 
     protected ZPAbstractZombie(EntityType<? extends ZPAbstractZombie> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -123,7 +125,8 @@ public abstract class ZPAbstractZombie extends Monster {
                         this.heal(stack.getItem().equals(Items.ROTTEN_FLESH) ? 4.0f : 2.0f);
                         stack.shrink(1);
                         if (stack.isEmpty()) {
-                            this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+                            this.setItemInHand(InteractionHand.MAIN_HAND, this.stolenStack == null ? ItemStack.EMPTY : this.stolenStack);
+                            this.stolenStack = null;
                         }
                     }
                     this.eatingTime = 0;
@@ -133,6 +136,38 @@ public abstract class ZPAbstractZombie extends Monster {
             if (this.isEating()) {
                 this.spawnEatingParticlesAndSounds();
             }
+        }
+    }
+
+    @Override
+    public ItemStack equipItemIfPossible(ItemStack pStack) {
+        EquipmentSlot equipmentslot = getEquipmentSlotForItem(pStack);
+        ItemStack itemstack = this.getItemBySlot(equipmentslot);
+        boolean flag = this.canReplaceCurrentItem(pStack, itemstack);
+        if (equipmentslot.isArmor() && !flag) {
+            equipmentslot = EquipmentSlot.MAINHAND;
+            itemstack = this.getItemBySlot(equipmentslot);
+            flag = itemstack.isEmpty();
+        }
+
+        if (flag && this.canHoldItem(pStack)) {
+            double d0 = this.getEquipmentDropChance(equipmentslot);
+            if (!itemstack.isEmpty() && (double)Math.max(this.random.nextFloat() - 0.1F, 0.0F) < d0) {
+                this.spawnAtLocation(itemstack);
+            } else {
+                this.stolenStack = this.getItemBySlot(EquipmentSlot.MAINHAND);
+            }
+
+            if (equipmentslot.isArmor() && pStack.getCount() > 1) {
+                ItemStack itemstack1 = pStack.copyWithCount(1);
+                this.setItemSlotAndDropWhenKilled(equipmentslot, itemstack1);
+                return itemstack1;
+            } else {
+                this.setItemSlotAndDropWhenKilled(equipmentslot, pStack);
+                return pStack;
+            }
+        } else {
+            return ItemStack.EMPTY;
         }
     }
 

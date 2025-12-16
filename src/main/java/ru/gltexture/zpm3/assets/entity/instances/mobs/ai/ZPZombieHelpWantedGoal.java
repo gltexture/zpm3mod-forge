@@ -23,12 +23,14 @@ public class ZPZombieHelpWantedGoal extends Goal {
 
     public ZPZombieHelpWantedGoal(Mob mob) {
         this.setFlags(EnumSet.of(Flag.TARGET));
+        this.ticksToAlertHelp = ZPRandom.getRandom().nextInt(81);
         this.mob = mob;
     }
 
     public boolean canUse() {
         LivingEntity livingentity = this.mob.getTarget();
         if (this.ticksToAlertHelp-- <= 0 && (livingentity instanceof Player || livingentity instanceof Villager)) {
+            this.ticksToAlertHelp = 100 + ZPRandom.getRandom().nextInt(101);
             return this.canAttack(livingentity);
         } else {
             return false;
@@ -42,7 +44,6 @@ public class ZPZombieHelpWantedGoal extends Goal {
 
     public void start() {
         this.targetMob = this.mob.getTarget();
-        this.ticksToAlertHelp = 100 + ZPRandom.getRandom().nextInt(101);
         if (this.targetMob != null) {
             this.alertOthers();
         }
@@ -50,7 +51,7 @@ public class ZPZombieHelpWantedGoal extends Goal {
     }
 
     protected float helpAlertRange() {
-        return 14.0f + ZPRandom.getRandom().nextFloat() * 4.0f;
+        return 12.0f;
     }
 
     protected void alertOthers() {

@@ -42,7 +42,7 @@ public abstract class ZPPathFindingGoal extends Goal {
         if (livingentity == null || !livingentity.isAlive()) {
             return false;
         } else if (!this.followEvenNotSeeTarget) {
-            return !this.mob.getNavigation().isDone();
+            return this.path == null || !this.mob.getNavigation().isDone();
         } else if (!this.mob.isWithinRestriction(livingentity.blockPosition())) {
             return false;
         } else {
@@ -102,7 +102,6 @@ public abstract class ZPPathFindingGoal extends Goal {
                 }
             }
             if (this.cachedTargetPos != null && this.path != null && this.path.getEndNode() != null) {
-                System.out.println("F " + this.cachedTargetPos.distance(livingentity.position().toVector3f()) + " " + this.mob.position().distanceTo(this.path.getEndNode().asVec3()) * 0.5f);
                 if (this.cachedTargetPos.distance(livingentity.position().toVector3f()) >= Math.min(this.mob.position().distanceTo(this.path.getEndNode().asVec3()) * 0.25f, 1.0f)) {
                     this.timeBeforeNextRecalculation = ZPRandom.getRandom().nextInt(10);
                     this.path = null;

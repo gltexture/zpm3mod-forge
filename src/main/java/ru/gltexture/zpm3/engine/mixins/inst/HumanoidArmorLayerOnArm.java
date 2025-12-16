@@ -70,12 +70,16 @@ public class HumanoidArmorLayerOnArm<T extends LivingEntity, M extends HumanoidM
 
       Matrix4f translate = new Matrix4f().identity();
 
+      float x = 0.515f;
+      float y = -1.665f;
+
       translate
-              .translate(new Vector3f(rightArm ? 0.44f : -0.44f, -1.75f, 0.0f))
+              .translate(new Vector3f(rightArm ? x : -x, y, 0.0f))
               .rotateX((float) Math.toRadians(0.0f))
               .rotateY((float) Math.toRadians(0.0f))
               .rotateZ((float) Math.toRadians(0.0f))
-              .scale(1.35f, 2.0f, 1.5f);
+              .scale(1.55f, 2.0f, 1.55f);
+
       poseStack.pushPose();
       if (rightArm) {
          poseStack.mulPoseMatrix(translate);

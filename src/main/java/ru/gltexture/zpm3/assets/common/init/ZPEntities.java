@@ -110,7 +110,7 @@ public class ZPEntities extends ZPRegistry<EntityType<?>> {
                         .build(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "zp_dog_zombie_entity").toString()))
                 .afterCreated((e, utils) -> {
                     ZPUtility.sides().onlyClient(() -> ZPEntities.registerDogZombieRenderer(e, utils));
-                    ZPEntityMobAttributes.addNewAttributeCreationUnsafe(e, ZPMinerZombie::createAttributes);
+                    ZPEntityMobAttributes.addNewAttributeCreationUnsafe(e, ZPDogZombie::createAttributes);
                 }).end();
     }
 

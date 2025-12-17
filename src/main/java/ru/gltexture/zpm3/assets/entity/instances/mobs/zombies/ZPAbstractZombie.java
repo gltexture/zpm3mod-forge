@@ -44,6 +44,7 @@ import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.common.init.ZPDamageTypes;
 import ru.gltexture.zpm3.assets.common.init.ZPEntityAttributes;
+import ru.gltexture.zpm3.assets.entity.mixins.ext.IPlayerZmTargetsExt;
 import ru.gltexture.zpm3.assets.mob_effects.init.ZPMobEffects;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.instances.items.ZPItemFood;
@@ -137,6 +138,19 @@ public abstract class ZPAbstractZombie extends Monster {
                 this.spawnEatingParticlesAndSounds();
             }
         }
+    }
+
+    @Override
+    public void setTarget(@Nullable LivingEntity pTarget) {
+        if (pTarget instanceof IPlayerZmTargetsExt zmTargetsExt) {
+            if (!zmTargetsExt.test(this)) {
+                return;
+            }
+        }
+        //if (pTarget == null) {
+        //    System.out.println("A");
+        //}
+        super.setTarget(pTarget);
     }
 
     @Override

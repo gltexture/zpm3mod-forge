@@ -14,6 +14,37 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public static final String GROUP_CLIENT = "Client";
 
     // ===== ZOMBIE =====
+
+    @ZPConfigurableConstant(
+            description = "Maximum radius within which a zombie can call other zombies for assistance.",
+            group = ZPConstants.GROUP_ZOMBIE,
+            type = ZPConfigurableConstant.TYPES.FLOAT
+    )
+    public static float MAX_RADIUS_ZOMBIE_CAN_CALL_FOR_HELP = 16.0f;
+
+    @ZPConfigurableConstant(
+            description = "Maximum number of zombies that can simultaneously target a single player.",
+            group = ZPConstants.GROUP_ZOMBIE,
+            type = ZPConfigurableConstant.TYPES.INT
+    )
+    public static int MAX_ZOMBIES_CAN_BE_TARGETED_ON_PLAYER = 2;
+
+    @ZPConfigurableConstant(
+            description = "Maximum number of zombies a single zombie can call for assistance when engaging a target.",
+            group = ZPConstants.GROUP_ZOMBIE,
+            type = ZPConfigurableConstant.TYPES.INT
+    )
+    public static int MAX_ENTITIES_ZOMBIE_CAN_CALL_TO_HELP = 3;
+
+    @ZPConfigurableConstant(
+            description = "Increases the interval between zombie path updates; higher values reduce CPU load but make zombie AI less responsive.",
+            group = ZPConstants.GROUP_ZOMBIE,
+            type = ZPConfigurableConstant.TYPES.FLOAT,
+            min = 0.1,
+            max = 3.0
+    )
+    public static float ZOMBIE_PATH_UPDATE_COOLDOWN_PUNISHMENT_GRADE = 1.75f;
+
     @ZPConfigurableConstant(
             description = "Infection duration in ticks applied by a zombie to the player when attacking. During this period the Zombie Plague effect remains active, weakening the target over time.",
             group = ZPConstants.GROUP_ZOMBIE,

@@ -50,6 +50,11 @@ public class ZPZombieNearestAttackableTargetPlayerGoal extends TargetGoal {
     }
 
     @Override
+    public void stop() {
+        this.targetMob = null;
+    }
+
+    @Override
     public void tick() {
         super.tick();
         LivingEntity closeEntity = this.checkForCloseEntities();

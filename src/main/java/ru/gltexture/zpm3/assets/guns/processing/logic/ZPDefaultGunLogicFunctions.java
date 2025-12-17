@@ -589,12 +589,12 @@ public abstract class ZPDefaultGunLogicFunctions {
 
     @OnlyIn(Dist.CLIENT)
     private static void localSound(SoundEvent soundEvent, @NotNull ZPBaseGun item) {
-        SimpleSoundInstance sound = SimpleSoundInstance.forLocalAmbience(soundEvent, 1.0f, 1.0F + ZPRandom.instance.randomFloat(0.1f));
+        SimpleSoundInstance sound = SimpleSoundInstance.forLocalAmbience(soundEvent, 0.95F + ZPRandom.instance.randomFloat(0.075f), 1.0f);
         ZPUtility.sounds().play(sound);
     }
 
     @OnlyIn(Dist.CLIENT)
     private static void globalSound(SoundEvent soundEvent, @NotNull ZPBaseGun item, @NotNull Entity entity) {
-        entity.level().playLocalSound(entity.getOnPos(), soundEvent, SoundSource.MASTER, (float) (double) item.getGunProperties().getDamage() * 16.0f, 1.0f, true);
+        entity.level().playLocalSound(entity.getOnPos(), soundEvent, SoundSource.MASTER, (float) (double) item.getGunProperties().getDamage() * 16.0f, 0.95F + ZPRandom.instance.randomFloat(0.075f), true);
     }
 }

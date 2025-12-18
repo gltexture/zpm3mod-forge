@@ -22,6 +22,11 @@ public class ZPZombieHurtByMobGoal extends TargetGoal {
         this.setFlags(EnumSet.of(Goal.Flag.TARGET));
     }
 
+    @Override
+    public void stop() {
+        this.targetMob = null;
+    }
+
     public boolean canUse() {
         int i = this.mob.getLastHurtByMobTimestamp();
         LivingEntity livingentity = this.mob.getLastHurtByMob();
@@ -39,22 +44,7 @@ public class ZPZombieHurtByMobGoal extends TargetGoal {
         this.mob.setTarget(this.mob.getLastHurtByMob());
         this.targetMob = this.mob.getTarget();
         this.timestamp = this.mob.getLastHurtByMobTimestamp();
-        this.unseenMemoryTicks = 300;
-        this.alertOthers();
+        this.unseenMemoryTicks = 1200;
         super.start();
-    }
-
-    protected float helpAlertRange() {
-        return 32.0f;
-    }
-
-    protected void alertOthers() {
-        AABB aabb = AABB.unitCubeFromLowerCorner(this.mob.position()).inflate(this.helpAlertRange(), this.helpAlertRange() / 2.0f, this.helpAlertRange());
-        List<ZPAbstractZombie> list = this.mob.level().getEntitiesOfClass(ZPAbstractZombie.class, aabb, (e) -> !e.equals(this.mob));
-        list.forEach(e -> {
-            if (e.getTarget() == null || (e.getTarget().position().distanceTo(e.position()) > 16.0f && (e.getTarget().position().distanceTo(e.position()) > Objects.requireNonNull(this.targetMob).position().distanceTo(e.position())) && ZPRandom.instance.randomBoolean())) {
-                e.setTarget(this.targetMob);
-            }
-        });
     }
 }

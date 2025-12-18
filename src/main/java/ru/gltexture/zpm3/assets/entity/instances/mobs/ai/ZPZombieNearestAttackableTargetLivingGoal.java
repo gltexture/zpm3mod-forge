@@ -7,6 +7,7 @@ import net.minecraft.world.entity.ai.goal.target.TargetGoal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.assets.entity.instances.mobs.zombies.ZPAbstractZombie;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -25,7 +26,7 @@ public class ZPZombieNearestAttackableTargetLivingGoal extends TargetGoal {
 
     private final float searchRangeMultiplier;
 
-    public ZPZombieNearestAttackableTargetLivingGoal(Mob pMob, List<Class<? extends PathfinderMob>> pTargetTypes, float searchRangeMultiplier, boolean canUseXRayView, int searchUpdateInterval, @Nullable Predicate<LivingEntity> pTargetPredicate) {
+    public ZPZombieNearestAttackableTargetLivingGoal(ZPAbstractZombie pMob, List<Class<? extends PathfinderMob>> pTargetTypes, float searchRangeMultiplier, boolean canUseXRayView, int searchUpdateInterval, @Nullable Predicate<LivingEntity> pTargetPredicate) {
         super(pMob, false, false);
         this.targetTypes = pTargetTypes;
         this.setFlags(EnumSet.of(Flag.TARGET));
@@ -51,11 +52,6 @@ public class ZPZombieNearestAttackableTargetLivingGoal extends TargetGoal {
             return this.findTarget();
         }
         return false;
-    }
-
-    @Override
-    public void stop() {
-        this.targetMob = null;
     }
 
     @Override

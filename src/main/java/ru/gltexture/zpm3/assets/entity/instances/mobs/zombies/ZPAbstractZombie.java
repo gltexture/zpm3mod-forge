@@ -59,9 +59,11 @@ public abstract class ZPAbstractZombie extends Monster {
     private int stopDespawning;
     private int eatingTime;
     private @Nullable ItemStack stolenStack;
+    public boolean wantsToNullTarget;
 
     protected ZPAbstractZombie(EntityType<? extends ZPAbstractZombie> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
+        this.wantsToNullTarget = false;
     }
 
     @Override
@@ -143,13 +145,11 @@ public abstract class ZPAbstractZombie extends Monster {
     @Override
     public void setTarget(@Nullable LivingEntity pTarget) {
         if (pTarget instanceof IPlayerZmTargetsExt zmTargetsExt) {
-            if (!zmTargetsExt.test(this)) {
+            if (!zmTargetsExt.addInRegistry(this)) {
                 return;
             }
         }
-        //if (pTarget == null) {
-        //    System.out.println("A");
-        //}
+        //if (pTarget == null) {System.out.println("A");}
         super.setTarget(pTarget);
     }
 

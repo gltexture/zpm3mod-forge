@@ -16,7 +16,9 @@ import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
+import ru.gltexture.zpm3.assets.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.assets.entity.instances.mobs.zombies.ZPCommonZombie;
+import ru.gltexture.zpm3.assets.entity.mixins.ext.IPlayerZmTargetsExt;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 
 public abstract class ZPPathFindingGoal extends Goal {
@@ -52,14 +54,22 @@ public abstract class ZPPathFindingGoal extends Goal {
         LivingEntity livingentity = this.mob.getTarget();
         if (livingentity == null || !livingentity.isAlive()) {
             return false;
-        } else if (livingentity.distanceTo(this.mob) > this.getFollowDistance()) {
-            return false;
-        } else if (!this.followEvenNotSeeTarget) {
-            return this.path == null || !this.mob.getNavigation().isDone();
-        } else if (!this.mob.isWithinRestriction(livingentity.blockPosition())) {
-            return false;
         } else {
-            return !(livingentity instanceof Player player) || (!player.isSpectator() && !player.isCreative());
+            if (livingentity instanceof IPlayerZmTargetsExt ext) {
+                if (!ext.test((ZPAbstractZombie) this.mob)) {
+                    this.stop();
+                    return false;
+                }
+            }
+            if (livingentity.distanceTo(this.mob) > this.getFollowDistance()) {
+                return false;
+            } else if (!this.followEvenNotSeeTarget) {
+                return this.path == null || !this.mob.getNavigation().isDone();
+            } else if (!this.mob.isWithinRestriction(livingentity.blockPosition())) {
+                return false;
+            } else {
+                return !(livingentity instanceof Player player) || (!player.isSpectator() && !player.isCreative());
+            }
         }
     }
 
@@ -70,10 +80,7 @@ public abstract class ZPPathFindingGoal extends Goal {
     }
 
     public void stop() {
-        LivingEntity livingentity = this.mob.getTarget();
-        if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(livingentity)) {
-            this.mob.setTarget(null);
-        }
+        this.mob.setTarget(null);
         this.mob.setAggressive(false);
         this.mob.getNavigation().stop();
     }
@@ -130,6 +137,7 @@ public abstract class ZPPathFindingGoal extends Goal {
 
             if (!flag) {
                 int updTicks = (int) (0.5f * Math.pow(distanceInBlocksToEntity, ZPConstants.ZOMBIE_PATH_UPDATE_COOLDOWN_PUNISHMENT_GRADE));
+                updTicks *= (int) (1.0f / this.speedModifier);
                 if (this.timeBeforeNextRecalculation-- <= 0) {
                     if (!this.followEvenNotSeeTarget && !this.mob.getSensing().hasLineOfSight(livingentity)) {
                         this.timeBeforeNextRecalculation = ZPRandom.getRandom().nextInt(60);

@@ -16,6 +16,13 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     // ===== ZOMBIE =====
 
     @ZPConfigurableConstant(
+            description = "Defines how much closer (as a percentage of the nearest zombie’s distance) a candidate zombie must be to replace the farthest zombie when the maximum number of zombies targeting a player is reached.",
+            group = ZPConstants.GROUP_ZOMBIE,
+            type = ZPConfigurableConstant.TYPES.FLOAT
+    )
+    public static final float CLOSEST_ZOMBIE_SWAP_TARGET_PERCENTAGE = 0.05f;
+
+    @ZPConfigurableConstant(
             description = "Maximum radius within which a zombie can call other zombies for assistance.",
             group = ZPConstants.GROUP_ZOMBIE,
             type = ZPConfigurableConstant.TYPES.FLOAT
@@ -27,7 +34,7 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
             group = ZPConstants.GROUP_ZOMBIE,
             type = ZPConfigurableConstant.TYPES.INT
     )
-    public static int MAX_ZOMBIES_CAN_BE_TARGETED_ON_PLAYER = 2;
+    public static int MAX_ZOMBIES_CAN_BE_TARGETED_ON_PLAYER = 48;
 
     @ZPConfigurableConstant(
             description = "Maximum number of zombies a single zombie can call for assistance when engaging a target.",
@@ -43,7 +50,7 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
             min = 0.1,
             max = 3.0
     )
-    public static float ZOMBIE_PATH_UPDATE_COOLDOWN_PUNISHMENT_GRADE = 1.75f;
+    public static float ZOMBIE_PATH_UPDATE_COOLDOWN_PUNISHMENT_GRADE = 1.5f;
 
     @ZPConfigurableConstant(
             description = "Infection duration in ticks applied by a zombie to the player when attacking. During this period the Zombie Plague effect remains active, weakening the target over time.",

@@ -39,7 +39,7 @@ public class ZPZombieHelpWantedGoal extends Goal {
             return false;
         }
         if (this.ticksToAlertHelp-- <= 0 && (livingentity instanceof Player || livingentity instanceof Villager)) {
-            this.ticksToAlertHelp = 100 + ZPRandom.getRandom().nextInt(101);
+            this.ticksToAlertHelp = 80 + ZPRandom.getRandom().nextInt(81);
             return this.canAttack(livingentity);
         } else {
             return false;
@@ -67,7 +67,7 @@ public class ZPZombieHelpWantedGoal extends Goal {
         AABB aabb = AABB.unitCubeFromLowerCorner(this.mob.position()).inflate(this.helpAlertRange(), this.helpAlertRange() / 2.0f, this.helpAlertRange());
         List<ZPAbstractZombie> list = this.mob.level().getEntitiesOfClass(ZPAbstractZombie.class, aabb, (e) -> !e.equals(this.mob));
         list.forEach(e -> {
-            if (e.getTarget() == null || (e.getTarget().position().distanceTo(e.position()) >= 12.0f && (e.getTarget().position().distanceTo(e.position()) > Objects.requireNonNull(this.targetMob).position().distanceTo(e.position())))) {
+            if (e.getTarget() == null || (e.getTarget().position().distanceTo(e.position()) >= this.helpAlertRange() * 0.5f && (e.getTarget().position().distanceTo(e.position()) > Objects.requireNonNull(this.targetMob).position().distanceTo(e.position())))) {
                 this.zombiesWantedForHelp.add(e);
                 e.setTarget(this.targetMob);
             }

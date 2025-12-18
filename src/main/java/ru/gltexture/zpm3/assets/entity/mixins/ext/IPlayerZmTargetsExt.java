@@ -67,7 +67,7 @@ public interface IPlayerZmTargetsExt {
     }
 
     default void filter() {
-        System.out.println(this.angryZombiesRegistrySet().size() + " " + this.angryZombies().size());
+        //System.out.println(this.angryZombiesRegistrySet().size() + " " + this.angryZombies().size());
 
         Iterator<ZPAbstractZombie> it = this.angryZombies().iterator();
         Entity self = (Entity) this;

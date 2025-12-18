@@ -50,27 +50,36 @@ public abstract class ZPPathFindingGoal extends Goal {
         return this.mob.getAttributeValue(Attributes.FOLLOW_RANGE);
     }
 
+    @SuppressWarnings("all")
     public boolean canContinueToUse() {
         LivingEntity livingentity = this.mob.getTarget();
-        if (livingentity == null || !livingentity.isAlive()) {
+        if (livingentity == null) {
             return false;
         } else {
-            if (livingentity instanceof IPlayerZmTargetsExt ext) {
-                if (!ext.test((ZPAbstractZombie) this.mob)) {
-                    this.stop();
-                    return false;
+            boolean falseFlag = true;
+            if (!livingentity.isAlive()) {
+                falseFlag = false;
+            }
+            if (falseFlag && livingentity instanceof Player player) {
+                if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(player)) {
+                    falseFlag = false;
                 }
             }
-            if (livingentity.distanceTo(this.mob) > this.getFollowDistance()) {
+            if (falseFlag && livingentity instanceof IPlayerZmTargetsExt ext && !ext.test((ZPAbstractZombie) this.mob)) {
+                falseFlag = false;
+            }
+            if (falseFlag && livingentity.distanceTo(this.mob) > this.getFollowDistance()) {
+                falseFlag = false;
+            }
+            if (falseFlag && !this.mob.isWithinRestriction(livingentity.blockPosition())) {
+                falseFlag = false;
+            }
+            if (!falseFlag) {
+                this.stop();
                 return false;
-            } else if (!this.followEvenNotSeeTarget) {
-                return this.path == null || !this.mob.getNavigation().isDone();
-            } else if (!this.mob.isWithinRestriction(livingentity.blockPosition())) {
-                return false;
-            } else {
-                return !(livingentity instanceof Player player) || (!player.isSpectator() && !player.isCreative());
             }
         }
+        return true;
     }
 
     public void start() {
@@ -106,6 +115,7 @@ public abstract class ZPPathFindingGoal extends Goal {
             final double distanceInBlocksToEntity = this.mob.distanceTo(livingentity);
             boolean flag = false;
 
+            /*
             if (false) {
                 if (this.following != null) {
                     flag = true;
@@ -134,6 +144,7 @@ public abstract class ZPPathFindingGoal extends Goal {
                     }
                 }
             }
+            */
 
             if (!flag) {
                 int updTicks = (int) (0.5f * Math.pow(distanceInBlocksToEntity, ZPConstants.ZOMBIE_PATH_UPDATE_COOLDOWN_PUNISHMENT_GRADE));
@@ -141,12 +152,14 @@ public abstract class ZPPathFindingGoal extends Goal {
                 if (this.timeBeforeNextRecalculation-- <= 0) {
                     if (!this.followEvenNotSeeTarget && !this.mob.getSensing().hasLineOfSight(livingentity)) {
                         this.timeBeforeNextRecalculation = ZPRandom.getRandom().nextInt(60);
+                        if (this.mob.getNavigation().isDone()) {
+                            this.stop();
+                        }
                         return;
                     }
                     this.path = this.mob.getNavigation().createPath(livingentity, 0);
                     if (this.path == null || this.path.getEndNode() == null || !this.path.canReach() || !this.mob.getNavigation().moveTo(this.path, this.speedModifier)) {
                         this.notFoundPathPunishment = Math.min(this.notFoundPathPunishment + 10, ZPPathFindingGoal.MAX_NOT_FOUND_PUNISHMENT);
-                    } else {
                     }
                     this.timeBeforeNextRecalculation = updTicks + ZPRandom.getRandom().nextInt((int) Mth.clamp(updTicks * 0.5f, 2, 20));
                 } else {

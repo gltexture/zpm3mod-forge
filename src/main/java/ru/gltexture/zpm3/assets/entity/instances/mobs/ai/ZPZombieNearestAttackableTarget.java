@@ -1,41 +1,55 @@
 package ru.gltexture.zpm3.assets.entity.instances.mobs.ai;
 
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.goal.target.TargetGoal;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.assets.entity.mixins.ext.IPlayerZmTargetsExt;
+import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class ZPZombieNearestAttackableTargetPlayerGoal extends TargetGoal {
+public class ZPZombieNearestAttackableTarget extends Goal {
+    protected final List<Class<? extends PathfinderMob>> targetTypes;
     private int ticksToUpdateTargetSearching;
-
     private final int searchUpdateInterval;
-
+    private LivingEntity lastTargetedEntity;
     protected @NotNull SpecialTargetConditions closePlaceConditions;
     protected @NotNull SpecialTargetConditions directViewConditions;
     protected @Nullable SpecialTargetConditions xRayViewConditions;
-
+    private final ZPAbstractZombie zombie;
     private final float searchRangeMultiplier;
 
-    public ZPZombieNearestAttackableTargetPlayerGoal(ZPAbstractZombie pMob, float searchRangeMultiplier, boolean canUseXRayView, int searchUpdateInterval, @Nullable Predicate<LivingEntity> pTargetPredicate) {
-        super(pMob, false, false);
+    protected ZPZombieNearestAttackableTarget(ZPAbstractZombie pMob, List<Class<? extends PathfinderMob>> nonPlayersToFind, float searchRangeMultiplier, boolean canUseXRayView, int searchUpdateInterval, @Nullable Predicate<LivingEntity> pTargetPredicate) {
         this.setFlags(EnumSet.of(Flag.TARGET));
+        this.zombie = pMob;
+        this.targetTypes = nonPlayersToFind;
         this.ticksToUpdateTargetSearching = 0;
         this.searchUpdateInterval = searchUpdateInterval;
         this.closePlaceConditions = SpecialTargetConditions.forCombat().selector(pTargetPredicate);
         this.directViewConditions = SpecialTargetConditions.forCombat().selector(pTargetPredicate);
         this.xRayViewConditions = canUseXRayView ? SpecialTargetConditions.forCombat().ignoreLineOfSight().selector(pTargetPredicate) : null;
         this.searchRangeMultiplier = searchRangeMultiplier;
+        this.lastTargetedEntity = null;
+    }
+
+    public static ZPZombieNearestAttackableTarget player(ZPAbstractZombie pMob, float searchRangeMultiplier, boolean canUseXRayView, int searchUpdateInterval, @Nullable Predicate<LivingEntity> pTargetPredicate) {
+        return new ZPZombieNearestAttackableTarget(pMob, null, searchRangeMultiplier, canUseXRayView, searchUpdateInterval, pTargetPredicate);
+    }
+
+    public static ZPZombieNearestAttackableTarget nonPlayer(ZPAbstractZombie pMob, List<Class<? extends PathfinderMob>> nonPlayersToFind, float searchRangeMultiplier, boolean canUseXRayView, int searchUpdateInterval, @Nullable Predicate<LivingEntity> pTargetPredicate) {
+        return new ZPZombieNearestAttackableTarget(pMob, nonPlayersToFind, searchRangeMultiplier, canUseXRayView, searchUpdateInterval, pTargetPredicate);
     }
 
     private void setRanges() {
@@ -47,87 +61,111 @@ public class ZPZombieNearestAttackableTargetPlayerGoal extends TargetGoal {
     }
 
     public boolean canUse() {
-        if (this.ticksToUpdateTargetSearching-- <= 0) {
-            this.ticksToUpdateTargetSearching = this.searchUpdateInterval;
-            return this.findTarget();
-        }
-        return false;
+        this.setRanges();
+        return true;
+    }
+
+    @Override
+    public boolean canContinueToUse() {
+        return this.lastTargetedEntity != null;
     }
 
     @Override
     public void stop() {
-        this.targetMob = null;
+        this.lastTargetedEntity = null;
     }
 
     @Override
     public void tick() {
-        super.tick();
-        LivingEntity closeEntity = this.checkForCloseEntities();
-        if (closeEntity != null) {
-            this.stop();
-            this.ticksToUpdateTargetSearching = 0;
-            if (this.canUse()) {
-                this.start();
+        if (this.lastTargetedEntity != null && (!this.lastTargetedEntity.isAlive() || !this.lastTargetedEntity.equals(this.zombie.getTarget()))) {
+            this.lastTargetedEntity = null;
+            return;
+        }
+        if (this.ticksToUpdateTargetSearching-- <= 0) {
+            this.ticksToUpdateTargetSearching = this.searchUpdateInterval;
+            if (this.zombie.getTarget() != null) {
+                this.ticksToUpdateTargetSearching += 20;
+            }
+            this.lastTargetedEntity = this.findTarget();
+            if (this.lastTargetedEntity != null) {
+                boolean flag = this.zombie.getTarget() == null || (!this.zombie.getTarget().equals(this.lastTargetedEntity) && this.zombie.distanceTo(this.lastTargetedEntity) <= this.zombie.distanceTo(this.zombie.getTarget()) * 0.5f);
+                if (flag) {
+                    this.zombie.setTarget(this.lastTargetedEntity);
+                }
             }
         }
     }
 
-    @Override
-    protected double getFollowDistance() {
-        return (super.getFollowDistance() * 0.75f) * this.searchRangeMultiplier;
+    public void start() {
+        this.ticksToUpdateTargetSearching = ZPRandom.getRandom().nextInt(6);
     }
 
-    protected LivingEntity checkForCloseEntities() {
-        LivingEntity livingEntity = null;
-        livingEntity = this.getNearestPlayer(this.closePlaceConditions, this.mob, this.mob.getX(), this.mob.getEyeY(), this.mob.getZ());
-        if (livingEntity != null && this.targetMob != null && this.targetMob.distanceTo(this.mob) * 2.0f < livingEntity.distanceTo(this.mob)) {
-            return null;
+    protected double getFollowDistance() {
+        return (this.zombie.getAttributeValue(Attributes.FOLLOW_RANGE) * 0.75f) * this.searchRangeMultiplier;
+    }
+
+    protected LivingEntity findTarget() {
+        if (this.targetTypes != null) {
+            return this.closestEntity();
+        }
+        return this.closestPlayer();
+    }
+
+    protected AABB getTargetSearchArea(double pTargetDistance) {
+        return this.zombie.getBoundingBox().inflate(pTargetDistance, pTargetDistance, pTargetDistance);
+    }
+
+    protected LivingEntity closestPlayer() {
+        LivingEntity livingEntity = this.getNearestPlayer(this.directViewConditions, this.zombie, this.zombie.getX(), this.zombie.getEyeY(), this.zombie.getZ());
+        if (livingEntity == null) {
+            if (this.xRayViewConditions == null) {
+                return null;
+            }
+            livingEntity = this.getNearestPlayer(this.xRayViewConditions, this.zombie, this.zombie.getX(), this.zombie.getEyeY(), this.zombie.getZ());
         }
         return livingEntity;
     }
 
-    protected AABB getTargetSearchArea(double pTargetDistance) {
-        return this.mob.getBoundingBox().inflate(pTargetDistance, pTargetDistance, pTargetDistance);
-    }
-
-    protected boolean findTarget() {
-        this.setRanges();
-        LivingEntity livingEntity = null;
-        livingEntity = this.getNearestPlayer(this.directViewConditions, this.mob, this.mob.getX(), this.mob.getEyeY(), this.mob.getZ());
+    protected LivingEntity closestEntity() {
+        final Predicate<LivingEntity> pFilter = (p) -> this.targetTypes.stream().anyMatch(e -> e.isAssignableFrom(p.getClass()));
+        LivingEntity livingEntity = this.getNearestEntity(this.zombie.level().getEntitiesOfClass(LivingEntity.class, this.getTargetSearchArea(this.getFollowDistance()), pFilter), this.directViewConditions, this.zombie.getX(), this.zombie.getEyeY(), this.zombie.getZ());
         if (livingEntity == null) {
-            livingEntity = this.xRayViewConditions == null ? null : this.getNearestPlayer(this.xRayViewConditions, this.mob, this.mob.getX(), this.mob.getEyeY(), this.mob.getZ());
-        }
-        if (livingEntity != null && this.mob.getTarget() != null && !this.mob.getTarget().equals(livingEntity)) {
-            if (livingEntity.position().distanceTo(this.mob.position()) > 6.0f) {
-                return false;
+            if (this.xRayViewConditions == null) {
+                return null;
             }
+            livingEntity = this.getNearestEntity(this.zombie.level().getEntitiesOfClass(LivingEntity.class, this.getTargetSearchArea(this.getReducedFollowDistanceForXRay()), pFilter), this.xRayViewConditions, this.zombie.getX(), this.zombie.getEyeY(), this.zombie.getZ());
         }
-        this.targetMob = livingEntity;
-        return livingEntity != null;
+        return livingEntity;
     }
 
     protected float getReducedFollowDistanceForXRay() {
         return (float) (this.getFollowDistance() * 0.5f);
     }
 
-    public void start() {
-        this.unseenMemoryTicks = 1200;
-        this.mob.setTarget(this.targetMob);
-        super.start();
-    }
-
-    public void setTarget(@Nullable LivingEntity pTarget) {
-        this.targetMob = pTarget;
+    @Nullable
+    protected <T extends LivingEntity> T getNearestEntity(List<? extends T> pEntities, SpecialTargetConditions pPredicate, double pX, double pY, double pZ) {
+        double $$6 = -1.0F;
+        T $$7 = null;
+        for(T $$8 : pEntities) {
+            if (pPredicate.test(this.zombie, $$8)) {
+                double $$9 = $$8.distanceToSqr(pX, pY, pZ);
+                if ($$6 == (double)-1.0F || $$9 < $$6) {
+                    $$6 = $$9;
+                    $$7 = $$8;
+                }
+            }
+        }
+        return $$7;
     }
 
     @Nullable
-    private Player getNearestPlayer(SpecialTargetConditions pPredicate, @Nullable LivingEntity pTarget, double pX, double pY, double pZ) {
-        List<? extends Player> pEntities = this.mob.level().players();
+    protected Player getNearestPlayer(SpecialTargetConditions pPredicate, @Nullable LivingEntity pTarget, double pX, double pY, double pZ) {
+        List<? extends Player> pEntities = this.zombie.level().players();
         double $$6 = -1.0F;
         Player $$7 = null;
 
         for(Player $$8 : pEntities) {
-            if (pPredicate.test((ZPAbstractZombie) this.mob, $$8)) {
+            if (pPredicate.test(this.zombie, $$8)) {
                 double $$9 = $$8.distanceToSqr(pX, pY, pZ);
                 if ($$6 == (double)-1.0F || $$9 < $$6) {
                     $$6 = $$9;

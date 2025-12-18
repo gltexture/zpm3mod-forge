@@ -60,14 +60,14 @@ public class ZPDogZombie extends ZPAbstractZombie {
         }
         this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
         this.goalSelector.addGoal(5, (new ZPZombieEatingGoal(this)));
+        this.goalSelector.addGoal(6, new ZPZombieAngryGoal(this));
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(8, new ZPZombieRandomLookAroundGoal(this));
+        this.goalSelector.addGoal(9, new ZPZombieRandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, (new ZPZombieHurtByMobGoal(this)));
-        this.targetSelector.addGoal(2, new ZPZombieNearestAttackableTargetPlayerGoal(this, 1.0f, ZPConstants.ZOMBIE_XRAY_LOOK, 10, (e) -> true));
-        this.targetSelector.addGoal(3, new ZPZombieNearestAttackableTargetLivingGoal(this, List.of(AbstractVillager.class), 0.5f, ZPConstants.ZOMBIE_XRAY_LOOK, 20, (e) -> true));
-        this.targetSelector.addGoal(4, new ZPZombieNearestAttackableTargetLivingGoal(this, List.of(Cow.class, IronGolem.class, Horse.class, Sheep.class, Pig.class), 0.4f, false, 60, (e) -> true));
-        this.targetSelector.addGoal(5, new ZPZombieAngryGoal(this));
+        this.targetSelector.addGoal(2, ZPZombieNearestAttackableTarget.player(this, 1.0f, false, 10, (e) -> true));
+        this.targetSelector.addGoal(3, ZPZombieNearestAttackableTarget.nonPlayer(this, List.of(AbstractVillager.class), 0.5f, false, 20, (e) -> true));
+        this.targetSelector.addGoal(4, ZPZombieNearestAttackableTarget.nonPlayer(this, List.of(Cow.class, IronGolem.class, Horse.class, Sheep.class, Pig.class), 0.4f, false, 60, (e) -> true));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -87,10 +87,12 @@ public class ZPDogZombie extends ZPAbstractZombie {
     @Override
     public void tick() {
         super.tick();
-        if (this.lastHurtByPlayerTime > 60) {
-            Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(this.baseMovementSpeed * 0.75f);
-        } else {
-            Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(this.baseMovementSpeed);
+        if (this.baseMovementSpeed > 0.0f) {
+            if (true || this.lastHurtByPlayerTime > 60) {
+                Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(this.baseMovementSpeed * 0.75f);
+            } else {
+                Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(this.baseMovementSpeed);
+            }
         }
     }
 

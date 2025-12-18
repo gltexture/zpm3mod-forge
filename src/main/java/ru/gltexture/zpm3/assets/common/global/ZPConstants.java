@@ -20,7 +20,7 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
             group = ZPConstants.GROUP_ZOMBIE,
             type = ZPConfigurableConstant.TYPES.FLOAT
     )
-    public static final float CLOSEST_ZOMBIE_SWAP_TARGET_PERCENTAGE = 0.05f;
+    public static float CLOSEST_ZOMBIE_SWAP_TARGET_PERCENTAGE = 0.05f;
 
     @ZPConfigurableConstant(
             description = "Maximum radius within which a zombie can call other zombies for assistance.",
@@ -34,7 +34,7 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
             group = ZPConstants.GROUP_ZOMBIE,
             type = ZPConfigurableConstant.TYPES.INT
     )
-    public static int MAX_ZOMBIES_CAN_BE_TARGETED_ON_PLAYER = 48;
+    public static int MAX_ZOMBIES_TARGETED_ON_PLAYER = 64;
 
     @ZPConfigurableConstant(
             description = "Maximum number of zombies a single zombie can call for assistance when engaging a target.",
@@ -552,7 +552,7 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public static boolean FANCY_ITEM_ENTITIES = true;
 
     @ZPConfigurableConstant(
-            description = "(ONLY CLIENT) Fob Item Scaling.",
+            description = "(ONLY CLIENT) Fov Item Scaling.",
             group = ZPConstants.GROUP_CLIENT,
             type = ZPConfigurableConstant.TYPES.BOOLEAN
     )

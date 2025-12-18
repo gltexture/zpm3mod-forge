@@ -78,7 +78,7 @@ public class ZPRenderEntityItem extends ItemEntityRenderer {
             this.random.setSeed(i);
             BakedModel bakedmodel = this.itemRenderer.getModel(itemstack, pEntity.level(), null, pEntity.getId());
             int j = this.getRenderAmount(itemstack);
-            float scaling = this.getScaling(itemstack);
+            float scaling = this.getScaling(bakedmodel, itemstack);
             scale = scaling;
             pPoseStack.translate(0.0f, 1.0e-8f * this.random2.nextInt(Short.MAX_VALUE), 0.0f);
 
@@ -123,14 +123,14 @@ public class ZPRenderEntityItem extends ItemEntityRenderer {
         }
     }
 
-    private float getScaling(ItemStack stack) {
+    private float getScaling(BakedModel bakedModel, ItemStack stack) {
         if (stack.getItem() instanceof ZPBaseGun baseGun) {
             return baseGun.getGunProperties().getHeldType().equals(ZPBaseGun.GunProperties.HeldType.RIFLE) ? 2.4f : 1.8f;
         }
         if (stack.getItem() instanceof ZPGunPistol || stack.getItem() instanceof SwordItem || stack.getItem() instanceof PickaxeItem || stack.getItem() instanceof AxeItem || stack.getItem() instanceof ArmorItem || stack.getItem() instanceof BowItem || stack.getItem() instanceof ShovelItem) {
             return 1.45f;
         }
-        if (stack.getItem() instanceof BlockItem) {
+        if (stack.getItem() instanceof BlockItem blockItem && bakedModel.isGui3d()) {
             return 0.25f;
         }
         return 1.15f;

@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.engine.core.ZPLogger;
 import ru.gltexture.zpm3.engine.exceptions.ZPIOException;
+import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.engine.service.ZPPath;
 
 import java.io.*;
@@ -80,7 +81,9 @@ public final class ZPConfigurator {
                         }
                     }
                 }
-            } catch (IOException | IllegalAccessException ex) {
+            } catch (IllegalAccessException | IllegalArgumentException ex) {
+                throw new ZPRuntimeException(ex);
+            } catch (IOException | ClassCastException ex) {
                 ex.printStackTrace(System.err);
             } catch (NoSuchFieldException ex) {
                 ZPLogger.warn("Couldn't find in " + e.getClass().getSimpleName() + " field. " + ex.getMessage());

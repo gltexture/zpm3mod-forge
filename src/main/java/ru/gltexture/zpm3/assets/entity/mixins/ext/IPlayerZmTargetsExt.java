@@ -25,7 +25,7 @@ public interface IPlayerZmTargetsExt {
             return true;
         }
         List<ZPAbstractZombie> list = this.angryZombies();
-        int max = ZPConstants.MAX_ZOMBIES_CAN_BE_TARGETED_ON_PLAYER;
+        int max = ZPConstants.MAX_ZOMBIES_TARGETED_ON_PLAYER;
         if (list.size() < max) {
             list.add(zombie);
             this.sortByDistance();
@@ -53,7 +53,7 @@ public interface IPlayerZmTargetsExt {
             return true;
         }
         List<ZPAbstractZombie> list = this.angryZombies();
-        int max = ZPConstants.MAX_ZOMBIES_CAN_BE_TARGETED_ON_PLAYER;
+        int max = ZPConstants.MAX_ZOMBIES_TARGETED_ON_PLAYER;
         if (list.size() < max) {
             return true;
         }

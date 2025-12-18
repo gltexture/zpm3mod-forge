@@ -39,7 +39,7 @@ public class ZPZombieHelpWantedGoal extends Goal {
             return false;
         }
         if (this.ticksToAlertHelp-- <= 0 && (livingentity instanceof Player || livingentity instanceof Villager)) {
-            this.ticksToAlertHelp = 80 + ZPRandom.getRandom().nextInt(81);
+            this.ticksToAlertHelp = 80 + ZPRandom.getRandom().nextInt(21);
             return this.canAttack(livingentity);
         } else {
             return false;

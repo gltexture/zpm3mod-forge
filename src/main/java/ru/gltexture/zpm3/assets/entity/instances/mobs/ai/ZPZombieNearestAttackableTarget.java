@@ -61,13 +61,21 @@ public class ZPZombieNearestAttackableTarget extends Goal {
     }
 
     public boolean canUse() {
-        this.setRanges();
-        return true;
+        if (this.ticksToUpdateTargetSearching-- <= 0) {
+            this.ticksToUpdateTargetSearching = this.searchUpdateInterval;
+            this.setRanges();
+            this.lastTargetedEntity = this.findTarget();
+            return this.lastTargetedEntity != null && this.lastTargetedEntity.isAlive();
+        }
+        return false;
     }
 
     @Override
     public boolean canContinueToUse() {
-        return this.lastTargetedEntity != null;
+        if (this.lastTargetedEntity != null && this.lastTargetedEntity.isAlive()) {
+            return this.zombie.getTarget() == null || this.zombie.getTarget().equals(this.lastTargetedEntity);
+        }
+        return false;
     }
 
     @Override
@@ -77,20 +85,18 @@ public class ZPZombieNearestAttackableTarget extends Goal {
 
     @Override
     public void tick() {
-        if (this.lastTargetedEntity != null && (!this.lastTargetedEntity.isAlive() || !this.lastTargetedEntity.equals(this.zombie.getTarget()))) {
-            this.lastTargetedEntity = null;
-            return;
-        }
-        if (this.ticksToUpdateTargetSearching-- <= 0) {
-            this.ticksToUpdateTargetSearching = this.searchUpdateInterval;
-            if (this.zombie.getTarget() != null) {
-                this.ticksToUpdateTargetSearching += 20;
-            }
-            this.lastTargetedEntity = this.findTarget();
-            if (this.lastTargetedEntity != null) {
-                boolean flag = this.zombie.getTarget() == null || (!this.zombie.getTarget().equals(this.lastTargetedEntity) && this.zombie.distanceTo(this.lastTargetedEntity) <= this.zombie.distanceTo(this.zombie.getTarget()) * 0.5f);
-                if (flag) {
-                    this.zombie.setTarget(this.lastTargetedEntity);
+        if (this.lastTargetedEntity != null) {
+            if (this.ticksToUpdateTargetSearching-- <= 0) {
+                this.ticksToUpdateTargetSearching = this.searchUpdateInterval;
+                this.lastTargetedEntity = this.findTarget();
+                if (this.zombie.getTarget() != null) {
+                    this.ticksToUpdateTargetSearching += 20;
+                }
+                if (this.lastTargetedEntity != null) {
+                    boolean isValid = this.zombie.getTarget() == null || (!this.zombie.getTarget().equals(this.lastTargetedEntity) && this.zombie.distanceTo(this.lastTargetedEntity) <= this.zombie.distanceTo(this.zombie.getTarget()) * 0.5f);
+                    if (isValid) {
+                        this.zombie.setTarget(this.lastTargetedEntity);
+                    }
                 }
             }
         }

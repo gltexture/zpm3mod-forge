@@ -60,24 +60,6 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public static int ZOMBIE_PLAGUE_VIRUS_EFFECT_TIME_TICKS = 20 * (20 * 60);
 
     @ZPConfigurableConstant(
-            description = "Multiplier of firearm projectile damage dealt to zombies.",
-            group = ZPConstants.GROUP_ZOMBIE,
-            type = ZPConfigurableConstant.TYPES.FLOAT,
-            min = 0.0,
-            max = 1.0
-    )
-    public static float ZOMBIE_APPLY_NEGATIVE_EFFECT_ON_ENTITY_CHANCE_MULTIPLIER = 1.0f;
-
-    @ZPConfigurableConstant(
-            description = "Base chance that a zombie will throw trash or a projectile at a nearby entity based on game logic calculation.",
-            group = ZPConstants.GROUP_ZOMBIE,
-            type = ZPConfigurableConstant.TYPES.FLOAT,
-            min = 0.0,
-            max = 1.0
-    )
-    public static float ZOMBIE_THROW_A_GIFT_CHANCE = 1.0f;
-
-    @ZPConfigurableConstant(
             description = "Multiplier of firearm projectile damage inflicted on zombies. 3.0 = triple damage compared to the base bullet damage value.",
             group = ZPConstants.GROUP_ZOMBIE,
             type = ZPConfigurableConstant.TYPES.FLOAT
@@ -85,11 +67,60 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public static float ZOMBIE_BULLET_DAMAGE_MULTIPLIER = 3.0f;
 
     @ZPConfigurableConstant(
-            description = "Default attack reach distance for zombies measured in blocks.",
+            description = "Global multiplier for zombie melee attack reach.",
             group = ZPConstants.GROUP_ZOMBIE,
             type = ZPConfigurableConstant.TYPES.FLOAT
     )
-    public static float ZOMBIE_DEFAULT_HAND_REACH = 4.0f;
+    public static float ZOMBIE_ATTACK_RANGE_MULTIPLIER = 1.0f;
+
+    @ZPConfigurableConstant(
+            description = "Multiplier for the chance of zombies applying negative status effects to entities.",
+            group = ZPConstants.GROUP_ZOMBIE,
+            type = ZPConfigurableConstant.TYPES.FLOAT
+    )
+    public static float ZOMBIE_APPLY_NEGATIVE_EFFECT_ON_ENTITY_CHANCE_MULTIPLIER = 1.0f;
+
+    @ZPConfigurableConstant(
+            description = "Global multiplier for zombie block mining speed.",
+            group = ZPConstants.GROUP_ZOMBIE,
+            type = ZPConfigurableConstant.TYPES.FLOAT
+    )
+    public static float ZOMBIE_MINING_SPEED_MULTIPLIER = 1.0f;
+
+    @ZPConfigurableConstant(
+            description = "Multiplier for the chance of zombies throwing objects or debris at targets.",
+            group = ZPConstants.GROUP_ZOMBIE,
+            type = ZPConfigurableConstant.TYPES.FLOAT
+    )
+    public static float ZOMBIE_THROW_A_GIFT_CHANCE_MULTIPLIER = 1.0f;
+
+    @ZPConfigurableConstant(
+            description = "Global multiplier for zombie maximum health.",
+            group = ZPConstants.GROUP_ZOMBIE,
+            type = ZPConfigurableConstant.TYPES.FLOAT
+    )
+    public static float ZOMBIE_MAX_HEALTH_MULTIPLIER = 1.0f;
+
+    @ZPConfigurableConstant(
+            description = "Global multiplier for zombie movement speed.",
+            group = ZPConstants.GROUP_ZOMBIE,
+            type = ZPConfigurableConstant.TYPES.FLOAT
+    )
+    public static float ZOMBIE_MOVEMENT_SPEED_MULTIPLIER = 1.0f;
+
+    @ZPConfigurableConstant(
+            description = "Global multiplier for zombie melee attack damage.",
+            group = ZPConstants.GROUP_ZOMBIE,
+            type = ZPConfigurableConstant.TYPES.FLOAT
+    )
+    public static float ZOMBIE_ATTACK_DAMAGE_MULTIPLIER = 1.0f;
+
+    @ZPConfigurableConstant(
+            description = "Multiplier for the chance of zombies applying the Plague effect on hit.",
+            group = ZPConstants.GROUP_ZOMBIE,
+            type = ZPConfigurableConstant.TYPES.FLOAT
+    )
+    public static float ZOMBIE_PLAGUE_EFFECT_CHANCE_MULTIPLIER = 1.0f;
 
     @ZPConfigurableConstant(
             description = "Maximum distance in blocks that a zombie can follow a previously detected target. Detection radius is always 25–35% smaller than this value to avoid unrealistic pursuit behavior.",
@@ -99,20 +130,11 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public static float ZOMBIE_FOLLOW_RANGE = 48.0f;
 
     @ZPConfigurableConstant(
-            description = "Multiplier that increases the chance of infection effects being applied by zombies (0.0–1.0 range). A value of 1.0 means 100% of standard infection probability logic.",
-            group = ZPConstants.GROUP_ZOMBIE,
-            type = ZPConfigurableConstant.TYPES.FLOAT,
-            min = 0.0,
-            max = 1.0
-    )
-    public static float ZOMBIE_PLAGUE_EFFECT_CHANCE_MULTIPLIER = 1.0f;
-
-    @ZPConfigurableConstant(
             description = "Duration in ticks during which an enraged zombie remains persistent and cannot despawn, preventing mob unloading when the target is lost briefly or leaves visibility.",
             group = ZPConstants.GROUP_ZOMBIE,
             type = ZPConfigurableConstant.TYPES.INT
     )
-    public static int ZOMBIE_MAX_ANGRY_PERSISTENCE_TICKS = 1200;
+    public static int ZOMBIE_MAX_ANGRY_PERSISTENCE_TICKS = 1800;
 
     @ZPConfigurableConstant(
             description = "If enabled, a zombie carrying important loot will not despawn, ensuring rare drop persistence and preventing loss on chunk unload.",
@@ -143,11 +165,11 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public static int ZOMBIE_EATING_TIME = 200;
 
     @ZPConfigurableConstant(
-            description = "Cooldown interval in ticks between zombie attempts to throw trash or a projectile at a nearby entity.",
+            description = "Multiplier for the cooldown between zombie attempts to throw objects or debris.",
             group = ZPConstants.GROUP_ZOMBIE,
-            type = ZPConfigurableConstant.TYPES.INT
+            type = ZPConfigurableConstant.TYPES.FLOAT
     )
-    public static int ZOMBIE_THROW_A_GIFT_TRY_DEFAULT_COOLDOWN = 300;
+    public static float ZOMBIE_THROW_A_GIFT_TRY_COOLDOWN_MULTIPLIER = 1.0f;
 
     @ZPConfigurableConstant(
             description = "Maximum height of zombie's mining system.",

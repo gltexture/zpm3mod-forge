@@ -8,6 +8,7 @@
   "tab.zpm3.spawns": "ZP3 Spawns",
   "tab.zpm3.misc": "ZP3 Misc",
 
+  "block.zpm3.anti_zombie": "(Admin) Anti-Zombie",
   "block.zpm3.block_lamp": "Street Lamp",
   "block.zpm3.block_lamp_off": "Street Lamp (Off)",
   "block.zpm3.armor_green": "Green Armor",
@@ -139,6 +140,6 @@
   "death.attack.zp_bullet": "%1$s was shot!",
   "death.attack.zp_bullet.player": "%1$s was shot by %2$s!",
 
-  "death.attack.zp_bleeding": "%1$s bled to death!",
-  "death.attack.zp_bleeding.player": "%1$s bled to death because of %2$s!"
+  "death.attack.damage.zpm3.zp_bleeding": "%1$s bled to death!",
+  "death.attack.damage.zpm3.zp_bleeding.player": "%1$s bled to death because of %2$s!"
 }

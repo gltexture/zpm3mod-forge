@@ -20,7 +20,7 @@ public class ZPEntityAttributes extends ZPRegistry<Attribute> {
 
     @Override
     protected void runRegister(@NotNull ZPRegSupplier<Attribute> regSupplier) {
-        ZPEntityAttributes.zm_attack_range_multiplier = regSupplier.register("zm_attack_range_multiplier", () -> new RangedAttribute("zpm3.zm_attack_range_multiplier", Math.pow(ZPConstants.ZOMBIE_DEFAULT_HAND_REACH, 2.0f), 0.0D, 1024.0D)).end();
+        ZPEntityAttributes.zm_attack_range_multiplier = regSupplier.register("zm_attack_range_multiplier", () -> new RangedAttribute("zpm3.zm_attack_range_multiplier", 0.5f, 0.0D, 1024.0D)).end();
         ZPEntityAttributes.zm_mining_speed = regSupplier.register("zm_mining_speed", () -> new RangedAttribute("zpm3.zm_mining_speed", 0.01f, 0.0f, 12.0f)).end();
         ZPEntityAttributes.zm_random_effect_chance = regSupplier.register("zm_effect_chance", () -> new RangedAttribute("zpm3.zm_effect_chance", 0.015f, 0.0f, 1.0f)).end();
         ZPEntityAttributes.zm_throw_a_gift_chance = regSupplier.register("zm_throw_a_gift_chance", () -> new RangedAttribute("zpm3.zm_throw_a_gift_chance", 0.01f, 0.0f, 1.0f)).end();

@@ -21,7 +21,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.*;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
@@ -41,9 +40,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.gltexture.zpm3.assets.commands.zones.ZPZoneChecks;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.common.init.ZPDamageTypes;
 import ru.gltexture.zpm3.assets.common.init.ZPEntityAttributes;
+import ru.gltexture.zpm3.assets.common.instances.blocks.ZPAntiZombie;
 import ru.gltexture.zpm3.assets.entity.mixins.ext.IPlayerZmTargetsExt;
 import ru.gltexture.zpm3.assets.mob_effects.init.ZPMobEffects;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
@@ -71,8 +72,14 @@ public abstract class ZPAbstractZombie extends Monster {
 
     protected abstract int getTotalZombieSkins();
 
+    @SuppressWarnings("all")
     public static boolean checkZombieSpawnRules(@NotNull EntityType<? extends Monster> pType, ServerLevelAccessor pLevel, @NotNull MobSpawnType pSpawnType, @NotNull BlockPos pPos, @NotNull RandomSource pRandom) {
-        return pLevel.getDifficulty() != Difficulty.PEACEFUL && ((isDarkEnoughToSpawn(pLevel, pPos, pRandom) || ZPRandom.getRandom().nextFloat() <= 0.001f) && checkMobSpawnRules(pType, pLevel, pSpawnType, pPos, pRandom));
+        if (pLevel.getDifficulty() != Difficulty.PEACEFUL && ((isDarkEnoughToSpawn(pLevel, pPos, pRandom) || ZPRandom.getRandom().nextFloat() <= 0.001f) && checkMobSpawnRules(pType, pLevel, pSpawnType, pPos, pRandom))) {
+            if (!ZPZoneChecks.INSTANCE.isZombieBlockSpawn(pLevel.getLevel(), pPos)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -103,6 +110,12 @@ public abstract class ZPAbstractZombie extends Monster {
     }
 
     public void tick() {
+        if (this.level() instanceof ServerLevel serverLevel) {
+            if (ZPZoneChecks.INSTANCE.isZombieErasing(serverLevel, this)) {
+                ZPAntiZombie.eraseMob(this);
+                return;
+            }
+        }
         super.tick();
         if (!this.level().isClientSide) {
             this.entityData.set(ZPAbstractZombie.DEBUG_TARGET_ID, this.getTarget() == null ? -1 : this.getTarget().getId());
@@ -228,7 +241,7 @@ public abstract class ZPAbstractZombie extends Monster {
 
     public boolean doHurtTarget(@NotNull Entity pEntity) {
         boolean b1 = super.doHurtTarget(pEntity);
-        if (ZPRandom.getRandom().nextFloat() <= this.getAttributes().getBaseValue(ZPEntityAttributes.zm_random_effect_chance.get()) * ZPConstants.ZOMBIE_APPLY_NEGATIVE_EFFECT_ON_ENTITY_CHANCE_MULTIPLIER) {
+        if (ZPRandom.getRandom().nextFloat() <= this.getAttributes().getBaseValue(ZPEntityAttributes.zm_random_effect_chance.get())) {
             if (pEntity instanceof LivingEntity livingEntity) {
                 ZPAbstractZombie.applyRandomEffect(livingEntity);
             }

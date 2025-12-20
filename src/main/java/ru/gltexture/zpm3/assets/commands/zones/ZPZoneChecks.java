@@ -2,6 +2,8 @@ package ru.gltexture.zpm3.assets.commands.zones;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
 
 import java.util.Collection;
 
@@ -9,6 +11,18 @@ public final class ZPZoneChecks {
     public static final ZPZoneChecks INSTANCE = new ZPZoneChecks();
 
     private ZPZoneChecks() {
+    }
+
+    public boolean isZombieErasing(ServerLevel level, LivingEntity entity) {
+        return this.checkFlag(level, Mth.floor(entity.getX()), Mth.floor(entity.getY()), Mth.floor(entity.getZ()), ZPFlagZones.Zone.AvailableFlags.zombieErasing);
+    }
+
+    public boolean isZombieBlockSpawn(ServerLevel level, LivingEntity entity) {
+        return this.checkFlag(level, Mth.floor(entity.getX()), Mth.floor(entity.getY()), Mth.floor(entity.getZ()), ZPFlagZones.Zone.AvailableFlags.zombieSpawnBlocking);
+    }
+
+    public boolean isZombieBlockSpawn(ServerLevel level, BlockPos blockPos) {
+        return this.checkFlag(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ZPFlagZones.Zone.AvailableFlags.zombieSpawnBlocking);
     }
 
     public boolean isNoAcidInvDmg(ServerLevel level, BlockPos blockPos) {

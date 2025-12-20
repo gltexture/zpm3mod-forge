@@ -158,7 +158,7 @@ public abstract class ZPPathFindingGoal extends Goal {
                         return;
                     }
                     this.path = this.mob.getNavigation().createPath(livingentity, 0);
-                    if (this.path == null || this.path.getEndNode() == null || !this.path.canReach() || !this.mob.getNavigation().moveTo(this.path, this.speedModifier)) {
+                    if (this.path == null || this.path.getEndNode() == null || !this.mob.getNavigation().moveTo(this.path, this.speedModifier) || !this.path.canReach()) {
                         this.notFoundPathPunishment = Math.min(this.notFoundPathPunishment + 10, ZPPathFindingGoal.MAX_NOT_FOUND_PUNISHMENT);
                     }
                     this.timeBeforeNextRecalculation = updTicks + ZPRandom.getRandom().nextInt((int) Mth.clamp(updTicks * 0.5f, 2, 20));

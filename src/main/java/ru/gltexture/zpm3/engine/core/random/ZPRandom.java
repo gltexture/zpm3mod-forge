@@ -21,6 +21,10 @@ public final class ZPRandom {
         this.random = new Random(seed);
     }
 
+    public Vector3f randomVector3f(Vector3f defaultValue, Vector3f mask) {
+        return new Vector3f(defaultValue).sub(new Vector3f(ZPRandom.getRandom().nextFloat(), ZPRandom.getRandom().nextFloat(), ZPRandom.getRandom().nextFloat()).mul(mask));
+    }
+
     public Vector3f randomVector3f(float defaultValue, Vector3f mask) {
         return new Vector3f(defaultValue).sub(new Vector3f(ZPRandom.getRandom().nextFloat(), ZPRandom.getRandom().nextFloat(), ZPRandom.getRandom().nextFloat()).mul(mask));
     }

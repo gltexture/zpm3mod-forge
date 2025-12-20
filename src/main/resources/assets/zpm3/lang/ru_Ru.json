@@ -8,6 +8,7 @@
   "tab.zpm3.spawns": "ZP3 Спавны",
   "tab.zpm3.misc": "ZP3 Разное",
 
+  "block.zpm3.anti_zombie": "(Admin) Анти-Зомби",
   "block.zpm3.block_lamp": "Городская лампа",
   "block.zpm3.block_lamp_off": "Городская лампа (выключена)",
   "block.zpm3.armor_green": "Зелёная броня",
@@ -137,6 +138,6 @@
   "death.attack.zp_bullet": "%1$s был застрелен!",
   "death.attack.zp_bullet.player": "%1$s был застрелен %2$s!",
 
-  "death.attack.zp_bleeding": "%1$s истек кровью!",
-  "death.attack.zp_bleeding.player": "%1$s истек кровью из-за %2$s!"
+  "death.attack.damage.zpm3.zp_bleeding": "%1$s истек кровью!",
+  "death.attack.damage.zpm3.zp_bleeding.player": "%1$s истек кровью из-за %2$s!"
 }

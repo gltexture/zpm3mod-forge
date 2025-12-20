@@ -52,7 +52,7 @@ public class ZPMenuPatchEvent implements ZPEventClass {
         int h = 20;
 
         event.addListener(Button.builder(Component.literal("ZP3 CurseForge"), btn -> openUrl("https://www.curseforge.com/")).bounds(centerX, baseY, w, h).build());
-        event.addListener(Button.builder(Component.literal("ZP3 Discord"), btn -> openUrl("https://discord.gg/")).bounds(centerX, baseY + 24, w, h).build());
+        event.addListener(Button.builder(Component.literal("ZP3 Discord"), btn -> openUrl("https://discord.gg/bb6AaU6Taw")).bounds(centerX, baseY + 24, w, h).build());
     }
 
     private static void openUrl(String url) {

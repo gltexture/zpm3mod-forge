@@ -38,7 +38,7 @@ import ru.gltexture.zpm3.engine.helpers.*;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
 import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockItemModelExecutors;
 import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockModelExecutors;
-import ru.gltexture.zpm3.engine.helpers.gen.data.VanillaMinecraftModelParentReference;
+import ru.gltexture.zpm3.engine.helpers.gen.data.MinecraftModelParentReference;
 import ru.gltexture.zpm3.engine.helpers.gen.data.ZPGenTextureData;
 import ru.gltexture.zpm3.engine.helpers.gen.providers.ZPBlockModelProvider;
 import ru.gltexture.zpm3.engine.helpers.gen.providers.ZPItemModelProvider;
@@ -303,19 +303,19 @@ public abstract class ZPRegistry<T> {
             }
 
             @OnlyIn(Dist.CLIENT)
-            public void addItemModel(@NotNull RegistryObject<? extends Item> item, @NotNull VanillaMinecraftModelParentReference vanillaMinecraftModelRef, @NotNull String mainTextureKey, @NotNull ZPPath textureDirectory) {
+            public void addItemModel(@NotNull RegistryObject<? extends Item> item, @NotNull MinecraftModelParentReference vanillaMinecraftModelRef, @NotNull String mainTextureKey, @NotNull ZPPath textureDirectory) {
                 final String textureName = Objects.requireNonNull(item.getId()).getPath();
                 this.addItemModel(item, () -> ZPGenTextureData.of(vanillaMinecraftModelRef, mainTextureKey, () -> new ZPPath(textureDirectory, textureName)));
             }
 
             @OnlyIn(Dist.CLIENT)
             @SafeVarargs
-            public final void addItemModel(@NotNull RegistryObject<? extends Item> item, @NotNull VanillaMinecraftModelParentReference vanillaMinecraftModelRef, @NotNull Pair<@NotNull String, @NotNull Supplier<ZPPath>>... descriptors) {
+            public final void addItemModel(@NotNull RegistryObject<? extends Item> item, @NotNull MinecraftModelParentReference vanillaMinecraftModelRef, @NotNull Pair<@NotNull String, @NotNull Supplier<ZPPath>>... descriptors) {
                 this.addItemModel(item, () -> ZPGenTextureData.of(vanillaMinecraftModelRef, descriptors));
             }
 
             @OnlyIn(Dist.CLIENT)
-            public void addItemModel(@NotNull RegistryObject<? extends Item> item, @NotNull VanillaMinecraftModelParentReference vanillaMinecraftModelRef, @NotNull RegistryObject<? extends Item> textureLike) {
+            public void addItemModel(@NotNull RegistryObject<? extends Item> item, @NotNull MinecraftModelParentReference vanillaMinecraftModelRef, @NotNull RegistryObject<? extends Item> textureLike) {
                 this.addItemModel(item, () -> ZPGenTextureData.copy(vanillaMinecraftModelRef, ZPItemModelProvider.getTextureData(textureLike).get()));
             }
 
@@ -353,20 +353,25 @@ public abstract class ZPRegistry<T> {
             }
 
             @OnlyIn(Dist.CLIENT)
-            public void addBlockModelSimpleOneTexture(@NotNull RegistryObject<? extends Block> block, @Nullable VanillaMinecraftModelParentReference vanillaMinecraftModelRef, @NotNull String mainTextureKey, @NotNull ZPPath textureDirectory) {
+            public void addBlockModelSimpleOneTexture(@NotNull RegistryObject<? extends Block> block, @Nullable MinecraftModelParentReference vanillaMinecraftModelRef, @NotNull String mainTextureKey, @NotNull ZPPath textureDirectory) {
                 final String textureName = Objects.requireNonNull(block.getId()).getPath();
                 this.addBlockModelWitchGenTextureData(block, () -> ZPGenTextureData.of(vanillaMinecraftModelRef, mainTextureKey, () -> new ZPPath(textureDirectory, textureName)));
             }
 
             @OnlyIn(Dist.CLIENT)
             @SafeVarargs
-            public final void addBlockModelKey_ValueArray(@NotNull RegistryObject<? extends Block> block, @Nullable VanillaMinecraftModelParentReference vanillaMinecraftModelRef, Pair<@NotNull String, @NotNull Supplier<ZPPath>>... descriptors) {
+            public final void addBlockModelKey_ValueArray(@NotNull RegistryObject<? extends Block> block, @Nullable MinecraftModelParentReference vanillaMinecraftModelRef, Pair<@NotNull String, @NotNull Supplier<ZPPath>>... descriptors) {
                 this.addBlockModelWitchGenTextureData(block, () -> ZPGenTextureData.of(vanillaMinecraftModelRef, descriptors));
             }
 
             @OnlyIn(Dist.CLIENT)
-            public void addBlockModelWithCopiedTexture(@NotNull RegistryObject<? extends Block> block, @Nullable VanillaMinecraftModelParentReference vanillaMinecraftModelRef, @NotNull RegistryObject<? extends Block> textureLike) {
+            public void addBlockModelWithCopiedTexture(@NotNull RegistryObject<? extends Block> block, @Nullable MinecraftModelParentReference vanillaMinecraftModelRef, @NotNull RegistryObject<? extends Block> textureLike) {
                 this.addBlockModelWitchGenTextureData(block, () -> ZPGenTextureData.copy(vanillaMinecraftModelRef, ZPBlockModelProvider.getTextureData(textureLike).get()));
+            }
+
+            @OnlyIn(Dist.CLIENT)
+            public void addBlockModelWithVanillaTexture(@NotNull RegistryObject<? extends Block> block, @Nullable MinecraftModelParentReference vanillaMinecraftModelRef) {
+                this.addBlockModelWitchGenTextureData(block, () -> ZPGenTextureData.of(vanillaMinecraftModelRef));
             }
 
             @OnlyIn(Dist.CLIENT)

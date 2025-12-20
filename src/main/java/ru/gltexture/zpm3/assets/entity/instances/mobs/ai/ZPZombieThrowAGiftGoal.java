@@ -2,6 +2,7 @@ package ru.gltexture.zpm3.assets.entity.instances.mobs.ai;
 
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
@@ -21,10 +22,11 @@ import java.util.function.Supplier;
 
 public class ZPZombieThrowAGiftGoal extends Goal {
     protected final ZPAbstractZombie mob;
-
+    private LivingEntity target;
     private int ticksBeforeThrowSomething;
     private final Pair<Supplier<ZPThrowableEntity>, Integer>[] weightedPairsArray;
     private float zombiesAroundMul;
+    private float throwAGiftChance;
 
     @SafeVarargs
     public ZPZombieThrowAGiftGoal(ZPAbstractZombie pMob, @NotNull Pair<Supplier<ZPThrowableEntity>, Integer>... weightedPairsArray) {
@@ -34,49 +36,48 @@ public class ZPZombieThrowAGiftGoal extends Goal {
     }
 
     protected float getThrowChance(@NotNull ZPAbstractZombie abstractZombie) {
-        return (float) abstractZombie.getAttributes().getBaseValue(ZPEntityAttributes.zm_throw_a_gift_chance.get());
+        return (float) Mth.clamp(abstractZombie.getAttributes().getBaseValue(ZPEntityAttributes.zm_throw_a_gift_chance.get()), 0.0f, 1.0f);
     }
 
     public boolean canUse() {
-        if (this.mob.level().getDifficulty() == Difficulty.EASY || this.mob.getTarget() == null || !this.mob.getTarget().isAlive()) {
+        this.target = this.mob.getTarget();
+        if (this.mob.level().getDifficulty() == Difficulty.EASY || this.target == null || !this.target.isAlive()) {
             return false;
         }
-        float dy = (float) (this.mob.getTarget().position().y - this.mob.position().y);
+        float dy = (float) (this.target.position().y - this.mob.position().y);
         if (dy <= 4.0f) {
             return false;
         }
         if (this.ticksBeforeThrowSomething-- <= 0) {
-            int zombiesAround = this.computeZombiesAround(this.mob.level());
-            this.zombiesAroundMul = 1.0f + (Math.min(zombiesAround, 10) * 0.05f);
-            if (ZPRandom.getRandom().nextFloat() <= this.getThrowChance(this.mob) * this.zombiesAroundMul * ZPConstants.ZOMBIE_THROW_A_GIFT_CHANCE) {
-                this.ticksBeforeThrowSomething = (int) ((ZPConstants.ZOMBIE_THROW_A_GIFT_TRY_DEFAULT_COOLDOWN - this.zombiesAroundMul * 80) + ZPRandom.getRandom().nextInt(201));
-                return true;
-            }
+            final int zombiesAround = this.computeZombiesAround(this.mob.level());
+            this.zombiesAroundMul = (float) (Math.pow(zombiesAround, Math.E) * 0.01f);
+            this.zombiesAroundMul = Mth.clamp(this.zombiesAroundMul, 1.0f, 100.0f);
+            this.throwAGiftChance = this.zombiesAroundMul * this.getThrowChance(this.mob);
+            float defaultCooldown = 400;
+            defaultCooldown -= 250 * (1.0f - this.throwAGiftChance);
+            defaultCooldown *= ZPConstants.ZOMBIE_THROW_A_GIFT_TRY_COOLDOWN_MULTIPLIER;
+            this.ticksBeforeThrowSomething = (int) (defaultCooldown + ZPRandom.getRandom().nextInt(101));
+            return ZPRandom.getRandom().nextFloat() <= this.throwAGiftChance;
         }
         return false;
     }
 
     private int computeZombiesAround(Level level) {
-        return level.getEntitiesOfClass(ZPAbstractZombie.class, this.mob.getBoundingBox().inflate(2.0f, 0.0f, 2.0f), (e) -> !e.equals(this.mob)).size();
+        return level.getEntitiesOfClass(ZPAbstractZombie.class, this.mob.getBoundingBox().inflate(3.0f, 0.0f, 3.0f), (e) -> !e.equals(this.mob)).size();
     }
 
     public void start() {
         super.start();
-        LivingEntity target = mob.getTarget();
-        if (target == null) {
-            return;
-        }
-
         ZPThrowableEntity throwable = this.pickRandomWeighted();
         if (throwable == null) {
             return;
         }
         this.mob.level().playSound(null, this.mob.getX(), this.mob.getY(), this.mob.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.HOSTILE, 1.25f, 0.6f + this.mob.getRandom().nextFloat() * 0.2f);
-        final Vec3 dir = mob.getTarget().position().subtract(mob.position()).normalize();
+        final Vec3 dir = this.target.position().subtract(mob.position()).normalize();
         final float pitch = (float) Math.toDegrees(-Math.asin(dir.y));
         final float yaw = (float) Math.toDegrees(Math.atan2(dir.z, dir.x)) - 90f;
         throwable.setPos(mob.position().add(0.0f, mob.getEyeHeight(), 0.0f));
-        throwable.shootFromRotation(this.mob, pitch, yaw, 0.0f, 0.5f + ZPRandom.getRandom().nextFloat(0.2f) + ZPRandom.getRandom().nextFloat(0.75f * this.zombiesAroundMul), 6.0f + ZPRandom.getRandom().nextFloat(14.0f * this.zombiesAroundMul));
+        throwable.shootFromRotation(this.mob, pitch, yaw, 0.0f, 0.5f + ZPRandom.instance.randomFloat(0.2f) + ZPRandom.instance.randomFloat(0.75f + this.throwAGiftChance * 0.5f), 6.0f + ZPRandom.instance.randomFloat(16.0f - (this.throwAGiftChance * 8.0f)));
         throwable.setOwner(this.mob);
         this.mob.level().addFreshEntity(throwable);
         mob.swing(InteractionHand.MAIN_HAND, true);

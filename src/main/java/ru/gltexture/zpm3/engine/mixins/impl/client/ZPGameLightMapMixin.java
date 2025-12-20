@@ -18,6 +18,9 @@ import org.joml.Vector3fc;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.debug.imgui.DearUITRSInterface;
 import ru.gltexture.zpm3.assets.mob_effects.init.ZPMobEffects;
@@ -56,7 +59,8 @@ public abstract class ZPGameLightMapMixin {
         return 1.0f - Mth.clamp((float) duration / (float) maxDuration, 0f, 1f);
     }
 
-    public void updateLightTexture(float pPartialTicks) {
+    @Inject(method = "updateLightTexture", at = @At("HEAD"), cancellable = true)
+    public void updateLightTexture(float pPartialTicks, CallbackInfo ci) {
         if (this.updateLightTexture) {
             this.updateLightTexture = false;
             this.minecraft.getProfiler().push("lightTex");
@@ -161,5 +165,6 @@ public abstract class ZPGameLightMapMixin {
                 this.minecraft.getProfiler().pop();
             }
         }
+        ci.cancel();
     }
 }

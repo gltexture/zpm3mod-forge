@@ -65,19 +65,18 @@ public class ZPEntityEffectActionsEvent implements ZPEventClass {
                     }
                 }
             }
-
-            if (event.getEntity().level() instanceof ServerLevel serverLevel && event.getSource().type().equals(ZPDamageTypes.getDamageType(serverLevel, DamageTypes.FALL).get())) {
-                if (event.getAmount() >= 3.0f) {
-                    System.out.println(event.getAmount());
-                    float damNorm = event.getAmount() / 20.0f;
-                    float fractureChance = (float) (4.0f * Math.pow(damNorm, 0.6f * Math.E)) * ZPConstants.FRACTURE_CHANCE_MULTIPLIER;
-                    System.out.println(fractureChance);
-                    if (ZPRandom.getRandom().nextFloat() <= fractureChance) {
-                        if (ZPEffectUtils.isFractured(entity)) {
-                            event.setAmount(event.getAmount() * 2.0f);
-                        } else {
-                            float timeMultiplier = event.getAmount() / 3.0f;
-                            entity.addEffect(new MobEffectInstance(ZPMobEffects.fracture.get(), (int) (6000 * timeMultiplier)));
+            if (entity instanceof Player) {
+                if (event.getEntity().level() instanceof ServerLevel serverLevel && event.getSource().type().equals(ZPDamageTypes.getDamageType(serverLevel, DamageTypes.FALL).get())) {
+                    if (event.getAmount() >= 3.0f) {
+                        float damNorm = event.getAmount() / 20.0f;
+                        float fractureChance = (float) (4.0f * Math.pow(damNorm, 0.4f * Math.E)) * ZPConstants.FRACTURE_CHANCE_MULTIPLIER;
+                        if (ZPRandom.getRandom().nextFloat() <= fractureChance) {
+                            if (ZPEffectUtils.isFractured(entity)) {
+                                event.setAmount(event.getAmount() * 2.0f);
+                            } else {
+                                float timeMultiplier = event.getAmount() / 3.0f;
+                                entity.addEffect(new MobEffectInstance(ZPMobEffects.fracture.get(), (int) (6000 * timeMultiplier)));
+                            }
                         }
                     }
                 }

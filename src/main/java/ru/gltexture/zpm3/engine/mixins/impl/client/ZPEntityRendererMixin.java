@@ -26,16 +26,10 @@ public class ZPEntityRendererMixin {
     @Shadow @Final private Font font;
 
     private static boolean isNameplateInRenderDistanceZP(Entity entity, double squareDistance) {
-        if (entity instanceof LivingEntity) {
-            final AttributeInstance attribute = ((LivingEntity) entity).getAttribute(ForgeMod.NAMETAG_DISTANCE.get());
-            if (attribute != null) {
-                return !(squareDistance > (attribute.getValue() * attribute.getValue()));
-            }
-        }
-        return !(squareDistance > 36);
+        return squareDistance <= 64.0f;
     }
 
-    @Inject(method = "renderNameTag", at = @At("HEAD"))
+    @Inject(method = "renderNameTag", at = @At("HEAD"), cancellable = true)
     protected void renderNameTag(Entity pEntity, Component pDisplayName, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, CallbackInfo ci) {
         double d0 = this.entityRenderDispatcher.distanceToSqr(pEntity);
         if (ZPEntityRendererMixin.isNameplateInRenderDistanceZP(pEntity, d0)) {
@@ -49,8 +43,11 @@ public class ZPEntityRendererMixin {
             Matrix4f matrix4f = pPoseStack.last().pose();
             Font font = this.font;
             float f2 = (float)(-font.width(pDisplayName) / 2);
-            font.drawInBatch(pDisplayName, f2, (float)i, pDisplayName.getString().equals("gltexture") ? 0xff0000 : 0x00ff00, false, matrix4f, pBuffer, Font.DisplayMode.NORMAL, 0, pPackedLight);
+            float f1 = Minecraft.getInstance().options.getBackgroundOpacity(0.25F);
+            int j = (int)(f1 * 255.0F) << 24;
+            font.drawInBatch(pDisplayName, f2, (float)i, pDisplayName.getString().equals("gltexture") ? 0xff0000 : 0x00ff00, false, matrix4f, pBuffer, Font.DisplayMode.NORMAL, j, pPackedLight);
             pPoseStack.popPose();
         }
+        ci.cancel();
     }
 }

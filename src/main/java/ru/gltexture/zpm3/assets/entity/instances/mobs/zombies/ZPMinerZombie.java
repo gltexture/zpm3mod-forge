@@ -69,21 +69,21 @@ public class ZPMinerZombie extends ZPAbstractZombie {
         this.targetSelector.addGoal(1, (new ZPZombieHurtByMobGoal(this)));
         this.targetSelector.addGoal(2, ZPZombieNearestAttackableTarget.player(this, 1.0f, ZPConstants.ZOMBIE_XRAY_LOOK, 10, (e) -> true));
         this.targetSelector.addGoal(3, ZPZombieNearestAttackableTarget.nonPlayer(this, List.of(AbstractVillager.class), 0.5f, ZPConstants.ZOMBIE_XRAY_LOOK, 20, (e) -> true));
-        this.targetSelector.addGoal(4, ZPZombieNearestAttackableTarget.nonPlayer(this, List.of(Cow.class, IronGolem.class, Horse.class, Sheep.class, Pig.class), 0.4f, false, 60, (e) -> true));
+        this.targetSelector.addGoal(4, ZPZombieNearestAttackableTarget.nonPlayer(this, List.of(Cow.class, IronGolem.class, Horse.class, Sheep.class, Pig.class), 0.35f, false, 60, (e) -> true));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
                 .add(ForgeMod.SWIM_SPEED.get(), 1.25f)
-                .add(Attributes.MAX_HEALTH, 60.0f)
-                .add(Attributes.FOLLOW_RANGE, ZPConstants.ZOMBIE_FOLLOW_RANGE * 0.75f)
-                .add(Attributes.MOVEMENT_SPEED, 0.22f)
-                .add(Attributes.ATTACK_DAMAGE, 1.5f)
+                .add(Attributes.MAX_HEALTH, 60.0f * ZPConstants.ZOMBIE_MAX_HEALTH_MULTIPLIER)
+                .add(Attributes.FOLLOW_RANGE, ZPConstants.ZOMBIE_FOLLOW_RANGE * 0.8f)
+                .add(Attributes.MOVEMENT_SPEED, 0.22f * ZPConstants.ZOMBIE_MOVEMENT_SPEED_MULTIPLIER)
+                .add(Attributes.ATTACK_DAMAGE, 1.5f * ZPConstants.ZOMBIE_ATTACK_DAMAGE_MULTIPLIER)
                 .add(Attributes.ARMOR, 4.0f)
-                .add(ZPEntityAttributes.zm_attack_range_multiplier.get(), 0.4f)
-                .add(ZPEntityAttributes.zm_mining_speed.get(), 0.005f)
-                .add(ZPEntityAttributes.zm_random_effect_chance.get(), 0.015f)
-                .add(ZPEntityAttributes.zm_throw_a_gift_chance.get(), 0.006f);
+                .add(ZPEntityAttributes.zm_attack_range_multiplier.get(), 0.55f / ZPConstants.ZOMBIE_ATTACK_RANGE_MULTIPLIER)
+                .add(ZPEntityAttributes.zm_mining_speed.get(), 0.0075f * ZPConstants.ZOMBIE_MINING_SPEED_MULTIPLIER)
+                .add(ZPEntityAttributes.zm_random_effect_chance.get(), 0.015f * ZPConstants.ZOMBIE_APPLY_NEGATIVE_EFFECT_ON_ENTITY_CHANCE_MULTIPLIER)
+                .add(ZPEntityAttributes.zm_throw_a_gift_chance.get(), 0.008f * ZPConstants.ZOMBIE_THROW_A_GIFT_CHANCE_MULTIPLIER);
     }
 
     @Override
@@ -108,7 +108,7 @@ public class ZPMinerZombie extends ZPAbstractZombie {
         this.addRandomAttributeValue(ZPEntityAttributes.zm_attack_range_multiplier.get(), ZPAbstractZombie.getRandomSalt(-0.05f, 0.05f));
         this.addRandomAttributeValue(ZPEntityAttributes.zm_mining_speed.get(), ZPAbstractZombie.getRandomSalt(-0.0006f, 0.0006f));
         this.addRandomAttributeValue(ZPEntityAttributes.zm_random_effect_chance.get(), ZPAbstractZombie.getRandomSalt(-0.005f, 0.005f));
-        this.addRandomAttributeValue(ZPEntityAttributes.zm_throw_a_gift_chance.get(), ZPAbstractZombie.getRandomSalt(-0.008f, 0.008f));
+        this.addRandomAttributeValue(ZPEntityAttributes.zm_throw_a_gift_chance.get(), ZPAbstractZombie.getRandomSalt(-0.0025f, 0.0025f));
     }
 
     @Override

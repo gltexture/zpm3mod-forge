@@ -126,7 +126,9 @@ public final class ZPFlagZones {
             noAcidInvDmg,
             noZombieMining,
             noThrowableBlockDamage,
-            noBulletBlockDmg
+            noBulletBlockDmg,
+            zombieErasing,
+            zombieSpawnBlocking
         }
     }
 }

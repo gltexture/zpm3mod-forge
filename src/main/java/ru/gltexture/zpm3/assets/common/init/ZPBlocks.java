@@ -3,8 +3,10 @@ package ru.gltexture.zpm3.assets.common.init;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.assets.common.init.helper.ZPRegAdminBlocks;
 import ru.gltexture.zpm3.assets.common.init.helper.ZPRegCommonBlocks;
 import ru.gltexture.zpm3.assets.common.init.helper.ZPRegFluidBlocks;
+import ru.gltexture.zpm3.assets.common.instances.blocks.ZPAntiZombie;
 import ru.gltexture.zpm3.assets.common.instances.blocks.*;
 import ru.gltexture.zpm3.engine.instances.blocks.*;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
@@ -12,6 +14,8 @@ import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.registry.collection.IZPCollectRegistryObjects;
 
 public class ZPBlocks extends ZPRegistry<Block> implements IZPCollectRegistryObjects {
+    public static RegistryObject<ZPAntiZombie> anti_zombie;
+
     public static RegistryObject<ZPBlock> block_lamp;
     public static RegistryObject<ZPBlock> block_lamp_off;
 
@@ -48,6 +52,7 @@ public class ZPBlocks extends ZPRegistry<Block> implements IZPCollectRegistryObj
     @Override
     protected void runRegister(@NotNull ZPRegSupplier<Block> regSupplier) {
         this.pushInstanceCollecting("blocks");
+        ZPRegAdminBlocks.init(regSupplier);
         ZPRegCommonBlocks.init(regSupplier);
         this.stopCollecting();
         ZPRegFluidBlocks.init(regSupplier);

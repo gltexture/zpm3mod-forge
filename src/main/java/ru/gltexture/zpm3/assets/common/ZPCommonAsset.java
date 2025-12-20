@@ -72,6 +72,7 @@ public class ZPCommonAsset extends ZPAsset {
             Blocks.GREEN_CONCRETE.explosionResistance = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
             Blocks.RED_CONCRETE.explosionResistance = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
             Blocks.BLACK_CONCRETE.explosionResistance = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
+            Blocks.OBSIDIAN.explosionResistance = 4.0f;
 
             Blocks.CYAN_CONCRETE.defaultBlockState().destroySpeed = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
             Blocks.WHITE_CONCRETE.defaultBlockState().destroySpeed = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
@@ -90,6 +91,7 @@ public class ZPCommonAsset extends ZPAsset {
             Blocks.GREEN_CONCRETE.defaultBlockState().destroySpeed = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
             Blocks.RED_CONCRETE.defaultBlockState().destroySpeed = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
             Blocks.BLACK_CONCRETE.defaultBlockState().destroySpeed = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
+            Blocks.OBSIDIAN.defaultBlockState().destroySpeed = 4.0f;
 
             Blocks.BRICKS.defaultBlockState().destroySpeed = 4.0F;
             Blocks.BRICKS.explosionResistance = 12.0f;

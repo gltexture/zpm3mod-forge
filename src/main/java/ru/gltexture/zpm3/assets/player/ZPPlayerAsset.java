@@ -5,13 +5,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.player.events.client.ZPMenuPatchEvent;
 import ru.gltexture.zpm3.assets.player.events.client.ZPPlayerItemToolTips;
+import ru.gltexture.zpm3.assets.player.events.client.ZPRenderGuiEvent;
+import ru.gltexture.zpm3.assets.player.events.common.*;
 import ru.gltexture.zpm3.assets.player.keybind.ZPPickUpKeyBindings;
 import ru.gltexture.zpm3.assets.player.events.client.ZPRenderWorldEventWithPickUpCheck;
-import ru.gltexture.zpm3.assets.player.events.common.ZPPlaceLiquidEvent;
-import ru.gltexture.zpm3.assets.player.events.common.ZPPlayerEntityItemEvent;
-import ru.gltexture.zpm3.assets.player.events.common.ZPPlayerJoinOrSpawnEvent;
 import ru.gltexture.zpm3.assets.player.events.server.ZPPlayerFillBucketEvent;
-import ru.gltexture.zpm3.assets.player.events.common.ZPPlayerTickEvent;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.asset.ZPAsset;
@@ -63,6 +61,8 @@ public class ZPPlayerAsset extends ZPAsset {
         assetEntry.addEventClass(ZPPlayerTickEvent.class);
         assetEntry.addEventClass(ZPPlayerFillBucketEvent.class);
         assetEntry.addEventClass(ZPPlaceLiquidEvent.class);
+        assetEntry.addEventClass(ZPPlayerEatFoodEvent.class);
+        assetEntry.addEventClass(ZPRenderGuiEvent.class);
         assetEntry.addEventClass(ZPPlayerJoinOrSpawnEvent.class);
     }
 

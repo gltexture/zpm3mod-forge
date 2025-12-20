@@ -16,7 +16,7 @@ import ru.gltexture.zpm3.engine.helpers.ZPBlockTagsHelper;
 import ru.gltexture.zpm3.engine.helpers.ZPFluidTagsHelper;
 import ru.gltexture.zpm3.engine.helpers.ZPItemTagsHelper;
 import ru.gltexture.zpm3.engine.helpers.ZPLootTableHelper;
-import ru.gltexture.zpm3.engine.helpers.gen.data.VanillaMinecraftModelParentReference;
+import ru.gltexture.zpm3.engine.helpers.gen.data.MinecraftModelParentReference;
 import ru.gltexture.zpm3.engine.helpers.gen.data.ZPGenTextureData;
 import ru.gltexture.zpm3.engine.helpers.gen.providers.ZPBlockModelProvider;
 import ru.gltexture.zpm3.engine.helpers.gen.providers.ZPItemModelProvider;
@@ -31,29 +31,30 @@ public abstract class ZPDataGenHelper {
     public static final String CUTOUT_RENDER_TYPE = "cutout";
     public static final String TRANSLUCENT_RENDER_TYPE = "translucent";
 
-    public static final VanillaMinecraftModelParentReference DEFAULT_CHEST_BLOCK = new VanillaMinecraftModelParentReference("block/chest");
-    public static final VanillaMinecraftModelParentReference DEFAULT_CHEST_ITEM = new VanillaMinecraftModelParentReference("item/chest");
-    public static final VanillaMinecraftModelParentReference DEFAULT_WATER = new VanillaMinecraftModelParentReference("block/water");
-    public static final VanillaMinecraftModelParentReference DEFAULT_BLOCK_CUBE = new VanillaMinecraftModelParentReference("block/cobblestone");
-    public static final VanillaMinecraftModelParentReference DEFAULT_BLOCK_STAIRS = new VanillaMinecraftModelParentReference("block/cobblestone_stairs");
-    public static final VanillaMinecraftModelParentReference DEFAULT_BLOCK_SLAB = new VanillaMinecraftModelParentReference("block/cobblestone_slab");
-    public static final VanillaMinecraftModelParentReference DEFAULT_BLOCK_CROSS = new VanillaMinecraftModelParentReference("block/cross");
-    public static final @Nullable VanillaMinecraftModelParentReference NO_REFERENCE = null;
+    public static final MinecraftModelParentReference DEFAULT_BLOCK_AIR = new MinecraftModelParentReference("block/air");
+    public static final MinecraftModelParentReference DEFAULT_CHEST_BLOCK = new MinecraftModelParentReference("block/chest");
+    public static final MinecraftModelParentReference DEFAULT_CHEST_ITEM = new MinecraftModelParentReference("item/chest");
+    public static final MinecraftModelParentReference DEFAULT_WATER = new MinecraftModelParentReference("block/water");
+    public static final MinecraftModelParentReference DEFAULT_BLOCK_CUBE = new MinecraftModelParentReference("block/cobblestone");
+    public static final MinecraftModelParentReference DEFAULT_BLOCK_STAIRS = new MinecraftModelParentReference("block/cobblestone_stairs");
+    public static final MinecraftModelParentReference DEFAULT_BLOCK_SLAB = new MinecraftModelParentReference("block/cobblestone_slab");
+    public static final MinecraftModelParentReference DEFAULT_BLOCK_CROSS = new MinecraftModelParentReference("block/cross");
+    public static final @Nullable MinecraftModelParentReference NO_REFERENCE = null;
 
-    public static final VanillaMinecraftModelParentReference DEFAULT_TORCH = new VanillaMinecraftModelParentReference("block/template_torch");
-    public static final VanillaMinecraftModelParentReference DEFAULT_TORCH_WALL = new VanillaMinecraftModelParentReference("block/template_torch_wall");
+    public static final MinecraftModelParentReference DEFAULT_TORCH = new MinecraftModelParentReference("block/template_torch");
+    public static final MinecraftModelParentReference DEFAULT_TORCH_WALL = new MinecraftModelParentReference("block/template_torch_wall");
 
-    public static final VanillaMinecraftModelParentReference DEFAULT_BLOCK_PILLAR = new VanillaMinecraftModelParentReference("block/cube_column");
+    public static final MinecraftModelParentReference DEFAULT_BLOCK_PILLAR = new MinecraftModelParentReference("block/cube_column");
 
-    public static final VanillaMinecraftModelParentReference DEFAULT_SPAWN_EGG = new VanillaMinecraftModelParentReference("item/template_spawn_egg");
+    public static final MinecraftModelParentReference DEFAULT_SPAWN_EGG = new MinecraftModelParentReference("item/template_spawn_egg");
 
-    public static final VanillaMinecraftModelParentReference DEFAULT_FOOD = new VanillaMinecraftModelParentReference("item/bread");
-    public static final VanillaMinecraftModelParentReference DEFAULT_ITEM = new VanillaMinecraftModelParentReference("item/diamond");
-    public static final VanillaMinecraftModelParentReference DEFAULT_MELEE = new VanillaMinecraftModelParentReference("item/diamond_sword");
-    public static final VanillaMinecraftModelParentReference DEFAULT_AXE = new VanillaMinecraftModelParentReference("item/diamond_axe");
-    public static final VanillaMinecraftModelParentReference DEFAULT_PICKAXE = new VanillaMinecraftModelParentReference("item/diamond_pickaxe");
-    public static final VanillaMinecraftModelParentReference DEFAULT_SHOVEL = new VanillaMinecraftModelParentReference("item/diamond_shovel");
-    public static final VanillaMinecraftModelParentReference DEFAULT_HOE = new VanillaMinecraftModelParentReference("item/diamond_hoe");
+    public static final MinecraftModelParentReference DEFAULT_FOOD = new MinecraftModelParentReference("item/bread");
+    public static final MinecraftModelParentReference DEFAULT_ITEM = new MinecraftModelParentReference("item/diamond");
+    public static final MinecraftModelParentReference DEFAULT_MELEE = new MinecraftModelParentReference("item/diamond_sword");
+    public static final MinecraftModelParentReference DEFAULT_AXE = new MinecraftModelParentReference("item/diamond_axe");
+    public static final MinecraftModelParentReference DEFAULT_PICKAXE = new MinecraftModelParentReference("item/diamond_pickaxe");
+    public static final MinecraftModelParentReference DEFAULT_SHOVEL = new MinecraftModelParentReference("item/diamond_shovel");
+    public static final MinecraftModelParentReference DEFAULT_HOE = new MinecraftModelParentReference("item/diamond_hoe");
 
     public static final ZPPath COMMON_BLOCKS_DIRECTORY = new ZPPath("common");
     public static final ZPPath TORCH_BLOCKS_DIRECTORY = new ZPPath("torch");

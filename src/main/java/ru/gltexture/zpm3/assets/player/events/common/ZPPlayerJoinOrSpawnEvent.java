@@ -2,6 +2,8 @@ package ru.gltexture.zpm3.assets.player.events.common;
 
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -22,6 +24,7 @@ public class ZPPlayerJoinOrSpawnEvent implements ZPEventClass {
     public ZPPlayerJoinOrSpawnEvent() {
     }
 
+    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void onPlayerSpawn(EntityJoinLevelEvent event) {
         ZPUtility.sides().onlyClient(() -> {

@@ -54,15 +54,15 @@ public class ZPPlayerAsset extends ZPAsset {
         ZPUtility.sides().onlyClient(() -> {
             assetEntry.addEventClass(ZPRenderWorldEventWithPickUpCheck.class);
             assetEntry.addEventClass(ZPPlayerItemToolTips.class);
+            assetEntry.addEventClass(ZPMenuPatchEvent.class);
+            assetEntry.addEventClass(ZPRenderGuiEvent.class);
         });
 
-        assetEntry.addEventClass(ZPMenuPatchEvent.class);
         assetEntry.addEventClass(ZPPlayerEntityItemEvent.class);
         assetEntry.addEventClass(ZPPlayerTickEvent.class);
         assetEntry.addEventClass(ZPPlayerFillBucketEvent.class);
         assetEntry.addEventClass(ZPPlaceLiquidEvent.class);
         assetEntry.addEventClass(ZPPlayerEatFoodEvent.class);
-        assetEntry.addEventClass(ZPRenderGuiEvent.class);
         assetEntry.addEventClass(ZPPlayerJoinOrSpawnEvent.class);
     }
 

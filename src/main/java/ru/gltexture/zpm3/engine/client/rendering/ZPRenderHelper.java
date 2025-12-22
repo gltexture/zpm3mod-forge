@@ -1,11 +1,15 @@
 package ru.gltexture.zpm3.engine.client.rendering;
 
 import com.mojang.blaze3d.platform.Window;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.SharedConstants;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.Mth;
 import net.minecraftforge.event.TickEvent;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL46;
+import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
 import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacksManager;
 import ru.gltexture.zpm3.engine.client.rendering.crosshair.ZPClientCrosshairRecoilManager;
@@ -14,6 +18,7 @@ import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooksManager;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPDefaultShaders;
 import ru.gltexture.zpm3.engine.client.rendering.ui.imgui.ZPDearUIRenderer;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
+import ru.gltexture.zpm3.engine.mixins.impl.client.GameRendererAccessor;
 
 public final class ZPRenderHelper implements ZPClientCallbacks.ZPClientResourceDependentObject {
     public static ZPRenderHelper INSTANCE = new ZPRenderHelper();
@@ -22,6 +27,17 @@ public final class ZPRenderHelper implements ZPClientCallbacks.ZPClientResourceD
 
     private ZPRenderHelper() {
         this.dearUIRenderer = new ZPDearUIRenderer(ZPDefaultShaders.imgui::getShaderInstance);
+    }
+
+    public static double fovItemOffset(Camera camera, float partialTicks, PoseStack poseStack) {
+        if (ZPConstants.FIRST_PERSON_RENDER_SCALE_TYPE == 1) {
+            return 0.0f;
+        }
+        final double def = 70.0f;
+        final double maxAbs = 110.0f - def;
+        double fov = ((GameRendererAccessor) Minecraft.getInstance().gameRenderer).invokeGetFov(camera, partialTicks, true);
+        double absFov = (fov - def) / maxAbs;
+        return Math.pow(Math.abs(absFov), 1.25f) * Math.signum(absFov);
     }
 
     public void init() {

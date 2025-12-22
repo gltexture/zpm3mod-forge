@@ -18,12 +18,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.debug.imgui.DearUITRSInterface;
-import ru.gltexture.zpm3.assets.guns.events.ZPGunPostRender;
 import ru.gltexture.zpm3.assets.guns.item.ZPBaseGun;
 import ru.gltexture.zpm3.assets.guns.rendering.fx.ZPGunFXGlobalData;
 import ru.gltexture.zpm3.assets.guns.rendering.transforms.AbstractGunTransforms;
 import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
+import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
 import ru.gltexture.zpm3.engine.exceptions.ZPNullException;
 
 import java.util.Objects;
@@ -201,6 +202,11 @@ public class ZPDefaultPistolRenderer extends ZPAbstractGunRenderer {
                         .rotateZ((float) Math.toRadians(startRotation.z))
                         .scale(Objects.requireNonNull(this.gunTransforms().scalingGun1P()).add(new Vector3f(DearUITRSInterface.trsGun.scale).sub(new Vector3f(1.0f))));
                 pPoseStack.pushTransformation(new Transformation(transformation));
+
+                if (ZPConstants.FIRST_PERSON_RENDER_SPACE_SCALE_BY_FOV) {
+                    double f1 = ZPRenderHelper.fovItemOffset(Minecraft.getInstance().gameRenderer.getMainCamera(), pPartialTicks, pPoseStack);
+                    pPoseStack.translate(0.0f, f1 * -0.0625f, f1 * 0.25f);
+                }
 
                 @Nullable Matrix4f reloading = ZPDefaultGunRenderers.defaultReloadingFXUniversal.getCurrentGunReloadingTransformation(isRightHanded, pPartialTicks);
                 if (reloading != null) {

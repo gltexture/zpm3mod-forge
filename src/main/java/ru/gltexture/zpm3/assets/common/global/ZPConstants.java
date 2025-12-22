@@ -574,11 +574,18 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public static boolean FANCY_ITEM_ENTITIES = true;
 
     @ZPConfigurableConstant(
-            description = "(ONLY CLIENT) Fov Item Scaling.",
+            description = "(ONLY CLIENT) Fov 1-St Person Scaling.",
             group = ZPConstants.GROUP_CLIENT,
             type = ZPConfigurableConstant.TYPES.BOOLEAN
     )
-    public static boolean FOV_ITEM_SCALING = true;
+    public static boolean FIRST_PERSON_RENDER_SPACE_SCALE_BY_FOV = true;
+
+    @ZPConfigurableConstant(
+            description = "(ONLY CLIENT) Fov 1-St Person Scaling type. 0=Progressive(Position transpose); 1=Static",
+            group = ZPConstants.GROUP_CLIENT,
+            type = ZPConfigurableConstant.TYPES.INT
+    )
+    public static int FIRST_PERSON_RENDER_SCALE_TYPE = 0;
 
     @Override
     public String configName() {

@@ -16,6 +16,7 @@
     "common.ZPServerPlayerGameMixin"
   ],
   "client": [
+    "client.GameRendererAccessor",
     "client.TranslatableContentsFixMixin",
     "client.ZPClientLevelMixin",
     "client.ZPEntityRendererMixin",

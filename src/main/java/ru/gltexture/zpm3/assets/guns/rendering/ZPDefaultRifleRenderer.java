@@ -7,7 +7,6 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.chunk.ChunkRenderDispatcher;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,13 +17,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import org.lwjgl.opengl.GL46;
+import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.debug.imgui.DearUITRSInterface;
-import ru.gltexture.zpm3.assets.guns.events.ZPGunPostRender;
 import ru.gltexture.zpm3.assets.guns.item.ZPBaseGun;
 import ru.gltexture.zpm3.assets.guns.rendering.fx.ZPGunFXGlobalData;
 import ru.gltexture.zpm3.assets.guns.rendering.transforms.AbstractGunTransforms;
 import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
+import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
 import ru.gltexture.zpm3.engine.exceptions.ZPNullException;
 import ru.gltexture.zpm3.engine.service.Pair;
 
@@ -225,6 +224,11 @@ public class ZPDefaultRifleRenderer extends ZPAbstractGunRenderer {
                         .rotateZ((float) Math.toRadians(startRotation.z))
                         .scale(Objects.requireNonNull(abstractGunRenderer.gunTransforms().scalingGun1P()));
                 pPoseStack.pushTransformation(new Transformation(transformation));
+
+                if (ZPConstants.FIRST_PERSON_RENDER_SPACE_SCALE_BY_FOV) {
+                    double f1 = ZPRenderHelper.fovItemOffset(Minecraft.getInstance().gameRenderer.getMainCamera(), pPartialTicks, pPoseStack);
+                    pPoseStack.translate(0.0f, f1 * -0.0625f, f1 * 0.25f);
+                }
 
                 @Nullable Matrix4f reloading = ZPDefaultGunRenderers.defaultReloadingFXUniversal.getCurrentGunReloadingTransformation(isRightHanded, pPartialTicks);
                 if (reloading != null) {

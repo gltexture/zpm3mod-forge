@@ -3,6 +3,8 @@ package ru.gltexture.zpm3.assets.player.events.client;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -12,6 +14,7 @@ import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.events.ZPEventClass;
 import ru.gltexture.zpm3.engine.mixins.ext.IZPPlayerMixinExt;
 
+@OnlyIn(Dist.CLIENT)
 public class ZPRenderGuiEvent implements ZPEventClass {
     public ZPRenderGuiEvent() {
     }

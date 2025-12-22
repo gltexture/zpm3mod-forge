@@ -11,6 +11,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.mixins.ext.IZPPlayerMixinExt;
@@ -56,6 +58,7 @@ public class ZPBlockCrack implements ZPNetwork.ZPPacket {
     public void onServer(@NotNull Player sender, @NotNull ServerLevel serverLevel) {
     }
 
+    @OnlyIn(Dist.CLIENT)
     @SuppressWarnings("deprecation")
     @Override
     public void onClient(@NotNull Player localPlayer) {

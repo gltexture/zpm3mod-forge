@@ -136,7 +136,7 @@ public abstract class ZPRegTorchBlocks {
         ).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
             utils.blocks().setBlockModelExecutor(e, DefaultBlockModelExecutors.getDefaultWallTorch());
-            utils.blocks().addBlockModelWithCopiedTexture(e, ZPDataGenHelper.DEFAULT_TORCH_WALL, ZPTorchBlocks.wall_lamp);
+            utils.blocks().addBlockModelWithCopiedTexture(e, ZPDataGenHelper.DEFAULT_TORCH_WALL, ZPTorchBlocks.wall_lamp_off);
             utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
             });
         }).end();

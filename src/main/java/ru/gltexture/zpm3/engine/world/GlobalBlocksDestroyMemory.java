@@ -2,12 +2,17 @@ package ru.gltexture.zpm3.engine.world;
 
 import com.google.common.base.Optional;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3i;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
+import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 
 import java.util.*;
 
@@ -18,6 +23,31 @@ public class GlobalBlocksDestroyMemory {
         this.memory = new HashMap<>();
     }
 
+    public static void spawnBlockCrackParticles(ServerLevel serverLevel, BlockPos origin) {
+        BlockState blockState = serverLevel.getBlockState(origin);
+
+        for (Direction dir : Direction.values()) {
+            int particlesPerFace = 3 + ZPRandom.getRandom().nextInt(3);
+            for (int i = 0; i < particlesPerFace; i++) {
+                double x = origin.getX() + (dir == Direction.WEST ? -0.2 : dir == Direction.EAST ? 1.2 : ZPRandom.getRandom().nextDouble());
+                double y = origin.getY() + (dir == Direction.DOWN ? -0.2 : dir == Direction.UP ? 1.2 : ZPRandom.getRandom().nextDouble());
+                double z = origin.getZ() + (dir == Direction.NORTH ? -0.2 : dir == Direction.SOUTH ? 1.2 : ZPRandom.getRandom().nextDouble());
+
+                BlockPos checkPos = new BlockPos((int) Math.floor(x), (int) Math.floor(y), (int) Math.floor(z));
+                BlockState checkState = serverLevel.getBlockState(checkPos);
+
+                if (checkState.isSolid()) {
+                    continue;
+                }
+
+                double vx = (ZPRandom.getRandom().nextDouble() - 0.5) * 0.05;
+                double vy = (ZPRandom.getRandom().nextDouble() - 0.5) * 0.05;
+                double vz = (ZPRandom.getRandom().nextDouble() - 0.5) * 0.05;
+
+                serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, blockState), x, y, z, 3, vx, vy, vz, 0.0D);
+            }
+        }
+    }
     public void addNewEntryShortMem(@NotNull Level level, @NotNull BlockPos blockPos, float progressInc) {
         this.addNewEntry(level, blockPos, progressInc, ZPConstants.TIME_TO_CLEAR_SHARED_ZOMBIE_MINING_SHORT_MEM);
     }

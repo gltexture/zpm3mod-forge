@@ -12,12 +12,17 @@ import java.util.Objects;
 
 @OnlyIn(Dist.CLIENT)
 public class ZPClientCrosshairRecoilManager {
+    private static final float DAMPING_MAX = 0.25f;
+
     private static Vector3f cameraTransform;
     private static Vector3f cameraTransformPrev;
+    private static float recoilDamping;
+    private static int dampCooldown;
 
     static {
         ZPClientCrosshairRecoilManager.cameraTransform = new Vector3f(0.0f);
         ZPClientCrosshairRecoilManager.cameraTransformPrev = new Vector3f(0.0f);
+        ZPClientCrosshairRecoilManager.recoilDamping = 0.0f;
     }
 
     public static float recoilDecaySpeed = 0.3f;
@@ -29,6 +34,9 @@ public class ZPClientCrosshairRecoilManager {
 
         ZPClientCrosshairRecoilManager.cameraTransformPrev.set(ZPClientCrosshairRecoilManager.cameraTransform);
         ZPClientCrosshairRecoilManager.cameraTransform.mul(ZPClientCrosshairRecoilManager.recoilDecaySpeed);
+        if (ZPClientCrosshairRecoilManager.dampCooldown-- <= 0) {
+            ZPClientCrosshairRecoilManager.recoilDamping = Math.max(ZPClientCrosshairRecoilManager.recoilDamping - 0.1f, 0.0f);
+        }
     }
 
     public static void onRenderTick(double deltaTicks, @NotNull Minecraft minecraft) {
@@ -50,6 +58,7 @@ public class ZPClientCrosshairRecoilManager {
         if (ZPFreeCameraEvents.enabled) {
             return 0.0f;
         }
+        recoilPitch *= (1.0f - ZPClientCrosshairRecoilManager.recoilDamping);
         final int i = ZPRandom.getRandom().nextBoolean() ? 1 : -1;
 
         Minecraft minecraft = Minecraft.getInstance();
@@ -67,6 +76,8 @@ public class ZPClientCrosshairRecoilManager {
         Objects.requireNonNull(Minecraft.getInstance().player).bob = Math.min(recoilPitch * 0.01f, 0.2f);
 
         ZPClientCrosshairRecoilManager.cameraTransform.set(nPitch * 2.0f, nYaw * 0.5f, nRoll * -i);
+        ZPClientCrosshairRecoilManager.recoilDamping = Math.min(ZPClientCrosshairRecoilManager.recoilDamping + (ZPClientCrosshairRecoilManager.DAMPING_MAX * 0.05f), ZPClientCrosshairRecoilManager.DAMPING_MAX);
+        ZPClientCrosshairRecoilManager.dampCooldown = 3;
         return nPitch;
     }
 }

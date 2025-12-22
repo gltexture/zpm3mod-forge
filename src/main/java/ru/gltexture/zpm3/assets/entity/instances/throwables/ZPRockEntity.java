@@ -24,6 +24,7 @@ import ru.gltexture.zpm3.engine.mixins.ext.IZPLevelExt;
 import ru.gltexture.zpm3.assets.common.utils.ZPCommonClientUtils;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.instances.entities.ZPThrowableEntity;
+import ru.gltexture.zpm3.engine.world.GlobalBlocksDestroyMemory;
 
 public class ZPRockEntity extends ZPThrowableEntity {
     public ZPRockEntity(EntityType<ZPRockEntity> pEntityType, Level pLevel) {
@@ -86,6 +87,7 @@ public class ZPRockEntity extends ZPThrowableEntity {
                     if (this.level() instanceof IZPLevelExt ext) {
                         if (ZPFakePlayer.canBreakBlock((ServerLevel) this.level(), pos) && !ZPZoneChecks.INSTANCE.isNoThrowableBlockDamage((ServerLevel) this.level(), pos)) {
                             ext.getGlobalBlocksDestroyMemory().addNewEntryLongMem(this.level(), pos, (5.0f + ZPRandom.getRandom().nextFloat(5.0f)) * ZPConstants.THROWABLES_BLOCK_BREAK_MULTIPLIER);
+                            GlobalBlocksDestroyMemory.spawnBlockCrackParticles((ServerLevel) this.level(), pos);
                         }
                     }
                 }

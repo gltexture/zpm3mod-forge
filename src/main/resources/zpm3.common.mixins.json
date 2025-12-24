@@ -5,13 +5,14 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "zpm3.refmap.json",
   "mixins": [
-    "common.ZPTorchMixin",
-    "common.ZPWallTorchMixin",
-    "common.ZPPumpkinMixin",
-    "common.ZPLavaMixin",
     "common.ZPFluidPlacedMixin",
+    "common.ZPLavaMixin",
+    "common.ZPMilkMixin",
     "common.ZPMobCategoryMixin",
-    "common.ZPMilkMixin"
+    "common.ZPPumpkinMixin",
+    "common.ZPTorchMixin",
+    "common.ZPVineBlockMixin",
+    "common.ZPWallTorchMixin"
   ],
   "client": [
   ],

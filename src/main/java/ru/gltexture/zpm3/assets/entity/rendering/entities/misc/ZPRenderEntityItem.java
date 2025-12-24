@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 import ru.gltexture.zpm3.assets.player.client.ZPClientGlobalSettings;
 import ru.gltexture.zpm3.assets.player.events.client.ZPRenderWorldEventWithPickUpCheck;
@@ -78,8 +79,7 @@ public class ZPRenderEntityItem extends ItemEntityRenderer {
             this.random.setSeed(i);
             BakedModel bakedmodel = this.itemRenderer.getModel(itemstack, pEntity.level(), null, pEntity.getId());
             int j = this.getRenderAmount(itemstack);
-            float scaling = this.getScaling(bakedmodel, itemstack);
-            scale = scaling;
+            Vector3f scaling = this.getScaling(bakedmodel, itemstack);
             pPoseStack.translate(0.0f, 1.0e-8f * this.random2.nextInt(Short.MAX_VALUE), 0.0f);
 
             if (!pEntity.onGround()) {
@@ -100,9 +100,8 @@ public class ZPRenderEntityItem extends ItemEntityRenderer {
                 pPoseStack.mulPose(Axis.ZP.rotation((float) (Math.PI * this.random.nextFloat() * 2.0f)));
             } else {
                 pPoseStack.translate(0.0F, -0.1f, 0.0F);
-                scaling += 1.0f;
             }
-            pPoseStack.scale(scaling, scaling, scaling);
+            pPoseStack.scale(scaling.x, scaling.y, scaling.z);
             for (int k = 0; k < j; ++k) {
                 pPoseStack.pushPose();
                 if (k > 0) {
@@ -119,20 +118,24 @@ public class ZPRenderEntityItem extends ItemEntityRenderer {
             super.render(pEntity, pEntityYaw, pPartialTicks, pPoseStack, pBuffer, pPackedLight);
         }
         if (ZPConstants.PICK_UP_ON_F && ZPClientGlobalSettings.SERVER_PICK_UP_ON_F && ZPRenderWorldEventWithPickUpCheck.entityToPickUp != null && ZPRenderWorldEventWithPickUpCheck.entityToPickUp.equals(pEntity)) {
-            this.renderPickUpTip(pEntity, pPoseStack, pBuffer, scale);
+            this.renderPickUpTip(pEntity, pPoseStack, pBuffer, 0.0f);
         }
     }
 
-    private float getScaling(BakedModel bakedModel, ItemStack stack) {
-        if (stack.getItem() instanceof ZPBaseGun baseGun) {
-            return baseGun.getGunProperties().getHeldType().equals(ZPBaseGun.GunProperties.HeldType.RIFLE) ? 2.4f : 1.8f;
+    @SuppressWarnings("all")
+    private Vector3f getScaling(BakedModel bakedModel, ItemStack stack) {
+        if (!bakedModel.isGui3d()) {
+            if (stack.getItem() instanceof ZPBaseGun baseGun) {
+                return new Vector3f(baseGun.getGunProperties().getHeldType().equals(ZPBaseGun.GunProperties.HeldType.RIFLE) ? 2.4f : 1.8f);
+            }
+            if (stack.getItem() instanceof ZPGunPistol || stack.getItem() instanceof SwordItem || stack.getItem() instanceof PickaxeItem || stack.getItem() instanceof AxeItem || stack.getItem() instanceof ArmorItem || stack.getItem() instanceof BowItem || stack.getItem() instanceof ShovelItem) {
+                return new Vector3f(1.45f);
+            }
+        } else {
+            if (stack.getItem() instanceof BlockItem blockItem) {
+                return new Vector3f(1.25f);
+            }
         }
-        if (stack.getItem() instanceof ZPGunPistol || stack.getItem() instanceof SwordItem || stack.getItem() instanceof PickaxeItem || stack.getItem() instanceof AxeItem || stack.getItem() instanceof ArmorItem || stack.getItem() instanceof BowItem || stack.getItem() instanceof ShovelItem) {
-            return 1.45f;
-        }
-        if (stack.getItem() instanceof BlockItem blockItem && bakedModel.isGui3d()) {
-            return 0.25f;
-        }
-        return 1.15f;
+        return new Vector3f(bakedModel.isGui3d() ? 1.0f : 1.25f);
     }
 }

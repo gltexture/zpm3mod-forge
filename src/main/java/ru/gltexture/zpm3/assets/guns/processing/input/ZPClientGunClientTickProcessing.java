@@ -116,7 +116,7 @@ public class ZPClientGunClientTickProcessing implements IZPGunInputProcessor {
                 final boolean rightIsGun = rightGun != null;
                 final boolean leftIsGun = leftGun != null;
 
-                ZPClientGunClientTickProcessing.tryToShootOnlyRight = (leftIsGun && !rightIsGun) && ZPClientGunClientTickProcessing.tryShotOnlyLeftGunWhileRightIsEmpty(minecraft);
+                ZPClientGunClientTickProcessing.tryToShootOnlyRight = ZPClientGunClientTickProcessing.tryShotOnlyLeftGunWhileRightIsEmpty(minecraft) && (leftIsGun && !rightIsGun);
                 final boolean flagRightTemp = ZPClientGunClientTickProcessing.wasPressedRight;
                 final boolean flagLeftTemp = ZPClientGunClientTickProcessing.wasPressedLeft;
                 ZPClientGunClientTickProcessing.wasPressedRight = rightPressed;
@@ -240,6 +240,20 @@ public class ZPClientGunClientTickProcessing implements IZPGunInputProcessor {
                 }
             }
         }
+    }
+
+    public static boolean shouldBlockMouseAttackWithGunCheck(@NotNull Minecraft minecraft) {
+        @Nullable Player player = minecraft.player;
+        ClientLevel level = minecraft.level;
+        if (level != null && player != null) {
+            if (minecraft.screen == null && minecraft.getOverlay() == null) {
+                if (!(player.getOffhandItem().getItem() instanceof ZPBaseGun)) {
+                    return false;
+                }
+            }
+        }
+        boolean leftPressed = minecraft.mouseHandler.isLeftPressed();
+        return ZPClientGunClientTickProcessing.rightClickedFirst && leftPressed;
     }
 
     public static boolean shouldBlockMouseAttack(@NotNull Minecraft minecraft) {

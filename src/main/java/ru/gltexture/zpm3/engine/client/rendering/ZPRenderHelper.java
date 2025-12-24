@@ -18,6 +18,7 @@ import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooksManager;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPDefaultShaders;
 import ru.gltexture.zpm3.engine.client.rendering.ui.imgui.ZPDearUIRenderer;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
+import ru.gltexture.zpm3.engine.events.client.ZPClientForge;
 import ru.gltexture.zpm3.engine.mixins.impl.client.GameRendererAccessor;
 
 public final class ZPRenderHelper implements ZPClientCallbacks.ZPClientResourceDependentObject {
@@ -38,6 +39,10 @@ public final class ZPRenderHelper implements ZPClientCallbacks.ZPClientResourceD
         double fov = ((GameRendererAccessor) Minecraft.getInstance().gameRenderer).invokeGetFov(camera, partialTicks, true);
         double absFov = (fov - def) / maxAbs;
         return Math.pow(Math.abs(absFov), 1.25f) * Math.signum(absFov);
+    }
+
+    public static float DELTA_TIME() {
+        return ZPClientForge.RENDER_DELTA_TIME;
     }
 
     public void init() {

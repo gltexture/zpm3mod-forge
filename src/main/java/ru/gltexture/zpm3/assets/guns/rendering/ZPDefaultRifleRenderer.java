@@ -200,10 +200,11 @@ public class ZPDefaultRifleRenderer extends ZPAbstractGunRenderer {
         ZPDefaultRifleRenderer.onRenderItem1PersonRifle(this, pPlayer, deltaTicks, pPartialTicks, pPitch, pHand, pSwingProgress, pStack, pEquippedProgress, pPoseStack, pBuffer, pCombinedLight);
     }
 
-    public static void onRenderItem1PersonRifle(ZPAbstractGunRenderer abstractGunRenderer, AbstractClientPlayer pPlayer, float deltaTicks, float pPartialTicks, float pPitch, InteractionHand pHand, float pSwingProgress, ItemStack pStack, float pEquippedProgress, PoseStack pPoseStack, MultiBufferSource pBuffer, int pCombinedLight) {
+    public static void onRenderItem1PersonRifle(ZPAbstractGunRenderer abstractGunRenderer, AbstractClientPlayer pPlayer, float deltaTicks, float pPartialTicks, float pPitch, InteractionHand pHand, float pSwingProgress, ItemStack pStack, float pEquippedProgress, PoseStack oldPstack, MultiBufferSource pBuffer, int pCombinedLight) {
         try {
             final boolean isRightHanded = pHand == InteractionHand.MAIN_HAND;
             if (pStack.getItem() instanceof ZPBaseGun baseGun) {
+                PoseStack pPoseStack = new PoseStack();
                 pPoseStack.pushPose();
                 final float equippedConst = -0.6F + pEquippedProgress * -0.6F;
                 final Matrix4f transformation = new Matrix4f().identity();
@@ -215,7 +216,6 @@ public class ZPDefaultRifleRenderer extends ZPAbstractGunRenderer {
                 final Vector3f startRotation = Objects.requireNonNull(isRightHanded ? abstractGunRenderer.gunTransforms().rotationGunRight() : abstractGunRenderer.gunTransforms().rotationGunLeft());
                 startRotation.add(DearUITRSInterface.trsGun.rotation);
 
-                pPoseStack = new PoseStack();
                 abstractGunRenderer.translateStack(pPoseStack, pPartialTicks);
                 transformation
                         .translate(startTranslation)

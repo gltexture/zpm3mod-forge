@@ -1,6 +1,5 @@
 package ru.gltexture.zpm3.assets.guns.rendering;
 
-import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.shaders.Uniform;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -26,7 +25,6 @@ import java.util.Objects;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class ZPGunLayersProcessing {
-
     @SuppressWarnings("unchecked")
     public static void postRenderMflash1Person(@NotNull Matrix4f orthographic2D, @NotNull Matrix4f fullMatrix, @NotNull Matrix4f halfMatrix, ZPDefaultGunMuzzleflashFX defaultGunMuzzleflashFX) {
         @NotNull Minecraft minecraft = Minecraft.getInstance();

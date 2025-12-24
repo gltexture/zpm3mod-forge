@@ -28,6 +28,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import org.lwjgl.opengl.GL46;
 import ru.gltexture.zpm3.assets.debug.imgui.DearUITRSInterface;
 
 @OnlyIn(Dist.CLIENT)
@@ -70,15 +71,18 @@ public class HumanoidArmorLayerOnArm<T extends LivingEntity, M extends HumanoidM
 
       Matrix4f translate = new Matrix4f().identity();
 
-      float x = 0.515f;
-      float y = -1.665f;
-
+      float x = 0.537f;
+      float y = -1.74f;
+      float scaleX = 1.52f;
+      float scaleY = 2.0f;
+      float scaleZ = 1.52f;
+      float rotationX = 0.89f;
       translate
               .translate(new Vector3f(rightArm ? x : -x, y, 0.0f))
               .rotateX((float) Math.toRadians(0.0f))
               .rotateY((float) Math.toRadians(0.0f))
-              .rotateZ((float) Math.toRadians(0.0f))
-              .scale(1.55f, 2.0f, 1.55f);
+              .rotateZ((float) Math.toRadians(rightArm ? rotationX : -rotationX))
+              .scale(scaleX, scaleY, scaleZ);
 
       poseStack.pushPose();
       if (rightArm) {

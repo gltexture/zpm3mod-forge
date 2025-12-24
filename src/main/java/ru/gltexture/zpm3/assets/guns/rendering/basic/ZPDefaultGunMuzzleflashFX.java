@@ -21,6 +21,7 @@ import org.joml.Quaternionf;
 import org.joml.Vector2i;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL46;
+import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.debug.imgui.DearUITRSInterface;
 import ru.gltexture.zpm3.assets.guns.events.ZPGunPostRender;
 import ru.gltexture.zpm3.assets.guns.mixins.ext.IZPPlayerClientDataExt;
@@ -86,8 +87,8 @@ public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderH
         }
         final int id = this.hand(gunFXData.isRightHand());
         if (player.equals(Minecraft.getInstance().player)) {
-        this.muzzleflashTime1Person = gunFXData.muzzleflashTime();
-        this.muzzleflashScissor1Person[id] = this.muzzleflashScissor1Person[id] > 0.01f ? 0.35f : 0.0f;
+            this.muzzleflashTime1Person = gunFXData.muzzleflashTime();
+            this.muzzleflashScissor1Person[id] = this.muzzleflashScissor1Person[id] > 0.01f ? 0.35f : 0.0f;
         }
         this.initialRotation[id] = ZPRandom.instance.randomFloat((float) Math.PI);
         if (player instanceof IZPPlayerClientDataExt playerClientDataExt) {
@@ -106,6 +107,7 @@ public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderH
         if (livingEntity instanceof IZPPlayerClientDataExt player) {
             player.getPlayerMuzzleflashScissor3Person()[0] += deltaTicks / ZPDefaultGunMuzzleflashFX.MUZZLEFLASH_3PERSON_TIME;
             player.getPlayerMuzzleflashScissor3Person()[1] += deltaTicks / ZPDefaultGunMuzzleflashFX.MUZZLEFLASH_3PERSON_TIME;
+
             if (DearUITRSInterface.muzzleflashHandling) {
                 player.getPlayerMuzzleflashScissor3Person()[0] = player.getPlayerMuzzleflashScissor3Person()[1] = DearUITRSInterface.scissor3P;
             }
@@ -168,12 +170,18 @@ public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderH
             GL46.glDrawBuffers(new int[]{GL46.GL_COLOR_ATTACHMENT1, GL46.GL_COLOR_ATTACHMENT2});
             GL46.glClear(GL46.GL_COLOR_BUFFER_BIT);
         }
+        boolean blendEnabled = GL46.glIsEnabled(GL46.GL_BLEND);
+        boolean depthEnabled = GL46.glIsEnabled(GL46.GL_DEPTH_TEST);
         GL46.glEnable(GL46.GL_BLEND);
         GL46.glEnable(GL46.GL_DEPTH_TEST);
         this.renderMuzzleFlash1Person(this.muzzleflashScissor1Person[0], false);
         this.renderMuzzleFlash1Person(this.muzzleflashScissor1Person[1], true);
-       // GL46.glDisable(GL46.GL_BLEND);
-        GL46.glDisable(GL46.GL_DEPTH_TEST);
+        if (!blendEnabled) {
+            GL46.glDisable(GL46.GL_BLEND);
+        }
+        if (!depthEnabled) {
+            GL46.glDisable(GL46.GL_DEPTH_TEST);
+        }
     }
 
     private void renderMuzzleFlash1Person(float muzzleflashScissor, boolean isRightHanded) {
@@ -252,11 +260,11 @@ public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderH
     }
 
     public static boolean renderMuzzleflash1Person() {
-        return ZPDefaultGunMuzzleflashFX.minQuality() >= 2;
+        return ZPDefaultGunMuzzleflashFX.minQuality() >= 2 && ZPConstants.RENDER_MUZZLE_FLASHES;
     }
 
     public static boolean renderMuzzleflash3Person() {
-        return ZPDefaultGunMuzzleflashFX.minQuality() >= 2;
+        return ZPDefaultGunMuzzleflashFX.minQuality() >= 2 && ZPConstants.RENDER_MUZZLE_FLASHES;
     }
 
     public static boolean useFancyRendering1person() {
@@ -352,6 +360,9 @@ public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderH
     @Override
     public void onPostRender3Person(float deltaTicks, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, LivingEntity pLivingEntity, float pLimbSwing, float pLimbSwingAmount, float pPartialTicks, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
         if (ZPDefaultGunMuzzleflashFX.renderMuzzleflash3Person()) {
+            boolean stencilEnabled = GL46.glIsEnabled(GL46.GL_STENCIL_TEST);
+            boolean depthEnabled = GL46.glIsEnabled(GL46.GL_DEPTH_TEST);
+            boolean blendEnabled = GL46.glIsEnabled(GL46.GL_BLEND);
             GL46.glEnable(GL46.GL_STENCIL_TEST);
             GL46.glEnable(GL46.GL_DEPTH_TEST);
             GL46.glEnable(GL46.GL_BLEND);
@@ -360,14 +371,22 @@ public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderH
             this.render3Person(pLivingEntity, pBuffer, deltaTicks, false);
             this.render3Person(pLivingEntity, pBuffer, deltaTicks, true);
             //GL46.glBlendFuncSeparate(GL46.GL_SRC_ALPHA, GL46.GL_ONE_MINUS_SRC_ALPHA, GL46.GL_ONE, GL46.GL_ONE_MINUS_SRC_ALPHA);
-            GL46.glDisable(GL46.GL_BLEND);
-            GL46.glDisable(GL46.GL_DEPTH_TEST);
-            GL46.glDisable(GL46.GL_STENCIL_TEST);
+            if (!stencilEnabled) {
+                GL46.glDisable(GL46.GL_STENCIL_TEST);
+            }
+            if (!depthEnabled) {
+                GL46.glDisable(GL46.GL_DEPTH_TEST);
+            }
+            if (!blendEnabled) {
+                GL46.glDisable(GL46.GL_BLEND);
+            }
         }
     }
 
     @Override
     public void onPreRender3Person(float deltaTicks, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, LivingEntity pLivingEntity, float pLimbSwing, float pLimbSwingAmount, float pPartialTicks, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
-        GL46.glClear(GL46.GL_STENCIL_BUFFER_BIT);
+        if (ZPDefaultGunMuzzleflashFX.renderMuzzleflash3Person()) {
+            GL46.glClear(GL46.GL_STENCIL_BUFFER_BIT);
+        }
     }
 }

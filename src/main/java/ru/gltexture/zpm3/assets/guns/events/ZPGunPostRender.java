@@ -1,5 +1,6 @@
 package ru.gltexture.zpm3.assets.guns.events;
 
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
@@ -11,23 +12,18 @@ import ru.gltexture.zpm3.assets.guns.rendering.ZPDefaultGunRenderers;
 import ru.gltexture.zpm3.assets.guns.rendering.ZPGunLayersProcessing;
 import ru.gltexture.zpm3.assets.guns.rendering.basic.ZPDefaultGunMuzzleflashFX;
 import ru.gltexture.zpm3.assets.guns.rendering.tracer.ZPBulletTracerManager;
+import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.events.ZPEventClass;
 
 @OnlyIn(Dist.CLIENT)
 public class ZPGunPostRender implements ZPEventClass {
-    private static double lastFrameTime = 0.0f;
-    private static double deltaTime = -1.0f;
-
     @SubscribeEvent
     public static void exec(@NotNull RenderLevelStageEvent renderLevelStageEvent) {
         if (renderLevelStageEvent.getStage() == RenderLevelStageEvent.Stage.AFTER_LEVEL) {
             ZPGunLayersProcessing.postRender((ZPDefaultGunMuzzleflashFX) ZPDefaultGunRenderers.defaultMuzzleflashFXUniversal);
-        } else if (renderLevelStageEvent.getStage() == RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS) {
-            double currentTime = GLFW.glfwGetTime();
-            ZPGunPostRender.deltaTime = currentTime - lastFrameTime;
-            ZPGunPostRender.lastFrameTime = currentTime;
-            ZPBulletTracerManager.INSTANCE.renderAll(renderLevelStageEvent.getPoseStack(), renderLevelStageEvent.getPartialTick(), (float) ZPGunPostRender.deltaTime);
+        } else if (renderLevelStageEvent.getStage() == RenderLevelStageEvent.Stage.AFTER_ENTITIES) {
+            ZPBulletTracerManager.INSTANCE.renderAll(renderLevelStageEvent.getPoseStack(), renderLevelStageEvent.getPartialTick(), ZPRenderHelper.DELTA_TIME());
         }
     }
 

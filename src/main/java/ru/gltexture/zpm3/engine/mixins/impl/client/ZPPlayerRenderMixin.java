@@ -16,6 +16,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.engine.mixins.inst.HumanoidArmorLayerOnArm;
 
 import java.util.Map;
@@ -38,12 +39,16 @@ public abstract class ZPPlayerRenderMixin {
     @Inject(method = "renderRightHand", at = @At("TAIL"))
     @SuppressWarnings("unchecked")
     private void renderRightHand(PoseStack pPoseStack, MultiBufferSource pBuffer, int pCombinedLight, AbstractClientPlayer pPlayer, CallbackInfo ci) {
-        this.humanoidArmorLayer.renderArmorPiece(pPoseStack, pBuffer, true, pPlayer, pCombinedLight);
+        if (ZPConstants.RENDER_ARMOR_LAYERS_ON_HANDS) {
+            this.humanoidArmorLayer.renderArmorPiece(pPoseStack, pBuffer, true, pPlayer, pCombinedLight);
+        }
     }
 
     @Inject(method = "renderLeftHand", at = @At("TAIL"))
     @SuppressWarnings("unchecked")
     private void renderLeftHand(PoseStack pPoseStack, MultiBufferSource pBuffer, int pCombinedLight, AbstractClientPlayer pPlayer, CallbackInfo ci) {
-        this.humanoidArmorLayer.renderArmorPiece(pPoseStack, pBuffer, false, pPlayer, pCombinedLight);
+        if (ZPConstants.RENDER_ARMOR_LAYERS_ON_HANDS) {
+            this.humanoidArmorLayer.renderArmorPiece(pPoseStack, pBuffer, false, pPlayer, pCombinedLight);
+        }
     }
 }

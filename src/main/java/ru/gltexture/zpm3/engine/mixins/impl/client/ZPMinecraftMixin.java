@@ -22,7 +22,7 @@ public class ZPMinecraftMixin {
     @Inject(method = "startAttack", at = @At("HEAD"), cancellable = true)
     private void startAttack(CallbackInfoReturnable<Boolean> ci) {
         if (this.player != null) {
-            if (ZPClientGunClientTickProcessing.shouldBlockMouseAttack(Minecraft.getInstance()) || this.player.getMainHandItem().getItem() instanceof ZPBaseGun) {
+            if (ZPClientGunClientTickProcessing.shouldBlockMouseAttackWithGunCheck(Minecraft.getInstance()) || this.player.getMainHandItem().getItem() instanceof ZPBaseGun) {
                 ci.setReturnValue(false);
             }
         }

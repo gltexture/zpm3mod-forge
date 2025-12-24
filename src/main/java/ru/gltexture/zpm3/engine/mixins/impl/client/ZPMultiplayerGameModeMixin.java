@@ -16,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import ru.gltexture.zpm3.assets.guns.item.ZPBaseGun;
+import ru.gltexture.zpm3.assets.guns.processing.input.ZPClientGunClientTickProcessing;
 import ru.gltexture.zpm3.engine.mixins.ext.IZPLevelRendererExt;
 
 @Mixin(MultiPlayerGameMode.class)
@@ -35,7 +36,7 @@ public class ZPMultiplayerGameModeMixin {
                     this.destroyProgress = Math.max((visualProgress / 10.0f) - 0.1f, 0.0f);
                 }
                 ItemStack itemStack = Minecraft.getInstance().player.getMainHandItem();
-                if (itemStack.getItem() instanceof ZPBaseGun) {
+                if (ZPClientGunClientTickProcessing.shouldBlockMouseAttackWithGunCheck(Minecraft.getInstance()) || itemStack.getItem() instanceof ZPBaseGun) {
                     ci.setReturnValue(false);
                 }
             }

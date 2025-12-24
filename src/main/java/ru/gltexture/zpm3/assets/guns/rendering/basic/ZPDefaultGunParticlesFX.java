@@ -201,7 +201,6 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
 
             motion.add(ZPRandom.instance.randomVector3f(0.05f, new Vector3f(0.1f, 0.1f, 0.1f)));
         }
-
         Objects.requireNonNull(mc.level).addParticle(new GunShellOptions(ZPParticles.gun_shell.get(), color), false, spawnPos.x, spawnPos.y, spawnPos.z, motion.x(), motion.y() + 1.0f, motion.z());
     }
 

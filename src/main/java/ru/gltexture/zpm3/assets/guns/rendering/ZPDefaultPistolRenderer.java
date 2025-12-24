@@ -177,9 +177,10 @@ public class ZPDefaultPistolRenderer extends ZPAbstractGunRenderer {
     }
 
     @Override
-    public void onRenderItem1Person(AbstractClientPlayer pPlayer, float deltaTicks, float pPartialTicks, float pPitch, InteractionHand pHand, float pSwingProgress, ItemStack pStack, float pEquippedProgress, PoseStack pPoseStack, MultiBufferSource pBuffer, int pCombinedLight) {
+    public void onRenderItem1Person(AbstractClientPlayer pPlayer, float deltaTicks, float pPartialTicks, float pPitch, InteractionHand pHand, float pSwingProgress, ItemStack pStack, float pEquippedProgress, PoseStack oldPoseStack, MultiBufferSource pBuffer, int pCombinedLight) {
         try {
             if (pStack.getItem() instanceof ZPBaseGun baseGun) {
+                PoseStack pPoseStack = new PoseStack();
                 pPoseStack.pushPose();
                 final boolean isRightHanded = pHand == InteractionHand.MAIN_HAND;
                 final float equippedConst = -0.6F + pEquippedProgress * -0.6F;
@@ -192,7 +193,6 @@ public class ZPDefaultPistolRenderer extends ZPAbstractGunRenderer {
                 final Vector3f startRotation = Objects.requireNonNull(isRightHanded ? this.gunTransforms().rotationGunRight() : this.gunTransforms().rotationGunLeft());
                 startRotation.add(DearUITRSInterface.trsGun.rotation);
 
-                pPoseStack = new PoseStack();
                 pPoseStack.setIdentity();
                 this.translateStack(pPoseStack, pPartialTicks);
                 transformation

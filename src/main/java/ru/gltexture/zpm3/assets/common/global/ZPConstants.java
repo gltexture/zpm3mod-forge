@@ -4,6 +4,7 @@ import ru.gltexture.zpm3.engine.core.config.ZPConfigurableConstant;
 import ru.gltexture.zpm3.engine.core.config.ZPConfigurator;
 
 public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
+
     public ZPConstants() {
     }
 
@@ -391,6 +392,13 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public static int ZP_PATH_UPDATER_ALG = 1;
 
     @ZPConfigurableConstant(
+            description = "Disable vine climb.",
+            group = ZPConstants.GROUP_WORLD,
+            type = ZPConfigurableConstant.TYPES.BOOLEAN
+    )
+    public static boolean DISABLE_VINE_CLIMB = true;
+
+    @ZPConfigurableConstant(
             description = "Night time progression divider. During night, the world time is incremented once every N server ticks. Higher values slow down night duration.",
             group = ZPConstants.GROUP_WORLD,
             type = ZPConfigurableConstant.TYPES.INT,
@@ -565,6 +573,26 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public static int ITEMS_THROW_COOLDOWN = 20;
 
     // ===== CLIENT =====
+    @ZPConfigurableConstant(
+            description = "(ONLY CLIENT) Render muzzle flashes. Disabling sometimes can fix render-issues with other mods.",
+            group = ZPConstants.GROUP_CLIENT,
+            type = ZPConfigurableConstant.TYPES.BOOLEAN
+    )
+    public static boolean RENDER_MUZZLE_FLASHES = true;
+
+    @ZPConfigurableConstant(
+            description = "(ONLY CLIENT) Render bullet tracers.",
+            group = ZPConstants.GROUP_CLIENT,
+            type = ZPConfigurableConstant.TYPES.BOOLEAN
+    )
+    public static boolean RENDER_BULLET_TRACERS = true;
+
+    @ZPConfigurableConstant(
+            description = "(ONLY CLIENT) Render armor layer on hands.",
+            group = ZPConstants.GROUP_CLIENT,
+            type = ZPConfigurableConstant.TYPES.BOOLEAN
+    )
+    public static boolean RENDER_ARMOR_LAYERS_ON_HANDS = true;
 
     @ZPConfigurableConstant(
             description = "(ONLY CLIENT) Fancy ZP item-entity animation.",

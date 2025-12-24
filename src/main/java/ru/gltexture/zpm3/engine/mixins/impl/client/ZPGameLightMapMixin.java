@@ -141,7 +141,7 @@ public abstract class ZPGameLightMapMixin {
                                 }
                             }
                             if (ZPEffectUtils.isBetterVisioned(this.minecraft.player)) {
-                                f14 = Math.min(f14, -0.2f);
+                                f14 = Math.min(f14, 0.125f);
                             }
                         }
                         {

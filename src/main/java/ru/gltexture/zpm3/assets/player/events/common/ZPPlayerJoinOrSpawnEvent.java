@@ -32,6 +32,11 @@ public class ZPPlayerJoinOrSpawnEvent implements ZPEventClass {
                 ZombiePlague3.net().sendToServer(new ZPSendGlobalSettings_CtoS(ZPConstants.PICK_UP_ON_F));
             }
         });
+        if (event.getEntity() instanceof ServerPlayer sp) {
+            if (sp.getAttribute(ForgeMod.ENTITY_REACH.get()) != null) {
+                Objects.requireNonNull(sp.getAttribute(ForgeMod.ENTITY_REACH.get())).setBaseValue(ZPConstants.PLAYER_DEFAULT_HAND_REACH_DISTANCE);
+            }
+        }
     }
 
     @SubscribeEvent
@@ -40,9 +45,6 @@ public class ZPPlayerJoinOrSpawnEvent implements ZPEventClass {
             return;
         }
         ZombiePlague3.net().sendToPlayer(ZPSendGlobalSettings_StoC.create(), sp);
-        if (event.getEntity().getAttribute(ForgeMod.ENTITY_REACH.get()) != null) {
-            Objects.requireNonNull(event.getEntity().getAttribute(ForgeMod.ENTITY_REACH.get())).setBaseValue(ZPConstants.PLAYER_DEFAULT_HAND_REACH);
-        }
     }
 
     @Override

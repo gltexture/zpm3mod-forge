@@ -128,7 +128,7 @@
   "block.zpm3.loot_case_tier_low": "Loot Case (Low Tier)",
   "block.zpm3.loot_case_tier_mid": "Loot Case (Mid Tier)",
   "block.zpm3.loot_case_tier_hi": "Loot Case (High Tier)",
-
+  "block.zpm3.loot_case_tier_fun": "Loot Case (Random, Cooldown=0)",
   "effect.zpm3.bleeding": "Bleeding",
   "effect.zpm3.zombie_plague": "Zombie Plague",
   "effect.zpm3.fracture": "Fracture",

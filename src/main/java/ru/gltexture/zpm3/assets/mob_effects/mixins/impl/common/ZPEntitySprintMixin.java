@@ -21,11 +21,12 @@ public abstract class ZPEntitySprintMixin {
         }
     }
 
-    @Inject(method = "setSprinting", at = @At("HEAD"))
+    @Inject(method = "setSprinting", at = @At("HEAD"), cancellable = true)
     private void setSprinting(boolean pSprinting, CallbackInfo ci) {
         if ((Object) this instanceof LivingEntity self) {
             if (self.hasEffect(ZPMobEffects.fracture.get())) {
                 this.setSharedFlag(3, false);
+                ci.cancel();
             }
         }
     }

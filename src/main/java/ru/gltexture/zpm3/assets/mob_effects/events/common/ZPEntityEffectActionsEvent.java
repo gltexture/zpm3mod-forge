@@ -1,5 +1,6 @@
 package ru.gltexture.zpm3.assets.mob_effects.events.common;
 
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -65,7 +66,7 @@ public class ZPEntityEffectActionsEvent implements ZPEventClass {
                     }
                 }
             }
-            if (entity instanceof Player) {
+            if (entity instanceof Player player) {
                 if (event.getEntity().level() instanceof ServerLevel serverLevel && event.getSource().type().equals(ZPDamageTypes.getDamageType(serverLevel, DamageTypes.FALL).get())) {
                     if (event.getAmount() >= 3.0f) {
                         float damNorm = event.getAmount() / 20.0f;
@@ -74,6 +75,7 @@ public class ZPEntityEffectActionsEvent implements ZPEventClass {
                             if (ZPEffectUtils.isFractured(entity)) {
                                 event.setAmount(event.getAmount() * 2.0f);
                             } else {
+                                player.setSprinting(false);
                                 float timeMultiplier = event.getAmount() / 3.0f;
                                 entity.addEffect(new MobEffectInstance(ZPMobEffects.fracture.get(), (int) (6000 * timeMultiplier)));
                             }

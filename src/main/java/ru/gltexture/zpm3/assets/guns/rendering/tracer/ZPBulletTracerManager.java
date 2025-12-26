@@ -34,7 +34,7 @@ public final class ZPBulletTracerManager {
         if (!ZPConstants.RENDER_BULLET_TRACERS) {
             return false;
         }
-        if (start.distance(end) <= 8.0f) {
+        if (start.distance(end) <= 4.0f) {
             return false;
         }
         this.tracerSet.add(new Tracer(new TracerPath(start, end)));

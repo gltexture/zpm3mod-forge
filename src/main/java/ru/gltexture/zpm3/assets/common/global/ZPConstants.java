@@ -256,7 +256,7 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
             group = ZPConstants.GROUP_COMBAT,
             type = ZPConfigurableConstant.TYPES.FLOAT
     )
-    public static float PLAYER_DEFAULT_HAND_REACH = 2.0f;
+    public static float PLAYER_DEFAULT_HAND_REACH_DISTANCE = 2.0f;
 
 
     // ===== COMBAT / DAMAGE / ANTI-LAG =====
@@ -414,7 +414,7 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
             min = 1.0,
             max = Float.MAX_VALUE
     )
-    public static int WORLD_DAY_TIME_SLOWDOWN_CYCLE_TICKING = 2;
+    public static int WORLD_DAY_TIME_SLOWDOWN_CYCLE_TICKING = 3;
 
     @ZPConfigurableConstant(
             description = "New vanilla's concrete destroy speed.",
@@ -454,7 +454,7 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
             min = -1.0,
             max = 1.0
     )
-    public static float DARKNESS_GAMMA_STATIC_FACTOR_SERVER_SIDE = -0.45f;
+    public static float DARKNESS_GAMMA_STATIC_FACTOR_SERVER_SIDE = -0.5f;
 
     @ZPConfigurableConstant(
             description = "Multiplier for block breaking power of thrown items (plates, bricks, rocks, etc.) when interacting with destructible world objects.",

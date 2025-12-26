@@ -185,7 +185,10 @@ public class ZPDefaultPistolRenderer extends ZPAbstractGunRenderer {
                 final boolean isRightHanded = pHand == InteractionHand.MAIN_HAND;
                 final float equippedConst = -0.6F + pEquippedProgress * -0.6F;
                 final Matrix4f transformation = new Matrix4f().identity();
-
+                if (ZPConstants.FIRST_PERSON_RENDER_SPACE_SCALE_BY_FOV) {
+                    double f1 = ZPRenderHelper.fovItemOffset(Minecraft.getInstance().gameRenderer.getMainCamera(), pPartialTicks, pPoseStack);
+                    transformation.translate(0.0f, (float) (f1 * -0.0625f), (float) (f1 * 0.25f));
+                }
                 final Vector3f startTranslation = Objects.requireNonNull(isRightHanded ? this.gunTransforms().translationGunRight() : this.gunTransforms().translationGunLeft());
                 startTranslation.add(0.0f, equippedConst, 0.0f);
                 startTranslation.add(DearUITRSInterface.trsGun.position);
@@ -202,11 +205,6 @@ public class ZPDefaultPistolRenderer extends ZPAbstractGunRenderer {
                         .rotateZ((float) Math.toRadians(startRotation.z))
                         .scale(Objects.requireNonNull(this.gunTransforms().scalingGun1P()).add(new Vector3f(DearUITRSInterface.trsGun.scale).sub(new Vector3f(1.0f))));
                 pPoseStack.pushTransformation(new Transformation(transformation));
-
-                if (ZPConstants.FIRST_PERSON_RENDER_SPACE_SCALE_BY_FOV) {
-                    double f1 = ZPRenderHelper.fovItemOffset(Minecraft.getInstance().gameRenderer.getMainCamera(), pPartialTicks, pPoseStack);
-                    pPoseStack.translate(0.0f, f1 * -0.0625f, f1 * 0.25f);
-                }
 
                 @Nullable Matrix4f reloading = ZPDefaultGunRenderers.defaultReloadingFXUniversal.getCurrentGunReloadingTransformation(isRightHanded, pPartialTicks);
                 if (reloading != null) {

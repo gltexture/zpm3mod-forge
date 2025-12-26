@@ -474,6 +474,11 @@ public class ZPLootCasesAsset extends ZPAsset {
                 )
                 .build(1, 3, 0.8f, 0.8f);
 
+        private static ZPLootTable loot_case_tier_fun = ZPLootTable.builder("loot_case_tier_fun")
+                .lootCase("tier3", true, 0)
+                .extendBy("loot_case_tier_hi", "loot_case_tier_low", "loot_case_tier_mid")
+                .build(5, 6, 1.0f, 0.8f);
+
         @Override
         public void init() {
             this.register(ZPDefaultLootTables.sample);
@@ -481,6 +486,7 @@ public class ZPLootCasesAsset extends ZPAsset {
             this.register(ZPDefaultLootTables.loot_case_tier_mid);
             this.register(ZPDefaultLootTables.loot_case_tier_hi);
             this.register(ZPDefaultLootTables.loot_debris);
+            this.register(ZPDefaultLootTables.loot_case_tier_fun);
         }
     }
 }

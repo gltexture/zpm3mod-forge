@@ -12,6 +12,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
@@ -24,10 +25,8 @@ import net.minecraft.world.entity.ai.attributes.*;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
@@ -74,7 +73,7 @@ public abstract class ZPAbstractZombie extends Monster {
 
     @SuppressWarnings("all")
     public static boolean checkZombieSpawnRules(@NotNull EntityType<? extends Monster> pType, ServerLevelAccessor pLevel, @NotNull MobSpawnType pSpawnType, @NotNull BlockPos pPos, @NotNull RandomSource pRandom) {
-        if (pLevel.getDifficulty() != Difficulty.PEACEFUL && ((isDarkEnoughToSpawn(pLevel, pPos, pRandom) || ZPRandom.getRandom().nextFloat() <= 0.001f) && checkMobSpawnRules(pType, pLevel, pSpawnType, pPos, pRandom))) {
+        if (pLevel.getDifficulty() != Difficulty.PEACEFUL && ((isDarkEnoughToSpawn(pLevel, pPos, pRandom) || ZPRandom.getRandom().nextFloat() <= 0.005f) && checkMobSpawnRules(pType, pLevel, pSpawnType, pPos, pRandom))) {
             if (!ZPZoneChecks.INSTANCE.isZombieBlockSpawn(pLevel.getLevel(), pPos)) {
                 return true;
             }
@@ -239,15 +238,56 @@ public abstract class ZPAbstractZombie extends Monster {
         }
     }
 
+    @Override
     public boolean doHurtTarget(@NotNull Entity pEntity) {
-        boolean b1 = super.doHurtTarget(pEntity);
-        if (ZPRandom.getRandom().nextFloat() <= this.getAttributes().getBaseValue(ZPEntityAttributes.zm_random_effect_chance.get())) {
-            if (pEntity instanceof LivingEntity livingEntity) {
-                ZPAbstractZombie.applyRandomEffect(livingEntity);
+        AttributeInstance attribute = this.getAttribute(Attributes.ATTACK_DAMAGE);
+        if (attribute == null) {
+            return false;
+        }
+        final float baseDamage = (float) attribute.getBaseValue();
+        float f = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
+        float f1 = (float) this.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
+        final float delta = Math.abs(baseDamage - f);
+        f = baseDamage + delta * 0.375f;
+        if (pEntity instanceof LivingEntity) {
+            f += EnchantmentHelper.getDamageBonus(this.getMainHandItem(), ((LivingEntity) pEntity).getMobType());
+            f1 += (float) EnchantmentHelper.getKnockbackBonus(this);
+        }
+        int i = EnchantmentHelper.getFireAspect(this);
+        if (i > 0) {
+            pEntity.setSecondsOnFire(i * 4);
+        }
+        boolean flag = pEntity.hurt(this.damageSources().mobAttack(this), f);
+        if (flag) {
+            if (f1 > 0.0F && pEntity instanceof LivingEntity) {
+                ((LivingEntity) pEntity).knockback(f1 * 0.5F, Mth.sin(this.getYRot() * ((float) Math.PI / 180F)), -Mth.cos(this.getYRot() * ((float) Math.PI / 180F)));
+                this.setDeltaMovement(this.getDeltaMovement().multiply(0.6, 1.0F, 0.6));
+            }
+            if (pEntity instanceof Player player) {
+                this.maybeDisableShield(player, this.getMainHandItem(), player.isUsingItem() ? player.getUseItem() : ItemStack.EMPTY);
+            }
+            this.doEnchantDamageEffects(this, pEntity);
+            this.setLastHurtMob(pEntity);
+        }
+        if (flag) {
+            if (ZPRandom.getRandom().nextFloat() <= this.getAttributes().getBaseValue(ZPEntityAttributes.zm_random_effect_chance.get())) {
+                if (pEntity instanceof LivingEntity livingEntity) {
+                    ZPAbstractZombie.applyRandomEffect(livingEntity);
+                }
+            }
+            this.attackTicks = 30;
+        }
+        return flag;
+    }
+
+    private void maybeDisableShield(Player pPlayer, ItemStack pMobItemStack, ItemStack pPlayerItemStack) {
+        if (!pMobItemStack.isEmpty() && !pPlayerItemStack.isEmpty() && pMobItemStack.getItem() instanceof AxeItem && pPlayerItemStack.is(Items.SHIELD)) {
+            float f = 0.25F + (float)EnchantmentHelper.getBlockEfficiency(this) * 0.05F;
+            if (this.random.nextFloat() < f) {
+                pPlayer.getCooldowns().addCooldown(Items.SHIELD, 100);
+                this.level().broadcastEntityEvent(pPlayer, (byte)30);
             }
         }
-        this.attackTicks = 30;
-        return b1;
     }
 
     protected SoundEvent getAmbientSound() {

@@ -47,7 +47,6 @@ public class ZPLootCaseBlockEntity extends ChestBlockEntity {
             if (blockState.getBlock() instanceof ZPDefaultBlockLootCase defaultBlockLootCase) {
                 boolean flag = false;
                 if (this.timeLock <= 0L) {
-                    this.setTime(this.getLevel(), defaultBlockLootCase.getLootRespawnTime(), defaultBlockLootCase.getLootRespawnTime() / 10);
                     flag = true;
                 } else if (this.getLevel().getGameTime() >= this.timeLock) {
                     flag = true;
@@ -62,6 +61,7 @@ public class ZPLootCaseBlockEntity extends ChestBlockEntity {
                         }
                     });
                     this.spawnLoot(rootLootTable);
+                    this.setTime(this.getLevel(), defaultBlockLootCase.getLootRespawnTime(), defaultBlockLootCase.getLootRespawnTime() / 10);
                 }
             }
         }

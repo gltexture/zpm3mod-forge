@@ -141,7 +141,7 @@ public abstract class ZPGameLightMapMixin {
                                 }
                             }
                             if (ZPEffectUtils.isBetterVisioned(this.minecraft.player)) {
-                                f14 = Math.min(f14, 0.125f);
+                                f14 = ZPClientGlobalSettings.DARKNESS_ENABLED ? ZPClientGlobalSettings.DARKNESS_FACTOR + 0.35f : Math.max(f14, 0.2f);
                             }
                         }
                         {

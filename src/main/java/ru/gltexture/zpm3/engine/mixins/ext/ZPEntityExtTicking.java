@@ -16,9 +16,6 @@ import ru.gltexture.zpm3.assets.commands.zones.ZPZoneChecks;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.common.utils.ZPCommonServerUtils;
 import ru.gltexture.zpm3.engine.client.utils.ClientRenderFunctions;
-import ru.gltexture.zpm3.engine.fake.ZPFakePlayer;
-import ru.gltexture.zpm3.engine.service.ZPUtility;
-import ru.gltexture.zpm3.engine.sound.ZPPositionedSound;
 
 public abstract class ZPEntityExtTicking {
     public static void serverEntityTickPre(@NotNull Entity entity, @NotNull IZPEntityExt izpEntityExt) {
@@ -30,9 +27,6 @@ public abstract class ZPEntityExtTicking {
         if (!ZPZoneChecks.INSTANCE.isNoAcidInvDmg((ServerLevel) entity.level(), entity.getOnPos())) {
             if (izpEntityExt.touchesAcidBlock() && entity.tickCount % 2 == 0) {
                 izpEntityExt.addAcidLevel(1);
-                if (entity instanceof LivingEntity livingEntity) {
-                    livingEntity.hurt(livingEntity.damageSources().generic(), 2.0f);
-                }
             }
             if (izpEntityExt.getAcidLevel() > 3000) {
                 if (entity instanceof LivingEntity livingEntity && izpEntityExt.touchesAcidBlock()) {
@@ -40,7 +34,7 @@ public abstract class ZPEntityExtTicking {
                 }
             }
             if (izpEntityExt.getAcidLevel() > 0) {
-                ZPEntityExtTicking.damageItemsEveryTick(entity);
+                ZPEntityExtTicking.damageEveryTick(entity);
             }
         }
     }
@@ -78,12 +72,14 @@ public abstract class ZPEntityExtTicking {
     //************************************************************************************************
 
 
-    private static void damageItemsEveryTick(Entity entity) {
+    private static void damageEveryTick(Entity entity) {
         if (entity.tickCount % ZPConstants.ACID_DAMAGE_TICK_RATE != 0) {
             return;
         }
 
         if (entity instanceof LivingEntity livingEntity) {
+            livingEntity.hurt(livingEntity.damageSources().generic(), 2.0f);
+
             for (ItemStack stack : livingEntity.getHandSlots()) {
                 if (stack.isDamageableItem()) {
                     stack.hurtAndBreak(1, livingEntity, e -> {

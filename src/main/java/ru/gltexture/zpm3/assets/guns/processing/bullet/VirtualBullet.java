@@ -9,6 +9,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -222,6 +224,11 @@ public class VirtualBullet {
         float damage = amount * this.getBulletReductionMultiplier(entityToDamage);
         if (isHeadshot) {
             damage += ZPConstants.BULLET_HEADSHOT_BONUS_DAMAGE;
+        }
+        if (entityToDamage instanceof Animal) {
+            damage *= 1.5f;
+        } else if (entityToDamage instanceof Mob) {
+            damage *= 2.0f;
         }
         if (entityToDamage.hurt(ZPDamageSources.bullet((ServerLevel) level, attacker), damage)) {
             entityToDamage.invulnerableTime = 0;

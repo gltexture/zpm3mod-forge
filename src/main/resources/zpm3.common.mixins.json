@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "zpm3.refmap.json",
   "mixins": [
+    "common.ZPCaveVineBlockMixin",
     "common.ZPFluidPlacedMixin",
     "common.ZPLavaMixin",
     "common.ZPMilkMixin",

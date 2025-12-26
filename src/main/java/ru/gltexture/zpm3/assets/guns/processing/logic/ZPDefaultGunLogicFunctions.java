@@ -217,13 +217,13 @@ public abstract class ZPDefaultGunLogicFunctions {
                 if (item.isJammed(player, itemStack) && unload) {
                     return false;
                 }
+                final int currentAmmo = item.getCurrentAmmo(player, itemStack);
                 if (unload) {
-                    final int currentAmmo = item.getCurrentAmmo(player, itemStack);
                     if (currentAmmo <= 0) {
                         return false;
                     }
                 } else {
-                    if (item.getGunProperties().getAmmo() != null && player.getInventory().countItem(item.getGunProperties().getAmmo()) <= 0) {
+                    if (currentAmmo >= item.getGunProperties().getMaxAmmo() || (item.getGunProperties().getAmmo() != null && player.getInventory().countItem(item.getGunProperties().getAmmo()) <= 0)) {
                         return false;
                     }
                 }
@@ -419,13 +419,13 @@ public abstract class ZPDefaultGunLogicFunctions {
         final int reloadTimeNominal = item.getGunProperties().getReloadTime();
 
         if (!ZPDefaultGunLogicFunctions.isAnythingReloading(player)) {
+            final int currentAmmo = item.getCurrentAmmo(player, itemStack);
             if (unload) {
-                final int currentAmmo = item.getCurrentAmmo(player, itemStack);
                 if (currentAmmo <= 0) {
                     return false;
                 }
             } else {
-                if (item.getGunProperties().getAmmo() != null && player.getInventory().countItem(item.getGunProperties().getAmmo()) <= 0) {
+                if (currentAmmo >= item.getGunProperties().getMaxAmmo() || (item.getGunProperties().getAmmo() != null && player.getInventory().countItem(item.getGunProperties().getAmmo()) <= 0)) {
                     return false;
                 }
             }
@@ -451,7 +451,7 @@ public abstract class ZPDefaultGunLogicFunctions {
                     return false;
                 }
             } else {
-                if (item.getGunProperties().getAmmo() != null && player.getInventory().countItem(item.getGunProperties().getAmmo()) <= 0) {
+                if (currentAmmo >= item.getGunProperties().getMaxAmmo() || (item.getGunProperties().getAmmo() != null && player.getInventory().countItem(item.getGunProperties().getAmmo()) <= 0)) {
                     return false;
                 }
             }
@@ -573,7 +573,13 @@ public abstract class ZPDefaultGunLogicFunctions {
         if (pEntity instanceof Player player) {
             Item item1 = item.getGunProperties().getAmmo();
             if (item.isReloading(pEntity, pStack)) {
-                item.setCurrentAmmo(pEntity, pStack, item1 == null || player.isCreative() ? item.getGunProperties().getMaxAmmo() : ZPUtility.entity().consumeItemFromInventory(player.getInventory(), item1, item.getGunProperties().getMaxAmmo()));
+                if (item1 == null || player.isCreative()) {
+                    item.setCurrentAmmo(pEntity, pStack, item.getGunProperties().getMaxAmmo());
+                    return;
+                }
+                final int currentAmmo = item.getCurrentAmmo(pEntity, pStack);
+                final int ammoToInc = ZPUtility.entity().consumeItemFromInventory(player.getInventory(), item1, item.getGunProperties().getMaxAmmo() - currentAmmo);
+                item.setCurrentAmmo(pEntity, pStack, currentAmmo + ammoToInc);
             } else if (item.isUnloading(pEntity, pStack)) {
                 final int ammoCurrent = item.getCurrentAmmo(pEntity, pStack);
                 if (item1 != null) {

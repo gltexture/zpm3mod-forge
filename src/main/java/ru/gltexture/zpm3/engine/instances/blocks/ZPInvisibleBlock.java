@@ -4,6 +4,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.AirBlock;
+import net.minecraft.world.level.block.BarrierBlock;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -15,7 +17,13 @@ import org.jetbrains.annotations.NotNull;
 
 public class ZPInvisibleBlock extends ZPBlock {
     public ZPInvisibleBlock() {
-        super(BlockBehaviour.Properties.of().noCollission().noOcclusion().air().strength(-1.0F, 3600000.0F).pushReaction(PushReaction.BLOCK)
+        super(BlockBehaviour.Properties.of()
+                .noCollission()
+                .noOcclusion()
+                .noParticlesOnBreak()
+                .air()
+                .strength(-1.0F, 3600000.0F)
+                .pushReaction(PushReaction.BLOCK)
                 .isValidSpawn((s, l, p, e) -> false)
                 .isSuffocating((s, l, p) -> false)
                 .isViewBlocking((s, l, p) -> false));

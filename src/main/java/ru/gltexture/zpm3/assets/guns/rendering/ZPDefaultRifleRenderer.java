@@ -208,7 +208,10 @@ public class ZPDefaultRifleRenderer extends ZPAbstractGunRenderer {
                 pPoseStack.pushPose();
                 final float equippedConst = -0.6F + pEquippedProgress * -0.6F;
                 final Matrix4f transformation = new Matrix4f().identity();
-
+                if (ZPConstants.FIRST_PERSON_RENDER_SPACE_SCALE_BY_FOV) {
+                    double f1 = ZPRenderHelper.fovItemOffset(Minecraft.getInstance().gameRenderer.getMainCamera(), pPartialTicks, pPoseStack);
+                    transformation.translate(0.0f, (float) (f1 * -0.0625f), (float) (f1 * 0.25f));
+                }
                 final Vector3f startTranslation = Objects.requireNonNull(isRightHanded ? abstractGunRenderer.gunTransforms().translationGunRight() : abstractGunRenderer.gunTransforms().translationGunLeft());
                 startTranslation.add(0.0f, equippedConst, 0.0f);
                 startTranslation.add(DearUITRSInterface.trsGun.position);
@@ -225,11 +228,6 @@ public class ZPDefaultRifleRenderer extends ZPAbstractGunRenderer {
                         .scale(Objects.requireNonNull(abstractGunRenderer.gunTransforms().scalingGun1P()));
                 pPoseStack.pushTransformation(new Transformation(transformation));
 
-                if (ZPConstants.FIRST_PERSON_RENDER_SPACE_SCALE_BY_FOV) {
-                    double f1 = ZPRenderHelper.fovItemOffset(Minecraft.getInstance().gameRenderer.getMainCamera(), pPartialTicks, pPoseStack);
-                    pPoseStack.translate(0.0f, f1 * -0.0625f, f1 * 0.25f);
-                }
-
                 @Nullable Matrix4f reloading = ZPDefaultGunRenderers.defaultReloadingFXUniversal.getCurrentGunReloadingTransformation(isRightHanded, pPartialTicks);
                 if (reloading != null) {
                     pPoseStack.pushTransformation(new Transformation(reloading));
@@ -242,6 +240,7 @@ public class ZPDefaultRifleRenderer extends ZPAbstractGunRenderer {
                         pPoseStack.pushTransformation(new Transformation(shutter.first()));
                     }
                 }
+
                 final Matrix4f matrixGun = new Matrix4f(pPoseStack.last().pose());
                 @Nullable Matrix4f recoil = ZPDefaultGunRenderers.defaultRecoilFXUniversal.getCurrentRecoilTransformation(pPlayer, baseGun, pStack, isRightHanded, pPartialTicks);
                 if (recoil != null) {
@@ -252,6 +251,7 @@ public class ZPDefaultRifleRenderer extends ZPAbstractGunRenderer {
                 if (shutter != null) {
                     pPoseStack.pushTransformation(new Transformation(shutter.second()));
                 }
+
                 final Matrix4f matrixArm = new Matrix4f();
                 if (isRightHanded) {
                     final boolean leftIsEmpty = pPlayer.getOffhandItem().isEmpty();

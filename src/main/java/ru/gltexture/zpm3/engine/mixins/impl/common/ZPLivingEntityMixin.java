@@ -1,7 +1,6 @@
 package ru.gltexture.zpm3.engine.mixins.impl.common;
 
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -11,17 +10,25 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import ru.gltexture.zpm3.assets.guns.item.ZPBaseGun;
-import ru.gltexture.zpm3.assets.guns.processing.input.ZPClientGunClientTickProcessing;
 
 @Mixin(LivingEntity.class)
 public abstract class ZPLivingEntityMixin {
     @Shadow public abstract ItemStack getMainHandItem();
 
+    @Shadow
+    public abstract ItemStack getOffhandItem();
+
     @Inject(method = "swing(Lnet/minecraft/world/InteractionHand;Z)V", at = @At("HEAD"), cancellable = true)
     public void swing(InteractionHand pHand, boolean pUpdateSelf, CallbackInfo ci) {
         if (pHand == InteractionHand.MAIN_HAND) {
             ItemStack itemStack = this.getMainHandItem();
-            if (ZPClientGunClientTickProcessing.shouldBlockMouseAttackWithGunCheck(Minecraft.getInstance()) || itemStack.getItem() instanceof ZPBaseGun) {
+            if (itemStack.getItem() instanceof ZPBaseGun) {
+                ci.cancel();
+            }
+        }
+        if (pHand == InteractionHand.OFF_HAND) {
+            ItemStack itemStack = this.getOffhandItem();
+            if (itemStack.getItem() instanceof ZPBaseGun) {
                 ci.cancel();
             }
         }

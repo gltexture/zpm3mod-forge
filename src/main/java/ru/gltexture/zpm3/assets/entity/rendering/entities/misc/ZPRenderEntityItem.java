@@ -17,6 +17,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.*;
+import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -70,7 +71,7 @@ public class ZPRenderEntityItem extends ItemEntityRenderer {
     @Override
     public void render(@NotNull ItemEntity pEntity, float pEntityYaw, float pPartialTicks, @NotNull PoseStack pPoseStack, @NotNull MultiBufferSource pBuffer, int pPackedLight) {
         float scale = 0.0f;
-        if (Minecraft.getInstance().options.graphicsMode().get() != GraphicsStatus.FAST &&  ZPConstants.FANCY_ITEM_ENTITIES) {
+        if (ZPConstants.FANCY_ITEM_ENTITIES) {
             pPoseStack.pushPose();
             ItemStack itemstack = pEntity.getItem();
             int itemId = Item.getId(itemstack.getItem()) * pEntity.getId();
@@ -99,7 +100,11 @@ public class ZPRenderEntityItem extends ItemEntityRenderer {
                 pPoseStack.mulPose(Axis.XP.rotation((float) (-Math.PI / 2.0f)));
                 pPoseStack.mulPose(Axis.ZP.rotation((float) (Math.PI * this.random.nextFloat() * 2.0f)));
             } else {
-                pPoseStack.translate(0.0F, -0.1f, 0.0F);
+                if (itemstack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof BedBlock) {
+                    pPoseStack.translate(0.0F, 0.1f, 0.0F);
+                } else {
+                    pPoseStack.translate(0.0F, -0.1f, 0.0F);
+                }
             }
             pPoseStack.scale(scaling.x, scaling.y, scaling.z);
             for (int k = 0; k < j; ++k) {

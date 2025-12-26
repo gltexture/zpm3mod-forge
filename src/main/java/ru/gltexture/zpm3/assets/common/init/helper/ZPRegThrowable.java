@@ -23,7 +23,7 @@ public abstract class ZPRegThrowable {
                     throwable.setItem(itemstack);
                     throwable.shootFromRotation(pPlayer, pPlayer.getXRot(), pPlayer.getYRot(), 0.0F, velocity, inaccuracy);
                     return throwable;
-                }), new Item.Properties().stacksTo(1))
+                }), new Item.Properties().stacksTo(6))
         ).afterCreated((e, utils) -> {
             utils.items().addDispenserData(e, new ZPDispenseProjectileHelper.ProjectileData((pLevel, pPosition, pStack) -> new ZPAcidBottleEntity(ZPEntities.acid_bottle_entity.get(), pPosition.x(), pPosition.y(), pPosition.z(), pLevel), 0.5f, 1.5f));
             ZPUtility.sides().onlyClient(() -> {
@@ -54,7 +54,7 @@ public abstract class ZPRegThrowable {
                     throwable.setItem(itemstack);
                     throwable.shootFromRotation(pPlayer, pPlayer.getXRot(), pPlayer.getYRot(), 0.0F, velocity, inaccuracy);
                     return throwable;
-                }), new Item.Properties().stacksTo(3))
+                }), new Item.Properties().stacksTo(4))
         ).afterCreated((e, utils) -> {
             utils.items().addDispenserData(e, new ZPDispenseProjectileHelper.ProjectileData((pLevel, pPosition, pStack) -> new ZPRockEntity(ZPEntities.rock_entity.get(), pPosition.x(), pPosition.y(), pPosition.z(), pLevel), 0.5f, 1.5f));
             ZPUtility.sides().onlyClient(() -> {

@@ -4,7 +4,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.api.distmarker.Dist;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.common.init.ZPItems;
@@ -91,7 +90,7 @@ public abstract class ZPRegMedicine {
     }
 
     public static void init(ZPItems zpItems, @NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
-        zpItems.pushInstanceCollecting("medicine");
+        zpItems.initInstanceCollecting("medicine");
 
         ZPItems.adrenaline_syringe = regSupplier.register("adrenaline_syringe", () -> new ZPItemMedicine(new Item.Properties().stacksTo(4), ZPRegMedicine.ADRENALINE, new ZPItemMedicine.ZPMedicineProperties()
                 .setMedicineAnim(ZPItemMedicine.MedicineAnim.BLOCK)
@@ -242,7 +241,7 @@ public abstract class ZPRegMedicine {
             });
         }).end();
 
-        zpItems.stopCollecting();
+        zpItems.stopInstanceCollecting();
     }
 
     /*

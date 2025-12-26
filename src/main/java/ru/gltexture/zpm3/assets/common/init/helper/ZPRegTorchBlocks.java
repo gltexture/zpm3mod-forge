@@ -5,7 +5,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.PushReaction;
-import net.minecraftforge.api.distmarker.Dist;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.init.ZPTorchBlocks;
 import ru.gltexture.zpm3.assets.common.instances.blocks.torch.ZPFadingTorchBlock;
@@ -19,7 +18,7 @@ import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public abstract class ZPRegTorchBlocks {
     public static void init(ZPTorchBlocks torchBlocks, @NotNull ZPRegistry.ZPRegSupplier<Block> regSupplier) {
-        torchBlocks.pushInstanceCollecting("torches");
+        torchBlocks.initInstanceCollecting("torches");
         
         ZPTorchBlocks.torch2 = regSupplier.register("torch2", () -> new ZPFadingTorchBlock(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 12).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), ParticleTypes.FLAME, 1.0f, () -> ZPTorchBlocks.torch3.get())
         ).afterCreated((e, utils) -> {
@@ -101,7 +100,7 @@ public abstract class ZPRegTorchBlocks {
             });
         }).end();
 
-        torchBlocks.stopCollecting();
+        torchBlocks.stopInstanceCollecting();
 
         ZPTorchBlocks.wall_lamp = regSupplier.register("wall_lamp", () -> new ZPTorchBlock(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 15).sound(SoundType.GLASS).pushReaction(PushReaction.DESTROY), null, 0.0f) //ParticleTypes.FLAME
         ).afterCreated((e, utils) -> {

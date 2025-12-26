@@ -92,7 +92,7 @@ public abstract class ZPRegistry<T> {
     }
 
     @SuppressWarnings("all")
-    public void stopCollecting() throws ZPRuntimeException {
+    public void stopInstanceCollecting() throws ZPRuntimeException {
         if (!this.hasCollector()) {
             throw new ZPRuntimeException("Couldn't stop collecting, because collector wasn't attached");
         }
@@ -100,7 +100,7 @@ public abstract class ZPRegistry<T> {
     }
 
     @SuppressWarnings("all")
-    public void pushInstanceCollecting(@NotNull String id) throws ZPRuntimeException {
+    public void initInstanceCollecting(@NotNull String id) throws ZPRuntimeException {
         if (!this.hasCollector()) {
             throw new ZPRuntimeException("Couldn't continue collecting, because collector wasn't attached");
         }

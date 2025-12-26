@@ -9,8 +9,10 @@ import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.instances.block_entities.ZPFadingBlockEntity;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.engine.instances.blocks.ZPBlock;
+import ru.gltexture.zpm3.engine.instances.blocks.ZPLiquidBlock;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.registry.ZPRegistryCollections;
+import ru.gltexture.zpm3.engine.service.Pair;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
@@ -23,14 +25,14 @@ public class ZPBlockEntities extends ZPRegistry<BlockEntityType<?>> {
     }
 
     @Override
-    @SuppressWarnings("DataFlowIssue")
+    @SuppressWarnings("all")
     protected void runRegister(@NotNull ZPRegSupplier<BlockEntityType<?>> regSupplier) {
         ZPBlockEntities.fading_block_entity = regSupplier.register("fading_torch_block_entity",
                 () -> {
-                    ZPBlock[] zpBlocks = ZPRegistryCollections.getCollectionById(ZPTorchBlocks.class, "torches")
+                    Block[] zpBlocks = ZPRegistryCollections.getCollectionById(Pair.of(ZPTorchBlocks.class, "torches"), Pair.of(ZPBlocks.class, "fadingLiquids"))
                             .stream()
-                            .map(e -> (ZPBlock) e.get())
-                            .toArray(ZPBlock[]::new);
+                            .map(e -> (Block) e.get())
+                            .toArray(Block[]::new);
                     Block[] allBlocks = Stream.concat(Arrays.stream(zpBlocks), Stream.of(Blocks.TORCH, Blocks.WALL_TORCH, Blocks.JACK_O_LANTERN, Blocks.LAVA)).toArray(Block[]::new);
                     return Builder.of(ZPFadingBlockEntity::new, allBlocks).build(null);
                 }).end();

@@ -7,6 +7,7 @@ import ru.gltexture.zpm3.engine.core.ZPLogger;
 import ru.gltexture.zpm3.engine.exceptions.ZPNullException;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.engine.registry.collection.IZPRegistryObjectsCollector;
+import ru.gltexture.zpm3.engine.service.Pair;
 
 import java.util.*;
 
@@ -37,6 +38,18 @@ public abstract class ZPRegistryCollections {
     public static <T> LinkedHashSet<RegistryObject<T>> getCollectionById(@NotNull Class<? extends ZPRegistry<T>> clazz, @NotNull String id) {
         try {
             return ZPRegistryCollections.getCollector(clazz).getCollection(id);
+        } catch (ZPNullException | ClassCastException e) {
+            throw new ZPRuntimeException(e);
+        }
+    }
+
+    public static <T> LinkedHashSet<RegistryObject<T>> getCollectionById(Pair<@NotNull Class<? extends ZPRegistry<T>>, @NotNull String>... stringPair) {
+        try {
+            final LinkedHashSet<RegistryObject<T>> registryObjects = new LinkedHashSet<>();
+            Arrays.stream(stringPair).forEach(e -> {
+                registryObjects.addAll(ZPRegistryCollections.getCollector(e.first()).getCollection(e.second()));
+            });
+            return registryObjects;
         } catch (ZPNullException | ClassCastException e) {
             throw new ZPRuntimeException(e);
         }

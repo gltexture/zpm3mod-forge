@@ -47,7 +47,7 @@ public class ZPGameRendererMixin {
     @Inject(method = "renderItemInHand", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;pushPose()V", shift = At.Shift.AFTER))
     private void renderItemInHand(PoseStack pPoseStack, Camera pActiveRenderInfo, float pPartialTicks, CallbackInfo ci) {
         if (ZPConstants.FIRST_PERSON_RENDER_SPACE_SCALE_BY_FOV) {
-            double f1 = ZPRenderHelper.fovItemOffset(Minecraft.getInstance().gameRenderer.getMainCamera(), pPartialTicks, pPoseStack);
+            double f1 = ZPRenderHelper.fovItemOffset(Minecraft.getInstance().gameRenderer.getMainCamera(), pPartialTicks, pPoseStack) * 0.5f;
             pPoseStack.translate(0.0f, f1 * -0.0625f, f1 * 0.25f);
         }
     }

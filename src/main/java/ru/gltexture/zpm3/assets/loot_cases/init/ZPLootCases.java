@@ -2,7 +2,6 @@ package ru.gltexture.zpm3.assets.loot_cases.init;
 
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.loot_cases.instances.blocks.ZPDefaultBlockLootCase;
@@ -29,7 +28,7 @@ public class ZPLootCases extends ZPRegistry<ZPDefaultBlockLootCase> implements I
 
     @Override
     protected void runRegister(@NotNull ZPRegSupplier<ZPDefaultBlockLootCase> regSupplier) {
-        this.pushInstanceCollecting("lootCases");
+        this.initInstanceCollecting("lootCases");
         for (ZPLootTable lootTable : ZPLootTablesCollection.INSTANCE.getAllLootTables().stream().filter(e -> e.getLootCaseData() != null).toList()) {
             final String lootCaseName = Objects.requireNonNull(lootTable.getLootCaseData()).name().toLowerCase();
             final boolean isUnbreakable = lootTable.getLootCaseData().isUnbreakable();
@@ -43,7 +42,7 @@ public class ZPLootCases extends ZPRegistry<ZPDefaultBlockLootCase> implements I
             }).end();
             ZPLootCases.generatedLootCases.put(lootCaseName, syntheticLootCase);
         }
-        this.stopCollecting();
+        this.stopInstanceCollecting();
     }
 
     @Override

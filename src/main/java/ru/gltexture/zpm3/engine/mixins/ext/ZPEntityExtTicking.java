@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.commands.zones.ZPZoneChecks;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.common.utils.ZPCommonServerUtils;
+import ru.gltexture.zpm3.assets.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.engine.client.utils.ClientRenderFunctions;
 
 public abstract class ZPEntityExtTicking {
@@ -78,7 +79,7 @@ public abstract class ZPEntityExtTicking {
         }
 
         if (entity instanceof LivingEntity livingEntity) {
-            livingEntity.hurt(livingEntity.damageSources().generic(), 2.0f);
+            livingEntity.hurt(livingEntity.damageSources().generic(), livingEntity instanceof ZPAbstractZombie ? 8.0f : 3.0f);
 
             for (ItemStack stack : livingEntity.getHandSlots()) {
                 if (stack.isDamageableItem()) {

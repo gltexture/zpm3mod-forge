@@ -268,18 +268,32 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public static int ACID_DAMAGE_TICK_RATE = 4;
 
     @ZPConfigurableConstant(
-            description = "Acid bottle debuff duration in ticks applied when hitting an entity.",
+            description = "Acid bottle debuff(inv breaking + dmg) duration in ticks applied when hitting an entity DIRECTLY.",
             group = ZPConstants.GROUP_COMBAT,
             type = ZPConfigurableConstant.TYPES.INT
     )
-    public static int ACID_BOTTLE_AFFECT_TIME = 100;
+    public static int ACID_BOTTLE_DIRECT_HIT_AFFECT_TIME = 100;
+
+    @ZPConfigurableConstant(
+            description = "Acid bottle splash radius.",
+            group = ZPConstants.GROUP_COMBAT,
+            type = ZPConfigurableConstant.TYPES.FLOAT
+    )
+    public static float ACID_BOTTLE_SPLASH_RADIUS = 1.5f;
+
+    @ZPConfigurableConstant(
+            description = "Acid bottle debuff(inv breaking + dmg) duration in ticks applied when hitting an entity by SPLASH. (0=disable splash affection)",
+            group = ZPConstants.GROUP_COMBAT,
+            type = ZPConfigurableConstant.TYPES.INT
+    )
+    public static int ACID_BOTTLE_SPLASH_HIT_MAX_AFFECT_TIME = 80;
 
     @ZPConfigurableConstant(
             description = "Base damage dealt on inventory items by an acid bottle projectile when hitting an entity.",
             group = ZPConstants.GROUP_COMBAT,
             type = ZPConfigurableConstant.TYPES.FLOAT
     )
-    public static float ACID_BOTTLE_DAMAGE = 2.0f;
+    public static float ACID_BOTTLE_DAMAGE = 2.5f;
 
     @ZPConfigurableConstant(
             description = "Base damage value for a thrown plate item when hitting an entity.",
@@ -522,7 +536,14 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public static int PUMPKIN_FADING_TIME = 24000;
 
     @ZPConfigurableConstant(
-            description = "Duration in ticks before a lava turns into stone.",
+            description = "Duration in ticks before acid turns into sand.",
+            group = ZPConstants.GROUP_WORLD,
+            type = ZPConfigurableConstant.TYPES.INT
+    )
+    public static int ACID_FADING_TIME = 1200;
+
+    @ZPConfigurableConstant(
+            description = "Duration in ticks before lava turns into stone.",
             group = ZPConstants.GROUP_WORLD,
             type = ZPConfigurableConstant.TYPES.INT
     )
@@ -541,6 +562,13 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
             type = ZPConfigurableConstant.TYPES.BOOLEAN
     )
     public static boolean FADING_PUMPKINS = true;
+
+    @ZPConfigurableConstant(
+            description = "Allows acid fade over time when enabled.",
+            group = ZPConstants.GROUP_WORLD,
+            type = ZPConfigurableConstant.TYPES.BOOLEAN
+    )
+    public static boolean FADING_ACIDS = true;
 
     @ZPConfigurableConstant(
             description = "Allows lava fade over time when enabled.",

@@ -51,11 +51,11 @@ public class ZPBlocks extends ZPRegistry<Block> implements IZPCollectRegistryObj
 
     @Override
     protected void runRegister(@NotNull ZPRegSupplier<Block> regSupplier) {
-        this.pushInstanceCollecting("blocks");
+        this.initInstanceCollecting("blocks");
         ZPRegAdminBlocks.init(regSupplier);
         ZPRegCommonBlocks.init(regSupplier);
-        this.stopCollecting();
-        ZPRegFluidBlocks.init(regSupplier);
+        this.stopInstanceCollecting();
+        ZPRegFluidBlocks.init(this, regSupplier);
     }
 
     @Override

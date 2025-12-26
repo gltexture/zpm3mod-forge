@@ -6,12 +6,13 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.common.init.ZPItems;
@@ -80,22 +81,64 @@ public class ZPAcidBottleEntity extends ZPThrowableEntity {
         return !(this.getOwner() instanceof ZPAbstractZombie) || !(pTarget instanceof ZPAbstractZombie);
     }
 
+    @Override
     protected void onHitEntity(@NotNull EntityHitResult pResult) {
         super.onHitEntity(pResult);
         Entity entity = pResult.getEntity();
         if (!entity.level().isClientSide()) {
             if (entity instanceof IZPEntityExt izpEntityExt) {
-                izpEntityExt.addAcidLevel(ZPConstants.ACID_BOTTLE_AFFECT_TIME);
+                izpEntityExt.addAcidLevel(ZPConstants.ACID_BOTTLE_DIRECT_HIT_AFFECT_TIME);
             }
             entity.hurt(this.damageSources().thrown(this, this.getOwner()), ZPConstants.ACID_BOTTLE_DAMAGE);
+            this.affectSplash(entity);
         }
     }
 
+    @Override
+    protected void onHitBlock(BlockHitResult pResult) {
+        super.onHitBlock(pResult);
+        if (!this.level().isClientSide) {
+            this.affectSplash(null);
+        }
+    }
+
+    @Override
     protected void onHit(@NotNull HitResult pResult) {
         super.onHit(pResult);
         if (!this.level().isClientSide) {
             this.level().broadcastEntityEvent(this, (byte) 3);
             this.discard();
+        }
+    }
+
+    protected void affectSplash(@Nullable Entity hitEntity) {
+        if (!this.level().isClientSide()) {
+            if (ZPConstants.ACID_BOTTLE_SPLASH_HIT_MAX_AFFECT_TIME > 0) {
+                final double radius = ZPConstants.ACID_BOTTLE_SPLASH_RADIUS;
+                final int maxTime = ZPConstants.ACID_BOTTLE_SPLASH_HIT_MAX_AFFECT_TIME;
+                final int minTime = 20;
+                final float dY = hitEntity == null ? 0.0f : (float) (hitEntity.getBoundingBox().maxY - hitEntity.getBoundingBox().minY);
+                Vec3 center = hitEntity != null ? new Vec3(hitEntity.position().toVector3f().add(0.0f, dY, 0.0f)) : this.position();
+                Level level = this.level();
+                AABB area = new AABB(center, center).inflate(radius);
+                for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, area, e -> e != hitEntity)) {
+                    double dist = target.distanceTo(hitEntity != null ? hitEntity : this);
+                    if (dist > radius) {
+                        continue;
+                    }
+                    Vec3 from = center;
+                    Vec3 to = target.getBoundingBox().getCenter();
+                    BlockHitResult hit = level.clip(new ClipContext(from, to, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+                    if (hit.getType() == HitResult.Type.BLOCK) {
+                        continue;
+                    }
+                    double k = 1.0 - (dist / radius);
+                    int affectTime = (int) Math.max(minTime, Math.round(k * maxTime));
+                    if (target instanceof IZPEntityExt ext) {
+                        ext.addAcidLevel(affectTime);
+                    }
+                }
+            }
         }
     }
 

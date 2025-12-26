@@ -59,7 +59,7 @@ public class ZPRenderWorldEventWithPickUpCheck implements ZPEventClass {
             final float dist = 2.0f;
             final Vec3 targetPos = mc.player.getEyePosition().add(mc.player.getLookAngle().scale(dist));
             ZPRenderWorldEventWithPickUpCheck.entityToPickUp = null;
-            BlockHitResult blockHit = mc.level.clip(new ClipContext(mc.player.getEyePosition(), targetPos, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, mc.player));
+            BlockHitResult blockHit = mc.level.clip(new ClipContext(mc.player.getEyePosition(), targetPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, mc.player));
             Vec3 rayEnd = blockHit.getType() == HitResult.Type.BLOCK ? blockHit.getLocation() : targetPos;
             EntityHitResult ehr = ProjectileUtil.getEntityHitResult(mc.level, mc.player, mc.player.getEyePosition(), rayEnd, mc.player.getBoundingBox().expandTowards(mc.player.getLookAngle().scale(dist)).inflate(1.0),
                     e -> e instanceof ItemEntity p && p.tickCount > 5

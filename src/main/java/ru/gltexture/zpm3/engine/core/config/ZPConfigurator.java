@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public final class ZPConfigurator {
@@ -29,6 +30,15 @@ public final class ZPConfigurator {
     public void addClass(ZPClassWithConfConstants classWithConfConstantsClass) {
         this.classList.add(classWithConfConstantsClass);
     }
+
+    private int parseIntLenient(String s) {
+        try {
+            return (int) Math.floor(Double.parseDouble(s.trim()));
+        } catch (NumberFormatException e) {
+            throw new ZPIOException("Invalid int value: " + s, e);
+        }
+    }
+
 
     public void processConfiguration(ZPPath diskPath) {
         ZPLogger.info("Config-processing, " + diskPath);
@@ -46,9 +56,16 @@ public final class ZPConfigurator {
                     for (Map.Entry<String, List<ClassFieldData>> entry : readClassFields.entrySet()) {
                         fileWriter.append("\n\n# =========================== (").append(entry.getKey()).append(") ===========================\n\n");
                         for (ClassFieldData classFieldData : entry.getValue()) {
+                            final ClassFieldData fieldFromReadFile = readExistingFile != null ? readExistingFile.get(classFieldData.fieldName) : null;
                             Object newValue = null;
-                            if (readExistingFile != null && readExistingFile.containsKey(classFieldData.fieldName)) {
-                                newValue = readExistingFile.get(classFieldData.fieldName).currentValue;
+                            if (fieldFromReadFile != null) {
+                                if (readExistingFile.containsKey(classFieldData.fieldName)) {
+                                    newValue = fieldFromReadFile.currentValue;
+                                }
+                                if (!classFieldData.type.equals(fieldFromReadFile.type)) {
+                                    ZPLogger.error("Param type mismatch! Param: " + classFieldData.fieldName + " Types: " + classFieldData.type + "/" + fieldFromReadFile.type);
+                                    readExistingFile.replace(classFieldData.fieldName, new ClassFieldData(fieldFromReadFile.fieldName, fieldFromReadFile.group, fieldFromReadFile.description, classFieldData.type, fieldFromReadFile.defaultValue, fieldFromReadFile.currentValue));
+                                }
                             }
                             fileWriter.append("\n# ").append(String.valueOf(i++)).append(". \n");
                             fileWriter.append(classFieldData.toString(newValue));
@@ -66,25 +83,38 @@ public final class ZPConfigurator {
                                 ZPConfigurableConstant zpConfigurableConstant = field.getAnnotation(ZPConfigurableConstant.class);
                                 field.setAccessible(true);
 
-                                Object value = classFieldData.currentValue;
-                                if (value instanceof Float f) {
-                                    value = (float) Mth.clamp(f, zpConfigurableConstant.min(), zpConfigurableConstant.max());
-                                } else if (value instanceof Integer f) {
-                                    value = (int) Mth.clamp(f, zpConfigurableConstant.min(), zpConfigurableConstant.max());
-                                } else if (value instanceof Double f) {
-                                    value = (float) Mth.clamp(f, zpConfigurableConstant.min(), zpConfigurableConstant.max());
+                                Object currentValue = null;
+                                final String readValue = classFieldData.currentValue;
+                                final String type = classFieldData.type;
+                                try {
+                                    switch (Objects.requireNonNull(ZPConfigurableConstant.TYPES.getType(type))) {
+                                        case STRING -> currentValue = readValue;
+                                        case FLOAT -> currentValue = Float.parseFloat(readValue);
+                                        case INT -> currentValue = this.parseIntLenient(readValue);
+                                        case BOOLEAN -> currentValue = (readValue.equals("true") || readValue.equals("1")) ? Boolean.TRUE : Boolean.FALSE;
+                                    }
+                                    if (currentValue != null) {
+                                        if (currentValue instanceof Float f) {
+                                            currentValue = (float) Mth.clamp(f, zpConfigurableConstant.min(), zpConfigurableConstant.max());
+                                        } else if (currentValue instanceof Integer f) {
+                                            currentValue = (int) Mth.clamp(f, zpConfigurableConstant.min(), zpConfigurableConstant.max());
+                                        } else if (currentValue instanceof Double f) {
+                                            currentValue = (float) Mth.clamp(f, zpConfigurableConstant.min(), zpConfigurableConstant.max());
+                                        }
+                                        field.set(null, currentValue);
+                                    }
+                                    ZPLogger.info("Read config field: " + e.getClass() + " F: " + classFieldData.fieldName());
+                                } catch (Exception ex) {
+                                    ZPLogger.exception(new ZPIOException("Failed to read config-var " + classFieldData.fieldName + " with type " + type + ". Check the config! ", ex));
                                 }
-
-                                field.set(null, value);
-                                ZPLogger.info("Read config field: " + e.getClass() + " F: " + classFieldData.fieldName());
                             }
                         }
                     }
                 }
-            } catch (IllegalAccessException | IllegalArgumentException ex) {
+            } catch (IllegalAccessException ex) {
                 throw new ZPRuntimeException(ex);
             } catch (IOException | ClassCastException ex) {
-                ex.printStackTrace(System.err);
+                ZPLogger.exception(ex);
             } catch (NoSuchFieldException ex) {
                 ZPLogger.warn("Couldn't find in " + e.getClass().getSimpleName() + " field. " + ex.getMessage());
             }
@@ -112,15 +142,7 @@ public final class ZPConfigurator {
                     final String fieldName = strings[0];
                     final String type = strings[1];
                     final String currentValueS = strings[2];
-                    Object currentValue = null;
-                    switch (Objects.requireNonNull(ZPConfigurableConstant.TYPES.getType(type))) {
-                        case STRING -> currentValue = currentValueS;
-                        case FLOAT -> currentValue = Float.parseFloat(currentValueS);
-                        case INT -> currentValue = Integer.parseInt(currentValueS);
-                        case BOOLEAN -> currentValue = currentValueS.equals("true") ? Boolean.TRUE : Boolean.FALSE;
-                        default -> throw new ZPIOException("UNKNOWN TYPE: " + type);
-                    }
-                    map.put(fieldName, new ClassFieldData(fieldName, "", "", type, null, Objects.requireNonNull(currentValue)));
+                    map.put(fieldName, new ClassFieldData(fieldName, "", "", type, null, currentValueS));
                 }
             }
         } catch (Exception e) {
@@ -140,7 +162,7 @@ public final class ZPConfigurator {
                 }
                 ZPConfigurableConstant configurableConstant = field.getAnnotation(ZPConfigurableConstant.class);
                 Object value = field.get(null);
-                ClassFieldData classFieldData = new ClassFieldData(field.getName(), configurableConstant.group(), configurableConstant.description(), configurableConstant.type().getId(), value, value);
+                ClassFieldData classFieldData = new ClassFieldData(field.getName(), configurableConstant.group(), configurableConstant.description(), configurableConstant.type().getId(), value, value.toString());
                 classFieldDataList.add(classFieldData);
             }
         }
@@ -151,10 +173,20 @@ public final class ZPConfigurator {
         String configName();
     }
 
-    public record ClassFieldData(String fieldName, String group, String description, String type, Object defaultValue, @NotNull Object currentValue) {
-
+    public record ClassFieldData(String fieldName, String group, String description, String type, Object defaultValue, @NotNull String currentValue) {
         public @NotNull String toString(@Nullable Object newValue) {
-            return this.fieldName + ":" + this.type + ":" + (newValue != null ? newValue.toString() : currentValue.toString()) + "\n# " + this.description + " | Default=" + defaultValue.toString() + "\n";
+            StringBuilder builder = new StringBuilder();
+            builder.append(this.fieldName)
+                    .append(":")
+                    .append(this.type)
+                    .append(":")
+                    .append(newValue != null ? newValue.toString() : currentValue)
+                    .append("\n# ")
+                    .append(this.description)
+                    .append(" | Default=")
+                    .append(defaultValue.toString())
+                    .append("\n");
+            return builder.toString();
         }
     }
 }

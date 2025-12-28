@@ -35,7 +35,7 @@ public abstract class ZPLootTablesReader {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace(System.err);
+            ZPLogger.exception(e);
         }
     }
 
@@ -46,7 +46,7 @@ public abstract class ZPLootTablesReader {
             jsonRaw = ZPUtility.files().readTextFromJar(readJson);
         } catch (IOException e) {
             ZPLogger.error("Couldn't get file: " + readJson);
-            e.printStackTrace(System.err);
+            ZPLogger.exception(e);
             return null;
         }
 

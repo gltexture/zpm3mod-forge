@@ -123,7 +123,8 @@ public final class ZPFlagZones {
 
     public record Zone(String uniqueId, int startX, int startY, int startZ, int endX, int endY, int endZ, Set<AvailableFlags> flags) {
         public enum AvailableFlags {
-            noAcidInvDmg,
+            noAcidAffection,
+            noAcidBlockDestruction,
             noZombieMining,
             noThrowableBlockDamage,
             noBulletBlockDmg,

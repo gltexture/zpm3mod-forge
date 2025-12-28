@@ -1,21 +1,18 @@
 package ru.gltexture.zpm3.assets.entity.instances.mobs.ai;
 
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.assets.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.assets.entity.mixins.ext.IPlayerZmTargetsExt;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 
-import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.function.Predicate;
@@ -30,6 +27,7 @@ public class ZPZombieNearestAttackableTarget extends Goal {
     protected @Nullable SpecialTargetConditions xRayViewConditions;
     private final ZPAbstractZombie zombie;
     private final float searchRangeMultiplier;
+    private LivingEntity veryAngryAt;
 
     protected ZPZombieNearestAttackableTarget(ZPAbstractZombie pMob, List<Class<? extends PathfinderMob>> nonPlayersToFind, float searchRangeMultiplier, boolean canUseXRayView, int searchUpdateInterval, @Nullable Predicate<LivingEntity> pTargetPredicate) {
         this.setFlags(EnumSet.of(Flag.TARGET));
@@ -61,9 +59,13 @@ public class ZPZombieNearestAttackableTarget extends Goal {
     }
 
     public boolean canUse() {
+        this.setRanges();
+        this.veryAngryAt = this.tryToEntityThatIsVeryAggressive();
+        if (this.veryAngryAt != null) {
+            return true;
+        }
         if (this.ticksToUpdateTargetSearching-- <= 0) {
             this.ticksToUpdateTargetSearching = this.searchUpdateInterval;
-            this.setRanges();
             this.lastTargetedEntity = this.findTarget();
             return this.lastTargetedEntity != null && this.lastTargetedEntity.isAlive();
         }
@@ -83,23 +85,54 @@ public class ZPZombieNearestAttackableTarget extends Goal {
         this.lastTargetedEntity = null;
     }
 
+    public @Nullable LivingEntity tryToEntityThatIsVeryAggressive() {
+        LivingEntity livingEntity = this.zombie.getLastHurtByMob();
+        if (livingEntity == null || !livingEntity.isAlive()) {
+            return null;
+        }
+        return this.ticksFromLastHurt() < 400 ? livingEntity : null;
+    }
+
+    public int ticksFromLastHurt() {
+        return this.zombie.tickCount - this.zombie.getLastHurtByMobTimestamp();
+    }
+
     @Override
     public void tick() {
+        this.veryAngryAt = this.tryToEntityThatIsVeryAggressive();
+        if (this.veryAngryAt != null) {
+            final LivingEntity alreadyTarget = this.zombie.getTarget();
+            if (alreadyTarget != null) {
+                final float distCompare = (this.zombie.distanceTo(this.veryAngryAt) * 0.675f) - this.zombie.distanceTo(alreadyTarget);
+                if (distCompare <= 0.0f) {
+                    this.zombie.setTarget(this.veryAngryAt);
+                    return;
+                }
+            } else {
+                this.zombie.setTarget(this.veryAngryAt);
+                return;
+            }
+        }
+
         if (this.lastTargetedEntity != null) {
             if (this.ticksToUpdateTargetSearching-- <= 0) {
-                this.ticksToUpdateTargetSearching = this.searchUpdateInterval;
                 this.lastTargetedEntity = this.findTarget();
                 if (this.zombie.getTarget() != null) {
                     this.ticksToUpdateTargetSearching += 20;
                 }
                 if (this.lastTargetedEntity != null) {
-                    boolean isValid = this.zombie.getTarget() == null || (!this.zombie.getTarget().equals(this.lastTargetedEntity) && this.zombie.distanceTo(this.lastTargetedEntity) <= this.zombie.distanceTo(this.zombie.getTarget()) * 0.5f);
+                    boolean isValid = this.zombie.getTarget() == null || (!this.zombie.getTarget().equals(this.lastTargetedEntity) && this.zombie.distanceTo(this.lastTargetedEntity) <= this.zombie.distanceTo(this.zombie.getTarget()) * 0.675f);
                     if (isValid) {
                         this.zombie.setTarget(this.lastTargetedEntity);
                     }
                 }
             }
         }
+    }
+
+    @Override
+    public boolean requiresUpdateEveryTick() {
+        return true;
     }
 
     public void start() {
@@ -145,7 +178,7 @@ public class ZPZombieNearestAttackableTarget extends Goal {
     }
 
     protected float getReducedFollowDistanceForXRay() {
-        return (float) (this.getFollowDistance() * 0.5f);
+        return (float) (this.getFollowDistance() * 0.575f);
     }
 
     @Nullable

@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
@@ -55,14 +56,19 @@ public abstract class ClientRenderFunctions {
     }
 
     public static void addAcidParticles(Entity entity) {
+        ClientRenderFunctions.addAcidParticles(20, entity);
+    }
+
+    public static void addAcidParticles(int acidLevel, Entity entity) {
+        final float scaling = Mth.clamp(acidLevel / 20.0f, 0.175f, 1.0f);
         int maxParticles = 1 + (int) Math.floor(entity.getBbWidth() * entity.getBbHeight());
         maxParticles = Math.min(maxParticles, 6);
 
         for (int i = 0; i < maxParticles; ++i) {
-            final Vector3f randomVector = ZPRandom.instance.randomVector3f(0.15f, new Vector3f(0.3f, 0.1f, 0.3f));
+            final Vector3f randomVector = ZPRandom.instance.randomVector3f(0.15f, new Vector3f(0.3f, 0.1f, 0.3f)).mul(scaling);
             final Vector3f position = entity.position().toVector3f().add(0.0f, ZPRandom.instance.randomFloat(entity.getBbHeight()), 0.0f);
             position.add(ZPRandom.instance.randomVector3f(0.3f, new Vector3f(0.6f, 0.3f, 0.6f)));
-            ZPCommonClientUtils.emmitAcidParticle(2.2f + ZPRandom.getRandom().nextFloat(0.3f), position, new Vector3f(randomVector.x, (randomVector.y * 0.1f) + 0.05f, randomVector.z));
+            ZPCommonClientUtils.emmitAcidParticle((2.0f * scaling) + 0.2f + ZPRandom.getRandom().nextFloat(0.4f), position, new Vector3f(randomVector.x, (randomVector.y * 0.1f) + 0.05f, randomVector.z));
         }
     }
 

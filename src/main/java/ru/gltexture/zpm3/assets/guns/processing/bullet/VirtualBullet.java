@@ -225,10 +225,12 @@ public class VirtualBullet {
         if (isHeadshot) {
             damage += ZPConstants.BULLET_HEADSHOT_BONUS_DAMAGE;
         }
-        if (entityToDamage instanceof Animal) {
-            damage *= 1.5f;
-        } else if (entityToDamage instanceof Mob) {
-            damage *= 2.0f;
+        if (!(entityToDamage instanceof ZPAbstractZombie)) {
+            if (entityToDamage instanceof Animal) {
+                damage *= 1.5f;
+            } else if (entityToDamage instanceof Mob) {
+                damage *= 3.0f;
+            }
         }
         if (entityToDamage.hurt(ZPDamageSources.bullet((ServerLevel) level, attacker), damage)) {
             entityToDamage.invulnerableTime = 0;

@@ -79,3 +79,6 @@ config = "zpm3.player.mixins.json"
 
 [[mixins]]
 config = "zpm3.debug.mixins.json"
+
+[[mixins]]
+config = "zpm3.entities.mixins.json"

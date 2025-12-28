@@ -93,14 +93,14 @@ public class ZPCommonAsset extends ZPAsset {
             Blocks.BLACK_CONCRETE.defaultBlockState().destroySpeed = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
             Blocks.OBSIDIAN.defaultBlockState().destroySpeed = 4.0f;
 
-            Blocks.BRICKS.defaultBlockState().destroySpeed = 4.0F;
-            Blocks.BRICKS.explosionResistance = 12.0f;
+            Blocks.BRICKS.defaultBlockState().destroySpeed = 8.0F;
+            Blocks.BRICKS.explosionResistance = 18.0f;
 
-            Blocks.IRON_BARS.defaultBlockState().destroySpeed = 10.0F;
+            Blocks.IRON_BARS.defaultBlockState().destroySpeed = 24.0F;
             Blocks.IRON_BARS.explosionResistance = 12.0f;
         }
 
-        DispenserBlock.registerBehavior(Items.LAVA_BUCKET, new DefaultDispenseItemBehavior() {
+        final DefaultDispenseItemBehavior defaultLiqDispense = new DefaultDispenseItemBehavior() {
             private final DefaultDispenseItemBehavior defaultDispenseItemBehavior = new DefaultDispenseItemBehavior();
 
             public @NotNull ItemStack execute(@NotNull BlockSource p_123561_, @NotNull ItemStack p_123562_) {
@@ -122,7 +122,10 @@ public class ZPCommonAsset extends ZPAsset {
                     return this.defaultDispenseItemBehavior.dispense(p_123561_, p_123562_);
                 }
             }
-        });
+        };
+        DispenserBlock.registerBehavior(ZPItems.toxicwater_bucket.get(), defaultLiqDispense);
+        DispenserBlock.registerBehavior(ZPItems.acid_bucket.get(), defaultLiqDispense);
+        DispenserBlock.registerBehavior(Items.LAVA_BUCKET, defaultLiqDispense);
         DispenserBlock.registerBehavior(Items.BUCKET, new DefaultDispenseItemBehavior() {
             private final DefaultDispenseItemBehavior defaultDispenseItemBehavior = new DefaultDispenseItemBehavior();
 

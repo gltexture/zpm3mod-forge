@@ -1,5 +1,7 @@
 package ru.gltexture.zpm3.assets.entity.instances.throwables;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
@@ -14,13 +16,17 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+import ru.gltexture.zpm3.assets.commands.zones.ZPZoneChecks;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.common.init.ZPItems;
 import ru.gltexture.zpm3.assets.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.assets.common.utils.ZPCommonClientUtils;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
+import ru.gltexture.zpm3.engine.fake.ZPFakePlayer;
 import ru.gltexture.zpm3.engine.mixins.ext.IZPEntityExt;
 import ru.gltexture.zpm3.engine.instances.entities.ZPThrowableEntity;
+import ru.gltexture.zpm3.engine.mixins.ext.IZPLevelExt;
+import ru.gltexture.zpm3.engine.world.GlobalBlocksDestroyMemory;
 
 public class ZPAcidBottleEntity extends ZPThrowableEntity {
     public ZPAcidBottleEntity(EntityType<ZPAcidBottleEntity> pEntityType, Level pLevel) {
@@ -106,6 +112,18 @@ public class ZPAcidBottleEntity extends ZPThrowableEntity {
     protected void onHit(@NotNull HitResult pResult) {
         super.onHit(pResult);
         if (!this.level().isClientSide) {
+            if (pResult.getType() == HitResult.Type.BLOCK) {
+                BlockHitResult blockHit = (BlockHitResult) pResult;
+                BlockPos pos = blockHit.getBlockPos();
+                if (!this.level().isEmptyBlock(pos)) {
+                    if (this.level() instanceof IZPLevelExt ext) {
+                        if (ZPFakePlayer.canBreakBlock((ServerLevel) this.level(), pos) && !ZPZoneChecks.INSTANCE.isNoThrowableBlockDamage((ServerLevel) this.level(), pos)) {
+                            ext.getGlobalBlocksDestroyMemory().addNewEntryLongMem(this.level(), pos, (1.0f + ZPRandom.getRandom().nextFloat(1.0f)) * ZPConstants.THROWABLES_BLOCK_BREAK_MULTIPLIER);
+                            GlobalBlocksDestroyMemory.spawnBlockCrackParticles((ServerLevel) this.level(), pos);
+                        }
+                    }
+                }
+            }
             this.level().broadcastEntityEvent(this, (byte) 3);
             this.discard();
         }

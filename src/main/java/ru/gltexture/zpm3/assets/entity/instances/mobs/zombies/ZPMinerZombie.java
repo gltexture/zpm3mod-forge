@@ -66,10 +66,9 @@ public class ZPMinerZombie extends ZPAbstractZombie {
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(9, new ZPZombieRandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, (new ZPZombieHurtByMobGoal(this)));
-        this.targetSelector.addGoal(2, ZPZombieNearestAttackableTarget.player(this, 1.0f, ZPConstants.ZOMBIE_XRAY_LOOK, 10, (e) -> true));
-        this.targetSelector.addGoal(3, ZPZombieNearestAttackableTarget.nonPlayer(this, List.of(AbstractVillager.class), 0.5f, ZPConstants.ZOMBIE_XRAY_LOOK, 20, (e) -> true));
-        this.targetSelector.addGoal(4, ZPZombieNearestAttackableTarget.nonPlayer(this, List.of(Cow.class, IronGolem.class, Horse.class, Sheep.class, Pig.class), 0.35f, false, 60, (e) -> true));
+        this.targetSelector.addGoal(1, ZPZombieNearestAttackableTarget.player(this, 1.0f, ZPConstants.ZOMBIE_XRAY_LOOK, 10, (e) -> true));
+        this.targetSelector.addGoal(2, ZPZombieNearestAttackableTarget.nonPlayer(this, List.of(AbstractVillager.class), 0.5f, ZPConstants.ZOMBIE_XRAY_LOOK, 20, (e) -> true));
+        this.targetSelector.addGoal(3, ZPZombieNearestAttackableTarget.nonPlayer(this, List.of(Cow.class, IronGolem.class, Horse.class, Sheep.class, Pig.class), 0.35f, false, 60, (e) -> true));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -78,7 +77,7 @@ public class ZPMinerZombie extends ZPAbstractZombie {
                 .add(Attributes.MAX_HEALTH, 60.0f * ZPConstants.ZOMBIE_MAX_HEALTH_MULTIPLIER)
                 .add(Attributes.FOLLOW_RANGE, ZPConstants.ZOMBIE_FOLLOW_RANGE * 0.8f)
                 .add(Attributes.MOVEMENT_SPEED, 0.22f * ZPConstants.ZOMBIE_MOVEMENT_SPEED_MULTIPLIER)
-                .add(Attributes.ATTACK_DAMAGE, 1.5f * ZPConstants.ZOMBIE_ATTACK_DAMAGE_MULTIPLIER)
+                .add(Attributes.ATTACK_DAMAGE, 3.0f * ZPConstants.ZOMBIE_ATTACK_DAMAGE_MULTIPLIER)
                 .add(Attributes.ARMOR, 4.0f)
                 .add(ZPEntityAttributes.zm_attack_range_multiplier.get(), 0.55f / ZPConstants.ZOMBIE_ATTACK_RANGE_MULTIPLIER)
                 .add(ZPEntityAttributes.zm_mining_speed.get(), 0.0075f * ZPConstants.ZOMBIE_MINING_SPEED_MULTIPLIER)

@@ -62,7 +62,7 @@ public abstract class ZPRegTorchBlocks {
             });
         }).end();
 
-        ZPTorchBlocks.torch4 = regSupplier.register("torch4", () -> new ZPFadingTorchBlock(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 6).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), ParticleTypes.FLAME, 0.15f, () -> ZPTorchBlocks.torch5.get())
+        ZPTorchBlocks.torch4 = regSupplier.register("torch4", () -> new ZPFadingTorchBlock(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 7).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), ParticleTypes.FLAME, 0.15f, () -> ZPTorchBlocks.torch5.get())
         ).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
             utils.blocks().setBlockModelExecutor(e, DefaultBlockModelExecutors.getDefaultTorch());
@@ -72,7 +72,7 @@ public abstract class ZPRegTorchBlocks {
             });
         }).end();
 
-        ZPTorchBlocks.torch4_wall = regSupplier.register("torch4_wall", () -> new ZPFadingTorchBlockWall(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 6).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), ParticleTypes.FLAME, 0.15f, () -> ZPTorchBlocks.torch5_wall.get())
+        ZPTorchBlocks.torch4_wall = regSupplier.register("torch4_wall", () -> new ZPFadingTorchBlockWall(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 7).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), ParticleTypes.FLAME, 0.15f, () -> ZPTorchBlocks.torch5_wall.get())
         ).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
             utils.blocks().setBlockModelExecutor(e, DefaultBlockModelExecutors.getDefaultWallTorch());
@@ -81,7 +81,7 @@ public abstract class ZPRegTorchBlocks {
             });
         }).end();
 
-        ZPTorchBlocks.torch5 = regSupplier.register("torch5", () -> new ZPFadingTorchBlock(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 2).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), null, 0.0f, null)
+        ZPTorchBlocks.torch5 = regSupplier.register("torch5", () -> new ZPFadingTorchBlock(BlockBehaviour.Properties.of().noCollission().instabreak().sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), null, 0.0f, null)
         ).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
             utils.blocks().setBlockModelExecutor(e, DefaultBlockModelExecutors.getDefaultTorch());
@@ -91,7 +91,7 @@ public abstract class ZPRegTorchBlocks {
             });
         }).end();
 
-        ZPTorchBlocks.torch5_wall = regSupplier.register("torch5_wall", () -> new ZPFadingTorchBlockWall(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 2).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), null, 0.0f, null)
+        ZPTorchBlocks.torch5_wall = regSupplier.register("torch5_wall", () -> new ZPFadingTorchBlockWall(BlockBehaviour.Properties.of().noCollission().instabreak().sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), null, 0.0f, null)
         ).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
             utils.blocks().setBlockModelExecutor(e, DefaultBlockModelExecutors.getDefaultWallTorch());

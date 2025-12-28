@@ -25,7 +25,7 @@ public abstract class ZPEntityExtTicking {
                 itemEntity.kill();
             }
         }
-        if (!ZPZoneChecks.INSTANCE.isNoAcidInvDmg((ServerLevel) entity.level(), entity.getOnPos())) {
+        if (!ZPZoneChecks.INSTANCE.isNoAcidAffection((ServerLevel) entity.level(), entity.getOnPos())) {
             if (izpEntityExt.touchesAcidBlock() && entity.tickCount % 2 == 0) {
                 izpEntityExt.addAcidLevel(1);
             }
@@ -58,7 +58,7 @@ public abstract class ZPEntityExtTicking {
 
     public static void clientEntityTickPre(@NotNull Entity entity, @NotNull IZPEntityExt izpEntityExt) {
         if (izpEntityExt.getAcidLevel() > 0) {
-            ClientRenderFunctions.addAcidParticles(entity);
+            ClientRenderFunctions.addAcidParticles(izpEntityExt.getAcidLevel(), entity);
             if (entity.tickCount % 3 == 0) {
                 entity.level().playLocalSound(entity.getOnPos(), SoundEvents.FIRE_EXTINGUISH, SoundSource.MASTER, 0.375f, 1.15f, false);
             }

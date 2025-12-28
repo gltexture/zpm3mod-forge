@@ -3,8 +3,7 @@ package ru.gltexture.zpm3.assets.common.global;
 import ru.gltexture.zpm3.engine.core.config.ZPConfigurableConstant;
 import ru.gltexture.zpm3.engine.core.config.ZPConfigurator;
 
-public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
-
+public class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public ZPConstants() {
     }
 
@@ -75,6 +74,13 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public static float ZOMBIE_ATTACK_RANGE_MULTIPLIER = 1.0f;
 
     @ZPConfigurableConstant(
+            description = "Global multiplier for dog-zombie melee attack reach.",
+            group = ZPConstants.GROUP_ZOMBIE,
+            type = ZPConfigurableConstant.TYPES.FLOAT
+    )
+    public static float ZOMBIE_DOG_ATTACK_RANGE_MULTIPLIER = 0.5f;
+
+    @ZPConfigurableConstant(
             description = "Multiplier for the chance of zombies applying negative status effects to entities.",
             group = ZPConstants.GROUP_ZOMBIE,
             type = ZPConfigurableConstant.TYPES.FLOAT
@@ -124,21 +130,21 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public static float ZOMBIE_PLAGUE_EFFECT_CHANCE_MULTIPLIER = 1.0f;
 
     @ZPConfigurableConstant(
-            description = "Maximum distance in blocks that a zombie can follow a previously detected target. Detection radius is always 25–35% smaller than this value to avoid unrealistic pursuit behavior.",
+            description = "Maximum distance in blocks that a zombie can follow a previously detected target. Detection radius is smaller than this value to avoid unrealistic pursuit behavior.",
             group = ZPConstants.GROUP_ZOMBIE,
             type = ZPConfigurableConstant.TYPES.FLOAT
     )
     public static float ZOMBIE_FOLLOW_RANGE = 48.0f;
 
     @ZPConfigurableConstant(
-            description = "Duration in ticks during which an enraged zombie remains persistent and cannot despawn, preventing mob unloading when the target is lost briefly or leaves visibility.",
+            description = "Duration in ticks during which an enraged zombie remains persistent and cannot despawn, preventing mob unloading when the target is lost briefly.",
             group = ZPConstants.GROUP_ZOMBIE,
             type = ZPConfigurableConstant.TYPES.INT
     )
     public static int ZOMBIE_MAX_ANGRY_PERSISTENCE_TICKS = 1800;
 
     @ZPConfigurableConstant(
-            description = "If enabled, a zombie carrying important loot will not despawn, ensuring rare drop persistence and preventing loss on chunk unload.",
+            description = "If enabled, a zombie carrying important loot will not despawn, ensuring rare drop persistence.",
             group = ZPConstants.GROUP_ZOMBIE,
             type = ZPConfigurableConstant.TYPES.BOOLEAN
     )
@@ -163,7 +169,7 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
             group = ZPConstants.GROUP_ZOMBIE,
             type = ZPConfigurableConstant.TYPES.INT
     )
-    public static int ZOMBIE_EATING_TIME = 200;
+    public static int ZOMBIE_EATING_TIME = 300;
 
     @ZPConfigurableConstant(
             description = "Multiplier for the cooldown between zombie attempts to throw objects or debris.",
@@ -187,11 +193,11 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public static float ZOMBIE_MIN_MINING_HEIGHT = -9999999.0f;
 
     @ZPConfigurableConstant(
-            description = "Maximum number of zombies allowed in one chunk to limit overcrowding and AI performance load.",
+            description = "Maximum number of zombies allowed to spawn in one chunk to limit overcrowding and AI load.",
             group = ZPConstants.GROUP_ZOMBIE,
             type = ZPConfigurableConstant.TYPES.INT
     )
-    public static int MAX_ZOMBIES_IN_CHUNK = 120;
+    public static int MAX_ZOMBIES_SPAWN_IN_CHUNK = 128;
 
     @ZPConfigurableConstant(
             description = "Block hardness multiplier applied when zombies mine or break blocks.",
@@ -201,28 +207,28 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public static float ZOMBIE_MINING_BLOCK_HARDNESS_MULTIPLIER = 1.0f;
 
     @ZPConfigurableConstant(
-            description = "If enabled, zombies share global block destruction memory (short + long), affecting cooperative block breaking logic. If disabled, each zombie mines independently (classic system).",
+            description = "If enabled, zombies use shared global block destruction memory, affecting cooperative block breaking logic. If disabled, each zombie mines independently.",
             group = ZPConstants.GROUP_ZOMBIE,
             type = ZPConfigurableConstant.TYPES.BOOLEAN
     )
     public static boolean USE_ZOMBIE_MINING_SHARED_GLOBAL_MEM = true;
 
     @ZPConfigurableConstant(
-            description = "Time in ticks after which a zombie hit partially stored block damage (short memory) is reset.",
+            description = "Time in ticks after which partially stored block damage (short memory) is reset.",
             group = ZPConstants.GROUP_ZOMBIE,
             type = ZPConfigurableConstant.TYPES.INT
     )
     public static int TIME_TO_CLEAR_SHARED_ZOMBIE_MINING_SHORT_MEM = 600;
 
     @ZPConfigurableConstant(
-            description = "Time in ticks after which long-term stored zombie block damage memory is cleared. Typically used for persistent environment destruction data.",
+            description = "Time in ticks after which long-term stored zombie block damage memory is reset.",
             group = ZPConstants.GROUP_ZOMBIE,
             type = ZPConfigurableConstant.TYPES.INT
     )
     public static int TIME_TO_CLEAR_SHARED_ZOMBIE_MINING_LONG_MEM = 3600;
 
     @ZPConfigurableConstant(
-            description = "Zombie hand reach length used specifically for mining path calculations measured in blocks.",
+            description = "Zombie hand reach length used for mining path calculations measured in blocks.",
             group = ZPConstants.GROUP_ZOMBIE,
             type = ZPConfigurableConstant.TYPES.FLOAT
     )
@@ -249,17 +255,50 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     )
     public static int TOTAL_MINER_ZOMBIE_TEXTURES = 6;
 
-
     // ===== PLAYER =====
     @ZPConfigurableConstant(
             description = "Default hand reach for players measured in blocks used for melee interaction logic.",
             group = ZPConstants.GROUP_COMBAT,
             type = ZPConfigurableConstant.TYPES.FLOAT
     )
-    public static float PLAYER_DEFAULT_HAND_REACH_DISTANCE = 2.0f;
-
+    public static float PLAYER_DEFAULT_HAND_REACH_DISTANCE = 2.375f;
 
     // ===== COMBAT / DAMAGE / ANTI-LAG =====
+    @ZPConfigurableConstant(
+            description = "Multiplier used to reduce damage taken from bullets based on armor. 1.0 = no reduction, 0 = full reduction.",
+            group = ZPConstants.GROUP_COMBAT,
+            type = ZPConfigurableConstant.TYPES.FLOAT,
+            min = 0.0,
+            max = 1.0
+    )
+    public static float ARMOR_BULLET_DAMAGE_REDUCTION_MULTIPLIER = 0.75f;
+
+    @ZPConfigurableConstant(
+            description = "If enabled, only players can receive bleeding debuffs from attacks",
+            group = ZPConstants.GROUP_COMBAT,
+            type = ZPConfigurableConstant.TYPES.BOOLEAN
+    )
+    public static boolean BLEEDING_ONLY_FOR_PLAYERS = false;
+
+    @ZPConfigurableConstant(
+            description = "Multiplier that increases the chance of fracture. 1.0 = default fracture probability, 0 = fractures disabled.",
+            group = ZPConstants.GROUP_COMBAT,
+            type = ZPConfigurableConstant.TYPES.FLOAT,
+            min = 0.0,
+            max = 1.0
+    )
+    public static float FRACTURE_CHANCE_MULTIPLIER = 1.0f;
+
+    @ZPConfigurableConstant(
+            description = "Multiplier for the chance to inflict bleeding. 1.0 = default chance, 0 = disables bleeding, 5.0 = 5× more likely.",
+            group = ZPConstants.GROUP_COMBAT,
+            type = ZPConfigurableConstant.TYPES.FLOAT,
+            min = 0.0,
+            max = 5.0
+    )
+    public static float BLEEDING_CHANCE_MULTIPLIER = 1.0f;
+
+
     @ZPConfigurableConstant(
             description = "Acid inventory damage tick rate.",
             group = ZPConstants.GROUP_COMBAT,
@@ -268,7 +307,7 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public static int ACID_DAMAGE_TICK_RATE = 4;
 
     @ZPConfigurableConstant(
-            description = "Acid bottle debuff(inv breaking + dmg) duration in ticks applied when hitting an entity DIRECTLY.",
+            description = "Duration in ticks for acid bottle debuff (inventory breaking + damage) applied when hitting an entity directly.",
             group = ZPConstants.GROUP_COMBAT,
             type = ZPConfigurableConstant.TYPES.INT
     )
@@ -282,122 +321,107 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public static float ACID_BOTTLE_SPLASH_RADIUS = 1.5f;
 
     @ZPConfigurableConstant(
-            description = "Acid bottle debuff(inv breaking + dmg) duration in ticks applied when hitting an entity by SPLASH. (0=disable splash affection)",
+            description = "Duration in ticks for acid bottle splash debuff (inventory breaking + damage). Set to 0 to disable splash effect.",
             group = ZPConstants.GROUP_COMBAT,
             type = ZPConfigurableConstant.TYPES.INT
     )
     public static int ACID_BOTTLE_SPLASH_HIT_MAX_AFFECT_TIME = 80;
 
     @ZPConfigurableConstant(
-            description = "Base damage dealt on inventory items by an acid bottle projectile when hitting an entity.",
+            description = "Base damage dealt to inventory items by an acid bottle projectile on direct hit.",
             group = ZPConstants.GROUP_COMBAT,
             type = ZPConfigurableConstant.TYPES.FLOAT
     )
     public static float ACID_BOTTLE_DAMAGE = 2.5f;
 
     @ZPConfigurableConstant(
-            description = "Base damage value for a thrown plate item when hitting an entity.",
+            description = "Base damage dealt by a thrown plate when hitting an entity.",
             group = ZPConstants.GROUP_COMBAT,
             type = ZPConfigurableConstant.TYPES.FLOAT
     )
     public static float PLATE_DAMAGE = 1.0f;
 
     @ZPConfigurableConstant(
-            description = "Base damage value for a thrown brick item when hitting an entity.",
+            description = "Base damage dealt by a thrown brick when hitting an entity.",
             group = ZPConstants.GROUP_COMBAT,
             type = ZPConfigurableConstant.TYPES.FLOAT
     )
     public static float BRICK_DAMAGE = 3.0f;
 
     @ZPConfigurableConstant(
-            description = "Damage dealt by rotten flesh throwable when hitting an entity.",
+            description = "Damage dealt by thrown rotten flesh when hitting an entity.",
             group = ZPConstants.GROUP_COMBAT,
             type = ZPConfigurableConstant.TYPES.FLOAT
     )
     public static float ROTTEN_FLESH_DAMAGE = 2.0f;
 
     @ZPConfigurableConstant(
-            description = "Base damage value for a thrown rock item when hitting an entity.",
+            description = "Base damage dealt by a thrown rock when hitting an entity.",
             group = ZPConstants.GROUP_COMBAT,
             type = ZPConfigurableConstant.TYPES.FLOAT
     )
     public static float ROCK_DAMAGE = 6.0f;
 
     @ZPConfigurableConstant(
-            description = "Number of ticks entity AABB hitbox data is stored in anti-lag memory for collision interpolation and hit validation. Higher values improve lag compensation but increase memory cost.",
+            description = "Number of ticks entity AABB hitbox data is stored for anti-lag memory. Higher values improve lag compensation at the cost of memory.",
             group = ZPConstants.GROUP_COMBAT,
             type = ZPConfigurableConstant.TYPES.INT
     )
     public static int ENTITY_MAX_AABB_MEMORY_ANTILAG = 20;
 
     @ZPConfigurableConstant(
-            description = "Max number of times one bullet raycast can register block hits before stopping penetration calculations.",
+            description = "Maximum number of times a bullet raycast can register block hits before stopping penetration calculations.",
             group = ZPConstants.GROUP_COMBAT,
             type = ZPConfigurableConstant.TYPES.INT
     )
     public static int MAX_BULLET_BLOCK_HITS = 3;
 
-
     // ===== NETWORK =====
     @ZPConfigurableConstant(
-            description = "Frequency in ticks at which the player ping packet is sent from client to server for latency tracking.",
+            description = "Frequency in ticks at which the player ping packet is sent for latency tracking.",
             group = ZPConstants.GROUP_NETWORK,
             type = ZPConfigurableConstant.TYPES.INT
     )
     public static int PLAYER_PING_PACKET_FREQ = 20;
 
     @ZPConfigurableConstant(
-            description = "Maximum distance in blocks at which nearby players receive gun fire action packets (shoot events, reload events, animation triggers).",
+            description = "Maximum distance in blocks at which nearby players receive gun fire action packets (shoot events, reload events, animations).",
             group = ZPConstants.GROUP_NETWORK,
             type = ZPConfigurableConstant.TYPES.FLOAT
     )
     public static float GUN_ACTION_PACKET_RANGE = 256.0f;
 
     @ZPConfigurableConstant(
-            description = "Maximum distance in blocks at which players receive bullet hit result packets (raycast impact, blood effect spawn, entity hit validation).",
+            description = "Maximum distance in blocks at which players receive bullet hit result packets (raycast impact, blood, entity hit validation).",
             group = ZPConstants.GROUP_NETWORK,
             type = ZPConfigurableConstant.TYPES.FLOAT
     )
     public static float BULLET_HIT_PACKET_RANGE = 128.0f;
 
-
-    // ===== GAMEPLAY =====
+    // ===== WORLD =====
     @ZPConfigurableConstant(
-            description = "Multiplier that increases the chance of limb fracture when an attack lands. 1.0 = default fracture logic probability. 0 disables fractures.",
-            group = ZPConstants.GROUP_COMBAT,
-            type = ZPConfigurableConstant.TYPES.FLOAT,
-            min = 0.0,
-            max = 1.0
+            description = "Tries to make acid block destruction mechanic smoother (less value = less destruction).",
+            group = ZPConstants.GROUP_WORLD,
+            type = ZPConfigurableConstant.TYPES.FLOAT
     )
-    public static float FRACTURE_CHANCE_MULTIPLIER = 1.0f;
+    public static int ACID_BLOCK_DESTRUCTION_CONSTRAINT = 6;
 
     @ZPConfigurableConstant(
-            description = "Multiplier, that used to reduce damage by armor on entity.",
-            group = ZPConstants.GROUP_COMBAT,
-            type = ZPConfigurableConstant.TYPES.FLOAT,
-            min = 0.0,
-            max = 1.0
+            description = "Base block damage of acid block.",
+            group = ZPConstants.GROUP_WORLD,
+            type = ZPConfigurableConstant.TYPES.FLOAT
     )
-    public static float ARMOR_BULLET_DAMAGE_REDUCTION_MULTIPLIER = 0.75f;
+    public static float ACID_BLOCK_BASE_BLOCK_DAMAGE = 0.1f;
 
     @ZPConfigurableConstant(
-            description = "If enabled, only players can receive bleeding debuffs from attacks. Zombies and other instances are immune.",
-            group = ZPConstants.GROUP_COMBAT,
+            description = "Allow acid blocks to break surrounding blocks (EXPERIMENTAL, may cause lag).",
+            group = ZPConstants.GROUP_WORLD,
             type = ZPConfigurableConstant.TYPES.BOOLEAN
     )
-    public static boolean BLEEDING_ONLY_FOR_PLAYERS = false;
+    public static boolean ALLOW_ACID_LIQUID_DESTROY_BLOCKS = true;
 
     @ZPConfigurableConstant(
-            description = "Multiplier for bleeding chance calculation. 1.0 = default. 0 disables bleeding. 5.0 = 5× more likely to inflict bleeding.",
-            group = ZPConstants.GROUP_COMBAT,
-            type = ZPConfigurableConstant.TYPES.FLOAT,
-            min = 0.0,
-            max = 5.0
-    )
-    public static float BLEEDING_CHANCE_MULTIPLIER = 1.0f;
-
-    @ZPConfigurableConstant(
-            description = "Path-update (NOT PATHGEN) algorithm. 0=Vanilla 1=Rewrote.",
+            description = "Path update algorithm (0 = Vanilla, 1 = Rewritten).",
             group = ZPConstants.GROUP_WORLD,
             type = ZPConfigurableConstant.TYPES.INT,
             min = 0.0,
@@ -406,20 +430,13 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public static int ZP_PATH_UPDATER_ALG = 1;
 
     @ZPConfigurableConstant(
-            description = "Disable vine climb.",
-            group = ZPConstants.GROUP_WORLD,
-            type = ZPConfigurableConstant.TYPES.BOOLEAN
-    )
-    public static boolean DISABLE_VINE_CLIMB = true;
-
-    @ZPConfigurableConstant(
             description = "Night time progression divider. During night, the world time is incremented once every N server ticks. Higher values slow down night duration.",
             group = ZPConstants.GROUP_WORLD,
             type = ZPConfigurableConstant.TYPES.INT,
             min = 1.0,
             max = Float.MAX_VALUE
     )
-    public static int WORLD_NIGHT_TIME_SLOWDOWN_CYCLE_TICKING = 2;
+    public static int WORLD_NIGHT_SLOWDOWN_CYCLE_TICKING = 2;
 
     @ZPConfigurableConstant(
             description = "Day time progression divider. During day, the world time is incremented once every N server ticks. Higher values slow down day duration.",
@@ -428,10 +445,10 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
             min = 1.0,
             max = Float.MAX_VALUE
     )
-    public static int WORLD_DAY_TIME_SLOWDOWN_CYCLE_TICKING = 3;
+    public static int WORLD_DAY_SLOWDOWN_CYCLE_TICKING = 3;
 
     @ZPConfigurableConstant(
-            description = "New vanilla's concrete destroy speed.",
+            description = "New vanilla concrete destroy speed.",
             group = ZPConstants.GROUP_WORLD,
             type = ZPConfigurableConstant.TYPES.FLOAT,
             min = 0.0
@@ -439,7 +456,7 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public static float ZP_VANILLA_CONCRETE_DESTROY_SPEED = 300.0f;
 
     @ZPConfigurableConstant(
-            description = "New entity-item lifespan.",
+            description = "New entity-item lifespan in ticks.",
             group = ZPConstants.GROUP_WORLD,
             type = ZPConfigurableConstant.TYPES.INT,
             min = 0.0,
@@ -471,42 +488,42 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public static float DARKNESS_GAMMA_STATIC_FACTOR_SERVER_SIDE = -0.5f;
 
     @ZPConfigurableConstant(
-            description = "Multiplier for block breaking power of thrown items (plates, bricks, rocks, etc.) when interacting with destructible world objects.",
+            description = "Multiplier for block breaking power of thrown items (plates, bricks, rocks) when interacting with destructible world objects.",
             group = ZPConstants.GROUP_WORLD,
             type = ZPConfigurableConstant.TYPES.FLOAT
     )
     public static float THROWABLES_BLOCK_BREAK_MULTIPLIER = 1.0f;
 
     @ZPConfigurableConstant(
-            description = "Send a net-packet headshot and bullet entity-hit effects (blood + sound).",
+            description = "Send a net packet for headshot and bullet entity-hit effects (blood + sound).",
             group = ZPConstants.GROUP_COMBAT,
             type = ZPConfigurableConstant.TYPES.BOOLEAN
     )
     public static boolean SEND_PACKET_ABOUT_BULLET_ENTITY_HIT = true;
 
     @ZPConfigurableConstant(
-            description = "Bonus damage, caused by headshot.",
+            description = "Bonus damage caused by a headshot.",
             group = ZPConstants.GROUP_COMBAT,
             type = ZPConfigurableConstant.TYPES.FLOAT
     )
     public static float BULLET_HEADSHOT_BONUS_DAMAGE = 2.0f;
 
     @ZPConfigurableConstant(
-            description = "Cooldown in ticks before a medicine item can be used again. Prevents spamming heals or cures.",
+            description = "Cooldown in ticks before a medicine item can be used again, preventing spamming.",
             group = ZPConstants.GROUP_COMBAT,
             type = ZPConfigurableConstant.TYPES.INT
     )
     public static int MEDICINE_USE_COOLDOWN = 60;
 
     @ZPConfigurableConstant(
-            description = "If enabled, bullets are capable of breaking specific marked blocks if the block has the destructible flag.",
+            description = "If enabled, bullets can break specific marked blocks if the block has the destructible flag.",
             group = ZPConstants.GROUP_WORLD,
             type = ZPConfigurableConstant.TYPES.BOOLEAN
     )
     public static boolean CAN_BULLET_BREAK_BLOCK = true;
 
     @ZPConfigurableConstant(
-            description = "Maximum block's hardness, that can be broken by bullet.",
+            description = "Maximum block hardness that can be broken by a bullet.",
             group = ZPConstants.GROUP_COMBAT,
             type = ZPConfigurableConstant.TYPES.FLOAT
     )
@@ -515,7 +532,7 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     // ===== WORLD / ENVIRONMENT =====
 
     @ZPConfigurableConstant(
-            description = "Increases cooking time. References to all vanilla crafting blocks (furnace, campfire etc.).",
+            description = "Increases cooking time. Affects all vanilla crafting blocks (furnace, campfire, etc.).",
             group = ZPConstants.GROUP_WORLD,
             type = ZPConfigurableConstant.TYPES.FLOAT
     )
@@ -564,19 +581,18 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public static boolean FADING_PUMPKINS = true;
 
     @ZPConfigurableConstant(
-            description = "Allows acid fade over time when enabled.",
+            description = "Allows acid to fade over time when enabled.",
             group = ZPConstants.GROUP_WORLD,
             type = ZPConfigurableConstant.TYPES.BOOLEAN
     )
     public static boolean FADING_ACIDS = true;
 
     @ZPConfigurableConstant(
-            description = "Allows lava fade over time when enabled.",
+            description = "Allows lava to fade over time when enabled.",
             group = ZPConstants.GROUP_WORLD,
             type = ZPConfigurableConstant.TYPES.BOOLEAN
     )
     public static boolean FADING_LAVAS = true;
-
 
     // ===== THROWABLE ITEMS PLAYER DEFAULTS =====
     @ZPConfigurableConstant(
@@ -602,42 +618,49 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
 
     // ===== CLIENT =====
     @ZPConfigurableConstant(
-            description = "(ONLY CLIENT) Render muzzle flashes. Disabling sometimes can fix render-issues with other mods.",
+            description = "(CLIENT) Show ping on screen.",
+            group = ZPConstants.GROUP_CLIENT,
+            type = ZPConfigurableConstant.TYPES.BOOLEAN
+    )
+    public static boolean SHOW_PING_ON_SCREEN = true;
+
+    @ZPConfigurableConstant(
+            description = "(CLIENT) Render muzzle flashes. Disabling may fix rendering issues with other mods.",
             group = ZPConstants.GROUP_CLIENT,
             type = ZPConfigurableConstant.TYPES.BOOLEAN
     )
     public static boolean RENDER_MUZZLE_FLASHES = true;
 
     @ZPConfigurableConstant(
-            description = "(ONLY CLIENT) Render bullet tracers.",
+            description = "(CLIENT) Render bullet tracers.",
             group = ZPConstants.GROUP_CLIENT,
             type = ZPConfigurableConstant.TYPES.BOOLEAN
     )
     public static boolean RENDER_BULLET_TRACERS = true;
 
     @ZPConfigurableConstant(
-            description = "(ONLY CLIENT) Render armor layer on hands.",
+            description = "(CLIENT) Render armor layer on hands.",
             group = ZPConstants.GROUP_CLIENT,
             type = ZPConfigurableConstant.TYPES.BOOLEAN
     )
     public static boolean RENDER_ARMOR_LAYERS_ON_HANDS = true;
 
     @ZPConfigurableConstant(
-            description = "(ONLY CLIENT) Fancy ZP item-entity animation.",
+            description = "(CLIENT) Fancy ZP item-entity animation.",
             group = ZPConstants.GROUP_CLIENT,
             type = ZPConfigurableConstant.TYPES.BOOLEAN
     )
     public static boolean FANCY_ITEM_ENTITIES = true;
 
     @ZPConfigurableConstant(
-            description = "(ONLY CLIENT) Fov 1-St Person Scaling.",
+            description = "(CLIENT) First-person FOV scaling.",
             group = ZPConstants.GROUP_CLIENT,
             type = ZPConfigurableConstant.TYPES.BOOLEAN
     )
     public static boolean FIRST_PERSON_RENDER_SPACE_SCALE_BY_FOV = true;
 
     @ZPConfigurableConstant(
-            description = "(ONLY CLIENT) Fov 1-St Person Scaling type. 0=Progressive(Position transpose); 1=Static",
+            description = "(CLIENT) First-person FOV scaling type: 0 = progressive (position-based), 1 = static.",
             group = ZPConstants.GROUP_CLIENT,
             type = ZPConfigurableConstant.TYPES.INT
     )
@@ -645,6 +668,6 @@ public  class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
 
     @Override
     public String configName() {
-        return "default_zp3_ver1";
+        return "common_zp3";
     }
 }

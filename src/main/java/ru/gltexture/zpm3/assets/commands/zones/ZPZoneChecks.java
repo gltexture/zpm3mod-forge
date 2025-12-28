@@ -25,8 +25,12 @@ public final class ZPZoneChecks {
         return this.checkFlag(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ZPFlagZones.Zone.AvailableFlags.zombieSpawnBlocking);
     }
 
-    public boolean isNoAcidInvDmg(ServerLevel level, BlockPos blockPos) {
-        return this.checkFlag(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ZPFlagZones.Zone.AvailableFlags.noAcidInvDmg);
+    public boolean isNoAcidAffection(ServerLevel level, BlockPos blockPos) {
+        return this.checkFlag(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ZPFlagZones.Zone.AvailableFlags.noAcidAffection);
+    }
+
+    public boolean isNoAcidBlockDestruction(ServerLevel level, BlockPos blockPos) {
+        return this.checkFlag(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ZPFlagZones.Zone.AvailableFlags.noAcidBlockDestruction);
     }
 
     public boolean isNoZombieMining(ServerLevel level, BlockPos blockPos) {

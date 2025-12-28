@@ -18,7 +18,7 @@ public class ZPSendGlobalSettings_StoC implements ZPNetwork.ZPPacket {
     private final float darknessFactor;
 
     public static @NotNull ZPSendGlobalSettings_StoC create() {
-        return new ZPSendGlobalSettings_StoC(ZPConstants.WORLD_DAY_TIME_SLOWDOWN_CYCLE_TICKING, ZPConstants.WORLD_NIGHT_TIME_SLOWDOWN_CYCLE_TICKING, ZPConstants.ENABLE_HARDCORE_DARKNESS_SERVER_SIDE, ZPConstants.PICK_UP_ON_F, ZPConstants.DARKNESS_GAMMA_STATIC_FACTOR_SERVER_SIDE);
+        return new ZPSendGlobalSettings_StoC(ZPConstants.WORLD_DAY_SLOWDOWN_CYCLE_TICKING, ZPConstants.WORLD_NIGHT_SLOWDOWN_CYCLE_TICKING, ZPConstants.ENABLE_HARDCORE_DARKNESS_SERVER_SIDE, ZPConstants.PICK_UP_ON_F, ZPConstants.DARKNESS_GAMMA_STATIC_FACTOR_SERVER_SIDE);
     }
 
     public ZPSendGlobalSettings_StoC(int dayTimeCycleTicksFreeze, int nightTimeCycleTicksFreeze, boolean isDarknessEnabled, boolean pickUpOnF, float darknessFactor) {

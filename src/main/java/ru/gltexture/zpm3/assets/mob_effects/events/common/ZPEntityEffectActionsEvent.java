@@ -2,6 +2,7 @@ package ru.gltexture.zpm3.assets.mob_effects.events.common;
 
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -14,6 +15,7 @@ import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.common.init.ZPDamageTypes;
+import ru.gltexture.zpm3.assets.common.init.ZPSounds;
 import ru.gltexture.zpm3.assets.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.assets.mob_effects.init.ZPMobEffects;
 import ru.gltexture.zpm3.assets.mob_effects.utils.ZPEffectUtils;
@@ -78,6 +80,7 @@ public class ZPEntityEffectActionsEvent implements ZPEventClass {
                                 player.setSprinting(false);
                                 float timeMultiplier = event.getAmount() / 3.0f;
                                 entity.addEffect(new MobEffectInstance(ZPMobEffects.fracture.get(), (int) (6000 * timeMultiplier)));
+                                player.level().playSound(null, player.getOnPos(), ZPSounds.fracture.get(), SoundSource.MASTER, 1.0f, 1.0f);
                             }
                         }
                     }

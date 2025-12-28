@@ -182,5 +182,10 @@ public abstract class ZPRegSounds {
                 .afterCreated((e, utils) -> {
             utils.sounds().addNewSound(new ZPSoundListProvider.ZPSoundEvent("impactmeat", false, "sounds.zpm3.impactmeat", List.of(new ZPSoundListProvider.SoundData("effects/impactmeat"))));
         }).end();
+
+        ZPSounds.fracture = regSupplier.register("fracture", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "fracture")))
+                .afterCreated((e, utils) -> {
+                    utils.sounds().addNewSound(new ZPSoundListProvider.ZPSoundEvent("fracture", false, "sounds.zpm3.fracture", List.of(new ZPSoundListProvider.SoundData("effects/fracture"))));
+                }).end();
     }
 }

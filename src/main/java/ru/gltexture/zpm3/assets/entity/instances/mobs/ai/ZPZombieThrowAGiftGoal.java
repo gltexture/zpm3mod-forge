@@ -69,7 +69,7 @@ public class ZPZombieThrowAGiftGoal extends Goal {
     public void start() {
         super.start();
         ZPThrowableEntity throwable = this.pickRandomWeighted();
-        if (throwable == null) {
+        if (this.mob.tickCount <= 100 || throwable == null) {
             return;
         }
         this.mob.level().playSound(null, this.mob.getX(), this.mob.getY(), this.mob.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.HOSTILE, 1.25f, 0.6f + this.mob.getRandom().nextFloat() * 0.2f);

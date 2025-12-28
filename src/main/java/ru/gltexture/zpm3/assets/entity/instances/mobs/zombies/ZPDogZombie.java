@@ -42,6 +42,7 @@ import java.util.Objects;
 
 public class ZPDogZombie extends ZPAbstractZombie {
     private float baseMovementSpeed;
+    private int contusionCooldown;
 
     public ZPDogZombie(Level pLevel) {
         this(ZPEntities.zp_dog_zombie_entity.get(), pLevel);
@@ -64,21 +65,20 @@ public class ZPDogZombie extends ZPAbstractZombie {
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(9, new ZPZombieRandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, (new ZPZombieHurtByMobGoal(this)));
-        this.targetSelector.addGoal(2, ZPZombieNearestAttackableTarget.player(this, 1.0f, false, 10, (e) -> true));
-        this.targetSelector.addGoal(3, ZPZombieNearestAttackableTarget.nonPlayer(this, List.of(AbstractVillager.class), 0.5f, false, 20, (e) -> true));
-        this.targetSelector.addGoal(4, ZPZombieNearestAttackableTarget.nonPlayer(this, List.of(Cow.class, IronGolem.class, Horse.class, Sheep.class, Pig.class), 0.35f, false, 60, (e) -> true));
+        this.targetSelector.addGoal(1, ZPZombieNearestAttackableTarget.player(this, 1.0f, false, 10, (e) -> true));
+        this.targetSelector.addGoal(2, ZPZombieNearestAttackableTarget.nonPlayer(this, List.of(AbstractVillager.class), 0.5f, false, 20, (e) -> true));
+        this.targetSelector.addGoal(3, ZPZombieNearestAttackableTarget.nonPlayer(this, List.of(Cow.class, IronGolem.class, Horse.class, Sheep.class, Pig.class), 0.35f, false, 60, (e) -> true));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
                 .add(ForgeMod.SWIM_SPEED.get(), 1.75f)
-                .add(Attributes.MAX_HEALTH, 25.0f * ZPConstants.ZOMBIE_MAX_HEALTH_MULTIPLIER)
+                .add(Attributes.MAX_HEALTH, 24.0f * ZPConstants.ZOMBIE_MAX_HEALTH_MULTIPLIER)
                 .add(Attributes.FOLLOW_RANGE, ZPConstants.ZOMBIE_FOLLOW_RANGE)
                 .add(Attributes.MOVEMENT_SPEED, 0.34f * ZPConstants.ZOMBIE_MOVEMENT_SPEED_MULTIPLIER)
                 .add(Attributes.ATTACK_DAMAGE, 2.0f * ZPConstants.ZOMBIE_ATTACK_DAMAGE_MULTIPLIER)
                 .add(Attributes.ARMOR, 2.0f)
-                .add(ZPEntityAttributes.zm_attack_range_multiplier.get(), 1.0f / ZPConstants.ZOMBIE_ATTACK_RANGE_MULTIPLIER)
+                .add(ZPEntityAttributes.zm_attack_range_multiplier.get(), 1.0f / ZPConstants.ZOMBIE_DOG_ATTACK_RANGE_MULTIPLIER)
                 .add(ZPEntityAttributes.zm_mining_speed.get(), 0.0f)
                 .add(ZPEntityAttributes.zm_random_effect_chance.get(), 0.025f * ZPConstants.ZOMBIE_APPLY_NEGATIVE_EFFECT_ON_ENTITY_CHANCE_MULTIPLIER)
                 .add(ZPEntityAttributes.zm_throw_a_gift_chance.get(), 0.0f);
@@ -88,8 +88,9 @@ public class ZPDogZombie extends ZPAbstractZombie {
     public void tick() {
         super.tick();
         if (this.baseMovementSpeed > 0.0f) {
-            if (this.lastHurtByPlayerTime > 60) {
-                Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(this.baseMovementSpeed * 0.75f);
+            if (this.contusionCooldown-- <= 0 && this.getLastHurtByMob() != null && (this.tickCount - this.getLastHurtByMobTimestamp()) < 100) {
+                this.contusionCooldown = 300;
+                Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(this.baseMovementSpeed * 0.675f);
             } else {
                 Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(this.baseMovementSpeed);
             }

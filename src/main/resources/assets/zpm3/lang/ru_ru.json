@@ -136,8 +136,8 @@
   "effect.zpm3.better_vision": "Усиленное зрение",
   "tooltip.zpm3.weapon.hand_bonus": " Бонус дистанции: %s",
 
-  "death.attack.zp_bullet": "%1$s был застрелен!",
-  "death.attack.zp_bullet.player": "%1$s был застрелен %2$s!",
+  "death.attack.damage.zpm3.zp_bullet": "%1$s был застрелен!",
+  "death.attack.damage.zpm3.zp_bullet.player": "%1$s был застрелен %2$s!",
 
   "death.attack.damage.zpm3.zp_bleeding": "%1$s истек кровью!",
   "death.attack.damage.zpm3.zp_bleeding.player": "%1$s истек кровью из-за %2$s!"

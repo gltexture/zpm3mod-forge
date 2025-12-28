@@ -6,6 +6,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
@@ -22,6 +23,19 @@ public class ZPFadingBlockEntity extends ZPBlockEntity {
     private long timeLock;
     private boolean active;
     private int fadingTime;
+
+    public ZPFadingBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState, int fadingTime, boolean active) {
+        super(pType, pPos, pBlockState);
+        this.timeLock = 0L;
+        this.active = active;
+        this.fadingTime = fadingTime;
+    }
+
+    public ZPFadingBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
+        super(pType, pPos, pBlockState);
+        this.active = false;
+        this.fadingTime = 1;
+    }
 
     public ZPFadingBlockEntity(BlockPos pPos, BlockState pBlockState, int fadingTime, boolean active) {
         super(ZPBlockEntities.fading_block_entity.get(), pPos, pBlockState);

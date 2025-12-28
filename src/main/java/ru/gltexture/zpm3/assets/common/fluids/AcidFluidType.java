@@ -25,12 +25,13 @@ import java.util.function.Consumer;
 public class AcidFluidType extends FluidType {
     public AcidFluidType() {
         super(FluidType.Properties.create()
-                .descriptionId("block.minecraft.water")
+                .descriptionId("block.zpm3.acid")
                 .fallDistanceModifier(0F)
                 .motionScale(0.008f)
                 .canExtinguish(true)
                 .canSwim(true)
                 .canDrown(true)
+                .pathType(BlockPathTypes.BLOCKED)
                 .canConvertToSource(false)
                 .supportsBoating(false)
                 .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)

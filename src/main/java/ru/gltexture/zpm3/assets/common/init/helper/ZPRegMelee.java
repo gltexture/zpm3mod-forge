@@ -23,7 +23,7 @@ public abstract class ZPRegMelee {
                 ZPItemTabAddHelper.addItemInTab(e, ZPTabs.zp_melee_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_MELEE, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MELEE_ITEMS_DIRECTORY);
             });
-            utils.items().setItemDistanceBonus(e.getId(), 0.1f);
+            utils.items().setItemDistanceBonus(e.getId(), 0.2f);
         }).end();
 
         ZPItems.iron_club = regSupplier.register("iron_club", () -> new ZPItemSword(ZPCommonTiers.ZP_IRON_2, 3, -1.2F, new Item.Properties())
@@ -41,7 +41,7 @@ public abstract class ZPRegMelee {
                         utils.items().addItemInTab(e, ZPTabs.zp_melee_tab);
                         utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_MELEE, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MELEE_ITEMS_DIRECTORY);
                     });
-            utils.items().setItemDistanceBonus(e.getId(),0.2f);
+            utils.items().setItemDistanceBonus(e.getId(),0.4f);
         }).end();
 
         ZPItems.golf_club = regSupplier.register("golf_club", () -> new ZPItemSword(ZPCommonTiers.ZP_IRON_1, 4, -1.8F, new Item.Properties())
@@ -53,7 +53,7 @@ public abstract class ZPRegMelee {
             utils.items().setItemDistanceBonus(e.getId(), 0.3f);
         }).end();
 
-        ZPItems.crowbar = regSupplier.register("crowbar", () -> new ZPItemSword(ZPCommonTiers.ZP_IRON_2, 4, -0.8F, new Item.Properties())
+        ZPItems.crowbar = regSupplier.register("crowbar", () -> new ZPItemSword(ZPCommonTiers.ZP_IRON_3, 4, -0.8F, new Item.Properties())
         ).afterCreated((e, utils) -> {
                     ZPUtility.sides().onlyClient(() -> {
                         utils.items().addItemInTab(e, ZPTabs.zp_melee_tab);
@@ -62,13 +62,13 @@ public abstract class ZPRegMelee {
             utils.items().setItemDistanceBonus(e.getId(), -0.05f);
         }).end();
 
-        ZPItems.cleaver = regSupplier.register("cleaver", () -> new ZPItemSword(ZPCommonTiers.ZP_IRON_1, 2, -0.2F, new Item.Properties())
+        ZPItems.cleaver = regSupplier.register("cleaver", () -> new ZPItemSword(ZPCommonTiers.ZP_IRON_1, 2, -0.1F, new Item.Properties())
         ).afterCreated((e, utils) -> {
                     ZPUtility.sides().onlyClient(() -> {
                         utils.items().addItemInTab(e, ZPTabs.zp_melee_tab);
                         utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_MELEE, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MELEE_ITEMS_DIRECTORY);
                     });
-            utils.items().setItemDistanceBonus(e.getId(), -0.1f);
+            utils.items().setItemDistanceBonus(e.getId(), -0.125f);
         }).end();
 
         ZPItems.hatchet = regSupplier.register("hatchet", () -> new ZPItemAxe(ZPCommonTiers.ZP_IRON_3, 5.0f, -3.2F, new Item.Properties())

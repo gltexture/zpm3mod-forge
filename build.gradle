@@ -104,6 +104,7 @@ mixin {
     config "zpm3.main.mixins.json"
     config "zpm3.common.mixins.json"
     config "zpm3.mob_effects.mixins.json"
+    config "zpm3.entities.mixins.json"
     config "zpm3.player.mixins.json"
     config "zpm3.debug.mixins.json"
 }

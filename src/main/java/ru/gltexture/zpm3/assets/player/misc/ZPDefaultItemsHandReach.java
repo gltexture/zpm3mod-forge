@@ -20,7 +20,7 @@ public abstract class ZPDefaultItemsHandReach {
     static {
         ZPDefaultItemsHandReach.SET(AxeItem.class, 0.15f);
         ZPDefaultItemsHandReach.SET(PickaxeItem.class, 0.1f);
-        ZPDefaultItemsHandReach.SET(ShovelItem.class, -0.05f);
+        ZPDefaultItemsHandReach.SET(ShovelItem.class, 0.2f);
     }
 
     // o == Class || o == <Item>

@@ -23,7 +23,7 @@ import java.util.function.Consumer;
 public class ToxicFluidType extends FluidType {
     public ToxicFluidType() {
         super(Properties.create()
-                .descriptionId("block.minecraft.water")
+                .descriptionId("block.zpm3.toxic_water")
                 .fallDistanceModifier(0F)
                 .motionScale(0.008f)
                 .canExtinguish(true)

@@ -1,6 +1,7 @@
 package ru.gltexture.zpm3.assets.common.init;
 
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.assets.common.init.helper.ZPRegAdminBlocks;

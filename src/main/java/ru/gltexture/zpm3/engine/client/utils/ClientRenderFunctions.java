@@ -22,6 +22,7 @@ import org.joml.Vector2i;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL46;
 import ru.gltexture.zpm3.assets.common.utils.ZPCommonClientUtils;
+import ru.gltexture.zpm3.assets.debug.imgui.DearUITRSInterface;
 import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
 import ru.gltexture.zpm3.engine.client.rendering.gl.programs.base.ITexture2DProgram;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
@@ -47,12 +48,19 @@ public abstract class ClientRenderFunctions {
         float f = (float) pPlayer.getUseItemRemainingTicks() - pPartialTicks + 1.0F;
         float f1 = f / (float) pStack.getUseDuration();
 
-        float f3 = 1.0F - (float) Math.pow(f1, 27.0D);
-        int i = pHand == HumanoidArm.RIGHT ? 1 : -1;
-        pPoseStack.translate(f3 * 1.0F * (float) i, f3 * -0.2F, f3 * 0.1F);
-        pPoseStack.mulPose(Axis.YP.rotationDegrees((float) i * f3 * 80.0F));
-        pPoseStack.mulPose(Axis.XP.rotationDegrees(f3 * 10.0F));
-        pPoseStack.mulPose(Axis.ZP.rotationDegrees((float) i * f3 * 10.0F));
+        float f3 = 1.0F - (float) Math.pow(f1, 4.0D);
+
+        if (pHand == HumanoidArm.RIGHT) {
+            pPoseStack.translate(f3 * 0.32f, f3 * 0.28f, f3 * -0.15f);
+            pPoseStack.mulPose(Axis.YP.rotationDegrees(f3 * 98.0f));
+            pPoseStack.mulPose(Axis.XP.rotationDegrees(f3 * -67.0f));
+            pPoseStack.mulPose(Axis.ZP.rotationDegrees(f3 * -10.0f));
+        } else { //TODO
+            pPoseStack.translate(-f3 * 0.32f, f3 * 0.28f, f3 * -0.15f);
+            pPoseStack.mulPose(Axis.YP.rotationDegrees(f3 * -98.0f));
+            pPoseStack.mulPose(Axis.XP.rotationDegrees(f3 * -67.0f));
+            pPoseStack.mulPose(Axis.ZP.rotationDegrees(f3 * 10.0f));
+        }
     }
 
     public static void addAcidParticles(Entity entity) {

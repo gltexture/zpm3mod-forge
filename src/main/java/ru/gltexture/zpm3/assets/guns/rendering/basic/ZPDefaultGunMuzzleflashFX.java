@@ -88,13 +88,15 @@ public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderH
         }
         final int id = this.hand(gunFXData.isRightHand());
         this.initialRotation[id] = ZPRandom.instance.randomFloat((float) Math.PI);
-        if (player.equals(Minecraft.getInstance().player)) {
+        final boolean isTheSame = player.equals(Minecraft.getInstance().player);
+        if (isTheSame) {
             this.muzzleflashTime1Person = gunFXData.muzzleflashTime();
             this.muzzleflashScissor1Person[id] = this.muzzleflashScissor1Person[id] > 0.01f ? 0.35f : 0.0f;
-        } else if (Minecraft.getInstance().getCameraEntity() != null) {
-            if (Minecraft.getInstance().getEntityRenderDispatcher().shouldRender(player, Minecraft.getInstance().levelRenderer.getFrustum(), Minecraft.getInstance().getCameraEntity().getX(), Minecraft.getInstance().getCameraEntity().getY(), Minecraft.getInstance().getCameraEntity().getZ())) {
+        }
+        if (Minecraft.getInstance().getCameraEntity() != null) {
+            if (isTheSame || Minecraft.getInstance().getEntityRenderDispatcher().shouldRender(player, Minecraft.getInstance().levelRenderer.getFrustum(), Minecraft.getInstance().getCameraEntity().getX(), Minecraft.getInstance().getCameraEntity().getY(), Minecraft.getInstance().getCameraEntity().getZ())) {
                 if (player instanceof IZPPlayerClientDataExt playerClientDataExt) {
-                    if (!Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
+                    if (!isTheSame || !Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
                         playerClientDataExt.getPlayerMuzzleflashScissor3Person()[id] = 0.0f;
                     }
                 }

@@ -304,7 +304,7 @@ public class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
             group = ZPConstants.GROUP_COMBAT,
             type = ZPConfigurableConstant.TYPES.INT
     )
-    public static int ACID_DAMAGE_TICK_RATE = 4;
+    public static int ACID_DAMAGE_TICK_RATE = 5;
 
     @ZPConfigurableConstant(
             description = "Duration in ticks for acid bottle debuff (inventory breaking + damage) applied when hitting an entity directly.",
@@ -328,11 +328,18 @@ public class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public static int ACID_BOTTLE_SPLASH_HIT_MAX_AFFECT_TIME = 80;
 
     @ZPConfigurableConstant(
-            description = "Base damage dealt to inventory items by an acid bottle projectile on direct hit.",
+            description = "Base damage dealt to entity on direct hit.",
             group = ZPConstants.GROUP_COMBAT,
             type = ZPConfigurableConstant.TYPES.FLOAT
     )
-    public static float ACID_BOTTLE_DAMAGE = 2.5f;
+    public static float ACID_BOTTLE_DAMAGE = 2.0f;
+
+    @ZPConfigurableConstant(
+            description = "Base damage dealt to inventory items by an acid bottle projectile on direct hit.",
+            group = ZPConstants.GROUP_COMBAT,
+            type = ZPConfigurableConstant.TYPES.INT
+    )
+    public static int ACID_BOTTLE_INVENTORY_DAMAGE = 3;
 
     @ZPConfigurableConstant(
             description = "Base damage dealt by a thrown plate when hitting an entity.",
@@ -402,7 +409,7 @@ public class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     @ZPConfigurableConstant(
             description = "Tries to make acid block destruction mechanic smoother (less value = less destruction).",
             group = ZPConstants.GROUP_WORLD,
-            type = ZPConfigurableConstant.TYPES.FLOAT
+            type = ZPConfigurableConstant.TYPES.INT
     )
     public static int ACID_BLOCK_DESTRUCTION_CONSTRAINT = 6;
 
@@ -411,7 +418,7 @@ public class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
             group = ZPConstants.GROUP_WORLD,
             type = ZPConfigurableConstant.TYPES.FLOAT
     )
-    public static float ACID_BLOCK_BASE_BLOCK_DAMAGE = 0.1f;
+    public static float ACID_BLOCK_BASE_BLOCK_DAMAGE = 0.5f;
 
     @ZPConfigurableConstant(
             description = "Allow acid blocks to break surrounding blocks (EXPERIMENTAL, may cause lag).",

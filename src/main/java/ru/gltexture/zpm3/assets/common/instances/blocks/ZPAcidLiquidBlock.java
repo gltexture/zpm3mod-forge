@@ -109,7 +109,8 @@ public class ZPAcidLiquidBlock extends ZPLiquidBlock implements EntityBlock, IHo
                     continue;
                 }
                 boolean flagIsGlass = (!(block instanceof IceBlock)) && block.soundType == SoundType.GLASS;
-                if (!flagIsGlass) {
+                boolean flagIsSand = block instanceof SandBlock;
+                if (!flagIsGlass && !flagIsSand) {
                     if (pLevel instanceof IZPLevelExt ext) {
                         if (ZPFakePlayer.canBreakBlock(pLevel, blockPos) && !ZPZoneChecks.INSTANCE.isNoAcidAffection(pLevel, blockPos) && !ZPZoneChecks.INSTANCE.isNoAcidBlockDestruction(pLevel, blockPos)) {
                             ext.getGlobalBlocksDestroyMemory().addNewEntryLongMem(pLevel, blockPos, ZPConstants.ACID_BLOCK_BASE_BLOCK_DAMAGE + ZPRandom.getRandom().nextFloat() * 0.35f);

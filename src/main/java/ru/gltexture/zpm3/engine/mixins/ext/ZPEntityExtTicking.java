@@ -17,6 +17,7 @@ import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.common.utils.ZPCommonServerUtils;
 import ru.gltexture.zpm3.assets.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.engine.client.utils.ClientRenderFunctions;
+import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 
 public abstract class ZPEntityExtTicking {
     public static void serverEntityTickPre(@NotNull Entity entity, @NotNull IZPEntityExt izpEntityExt) {
@@ -60,7 +61,7 @@ public abstract class ZPEntityExtTicking {
         if (izpEntityExt.getAcidLevel() > 0) {
             ClientRenderFunctions.addAcidParticles(izpEntityExt.getAcidLevel(), entity);
             if (entity.tickCount % 3 == 0) {
-                entity.level().playLocalSound(entity.getOnPos(), SoundEvents.FIRE_EXTINGUISH, SoundSource.MASTER, 0.375f, 1.15f, false);
+                entity.level().playLocalSound(entity.getOnPos(), SoundEvents.FIRE_EXTINGUISH, SoundSource.MASTER, 0.375f, 1.0f + ZPRandom.getRandom().nextFloat() * 0.2f, false);
             }
         }
     }
@@ -79,20 +80,12 @@ public abstract class ZPEntityExtTicking {
         }
 
         if (entity instanceof LivingEntity livingEntity) {
-            livingEntity.hurt(livingEntity.damageSources().generic(), livingEntity instanceof ZPAbstractZombie ? 8.0f : 3.0f);
-
-            for (ItemStack stack : livingEntity.getHandSlots()) {
-                if (stack.isDamageableItem()) {
-                    stack.hurtAndBreak(1, livingEntity, e -> {
-                        e.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-                    });
-                }
-            }
+            livingEntity.hurt(livingEntity.damageSources().generic(), livingEntity instanceof ZPAbstractZombie ? 8.0f : 1.25f);
 
             if (livingEntity instanceof Player player) {
                 for (ItemStack stack : player.getInventory().items) {
                     if (stack.isDamageableItem()) {
-                        stack.hurtAndBreak(1, player, e -> {
+                        stack.hurtAndBreak(ZPConstants.ACID_BOTTLE_INVENTORY_DAMAGE, player, e -> {
                             e.broadcastBreakEvent(EquipmentSlot.MAINHAND);
                         });
                     }
@@ -102,8 +95,16 @@ public abstract class ZPEntityExtTicking {
                     ItemStack stack = player.getInventory().armor.get(i);
                     if (stack.isDamageableItem()) {
                         EquipmentSlot finalSlot = ZPCommonServerUtils.getEquipmentSlot(i);
-                        stack.hurtAndBreak(1, player, e -> {
+                        stack.hurtAndBreak(ZPConstants.ACID_BOTTLE_INVENTORY_DAMAGE, player, e -> {
                             e.broadcastBreakEvent(finalSlot);
+                        });
+                    }
+                }
+            } else {
+                for (ItemStack stack : livingEntity.getHandSlots()) {
+                    if (stack.isDamageableItem()) {
+                        stack.hurtAndBreak(ZPConstants.ACID_BOTTLE_INVENTORY_DAMAGE, livingEntity, e -> {
+                            e.broadcastBreakEvent(EquipmentSlot.MAINHAND);
                         });
                     }
                 }

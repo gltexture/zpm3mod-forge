@@ -73,12 +73,7 @@ public abstract class ZPAbstractZombie extends Monster {
 
     @SuppressWarnings("all")
     public static boolean checkZombieSpawnRules(@NotNull EntityType<? extends Monster> pType, ServerLevelAccessor pLevel, @NotNull MobSpawnType pSpawnType, @NotNull BlockPos pPos, @NotNull RandomSource pRandom) {
-        if (pLevel.getDifficulty() != Difficulty.PEACEFUL && ((isDarkEnoughToSpawn(pLevel, pPos, pRandom) || ZPRandom.getRandom().nextFloat() <= 0.005f) && checkMobSpawnRules(pType, pLevel, pSpawnType, pPos, pRandom))) {
-            if (!ZPZoneChecks.INSTANCE.isZombieBlockSpawn(pLevel.getLevel(), pPos)) {
-                return true;
-            }
-        }
-        return false;
+        return true;
     }
 
     @Override

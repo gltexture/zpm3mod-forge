@@ -19,6 +19,12 @@ import ru.gltexture.zpm3.engine.client.utils.ClientRenderFunctions;
 public class PlayerItemMixin {
     @Inject(method = "renderArmWithItem", at = @At("HEAD"))
     private void renderArmWithItem(AbstractClientPlayer pPlayer, float pPartialTicks, float pPitch, InteractionHand pHand, float pSwingProgress, ItemStack pStack, float pEquippedProgress, PoseStack pPoseStack, MultiBufferSource pBuffer, int pCombinedLight, CallbackInfo ci) {
+        pPoseStack.pushPose();
         ClientRenderFunctions.blockAnimation(pPlayer, pPartialTicks, pHand, pStack, pPoseStack);
+    }
+
+    @Inject(method = "renderArmWithItem", at = @At("TAIL"))
+    private void renderArmWithItem2(AbstractClientPlayer pPlayer, float pPartialTicks, float pPitch, InteractionHand pHand, float pSwingProgress, ItemStack pStack, float pEquippedProgress, PoseStack pPoseStack, MultiBufferSource pBuffer, int pCombinedLight, CallbackInfo ci) {
+        pPoseStack.popPose();
     }
 }

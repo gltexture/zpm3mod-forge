@@ -14,6 +14,7 @@ import ru.gltexture.zpm3.assets.common.init.ZPBlockEntities;
 import ru.gltexture.zpm3.assets.common.instances.blocks.torch.IFadingBlock;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.instances.block_entities.ZPBlockEntity;
+import ru.gltexture.zpm3.engine.instances.blocks.ZPTorchBlock;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public class ZPFadingBlockEntity extends ZPBlockEntity {
@@ -61,7 +62,7 @@ public class ZPFadingBlockEntity extends ZPBlockEntity {
                         blockEntity.setTime(level, blockEntity.fadingTime, blockEntity.fadingTime / 4);
                         return;
                     }
-                    boolean flag = (ZPUtility.blocks().isRainingOnBlock(level, pos) && level.getGameTime() % 40 == 0);
+                    boolean flag = state.getBlock() instanceof ZPTorchBlock && (ZPUtility.blocks().isRainingOnBlock(level, pos)&&level.getGameTime()%40==0);
                     if (level.getGameTime() >= blockEntity.timeLock) {
                         flag = true;
                     }

@@ -2,6 +2,10 @@ package ru.gltexture.zpm3.assets.entity.events.common;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.animal.horse.SkeletonHorse;
+import net.minecraft.world.entity.animal.horse.ZombieHorse;
+import net.minecraft.world.entity.monster.Phantom;
+import net.minecraft.world.entity.npc.WanderingTrader;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -16,6 +20,17 @@ public class ZPEntitySpawnEvent implements ZPEventClass {
     @SubscribeEvent
     public static void exec(@NotNull EntityJoinLevelEvent event) {
         ZPEntitySpawnEvent.registerNBT(event.getEntity());
+        if (event.getEntity() instanceof Phantom) {
+            event.setCanceled(true);
+        }
+        if (event.getEntity() instanceof WanderingTrader) {
+            event.setCanceled(true);
+        }
+        if (event.getEntity() instanceof SkeletonHorse horse) {
+            if (horse.isTrap()) {
+                event.setCanceled(true);
+            }
+        }
     }
 
     public static void registerNBT(Entity entity) {

@@ -6,11 +6,12 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.function.Supplier;
 
 public abstract class ZPBlockTagsHelper {
-    private static final Map<TagKey<Block>, Set<RegistryObject<? extends Block>>> tagsToAddBlock = new HashMap<>();
+    private static final Map<TagKey<Block>, Set<Supplier<Block>>> tagsToAddBlock = new HashMap<>();
 
-    public static void addTagToBlock(@NotNull RegistryObject<? extends Block> registryObject, @NotNull TagKey<Block> tagKey) {
+    public static void addTagToBlock(@NotNull Supplier<Block> registryObject, @NotNull TagKey<Block> tagKey) {
         if (!ZPBlockTagsHelper.tagsToAddBlock.containsKey(tagKey)) {
             ZPBlockTagsHelper.tagsToAddBlock.put(tagKey, new HashSet<>());
         }
@@ -21,7 +22,7 @@ public abstract class ZPBlockTagsHelper {
         ZPBlockTagsHelper.tagsToAddBlock.clear();
     }
 
-    public static @NotNull Map<TagKey<Block>, Set<RegistryObject<? extends Block>>> getTagsToAddBlock() {
+    public static @NotNull Map<TagKey<Block>, Set<Supplier<Block>>> getTagsToAddBlock() {
         return ZPBlockTagsHelper.tagsToAddBlock;
     }
 }

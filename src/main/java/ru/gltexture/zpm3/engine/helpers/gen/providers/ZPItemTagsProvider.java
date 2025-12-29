@@ -17,6 +17,7 @@ import ru.gltexture.zpm3.engine.helpers.ZPItemTagsHelper;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 public class ZPItemTagsProvider extends ItemTagsProvider {
     public ZPItemTagsProvider(PackOutput p_275343_, CompletableFuture<HolderLookup.Provider> p_275729_, CompletableFuture<TagLookup<Block>> p_275322_, String modId, @Nullable ExistingFileHelper existingFileHelper) {
@@ -25,8 +26,8 @@ public class ZPItemTagsProvider extends ItemTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.@NotNull Provider pProvider) {
-        for (Map.Entry<TagKey<Item>, Set<RegistryObject<? extends Item>>> entry : ZPItemTagsHelper.getTagsToAddItem().entrySet()) {
-            for (RegistryObject<? extends Item> registryObject : entry.getValue()) {
+        for (Map.Entry<TagKey<Item>, Set<Supplier<Item>>> entry : ZPItemTagsHelper.getTagsToAddItem().entrySet()) {
+            for (Supplier<Item> registryObject : entry.getValue()) {
                 this.tag(entry.getKey()).add(registryObject.get());
             }
         }

@@ -16,6 +16,13 @@ public class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     // ===== ZOMBIE =====
 
     @ZPConfigurableConstant(
+            description = "Allows zombie to spawn at day time, via the chance random.",
+            group = ZPConstants.GROUP_ZOMBIE,
+            type = ZPConfigurableConstant.TYPES.FLOAT
+    )
+    public static float ZOMBIE_SPAWN_AT_DAY_TIME_CHANCE = 0.000125f;
+
+    @ZPConfigurableConstant(
             description = "Defines how much closer (as a percentage of the nearest zombie’s distance) a candidate zombie must be to replace the farthest zombie when the maximum number of zombies targeting a player is reached.",
             group = ZPConstants.GROUP_ZOMBIE,
             type = ZPConfigurableConstant.TYPES.FLOAT

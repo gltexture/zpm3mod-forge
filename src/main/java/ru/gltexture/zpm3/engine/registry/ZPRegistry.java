@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -273,7 +274,7 @@ public abstract class ZPRegistry<T> {
             }
 
             public void addTagToFluid(@NotNull RegistryObject<? extends Fluid> registryObject, @NotNull TagKey<Fluid> tagKey) {
-                ZPDataGenHelper.addTagToFluid(registryObject, tagKey);
+                ZPDataGenHelper.addTagToFluid(registryObject::get, tagKey);
             }
         }
 
@@ -329,7 +330,7 @@ public abstract class ZPRegistry<T> {
             }
 
             public void addTagToItem(@NotNull RegistryObject<? extends Item> registryObject, @NotNull TagKey<Item> tagKey) {
-                ZPDataGenHelper.addTagToItem(registryObject, tagKey);
+                ZPDataGenHelper.addTagToItem(registryObject::get, tagKey);
             }
 
             public void setItemDistanceBonus(ResourceLocation path, float v) {
@@ -400,7 +401,7 @@ public abstract class ZPRegistry<T> {
             }
 
             public void addTagToBlock(@NotNull RegistryObject<? extends Block> registryObject, @NotNull TagKey<Block> tagKey) {
-                ZPDataGenHelper.addTagToBlock(registryObject, tagKey);
+                ZPDataGenHelper.addTagToBlock(registryObject::get, tagKey);
             }
         }
 
@@ -444,11 +445,11 @@ public abstract class ZPRegistry<T> {
             }
 
             public void addBlockLootTable(@NotNull RegistryObject<? extends Block> blockSupplier, @NotNull Supplier<LootPool.Builder> lootPool) {
-                ZPDataGenHelper.addBlockLootTable(blockSupplier, lootPool);
+                ZPDataGenHelper.addBlockLootTable(blockSupplier::get, lootPool);
             }
 
             public void addSelfDropLootTable(@NotNull RegistryObject<? extends Block> e) {
-                this.addBlockLootTable(e, () -> new LootPool.Builder().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(e.get())));
+                this.addBlockLootTable(e, () -> new LootPool.Builder().setRolls(ConstantValue.exactly(1)).when(ExplosionCondition.survivesExplosion()).add(LootItem.lootTableItem(e.get())));
             }
         }
 

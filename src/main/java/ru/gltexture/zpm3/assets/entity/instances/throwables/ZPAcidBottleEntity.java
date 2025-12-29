@@ -118,7 +118,7 @@ public class ZPAcidBottleEntity extends ZPThrowableEntity {
                 if (!this.level().isEmptyBlock(pos)) {
                     if (this.level() instanceof IZPLevelExt ext) {
                         if (ZPFakePlayer.canBreakBlock((ServerLevel) this.level(), pos) && !ZPZoneChecks.INSTANCE.isNoThrowableBlockDamage((ServerLevel) this.level(), pos)) {
-                            ext.getGlobalBlocksDestroyMemory().addNewEntryLongMem(this.level(), pos, (1.0f + ZPRandom.getRandom().nextFloat(1.0f)) * ZPConstants.THROWABLES_BLOCK_BREAK_MULTIPLIER);
+                            ext.getGlobalBlocksDestroyMemory().addNewEntryLongMem(this.level(), pos, (0.25f + ZPRandom.getRandom().nextFloat(0.15f)) * ZPConstants.THROWABLES_BLOCK_BREAK_MULTIPLIER);
                             GlobalBlocksDestroyMemory.spawnBlockCrackParticles((ServerLevel) this.level(), pos);
                         }
                     }
@@ -150,7 +150,7 @@ public class ZPAcidBottleEntity extends ZPThrowableEntity {
                     if (hit.getType() == HitResult.Type.BLOCK) {
                         continue;
                     }
-                    double k = 1.0 - (dist / radius);
+                    double k = 1.0 - Math.pow((dist / radius), Math.E);
                     int affectTime = (int) Math.max(minTime, Math.round(k * maxTime));
                     if (target instanceof IZPEntityExt ext) {
                         ext.addAcidLevel(affectTime);

@@ -77,19 +77,19 @@ public abstract class ZPDataGenHelper {
         ZPBlockModelProvider.addNewObject(block, blockTextureData);
     }
 
-    public static void addBlockLootTable(@NotNull RegistryObject<? extends Block> blockSupplier, @NotNull Supplier<LootPool.Builder> lootPool) {
+    public static void addBlockLootTable(@NotNull Supplier<Block> blockSupplier, @NotNull Supplier<LootPool.Builder> lootPool) {
         ZPLootTableHelper.addBlockLootTable(blockSupplier, lootPool);
     }
 
-    public static void addTagToBlock(@NotNull RegistryObject<? extends Block> registryObject, @NotNull TagKey<Block> tagKey) {
+    public static void addTagToBlock(@NotNull Supplier<Block> registryObject, @NotNull TagKey<Block> tagKey) {
         ZPBlockTagsHelper.addTagToBlock(registryObject, tagKey);
     }
 
-    public static void addTagToItem(@NotNull RegistryObject<? extends Item> registryObject, @NotNull TagKey<Item> tagKey) {
+    public static void addTagToItem(@NotNull Supplier<Item> registryObject, @NotNull TagKey<Item> tagKey) {
         ZPItemTagsHelper.addTagToItem(registryObject, tagKey);
     }
 
-    public static void addTagToFluid(@NotNull RegistryObject<? extends Fluid> registryObject, @NotNull TagKey<Fluid> tagKey) {
+    public static void addTagToFluid(@NotNull Supplier<Fluid> registryObject, @NotNull TagKey<Fluid> tagKey) {
         ZPFluidTagsHelper.addTagToFluid(registryObject, tagKey);
     }
 

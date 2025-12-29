@@ -3,12 +3,9 @@ package ru.gltexture.zpm3.assets.player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.assets.player.events.client.ZPMenuPatchEvent;
-import ru.gltexture.zpm3.assets.player.events.client.ZPPlayerItemToolTips;
-import ru.gltexture.zpm3.assets.player.events.client.ZPRenderGuiEvent;
+import ru.gltexture.zpm3.assets.player.events.client.*;
 import ru.gltexture.zpm3.assets.player.events.common.*;
 import ru.gltexture.zpm3.assets.player.keybind.ZPPickUpKeyBindings;
-import ru.gltexture.zpm3.assets.player.events.client.ZPRenderWorldEventWithPickUpCheck;
 import ru.gltexture.zpm3.assets.player.events.server.ZPPlayerFillBucketEvent;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
@@ -56,6 +53,7 @@ public class ZPPlayerAsset extends ZPAsset {
             assetEntry.addEventClass(ZPPlayerItemToolTips.class);
             assetEntry.addEventClass(ZPMenuPatchEvent.class);
             assetEntry.addEventClass(ZPRenderGuiEvent.class);
+            assetEntry.addEventClass(ZPResourcePackEvent.class);
         });
 
         assetEntry.addEventClass(ZPPlayerEntityItemEvent.class);

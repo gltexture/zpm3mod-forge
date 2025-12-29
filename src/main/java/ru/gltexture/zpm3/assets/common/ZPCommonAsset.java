@@ -1,5 +1,6 @@
 package ru.gltexture.zpm3.assets.common;
 
+import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
@@ -14,14 +15,17 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.BucketPickup;
-import net.minecraft.world.level.block.DispenserBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.DispenserBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.predicates.ConditionReference;
+import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
+import net.minecraft.world.level.storage.loot.predicates.MatchTool;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
@@ -34,6 +38,8 @@ import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.asset.ZPAsset;
 import ru.gltexture.zpm3.engine.core.asset.ZPAssetData;
+import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
+import ru.gltexture.zpm3.engine.helpers.gen.providers.ZPLootTableProvider;
 import ru.gltexture.zpm3.engine.instances.blocks.IHotLiquid;
 import ru.gltexture.zpm3.engine.recipes.ZPRecipesController;
 import ru.gltexture.zpm3.engine.recipes.ZPRecipesRegistry;
@@ -91,13 +97,15 @@ public class ZPCommonAsset extends ZPAsset {
             Blocks.GREEN_CONCRETE.defaultBlockState().destroySpeed = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
             Blocks.RED_CONCRETE.defaultBlockState().destroySpeed = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
             Blocks.BLACK_CONCRETE.defaultBlockState().destroySpeed = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
-            Blocks.OBSIDIAN.defaultBlockState().destroySpeed = 4.0f;
+            Blocks.OBSIDIAN.defaultBlockState().destroySpeed = 6.0f;
 
-            Blocks.BRICKS.defaultBlockState().destroySpeed = 8.0F;
+            Blocks.BRICKS.defaultBlockState().destroySpeed = 18.0F;
             Blocks.BRICKS.explosionResistance = 18.0f;
 
-            Blocks.IRON_BARS.defaultBlockState().destroySpeed = 24.0F;
-            Blocks.IRON_BARS.explosionResistance = 12.0f;
+            Blocks.IRON_BARS.getStateDefinition().getPossibleStates().forEach((e) -> {
+                e.destroySpeed = 20.0F;
+            });
+            Blocks.IRON_BARS.explosionResistance = 6.0f;
         }
 
         final DefaultDispenseItemBehavior defaultLiqDispense = new DefaultDispenseItemBehavior() {
@@ -187,6 +195,31 @@ public class ZPCommonAsset extends ZPAsset {
 
     @Override
     public void initializeAsset(ZombiePlague3.@NotNull IAssetEntry assetEntry) {
+        for (Block b : new Block[] {
+                Blocks.CYAN_CONCRETE,
+                Blocks.WHITE_CONCRETE,
+                Blocks.ORANGE_CONCRETE,
+                Blocks.MAGENTA_CONCRETE,
+                Blocks.LIGHT_BLUE_CONCRETE,
+                Blocks.YELLOW_CONCRETE,
+                Blocks.LIME_CONCRETE,
+                Blocks.PINK_CONCRETE,
+                Blocks.GRAY_CONCRETE,
+                Blocks.LIGHT_GRAY_CONCRETE,
+                Blocks.CYAN_CONCRETE,
+                Blocks.PURPLE_CONCRETE,
+                Blocks.BLUE_CONCRETE,
+                Blocks.BROWN_CONCRETE,
+                Blocks.GREEN_CONCRETE,
+                Blocks.RED_CONCRETE,
+                Blocks.BLACK_CONCRETE
+        }) {
+            ZPDataGenHelper.addBlockLootTable(() -> b, () -> new LootPool.Builder()
+                    .add(LootItem.lootTableItem(Blocks.COBBLESTONE))
+                    .when(ExplosionCondition.survivesExplosion())
+            );
+        }
+
         assetEntry.addTier(ZPCommonTiers.values());
         assetEntry.setRecipesRegistry(new ZPCommonRecipeRegistry());
         assetEntry.addZP3RegistryClass(ZPSounds.class);

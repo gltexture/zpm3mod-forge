@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 
 public abstract class ZPLootTableHelper {
     private static final Map<ResourceLocation, Set<Supplier<LootPool>>> existingLootPools = new HashMap<>();
-    private static final Map<RegistryObject<? extends Block>, Set<Supplier<LootPool.Builder>>> lootPoolsToCreate = new HashMap<>();
+    private static final Map<Supplier<Block>, Set<Supplier<LootPool.Builder>>> lootPoolsToCreate = new HashMap<>();
 
     public static void changeBlockExistingLootTable(@NotNull ResourceLocation registryObject, @NotNull Supplier<LootPool> lootPool) {
         if (!ZPLootTableHelper.existingLootPools.containsKey(registryObject)) {
@@ -21,7 +21,7 @@ public abstract class ZPLootTableHelper {
         ZPLootTableHelper.existingLootPools.get(registryObject).add(lootPool);
     }
 
-    public static void addBlockLootTable(@NotNull RegistryObject<? extends Block> blockSupplier, @NotNull Supplier<LootPool.Builder> lootPool) {
+    public static void addBlockLootTable(@NotNull Supplier<Block> blockSupplier, @NotNull Supplier<LootPool.Builder> lootPool) {
         if (!ZPLootTableHelper.lootPoolsToCreate.containsKey(blockSupplier)) {
             ZPLootTableHelper.lootPoolsToCreate.put(blockSupplier, new HashSet<>());
         }
@@ -32,7 +32,7 @@ public abstract class ZPLootTableHelper {
         return ZPLootTableHelper.existingLootPools.get(registryObject);
     }
 
-    public static @NotNull Map<RegistryObject<? extends Block>, Set<Supplier<LootPool.Builder>>> getLootPoolsToCreate() {
+    public static @NotNull Map<Supplier<Block>, Set<Supplier<LootPool.Builder>>> getLootPoolsToCreate() {
         return ZPLootTableHelper.lootPoolsToCreate;
     }
 

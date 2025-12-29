@@ -13,9 +13,9 @@ import java.util.*;
 import java.util.function.Supplier;
 
 public class ZPBlocksSubProvider extends BlockLootSubProvider {
-    private final Map<RegistryObject<? extends Block>, Set<Supplier<LootPool.Builder>>> map;
+    private final Map<Supplier<Block>, Set<Supplier<LootPool.Builder>>> map;
 
-    public ZPBlocksSubProvider(Set<Item> pExplosionResistant, FeatureFlagSet pEnabledFeatures, Map<RegistryObject<? extends Block>, Set<Supplier<LootPool.Builder>>> map) {
+    public ZPBlocksSubProvider(Set<Item> pExplosionResistant, FeatureFlagSet pEnabledFeatures, Map<Supplier<Block>, Set<Supplier<LootPool.Builder>>> map) {
         super(pExplosionResistant, pEnabledFeatures);
         this.map = map;
     }
@@ -27,7 +27,7 @@ public class ZPBlocksSubProvider extends BlockLootSubProvider {
 
     @Override
     protected void generate() {
-        for (Map.Entry<RegistryObject<? extends Block>, Set<Supplier<LootPool.Builder>>> entry : this.getMap().entrySet()) {
+        for (Map.Entry<Supplier<Block>, Set<Supplier<LootPool.Builder>>> entry : this.getMap().entrySet()) {
             Block block = entry.getKey().get();
             Supplier<LootTable.Builder> supplier = () -> {
                 LootTable.Builder lt = LootTable.lootTable();
@@ -40,7 +40,7 @@ public class ZPBlocksSubProvider extends BlockLootSubProvider {
         }
     }
 
-    public Map<RegistryObject<? extends Block>, Set<Supplier<LootPool.Builder>>> getMap() {
+    public Map<Supplier<Block>, Set<Supplier<LootPool.Builder>>> getMap() {
         return this.map;
     }
 }

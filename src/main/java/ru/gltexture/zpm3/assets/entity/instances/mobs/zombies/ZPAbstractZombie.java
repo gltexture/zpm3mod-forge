@@ -28,8 +28,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -71,9 +74,25 @@ public abstract class ZPAbstractZombie extends Monster {
 
     protected abstract int getTotalZombieSkins();
 
+    @Override
+    public float getWalkTargetValue(@NotNull BlockPos pPos, @NotNull LevelReader pLevel) {
+        return 0.0f;
+    }
+
+    public static boolean isDarkEnoughToSpawn(ServerLevelAccessor pLevel, @NotNull BlockPos pPos, RandomSource pRandom) {
+        DimensionType dimensiontype = pLevel.dimensionType();
+        int j = pLevel.getLevel().isThundering() ? pLevel.getMaxLocalRawBrightness(pPos, 10) : pLevel.getMaxLocalRawBrightness(pPos);
+        return (j - 1) <= dimensiontype.monsterSpawnLightTest().sample(pRandom);
+    }
+
     @SuppressWarnings("all")
     public static boolean checkZombieSpawnRules(@NotNull EntityType<? extends Monster> pType, ServerLevelAccessor pLevel, @NotNull MobSpawnType pSpawnType, @NotNull BlockPos pPos, @NotNull RandomSource pRandom) {
-        return true;
+        if (pLevel.getDifficulty() != Difficulty.PEACEFUL && ((ZPRandom.getRandom().nextFloat() <= ZPConstants.ZOMBIE_SPAWN_AT_DAY_TIME_CHANCE || ZPAbstractZombie.isDarkEnoughToSpawn(pLevel, pPos, pRandom)) && Monster.checkMobSpawnRules(pType, pLevel, pSpawnType, pPos, pRandom))) {
+            if (!ZPZoneChecks.INSTANCE.isZombieBlockSpawn(pLevel.getLevel(), pPos)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -354,7 +373,7 @@ public abstract class ZPAbstractZombie extends Monster {
             flag = true;
         }
         if (flag) {
-            this.stopDespawning = 12000;
+            this.stopDespawning = 6000;
         }
         return flag;
     }

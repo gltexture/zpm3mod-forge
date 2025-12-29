@@ -17,6 +17,7 @@ import ru.gltexture.zpm3.engine.helpers.ZPFluidTagsHelper;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 public class ZPFluidTagsProvider extends FluidTagsProvider {
     public ZPFluidTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, String modId, @Nullable ExistingFileHelper existingFileHelper) {
@@ -25,8 +26,8 @@ public class ZPFluidTagsProvider extends FluidTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.@NotNull Provider pProvider) {
-        for (Map.Entry<TagKey<Fluid>, Set<RegistryObject<? extends Fluid>>> entry : ZPFluidTagsHelper.getTagsToAddFluid().entrySet()) {
-            for (RegistryObject<? extends Fluid> registryObject : entry.getValue()) {
+        for (Map.Entry<TagKey<Fluid>, Set<Supplier<Fluid>>> entry : ZPFluidTagsHelper.getTagsToAddFluid().entrySet()) {
+            for (Supplier<Fluid> registryObject : entry.getValue()) {
                 this.tag(entry.getKey()).add(registryObject.get());
             }
         }

@@ -170,6 +170,33 @@ public class ZPZombieMiningGoal extends Goal {
             }
         }
 
+        if (blockToMine == null) {
+            Level level = this.mob.level();
+            BlockPos feet = this.mob.blockPosition();
+            BlockPos body = feet.above();
+            BlockPos[] candidates = new BlockPos[] {
+                    feet,
+                    body
+            };
+            for (BlockPos pos : candidates) {
+                final BlockState state = level.getBlockState(pos);
+                if (state.isAir()) {
+                    continue;
+                }
+                boolean flag = true;
+                for (Predicate<Pair<BlockPos, ZPAbstractZombie>> predicate : this.mineConditions) {
+                    if (!predicate.test(Pair.of(pos, this.mob))) {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag) {
+                    blockToMine = pos;
+                    break;
+                }
+            }
+        }
+
         if (blockToMine != null) {
             if (!ZPFakePlayer.canBreakBlock((ServerLevel) this.mob.level(), blockToMine)) {
                 return;

@@ -22,6 +22,10 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.*;
+import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
+import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
+import net.minecraft.world.entity.monster.Drowned;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
@@ -29,10 +33,10 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -63,10 +67,17 @@ public abstract class ZPAbstractZombie extends Monster {
     private int eatingTime;
     private @Nullable ItemStack stolenStack;
     public boolean wantsToNullTarget;
+    protected final WaterBoundPathNavigation waterNavigation;
+    protected final GroundPathNavigation groundNavigation;
 
     protected ZPAbstractZombie(EntityType<? extends ZPAbstractZombie> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
+        this.moveControl = new ZPAbstractZombie.DrownedMoveControl(this);
+        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
         this.wantsToNullTarget = false;
+        this.waterNavigation = new WaterBoundPathNavigation(this, pLevel);
+        this.groundNavigation = new GroundPathNavigation(this, pLevel);
     }
 
     @Override
@@ -124,6 +135,7 @@ public abstract class ZPAbstractZombie extends Monster {
 
     public void tick() {
         if (this.level() instanceof ServerLevel serverLevel) {
+            this.setAirSupply(this.getMaxAirSupply());
             if (ZPZoneChecks.INSTANCE.isZombieErasing(serverLevel, this)) {
                 ZPAntiZombie.eraseMob(this);
                 return;
@@ -192,7 +204,7 @@ public abstract class ZPAbstractZombie extends Monster {
 
         if (flag && this.canHoldItem(pStack)) {
             double d0 = this.getEquipmentDropChance(equipmentslot);
-            if (!itemstack.isEmpty() && (double)Math.max(this.random.nextFloat() - 0.1F, 0.0F) < d0) {
+            if (!itemstack.isEmpty() && (double) Math.max(this.random.nextFloat() - 0.1F, 0.0F) < d0) {
                 this.spawnAtLocation(itemstack);
             } else {
                 this.stolenStack = this.getItemBySlot(EquipmentSlot.MAINHAND);
@@ -296,10 +308,10 @@ public abstract class ZPAbstractZombie extends Monster {
 
     private void maybeDisableShield(Player pPlayer, ItemStack pMobItemStack, ItemStack pPlayerItemStack) {
         if (!pMobItemStack.isEmpty() && !pPlayerItemStack.isEmpty() && pMobItemStack.getItem() instanceof AxeItem && pPlayerItemStack.is(Items.SHIELD)) {
-            float f = 0.25F + (float)EnchantmentHelper.getBlockEfficiency(this) * 0.05F;
+            float f = 0.25F + (float) EnchantmentHelper.getBlockEfficiency(this) * 0.05F;
             if (this.random.nextFloat() < f) {
                 pPlayer.getCooldowns().addCooldown(Items.SHIELD, 100);
-                this.level().broadcastEntityEvent(pPlayer, (byte)30);
+                this.level().broadcastEntityEvent(pPlayer, (byte) 30);
             }
         }
     }
@@ -420,7 +432,7 @@ public abstract class ZPAbstractZombie extends Monster {
 
     protected void dropFromLootTable(@NotNull DamageSource pDamageSource, boolean pHitByPlayer) {
         LootTable loottable = this.getZmLootTable();
-        LootParams.Builder lootparams$builder = (new LootParams.Builder((ServerLevel)this.level())).withParameter(LootContextParams.THIS_ENTITY, this).withParameter(LootContextParams.ORIGIN, this.position()).withParameter(LootContextParams.DAMAGE_SOURCE, pDamageSource).withOptionalParameter(LootContextParams.KILLER_ENTITY, pDamageSource.getEntity()).withOptionalParameter(LootContextParams.DIRECT_KILLER_ENTITY, pDamageSource.getDirectEntity());
+        LootParams.Builder lootparams$builder = (new LootParams.Builder((ServerLevel) this.level())).withParameter(LootContextParams.THIS_ENTITY, this).withParameter(LootContextParams.ORIGIN, this.position()).withParameter(LootContextParams.DAMAGE_SOURCE, pDamageSource).withOptionalParameter(LootContextParams.KILLER_ENTITY, pDamageSource.getEntity()).withOptionalParameter(LootContextParams.DIRECT_KILLER_ENTITY, pDamageSource.getDirectEntity());
         if (pHitByPlayer && this.lastHurtByPlayer != null) {
             lootparams$builder = lootparams$builder.withParameter(LootContextParams.LAST_DAMAGE_PLAYER, this.lastHurtByPlayer).withLuck(this.lastHurtByPlayer.getLuck());
         }
@@ -526,6 +538,7 @@ public abstract class ZPAbstractZombie extends Monster {
 
         entity.addEffect(effect);
     }
+
     protected void randomizeAttributes() {
     }
 
@@ -551,5 +564,63 @@ public abstract class ZPAbstractZombie extends Monster {
 
     protected void dropCustomDeathLoot(@NotNull DamageSource pSource, int pLooting, boolean pRecentlyHit) {
         super.dropCustomDeathLoot(pSource, pLooting, pRecentlyHit);
+    }
+
+    public void updateSwimming() {
+        if (!this.level().isClientSide) {
+            if (this.isEffectiveAi() && this.isInWater() && this.groundNavigation.isDone() && (this.groundNavigation.getPath() == null || !this.groundNavigation.getPath().canReach())) {
+                this.navigation = this.waterNavigation;
+                this.setSwimming(true);
+            } else {
+                this.navigation = this.groundNavigation;
+                this.setSwimming(false);
+            }
+        }
+    }
+
+    private class DrownedMoveControl extends MoveControl {
+        private final ZPAbstractZombie zombie;
+
+        public DrownedMoveControl(ZPAbstractZombie pDrowned) {
+            super(pDrowned);
+            this.zombie = pDrowned;
+        }
+
+        public void tick() {
+            LivingEntity target = this.zombie.getTarget();
+            if (this.zombie.isInWater()) {
+                if (target != null && target.getY() > this.zombie.getY()) {
+                    final float f1 = ZPAbstractZombie.this.navigation.equals(ZPAbstractZombie.this.groundNavigation) ? 0.0175f : this.zombie.verticalCollisionBelow ? 0.025f : 0.0125f;
+                    if (this.zombie.horizontalCollision) {
+                        this.zombie.setDeltaMovement(this.zombie.getDeltaMovement().add(this.zombie.getLookAngle().x * f1, this.zombie.isUnderWater() ? 0.025f : 0.1f, this.zombie.getLookAngle().z * f1));
+                    } else {
+                        this.zombie.setDeltaMovement(this.zombie.getDeltaMovement().add(this.zombie.getLookAngle().x * f1, 0.01f, this.zombie.getLookAngle().z * f1));
+                    }
+                }
+
+                if (this.operation != Operation.MOVE_TO || this.zombie.getNavigation().isDone()) {
+                    this.zombie.setSpeed(0.0F);
+                    return;
+                }
+
+                double $$1 = this.wantedX - this.zombie.getX();
+                double $$2 = this.wantedY - this.zombie.getY();
+                double $$3 = this.wantedZ - this.zombie.getZ();
+                double $$4 = Math.sqrt($$1 * $$1 + $$2 * $$2 + $$3 * $$3);
+                $$2 /= $$4;
+                float $$5 = (float) (Mth.atan2($$3, $$1) * (double) (180F / (float) Math.PI)) - 90.0F;
+                this.zombie.setYRot(this.rotlerp(this.zombie.getYRot(), $$5, 90.0F));
+                this.zombie.yBodyRot = this.zombie.getYRot();
+                float $$6 = (float) (this.speedModifier * this.zombie.getAttributeValue(Attributes.MOVEMENT_SPEED));
+                float $$7 = Mth.lerp(0.125F, this.zombie.getSpeed(), $$6);
+                this.zombie.setSpeed($$7);
+                this.zombie.setDeltaMovement(this.zombie.getDeltaMovement().add((double) $$7 * $$1 * 0.01f, (double) $$7 * $$2 * 0.1f, (double) $$7 * $$3 * 0.01f));
+            } else {
+                if (!this.zombie.onGround()) {
+                    this.zombie.setDeltaMovement(this.zombie.getDeltaMovement().add(0.0F, -0.008, 0.0F));
+                }
+                super.tick();
+            }
+        }
     }
 }

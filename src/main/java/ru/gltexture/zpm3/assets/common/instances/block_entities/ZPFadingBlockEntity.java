@@ -6,6 +6,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.TorchBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -62,7 +63,7 @@ public class ZPFadingBlockEntity extends ZPBlockEntity {
                         blockEntity.setTime(level, blockEntity.fadingTime, blockEntity.fadingTime / 4);
                         return;
                     }
-                    boolean flag = state.getBlock() instanceof ZPTorchBlock && (ZPUtility.blocks().isRainingOnBlock(level, pos)&&level.getGameTime()%40==0);
+                    boolean flag = (state.getBlock() instanceof TorchBlock || state.getBlock() instanceof ZPTorchBlock) && (ZPUtility.blocks().isRainingOnBlock(level, pos) && level.getGameTime() % 40 == 0);
                     if (level.getGameTime() >= blockEntity.timeLock) {
                         flag = true;
                     }

@@ -342,11 +342,11 @@ public class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public static float ACID_BOTTLE_DAMAGE = 2.0f;
 
     @ZPConfigurableConstant(
-            description = "Base damage dealt to inventory items by an acid bottle projectile on direct hit.",
+            description = "Base damage dealt to inventory items by acid.",
             group = ZPConstants.GROUP_COMBAT,
             type = ZPConfigurableConstant.TYPES.INT
     )
-    public static int ACID_BOTTLE_INVENTORY_DAMAGE = 3;
+    public static int ACID_INVENTORY_DAMAGE = 4;
 
     @ZPConfigurableConstant(
             description = "Base damage dealt by a thrown plate when hitting an entity.",
@@ -414,6 +414,13 @@ public class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
 
     // ===== WORLD =====
     @ZPConfigurableConstant(
+            description = "How much internal damage can receive barbared wire, before it breaks.",
+            group = ZPConstants.GROUP_WORLD,
+            type = ZPConfigurableConstant.TYPES.INT
+    )
+    public static int MAX_BARBARED_WIRE_STRENGTH = 96;
+
+    @ZPConfigurableConstant(
             description = "Tries to make acid block destruction mechanic smoother (less value = less destruction).",
             group = ZPConstants.GROUP_WORLD,
             type = ZPConfigurableConstant.TYPES.INT
@@ -467,7 +474,7 @@ public class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
             type = ZPConfigurableConstant.TYPES.FLOAT,
             min = 0.0
     )
-    public static float ZP_VANILLA_CONCRETE_DESTROY_SPEED = 300.0f;
+    public static float ZP_VANILLA_CONCRETE_DESTROY_SPEED = 256.0f;
 
     @ZPConfigurableConstant(
             description = "New entity-item lifespan in ticks.",

@@ -42,7 +42,6 @@ import java.util.Objects;
 
 public class ZPDogZombie extends ZPAbstractZombie {
     private float baseMovementSpeed;
-    private int contusionCooldown;
 
     public ZPDogZombie(Level pLevel) {
         this(ZPEntities.zp_dog_zombie_entity.get(), pLevel);
@@ -72,12 +71,12 @@ public class ZPDogZombie extends ZPAbstractZombie {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(ForgeMod.SWIM_SPEED.get(), 1.75f)
-                .add(Attributes.MAX_HEALTH, 24.0f * ZPConstants.ZOMBIE_MAX_HEALTH_MULTIPLIER)
+                .add(ForgeMod.SWIM_SPEED.get(), 1.0f)
+                .add(Attributes.MAX_HEALTH, 20.0f * ZPConstants.ZOMBIE_MAX_HEALTH_MULTIPLIER)
                 .add(Attributes.FOLLOW_RANGE, ZPConstants.ZOMBIE_FOLLOW_RANGE)
                 .add(Attributes.MOVEMENT_SPEED, 0.34f * ZPConstants.ZOMBIE_MOVEMENT_SPEED_MULTIPLIER)
                 .add(Attributes.ATTACK_DAMAGE, 2.0f * ZPConstants.ZOMBIE_ATTACK_DAMAGE_MULTIPLIER)
-                .add(Attributes.ARMOR, 2.0f)
+                .add(Attributes.ARMOR, 0.0f)
                 .add(ZPEntityAttributes.zm_attack_range_multiplier.get(), 1.0f / ZPConstants.ZOMBIE_DOG_ATTACK_RANGE_MULTIPLIER)
                 .add(ZPEntityAttributes.zm_mining_speed.get(), 0.0f)
                 .add(ZPEntityAttributes.zm_random_effect_chance.get(), 0.025f * ZPConstants.ZOMBIE_APPLY_NEGATIVE_EFFECT_ON_ENTITY_CHANCE_MULTIPLIER)
@@ -88,9 +87,8 @@ public class ZPDogZombie extends ZPAbstractZombie {
     public void tick() {
         super.tick();
         if (this.baseMovementSpeed > 0.0f) {
-            if (this.contusionCooldown-- <= 0 && this.getLastHurtByMob() != null && (this.tickCount - this.getLastHurtByMobTimestamp()) < 100) {
-                this.contusionCooldown = 300;
-                Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(this.baseMovementSpeed * 0.675f);
+            if (this.getLastHurtByMob() != null && (this.tickCount - this.getLastHurtByMobTimestamp()) < 30) {
+                Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(this.baseMovementSpeed * 0.5f);
             } else {
                 Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(this.baseMovementSpeed);
             }
@@ -136,7 +134,7 @@ public class ZPDogZombie extends ZPAbstractZombie {
 
     @Override
     protected void randomizeAttributes() {
-        this.addRandomAttributeValue(Attributes.MAX_HEALTH, ZPAbstractZombie.getRandomSalt(0.0f, 11.0f));
+        this.addRandomAttributeValue(Attributes.MAX_HEALTH, ZPAbstractZombie.getRandomSalt(0.0f, 6.0f));
         this.addRandomAttributeValue(Attributes.FOLLOW_RANGE, ZPAbstractZombie.getRandomSalt(-2.0f, 2.0f));
         this.addRandomAttributeValue(Attributes.MOVEMENT_SPEED, ZPAbstractZombie.getRandomSalt(-0.005f, 0.01f));
         this.addRandomAttributeValue(Attributes.ATTACK_DAMAGE, ZPAbstractZombie.getRandomSalt(0.0f, 0.5f));

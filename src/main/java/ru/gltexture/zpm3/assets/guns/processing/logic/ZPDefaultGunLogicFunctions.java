@@ -147,17 +147,18 @@ public abstract class ZPDefaultGunLogicFunctions {
             final int currentAmmo = item.getCurrentAmmo(player, itemStack);
             final int ammoBeforeLoad = item.getAmmoBeforeReload(player, itemStack);
             if (!ZPDefaultGunLogicFunctions.isAnythingReloading(player)) {
-                if (item.isJammed(player, itemStack) && unload) {
+                if (!item.isJammed(player, itemStack)) {
+                    if (unload) {
+                        if (currentAmmo <= 0) {
+                            return false;
+                        }
+                    } else {
+                        if (currentAmmo >= item.getGunProperties().getMaxAmmo() || (item.getGunProperties().getAmmo() != null && player.getInventory().countItem(item.getGunProperties().getAmmo()) <= 0)) {
+                            return false;
+                        }
+                    }
+                } else if (unload) {
                     return false;
-                }
-                if (unload) {
-                    if (currentAmmo <= 0) {
-                        return false;
-                    }
-                } else {
-                    if (currentAmmo >= item.getGunProperties().getMaxAmmo() || (item.getGunProperties().getAmmo() != null && player.getInventory().countItem(item.getGunProperties().getAmmo()) <= 0)) {
-                        return false;
-                    }
                 }
                 ZombiePlague3.net().sendToServer(new ZPGunActionPacket(player.getId(), unload ? ZPGunActionPacket.UNLOAD : ZPGunActionPacket.RELOAD, isRightHand));
                 if (item.getGunProperties().getReloadSound() != null) {
@@ -214,18 +215,19 @@ public abstract class ZPDefaultGunLogicFunctions {
                 if (item.getCurrentTimeBeforeReload(player, itemStack) > 0) {
                     return false;
                 }
-                if (item.isJammed(player, itemStack) && unload) {
-                    return false;
-                }
                 final int currentAmmo = item.getCurrentAmmo(player, itemStack);
-                if (unload) {
-                    if (currentAmmo <= 0) {
-                        return false;
+                if (!item.isJammed(player, itemStack)) {
+                    if (unload) {
+                        if (currentAmmo <= 0) {
+                            return false;
+                        }
+                    } else {
+                        if (currentAmmo >= item.getGunProperties().getMaxAmmo() || (item.getGunProperties().getAmmo() != null && player.getInventory().countItem(item.getGunProperties().getAmmo()) <= 0)) {
+                            return false;
+                        }
                     }
-                } else {
-                    if (currentAmmo >= item.getGunProperties().getMaxAmmo() || (item.getGunProperties().getAmmo() != null && player.getInventory().countItem(item.getGunProperties().getAmmo()) <= 0)) {
-                        return false;
-                    }
+                } else if (unload) {
+                    return false;
                 }
                 ZombiePlague3.net().sendToServer(new ZPGunActionPacket(player.getId(), unload ? ZPGunActionPacket.UNLOAD : ZPGunActionPacket.RELOAD, isRightHand));
                 if (item.getGunProperties().getReloadSound() != null) {
@@ -420,14 +422,18 @@ public abstract class ZPDefaultGunLogicFunctions {
 
         if (!ZPDefaultGunLogicFunctions.isAnythingReloading(player)) {
             final int currentAmmo = item.getCurrentAmmo(player, itemStack);
-            if (unload) {
-                if (currentAmmo <= 0) {
-                    return false;
+            if (!item.isJammed(player, itemStack)) {
+                if (unload) {
+                    if (currentAmmo <= 0) {
+                        return false;
+                    }
+                } else {
+                    if (currentAmmo >= item.getGunProperties().getMaxAmmo() || (item.getGunProperties().getAmmo() != null && player.getInventory().countItem(item.getGunProperties().getAmmo()) <= 0)) {
+                        return false;
+                    }
                 }
-            } else {
-                if (currentAmmo >= item.getGunProperties().getMaxAmmo() || (item.getGunProperties().getAmmo() != null && player.getInventory().countItem(item.getGunProperties().getAmmo()) <= 0)) {
-                    return false;
-                }
+            } else if (unload) {
+                return false;
             }
             item.setCurrentReloadCooldown(player, itemStack, reloadTimeNominal);
             if (unload) {
@@ -446,14 +452,18 @@ public abstract class ZPDefaultGunLogicFunctions {
         final int ammoBeforeLoad = item.getAmmoBeforeReload(player, itemStack);
 
         if (!ZPDefaultGunLogicFunctions.isAnythingReloading(player)) {
-            if (unload) {
-                if (currentAmmo <= 0) {
-                    return false;
+            if (!item.isJammed(player, itemStack)) {
+                if (unload) {
+                    if (currentAmmo <= 0) {
+                        return false;
+                    }
+                } else {
+                    if (currentAmmo >= item.getGunProperties().getMaxAmmo() || (item.getGunProperties().getAmmo() != null && player.getInventory().countItem(item.getGunProperties().getAmmo()) <= 0)) {
+                        return false;
+                    }
                 }
-            } else {
-                if (currentAmmo >= item.getGunProperties().getMaxAmmo() || (item.getGunProperties().getAmmo() != null && player.getInventory().countItem(item.getGunProperties().getAmmo()) <= 0)) {
-                    return false;
-                }
+            } else if (unload) {
+                return false;
             }
             item.setCurrentReloadCooldown(player, itemStack, reloadTimeNominal);
             if (unload) {

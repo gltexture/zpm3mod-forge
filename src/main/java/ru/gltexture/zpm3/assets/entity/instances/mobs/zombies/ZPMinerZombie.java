@@ -73,7 +73,7 @@ public class ZPMinerZombie extends ZPAbstractZombie {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(ForgeMod.SWIM_SPEED.get(), 1.25f)
+                .add(ForgeMod.SWIM_SPEED.get(), 1.0f)
                 .add(Attributes.MAX_HEALTH, 60.0f * ZPConstants.ZOMBIE_MAX_HEALTH_MULTIPLIER)
                 .add(Attributes.FOLLOW_RANGE, ZPConstants.ZOMBIE_FOLLOW_RANGE * 0.8f)
                 .add(Attributes.MOVEMENT_SPEED, 0.22f * ZPConstants.ZOMBIE_MOVEMENT_SPEED_MULTIPLIER)

@@ -99,13 +99,13 @@ public class ZPCommonAsset extends ZPAsset {
             Blocks.BLACK_CONCRETE.defaultBlockState().destroySpeed = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
             Blocks.OBSIDIAN.defaultBlockState().destroySpeed = 6.0f;
 
-            Blocks.BRICKS.defaultBlockState().destroySpeed = 18.0F;
-            Blocks.BRICKS.explosionResistance = 18.0f;
+            Blocks.BRICKS.defaultBlockState().destroySpeed = 12.0F;
+            Blocks.BRICKS.explosionResistance = 8.0f;
 
             Blocks.IRON_BARS.getStateDefinition().getPossibleStates().forEach((e) -> {
-                e.destroySpeed = 20.0F;
+                e.destroySpeed = 12.0F;
             });
-            Blocks.IRON_BARS.explosionResistance = 6.0f;
+            Blocks.IRON_BARS.explosionResistance = 8.0f;
         }
 
         final DefaultDispenseItemBehavior defaultLiqDispense = new DefaultDispenseItemBehavior() {

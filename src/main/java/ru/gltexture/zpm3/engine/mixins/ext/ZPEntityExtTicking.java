@@ -8,7 +8,6 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -21,16 +20,16 @@ import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 
 public abstract class ZPEntityExtTicking {
     public static void serverEntityTickPre(@NotNull Entity entity, @NotNull IZPEntityExt izpEntityExt) {
-        if (entity instanceof ItemEntity itemEntity) {
+        if (!(entity instanceof LivingEntity)) {
             if (izpEntityExt.getAcidLevel() > 120) {
-                itemEntity.kill();
+                entity.discard();
             }
         }
         if (!ZPZoneChecks.INSTANCE.isNoAcidAffection((ServerLevel) entity.level(), entity.getOnPos())) {
             if (izpEntityExt.touchesAcidBlock() && entity.tickCount % 2 == 0) {
                 izpEntityExt.addAcidLevel(1);
             }
-            if (izpEntityExt.getAcidLevel() > 3000) {
+            if (izpEntityExt.getAcidLevel() > 600) {
                 if (entity instanceof LivingEntity livingEntity && izpEntityExt.touchesAcidBlock()) {
                     livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON, 60));
                 }
@@ -85,7 +84,7 @@ public abstract class ZPEntityExtTicking {
             if (livingEntity instanceof Player player) {
                 for (ItemStack stack : player.getInventory().items) {
                     if (stack.isDamageableItem()) {
-                        stack.hurtAndBreak(ZPConstants.ACID_BOTTLE_INVENTORY_DAMAGE, player, e -> {
+                        stack.hurtAndBreak(ZPConstants.ACID_INVENTORY_DAMAGE, player, e -> {
                             e.broadcastBreakEvent(EquipmentSlot.MAINHAND);
                         });
                     }
@@ -95,7 +94,7 @@ public abstract class ZPEntityExtTicking {
                     ItemStack stack = player.getInventory().armor.get(i);
                     if (stack.isDamageableItem()) {
                         EquipmentSlot finalSlot = ZPCommonServerUtils.getEquipmentSlot(i);
-                        stack.hurtAndBreak(ZPConstants.ACID_BOTTLE_INVENTORY_DAMAGE, player, e -> {
+                        stack.hurtAndBreak(ZPConstants.ACID_INVENTORY_DAMAGE, player, e -> {
                             e.broadcastBreakEvent(finalSlot);
                         });
                     }
@@ -103,7 +102,7 @@ public abstract class ZPEntityExtTicking {
             } else {
                 for (ItemStack stack : livingEntity.getHandSlots()) {
                     if (stack.isDamageableItem()) {
-                        stack.hurtAndBreak(ZPConstants.ACID_BOTTLE_INVENTORY_DAMAGE, livingEntity, e -> {
+                        stack.hurtAndBreak(ZPConstants.ACID_INVENTORY_DAMAGE, livingEntity, e -> {
                             e.broadcastBreakEvent(EquipmentSlot.MAINHAND);
                         });
                     }

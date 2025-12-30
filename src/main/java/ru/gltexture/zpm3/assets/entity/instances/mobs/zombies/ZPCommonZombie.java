@@ -7,6 +7,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.animal.horse.Horse;
+import net.minecraft.world.entity.monster.Drowned;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
@@ -14,6 +15,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.*;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
@@ -59,9 +61,9 @@ public class ZPCommonZombie extends ZPAbstractZombie {
         this.goalSelector.addGoal(4, (new ZPZombieHelpWantedGoal(this)));
         this.goalSelector.addGoal(5, (new ZPZombieEatingGoal(this)));
         this.goalSelector.addGoal(6, new ZPZombieAngryGoal(this));
-        this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(9, new ZPZombieRandomLookAroundGoal(this));
+        this.goalSelector.addGoal(8, new RandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(10, new ZPZombieRandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, ZPZombieNearestAttackableTarget.player(this, 1.0f, ZPConstants.ZOMBIE_XRAY_LOOK, 10, (e) -> true));
         this.targetSelector.addGoal(2, ZPZombieNearestAttackableTarget.nonPlayer(this, List.of(AbstractVillager.class), 0.5f, ZPConstants.ZOMBIE_XRAY_LOOK, 20, (e) -> true));
         this.targetSelector.addGoal(3, ZPZombieNearestAttackableTarget.nonPlayer(this, List.of(Cow.class, IronGolem.class, Horse.class, Sheep.class, Pig.class), 0.35f, false, 60, (e) -> true));
@@ -108,7 +110,7 @@ public class ZPCommonZombie extends ZPAbstractZombie {
 
     @Override
     protected void randomEquipment(DifficultyInstance pDifficulty) {
-        super.defaultRandomEquipment(pDifficulty, this::getRandomArmorForSlot, 0.01f, (slot) -> this.getRandomToolOrWeapon(), 0.05f);
+        super.defaultRandomEquipment(pDifficulty, this::getRandomArmorForSlot, 0.0125f, (slot) -> this.getRandomToolOrWeapon(), 0.0875f);
     }
 
     private ItemStack getRandomArmorForSlot(EquipmentSlot slot) {

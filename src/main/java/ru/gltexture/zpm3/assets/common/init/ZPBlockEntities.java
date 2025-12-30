@@ -6,7 +6,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.BlockEntityType.Builder;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.assets.common.instances.block_entities.ZPBarbaredWireBlockEntity;
 import ru.gltexture.zpm3.assets.common.instances.block_entities.ZPFadingBlockEntity;
+import ru.gltexture.zpm3.assets.loot_cases.registry.ZPLootTablesCollection;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.engine.instances.blocks.ZPBlock;
 import ru.gltexture.zpm3.engine.instances.blocks.ZPLiquidBlock;
@@ -19,6 +21,7 @@ import java.util.stream.Stream;
 
 public class ZPBlockEntities extends ZPRegistry<BlockEntityType<?>> {
     public static RegistryObject<BlockEntityType<ZPFadingBlockEntity>> fading_block_entity;
+    public static RegistryObject<BlockEntityType<ZPBarbaredWireBlockEntity>> barbared_wire_block_entity;
 
     public ZPBlockEntities() {
         super(ZPRegistryConveyor.Target.BLOCK_ENTITY_TYPE);
@@ -35,6 +38,11 @@ public class ZPBlockEntities extends ZPRegistry<BlockEntityType<?>> {
                             .toArray(Block[]::new);
                     Block[] allBlocks = Stream.concat(Arrays.stream(zpBlocks), Stream.of(Blocks.TORCH, Blocks.WALL_TORCH, Blocks.JACK_O_LANTERN, Blocks.LAVA)).toArray(Block[]::new);
                     return Builder.of(ZPFadingBlockEntity::new, allBlocks).build(null);
+                }).end();
+
+        ZPBlockEntities.barbared_wire_block_entity = regSupplier.register("barbared_wire_block_entity",
+                () -> {
+                    return Builder.of(ZPBarbaredWireBlockEntity::new, new Block[] {ZPBlocks.barbared_wire.get()}).build(null);
                 }).end();
     }
 

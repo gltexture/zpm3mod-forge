@@ -114,7 +114,7 @@ public abstract class ZPRegMedicine {
             });
         }).end();
 
-        ZPItems.bandage = regSupplier.register("bandage", () -> new ZPItemMedicine(new Item.Properties().durability(4), ZPRegMedicine.BANDAGE, new ZPItemMedicine.ZPMedicineProperties()
+        ZPItems.bandage = regSupplier.register("bandage", () -> new ZPItemMedicine(new Item.Properties().durability(2), ZPRegMedicine.BANDAGE, new ZPItemMedicine.ZPMedicineProperties()
                 .setMedicineAnim(ZPItemMedicine.MedicineAnim.BLOCK)
                 .setSoundToPlayOnConsume(() -> ZPSounds.bandage.get())
         )).afterCreated((e, utils) -> {
@@ -124,7 +124,7 @@ public abstract class ZPRegMedicine {
             });
         }).end();
 
-        ZPItems.aid_kit = regSupplier.register("aid_kit", () -> new ZPItemMedicine(new Item.Properties().durability(4), ZPRegMedicine.AID_KIT, new ZPItemMedicine.ZPMedicineProperties()
+        ZPItems.aid_kit = regSupplier.register("aid_kit", () -> new ZPItemMedicine(new Item.Properties().durability(2), ZPRegMedicine.AID_KIT, new ZPItemMedicine.ZPMedicineProperties()
                 .setMedicineAnim(ZPItemMedicine.MedicineAnim.BLOCK)
                 .setSoundToPlayOnConsume(() -> ZPSounds.bandage.get())
         )).afterCreated((e, utils) -> {
@@ -221,7 +221,7 @@ public abstract class ZPRegMedicine {
             });
         }).end();
 
-        ZPItems.military_bandage = regSupplier.register("military_bandage", () -> new ZPItemMedicine(new Item.Properties().durability(12), ZPRegMedicine.BANDAGE, new ZPItemMedicine.ZPMedicineProperties()
+        ZPItems.military_bandage = regSupplier.register("military_bandage", () -> new ZPItemMedicine(new Item.Properties().durability(6), ZPRegMedicine.BANDAGE, new ZPItemMedicine.ZPMedicineProperties()
                 .setMedicineAnim(ZPItemMedicine.MedicineAnim.BLOCK)
                 .setSoundToPlayOnConsume(() -> ZPSounds.bandage.get())
         )).afterCreated((e, utils) -> {

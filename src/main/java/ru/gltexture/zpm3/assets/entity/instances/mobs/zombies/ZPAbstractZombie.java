@@ -98,7 +98,14 @@ public abstract class ZPAbstractZombie extends Monster {
 
     @SuppressWarnings("all")
     public static boolean checkZombieSpawnRules(@NotNull EntityType<? extends Monster> pType, ServerLevelAccessor pLevel, @NotNull MobSpawnType pSpawnType, @NotNull BlockPos pPos, @NotNull RandomSource pRandom) {
-        if (pLevel.getDifficulty() != Difficulty.PEACEFUL && ((ZPRandom.getRandom().nextFloat() <= ZPConstants.ZOMBIE_SPAWN_AT_DAY_TIME_CHANCE || ZPAbstractZombie.isDarkEnoughToSpawn(pLevel, pPos, pRandom)) && Monster.checkMobSpawnRules(pType, pLevel, pSpawnType, pPos, pRandom))) {
+        float f1 = ZPConstants.ZOMBIE_SPAWN_AT_DAY_TIME_CHANCE;
+        if (pLevel.getDifficulty() == Difficulty.NORMAL) {
+            f1 *= 0.5f;
+        } else  if (pLevel.getDifficulty() == Difficulty.EASY) {
+            f1 *= 0.0f;
+        }
+        boolean random = (pLevel.getLevel().getGameTime() % 60 == 0 && ZPRandom.getRandom().nextFloat() <= f1);
+        if (pLevel.getDifficulty() != Difficulty.PEACEFUL && ((random || ZPAbstractZombie.isDarkEnoughToSpawn(pLevel, pPos, pRandom)) && Monster.checkMobSpawnRules(pType, pLevel, pSpawnType, pPos, pRandom))) {
             if (!ZPZoneChecks.INSTANCE.isZombieBlockSpawn(pLevel.getLevel(), pPos)) {
                 return true;
             }

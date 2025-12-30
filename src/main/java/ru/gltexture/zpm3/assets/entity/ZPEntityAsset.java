@@ -89,8 +89,8 @@ public class ZPEntityAsset extends ZPAsset {
                 controller.getVanillaBiomePopulationManager().setCancelVanilla_monsters_Method(true);
                 controller.getVanillaBiomePopulationManager().addMonster_Consumer(((pBuilder, pZombieWeight, pZombieVillageWeight,pSkeletonWeight,pIsUnderwater) -> {
                     pBuilder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ZPEntities.zp_common_zombie_entity.get(), 100, 1, 4));
-                    pBuilder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ZPEntities.zp_miner_zombie_entity.get(), 80, 1, 2));
-                    pBuilder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ZPEntities.zp_dog_zombie_entity.get(), 20, 2, 5));
+                    pBuilder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ZPEntities.zp_miner_zombie_entity.get(), 65, 1, 2));
+                    pBuilder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ZPEntities.zp_dog_zombie_entity.get(), 6, 2, 4));
                     return null;
                 }));
 

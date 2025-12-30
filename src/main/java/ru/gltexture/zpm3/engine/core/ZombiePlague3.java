@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.core.Position;
 import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
@@ -76,12 +77,12 @@ import java.util.*;
 public final class ZombiePlague3 {
     public static final String ZP_MAIN_DIR = "zpm3_files";
 
-    public static boolean DEV_PREVIEW = true;
+    public static boolean DEV_PREVIEW = false;
 
     public static final String assetsJsonPath = "zpm3.asset.json";
     public static final String MOD_ID = "zpm3";
     static final Logger LOGGER = LoggerFactory.getLogger(ZombiePlague3.MOD_ID);
-    private static final ZPProject MOD_INFO = new ZPProject("ZombiePlague3Mod", ZombiePlague3.MOD_ID, "0.1.19a");
+    private static final ZPProject MOD_INFO = new ZPProject("ZombiePlague3Mod", ZombiePlague3.MOD_ID, "0.1.20a");
     private final ZPRegistryConveyor zpRegistryConveyor;
     private final List<ZPAsset> assets;
     private ZPNetwork zpNetwork;
@@ -158,12 +159,12 @@ public final class ZombiePlague3 {
         @OnlyIn(Dist.CLIENT)
         @SubscribeEvent
         public void onRenderGui(RenderGuiOverlayEvent.Post event) {
-            if (!ZombiePlague3.DEV_PREVIEW) {
-                return;
-            }
             Minecraft mc = Minecraft.getInstance();
+            String text = "ZP3 Dev Preview" + " | " + ZombiePlague3.MOD_VERSION();
+            if (!ZombiePlague3.DEV_PREVIEW) {
+                text = "ZP3" + " | " + ZombiePlague3.MOD_VERSION();
+            }
             GuiGraphics gg = event.getGuiGraphics();
-            String text = "Dev Preview" + " | " + ZombiePlague3.MOD_VERSION();
             int screenWidth = event.getWindow().getGuiScaledWidth();
             int x = screenWidth - mc.font.width(text) - 6;
             int y = 6;

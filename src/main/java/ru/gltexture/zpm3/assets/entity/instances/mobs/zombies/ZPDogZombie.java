@@ -87,7 +87,7 @@ public class ZPDogZombie extends ZPAbstractZombie {
     public void tick() {
         super.tick();
         if (this.baseMovementSpeed > 0.0f) {
-            if (this.getLastHurtByMob() != null && (this.tickCount - this.getLastHurtByMobTimestamp()) < 30) {
+            if (this.getLastHurtByMob() != null && (this.tickCount - this.getLastHurtByMobTimestamp()) < 42) {
                 Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(this.baseMovementSpeed * 0.5f);
             } else {
                 Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(this.baseMovementSpeed);

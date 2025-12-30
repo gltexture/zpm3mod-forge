@@ -4,11 +4,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.entity.instances.mobs.ai.ZPZombieMiningGoal;
 import ru.gltexture.zpm3.assets.net_pack.packets.ZPBlockCrack;
 import ru.gltexture.zpm3.engine.core.ZPSide;
@@ -20,6 +22,7 @@ import ru.gltexture.zpm3.engine.service.Pair;
 import java.util.*;
 
 public class ZPWorldTickEvent implements ZPEventClass {
+    public static int MAX_ZOMBIES_IN_CHUNK = ZPConstants.MAX_ZOMBIES_SPAWN_IN_CHUNK;
     private static Map<ResourceKey<Level>, Integer> ticks = new HashMap<>();
 
     public ZPWorldTickEvent() {
@@ -29,6 +32,13 @@ public class ZPWorldTickEvent implements ZPEventClass {
     public static void tick(TickEvent.LevelTickEvent event) {
         if (event.level.isClientSide() || event.phase != TickEvent.Phase.END) {
             return;
+        }
+        if (event.level.getDifficulty() == Difficulty.HARD) {
+            ZPWorldTickEvent.MAX_ZOMBIES_IN_CHUNK = ZPConstants.MAX_ZOMBIES_SPAWN_IN_CHUNK;
+        } else if (event.level.getDifficulty() == Difficulty.NORMAL) {
+            ZPWorldTickEvent.MAX_ZOMBIES_IN_CHUNK = (int) (ZPConstants.MAX_ZOMBIES_SPAWN_IN_CHUNK * 0.8f);
+        } else if (event.level.getDifficulty() == Difficulty.EASY) {
+            ZPWorldTickEvent.MAX_ZOMBIES_IN_CHUNK = (int) (ZPConstants.MAX_ZOMBIES_SPAWN_IN_CHUNK * 0.5f);
         }
         final ResourceKey<Level> dim = event.level.dimension();
         int t = ticks.getOrDefault(dim, 0) + 1;

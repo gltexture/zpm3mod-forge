@@ -78,7 +78,7 @@ public class ZPMinerZombie extends ZPAbstractZombie {
                 .add(Attributes.FOLLOW_RANGE, ZPConstants.ZOMBIE_FOLLOW_RANGE * 0.8f)
                 .add(Attributes.MOVEMENT_SPEED, 0.22f * ZPConstants.ZOMBIE_MOVEMENT_SPEED_MULTIPLIER)
                 .add(Attributes.ATTACK_DAMAGE, 3.0f * ZPConstants.ZOMBIE_ATTACK_DAMAGE_MULTIPLIER)
-                .add(Attributes.ARMOR, 4.0f)
+                .add(Attributes.ARMOR, 1.0f)
                 .add(ZPEntityAttributes.zm_attack_range_multiplier.get(), 0.55f / ZPConstants.ZOMBIE_ATTACK_RANGE_MULTIPLIER)
                 .add(ZPEntityAttributes.zm_mining_speed.get(), 0.0075f * ZPConstants.ZOMBIE_MINING_SPEED_MULTIPLIER)
                 .add(ZPEntityAttributes.zm_random_effect_chance.get(), 0.015f * ZPConstants.ZOMBIE_APPLY_NEGATIVE_EFFECT_ON_ENTITY_CHANCE_MULTIPLIER)
@@ -102,7 +102,7 @@ public class ZPMinerZombie extends ZPAbstractZombie {
         this.addRandomAttributeValue(Attributes.FOLLOW_RANGE, ZPAbstractZombie.getRandomSalt(-2.0f, 2.0f));
         this.addRandomAttributeValue(Attributes.MOVEMENT_SPEED, ZPAbstractZombie.getRandomSalt(-0.005f, 0.01f));
         this.addRandomAttributeValue(Attributes.ATTACK_DAMAGE, ZPAbstractZombie.getRandomSalt(0.0f, 0.5f));
-        //this.addRandomAttributeValue(Attributes.ARMOR, 4.0f);
+        this.addRandomAttributeValue(Attributes.ARMOR, ZPAbstractZombie.getRandomSalt(0.0f, 0.5f));
         //this.addRandomAttributeValue(Attributes.SPAWN_REINFORCEMENTS_CHANCE, 0.3f);
         this.addRandomAttributeValue(ZPEntityAttributes.zm_attack_range_multiplier.get(), ZPAbstractZombie.getRandomSalt(-0.05f, 0.05f));
         this.addRandomAttributeValue(ZPEntityAttributes.zm_mining_speed.get(), ZPAbstractZombie.getRandomSalt(-0.0006f, 0.0006f));

@@ -219,7 +219,7 @@ public class ZPLootCasesAsset extends ZPAsset {
                         .addNonBreakable("zpm3:anti_poison_pill", 1, 1, 1, 1.0f)
                         .addNonBreakable("zpm3:tire", 1, 1, 1, 1.0f)
                 )
-                .commonGroup("food", 8, g -> g
+                .commonGroup("food", 10, g -> g
                         .addNonBreakable("zpm3:peaches", 1, 1, 1, 1.0f)
                         .addNonBreakable("zpm3:soda", 1, 1, 2, 1.0f)
                         .addNonBreakable("minecraft:bread", 2, 1, 3, 1.0f)
@@ -322,7 +322,7 @@ public class ZPLootCasesAsset extends ZPAsset {
                         .addBreakable("zpm3:hatchet", 2, 0.3f, 0.9f, 1.0f)
                         .addBreakable("zpm3:wrench", 2, 0.3f, 0.9f, 1.0f)
                 )
-                .commonGroup("food", 12, g -> g
+                .commonGroup("food", 15, g -> g
                         .addNonBreakable("minecraft:bread", 4, 1, 3, 1.0f)
                         .addNonBreakable("zpm3:peaches", 3, 1, 2, 1.0f)
                         .addNonBreakable("zpm3:soda", 3, 1, 2, 1.0f)

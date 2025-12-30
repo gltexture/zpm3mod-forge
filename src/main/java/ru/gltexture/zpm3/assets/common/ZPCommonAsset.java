@@ -99,8 +99,20 @@ public class ZPCommonAsset extends ZPAsset {
             Blocks.BLACK_CONCRETE.defaultBlockState().destroySpeed = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
             Blocks.OBSIDIAN.defaultBlockState().destroySpeed = 6.0f;
 
+            Blocks.BRICK_WALL.defaultBlockState().destroySpeed = 12.0F;
+            Blocks.BRICK_WALL.explosionResistance = 8.0f;
+
+            Blocks.BRICK_STAIRS.defaultBlockState().destroySpeed = 12.0F;
+            Blocks.BRICK_STAIRS.explosionResistance = 8.0f;
+
+            Blocks.BRICK_SLAB.defaultBlockState().destroySpeed = 8.0F;
+            Blocks.BRICK_SLAB.explosionResistance = 8.0f;
+
             Blocks.BRICKS.defaultBlockState().destroySpeed = 12.0F;
             Blocks.BRICKS.explosionResistance = 8.0f;
+
+            Blocks.IRON_BLOCK.explosionResistance = 9.0f;
+            Blocks.IRON_DOOR.explosionResistance = 16.0f;
 
             Blocks.IRON_BARS.getStateDefinition().getPossibleStates().forEach((e) -> {
                 e.destroySpeed = 12.0F;

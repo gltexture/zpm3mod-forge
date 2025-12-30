@@ -20,7 +20,7 @@ public class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
             group = ZPConstants.GROUP_ZOMBIE,
             type = ZPConfigurableConstant.TYPES.FLOAT
     )
-    public static float ZOMBIE_SPAWN_AT_DAY_TIME_CHANCE = 0.000125f;
+    public static float ZOMBIE_SPAWN_AT_DAY_TIME_CHANCE = 0.005f;
 
     @ZPConfigurableConstant(
             description = "Defines how much closer (as a percentage of the nearest zombie’s distance) a candidate zombie must be to replace the farthest zombie when the maximum number of zombies targeting a player is reached.",
@@ -71,7 +71,7 @@ public class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
             group = ZPConstants.GROUP_ZOMBIE,
             type = ZPConfigurableConstant.TYPES.FLOAT
     )
-    public static float ZOMBIE_BULLET_DAMAGE_MULTIPLIER = 3.0f;
+    public static float ZOMBIE_BULLET_DAMAGE_MULTIPLIER = 3.25f;
 
     @ZPConfigurableConstant(
             description = "Global multiplier for zombie melee attack reach.",

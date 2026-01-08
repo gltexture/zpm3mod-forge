@@ -148,13 +148,17 @@ tasks.named('processResources', ProcessResources).configure {
     }
 }
 
-tasks.named('jar', Jar).configure {
-    from sourceSets.main.output
+/*
     from {
         project.configurations.minecraftLibrary.findAll {
             it.name.contains('imgui-java-')
         }.collect { it.isDirectory() ? it : zipTree(it) }
     }
+ */
+
+tasks.named('jar', Jar).configure {
+    from sourceSets.main.output
+
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     manifest {
         attributes(["Specification-Title"     : mod_id,

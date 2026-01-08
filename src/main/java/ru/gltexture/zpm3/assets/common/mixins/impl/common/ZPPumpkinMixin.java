@@ -1,7 +1,9 @@
 package ru.gltexture.zpm3.assets.common.mixins.impl.common;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -16,11 +18,12 @@ import ru.gltexture.zpm3.assets.common.init.ZPBlockEntities;
 import ru.gltexture.zpm3.assets.common.instances.block_entities.ZPFadingBlockEntity;
 import ru.gltexture.zpm3.assets.common.instances.blocks.torch.IFadingBlock;
 import ru.gltexture.zpm3.assets.common.instances.blocks.torch.ZPFadingTorchBlock;
+import ru.gltexture.zpm3.assets.common.mixins.ext.ITorchPlayerExt;
 
 import java.util.function.Supplier;
 
 @Mixin(CarvedPumpkinBlock.class)
-public class ZPPumpkinMixin implements EntityBlock, IFadingBlock {
+public class ZPPumpkinMixin implements EntityBlock, IFadingBlock, ITorchPlayerExt {
     @Override
     public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState) {
         return !ZPConstants.FADING_PUMPKINS ? null : new ZPFadingBlockEntity(pPos, pState, ZPConstants.PUMPKIN_FADING_TIME, true);
@@ -37,5 +40,10 @@ public class ZPPumpkinMixin implements EntityBlock, IFadingBlock {
     @Override
     public @Nullable Supplier<Block> getTurnInto() {
         return () -> Blocks.CARVED_PUMPKIN;
+    }
+
+    @Override
+    public void setPlacedBy(@NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, @Nullable LivingEntity pPlacer, @NotNull ItemStack pStack) {
+        ZPFadingTorchBlock.activationCheck(pLevel, pPos, pState, pPlacer, pStack);
     }
 }

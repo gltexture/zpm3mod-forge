@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 import net.minecraftforge.event.TickEvent;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.lwjgl.opengl.GL46;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
@@ -23,11 +24,16 @@ import ru.gltexture.zpm3.engine.mixins.impl.client.GameRendererAccessor;
 
 public final class ZPRenderHelper implements ZPClientCallbacks.ZPClientResourceDependentObject {
     public static ZPRenderHelper INSTANCE = new ZPRenderHelper();
-    private final ZPDearUIRenderer dearUIRenderer;
+    private @Nullable ZPDearUIRenderer dearUIRenderer;
     private ZPScreenMesh screenMesh;
 
     private ZPRenderHelper() {
-        this.dearUIRenderer = new ZPDearUIRenderer(ZPDefaultShaders.imgui::getShaderInstance);
+        try {
+            Class.forName("imgui.ImGui", false, ZPRenderHelper.class.getClassLoader());
+            Class.forName("imgui.gl3.ImGuiImplGl3", false, ZPRenderHelper.class.getClassLoader());
+            this.dearUIRenderer = new ZPDearUIRenderer(ZPDefaultShaders.imgui::getShaderInstance);
+        } catch (ClassNotFoundException e) {
+        }
     }
 
     public static double fovItemOffset(Camera camera, float partialTicks, PoseStack poseStack) {
@@ -47,13 +53,15 @@ public final class ZPRenderHelper implements ZPClientCallbacks.ZPClientResourceD
 
     public void init() {
         ZPClientCallbacksManager.INSTANCE.addResourceDependentObjectCallback(this);
-        ZPClientCallbacksManager.INSTANCE.addResourceDependentObjectCallback(ZPRenderHelper.INSTANCE.getDearUIRenderer());
+        if (ZPRenderHelper.INSTANCE.getDearUIRenderer() != null) {
+            ZPClientCallbacksManager.INSTANCE.addResourceDependentObjectCallback(ZPRenderHelper.INSTANCE.getDearUIRenderer());
+        }
         ZPClientCallbacksManager.INSTANCE.addResourceDependentObjectCallback(ZPRenderHooksManager.INSTANCE);
 
         ZPRenderHooksManager.INSTANCE.addSceneRenderingHook(((renderStage, partialTicks, deltaTime, pNanoTime, pRenderLevel) -> {
             if (renderStage == RenderStage.POST) {
                 if (ZombiePlague3.isDevEnvironment()) {
-                    if (!Minecraft.getInstance().isPaused()) {
+                    if (!Minecraft.getInstance().isPaused() && this.getDearUIRenderer() != null) {
                         this.getDearUIRenderer().getInterfacesManager().renderAll(Minecraft.getInstance().getWindow(), deltaTime);
                     }
                 }
@@ -73,7 +81,7 @@ public final class ZPRenderHelper implements ZPClientCallbacks.ZPClientResourceD
         });
     }
 
-    public ZPDearUIRenderer getDearUIRenderer() {
+    public @Nullable ZPDearUIRenderer getDearUIRenderer() {
         return this.dearUIRenderer;
     }
 

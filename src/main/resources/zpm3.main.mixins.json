@@ -13,7 +13,8 @@
     "common.ZPPlayerMixin",
     "common.ZPRecipeManagerMixin",
     "common.ZPServerLevelMixin",
-    "common.ZPServerPlayerGameMixin"
+    "common.ZPServerPlayerGameMixin",
+    "common.ZPTraderSpawnerDisablerMixin"
   ],
   "client": [
     "client.GameRendererAccessor",

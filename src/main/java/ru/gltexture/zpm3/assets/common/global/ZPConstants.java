@@ -413,6 +413,21 @@ public class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public static float BULLET_HIT_PACKET_RANGE = 128.0f;
 
     // ===== WORLD =====
+
+    @ZPConfigurableConstant(
+            description = "Prevents fading lava or acid when placed in Creative mode.",
+            group = ZPConstants.GROUP_WORLD,
+            type = ZPConfigurableConstant.TYPES.BOOLEAN
+    )
+    public static boolean SKIP_FADE_TICKING_LAVA_ACID_PLACED_IN_CREATIVE = true;
+
+    @ZPConfigurableConstant(
+            description = "Prevents fading torches and pumpkins when placed in Creative mode.",
+            group = ZPConstants.GROUP_WORLD,
+            type = ZPConfigurableConstant.TYPES.BOOLEAN
+    )
+    public static boolean SKIP_FADE_TICKING_TORCHES_PUMPKINS_PLACED_IN_CREATIVE = true;
+
     @ZPConfigurableConstant(
             description = "How much internal damage can receive barbared wire, before it breaks.",
             group = ZPConstants.GROUP_WORLD,
@@ -557,7 +572,7 @@ public class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
             group = ZPConstants.GROUP_WORLD,
             type = ZPConfigurableConstant.TYPES.FLOAT
     )
-    public static float ZP_COOKING_TIME_ALL_CRAFTING_BLOCKS_MULTIPLIER = 2.0f;
+    public static float ZP_COOKING_TIME_MULTIPLIER = 3.0f;
 
     @ZPConfigurableConstant(
             description = "Duration in ticks before a placed torch light source fades.",
@@ -638,6 +653,14 @@ public class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public static int ITEMS_THROW_COOLDOWN = 20;
 
     // ===== CLIENT =====
+
+    @ZPConfigurableConstant(
+            description = "(CLIENT) Show version infp on screen.",
+            group = ZPConstants.GROUP_CLIENT,
+            type = ZPConfigurableConstant.TYPES.BOOLEAN
+    )
+    public static boolean SHOW_VERSION_INFO_ON_SCREEN = true;
+
     @ZPConfigurableConstant(
             description = "(CLIENT) Show ping on screen.",
             group = ZPConstants.GROUP_CLIENT,

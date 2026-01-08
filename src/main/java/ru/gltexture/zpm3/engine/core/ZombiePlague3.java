@@ -36,6 +36,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.entity.population.ZPSetupPopulation;
 import ru.gltexture.zpm3.assets.loot_cases.registry.ZPLootTablesRegistry;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPDefaultShaders;
@@ -82,7 +83,7 @@ public final class ZombiePlague3 {
     public static final String assetsJsonPath = "zpm3.asset.json";
     public static final String MOD_ID = "zpm3";
     static final Logger LOGGER = LoggerFactory.getLogger(ZombiePlague3.MOD_ID);
-    private static final ZPProject MOD_INFO = new ZPProject("ZombiePlague3Mod", ZombiePlague3.MOD_ID, "0.1.20a");
+    private static final ZPProject MOD_INFO = new ZPProject("ZombiePlague3Mod", ZombiePlague3.MOD_ID, "0.1.21a");
     private final ZPRegistryConveyor zpRegistryConveyor;
     private final List<ZPAsset> assets;
     private ZPNetwork zpNetwork;
@@ -159,16 +160,18 @@ public final class ZombiePlague3 {
         @OnlyIn(Dist.CLIENT)
         @SubscribeEvent
         public void onRenderGui(RenderGuiOverlayEvent.Post event) {
-            Minecraft mc = Minecraft.getInstance();
-            String text = "ZP3 Dev Preview" + " | " + ZombiePlague3.MOD_VERSION();
-            if (!ZombiePlague3.DEV_PREVIEW) {
-                text = "ZP3" + " | " + ZombiePlague3.MOD_VERSION();
+            if (ZPConstants.SHOW_VERSION_INFO_ON_SCREEN) {
+                Minecraft mc = Minecraft.getInstance();
+                String text = "ZP3 Dev Preview" + " | " + ZombiePlague3.MOD_VERSION();
+                if (!ZombiePlague3.DEV_PREVIEW) {
+                    text = "ZP3" + " | " + ZombiePlague3.MOD_VERSION();
+                }
+                GuiGraphics gg = event.getGuiGraphics();
+                int screenWidth = event.getWindow().getGuiScaledWidth();
+                int x = screenWidth - mc.font.width(text) - 6;
+                int y = 6;
+                gg.drawString(mc.font, text, x, y, 0xFF0000, true);
             }
-            GuiGraphics gg = event.getGuiGraphics();
-            int screenWidth = event.getWindow().getGuiScaledWidth();
-            int x = screenWidth - mc.font.width(text) - 6;
-            int y = 6;
-            gg.drawString(mc.font, text, x, y, 0xFF0000, true);
         }
     }
 

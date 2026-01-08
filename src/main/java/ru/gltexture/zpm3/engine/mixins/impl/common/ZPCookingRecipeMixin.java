@@ -15,6 +15,6 @@ public class ZPCookingRecipeMixin {
 
     @Inject(method = "getCookingTime", at = @At("HEAD"), cancellable = true)
     private void getCookingTime(CallbackInfoReturnable<Integer> cir) {
-        cir.setReturnValue((int) (this.cookingTime * ZPConstants.ZP_COOKING_TIME_ALL_CRAFTING_BLOCKS_MULTIPLIER));
+        cir.setReturnValue((int) (this.cookingTime * ZPConstants.ZP_COOKING_TIME_MULTIPLIER));
     }
 }

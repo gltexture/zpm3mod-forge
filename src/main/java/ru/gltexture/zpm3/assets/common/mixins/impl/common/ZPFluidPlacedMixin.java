@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.common.init.ZPBlocks;
 import ru.gltexture.zpm3.assets.common.instances.block_entities.ZPFadingBlockEntity;
 
@@ -23,7 +24,7 @@ public class ZPFluidPlacedMixin {
             BlockEntity be = pLevel.getBlockEntity(pPos);
             if (be != null) {
                 BlockState blockState = pLevel.getBlockState(pPos);
-                if (pPlayer != null && !pPlayer.isCreative() && (blockState.getBlock() == Blocks.LAVA || blockState.getBlock() == ZPBlocks.acid_block.get()) && be instanceof ZPFadingBlockEntity zpFadingBlock) {
+                if (pPlayer != null && !(ZPConstants.SKIP_FADE_TICKING_LAVA_ACID_PLACED_IN_CREATIVE && pPlayer.isCreative()) && (blockState.getBlock() == Blocks.LAVA || blockState.getBlock() == ZPBlocks.acid_block.get()) && be instanceof ZPFadingBlockEntity zpFadingBlock) {
                     zpFadingBlock.setActive(true);
                 }
             }

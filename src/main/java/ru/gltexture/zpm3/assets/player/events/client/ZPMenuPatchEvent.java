@@ -54,7 +54,7 @@ public class ZPMenuPatchEvent implements ZPEventClass {
         int w = 98;
         int h = 20;
 
-        event.addListener(Button.builder(Component.literal("ZP3 CurseForge"), btn -> openUrl("https://www.curseforge.com/")).bounds(centerX, baseY, w, h).build());
+        event.addListener(Button.builder(Component.literal("ZP3 CurseForge"), btn -> openUrl("curseforge.com/minecraft/mc-mods/zombie-plague-3")).bounds(centerX, baseY, w, h).build());
         event.addListener(Button.builder(Component.literal("ZP3 Discord"), btn -> openUrl("https://discord.gg/bb6AaU6Taw")).bounds(centerX, baseY + 24, w, h).build());
     }
 

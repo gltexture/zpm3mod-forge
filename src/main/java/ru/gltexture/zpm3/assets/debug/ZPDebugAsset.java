@@ -29,7 +29,9 @@ public class ZPDebugAsset extends ZPAsset {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void clientSetup() {
-        ZPRenderHelper.INSTANCE.getDearUIRenderer().getInterfacesManager().addActiveInterface(new DearUITRSInterface());
+        if (ZPRenderHelper.INSTANCE.getDearUIRenderer() != null) {
+            ZPRenderHelper.INSTANCE.getDearUIRenderer().getInterfacesManager().addActiveInterface(new DearUITRSInterface());
+        }
     }
 
     @OnlyIn(Dist.CLIENT)

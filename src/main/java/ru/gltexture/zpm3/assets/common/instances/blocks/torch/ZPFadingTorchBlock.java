@@ -2,6 +2,9 @@ package ru.gltexture.zpm3.assets.common.instances.blocks.torch;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
@@ -31,12 +34,6 @@ public class ZPFadingTorchBlock extends ZPTorchBlock implements EntityBlock, IFa
         return this.turnInto;
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public void onPlace(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState oldState, boolean isMoving) {
-        super.onPlace(state, level, pos, oldState, isMoving);
-    }
-
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
@@ -50,6 +47,27 @@ public class ZPFadingTorchBlock extends ZPTorchBlock implements EntityBlock, IFa
 
     @Override
     public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState) {
-        return !ZPConstants.FADING_TORCHES ? null : new ZPFadingBlockEntity(pPos, pState, ZPConstants.TORCH_FADING_TIME, true);
+        return !ZPConstants.FADING_TORCHES ? null : new ZPFadingBlockEntity(pPos, pState, ZPConstants.TORCH_FADING_TIME, !ZPConstants.SKIP_FADE_TICKING_TORCHES_PUMPKINS_PLACED_IN_CREATIVE);
+    }
+
+    @Override
+    public void setPlacedBy(@NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, @Nullable LivingEntity pPlacer, @NotNull ItemStack pStack) {
+        super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
+        ZPFadingTorchBlock.activationCheck(pLevel, pPos, pState, pPlacer, pStack);
+    }
+
+    @SuppressWarnings("all")
+    @Override
+    public void onPlace(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pOldState, boolean pMovedByPiston) {
+        super.onPlace(pState, pLevel, pPos, pOldState, pMovedByPiston);
+    }
+
+    public static void activationCheck(@NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, @Nullable LivingEntity pPlacer, @NotNull ItemStack pStack) {
+        BlockEntity entity = pLevel.getBlockEntity(pPos);
+        if (entity instanceof ZPFadingBlockEntity fadingBlockEntity && pPlacer instanceof Player player) {
+            if (!ZPConstants.SKIP_FADE_TICKING_TORCHES_PUMPKINS_PLACED_IN_CREATIVE || !player.isCreative()) {
+                fadingBlockEntity.setActive(true);
+            }
+        }
     }
 }

@@ -49,9 +49,9 @@ public class ZPEntityEffectActionsEvent implements ZPEventClass {
             LivingEntity entity = event.getEntity();
             if (!ZPConstants.BLEEDING_ONLY_FOR_PLAYERS || (entity instanceof Player)) {
                 if (!(entity instanceof ZPAbstractZombie)) {
-                    float bleedingChance = event.getEntity().level().getDifficulty().equals(Difficulty.HARD) ? 0.05f : 0.025f;
+                    float bleedingChance = event.getEntity().level().getDifficulty().equals(Difficulty.HARD) ? 0.475f : event.getEntity().level().getDifficulty().equals(Difficulty.NORMAL) ? 0.35f : 0.2f;
                     float damage = event.getAmount() / 20.0f;
-                    float armorMultiplier = 1.0f - (event.getEntity().getArmorValue() / 24.0f);
+                    float armorMultiplier = 1.0f - (event.getEntity().getArmorValue() / 80.0f);
                     damage *= armorMultiplier;
                     bleedingChance *= damage;
                     bleedingChance *= ZPConstants.BLEEDING_CHANCE_MULTIPLIER;

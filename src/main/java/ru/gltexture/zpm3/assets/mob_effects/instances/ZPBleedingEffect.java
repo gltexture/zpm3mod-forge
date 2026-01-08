@@ -20,7 +20,7 @@ public class ZPBleedingEffect extends ZPDefaultMobEffect {
 
     @Override
     public boolean isDurationEffectTick(int pDuration, int pAmplifier) {
-        return pDuration % (18 - pAmplifier * 2) == 0;
+        return pDuration % Math.max((22 - pAmplifier * 6), 1) == 0;
     }
 
     @Override

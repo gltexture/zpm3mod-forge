@@ -16,11 +16,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DeadBushBlock;
+import net.minecraft.world.level.block.FenceBlock;
+import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.TallGrassBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.ForgeHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -183,16 +186,20 @@ public class ZPZombieMiningGoal extends Goal {
                 if (state.isAir()) {
                     continue;
                 }
-                boolean flag = true;
-                for (Predicate<Pair<BlockPos, ZPAbstractZombie>> predicate : this.mineConditions) {
-                    if (!predicate.test(Pair.of(pos, this.mob))) {
-                        flag = false;
+                final VoxelShape shape = state.getCollisionShape(level, pos);
+                final boolean hasSolidCollision = !shape.isEmpty();
+                if ((state.getBlock() instanceof FenceBlock || state.getBlock() instanceof FenceGateBlock) || !hasSolidCollision) {
+                    boolean flag = true;
+                    for (Predicate<Pair<BlockPos, ZPAbstractZombie>> predicate : this.mineConditions) {
+                        if (!predicate.test(Pair.of(pos, this.mob))) {
+                            flag = false;
+                            break;
+                        }
+                    }
+                    if (flag) {
+                        blockToMine = pos;
                         break;
                     }
-                }
-                if (flag) {
-                    blockToMine = pos;
-                    break;
                 }
             }
         }

@@ -51,7 +51,9 @@ public final class ZPZoneChecks {
             return false;
         }
         for (ZPFlagZones.Zone zone : zones) {
-            if (this.isInside(zone, x, y, z) && zone.flags().contains(flag)) {
+            final boolean flag1 = this.isInside(zone, x, y, z);
+            final boolean flag2 = zone.flags().contains(flag);
+            if (flag1 && flag2) {
                 return true;
             }
         }

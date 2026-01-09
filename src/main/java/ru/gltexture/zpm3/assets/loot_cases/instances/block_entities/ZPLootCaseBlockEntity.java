@@ -21,9 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ZPLootCaseBlockEntity extends ChestBlockEntity {
-    public static final String NBT_TIMELOCK = "timeLock";
-    public static final String NBT_ACTIVE = "active";
-    public static final String NBT_FADING_TIME = "fadingTime";
     private long timeLock;
 
     public ZPLootCaseBlockEntity(BlockPos pPos, BlockState pBlockState) {

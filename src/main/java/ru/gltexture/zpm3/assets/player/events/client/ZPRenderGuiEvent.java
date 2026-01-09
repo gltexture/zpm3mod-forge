@@ -2,10 +2,13 @@ package ru.gltexture.zpm3.assets.player.events.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.DebugScreenOverlay;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
@@ -31,24 +34,64 @@ public class ZPRenderGuiEvent implements ZPEventClass {
     }
 
     @SubscribeEvent
+    public static void onRenderLevel(RenderLevelStageEvent event) {
+        Player player = Minecraft.getInstance().player;
+        if (player != null) {
+            if (!player.isCreative()) {
+                Minecraft.getInstance().getEntityRenderDispatcher().setRenderHitBoxes(false);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onRenderGuiOverlay(RenderGuiOverlayEvent.Pre event) {
+        Player player = Minecraft.getInstance().player;
+        if (player != null) {
+            if (!player.isCreative()) {
+                if (event.getOverlay().id().equals(VanillaGuiOverlay.DEBUG_TEXT.id())) {
+                    event.setCanceled(true);
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
     public static void onRenderGui(RenderGuiOverlayEvent.Post event) {
         Minecraft mc = Minecraft.getInstance();
         GuiGraphics gg = event.getGuiGraphics();
         @Nullable Player player = Minecraft.getInstance().player;
-        if (player instanceof IZPPlayerMixinExt ext && ZPConstants.SHOW_PING_ON_SCREEN) {
-            final int ping = ext.getPing();
-            String text = ext.getPing() + "ms";
-            int screenWidth = event.getWindow().getGuiScaledWidth();
-            int screenHeight = event.getWindow().getScreenHeight();
-            int x = 2;
-            int y = 2;
-            int color = 0xFF00FF00;
-            if (ping >= 120.0f) {
-                color = 0xFFFF0000;
-            } else if (ping >= 60.0f) {
-                color = 0xFFFFFF00;
+        boolean isCreative = player != null && player.isCreative();
+        if ((Minecraft.getInstance().options.renderDebug && !isCreative) || (isCreative && !Minecraft.getInstance().options.renderDebug)) {
+            if (player instanceof IZPPlayerMixinExt ext) {
+
+                {
+                    final int ping = ext.getPing();
+                    String text = ext.getPing() + "ms";
+                    int x = 2;
+                    int y = 2;
+                    int color = 0xFF00FF00;
+                    if (ping >= 200.0f) {
+                        color = 0xFFFF0000;
+                    } else if (ping >= 100.0f) {
+                        color = 0xFFFFFF00;
+                    }
+                    gg.drawString(mc.font, text, x, y, color, true);
+                }
+
+                {
+                    final int fps = Minecraft.getInstance().getFps();
+                    String text = fps + "fps";
+                    int x = 2;
+                    int y = 2;
+                    int color = 0xFF00FF00;
+                    if (fps <= 40.0f) {
+                        color = 0xFFFFFF00;
+                    } else if (fps <= 20.0f) {
+                        color = 0xFFFF0000;
+                    }
+                    gg.drawString(mc.font, text, x, y + 10, color, true);
+                }
             }
-            gg.drawString(mc.font, text, x, y, color, true);
         }
     }
 }

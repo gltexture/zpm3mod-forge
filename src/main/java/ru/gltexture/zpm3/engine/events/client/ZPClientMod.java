@@ -101,6 +101,7 @@ public final class ZPClientMod {
         generator.addProvider(event.includeServer(), new ZPMixinConfigsProvider(generator, ZombiePlague3.MOD_ID));
         generator.addProvider(event.includeServer(), new ZPDamageTypesProvider(generator, ZombiePlague3.MOD_ID));
         generator.addProvider(event.includeServer(), new ZPBiomeDataProvider(output, event.getLookupProvider()));
+        generator.addProvider(event.includeServer(), new ZPBiomeModifyingProvider(generator, ZombiePlague3.MOD_ID));
 
         {
             ZPBlocksSubProvider subProvider1 = new ZPBlocksSubProvider(Collections.emptySet(), FeatureFlags.REGISTRY.allFlags(), ZPLootTableHelper.getLootPoolsToCreate());

@@ -12,10 +12,7 @@ import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.gltexture.zpm3.engine.helpers.ZPBlockTagsHelper;
-import ru.gltexture.zpm3.engine.helpers.ZPFluidTagsHelper;
-import ru.gltexture.zpm3.engine.helpers.ZPItemTagsHelper;
-import ru.gltexture.zpm3.engine.helpers.ZPLootTableHelper;
+import ru.gltexture.zpm3.engine.helpers.*;
 import ru.gltexture.zpm3.engine.helpers.gen.data.MinecraftModelParentReference;
 import ru.gltexture.zpm3.engine.helpers.gen.data.ZPGenTextureData;
 import ru.gltexture.zpm3.engine.helpers.gen.providers.ZPBlockModelProvider;
@@ -111,6 +108,14 @@ public abstract class ZPDataGenHelper {
 
     public static void addNewSoundEvent(@NotNull ZPSoundListProvider.ZPSoundEvent soundEvent) {
         ZPSoundListProvider.addNewSoundEvent(soundEvent);
+    }
+
+    public static void addNewBiomeSpawnAddModifier(@NotNull ZPBiomeModifyingHelper.ModifyEntryAddSpawns modifyEntryAddSpawns) {
+        ZPBiomeModifyingHelper.addNewAddSpawnEntry(modifyEntryAddSpawns);
+    }
+
+    public static void addNewBiomeSpawnRemoveModifier(@NotNull ZPBiomeModifyingHelper.ModifyEntryRemoveSpawns modifyEntryRemoveSpawns) {
+        ZPBiomeModifyingHelper.addNewRemoveSpawnEntry(modifyEntryRemoveSpawns);
     }
 
     public static @NotNull ResourceLocation locate(@NotNull BlockStateProvider blockStateProvider, @NotNull String ref) {

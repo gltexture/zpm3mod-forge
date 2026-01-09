@@ -25,18 +25,18 @@ public abstract class ZPEntityExtTicking {
                 entity.discard();
             }
         }
-        if (!ZPZoneChecks.INSTANCE.isNoAcidAffection((ServerLevel) entity.level(), entity.getOnPos())) {
-            if (izpEntityExt.touchesAcidBlock() && entity.tickCount % 2 == 0) {
+        if (izpEntityExt.touchesAcidBlock() && entity.tickCount % 2 == 0) {
+            if (!ZPZoneChecks.INSTANCE.isNoAcidAffection((ServerLevel) entity.level(), entity.getOnPos())) {
                 izpEntityExt.addAcidLevel(1);
             }
-            if (izpEntityExt.getAcidLevel() > 600) {
-                if (entity instanceof LivingEntity livingEntity && izpEntityExt.touchesAcidBlock()) {
-                    livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON, 60));
-                }
+        }
+        if (izpEntityExt.getAcidLevel() > 600) {
+            if (entity instanceof LivingEntity livingEntity && izpEntityExt.touchesAcidBlock()) {
+                livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON, 60));
             }
-            if (izpEntityExt.getAcidLevel() > 0) {
-                ZPEntityExtTicking.damageEveryTick(entity);
-            }
+        }
+        if (izpEntityExt.getAcidLevel() > 0) {
+            ZPEntityExtTicking.damageEveryTick(entity);
         }
     }
 

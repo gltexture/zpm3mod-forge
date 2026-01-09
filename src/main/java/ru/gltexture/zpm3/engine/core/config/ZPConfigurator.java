@@ -39,7 +39,6 @@ public final class ZPConfigurator {
         }
     }
 
-
     public void processConfiguration(ZPPath diskPath) {
         ZPLogger.info("Config-processing, " + diskPath);
         this.classList.forEach(e -> {
@@ -53,6 +52,20 @@ public final class ZPConfigurator {
                 fileWriter.write("#AUTO_GENERATED: " + LocalDate.now() + "\n");
                 // FILE-PROCESSING
                 {
+                    final String info1 = "# !READ-IT! . Parameter data format:";
+                    final String info2 = "# !READ-IT! . (PARAM_NAME):(TYPE):(CURRENT_VALUE):(DEFAULT_VALUE)";
+                    final String info3 = "# !READ-IT! . Example:";
+                    final String info4 = "# !READ-IT! . ZOMBIE_SPAWN_AT_DAY_TIME_CHANCE:FLOAT:0.205:0.05";
+                    fileWriter.append("\n");
+                    fileWriter.append("\n");
+                    fileWriter.append(info1);
+                    fileWriter.append("\n");
+                    fileWriter.append(info2);
+                    fileWriter.append("\n");
+                    fileWriter.append(info3);
+                    fileWriter.append("\n");
+                    fileWriter.append(info4);
+                    fileWriter.append("\n");
                     for (Map.Entry<String, List<ClassFieldData>> entry : readClassFields.entrySet()) {
                         fileWriter.append("\n\n# =========================== (").append(entry.getKey()).append(") ===========================\n\n");
                         for (ClassFieldData classFieldData : entry.getValue()) {
@@ -60,7 +73,11 @@ public final class ZPConfigurator {
                             Object newValue = null;
                             if (fieldFromReadFile != null) {
                                 if (readExistingFile.containsKey(classFieldData.fieldName)) {
-                                    newValue = fieldFromReadFile.currentValue;
+                                    if (fieldFromReadFile.defaultValue != null && fieldFromReadFile.defaultValue.equals(fieldFromReadFile.currentValue)) {
+                                        newValue = classFieldData.defaultValue;
+                                    } else {
+                                        newValue = fieldFromReadFile.currentValue;
+                                    }
                                 }
                                 if (!classFieldData.type.equals(fieldFromReadFile.type)) {
                                     ZPLogger.error("Param type mismatch! Param: " + classFieldData.fieldName + " Types: " + classFieldData.type + "/" + fieldFromReadFile.type);
@@ -75,10 +92,18 @@ public final class ZPConfigurator {
                 }
                 // CLASS-PROCESSING
                 {
+                    final List<String> deprecatedFields = new ArrayList<>();
                     if (readExistingFile != null) {
                         for (Map.Entry<String, ClassFieldData> classFieldDatas : readExistingFile.entrySet()) {
                             ClassFieldData classFieldData = classFieldDatas.getValue();
-                            Field field = e.getClass().getDeclaredField(classFieldData.fieldName());
+                            Field field = null;
+                            try {
+                                field = e.getClass().getDeclaredField(classFieldData.fieldName());
+                            } catch (NoSuchFieldException ex) {
+                                deprecatedFields.add(classFieldData.fieldName() + ":" + classFieldData.type() + ":" + classFieldData.currentValue());
+                                ZPLogger.error("Couldn't find in " + e.getClass().getSimpleName() + " field. " + ex.getMessage());
+                                continue;
+                            }
                             if (field.isAnnotationPresent(ZPConfigurableConstant.class)) {
                                 ZPConfigurableConstant zpConfigurableConstant = field.getAnnotation(ZPConfigurableConstant.class);
                                 field.setAccessible(true);
@@ -110,13 +135,23 @@ public final class ZPConfigurator {
                             }
                         }
                     }
+                    if (!deprecatedFields.isEmpty()) {
+                        File unusedFields = new ZPPath(diskPath, e.configName() + ".unused").toFile();
+                        if (!unusedFields.exists()) {
+                            unusedFields.createNewFile();
+                        }
+                        try (FileWriter writer = new FileWriter(unusedFields)) {
+                            for (String field : deprecatedFields) {
+                                writer.append(field);
+                                writer.append("\n");
+                            }
+                        }
+                    }
                 }
             } catch (IllegalAccessException ex) {
                 throw new ZPRuntimeException(ex);
             } catch (IOException | ClassCastException ex) {
                 ZPLogger.exception(ex);
-            } catch (NoSuchFieldException ex) {
-                ZPLogger.warn("Couldn't find in " + e.getClass().getSimpleName() + " field. " + ex.getMessage());
             }
         });
     }
@@ -133,20 +168,31 @@ public final class ZPConfigurator {
             throw new ZPIOException("Error, while reading config: " + path, e);
         }
         final Map<String, ClassFieldData> map = new HashMap<>();
-        String line = "EMPTYLINE";
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            while ((line = reader.readLine()) != null) {
-                line = line.trim();
-                if (!line.startsWith("#") && !line.isEmpty()) {
-                    final String[] strings = line.split(":");
-                    final String fieldName = strings[0];
-                    final String type = strings[1];
-                    final String currentValueS = strings[2];
-                    map.put(fieldName, new ClassFieldData(fieldName, "", "", type, null, currentValueS));
+            while (true) {
+                try {
+                    String line = reader.readLine();
+                    if (line == null) {
+                        break;
+                    }
+                    line = line.trim();
+                    if (!line.startsWith("#") && !line.isEmpty()) {
+                        final String[] strings = line.split(":");
+                        final String fieldName = strings[0];
+                        final String type = strings[1];
+                        final String currentValueS = strings[2];
+                        String defaultValueS = null;
+                        if (strings.length >= 4) {
+                            defaultValueS = strings[3];
+                        }
+                        map.put(fieldName, new ClassFieldData(fieldName, "", "", type, defaultValueS, currentValueS));
+                    }
+                } catch (Exception e) {
+                    ZPLogger.exception(e);
                 }
             }
-        } catch (Exception e) {
-            throw new ZPIOException("Error, while reading config: " + path + "\n LINE: " + line, e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         return map;
     }
@@ -181,10 +227,11 @@ public final class ZPConfigurator {
                     .append(this.type)
                     .append(":")
                     .append(newValue != null ? newValue.toString() : currentValue)
+                    .append(defaultValue != null ? ":" + defaultValue : "")
                     .append("\n# ")
                     .append(this.description)
-                    .append(" | Default=")
-                    .append(defaultValue.toString())
+                    //.append(" | Default=")
+                    //.append(defaultValue.toString())
                     .append("\n");
             return builder.toString();
         }

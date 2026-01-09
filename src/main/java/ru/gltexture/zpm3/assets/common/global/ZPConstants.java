@@ -20,7 +20,7 @@ public class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
             group = ZPConstants.GROUP_ZOMBIE,
             type = ZPConfigurableConstant.TYPES.FLOAT
     )
-    public static float ZOMBIE_SPAWN_AT_DAY_TIME_CHANCE = 0.005f;
+    public static float ZOMBIE_SPAWN_AT_DAY_TIME_CHANCE = 0.00525f;
 
     @ZPConfigurableConstant(
             description = "Defines how much closer (as a percentage of the nearest zombie’s distance) a candidate zombie must be to replace the farthest zombie when the maximum number of zombies targeting a player is reached.",
@@ -447,7 +447,7 @@ public class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
             group = ZPConstants.GROUP_WORLD,
             type = ZPConfigurableConstant.TYPES.FLOAT
     )
-    public static float ACID_BLOCK_BASE_BLOCK_DAMAGE = 0.5f;
+    public static float ACID_BLOCK_BASE_BLOCK_DAMAGE = 1.0f;
 
     @ZPConfigurableConstant(
             description = "Allow acid blocks to break surrounding blocks (EXPERIMENTAL, may cause lag).",
@@ -660,13 +660,6 @@ public class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
             type = ZPConfigurableConstant.TYPES.BOOLEAN
     )
     public static boolean SHOW_VERSION_INFO_ON_SCREEN = true;
-
-    @ZPConfigurableConstant(
-            description = "(CLIENT) Show ping on screen.",
-            group = ZPConstants.GROUP_CLIENT,
-            type = ZPConfigurableConstant.TYPES.BOOLEAN
-    )
-    public static boolean SHOW_PING_ON_SCREEN = true;
 
     @ZPConfigurableConstant(
             description = "(CLIENT) Render muzzle flashes. Disabling may fix rendering issues with other mods.",

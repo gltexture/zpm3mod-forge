@@ -1,7 +1,7 @@
 package ru.gltexture.zpm3.engine.mixins.ext;
 
-import ru.gltexture.zpm3.engine.world.GlobalBlocksDestroyMemory;
+import ru.gltexture.zpm3.engine.world.ZPGlobalBlocksDestroyMemory;
 
 public interface IZPLevelExt {
-    GlobalBlocksDestroyMemory getGlobalBlocksDestroyMemory();
+    ZPGlobalBlocksDestroyMemory getGlobalBlocksDestroyMemory();
 }

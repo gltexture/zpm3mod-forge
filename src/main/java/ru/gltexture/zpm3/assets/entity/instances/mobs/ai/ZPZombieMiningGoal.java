@@ -1,6 +1,7 @@
 package ru.gltexture.zpm3.assets.entity.instances.mobs.ai;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -15,10 +16,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.DeadBushBlock;
-import net.minecraft.world.level.block.FenceBlock;
-import net.minecraft.world.level.block.FenceGateBlock;
-import net.minecraft.world.level.block.TallGrassBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -33,6 +31,7 @@ import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.common.init.ZPEntityAttributes;
 import ru.gltexture.zpm3.assets.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.engine.fake.ZPFakePlayer;
+import ru.gltexture.zpm3.engine.instances.blocks.ZPTorchBlock;
 import ru.gltexture.zpm3.engine.mixins.ext.IZPLevelExt;
 import ru.gltexture.zpm3.assets.net_pack.packets.ZPBlockCrack;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
@@ -59,6 +58,8 @@ public class ZPZombieMiningGoal extends Goal {
 
     private final Predicate<BlockState> predicateToFilterBlocks;
 
+    private static List<String> blockBlackListToBreak;
+
     @SafeVarargs
     public ZPZombieMiningGoal(ZPAbstractZombie pMob, @Nullable Predicate<BlockState> predicateToFilterBlocks, Predicate<Pair<BlockPos, ZPAbstractZombie>>... mineConditions) {
         this.mob = pMob;
@@ -69,14 +70,18 @@ public class ZPZombieMiningGoal extends Goal {
         this.maxUpdateMineDirTicks = 10;
     }
 
+    @SuppressWarnings("all")
     public static Predicate<BlockState> DEFAULT_BLOCKS_FILTER() {
-        return state -> !(
-                state.is(BlockTags.SMALL_FLOWERS)
-                        || state.is(BlockTags.FLOWERS)
-                        || state.is(BlockTags.TALL_FLOWERS)
-                        || state.getBlock() instanceof TallGrassBlock
-                        || state.getBlock() instanceof DeadBushBlock
-        );
+        if (ZPZombieMiningGoal.blockBlackListToBreak == null) {
+            ZPZombieMiningGoal.blockBlackListToBreak = Arrays.stream(ZPConstants.ZOMBIE_BLOCK_MINING_BLACKLIST.split(";")).toList();
+        }
+        return state -> {
+            ResourceLocation id = BuiltInRegistries.BLOCK.getKey(state.getBlock());
+            if (ZPZombieMiningGoal.blockBlackListToBreak.stream().anyMatch(e -> e.equals(id.toString()))) {
+                return false;
+            }
+            return true;
+        };
     }
 
     public static Predicate<Pair<BlockPos, ZPAbstractZombie>> DEFAULT_MINING_CONDITION(final float maxBlockStrength) {
@@ -146,6 +151,10 @@ public class ZPZombieMiningGoal extends Goal {
         return this.getMiningSpeed(zombie) * bonus;
     }
 
+    private boolean ignoreCollision(BlockState blockState) {
+        return blockState.getBlock() instanceof TorchBlock || blockState.getBlock() instanceof ZPTorchBlock || blockState.getBlock() instanceof CropBlock;
+    }
+
     @Override
     public void tick() {
         if (this.mob.level().getDifficulty() == Difficulty.EASY || this.mob.getTarget() == null || this.ticksBeforeCanMine-- > 0) {
@@ -186,9 +195,7 @@ public class ZPZombieMiningGoal extends Goal {
                 if (state.isAir()) {
                     continue;
                 }
-                final VoxelShape shape = state.getCollisionShape(level, pos);
-                final boolean hasSolidCollision = !shape.isEmpty();
-                if ((state.getBlock() instanceof FenceBlock || state.getBlock() instanceof FenceGateBlock) || !hasSolidCollision) {
+                if ((state.getBlock() instanceof FenceBlock || state.getBlock() instanceof FenceGateBlock) || this.ignoreCollision(state)) {
                     boolean flag = true;
                     for (Predicate<Pair<BlockPos, ZPAbstractZombie>> predicate : this.mineConditions) {
                         if (!predicate.test(Pair.of(pos, this.mob))) {
@@ -216,6 +223,10 @@ public class ZPZombieMiningGoal extends Goal {
             final BlockState state = level.getBlockState(blockToMine);
 
             if (this.predicateToFilterBlocks != null && !this.predicateToFilterBlocks.test(state)) {
+                return;
+            }
+
+            if (!this.ignoreCollision(state) && state.getCollisionShape(level, blockToMine).isEmpty()) {
                 return;
             }
 

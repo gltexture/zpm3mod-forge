@@ -47,7 +47,7 @@ public class ZPFadingTorchBlock extends ZPTorchBlock implements EntityBlock, IFa
 
     @Override
     public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState) {
-        return !ZPConstants.FADING_TORCHES ? null : new ZPFadingBlockEntity(pPos, pState, ZPConstants.TORCH_FADING_TIME, !ZPConstants.SKIP_FADE_TICKING_TORCHES_PUMPKINS_PLACED_IN_CREATIVE);
+        return !ZPConstants.FADING_TORCHES ? null : new ZPFadingBlockEntity(pPos, pState, ZPConstants.TORCH_FADING_TIME, true);
     }
 
     @Override

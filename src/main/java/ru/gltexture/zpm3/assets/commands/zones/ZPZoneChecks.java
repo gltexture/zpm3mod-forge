@@ -17,6 +17,23 @@ public final class ZPZoneChecks {
         return this.checkFlag(level, Mth.floor(entity.getX()), Mth.floor(entity.getY()), Mth.floor(entity.getZ()), ZPFlagZones.Zone.AvailableFlags.zombieErasing);
     }
 
+    public boolean isNoPlayersPvp(ServerLevel level, LivingEntity entity) {
+        return this.checkFlag(level, Mth.floor(entity.getX()), Mth.floor(entity.getY()), Mth.floor(entity.getZ()), ZPFlagZones.Zone.AvailableFlags.noPlayersPvp);
+    }
+
+    public boolean isNoPlayersDamage(ServerLevel level, LivingEntity entity) {
+        return this.checkFlag(level, Mth.floor(entity.getX()), Mth.floor(entity.getY()), Mth.floor(entity.getZ()), ZPFlagZones.Zone.AvailableFlags.noPlayersDamage);
+    }
+
+    public boolean isNoBlocksDestruction(ServerLevel level, BlockPos pos) {
+        return this.checkFlag(level, pos.getX(), pos.getY(), pos.getZ(), ZPFlagZones.Zone.AvailableFlags.noBlocksDestruction);
+    }
+
+    public boolean isBarbaredWiresDisabled(ServerLevel level, BlockPos pos) {
+        return this.checkFlag(level, pos.getX(), pos.getY(), pos.getZ(), ZPFlagZones.Zone.AvailableFlags.disableBarbaredWires);
+    }
+
+
     public boolean isZombieBlockSpawn(ServerLevel level, LivingEntity entity) {
         return this.checkFlag(level, Mth.floor(entity.getX()), Mth.floor(entity.getY()), Mth.floor(entity.getZ()), ZPFlagZones.Zone.AvailableFlags.zombieSpawnBlocking);
     }

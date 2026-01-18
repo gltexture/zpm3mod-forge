@@ -26,7 +26,7 @@ import ru.gltexture.zpm3.engine.fake.ZPFakePlayer;
 import ru.gltexture.zpm3.engine.mixins.ext.IZPEntityExt;
 import ru.gltexture.zpm3.engine.instances.entities.ZPThrowableEntity;
 import ru.gltexture.zpm3.engine.mixins.ext.IZPLevelExt;
-import ru.gltexture.zpm3.engine.world.GlobalBlocksDestroyMemory;
+import ru.gltexture.zpm3.engine.world.ZPGlobalBlocksDestroyMemory;
 
 public class ZPAcidBottleEntity extends ZPThrowableEntity {
     public ZPAcidBottleEntity(EntityType<ZPAcidBottleEntity> pEntityType, Level pLevel) {
@@ -119,7 +119,7 @@ public class ZPAcidBottleEntity extends ZPThrowableEntity {
                     if (this.level() instanceof IZPLevelExt ext) {
                         if (ZPFakePlayer.canBreakBlock((ServerLevel) this.level(), pos) && !ZPZoneChecks.INSTANCE.isNoThrowableBlockDamage((ServerLevel) this.level(), pos)) {
                             ext.getGlobalBlocksDestroyMemory().addNewEntryLongMem(this.level(), pos, (0.25f + ZPRandom.getRandom().nextFloat(0.15f)) * ZPConstants.THROWABLES_BLOCK_BREAK_MULTIPLIER);
-                            GlobalBlocksDestroyMemory.spawnBlockCrackParticles((ServerLevel) this.level(), pos);
+                            ZPGlobalBlocksDestroyMemory.spawnBlockCrackParticles((ServerLevel) this.level(), pos);
                         }
                     }
                 }

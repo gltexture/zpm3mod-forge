@@ -4,6 +4,8 @@ import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -36,8 +38,11 @@ import ru.gltexture.zpm3.assets.entity.instances.mobs.zombies.ZPMinerZombie;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.fake.ZPFakePlayer;
 import ru.gltexture.zpm3.engine.mixins.ext.IZPEntityExt;
+import ru.gltexture.zpm3.engine.world.ZPGlobalBlocksDestroyMemory;
 
 import java.lang.Math;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -51,6 +56,7 @@ public class VirtualBullet {
     private final float maxDistance;
 
     private @Nullable VirtualBulletHitResult virtualBulletHitResult;
+    private static List<String> blockBlackListToBreak;
 
     public VirtualBullet(@NotNull Entity entity, @NotNull Vector3f startPoint, float inaccuracy, float damage, float maxDistance) {
         this.entity = entity;
@@ -77,6 +83,15 @@ public class VirtualBullet {
             return false;
         }
         BlockState blockState = serverLevel.getBlockState(blockPos);
+        {
+            if (VirtualBullet.blockBlackListToBreak == null) {
+                VirtualBullet.blockBlackListToBreak = Arrays.stream(ZPConstants.BULLET_BLOCK_BREAKING_BLACKLIST.split(";")).toList();
+            }
+            ResourceLocation id = BuiltInRegistries.BLOCK.getKey(blockState.getBlock());
+            if (VirtualBullet.blockBlackListToBreak.stream().anyMatch(e -> e.equals(id.toString()))) {
+                return false;
+            }
+        }
         if (blockState.getBlock().soundType.equals(SoundType.GLASS)) {
             float hardness = blockState.getDestroySpeed(serverLevel, blockPos);
             if (hardness >= 0 && hardness <= ZPConstants.MAX_BULLET_HIT_BLOCK_HARDNESS) {

@@ -83,7 +83,7 @@ public final class ZombiePlague3 {
     public static final String assetsJsonPath = "zpm3.asset.json";
     public static final String MOD_ID = "zpm3";
     static final Logger LOGGER = LoggerFactory.getLogger(ZombiePlague3.MOD_ID);
-    private static final ZPProject MOD_INFO = new ZPProject("ZombiePlague3Mod", ZombiePlague3.MOD_ID, "0.1.22a");
+    private static final ZPProject MOD_INFO = new ZPProject("ZombiePlague3Mod", ZombiePlague3.MOD_ID, "0.1.23a");
     private final ZPRegistryConveyor zpRegistryConveyor;
     private final List<ZPAsset> assets;
     private ZPNetwork zpNetwork;
@@ -176,7 +176,7 @@ public final class ZombiePlague3 {
     }
 
     private void registerTiers() {
-        ZPTiersRegistryHelper.tierSet.forEach(e -> Arrays.stream(e).forEach(s -> s.init().forEach(ZombiePlague3::registerTier)));
+        ZPTiersRegistryHelper.tierSet.forEach(e -> Arrays.stream(e).forEach(s -> ZombiePlague3.registerTier(s.init())));
         ZPTiersRegistryHelper.clear();
     }
 

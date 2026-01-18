@@ -93,7 +93,7 @@ public abstract class ZPAbstractZombie extends Monster {
     public static boolean isDarkEnoughToSpawn(ServerLevelAccessor pLevel, @NotNull BlockPos pPos, RandomSource pRandom) {
         DimensionType dimensiontype = pLevel.dimensionType();
         int j = pLevel.getLevel().isThundering() ? pLevel.getMaxLocalRawBrightness(pPos, 10) : pLevel.getMaxLocalRawBrightness(pPos);
-        return (j - 1) <= dimensiontype.monsterSpawnLightTest().sample(pRandom);
+        return (j - ZPConstants.ZOMBIE_BRIGHTNESS_SPAWN_SENSITIVITY_REDUCE) <= dimensiontype.monsterSpawnLightTest().sample(pRandom);
     }
 
     @SuppressWarnings("all")

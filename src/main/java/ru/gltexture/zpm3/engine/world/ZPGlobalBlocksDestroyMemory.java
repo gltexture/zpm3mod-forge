@@ -1,10 +1,11 @@
 package ru.gltexture.zpm3.engine.world;
 
-import com.google.common.base.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
@@ -16,10 +17,11 @@ import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 
 import java.util.*;
 
-public class GlobalBlocksDestroyMemory {
+public class ZPGlobalBlocksDestroyMemory {
     private final Map<Vector3i, BlockMemory> memory;
+    private static List<String> blockBlackListToBreak;
 
-    public GlobalBlocksDestroyMemory() {
+    public ZPGlobalBlocksDestroyMemory() {
         this.memory = new HashMap<>();
     }
 
@@ -60,6 +62,15 @@ public class GlobalBlocksDestroyMemory {
         Vector3i pos = new Vector3i(blockPos.getX(), blockPos.getY(), blockPos.getZ());
         BlockMemory blockMemory = this.memory.get(new Vector3i(blockPos.getX(), blockPos.getY(), blockPos.getZ()));
         final BlockState blockState = level.getBlockState(blockPos);
+        {
+            if (ZPGlobalBlocksDestroyMemory.blockBlackListToBreak == null) {
+                ZPGlobalBlocksDestroyMemory.blockBlackListToBreak = Arrays.stream(ZPConstants.GLOBAL_BLOCK_DAMAGE_MEMORY_BLACKLIST.split(";")).toList();
+            }
+            ResourceLocation id = BuiltInRegistries.BLOCK.getKey(blockState.getBlock());
+            if (ZPGlobalBlocksDestroyMemory.blockBlackListToBreak.stream().anyMatch(e -> e.equals(id.toString()))) {
+                return;
+            }
+        }
         float blockHardness = blockState.getDestroySpeed(level, blockPos) * ZPConstants.ZOMBIE_MINING_BLOCK_HARDNESS_MULTIPLIER;
         if (blockHardness < 0) {
             return;

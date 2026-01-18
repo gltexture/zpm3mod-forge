@@ -16,11 +16,25 @@ public class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     // ===== ZOMBIE =====
 
     @ZPConfigurableConstant(
+            description = "Black list of blocks, that cannot be mined by zombie. Example: minecraft:grass;minecraft:stone.",
+            group = ZPConstants.GROUP_ZOMBIE,
+            type = ZPConfigurableConstant.TYPES.STRING
+    )
+    public static String ZOMBIE_BLOCK_MINING_BLACKLIST = "";
+
+    @ZPConfigurableConstant(
             description = "Allows zombie to spawn at day time, via the chance random.",
             group = ZPConstants.GROUP_ZOMBIE,
             type = ZPConfigurableConstant.TYPES.FLOAT
     )
     public static float ZOMBIE_SPAWN_AT_DAY_TIME_CHANCE = 0.00525f;
+
+    @ZPConfigurableConstant(
+            description = "Reduces brightness sensitivity for zombie's spawn calculation.",
+            group = ZPConstants.GROUP_ZOMBIE,
+            type = ZPConfigurableConstant.TYPES.INT
+    )
+    public static int ZOMBIE_BRIGHTNESS_SPAWN_SENSITIVITY_REDUCE = 1;
 
     @ZPConfigurableConstant(
             description = "Defines how much closer (as a percentage of the nearest zombie’s distance) a candidate zombie must be to replace the farthest zombie when the maximum number of zombies targeting a player is reached.",
@@ -156,6 +170,13 @@ public class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
             type = ZPConfigurableConstant.TYPES.BOOLEAN
     )
     public static boolean ZOMBIE_STOP_DESPAWNING_IF_HAS_IMPORTANT_LOOT = true;
+
+    @ZPConfigurableConstant(
+            description = "Multiplier of zombie's xray look distance.",
+            group = ZPConstants.GROUP_ZOMBIE,
+            type = ZPConfigurableConstant.TYPES.FLOAT
+    )
+    public static float ZOMBIE_XRAY_LOOK_DIST_MULTIPLIER = 1.0f;
 
     @ZPConfigurableConstant(
             description = "If enabled, zombies use X-ray target tracing through obstacles when following an enraged target. Does not affect detection radius.",
@@ -415,6 +436,13 @@ public class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     // ===== WORLD =====
 
     @ZPConfigurableConstant(
+            description = "Black list of blocks, that cannot be damaged and destroyed. Example: minecraft:grass;minecraft:stone.",
+            group = ZPConstants.GROUP_COMBAT,
+            type = ZPConfigurableConstant.TYPES.STRING
+    )
+    public static String GLOBAL_BLOCK_DAMAGE_MEMORY_BLACKLIST = "";
+
+    @ZPConfigurableConstant(
             description = "Prevents fading lava or acid when placed in Creative mode.",
             group = ZPConstants.GROUP_WORLD,
             type = ZPConfigurableConstant.TYPES.BOOLEAN
@@ -433,7 +461,7 @@ public class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
             group = ZPConstants.GROUP_WORLD,
             type = ZPConfigurableConstant.TYPES.INT
     )
-    public static int MAX_BARBARED_WIRE_STRENGTH = 96;
+    public static int MAX_BARBARED_WIRE_STRENGTH = 128;
 
     @ZPConfigurableConstant(
             description = "Tries to make acid block destruction mechanic smoother (less value = less destruction).",
@@ -550,6 +578,13 @@ public class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
             type = ZPConfigurableConstant.TYPES.INT
     )
     public static int MEDICINE_USE_COOLDOWN = 60;
+
+    @ZPConfigurableConstant(
+            description = "Black list of blocks, that cannot be destroyed by bullet. Example: minecraft:grass;minecraft:stone.",
+            group = ZPConstants.GROUP_WORLD,
+            type = ZPConfigurableConstant.TYPES.STRING
+    )
+    public static String BULLET_BLOCK_BREAKING_BLACKLIST = "";
 
     @ZPConfigurableConstant(
             description = "If enabled, bullets can break specific marked blocks if the block has the destructible flag.",

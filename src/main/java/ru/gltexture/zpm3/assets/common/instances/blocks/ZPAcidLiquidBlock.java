@@ -22,8 +22,6 @@ import org.joml.Vector3f;
 import ru.gltexture.zpm3.assets.commands.zones.ZPZoneChecks;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.common.init.ZPBlockEntities;
-import ru.gltexture.zpm3.assets.common.init.ZPFluidTypes;
-import ru.gltexture.zpm3.assets.common.init.ZPFluids;
 import ru.gltexture.zpm3.assets.common.instances.block_entities.ZPFadingBlockEntity;
 import ru.gltexture.zpm3.assets.common.instances.blocks.torch.IFadingBlock;
 import ru.gltexture.zpm3.assets.common.instances.blocks.torch.ZPFadingTorchBlock;
@@ -33,7 +31,7 @@ import ru.gltexture.zpm3.engine.fake.ZPFakePlayer;
 import ru.gltexture.zpm3.engine.instances.blocks.IHotLiquid;
 import ru.gltexture.zpm3.engine.instances.blocks.ZPLiquidBlock;
 import ru.gltexture.zpm3.engine.mixins.ext.IZPLevelExt;
-import ru.gltexture.zpm3.engine.world.GlobalBlocksDestroyMemory;
+import ru.gltexture.zpm3.engine.world.ZPGlobalBlocksDestroyMemory;
 
 import java.util.function.Supplier;
 
@@ -114,7 +112,7 @@ public class ZPAcidLiquidBlock extends ZPLiquidBlock implements EntityBlock, IHo
                     if (pLevel instanceof IZPLevelExt ext) {
                         if (ZPFakePlayer.canBreakBlock(pLevel, blockPos) && !ZPZoneChecks.INSTANCE.isNoAcidAffection(pLevel, blockPos) && !ZPZoneChecks.INSTANCE.isNoAcidBlockDestruction(pLevel, blockPos)) {
                             ext.getGlobalBlocksDestroyMemory().addNewEntryLongMem(pLevel, blockPos, ZPConstants.ACID_BLOCK_BASE_BLOCK_DAMAGE + ZPRandom.getRandom().nextFloat() * 0.35f);
-                            GlobalBlocksDestroyMemory.spawnBlockCrackParticles(pLevel, blockPos);
+                            ZPGlobalBlocksDestroyMemory.spawnBlockCrackParticles(pLevel, blockPos);
                         }
                     }
                 }

@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
-import ru.gltexture.zpm3.engine.world.GlobalBlocksDestroyMemory;
+import ru.gltexture.zpm3.engine.world.ZPGlobalBlocksDestroyMemory;
 import ru.gltexture.zpm3.engine.mixins.ext.IZPLevelExt;
 
 import java.util.function.BooleanSupplier;
@@ -27,7 +27,7 @@ public abstract class ZPServerLevelMixin implements IZPLevelExt {
     @Shadow
     public abstract void setDayTime(long pTime);
 
-    @Unique private final GlobalBlocksDestroyMemory globalBlocksDestroyMemory = new GlobalBlocksDestroyMemory();
+    @Unique private final ZPGlobalBlocksDestroyMemory globalBlocksDestroyMemory = new ZPGlobalBlocksDestroyMemory();
 
     @Unique private int zTick;
 
@@ -54,7 +54,7 @@ public abstract class ZPServerLevelMixin implements IZPLevelExt {
     }
 
     @Override
-    public GlobalBlocksDestroyMemory getGlobalBlocksDestroyMemory() {
+    public ZPGlobalBlocksDestroyMemory getGlobalBlocksDestroyMemory() {
         return this.globalBlocksDestroyMemory;
     }
 }

@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ZPTier extends Tier {
     ZPTier[] tiers();
-    List<ZPTierData> init();
+    ZPTierData init();
 }

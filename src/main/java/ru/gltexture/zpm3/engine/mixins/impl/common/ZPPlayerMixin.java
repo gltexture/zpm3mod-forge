@@ -1,7 +1,10 @@
 package ru.gltexture.zpm3.engine.mixins.impl.common;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -11,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
+import ru.gltexture.zpm3.assets.common.init.ZPDamageTypes;
 import ru.gltexture.zpm3.assets.net_pack.packets.ZPNetCheckPacket;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.mixins.ext.IZPPlayerMixinExt;
@@ -67,6 +71,20 @@ public abstract class ZPPlayerMixin implements IZPPlayerMixinExt {
                 this.waitingResponse = true;
                 this.pingTickTime = 0;
             }
+        }
+    }
+
+    @Inject(method = "hurtArmor", at = @At("HEAD"), cancellable = true)
+    public void hurtArmor(DamageSource pDamageSource, float pDamage, CallbackInfo ci) {
+        if (pDamageSource.type().equals(ZPDamageTypes.getDamageType((ServerLevel) ((Player) (Object) this).level(), ZPDamageTypes.zp_bleeding).get())) {
+            ci.cancel();
+        }
+    }
+
+    @Inject(method = "hurtHelmet", at = @At("HEAD"), cancellable = true)
+    public void hurtHelmet(DamageSource pDamageSource, float pDamageAmount, CallbackInfo ci) {
+        if (pDamageSource.type().equals(ZPDamageTypes.getDamageType((ServerLevel) ((Player) (Object) this).level(), ZPDamageTypes.zp_bleeding).get())) {
+            ci.cancel();
         }
     }
 

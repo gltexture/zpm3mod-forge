@@ -2,14 +2,21 @@ package ru.gltexture.zpm3.assets.entity.events.common;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
+import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.assets.commands.zones.ZPZoneChecks;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.entity.instances.mobs.ai.ZPZombieMiningGoal;
 import ru.gltexture.zpm3.assets.net_pack.packets.ZPBlockCrack;
@@ -28,6 +35,33 @@ public class ZPWorldTickEvent implements ZPEventClass {
     public ZPWorldTickEvent() {
     }
 
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void exec1(@NotNull BlockEvent.BreakEvent event) {
+        if (event.getLevel() instanceof ServerLevel serverLevel) {
+            if (!event.getPlayer().isCreative()) {
+                if (ZPZoneChecks.INSTANCE.isNoBlocksDestruction(serverLevel, event.getPos())) {
+                    event.setCanceled(true);
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void exec2(@NotNull LivingDamageEvent event) {
+        if (event.getEntity().level() instanceof ServerLevel serverLevel) {
+            if (event.getEntity() instanceof Player attacked) {
+                if (ZPZoneChecks.INSTANCE.isNoPlayersDamage(serverLevel, attacked)) {
+                    event.setCanceled(true);
+                }
+                if (event.getSource().getEntity() instanceof Player attacker) {
+                    if (ZPZoneChecks.INSTANCE.isNoPlayersPvp(serverLevel, attacked)) {
+                        event.setCanceled(true);
+                    }
+                }
+            }
+        }
+    }
+
     @SubscribeEvent
     public static void tick(TickEvent.LevelTickEvent event) {
         if (event.level.isClientSide() || event.phase != TickEvent.Phase.END) {
@@ -38,7 +72,7 @@ public class ZPWorldTickEvent implements ZPEventClass {
         } else if (event.level.getDifficulty() == Difficulty.NORMAL) {
             ZPWorldTickEvent.MAX_ZOMBIES_IN_CHUNK = (int) (ZPConstants.MAX_ZOMBIES_SPAWN_IN_CHUNK * 0.8f);
         } else if (event.level.getDifficulty() == Difficulty.EASY) {
-            ZPWorldTickEvent.MAX_ZOMBIES_IN_CHUNK = (int) (ZPConstants.MAX_ZOMBIES_SPAWN_IN_CHUNK * 0.5f);
+            ZPWorldTickEvent.MAX_ZOMBIES_IN_CHUNK = (int) (ZPConstants.MAX_ZOMBIES_SPAWN_IN_CHUNK * 0.6f);
         }
         final ResourceKey<Level> dim = event.level.dimension();
         int t = ticks.getOrDefault(dim, 0) + 1;

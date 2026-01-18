@@ -2,6 +2,7 @@ package ru.gltexture.zpm3.assets.common.instances.blocks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -22,6 +23,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+import ru.gltexture.zpm3.assets.commands.zones.ZPZoneChecks;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.common.init.ZPBlockEntities;
 import ru.gltexture.zpm3.assets.common.instances.block_entities.ZPBarbaredWireBlockEntity;
@@ -43,7 +45,9 @@ public class ZPBarbaredWireBlock extends Block implements EntityBlock {
     public void entityInside(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Entity entity) {
         if (entity instanceof LivingEntity livingEntity) {
             entity.makeStuckInBlock(state, new Vec3(0.375D, 0.375D, 0.375D));
-            if (!level.isClientSide()) {
+        }
+        if (level instanceof ServerLevel serverLevel && !ZPZoneChecks.INSTANCE.isBarbaredWiresDisabled(serverLevel, pos)) {
+            if (entity instanceof LivingEntity livingEntity) {
                 entity.hurt(entity.damageSources().generic(), entity instanceof Player ? 1 : 2);
                 if (entity.tickCount % 20 == 0 && ZPRandom.getRandom().nextFloat() <= 0.1f) {
                     if (!ZPConstants.BLEEDING_ONLY_FOR_PLAYERS || entity instanceof Player) {
@@ -52,9 +56,7 @@ public class ZPBarbaredWireBlock extends Block implements EntityBlock {
                         }
                     }
                 }
-            }
-            if (!level.isClientSide()) {
-                if (level.getGameTime() % 20 == 0) {
+                if (entity.tickCount % 20 == 0) {
                     if (level.getBlockEntity(pos) instanceof ZPBarbaredWireBlockEntity blockEntity) {
                         blockEntity.setDamage(blockEntity.getDamage() + 1);
                         if (blockEntity.getDamage() >= ZPConstants.MAX_BARBARED_WIRE_STRENGTH) {

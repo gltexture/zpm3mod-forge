@@ -424,6 +424,12 @@ public class ZPCommonAsset extends ZPAsset {
                         .save(writer, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "iron_scrap_smelting"));
             }));
 
+            recipeToAdd.add((writer -> {
+                SimpleCookingRecipeBuilder.smelting(Ingredient.of(Items.EGG), RecipeCategory.FOOD, ZPItems.fried_egg.get(), 0.25f, 300)
+                        .unlockedBy("has_rf", IZPRecipeSpec.has(Items.EGG))
+                        .save(writer, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "egg_smelting"));
+            }));
+
             for (String color : dyeMap.keySet()) {
                 Item dye = dyeMap.get(color);
                 Block concrete = concretePowderMap.get(color);

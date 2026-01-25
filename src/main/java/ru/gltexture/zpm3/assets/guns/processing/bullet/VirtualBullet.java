@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.*;
+import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -32,12 +33,16 @@ import org.joml.*;
 import ru.gltexture.zpm3.assets.commands.zones.ZPZoneChecks;
 import ru.gltexture.zpm3.assets.common.damage.ZPDamageSources;
 import ru.gltexture.zpm3.assets.common.global.ZPConstants;
+import ru.gltexture.zpm3.assets.common.init.ZPBlocks;
+import ru.gltexture.zpm3.assets.common.init.ZPTorchBlocks;
 import ru.gltexture.zpm3.assets.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.assets.entity.instances.mobs.zombies.ZPCommonZombie;
 import ru.gltexture.zpm3.assets.entity.instances.mobs.zombies.ZPMinerZombie;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.fake.ZPFakePlayer;
+import ru.gltexture.zpm3.engine.instances.blocks.ZPTorchBlock;
 import ru.gltexture.zpm3.engine.mixins.ext.IZPEntityExt;
+import ru.gltexture.zpm3.engine.service.ZPUtility;
 import ru.gltexture.zpm3.engine.world.ZPGlobalBlocksDestroyMemory;
 
 import java.lang.Math;
@@ -276,6 +281,9 @@ public class VirtualBullet {
             Vec3 vec3 = p_151359_.getFrom();
             Vec3 vec31 = p_151359_.getTo();
             VoxelShape voxelshape = p_151359_.getBlockShape(blockstate, level, p_151360_);
+            if (blockstate.getBlock() == ZPTorchBlocks.wall_lamp.get() || blockstate.getBlock() == ZPTorchBlocks.wall_lamp_wall.get() || blockstate.getBlock() == ZPTorchBlocks.wall_lamp_off.get() || blockstate.getBlock() == ZPTorchBlocks.wall_lamp_off_wall.get()) {
+                voxelshape = blockstate.getOcclusionShape(level, p_151360_);
+            }
             BlockHitResult blockhitresult = level.clipWithInteractionOverride(vec3, vec31, p_151360_, voxelshape, blockstate);
             VoxelShape voxelshape1 = p_151359_.getFluidShape(fluidstate, level, p_151360_);
             BlockHitResult blockhitresult1 = voxelshape1.clip(vec3, vec31, p_151360_);
@@ -301,6 +309,19 @@ public class VirtualBullet {
             Vec3 vec3 = p_275153_.getFrom().subtract(p_275153_.getTo());
             return BlockHitResult.miss(p_275153_.getTo(), Direction.getNearest(vec3.x, vec3.y, vec3.z), BlockPos.containing(p_275153_.getTo()));
         });
+    }
+
+    @Nullable
+    private BlockHitResult clipWithOverride(Level level, Vec3 pStartVec, Vec3 pEndVec, BlockPos pPos, VoxelShape pShape, BlockState pState) {
+        BlockHitResult blockhitresult = pShape.clip(pStartVec, pEndVec, pPos);
+        if (blockhitresult != null) {
+            BlockHitResult blockhitresult1 = pState.getCollisionShape(level, pPos, CollisionContext.empty()).clip(pStartVec, pEndVec, pPos);
+            if (blockhitresult1 != null && blockhitresult1.getLocation().subtract(pStartVec).lengthSqr() < blockhitresult.getLocation().subtract(pStartVec).lengthSqr()) {
+                return blockhitresult.withDirection(blockhitresult1.getDirection());
+            }
+        }
+
+        return blockhitresult;
     }
 
     public @Nullable VirtualBulletHitResult getVirtualBulletHitResult() {

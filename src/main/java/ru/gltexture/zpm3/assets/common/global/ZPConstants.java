@@ -16,11 +16,11 @@ public class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     // ===== ZOMBIE =====
 
     @ZPConfigurableConstant(
-            description = "Black list of blocks, that cannot be mined by zombie. Example: minecraft:grass;minecraft:stone.",
+            description = "Black list of blocks, that cannot be mined by zombie. Example: \"minecraft\\\\:grass;minecraft\\\\:stone\".",
             group = ZPConstants.GROUP_ZOMBIE,
             type = ZPConfigurableConstant.TYPES.STRING
     )
-    public static String ZOMBIE_BLOCK_MINING_BLACKLIST = "";
+    public static String ZOMBIE_BLOCK_MINING_BLACKLIST = "\"\"";
 
     @ZPConfigurableConstant(
             description = "Allows zombie to spawn at day time, via the chance random.",
@@ -285,6 +285,13 @@ public class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
 
     // ===== PLAYER =====
     @ZPConfigurableConstant(
+            description = "Randomized poison effect, then fry food has been eaten.",
+            group = ZPConstants.GROUP_COMBAT,
+            type = ZPConfigurableConstant.TYPES.FLOAT
+    )
+    public static float RANDOM_FRY_FOOD_POSIONING = 1.0f;
+
+    @ZPConfigurableConstant(
             description = "Default hand reach for players measured in blocks used for melee interaction logic.",
             group = ZPConstants.GROUP_COMBAT,
             type = ZPConfigurableConstant.TYPES.FLOAT
@@ -436,11 +443,11 @@ public class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     // ===== WORLD =====
 
     @ZPConfigurableConstant(
-            description = "Black list of blocks, that cannot be damaged and destroyed. Example: minecraft:grass;minecraft:stone.",
+            description = "Black list of blocks, that cannot be damaged and destroyed. Example: \"minecraft\\\\:grass;minecraft\\\\:stone\".",
             group = ZPConstants.GROUP_COMBAT,
             type = ZPConfigurableConstant.TYPES.STRING
     )
-    public static String GLOBAL_BLOCK_DAMAGE_MEMORY_BLACKLIST = "";
+    public static String GLOBAL_BLOCK_DAMAGE_MEMORY_BLACKLIST = "\"\"";
 
     @ZPConfigurableConstant(
             description = "Prevents fading lava or acid when placed in Creative mode.",
@@ -580,11 +587,11 @@ public class ZPConstants implements ZPConfigurator.ZPClassWithConfConstants {
     public static int MEDICINE_USE_COOLDOWN = 60;
 
     @ZPConfigurableConstant(
-            description = "Black list of blocks, that cannot be destroyed by bullet. Example: minecraft:grass;minecraft:stone.",
+            description = "Black list of blocks, that cannot be destroyed by bullet. Example: \"minecraft\\\\:grass;minecraft\\\\:stone\".",
             group = ZPConstants.GROUP_WORLD,
             type = ZPConfigurableConstant.TYPES.STRING
     )
-    public static String BULLET_BLOCK_BREAKING_BLACKLIST = "";
+    public static String BULLET_BLOCK_BREAKING_BLACKLIST = "\"\"";
 
     @ZPConfigurableConstant(
             description = "If enabled, bullets can break specific marked blocks if the block has the destructible flag.",

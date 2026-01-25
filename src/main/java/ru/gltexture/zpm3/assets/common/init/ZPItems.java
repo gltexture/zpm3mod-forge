@@ -59,6 +59,7 @@ public class ZPItems extends ZPRegistry<Item> implements IZPCollectRegistryObjec
     public static RegistryObject<ZPItemFood> peaches;
     public static RegistryObject<ZPItemFood> soda;
     public static RegistryObject<ZPItemFood> water;
+    public static RegistryObject<ZPItemFood> fried_egg;
 
     //MEDICINE
     public static RegistryObject<ZPItemMedicine> adrenaline_syringe;

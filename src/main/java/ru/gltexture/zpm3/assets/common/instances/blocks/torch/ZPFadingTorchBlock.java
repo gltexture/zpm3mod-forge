@@ -65,8 +65,8 @@ public class ZPFadingTorchBlock extends ZPTorchBlock implements EntityBlock, IFa
     public static void activationCheck(@NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, @Nullable LivingEntity pPlacer, @NotNull ItemStack pStack) {
         BlockEntity entity = pLevel.getBlockEntity(pPos);
         if (entity instanceof ZPFadingBlockEntity fadingBlockEntity && pPlacer instanceof Player player) {
-            if (!ZPConstants.SKIP_FADE_TICKING_TORCHES_PUMPKINS_PLACED_IN_CREATIVE || !player.isCreative()) {
-                fadingBlockEntity.setActive(true);
+            if (ZPConstants.SKIP_FADE_TICKING_TORCHES_PUMPKINS_PLACED_IN_CREATIVE && player.isCreative()) {
+                fadingBlockEntity.setActive(false);
             }
         }
     }

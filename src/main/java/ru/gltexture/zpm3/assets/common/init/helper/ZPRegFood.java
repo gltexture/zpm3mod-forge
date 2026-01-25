@@ -20,6 +20,7 @@ public abstract class ZPRegFood {
     public static final FoodProperties JAM = (new FoodProperties.Builder()).nutrition(4).saturationMod(0.3F).build();
     public static final FoodProperties MYSTERIOUS_CAN = (new FoodProperties.Builder()).nutrition(5).saturationMod(0.6F).effect(() -> new MobEffectInstance(MobEffects.HUNGER, 600), 0.5F).build();
     public static final FoodProperties PEACHES = (new FoodProperties.Builder()).nutrition(6).saturationMod(0.6F).build();
+    public static final FoodProperties FRIED_EGG = (new FoodProperties.Builder()).nutrition(2).saturationMod(0.2F).build();
     public static final FoodProperties SODA = (new FoodProperties.Builder()).nutrition(2).saturationMod(0.3F).build();
     public static final FoodProperties SPRATS = (new FoodProperties.Builder()).nutrition(4).saturationMod(0.3F).effect(() -> new MobEffectInstance(MobEffects.POISON, 400), 0.5F).build();
     public static final FoodProperties WATER = (new FoodProperties.Builder()).nutrition(3).saturationMod(0.6F).build();
@@ -50,6 +51,14 @@ public abstract class ZPRegFood {
                 }).end();
 
         ZPItems.peaches = regSupplier.register("peaches", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.PEACHES, new ZPItemFood.ZPFoodProperties()))
+                .afterCreated((e, utils) -> {
+                    ZPUtility.sides().onlyClient(() -> {
+                        utils.items().addItemInTab(e, ZPTabs.zp_food_tab);
+                        utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_FOOD, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.FOOD_ITEMS_DIRECTORY);
+                    });
+                }).end();
+
+        ZPItems.fried_egg = regSupplier.register("fried_egg", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.FRIED_EGG, new ZPItemFood.ZPFoodProperties()))
                 .afterCreated((e, utils) -> {
                     ZPUtility.sides().onlyClient(() -> {
                         utils.items().addItemInTab(e, ZPTabs.zp_food_tab);

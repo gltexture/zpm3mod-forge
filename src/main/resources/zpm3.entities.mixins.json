@@ -6,7 +6,9 @@
   "refmap": "zpm3.refmap.json",
   "mixins": [
     "common.ZPEntityItemMixin",
-    "common.ZPPlayerMixin"
+    "common.ZPPlayerMixin",
+    "common.ZPProjectileMixin",
+    "common.ZPSnowBallEntityMixin"
   ],
   "client": [
   ],

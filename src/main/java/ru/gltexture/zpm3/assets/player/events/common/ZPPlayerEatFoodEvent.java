@@ -15,6 +15,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.assets.common.global.ZPConstants;
 import ru.gltexture.zpm3.assets.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.assets.player.misc.ZPDefaultItemsHandReach;
 import ru.gltexture.zpm3.engine.core.ZPSide;
@@ -37,6 +38,11 @@ public class ZPPlayerEatFoodEvent implements ZPEventClass {
         if (!entity.level().isClientSide()) {
             if (stack.getItem().equals(Items.ROTTEN_FLESH)) {
                 ZPAbstractZombie.applyRandomEffect(entity);
+            }
+            if (stack.is(Items.BEEF) || stack.is(Items.PORKCHOP) || stack.is(Items.CHICKEN) || stack.is(Items.MUTTON) || stack.is(Items.RABBIT) || stack.is(Items.COD) || stack.is(Items.SALMON) || stack.is(Items.TROPICAL_FISH)) {
+                if (ZPRandom.getRandom().nextFloat() <= ZPConstants.RANDOM_FRY_FOOD_POSIONING) {
+                    entity.addEffect(new MobEffectInstance(MobEffects.HUNGER, 2400));
+                }
             }
         }
     }

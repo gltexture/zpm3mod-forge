@@ -16,7 +16,7 @@
   "block.zpm3.armored_glass": "Бронированное стекло",
   "block.zpm3.asphalt": "Асфальт",
   "block.zpm3.asphalt_slab": "Плита асфальта",
-  "block.zpm3.asphalt_stairs": "Лестница из асфальта",
+  "block.zpm3.asphalt_stairs": "Ступеньки из асфальта",
   "block.zpm3.asphalt_marking": "Разметка на асфальте",
   "block.zpm3.asphalt_marking_slab": "Плита разметки",
   "block.zpm3.asphalt_marking_stairs": "Лестница с разметкой",
@@ -66,6 +66,7 @@
   "item.zpm3.jam": "Варенье",
   "item.zpm3.mysterious_can": "Загадочные консервы",
   "item.zpm3.peaches": "Консервированные персики",
+  "item.zpm3.fried_egg": "Яишница",
   "item.zpm3.soda": "Газировка",
   "item.zpm3.water": "Минеральная вода",
 

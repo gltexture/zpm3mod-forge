@@ -113,7 +113,9 @@ public final class ZPConfigurator {
                                 final String type = classFieldData.type;
                                 try {
                                     switch (Objects.requireNonNull(ZPConfigurableConstant.TYPES.getType(type))) {
-                                        case STRING -> currentValue = readValue;
+                                        case STRING -> {
+                                            currentValue = readValue.replace("\\\\:", ":").replaceAll("^\"+|\"+$", "");
+                                        }
                                         case FLOAT -> currentValue = Float.parseFloat(readValue);
                                         case INT -> currentValue = this.parseIntLenient(readValue);
                                         case BOOLEAN -> currentValue = (readValue.equals("true") || readValue.equals("1")) ? Boolean.TRUE : Boolean.FALSE;
@@ -177,7 +179,7 @@ public final class ZPConfigurator {
                     }
                     line = line.trim();
                     if (!line.startsWith("#") && !line.isEmpty()) {
-                        final String[] strings = line.split(":");
+                        final String[] strings = line.split("(?<!\\\\):");
                         final String fieldName = strings[0];
                         final String type = strings[1];
                         final String currentValueS = strings[2];
@@ -196,6 +198,7 @@ public final class ZPConfigurator {
         }
         return map;
     }
+//"securitycraft:reinforced_light_gray_concrete;securitycraft:reinforced_iron_bars;securitycraft:keypad_chest;securitycraft:keypad_door_item"
 
     public Map<String, List<ClassFieldData>> getClassFieldDataSet(ZPClassWithConfConstants classWithConfConstants) throws ZPIOException, IllegalAccessException {
         List<ClassFieldData> classFieldDataList = new ArrayList<>();

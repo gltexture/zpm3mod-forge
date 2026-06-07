@@ -1,0 +1,148 @@
+package ru.gltexture.zpm3.modules.entity.mixins.impl.common;
+
+import net.minecraft.CrashReport;
+import net.minecraft.CrashReportCategory;
+import net.minecraft.ReportedException;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+import ru.gltexture.zpm3.modules.common.init.ZPBlocks;
+import ru.gltexture.zpm3.engine.mixins.ext.ZPEntityExtTicking;
+import ru.gltexture.zpm3.engine.mixins.ext.IZPEntityExt;
+import ru.gltexture.zpm3.engine.service.ZPUtility;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+@Mixin(Entity.class)
+public abstract class ZPEntityExtendingMixin implements IZPEntityExt {
+    @Shadow public abstract void fillCrashReportCategory(CrashReportCategory pCategory);
+    @Shadow public abstract Level level();
+    @Shadow public abstract SynchedEntityData getEntityData();
+
+    @Shadow public abstract AABB getBoundingBox();
+
+    @Unique private static final EntityDataAccessor<Integer> ACID_LEVEL = SynchedEntityData.defineId(Entity.class, EntityDataSerializers.INT);
+    @Unique private static final EntityDataAccessor<Integer> INTOXICATION_LEVEL = SynchedEntityData.defineId(Entity.class, EntityDataSerializers.INT);
+
+    @Unique private boolean zpm3forge$touchesAcidBlock;
+    @Unique private boolean zpm3forge$touchesToxicBlock;
+    @Unique private Deque<Snapshot> zpm3forge$aabbDeque = new ArrayDeque<>(20);
+
+    @Inject(method = "<init>", at = @At("TAIL"))
+    private void onConstructed(EntityType<?> type, Level world, CallbackInfo ci) {
+        this.zpm3forge$defineZPSyncData();
+    }
+
+    @Override
+    public void zpm3forge$defineZPSyncData() {
+        Entity self = (Entity) (Object) this;
+        self.getEntityData().define(ACID_LEVEL, 0);
+        self.getEntityData().define(INTOXICATION_LEVEL, 0);
+    }
+
+    @Inject(method = "tick", at = @At("HEAD"))
+    private void tickPre(CallbackInfo ci) {
+        if (this.level().isClientSide()) {
+            ZPEntityExtTicking.clientEntityTickPre((Entity) (Object) this, this);
+        } else {
+            AABB aabb = this.getBoundingBox();
+            this.zpm3forge$aabbDeque.addFirst(new Snapshot(System.currentTimeMillis(), aabb));
+            if (this.zpm3forge$aabbDeque.size() > ZPConstants.ENTITY_MAX_AABB_MEMORY_ANTILAG) {
+                this.zpm3forge$aabbDeque.removeLast();
+            }
+            if (ZPUtility.entity().isCollidingWithBlock((Entity) (Object) this, ZPBlocks.acid_block.get())) {
+                this.zpm3forge$touchesAcidBlock = true;
+            }
+            if (ZPUtility.entity().isCollidingWithBlock((Entity) (Object) this, ZPBlocks.toxic_block.get())) {
+                this.zpm3forge$touchesToxicBlock = true;
+            }
+            ZPEntityExtTicking.serverEntityTickPre((Entity) (Object) this, this);
+        }
+    }
+
+    @Inject(method = "tick", at = @At("TAIL"))
+    private void tickPost(CallbackInfo ci) {
+        if (this.level().isClientSide()) {
+            ZPEntityExtTicking.clientEntityTickPost((Entity)(Object)this, this);
+        } else {
+            ZPEntityExtTicking.serverEntityTickPost((Entity) (Object) this, this);
+            this.zpm3forge$touchesAcidBlock = false;
+            this.zpm3forge$touchesToxicBlock = false;
+        }
+    }
+
+    @Inject(method = "saveWithoutId", at = @At("HEAD"))
+    private void saveWithoutId(CompoundTag pCompound, CallbackInfoReturnable<CompoundTag> ci) {
+        try {
+            pCompound.putInt("acidLevel", this.zpm3forge$getAcidLevel());
+            pCompound.putInt("intoxicationLevel", this.zpm3forge$getIntoxicationLevel());
+        } catch (Throwable throwable) {
+            CrashReport crashreport = CrashReport.forThrowable(throwable, "Saving entity NBT");
+            CrashReportCategory crashreportcategory = crashreport.addCategory("MEntity being saved");
+            this.fillCrashReportCategory(crashreportcategory);
+            throw new ReportedException(crashreport);
+        }
+    }
+
+    @Inject(method = "load", at = @At("HEAD"))
+    public void load(CompoundTag pCompound, CallbackInfo ci) {
+        try {
+            this.zpm3forge$setAcidLevel(pCompound.getInt("acidLevel"));
+            this.zpm3forge$setIntoxicationLevel(pCompound.getInt("intoxicationLevel"));
+        } catch (Throwable throwable) {
+            CrashReport crashreport = CrashReport.forThrowable(throwable, "Loading entity NBT");
+            CrashReportCategory crashreportcategory = crashreport.addCategory("MEntity being loaded");
+            this.fillCrashReportCategory(crashreportcategory);
+            throw new ReportedException(crashreport);
+        }
+    }
+
+    @Override
+    public Deque<Snapshot> zpm3forge$getAabbDeque() {
+        return this.zpm3forge$aabbDeque;
+    }
+
+    @Override
+    public boolean zpm3forge$touchesAcidBlock() {
+        return this.zpm3forge$touchesAcidBlock;
+    }
+
+    @Override
+    public boolean zpm3forge$touchesToxicBlock() {
+        return this.zpm3forge$touchesToxicBlock;
+    }
+
+    @Override
+    public int zpm3forge$getAcidLevel() {
+        return this.getEntityData().get(ACID_LEVEL);
+    }
+
+    @Override
+    public void zpm3forge$setAcidLevel(int level) {
+        this.getEntityData().set(ACID_LEVEL, level);
+    }
+
+    @Override
+    public int zpm3forge$getIntoxicationLevel() {
+        return this.getEntityData().get(INTOXICATION_LEVEL);
+    }
+
+    @Override
+    public void zpm3forge$setIntoxicationLevel(int level) {
+        this.getEntityData().set(INTOXICATION_LEVEL, level);
+    }
+}

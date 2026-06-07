@@ -21,8 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL46;
-import ru.gltexture.zpm3.assets.common.utils.ZPCommonClientUtils;
-import ru.gltexture.zpm3.assets.debug.imgui.DearUITRSInterface;
+import ru.gltexture.zpm3.modules.common.utils.ZPCommonClientUtils;
 import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
 import ru.gltexture.zpm3.engine.client.rendering.gl.programs.base.ITexture2DProgram;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
@@ -119,6 +118,7 @@ public abstract class ClientRenderFunctions {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
     }
 
+    /*
     //TEMP
     @Deprecated
     public static void renderTextureIDScreenOverlayFromFBO2(@NotNull ShaderInstance shaderToRender, @NotNull Consumer<ShaderInstance> doUniforms, @Nullable List<Pair<String, ITexture2DProgram>> texturesWithUniforms, @Nullable List<Pair<String, Integer>> texturesWithUniforms2) {
@@ -182,6 +182,7 @@ public abstract class ClientRenderFunctions {
         GL46.glActiveTexture(GL46.GL_TEXTURE0);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
     }
+*/
 
     public static Vector2i getWindowSize() {
         final Minecraft mc = Minecraft.getInstance();

@@ -7,6 +7,6 @@ import net.minecraft.server.level.BlockDestructionProgress;
 import java.util.SortedSet;
 
 public interface IZPLevelRendererExt {
-    Int2ObjectMap<BlockDestructionProgress> destroyingBlocks();
-    Long2ObjectMap<SortedSet<BlockDestructionProgress>> destructionProgress();
+    Int2ObjectMap<BlockDestructionProgress> zpm3forge$destroyingBlocks();
+    Long2ObjectMap<SortedSet<BlockDestructionProgress>> zpm3forge$destructionProgress();
 }

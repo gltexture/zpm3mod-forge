@@ -7,7 +7,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.TickEvent;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.assets.guns.item.ZPBaseGun;
+import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class ZPClientCallbacks {

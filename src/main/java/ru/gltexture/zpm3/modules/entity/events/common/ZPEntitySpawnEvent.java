@@ -1,0 +1,50 @@
+package ru.gltexture.zpm3.modules.entity.events.common;
+
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.animal.horse.SkeletonHorse;
+import net.minecraft.world.entity.monster.Phantom;
+import net.minecraft.world.entity.npc.WanderingTrader;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.core.ZPSide;
+import ru.gltexture.zpm3.engine.events.ZPEventClass;
+import ru.gltexture.zpm3.engine.nbt.entity.ZPEntityNBT;
+
+public class ZPEntitySpawnEvent implements ZPEventClass {
+    @SubscribeEvent
+    public static void exec(@NotNull EntityJoinLevelEvent event) {
+        ZPEntitySpawnEvent.registerNBT(event.getEntity());
+        if (event.getEntity() instanceof Phantom) {
+            event.setCanceled(true);
+        }
+        if (event.getEntity() instanceof WanderingTrader) {
+            event.setCanceled(true);
+        }
+        if (event.getEntity() instanceof SkeletonHorse horse) {
+            if (horse.isTrap()) {
+                event.setCanceled(true);
+            }
+        }
+    }
+
+    public static void registerNBT(Entity entity) {
+        CompoundTag persistentData = entity.getPersistentData();
+        if (!persistentData.contains(ZPEntityNBT.PERSISTED_NBT_TAG)) {
+            CompoundTag persisted = new CompoundTag();
+            persistentData.put(ZPEntityNBT.PERSISTED_NBT_TAG, persisted);
+        }
+    }
+
+    @Override
+    public @NotNull ZPSide getSide() {
+        return ZPSide.COMMON;
+    }
+
+    @Override
+    public @NotNull Mod.EventBusSubscriber.Bus getBus() {
+        return Mod.EventBusSubscriber.Bus.FORGE;
+    }
+}

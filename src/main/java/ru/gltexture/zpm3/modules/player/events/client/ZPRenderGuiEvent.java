@@ -1,0 +1,95 @@
+package ru.gltexture.zpm3.modules.player.events.client;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import ru.gltexture.zpm3.engine.core.ZPSide;
+import ru.gltexture.zpm3.engine.events.ZPEventClass;
+import ru.gltexture.zpm3.engine.mixins.ext.IZPPlayerMixinExt;
+
+@OnlyIn(Dist.CLIENT)
+public class ZPRenderGuiEvent implements ZPEventClass {
+    public ZPRenderGuiEvent() {
+    }
+
+    @Override
+    public @NotNull ZPSide getSide() {
+        return ZPSide.CLIENT;
+    }
+
+    @Override
+    public @NotNull Mod.EventBusSubscriber.Bus getBus() {
+        return Mod.EventBusSubscriber.Bus.FORGE;
+    }
+
+    @SubscribeEvent
+    public static void onRenderLevel(RenderLevelStageEvent event) {
+        Player player = Minecraft.getInstance().player;
+        if (player != null) {
+            if (!player.isCreative()) {
+                Minecraft.getInstance().getEntityRenderDispatcher().setRenderHitBoxes(false);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onRenderGuiOverlay(RenderGuiOverlayEvent.Pre event) {
+        Player player = Minecraft.getInstance().player;
+        if (player != null) {
+            if (!player.isCreative()) {
+                if (event.getOverlay().id().equals(VanillaGuiOverlay.DEBUG_TEXT.id())) {
+                    event.setCanceled(true);
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onRenderGui(RenderGuiOverlayEvent.Post event) {
+        Minecraft mc = Minecraft.getInstance();
+        GuiGraphics gg = event.getGuiGraphics();
+        @Nullable Player player = Minecraft.getInstance().player;
+        boolean isCreative = player != null && player.isCreative();
+        if ((Minecraft.getInstance().options.renderDebug && !isCreative) || (isCreative && !Minecraft.getInstance().options.renderDebug)) {
+            if (player instanceof IZPPlayerMixinExt ext) {
+
+                {
+                    final int ping = ext.zpm3forge$getPing();
+                    String text = ext.zpm3forge$getPing() + "ms";
+                    int x = 2;
+                    int y = 2;
+                    int color = 0xFF00FF00;
+                    if (ping >= 200.0f) {
+                        color = 0xFFFF0000;
+                    } else if (ping >= 100.0f) {
+                        color = 0xFFFFFF00;
+                    }
+                    gg.drawString(mc.font, text, x, y, color, true);
+                }
+
+                {
+                    final int fps = Minecraft.getInstance().getFps();
+                    String text = fps + "fps";
+                    int x = 2;
+                    int y = 2;
+                    int color = 0xFF00FF00;
+                    if (fps <= 40.0f) {
+                        color = 0xFFFFFF00;
+                    } else if (fps <= 20.0f) {
+                        color = 0xFFFF0000;
+                    }
+                    gg.drawString(mc.font, text, x, y + 10, color, true);
+                }
+            }
+        }
+    }
+}

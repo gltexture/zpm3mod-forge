@@ -11,43 +11,43 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.assets.commands.zones.ZPZoneChecks;
-import ru.gltexture.zpm3.assets.common.global.ZPConstants;
-import ru.gltexture.zpm3.assets.common.utils.ZPCommonServerUtils;
-import ru.gltexture.zpm3.assets.entity.instances.mobs.zombies.ZPAbstractZombie;
+import ru.gltexture.zpm3.modules.commands.zones.ZPZoneChecks;
+import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+import ru.gltexture.zpm3.modules.common.utils.ZPCommonServerUtils;
+import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.engine.client.utils.ClientRenderFunctions;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 
 public abstract class ZPEntityExtTicking {
     public static void serverEntityTickPre(@NotNull Entity entity, @NotNull IZPEntityExt izpEntityExt) {
         if (!(entity instanceof LivingEntity)) {
-            if (izpEntityExt.getAcidLevel() > 120) {
+            if (izpEntityExt.zpm3forge$getAcidLevel() > 120) {
                 entity.discard();
             }
         }
         if (!ZPZoneChecks.INSTANCE.isNoAcidAffection((ServerLevel) entity.level(), entity.getOnPos())) {
-            if (izpEntityExt.touchesAcidBlock() && entity.tickCount % 2 == 0) {
+            if (izpEntityExt.zpm3forge$touchesAcidBlock() && entity.tickCount % 2 == 0) {
                 izpEntityExt.addAcidLevel(1);
             }
-            if (izpEntityExt.getAcidLevel() > 600) {
-                if (entity instanceof LivingEntity livingEntity && izpEntityExt.touchesAcidBlock()) {
+            if (izpEntityExt.zpm3forge$getAcidLevel() > 600) {
+                if (entity instanceof LivingEntity livingEntity && izpEntityExt.zpm3forge$touchesAcidBlock()) {
                     livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON, 60));
                 }
             }
-            if (izpEntityExt.getAcidLevel() > 0) {
+            if (izpEntityExt.zpm3forge$getAcidLevel() > 0) {
                 ZPEntityExtTicking.damageEveryTick(entity);
             }
         }
     }
 
     public static void serverEntityTickPost(@NotNull Entity entity, @NotNull IZPEntityExt izpEntityExt) {
-        if (!izpEntityExt.touchesAcidBlock()) {
-            if (izpEntityExt.getAcidLevel() > 0) {
+        if (!izpEntityExt.zpm3forge$touchesAcidBlock()) {
+            if (izpEntityExt.zpm3forge$getAcidLevel() > 0) {
                 izpEntityExt.addAcidLevel(-1);
             }
         }
-        if (!izpEntityExt.touchesToxicBlock()) {
-            if (izpEntityExt.getIntoxicationLevel() > 0) {
+        if (!izpEntityExt.zpm3forge$touchesToxicBlock()) {
+            if (izpEntityExt.zpm3forge$getIntoxicationLevel() > 0) {
                 izpEntityExt.addIntoxicationLevel(-1);
             }
         }
@@ -57,8 +57,8 @@ public abstract class ZPEntityExtTicking {
 
 
     public static void clientEntityTickPre(@NotNull Entity entity, @NotNull IZPEntityExt izpEntityExt) {
-        if (izpEntityExt.getAcidLevel() > 0) {
-            ClientRenderFunctions.addAcidParticles(izpEntityExt.getAcidLevel(), entity);
+        if (izpEntityExt.zpm3forge$getAcidLevel() > 0) {
+            ClientRenderFunctions.addAcidParticles(izpEntityExt.zpm3forge$getAcidLevel(), entity);
             if (entity.tickCount % 3 == 0) {
                 entity.level().playLocalSound(entity.getOnPos(), SoundEvents.FIRE_EXTINGUISH, SoundSource.MASTER, 0.375f, 1.0f + ZPRandom.getRandom().nextFloat() * 0.2f, false);
             }

@@ -9,9 +9,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.assets.common.global.ZPConstants;
-import ru.gltexture.zpm3.assets.common.init.ZPEntities;
-import ru.gltexture.zpm3.assets.entity.instances.throwables.ZPAcidBottleEntity;
+import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+import ru.gltexture.zpm3.modules.common.init.ZPEntities;
+import ru.gltexture.zpm3.modules.entity.instances.throwables.ZPAcidBottleEntity;
 import ru.gltexture.zpm3.engine.instances.entities.ZPThrowableEntity;
 
 public class ZPItemThrowable extends ZPItem {

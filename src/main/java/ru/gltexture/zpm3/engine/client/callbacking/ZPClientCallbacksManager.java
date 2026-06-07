@@ -9,7 +9,7 @@ import net.minecraftforge.event.TickEvent;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.*;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.assets.guns.item.ZPBaseGun;
+import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
 
 import java.util.ArrayList;
 import java.util.List;

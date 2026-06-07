@@ -10,6 +10,6 @@ import java.util.Collection;
 import java.util.Map;
 
 public interface IZPRecipesManagerExt {
-    Map<RecipeType<?>, Map<ResourceLocation, Recipe<?>>> getRecipes();
-    void removeRecipes(@NotNull Collection<ZPRecipesController.RecipeToRemove> toRemove);
+    Map<RecipeType<?>, Map<ResourceLocation, Recipe<?>>> zpm3forge$getRecipes();
+    void zpm3forge$removeRecipes(@NotNull Collection<ZPRecipesController.RecipeToRemove> toRemove);
 }

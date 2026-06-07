@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.core.Position;
 import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
@@ -36,12 +35,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.gltexture.zpm3.assets.common.global.ZPConstants;
-import ru.gltexture.zpm3.assets.entity.population.ZPSetupPopulation;
-import ru.gltexture.zpm3.assets.loot_cases.registry.ZPLootTablesRegistry;
+import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+import ru.gltexture.zpm3.modules.entity.population.ZPSetupPopulation;
+import ru.gltexture.zpm3.modules.loot_cases.registry.ZPLootTablesRegistry;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPDefaultShaders;
-import ru.gltexture.zpm3.engine.core.asset.ZPAsset;
-import ru.gltexture.zpm3.engine.core.asset.ZPAssetData;
+import ru.gltexture.zpm3.engine.core.asset.ZPModule;
+import ru.gltexture.zpm3.engine.core.asset.ZPModuleData;
 import ru.gltexture.zpm3.engine.core.config.ZPConfigurator;
 import ru.gltexture.zpm3.engine.helpers.ZPTiersRegistryHelper;
 import ru.gltexture.zpm3.engine.instances.items.tier.ZPTier;
@@ -78,14 +77,14 @@ import java.util.*;
 public final class ZombiePlague3 {
     public static final String ZP_MAIN_DIR = "zpm3_files";
 
-    public static boolean DEV_PREVIEW = false;
+    public static boolean DEV_PREVIEW = true;
 
-    public static final String assetsJsonPath = "zpm3.asset.json";
+    public static final String assetsJsonPath = "zpm3.modules.json";
     public static final String MOD_ID = "zpm3";
     static final Logger LOGGER = LoggerFactory.getLogger(ZombiePlague3.MOD_ID);
-    private static final ZPProject MOD_INFO = new ZPProject("ZombiePlague3Mod", ZombiePlague3.MOD_ID, "0.1.24a");
+    private static final ZPProject MOD_INFO = new ZPProject("ZombiePlague3Mod", ZombiePlague3.MOD_ID, "0.2a");
     private final ZPRegistryConveyor zpRegistryConveyor;
-    private final List<ZPAsset> assets;
+    private final List<ZPModule> assets;
     private ZPNetwork zpNetwork;
     private static ZPPopulationController populationController;
     private static ZPConfigurator configurator;
@@ -125,7 +124,7 @@ public final class ZombiePlague3 {
         ZPLogger.info(this + " INIT");
         final IEventBus modEventBus = ZombiePlague3.getModEventBus();
         this.createNet();
-        this.initAssets();
+        this.initModules();
         this.registerTiers();
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::completeSetup);
@@ -180,26 +179,26 @@ public final class ZombiePlague3 {
         ZPTiersRegistryHelper.clear();
     }
 
-    private void initAssets() {
-        ZPLogger.info(this + " Assets setup");
-        this.readAssetsJSON(this.assets);
+    private void initModules() {
+        ZPLogger.info(this + " Modules setup");
+        this.readModulesJSON(this.assets);
 
-        for (ZPAsset zpAsset : this.assets) {
-            zpAsset.preCommonInitializeAsset();
+        for (ZPModule zpModule : this.assets) {
+            zpModule.preCommonInitialize();
         }
 
         {
             ZombiePlague3.processConfigurations();
         }
 
-        for (ZPAsset zpAsset : this.assets) {
-            ZPLogger.info("Init asset: " + zpAsset);
-            AssetEntry assetEntry = new AssetEntry();
-            zpAsset.initializeAsset(assetEntry);
-            this.getZpNetwork().register(assetEntry.getPacketDataSet());
-            this.getZpRegistryConveyor().launch(assetEntry.getRegistrySet());
+        for (ZPModule zpModule : this.assets) {
+            ZPLogger.info("Init asset: " + zpModule);
+            ModuleEntry moduleEntry = new ModuleEntry();
+            zpModule.initializeModule(moduleEntry);
+            this.getZpNetwork().register(moduleEntry.getPacketDataSet());
+            this.getZpRegistryConveyor().launch(moduleEntry.getRegistrySet());
             
-            assetEntry.getEventClasses().forEach(e -> {
+            moduleEntry.getEventClasses().forEach(e -> {
                 try {
                     Method getDistMethod = e.getDeclaredMethod("getSide");
                     Method getBusMethod = e.getDeclaredMethod("getBus");
@@ -212,12 +211,12 @@ public final class ZombiePlague3 {
                 }
             });
 
-            assetEntry.getEventClassObjects().forEach(e -> {
+            moduleEntry.getEventClassObjects().forEach(e -> {
                 this.registerSomeEvents(e, e.getBus(), e.getSide());
             });
 
-            if (assetEntry.getZpLootTablesRegistry() != null) {
-                ZPLootTablesRegistry.REG(assetEntry.getZpLootTablesRegistry());
+            if (moduleEntry.getZpLootTablesRegistry() != null) {
+                ZPLootTablesRegistry.REG(moduleEntry.getZpLootTablesRegistry());
             }
         }
 
@@ -236,8 +235,8 @@ public final class ZombiePlague3 {
             MinecraftForge.EVENT_BUS.register(new ZPCommonForge());
         }
 
-        for (ZPAsset zpAsset : this.assets) {
-            zpAsset.postCommonInitializeAsset();
+        for (ZPModule zpModule : this.assets) {
+            zpModule.postCommonInitialize();
         }
     }
 
@@ -268,7 +267,7 @@ public final class ZombiePlague3 {
         }
     }
     
-    private void readAssetsJSON(List<ZPAsset> assets) {
+    private void readModulesJSON(List<ZPModule> assets) {
         String jsonRaw = null;
         try {
             jsonRaw = ZPUtility.files().readTextFromJar(new ZPPath(ZombiePlague3.assetsJsonPath));
@@ -277,7 +276,7 @@ public final class ZombiePlague3 {
         }
 
         JsonObject jsonObject = GsonHelper.parse(jsonRaw);
-        JsonArray jsonElements = jsonObject.getAsJsonArray("assets");
+        JsonArray jsonElements = jsonObject.getAsJsonArray("modules");
         for (int i = 0; i < jsonElements.size(); i++) {
             JsonObject asset = jsonElements.get(i).getAsJsonObject();
 
@@ -286,8 +285,7 @@ public final class ZombiePlague3 {
                 Class<?> zpAssetClass = Class.forName(pathToClass);
                 try {
                     final String name = asset.get("name").getAsString();
-                    final String version = asset.get("version").getAsString();
-                    ZPAsset obj = (ZPAsset) zpAssetClass.getDeclaredConstructor(ZPAssetData.class).newInstance(new ZPAssetData(name, version));
+                    ZPModule obj = (ZPModule) zpAssetClass.getDeclaredConstructor(ZPModuleData.class).newInstance(new ZPModuleData(name));
                     assets.add(obj);
                 } catch (ClassCastException e) {
                     ZPLogger.exception(e);
@@ -308,8 +306,8 @@ public final class ZombiePlague3 {
         RenderSystem.recordRenderCall(() -> {
             ZPSystemInit.client();
             ZPDefaultShaders.init();
-            for (ZPAsset zpAsset : this.assets) {
-                zpAsset.clientSetup();
+            for (ZPModule zpModule : this.assets) {
+                zpModule.clientSetup();
             }
             ZPSystemInit.clientRunSetup(Minecraft.getInstance().getWindow());
             {
@@ -328,8 +326,8 @@ public final class ZombiePlague3 {
     private void clientDestroy() {
         ZPLogger.info("Client resources destroy");
         RenderSystem.recordRenderCall(() -> {
-            for (ZPAsset zpAsset : this.assets) {
-                zpAsset.clientDestroy();
+            for (ZPModule zpModule : this.assets) {
+                zpModule.clientDestroy();
             }
             ZPSystemInit.clientRunDestroy(Minecraft.getInstance().getWindow());
             ZPRegistryCollections.clearAll();
@@ -342,8 +340,8 @@ public final class ZombiePlague3 {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         ZPRegistry.execLaterConsumers();
-        for (ZPAsset zpAsset : this.assets) {
-            zpAsset.commonSetup();
+        for (ZPModule zpModule : this.assets) {
+            zpModule.commonSetup();
         }
         this.initDispenserData();
 
@@ -444,7 +442,7 @@ public final class ZombiePlague3 {
         record MixinConfig(@NotNull String name, @NotNull String packagePath) { ; }
     }
 
-    public interface IAssetEntry {
+    public interface IModuleEntry {
         void addZP3RegistryClass(Class<? extends ZPRegistry<?>> zpRegistryProcessorClass);
         void addEventClass(Class<? extends ZPEventClass> clazz);
         void addEventClassObject(ZPEventClass object);
@@ -459,14 +457,14 @@ public final class ZombiePlague3 {
         }
     }
 
-    public static class AssetEntry implements IAssetEntry {
+    public static class ModuleEntry implements IModuleEntry {
         private final Set<Class<? extends ZPRegistry<?>>> registrySet;
         private final Set<Class<? extends ZPEventClass>> eventClasses;
         private final Set<ZPEventClass> eventClassObjects;
         private final Set<ZPNetwork.PacketData<?>> packetDataSet;
         private @Nullable ZPLootTablesRegistry zpLootTablesRegistry;
 
-        public AssetEntry() {
+        public ModuleEntry() {
             this.registrySet = new HashSet<>();
             this.eventClasses = new HashSet<>();
             this.eventClassObjects = new HashSet<>();

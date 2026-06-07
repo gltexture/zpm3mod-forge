@@ -1,0 +1,44 @@
+{
+  "modules": [
+    {
+      "name": "ZP3DebugModule",
+      "class": "ru.gltexture.zpm3.modules.debug.ZPDebugModule"
+    },
+    {
+      "name": "ZP3NetPackModule",
+      "class": "ru.gltexture.zpm3.modules.net_pack.ZPNetPackModule"
+    },
+    {
+      "name": "ZP3FXModule",
+      "class": "ru.gltexture.zpm3.modules.fx.ZPFXModule"
+    },
+    {
+      "name": "ZP3CommonModule",
+      "class": "ru.gltexture.zpm3.modules.common.ZPCommonModule"
+    },
+    {
+      "name": "ZP3EntityModule",
+      "class": "ru.gltexture.zpm3.modules.entity.ZPEntityModule"
+    },
+    {
+      "name": "ZP3PlayerModule",
+      "class": "ru.gltexture.zpm3.modules.player.ZPPlayerModule"
+    },
+    {
+      "name": "ZP3MobEffectsModule",
+      "class": "ru.gltexture.zpm3.modules.mob_effects.ZPMobEffectsModule"
+    },
+    {
+      "name": "ZP3GunsModule",
+      "class": "ru.gltexture.zpm3.modules.guns.ZPGunsModule"
+    },
+    {
+      "name": "ZP3LootCasesModule",
+      "class": "ru.gltexture.zpm3.modules.loot_cases.ZPLootCasesModule"
+    },
+    {
+      "name": "ZP3CommandsModule",
+      "class": "ru.gltexture.zpm3.modules.commands.ZPCommandsModule"
+    }
+  ]
+}

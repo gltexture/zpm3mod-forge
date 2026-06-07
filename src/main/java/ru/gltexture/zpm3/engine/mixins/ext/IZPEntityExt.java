@@ -6,45 +6,44 @@ import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Deque;
-import java.util.Iterator;
 import java.util.Objects;
 
 public interface IZPEntityExt {
-    int getAcidLevel();
-    int getIntoxicationLevel();
+    int zpm3forge$getAcidLevel();
+    int zpm3forge$getIntoxicationLevel();
 
-    void setAcidLevel(int acidLevel);
-    void setIntoxicationLevel(int intoxicationLevel);
+    void zpm3forge$setAcidLevel(int acidLevel);
+    void zpm3forge$setIntoxicationLevel(int intoxicationLevel);
 
-    void defineZPSyncData();
+    void zpm3forge$defineZPSyncData();
 
-    boolean touchesAcidBlock();
-    boolean touchesToxicBlock();
+    boolean zpm3forge$touchesAcidBlock();
+    boolean zpm3forge$touchesToxicBlock();
 
-    Deque<Snapshot> getAabbDeque();
+    Deque<Snapshot> zpm3forge$getAabbDeque();
 
     default AABB getAABBWithLagCompensation(@NotNull Entity entity, @NotNull ServerPlayer serverPlayer) {
         int ping;
         if (serverPlayer instanceof IZPPlayerMixinExt ext) {
-            ping = ext.getPing();
+            ping = ext.zpm3forge$getPing();
         } else {
             ping = serverPlayer.connection.getPlayer().latency;
         }
         long targetTime = System.currentTimeMillis() - ping / 2L;
-        for (Snapshot s : this.getAabbDeque()) {
+        for (Snapshot s : this.zpm3forge$getAabbDeque()) {
             if (s.timeMillis <= targetTime) {
                 return s.box();
             }
         }
-        return this.getAabbDeque().isEmpty() ? entity.getBoundingBox() : Objects.requireNonNull(this.getAabbDeque().peekLast()).box();
+        return this.zpm3forge$getAabbDeque().isEmpty() ? entity.getBoundingBox() : Objects.requireNonNull(this.zpm3forge$getAabbDeque().peekLast()).box();
     }
 
     default void addAcidLevel(int acidLevel) {
-        this.setAcidLevel(this.getAcidLevel() + acidLevel);
+        this.zpm3forge$setAcidLevel(this.zpm3forge$getAcidLevel() + acidLevel);
     }
 
     default void addIntoxicationLevel(int intoxicationLevel) {
-        this.setIntoxicationLevel(this.getIntoxicationLevel() + intoxicationLevel);
+        this.zpm3forge$setIntoxicationLevel(this.zpm3forge$getIntoxicationLevel() + intoxicationLevel);
     }
 
     record Snapshot(long timeMillis, AABB box) {}

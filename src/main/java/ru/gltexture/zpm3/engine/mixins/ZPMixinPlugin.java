@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 import ru.gltexture.zpm3.engine.core.ZPLogger;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.core.asset.ZPAsset;
+import ru.gltexture.zpm3.engine.core.asset.ZPModule;
 import ru.gltexture.zpm3.engine.exceptions.ZPIOException;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.engine.helpers.gen.providers.ZPMixinConfigsProvider;
@@ -29,7 +29,7 @@ public class ZPMixinPlugin implements IMixinConfigPlugin {
 
     private static final List<String> mixins = new ArrayList<>();
 
-    private static void readAssetsJSON(List<ZPAsset> assets) {
+    private static void readModulesJSON(List<ZPModule> assets) {
         String jsonRaw = null;
         try {
             jsonRaw = ZPUtility.files().readTextFromJar(new ZPPath(ZombiePlague3.assetsJsonPath));
@@ -38,7 +38,7 @@ public class ZPMixinPlugin implements IMixinConfigPlugin {
         }
 
         JsonObject jsonObject = GsonHelper.parse(jsonRaw);
-        JsonArray jsonElements = jsonObject.getAsJsonArray("assets");
+        JsonArray jsonElements = jsonObject.getAsJsonArray("modules");
         for (int i = 0; i < jsonElements.size(); i++) {
             JsonObject asset = jsonElements.get(i).getAsJsonObject();
             try {
@@ -46,9 +46,9 @@ public class ZPMixinPlugin implements IMixinConfigPlugin {
                 Class<?> zpAssetClass = Class.forName(pathToClass);
                 try {
                     @SuppressWarnings("unchecked")
-                    Constructor<ZPAsset> constructor = (Constructor<ZPAsset>) zpAssetClass.getDeclaredConstructor();
+                    Constructor<ZPModule> constructor = (Constructor<ZPModule>) zpAssetClass.getDeclaredConstructor();
                     constructor.setAccessible(true);
-                    ZPAsset obj = constructor.newInstance();
+                    ZPModule obj = constructor.newInstance();
                     assets.add(obj);
                 } catch (ClassCastException e) {
                     ZPLogger.exception(e);
@@ -62,10 +62,10 @@ public class ZPMixinPlugin implements IMixinConfigPlugin {
     }
 
     private static void registerMixinConfigs() {
-        List<ZPAsset> assets = new ArrayList<>();
-        ZPMixinPlugin.readAssetsJSON(assets);
-        for (ZPAsset zpAsset : assets) {
-            zpAsset.initMixins((mixinConfig, classes) -> {
+        List<ZPModule> assets = new ArrayList<>();
+        ZPMixinPlugin.readModulesJSON(assets);
+        for (ZPModule zpModule : assets) {
+            zpModule.initMixins((mixinConfig, classes) -> {
                 ZPMixinPlugin.mixins.add(mixinConfig.name());
                 ZPMixinConfigsProvider.addNewMixinData(mixinConfig, classes);
             });

@@ -8,7 +8,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.gltexture.zpm3.assets.common.instances.blocks.ZPBarbaredWireBlock;
+import ru.gltexture.zpm3.modules.common.instances.blocks.ZPBarbaredWireBlock;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
 import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockModelExecutors;

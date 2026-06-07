@@ -1,0 +1,45 @@
+package ru.gltexture.zpm3.engine.mixins.impl.client.render;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.BlockDestructionProgress;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
+import ru.gltexture.zpm3.modules.guns.processing.input.ZPClientGunClientTickProcessing;
+import ru.gltexture.zpm3.engine.mixins.ext.IZPLevelRendererExt;
+
+import java.util.SortedSet;
+
+@Mixin(LevelRenderer.class)
+@OnlyIn(Dist.CLIENT)
+public class ZPLevelRenderDestructionProgressBlocksMixin implements IZPLevelRendererExt {
+    @Shadow @Final private final Int2ObjectMap<BlockDestructionProgress> destroyingBlocks = new Int2ObjectOpenHashMap<>();
+    @Shadow @Final private final Long2ObjectMap<SortedSet<BlockDestructionProgress>> destructionProgress = new Long2ObjectOpenHashMap<>();
+
+    @Override
+    public Int2ObjectMap<BlockDestructionProgress> zpm3forge$destroyingBlocks() {
+        return this.destroyingBlocks;
+    }
+
+    @Override
+    public Long2ObjectMap<SortedSet<BlockDestructionProgress>> zpm3forge$destructionProgress() {
+        return this.destructionProgress;
+    }
+}

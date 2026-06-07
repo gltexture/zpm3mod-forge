@@ -12,7 +12,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3i;
-import ru.gltexture.zpm3.assets.common.global.ZPConstants;
+import ru.gltexture.zpm3.modules.common.global.ZPConstants;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 
 import java.util.*;

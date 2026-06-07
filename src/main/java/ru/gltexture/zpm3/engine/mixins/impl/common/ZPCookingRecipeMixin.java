@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import ru.gltexture.zpm3.assets.common.global.ZPConstants;
+import ru.gltexture.zpm3.modules.common.global.ZPConstants;
 
 @Mixin(AbstractCookingRecipe.class)
 public class ZPCookingRecipeMixin {

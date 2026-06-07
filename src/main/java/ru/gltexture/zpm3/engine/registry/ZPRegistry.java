@@ -29,7 +29,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.gltexture.zpm3.assets.player.misc.ZPDefaultItemsHandReach;
+import ru.gltexture.zpm3.modules.player.misc.ZPDefaultItemsHandReach;
 import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooks;
 import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooksManager;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;

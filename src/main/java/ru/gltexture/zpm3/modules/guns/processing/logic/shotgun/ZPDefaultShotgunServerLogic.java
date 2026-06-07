@@ -1,0 +1,30 @@
+package ru.gltexture.zpm3.modules.guns.processing.logic.shotgun;
+
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
+import ru.gltexture.zpm3.modules.guns.processing.logic.IGunLogicProcessor;
+import ru.gltexture.zpm3.modules.guns.processing.logic.ZPDefaultGunLogicFunctions;
+
+public class ZPDefaultShotgunServerLogic implements IGunLogicProcessor {
+    public ZPDefaultShotgunServerLogic() {
+    }
+
+    @Override
+    public boolean tryToShoot(@NotNull Level level, @NotNull Player player, @NotNull ZPBaseGun item, @NotNull ItemStack itemStack, boolean isRightHand) {
+        return ZPDefaultGunLogicFunctions.SERVER_DEFAULT_SHUTTER_ANIMATED_GUN_SHOT(this, level, player, item, itemStack, isRightHand, 9);
+    }
+
+    @Override
+    public boolean tryToReload(@NotNull Level level, @NotNull Player player, @NotNull ZPBaseGun item, @NotNull ItemStack itemStack, boolean unload, boolean isRightHand) {
+        return ZPDefaultGunLogicFunctions.SERVER_DEFAULT_SHUTTER_ANIMATED_GUN_RELOAD(this, level, player, item, itemStack, unload, isRightHand);
+    }
+
+    @Override
+    public void onTickInventory(@NotNull ItemStack pStack, @NotNull Level pLevel, @NotNull ZPBaseGun item, @NotNull Entity pEntity, int pSlotId, boolean pIsSelected, boolean offHand) {
+        ZPDefaultGunLogicFunctions.SERVER_DEFAULT_SHUTTER_ANIMATED_GUN_TICK(this, pStack, pLevel, item, pEntity, pSlotId, pIsSelected, offHand);
+    }
+}

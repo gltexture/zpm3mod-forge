@@ -15,5 +15,5 @@
   "injectors": {
     "defaultRequire": 1
   },
-  "package": "ru.gltexture.zpm3.assets.debug.mixins.impl"
+  "package": "ru.gltexture.zpm3.modules.debug.mixins.impl"
 }

@@ -1,4 +1,4 @@
-package ru.gltexture.zpm3.engine.core.asset;
+package ru.gltexture.zpm3.engine.core.module;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -16,26 +16,26 @@ public abstract class ZPModule {
         this.zpModuleData = null;
     }
 
-    public abstract void commonSetup();
+    public abstract void fml_commonSetupEvent();
 
     @OnlyIn(Dist.CLIENT)
-    public abstract void clientSetup();
+    public abstract void fml_clientSetupEvent();
 
     @OnlyIn(Dist.CLIENT)
-    public abstract void clientDestroy();
+    public abstract void clientShutDown();
 
     @Deprecated
-    public void initMixins(@NotNull ZombiePlague3.IMixinEntry mixinEntry) { }
-    public abstract void initializeModule(@NotNull ZombiePlague3.IModuleEntry assetEntry);
-    public abstract void preCommonInitialize();
-    public abstract void postCommonInitialize();
+    public void setupMixins(@NotNull ZombiePlague3.IMixinEntry mixinEntry) { }
+    public abstract void initialize(@NotNull ZombiePlague3.IModuleEntry moduleEntry);
+    public abstract void preInitialize();
+    public abstract void postInitialize();
 
-    public ZPModuleData getZpAssetData() {
+    public ZPModuleData getModuleData() {
         return this.zpModuleData;
     }
 
     @Override
     public String toString() {
-        return "Module: " + this.getZpAssetData();
+        return "Module: " + this.getModuleData();
     }
 }

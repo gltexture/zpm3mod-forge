@@ -20,11 +20,12 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.modules.common.global.ZPConstants;
 import ru.gltexture.zpm3.modules.debug.imgui.DearUITRSInterface;
 import ru.gltexture.zpm3.modules.mob_effects.init.ZPMobEffects;
 import ru.gltexture.zpm3.modules.mob_effects.utils.ZPEffectUtils;
-import ru.gltexture.zpm3.modules.player.client.ZPClientGlobalSettings;
+import ru.gltexture.zpm3.modules.net_pack.data.DefaultDataKeys;
 
 @Mixin(LightTexture.class)
 public abstract class ZPGameLightMapMixin {
@@ -134,14 +135,15 @@ public abstract class ZPGameLightMapMixin {
 
                         float f14 = this.minecraft.options.gamma().get().floatValue();
                         if (this.minecraft.player != null && (!this.minecraft.player.isCreative() || this.minecraft.options.hideGui)) {
-                            if (ZPClientGlobalSettings.DARKNESS_ENABLED) {
-                                f14 = ZPClientGlobalSettings.DARKNESS_FACTOR;
+                            final boolean darkness = ZombiePlague3.getClient_netSyncDataPack().getBoolean(DefaultDataKeys.StoC__DARKNESS_ENABLED, ZPConstants.ENABLE_HARDCORE_DARKNESS_SERVER_SIDE);
+                            if (darkness) {
+                                f14 = ZombiePlague3.getClient_netSyncDataPack().getFloat(DefaultDataKeys.StoC__DARKNESS_FACTOR, ZPConstants.DARKNESS_GAMMA_STATIC_FACTOR_SERVER_SIDE);
                                 if (DearUITRSInterface.debugDarknessValueEnable) {
                                     f14 = DearUITRSInterface.debugDarknessValue;
                                 }
                             }
                             if (ZPEffectUtils.isBetterVisioned(this.minecraft.player)) {
-                                f14 = ZPClientGlobalSettings.DARKNESS_ENABLED ? ZPClientGlobalSettings.DARKNESS_FACTOR + 0.2f : Math.max(f14, 0.2f);
+                                f14 = darkness ? f14 + 0.2f : Math.max(f14, 0.2f);
                             }
                         }
                         {

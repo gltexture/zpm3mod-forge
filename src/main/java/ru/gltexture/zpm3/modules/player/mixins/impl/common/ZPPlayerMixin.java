@@ -9,8 +9,10 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import ru.gltexture.zpm3.engine.core.ZPNetworkHandler;
 import ru.gltexture.zpm3.modules.common.global.ZPConstants;
 import ru.gltexture.zpm3.modules.common.init.ZPDamageTypes;
+import ru.gltexture.zpm3.modules.net_pack.data.ZPNetSyncDataPack;
 import ru.gltexture.zpm3.modules.net_pack.packets.ZPNetCheckPacket;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.mixins.ext.IZPPlayerMixinExt;
@@ -32,19 +34,15 @@ public abstract class ZPPlayerMixin implements IZPPlayerMixinExt {
     @Unique
     private int zpm3forge$pingTickTime = 0;
 
-   // @Unique
-   // private int gotPackets = 0;
-
     @Unique
-    private boolean zpm3forge$enabledPickUpOnF;
+    private ZPNetSyncDataPack zpm3forge$zpNetDataPack_fromClient;
 
     @Override
-    public boolean zpm3forge$enabledPickUpOnF() {
-        return this.zpm3forge$enabledPickUpOnF;
-    }
-
-    public void zpm3forge$setEnabledPickUpOnF(boolean enabledPickUpOnF) {
-        this.zpm3forge$enabledPickUpOnF = enabledPickUpOnF;
+    public ZPNetSyncDataPack zpm3forge$zpNetDataPack_fromClient() {
+        if (this.zpm3forge$zpNetDataPack_fromClient == null) {
+            this.zpm3forge$zpNetDataPack_fromClient = ZombiePlague3.net().createdNetSyncDataPack_CtoS();
+        }
+        return this.zpm3forge$zpNetDataPack_fromClient;
     }
 
     @Inject(method = "tick", at = @At("TAIL"))
@@ -86,14 +84,14 @@ public abstract class ZPPlayerMixin implements IZPPlayerMixinExt {
     }
 
     @Override
-    public void zpm3forge$getResultFromServer() {
+    public void zpm3forge$getResponseNetCheckFromServer() {
         long now = System.currentTimeMillis();
         this.zpm3forge$ping = (int) (now - this.zpm3forge$lastSentTime);
         this.zpm3forge$waitingResponse = false;
     }
 
     @Override
-    public void zpm3forge$getResultFromClient() {
+    public void zpm3forge$getResponseNetCheckFromClient() {
         if ((Object) this instanceof ServerPlayer serverPlayer) {
             long now = System.currentTimeMillis();
             this.zpm3forge$ping = (int) (now - this.zpm3forge$lastSentTime);

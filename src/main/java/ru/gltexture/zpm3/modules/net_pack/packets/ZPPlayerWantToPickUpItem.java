@@ -14,6 +14,8 @@ import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.mixins.ext.IZPPlayerMixinExt;
 import ru.gltexture.zpm3.engine.network.ZPNetwork;
+import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+import ru.gltexture.zpm3.modules.net_pack.data.DefaultDataKeys;
 
 public class ZPPlayerWantToPickUpItem implements ZPNetwork.ZPPacket {
     private final int itemId;
@@ -40,7 +42,7 @@ public class ZPPlayerWantToPickUpItem implements ZPNetwork.ZPPacket {
     public void onServer(@NotNull Player sender, @NotNull ServerLevel level) {
         if (sender instanceof IZPPlayerMixinExt ext) {
             Entity entity = level.getEntity(this.itemId);
-            if (ext.zpm3forge$enabledPickUpOnF() && entity instanceof ItemEntity entity1) {
+            if (ext.zpm3forge$zpNetDataPack_fromClient().getBoolean(DefaultDataKeys.StoC__SERVER_PICK_UP_ON_F, ZPConstants.PICK_UP_ON_F) && entity instanceof ItemEntity entity1) {
                 if (entity1.isAlive() && !entity1.hasPickUpDelay() && sender.distanceTo(entity1) <= 2.25f) {
                     this.pickUpItem(sender, entity1);
                 }

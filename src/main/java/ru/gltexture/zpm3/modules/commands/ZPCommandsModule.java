@@ -14,12 +14,10 @@ import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.modules.commands.zones.ZPFlagZones;
 import ru.gltexture.zpm3.modules.commands.zones.events.ZPLevelSaveReadEvents;
-import ru.gltexture.zpm3.modules.debug.events.ZPRenderStuffEvent;
-import ru.gltexture.zpm3.modules.net_pack.packets.ZPSendGlobalSettings_StoC;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.core.asset.ZPModule;
-import ru.gltexture.zpm3.engine.core.asset.ZPModuleData;
+import ru.gltexture.zpm3.engine.core.module.ZPModule;
+import ru.gltexture.zpm3.engine.core.module.ZPModuleData;
 import ru.gltexture.zpm3.engine.events.ZPEventClass;
 
 import java.util.*;
@@ -33,17 +31,17 @@ public class ZPCommandsModule extends ZPModule {
     }
 
     @Override
-    public void commonSetup() {
+    public void fml_commonSetupEvent() {
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void clientSetup() {
+    public void fml_clientSetupEvent() {
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void clientDestroy() {
+    public void clientShutDown() {
 
     }
 
@@ -54,22 +52,22 @@ public class ZPCommandsModule extends ZPModule {
     //    //        new ZombiePlague3.IMixinEntry.MixinClass("client.ZPInputMixin", ZPSide.CLIENT));
     //}
 
-    public static void addNewLineToDraw(@NotNull ZPRenderStuffEvent.LineRequest lineRequest) {
+   // public static void addNewLineToDraw(@NotNull ZPRenderStuffEvent.LineRequest lineRequest) {
+   // }
+
+    @Override
+    public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
+        moduleEntry.addEventClass(ZPCommandsEvent.class);
+        moduleEntry.addEventClass(ZPLevelSaveReadEvents.class);
     }
 
     @Override
-    public void initializeModule(ZombiePlague3.@NotNull IModuleEntry assetEntry) {
-        assetEntry.addEventClass(ZPCommandsEvent.class);
-        assetEntry.addEventClass(ZPLevelSaveReadEvents.class);
-    }
-
-    @Override
-    public void preCommonInitialize() {
+    public void preInitialize() {
 
     }
 
     @Override
-    public void postCommonInitialize() {
+    public void postInitialize() {
 
     }
 
@@ -92,18 +90,18 @@ public class ZPCommandsModule extends ZPModule {
         public static void onCommand(RegisterCommandsEvent event) {
             event.getDispatcher().register(
                     Commands.literal("zp3")
-                            .then(Commands.literal("refreshConfigs")
-                                    .executes(ctx -> {
-                                        ServerPlayer player = ctx.getSource().getPlayerOrException();
-                                        if (player.hasPermissions(4)) {
-                                            ZombiePlague3.processConfigurations();
-                                            ZombiePlague3.net().sendToAll(ZPSendGlobalSettings_StoC.create());
-                                            ctx.getSource().sendSuccess(() -> Component.literal("Success!"), false);
-                                            return 1;
-                                        }
-                                        return 0;
-                                    })
-                            )
+                            //.then(Commands.literal("refreshConfigs")
+                            //        .executes(ctx -> {
+                            //            ServerPlayer player = ctx.getSource().getPlayerOrException();
+                            //            if (player.hasPermissions(4)) {
+                            //                ZombiePlague3.processConfigurations();
+                            //                ZombiePlague3.net().sendToAll(ZPSendGlobalSettings_StoC.create());
+                            //                ctx.getSource().sendSuccess(() -> Component.literal("Success!"), false);
+                            //                return 1;
+                            //            }
+                            //            return 0;
+                            //        })
+                            //)
                             //.then(Commands.literal("refreshLootTables")
                             //        .executes(ctx -> {
                             //            ServerPlayer player = ctx.getSource().getPlayerOrException();

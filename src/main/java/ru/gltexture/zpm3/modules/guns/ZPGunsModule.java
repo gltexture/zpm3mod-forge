@@ -17,8 +17,8 @@ import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
 import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooks;
 import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooksManager;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.core.asset.ZPModule;
-import ru.gltexture.zpm3.engine.core.asset.ZPModuleData;
+import ru.gltexture.zpm3.engine.core.module.ZPModule;
+import ru.gltexture.zpm3.engine.core.module.ZPModuleData;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public class ZPGunsModule extends ZPModule {
@@ -30,13 +30,13 @@ public class ZPGunsModule extends ZPModule {
     }
 
     @Override
-    public void commonSetup() {
+    public void fml_commonSetupEvent() {
 
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void clientSetup() {
+    public void fml_clientSetupEvent() {
         ZPDefaultGunRenderers.init();
         ZPRenderHooksManager.INSTANCE.addItemSceneRendering1PersonHooks((ZPRenderHooks.ZPItemSceneRendering1PersonHooks) ZPDefaultGunRenderers.defaultMuzzleflashFXUniversal);
         ZPRenderHooksManager.INSTANCE.addItemSceneRendering3PersonHooks((ZPRenderHooks.ZPItemSceneRendering3PersonHooks) ZPDefaultGunRenderers.defaultMuzzleflashFXUniversal);
@@ -56,7 +56,7 @@ public class ZPGunsModule extends ZPModule {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void clientDestroy() {
+    public void clientShutDown() {
 
     }
 
@@ -72,23 +72,23 @@ public class ZPGunsModule extends ZPModule {
     //}
 
     @Override
-    public void initializeModule(ZombiePlague3.@NotNull IModuleEntry assetEntry) {
+    public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
         ZPUtility.sides().onlyClient(() -> {
-            assetEntry.addEventClass(ZPGunsUI.class);
-            assetEntry.addEventClass(ZPGunPostRender.class);
+            moduleEntry.addEventClass(ZPGunsUI.class);
+            moduleEntry.addEventClass(ZPGunPostRender.class);
         });
-        assetEntry.addEventClass(ZPGunTossEvent.class);
+        moduleEntry.addEventClass(ZPGunTossEvent.class);
     }
 
     @Override
-    public void preCommonInitialize() {
+    public void preInitialize() {
         ZPUtility.sides().onlyClient(() -> {
             ZombiePlague3.registerKeyBindings(new ZPGunKeyBindings());
         });
     }
 
     @Override
-    public void postCommonInitialize() {
+    public void postInitialize() {
 
     }
 }

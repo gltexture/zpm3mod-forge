@@ -30,8 +30,8 @@ import ru.gltexture.zpm3.modules.common.init.*;
 import ru.gltexture.zpm3.modules.common.instances.block_entities.ZPFadingBlockEntity;
 import ru.gltexture.zpm3.modules.common.tiers.ZPCommonTiers;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.core.asset.ZPModule;
-import ru.gltexture.zpm3.engine.core.asset.ZPModuleData;
+import ru.gltexture.zpm3.engine.core.module.ZPModule;
+import ru.gltexture.zpm3.engine.core.module.ZPModuleData;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
 import ru.gltexture.zpm3.engine.instances.blocks.IHotLiquid;
 import ru.gltexture.zpm3.engine.recipes.ZPRecipesController;
@@ -52,7 +52,7 @@ public class ZPCommonModule extends ZPModule {
     }
 
     @Override
-    public void commonSetup() {
+    public void fml_commonSetupEvent() {
         {
             Blocks.CYAN_CONCRETE.explosionResistance = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
             Blocks.WHITE_CONCRETE.explosionResistance = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
@@ -176,12 +176,12 @@ public class ZPCommonModule extends ZPModule {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void clientSetup() {
+    public void fml_clientSetupEvent() {
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void clientDestroy() {
+    public void clientShutDown() {
 
     }
 
@@ -199,7 +199,7 @@ public class ZPCommonModule extends ZPModule {
     //}
 
     @Override
-    public void initializeModule(ZombiePlague3.@NotNull IModuleEntry assetEntry) {
+    public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
         for (Block b : new Block[] {
                 Blocks.CYAN_CONCRETE,
                 Blocks.WHITE_CONCRETE,
@@ -225,37 +225,37 @@ public class ZPCommonModule extends ZPModule {
             );
         }
 
-        assetEntry.addTier(ZPCommonTiers.values());
-        assetEntry.setRecipesRegistry(new ZPCommonRecipeRegistry());
-        assetEntry.addZP3RegistryClass(ZPSounds.class);
-        assetEntry.addZP3RegistryClass(ZPItems.class);
-        assetEntry.addZP3RegistryClass(ZPBlockItems.class);
-        assetEntry.addZP3RegistryClass(ZPBlocks.class);
-        assetEntry.addZP3RegistryClass(ZPTorchBlocks.class);
-        assetEntry.addZP3RegistryClass(ZPEntityAttributes.class);
-        assetEntry.addZP3RegistryClass(ZPEntities.class);
-        assetEntry.addZP3RegistryClass(ZPBlockEntities.class);
-        assetEntry.addZP3RegistryClass(ZPFluids.class);
-        assetEntry.addZP3RegistryClass(ZPFluidTypes.class);
-        assetEntry.addZP3RegistryClass(ZPDamageTypes.class);
+        moduleEntry.addTier(ZPCommonTiers.values());
+        moduleEntry.addRecipesRegistry(new ZPCommonRecipeRegistry());
+        moduleEntry.addRegistryClass(ZPSounds.class);
+        moduleEntry.addRegistryClass(ZPItems.class);
+        moduleEntry.addRegistryClass(ZPBlockItems.class);
+        moduleEntry.addRegistryClass(ZPBlocks.class);
+        moduleEntry.addRegistryClass(ZPTorchBlocks.class);
+        moduleEntry.addRegistryClass(ZPEntityAttributes.class);
+        moduleEntry.addRegistryClass(ZPEntities.class);
+        moduleEntry.addRegistryClass(ZPBlockEntities.class);
+        moduleEntry.addRegistryClass(ZPFluids.class);
+        moduleEntry.addRegistryClass(ZPFluidTypes.class);
+        moduleEntry.addRegistryClass(ZPDamageTypes.class);
 
         ZPUtility.sides().onlyClient(() -> {
-            assetEntry.addZP3RegistryClass(ZPTabs.class);
+            moduleEntry.addRegistryClass(ZPTabs.class);
         });
     }
 
     @Override
-    public void preCommonInitialize() {
+    public void preInitialize() {
         ZombiePlague3.registerConfigClass(new ZPConstants());
     }
 
     @Override
-    public void postCommonInitialize() {
+    public void postInitialize() {
     }
 
     private static class ZPCommonRecipeRegistry extends ZPRecipesRegistry {
-        private static List<IZPRecipeSpec> recipeToAdd = new ArrayList<>();
-        private static List<ZPRecipesController.RecipeToRemove> toRemove = new ArrayList<>();
+        private static final List<IZPRecipeSpec> recipeToAdd = new ArrayList<>();
+        private static final List<ZPRecipesController.RecipeToRemove> toRemove = new ArrayList<>();
 
         private static final Map<String, Item> dyeMap = new HashMap<>() {{
                 put("white", Items.WHITE_DYE);
@@ -276,7 +276,7 @@ public class ZPCommonModule extends ZPModule {
                 put("black", Items.BLACK_DYE);
             }};
 
-        private static Map<String, Block> concretePowderMap = new HashMap<>() {{
+        private static final Map<String, Block> concretePowderMap = new HashMap<>() {{
             put("white", Blocks.WHITE_CONCRETE_POWDER);
             put("orange", Blocks.ORANGE_CONCRETE_POWDER);
             put("magenta", Blocks.MAGENTA_CONCRETE_POWDER);

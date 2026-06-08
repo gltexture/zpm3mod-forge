@@ -10,8 +10,8 @@ import ru.gltexture.zpm3.modules.loot_cases.init.ZPLootCases;
 import ru.gltexture.zpm3.modules.loot_cases.loot_tables.ZPLootTable;
 import ru.gltexture.zpm3.modules.loot_cases.registry.ZPLootTablesRegistry;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.core.asset.ZPModule;
-import ru.gltexture.zpm3.engine.core.asset.ZPModuleData;
+import ru.gltexture.zpm3.engine.core.module.ZPModule;
+import ru.gltexture.zpm3.engine.core.module.ZPModuleData;
 
 public class ZPLootCasesModule extends ZPModule {
     public ZPLootCasesModule(@NotNull ZPModuleData zpModuleData) {
@@ -22,17 +22,17 @@ public class ZPLootCasesModule extends ZPModule {
     }
 
     @Override
-    public void commonSetup() {
+    public void fml_commonSetupEvent() {
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void clientSetup() {
+    public void fml_clientSetupEvent() {
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void clientDestroy() {
+    public void clientShutDown() {
 
     }
 
@@ -44,24 +44,24 @@ public class ZPLootCasesModule extends ZPModule {
     //}
 
     @Override
-    public void initializeModule(ZombiePlague3.@NotNull IModuleEntry assetEntry) {
+    public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
         //assetEntry.addEventClass(ZPFreeCameraEvents.class);
-        assetEntry.addEventClass(ZPLootTablesGatherDataEvent.class);
+        moduleEntry.addEventClass(ZPLootTablesGatherDataEvent.class);
 
-        assetEntry.setLootTablesRegistry(new ZPDefaultLootTables());
+        moduleEntry.setLootTablesRegistry(new ZPDefaultLootTables());
 
-        assetEntry.addZP3RegistryClass(ZPLootCases.class);
-        assetEntry.addZP3RegistryClass(ZPBlockLootCaseEntities.class);
-        assetEntry.addZP3RegistryClass(ZPLootCaseBlockItems.class);
+        moduleEntry.addRegistryClass(ZPLootCases.class);
+        moduleEntry.addRegistryClass(ZPBlockLootCaseEntities.class);
+        moduleEntry.addRegistryClass(ZPLootCaseBlockItems.class);
     }
 
     @Override
-    public void preCommonInitialize() {
+    public void preInitialize() {
 
     }
 
     @Override
-    public void postCommonInitialize() {
+    public void postInitialize() {
 
     }
 

@@ -13,12 +13,13 @@ import ru.gltexture.zpm3.modules.common.global.ZPConstants;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.events.ZPEventClass;
 import ru.gltexture.zpm3.engine.mixins.ext.IZPPlayerMixinExt;
+import ru.gltexture.zpm3.modules.net_pack.data.DefaultDataKeys;
 
 public class ZPPlayerEntityItemEvent implements ZPEventClass {
     @SubscribeEvent
     public static void exec(@NotNull EntityItemPickupEvent event) {
         if (event.getEntity() instanceof IZPPlayerMixinExt ext) {
-            if (ZPConstants.PICK_UP_ON_F && ext.zpm3forge$enabledPickUpOnF()) {
+            if (ZPConstants.PICK_UP_ON_F && ext.zpm3forge$zpNetDataPack_fromClient().getBoolean(DefaultDataKeys.StoC__SERVER_PICK_UP_ON_F, ZPConstants.PICK_UP_ON_F)) {
                 event.setCanceled(true);
             }
         }

@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 import ru.gltexture.zpm3.engine.core.ZPLogger;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.core.asset.ZPModule;
+import ru.gltexture.zpm3.engine.core.module.ZPModule;
 import ru.gltexture.zpm3.engine.exceptions.ZPIOException;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.engine.helpers.gen.providers.ZPMixinConfigsProvider;
@@ -65,7 +65,7 @@ public class ZPMixinPlugin implements IMixinConfigPlugin {
         List<ZPModule> assets = new ArrayList<>();
         ZPMixinPlugin.readModulesJSON(assets);
         for (ZPModule zpModule : assets) {
-            zpModule.initMixins((mixinConfig, classes) -> {
+            zpModule.setupMixins((mixinConfig, classes) -> {
                 ZPMixinPlugin.mixins.add(mixinConfig.name());
                 ZPMixinConfigsProvider.addNewMixinData(mixinConfig, classes);
             });
@@ -113,8 +113,6 @@ public class ZPMixinPlugin implements IMixinConfigPlugin {
     public List<String> getMixins() {
         return List.of();
     }
-
-
 
     @Override
     public void preApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {

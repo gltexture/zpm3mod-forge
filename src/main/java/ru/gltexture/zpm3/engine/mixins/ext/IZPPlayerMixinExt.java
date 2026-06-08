@@ -1,10 +1,11 @@
 package ru.gltexture.zpm3.engine.mixins.ext;
 
-public interface IZPPlayerMixinExt {
-    void zpm3forge$setEnabledPickUpOnF(boolean enabledPickUpOnF);
-    boolean zpm3forge$enabledPickUpOnF();
+import ru.gltexture.zpm3.modules.net_pack.data.ZPNetSyncDataPack;
 
-    void zpm3forge$getResultFromServer();
-    void zpm3forge$getResultFromClient();
+public interface IZPPlayerMixinExt {
+    ZPNetSyncDataPack zpm3forge$zpNetDataPack_fromClient();
+
+    void zpm3forge$getResponseNetCheckFromServer();
+    void zpm3forge$getResponseNetCheckFromClient();
     int zpm3forge$getPing();
 }

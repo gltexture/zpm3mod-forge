@@ -13,20 +13,16 @@ import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Supplier;
 
 public class ZPNetwork {
-    private static int packetId = 0;
-
-    private static final String PROTO_VERSION = ZombiePlague3.MOD_VERSION();
-    public static final String MAIN_CHANNEL = "zpm3main";
-
     private final SimpleChannel mainChannel;
 
-    public ZPNetwork() {
-        this.mainChannel = NetworkRegistry.newSimpleChannel(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), ZPNetwork.MAIN_CHANNEL), () -> ZPNetwork.PROTO_VERSION, ZPNetwork.PROTO_VERSION::equals, ZPNetwork.PROTO_VERSION::equals);
+    public ZPNetwork(String channel, String version) {
+        this.mainChannel = NetworkRegistry.newSimpleChannel(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), channel), () -> version, version::equals, version::equals);
     }
 
     @SuppressWarnings("all")
@@ -37,7 +33,7 @@ public class ZPNetwork {
         });
     }
 
-    public void register(@NotNull Set<PacketData<? extends ZPPacket>> packetsData) {
+    public void register(@NotNull List<PacketData<? extends ZPPacket>> packetsData) {
         for (PacketData<? extends ZPPacket> packetClass : packetsData) {
             this.registerPacket(packetClass);
         }

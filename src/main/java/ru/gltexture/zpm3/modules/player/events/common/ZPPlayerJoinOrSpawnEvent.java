@@ -10,9 +10,9 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.mixins.ext.IZPPlayerMixinExt;
 import ru.gltexture.zpm3.modules.common.global.ZPConstants;
-import ru.gltexture.zpm3.modules.net_pack.packets.ZPSendGlobalSettings_CtoS;
-import ru.gltexture.zpm3.modules.net_pack.packets.ZPSendGlobalSettings_StoC;
+import ru.gltexture.zpm3.modules.net_pack.packets.ZPSyncConfigSettings;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.events.ZPEventClass;
@@ -29,7 +29,7 @@ public class ZPPlayerJoinOrSpawnEvent implements ZPEventClass {
     public static void onPlayerSpawn(EntityJoinLevelEvent event) {
         ZPUtility.sides().onlyClient(() -> {
             if (event.getEntity() instanceof LocalPlayer) {
-                ZombiePlague3.net().sendToServer(new ZPSendGlobalSettings_CtoS(ZPConstants.PICK_UP_ON_F));
+                ZombiePlague3.net().sendToServer(new ZPSyncConfigSettings(ZombiePlague3.net().createdNetSyncDataPack_CtoS()));
             }
         });
         if (event.getEntity() instanceof ServerPlayer sp) {
@@ -41,10 +41,9 @@ public class ZPPlayerJoinOrSpawnEvent implements ZPEventClass {
 
     @SubscribeEvent
     public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
-        if (!(event.getEntity() instanceof ServerPlayer sp)) {
-            return;
+        if (event.getEntity() instanceof ServerPlayer sp) {
+            ZombiePlague3.net().sendToPlayer(new ZPSyncConfigSettings(ZombiePlague3.net().createdNetSyncDataPack_StoC()), sp);
         }
-        ZombiePlague3.net().sendToPlayer(ZPSendGlobalSettings_StoC.create(), sp);
     }
 
     @Override

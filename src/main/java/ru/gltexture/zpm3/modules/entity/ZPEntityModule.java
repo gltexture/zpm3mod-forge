@@ -15,8 +15,8 @@ import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.modules.entity.rendering.entities.misc.ZPRenderEntityItem;
 import ru.gltexture.zpm3.modules.entity.population.ZPSetupPopulation;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.core.asset.ZPModule;
-import ru.gltexture.zpm3.engine.core.asset.ZPModuleData;
+import ru.gltexture.zpm3.engine.core.module.ZPModule;
+import ru.gltexture.zpm3.engine.core.module.ZPModuleData;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.helpers.ZPBiomeModifyingHelper;
 import ru.gltexture.zpm3.engine.helpers.ZPEntityRenderMatchHelper;
@@ -36,19 +36,19 @@ public class ZPEntityModule extends ZPModule {
     }
 
     @Override
-    public void commonSetup() {
+    public void fml_commonSetupEvent() {
 
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void clientSetup() {
+    public void fml_clientSetupEvent() {
 
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void clientDestroy() {
+    public void clientShutDown() {
 
     }
 
@@ -60,7 +60,7 @@ public class ZPEntityModule extends ZPModule {
     //}
 
     @Override
-    public void initializeModule(ZombiePlague3.@NotNull IModuleEntry assetEntry) {
+    public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
         {
             List<String> allBiomes = List.of(
                 "minecraft:the_void",
@@ -163,23 +163,23 @@ public class ZPEntityModule extends ZPModule {
             ZPDataGenHelper.addNewBiomeSpawnRemoveModifier(new ZPBiomeModifyingHelper.ModifyEntryRemoveSpawns("remove_from_spawn", allBiomes, overworldHostiles));
         }
 
-        assetEntry.setPopulationSetup(new ZPEntityModule.ZPCommonPopulationSetup());
-        assetEntry.addEventClass(ZPEntitySpawnEvent.class);
-        assetEntry.addEventClass(ZPEntityTickEvent.class);
-        assetEntry.addEventClass(ZPEntityLivingEvents.class);
-        assetEntry.addEventClass(ZPEntityMobAttributes.class);
-        assetEntry.addEventClass(ZPWorldTickEvent.class);
+        moduleEntry.setPopulationSetup(new ZPEntityModule.ZPCommonPopulationSetup());
+        moduleEntry.addEventClass(ZPEntitySpawnEvent.class);
+        moduleEntry.addEventClass(ZPEntityTickEvent.class);
+        moduleEntry.addEventClass(ZPEntityLivingEvents.class);
+        moduleEntry.addEventClass(ZPEntityMobAttributes.class);
+        moduleEntry.addEventClass(ZPWorldTickEvent.class);
     }
 
     @Override
-    public void preCommonInitialize() {
+    public void preInitialize() {
         ZPUtility.sides().onlyClient(() -> {
             ZPEntityRenderMatchHelper.matchEntityRendering(() -> EntityType.ITEM, ZPRenderEntityItem::new);
         });
     }
 
     @Override
-    public void postCommonInitialize() {
+    public void postInitialize() {
 
     }
 

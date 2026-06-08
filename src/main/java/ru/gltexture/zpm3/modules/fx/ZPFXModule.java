@@ -3,10 +3,10 @@ package ru.gltexture.zpm3.modules.fx;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.engine.core.asset.ZPModule;
+import ru.gltexture.zpm3.engine.core.module.ZPModule;
 import ru.gltexture.zpm3.modules.fx.init.ZPParticles;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.core.asset.ZPModuleData;
+import ru.gltexture.zpm3.engine.core.module.ZPModuleData;
 
 public class ZPFXModule extends ZPModule {
     public ZPFXModule(@NotNull ZPModuleData zpModuleData) {
@@ -17,34 +17,34 @@ public class ZPFXModule extends ZPModule {
     }
 
     @Override
-    public void commonSetup() {
+    public void fml_commonSetupEvent() {
 
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void clientSetup() {
+    public void fml_clientSetupEvent() {
 
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void clientDestroy() {
+    public void clientShutDown() {
 
     }
 
     @Override
-    public void initializeModule(ZombiePlague3.@NotNull IModuleEntry assetEntry) {
-        assetEntry.addZP3RegistryClass(ZPParticles.class);
+    public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
+        moduleEntry.addRegistryClass(ZPParticles.class);
     }
 
     @Override
-    public void preCommonInitialize() {
+    public void preInitialize() {
 
     }
 
     @Override
-    public void postCommonInitialize() {
+    public void postInitialize() {
 
     }
 }

@@ -40,7 +40,7 @@ public class ZPNetCheckPacket implements ZPNetwork.ZPPacket {
         try {
             Entity entity = Objects.requireNonNull(serverLevel).getEntity(this.entityId);
             if (entity instanceof IZPPlayerMixinExt ext) {
-                ext.zpm3forge$getResultFromClient();
+                ext.zpm3forge$getResponseNetCheckFromClient();
             }
         } catch (Exception ignored) {
         }
@@ -50,6 +50,6 @@ public class ZPNetCheckPacket implements ZPNetwork.ZPPacket {
     @Override
     public void onClient(@NotNull Player localPlayer) {
         ClientLevel clientLevel = Objects.requireNonNull(Minecraft.getInstance().level);
-        ((IZPPlayerMixinExt) localPlayer).zpm3forge$getResultFromServer();
+        ((IZPPlayerMixinExt) localPlayer).zpm3forge$getResponseNetCheckFromServer();
     }
 }

@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL46;
+import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.modules.guns.rendering.basic.ZPDefaultGunMuzzleflashFX;
 import ru.gltexture.zpm3.engine.client.rendering.ui.imgui.interfaces.DearUIInterface;
 import ru.gltexture.zpm3.engine.mixins.ext.IZPPlayerMixinExt;
@@ -155,6 +156,15 @@ public class DearUITRSInterface implements DearUIInterface {
             float[] v = new float[] {DearUITRSInterface.debugDarknessValue};
             ImGui.sliderFloat("Value", v, -10.0f, 1.0f);
             DearUITRSInterface.debugDarknessValue = v[0];
+        }
+        if (ImGui.collapsingHeader("Debug Client Data")) {
+            if (ZombiePlague3.getClient_netSyncDataPack().dataPack().isEmpty()) {
+                ImGui.text("Empty");
+            } else {
+                ZombiePlague3.getClient_netSyncDataPack().dataPack().forEach((k, v) -> {
+                    ImGui.text(k + " = " + v);
+                });
+            }
         }
         ImGui.end();
     }

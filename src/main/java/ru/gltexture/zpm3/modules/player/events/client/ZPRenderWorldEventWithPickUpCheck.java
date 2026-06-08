@@ -14,7 +14,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.gltexture.zpm3.modules.player.client.ZPClientGlobalSettings;
+import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+import ru.gltexture.zpm3.modules.net_pack.data.DefaultDataKeys;
 import ru.gltexture.zpm3.modules.player.keybind.ZPPickUpKeyBindings;
 import ru.gltexture.zpm3.modules.net_pack.packets.ZPPlayerWantToPickUpItem;
 import ru.gltexture.zpm3.engine.core.ZPSide;
@@ -51,7 +52,8 @@ public class ZPRenderWorldEventWithPickUpCheck implements ZPEventClass {
 
     @SubscribeEvent
     public static void onRenderWorld(RenderLevelStageEvent event) {
-        if (ZPClientGlobalSettings.SERVER_PICK_UP_ON_F && event.getStage() == RenderLevelStageEvent.Stage.AFTER_SOLID_BLOCKS) {
+        final boolean pickUpOnKey = ZombiePlague3.getClient_netSyncDataPack().getBoolean(DefaultDataKeys.StoC__SERVER_PICK_UP_ON_F, ZPConstants.PICK_UP_ON_F);
+        if (pickUpOnKey && event.getStage() == RenderLevelStageEvent.Stage.AFTER_SOLID_BLOCKS) {
             Minecraft mc = Minecraft.getInstance();
             if (mc.level == null || mc.player == null) {
                 return;

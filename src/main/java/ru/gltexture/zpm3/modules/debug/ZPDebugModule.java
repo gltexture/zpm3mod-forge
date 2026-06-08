@@ -8,8 +8,8 @@ import ru.gltexture.zpm3.modules.debug.events.ZPRenderStuffEvent;
 import ru.gltexture.zpm3.modules.debug.imgui.DearUITRSInterface;
 import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.core.asset.ZPModule;
-import ru.gltexture.zpm3.engine.core.asset.ZPModuleData;
+import ru.gltexture.zpm3.engine.core.module.ZPModule;
+import ru.gltexture.zpm3.engine.core.module.ZPModuleData;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public class ZPDebugModule extends ZPModule {
@@ -21,12 +21,12 @@ public class ZPDebugModule extends ZPModule {
     }
 
     @Override
-    public void commonSetup() {
+    public void fml_commonSetupEvent() {
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void clientSetup() {
+    public void fml_clientSetupEvent() {
         if (ZPRenderHelper.INSTANCE.getDearUIRenderer() != null) {
             ZPRenderHelper.INSTANCE.getDearUIRenderer().getInterfacesManager().addActiveInterface(new DearUITRSInterface());
         }
@@ -34,7 +34,7 @@ public class ZPDebugModule extends ZPModule {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void clientDestroy() {
+    public void clientShutDown() {
 
     }
 
@@ -50,20 +50,20 @@ public class ZPDebugModule extends ZPModule {
     }
 
     @Override
-    public void initializeModule(ZombiePlague3.@NotNull IModuleEntry assetEntry) {
+    public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
         ZPUtility.sides().onlyClient(() -> {
-            assetEntry.addEventClass(ZPFreeCameraEvents.class);
-            assetEntry.addEventClass(ZPRenderStuffEvent.class);
+            moduleEntry.addEventClass(ZPFreeCameraEvents.class);
+            moduleEntry.addEventClass(ZPRenderStuffEvent.class);
         });
     }
 
     @Override
-    public void preCommonInitialize() {
+    public void preInitialize() {
 
     }
 
     @Override
-    public void postCommonInitialize() {
+    public void postInitialize() {
 
     }
 }

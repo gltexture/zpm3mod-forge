@@ -21,7 +21,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
 import ru.gltexture.zpm3.modules.debug.imgui.DearUITRSInterface;
 import ru.gltexture.zpm3.modules.mob_effects.init.ZPMobEffects;
 import ru.gltexture.zpm3.modules.mob_effects.utils.ZPEffectUtils;
@@ -55,7 +57,7 @@ public abstract class ZPGameLightMapMixin {
         }
 
         int duration = effect.getDuration();
-        int maxDuration = ZPConstants.ZOMBIE_PLAGUE_VIRUS_EFFECT_TIME_TICKS;
+        int maxDuration = ZPZombieConfig.ZOMBIE_PLAGUE_VIRUS_EFFECT_TIME_TICKS.getVar();
 
         return 1.0f - Mth.clamp((float) duration / (float) maxDuration, 0f, 1f);
     }
@@ -135,9 +137,9 @@ public abstract class ZPGameLightMapMixin {
 
                         float f14 = this.minecraft.options.gamma().get().floatValue();
                         if (this.minecraft.player != null && (!this.minecraft.player.isCreative() || this.minecraft.options.hideGui)) {
-                            final boolean darkness = ZombiePlague3.getClient_netSyncDataPack().getBoolean(DefaultDataKeys.StoC__DARKNESS_ENABLED, ZPConstants.ENABLE_HARDCORE_DARKNESS_SERVER_SIDE);
+                            final boolean darkness = ZombiePlague3.getClient_netSyncDataPack().getBoolean(DefaultDataKeys.StoC__DARKNESS_ENABLED, ZPWorldConfig.ENABLE_HARDCORE_DARKNESS_SERVER_SIDE.getVar());
                             if (darkness) {
-                                f14 = ZombiePlague3.getClient_netSyncDataPack().getFloat(DefaultDataKeys.StoC__DARKNESS_FACTOR, ZPConstants.DARKNESS_GAMMA_STATIC_FACTOR_SERVER_SIDE);
+                                f14 = ZombiePlague3.getClient_netSyncDataPack().getFloat(DefaultDataKeys.StoC__DARKNESS_FACTOR, ZPWorldConfig.DARKNESS_GAMMA_STATIC_FACTOR_SERVER_SIDE.getVar());
                                 if (DearUITRSInterface.debugDarknessValueEnable) {
                                     f14 = DearUITRSInterface.debugDarknessValue;
                                 }

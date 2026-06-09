@@ -11,7 +11,8 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.engine.world.ZPGlobalBlocksDestroyMemory;
 import ru.gltexture.zpm3.engine.mixins.ext.IZPLevelExt;
 
@@ -40,7 +41,7 @@ public abstract class ZPServerLevelSlowdownTimeMixin implements IZPLevelExt {
     private void tickTime(CallbackInfo ci) {
         boolean isNight = this.getLevel().isNight();
         final long i = this.getLevel().getLevelData().getGameTime() + 1L;
-        if (this.zpm3forge$zTick++ >= ((isNight ? ZPConstants.WORLD_NIGHT_SLOWDOWN_CYCLE_TICKING : ZPConstants.WORLD_DAY_SLOWDOWN_CYCLE_TICKING) - 1)) {
+        if (this.zpm3forge$zTick++ >= ((isNight ? ZPWorldConfig.WORLD_NIGHT_SLOWDOWN_CYCLE_TICKING.getVar() : ZPWorldConfig.WORLD_DAY_SLOWDOWN_CYCLE_TICKING.getVar()) - 1)) {
             if (this.tickTime) {
                 if (this.getLevel().getLevelData().getGameRules().getBoolean(GameRules.RULE_DAYLIGHT)) {
                     this.setDayTime(this.getLevel().getLevelData().getDayTime() + 1L);

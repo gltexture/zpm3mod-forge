@@ -15,7 +15,9 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPCombatConfig;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.modules.common.init.ZPItems;
 import ru.gltexture.zpm3.engine.core.ZPLogger;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
@@ -44,7 +46,7 @@ public class ZPItemMedicine extends ZPItem {
     protected void cooldownForMedicine(@NotNull Player player) {
         try {
             for (RegistryObject<Item> registryObject : ZPRegistryCollections.getCollectionById(ZPItems.class, "medicine")) {
-                player.getCooldowns().addCooldown(registryObject.get(), ZPConstants.MEDICINE_USE_COOLDOWN);
+                player.getCooldowns().addCooldown(registryObject.get(), ZPCombatConfig.MEDICINE_USE_COOLDOWN.getVar());
             }
         } catch (ZPRuntimeException e) {
             ZPLogger.warn(e.getMessage());

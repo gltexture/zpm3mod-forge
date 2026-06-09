@@ -22,8 +22,9 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
 import ru.gltexture.zpm3.modules.commands.zones.ZPZoneChecks;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
 import ru.gltexture.zpm3.modules.common.init.ZPEntityAttributes;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.engine.fake.ZPFakePlayer;
@@ -67,7 +68,7 @@ public class ZPZombieMiningGoal extends Goal {
     @SuppressWarnings("all")
     public static Predicate<BlockState> DEFAULT_BLOCKS_FILTER() {
         if (ZPZombieMiningGoal.blockBlackListToBreak == null) {
-            ZPZombieMiningGoal.blockBlackListToBreak = Arrays.stream(ZPConstants.ZOMBIE_BLOCK_MINING_BLACKLIST.split(";")).toList();
+            ZPZombieMiningGoal.blockBlackListToBreak = Arrays.stream(ZPZombieConfig.ZOMBIE_BLOCK_MINING_BLACKLIST.getVar().split(";")).toList();
         }
         return state -> {
             ResourceLocation id = BuiltInRegistries.BLOCK.getKey(state.getBlock());
@@ -80,10 +81,10 @@ public class ZPZombieMiningGoal extends Goal {
 
     public static Predicate<Pair<BlockPos, ZPAbstractZombie>> DEFAULT_MINING_CONDITION(final float maxBlockStrength) {
         return (p) -> {
-            if (p.first().getY() > ZPConstants.ZOMBIE_MAX_MINING_HEIGHT) {
+            if (p.first().getY() > ZPZombieConfig.ZOMBIE_MAX_MINING_HEIGHT.getVar()) {
                 return false;
             }
-            if (p.first().getY() < ZPConstants.ZOMBIE_MIN_MINING_HEIGHT) {
+            if (p.first().getY() < ZPZombieConfig.ZOMBIE_MIN_MINING_HEIGHT.getVar()) {
                 return false;
             }
             float f = maxBlockStrength;
@@ -155,7 +156,7 @@ public class ZPZombieMiningGoal extends Goal {
             return;
         }
         if (this.updateMineDirTicks-- <= 0) {
-            this.mineDir = ZMMineDir.build(this.mob, ZPConstants.ZOMBIE_HANDS_LENGTH_FOR_MINING);
+            this.mineDir = ZMMineDir.build(this.mob, ZPZombieConfig.ZOMBIE_HANDS_LENGTH_FOR_MINING.getVar());
             this.resetMaxTimeForResetMineUpdateDirTicks();
             this.resetMineDirTicks();
         }
@@ -232,7 +233,7 @@ public class ZPZombieMiningGoal extends Goal {
                     (oldVal, newVal) -> Pair.of(oldVal.first() + 1, oldVal.second())
             );
 
-            if (ZPConstants.USE_ZOMBIE_MINING_SHARED_GLOBAL_MEM) {
+            if (ZPZombieConfig.USE_ZOMBIE_MINING_SHARED_GLOBAL_MEM.getVar()) {
                 if (this.mob.level() instanceof IZPLevelExt ext) {
                     ext.zpm3forge$getGlobalBlocksDestroyMemory().addNewEntryShortMem(this.mob.level(), blockToMine, this.getMiningSpeedWithBonus(state, blockToMine, this.mob));
                 }

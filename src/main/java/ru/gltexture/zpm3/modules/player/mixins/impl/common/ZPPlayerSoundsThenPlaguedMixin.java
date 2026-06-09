@@ -11,7 +11,8 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
 import ru.gltexture.zpm3.modules.mob_effects.init.ZPMobEffects;
 import ru.gltexture.zpm3.modules.mob_effects.utils.ZPEffectUtils;
 
@@ -38,7 +39,7 @@ public abstract class ZPPlayerSoundsThenPlaguedMixin {
             return false;
         }
         int duration = effect.getDuration();
-        int maxDuration = ZPConstants.ZOMBIE_PLAGUE_VIRUS_EFFECT_TIME_TICKS;
+        int maxDuration = ZPZombieConfig.ZOMBIE_PLAGUE_VIRUS_EFFECT_TIME_TICKS.getVar();
         return duration <= maxDuration / 2;
     }
 }

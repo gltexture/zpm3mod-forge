@@ -10,8 +10,10 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPCombatConfig;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.engine.mixins.ext.IZPPlayerMixinExt;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
 import ru.gltexture.zpm3.modules.net_pack.packets.ZPSyncConfigSettings;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
@@ -34,7 +36,7 @@ public class ZPPlayerJoinOrSpawnEvent implements ZPEventClass {
         });
         if (event.getEntity() instanceof ServerPlayer sp) {
             if (sp.getAttribute(ForgeMod.ENTITY_REACH.get()) != null) {
-                Objects.requireNonNull(sp.getAttribute(ForgeMod.ENTITY_REACH.get())).setBaseValue(ZPConstants.PLAYER_DEFAULT_HAND_REACH_DISTANCE);
+                Objects.requireNonNull(sp.getAttribute(ForgeMod.ENTITY_REACH.get())).setBaseValue(ZPCombatConfig.PLAYER_DEFAULT_HAND_REACH_DISTANCE.getVar());
             }
         }
     }

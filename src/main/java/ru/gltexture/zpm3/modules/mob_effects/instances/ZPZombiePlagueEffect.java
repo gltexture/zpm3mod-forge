@@ -13,7 +13,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientMobEffectExtensions;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPCommonZombie;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 
@@ -34,7 +35,7 @@ public class ZPZombiePlagueEffect extends ZPDefaultMobEffect {
     public void applyEffectTick(@NotNull LivingEntity entity, int amplifier) {
         if (entity.getEffect(this) != null) {
             int duration = Objects.requireNonNull(entity.getEffect(this)).getDuration();
-            float percentLeft = duration / (float) ZPConstants.ZOMBIE_PLAGUE_VIRUS_EFFECT_TIME_TICKS;
+            float percentLeft = duration / (float) ZPZombieConfig.ZOMBIE_PLAGUE_VIRUS_EFFECT_TIME_TICKS.getVar();
             float progress = 1.0f - percentLeft;
 
             if (entity instanceof Player player && !entity.level().isClientSide()) {

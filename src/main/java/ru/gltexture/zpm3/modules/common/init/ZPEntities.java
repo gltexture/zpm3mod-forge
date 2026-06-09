@@ -8,9 +8,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
 import ru.gltexture.zpm3.modules.entity.instances.throwables.*;
 import ru.gltexture.zpm3.modules.entity.events.common.ZPEntityMobAttributes;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPDogZombie;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPMinerZombie;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPCommonZombie;
@@ -40,12 +41,12 @@ public class ZPEntities extends ZPRegistry<EntityType<?>> {
 
     @OnlyIn(Dist.CLIENT)
     private static void registerZombieRenderer(RegistryObject<EntityType<ZPCommonZombie>> e, ZPRegUtils utils) {
-        utils.entities().matchEntityRendering(e, c -> new ZPCommonZombieRender(c, "textures/entity/zombie_common/citizen%d.png", ZPConstants.TOTAL_COMMON_ZOMBIE_TEXTURES));
+        utils.entities().matchEntityRendering(e, c -> new ZPCommonZombieRender(c, "textures/entity/zombie_common/citizen%d.png", ZPZombieConfig.TOTAL_COMMON_ZOMBIE_TEXTURES.getVar()));
     }
 
     @OnlyIn(Dist.CLIENT)
     private static void registerMinerZombieRenderer(RegistryObject<EntityType<ZPMinerZombie>> e, ZPRegUtils utils) {
-        utils.entities().matchEntityRendering(e, c -> new ZPMinerZombieRender(c, "textures/entity/zombie_miner/miner%d.png", ZPConstants.TOTAL_MINER_ZOMBIE_TEXTURES));
+        utils.entities().matchEntityRendering(e, c -> new ZPMinerZombieRender(c, "textures/entity/zombie_miner/miner%d.png", ZPZombieConfig.TOTAL_MINER_ZOMBIE_TEXTURES.getVar()));
     }
 
     @OnlyIn(Dist.CLIENT)

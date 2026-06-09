@@ -18,7 +18,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPClientConfig;
 import ru.gltexture.zpm3.modules.debug.imgui.DearUITRSInterface;
 import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
 import ru.gltexture.zpm3.modules.guns.rendering.fx.ZPGunFXGlobalData;
@@ -185,7 +186,7 @@ public class ZPDefaultPistolRenderer extends ZPAbstractGunRenderer {
                 final boolean isRightHanded = pHand == InteractionHand.MAIN_HAND;
                 final float equippedConst = -0.6F + pEquippedProgress * -0.6F;
                 final Matrix4f transformation = new Matrix4f().identity();
-                if (ZPConstants.FIRST_PERSON_RENDER_SPACE_SCALE_BY_FOV) {
+                if (ZPClientConfig.FIRST_PERSON_RENDER_SPACE_SCALE_BY_FOV.getVar()) {
                     double f1 = ZPRenderHelper.fovItemOffset(Minecraft.getInstance().gameRenderer.getMainCamera(), pPartialTicks, pPoseStack);
                     transformation.translate(0.0f, (float) (f1 * -0.0625f), (float) (f1 * 0.25f));
                 }

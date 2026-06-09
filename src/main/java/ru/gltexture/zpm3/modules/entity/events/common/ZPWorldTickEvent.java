@@ -15,8 +15,10 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
 import ru.gltexture.zpm3.modules.commands.zones.ZPZoneChecks;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
 import ru.gltexture.zpm3.modules.entity.instances.mobs.ai.ZPZombieMiningGoal;
 import ru.gltexture.zpm3.modules.net_pack.packets.ZPBlockCrack;
 import ru.gltexture.zpm3.engine.core.ZPSide;
@@ -28,7 +30,7 @@ import ru.gltexture.zpm3.engine.service.Pair;
 import java.util.*;
 
 public class ZPWorldTickEvent implements ZPEventClass {
-    public static int MAX_ZOMBIES_IN_CHUNK = ZPConstants.MAX_ZOMBIES_SPAWN_IN_CHUNK;
+    public static int MAX_ZOMBIES_IN_CHUNK = ZPZombieConfig.MAX_ZOMBIES_SPAWN_IN_CHUNK.getVar();
     private static Map<ResourceKey<Level>, Integer> ticks = new HashMap<>();
 
     public ZPWorldTickEvent() {
@@ -78,11 +80,11 @@ public class ZPWorldTickEvent implements ZPEventClass {
             return;
         }
         if (event.level.getDifficulty() == Difficulty.HARD) {
-            ZPWorldTickEvent.MAX_ZOMBIES_IN_CHUNK = ZPConstants.MAX_ZOMBIES_SPAWN_IN_CHUNK;
+            ZPWorldTickEvent.MAX_ZOMBIES_IN_CHUNK = ZPZombieConfig.MAX_ZOMBIES_SPAWN_IN_CHUNK.getVar();
         } else if (event.level.getDifficulty() == Difficulty.NORMAL) {
-            ZPWorldTickEvent.MAX_ZOMBIES_IN_CHUNK = (int) (ZPConstants.MAX_ZOMBIES_SPAWN_IN_CHUNK * 0.8f);
+            ZPWorldTickEvent.MAX_ZOMBIES_IN_CHUNK = (int) (ZPZombieConfig.MAX_ZOMBIES_SPAWN_IN_CHUNK.getVar() * 0.8f);
         } else if (event.level.getDifficulty() == Difficulty.EASY) {
-            ZPWorldTickEvent.MAX_ZOMBIES_IN_CHUNK = (int) (ZPConstants.MAX_ZOMBIES_SPAWN_IN_CHUNK * 0.6f);
+            ZPWorldTickEvent.MAX_ZOMBIES_IN_CHUNK = (int) (ZPZombieConfig.MAX_ZOMBIES_SPAWN_IN_CHUNK.getVar() * 0.6f);
         }
         final ResourceKey<Level> dim = event.level.dimension();
         int t = ticks.getOrDefault(dim, 0) + 1;

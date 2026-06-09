@@ -12,7 +12,8 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPCombatConfig;
 import ru.gltexture.zpm3.modules.common.init.ZPDamageTypes;
 import ru.gltexture.zpm3.modules.common.init.ZPSounds;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
@@ -46,7 +47,7 @@ public class ZPEntityEffectActionsEvent implements ZPEventClass {
             }
 
             LivingEntity entity = event.getEntity();
-            if (!ZPConstants.BLEEDING_ONLY_FOR_PLAYERS || (entity instanceof Player)) {
+            if (!ZPCombatConfig.BLEEDING_ONLY_FOR_PLAYERS.getVar() || (entity instanceof Player)) {
                 boolean flag =
                         event.getSource().type().equals(ZPDamageTypes.getDamageType(serverLevel, DamageTypes.FALL).get()) ||
                                 event.getSource().type().equals(ZPDamageTypes.getDamageType(serverLevel, ZPDamageTypes.zp_bleeding).get());
@@ -57,7 +58,7 @@ public class ZPEntityEffectActionsEvent implements ZPEventClass {
                         float armorMultiplier = 1.0f - (event.getEntity().getArmorValue() / 80.0f);
                         damage *= armorMultiplier;
                         bleedingChance *= damage;
-                        bleedingChance *= ZPConstants.BLEEDING_CHANCE_MULTIPLIER;
+                        bleedingChance *= ZPCombatConfig.BLEEDING_CHANCE_MULTIPLIER.getVar();
                         int duration = (int) (600 + (600 * damage * armorMultiplier));
                         if (ZPRandom.getRandom().nextFloat() <= bleedingChance) {
                             if (ZPEffectUtils.isBleeding(entity)) {
@@ -76,7 +77,7 @@ public class ZPEntityEffectActionsEvent implements ZPEventClass {
                 if (event.getSource().type().equals(ZPDamageTypes.getDamageType(serverLevel, DamageTypes.FALL).get())) {
                     if (event.getAmount() >= 3.0f) {
                         float damNorm = event.getAmount() / 20.0f;
-                        float fractureChance = (float) (4.0f * Math.pow(damNorm, 0.4f * Math.E)) * ZPConstants.FRACTURE_CHANCE_MULTIPLIER;
+                        float fractureChance = (float) (4.0f * Math.pow(damNorm, 0.4f * Math.E)) * ZPCombatConfig.FRACTURE_CHANCE_MULTIPLIER.getVar();
                         if (ZPRandom.getRandom().nextFloat() <= fractureChance) {
                             if (ZPEffectUtils.isFractured(entity)) {
                                 event.setAmount(event.getAmount() * 2.0f);

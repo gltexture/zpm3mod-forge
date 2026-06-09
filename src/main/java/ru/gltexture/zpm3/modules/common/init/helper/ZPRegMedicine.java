@@ -5,7 +5,10 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPCombatConfig;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
 import ru.gltexture.zpm3.modules.common.init.ZPItems;
 import ru.gltexture.zpm3.modules.common.init.ZPSounds;
 import ru.gltexture.zpm3.modules.common.init.ZPTabs;
@@ -53,7 +56,7 @@ public abstract class ZPRegMedicine {
             .build();
 
     public static final FoodProperties ZPLAGUE = ZPRegMedicine.DEFAULT_MEDICINE()
-            .effect(() -> new MobEffectInstance(ZPMobEffects.zombie_plague.get(), ZPConstants.ZOMBIE_PLAGUE_VIRUS_EFFECT_TIME_TICKS), 1.0F)
+            .effect(() -> new MobEffectInstance(ZPMobEffects.zombie_plague.get(), ZPZombieConfig.ZOMBIE_PLAGUE_VIRUS_EFFECT_TIME_TICKS.getVar()), 1.0F)
             .build();
 
     public static final FoodProperties ANTIBIOTICS = ZPRegMedicine.DEFAULT_MEDICINE()

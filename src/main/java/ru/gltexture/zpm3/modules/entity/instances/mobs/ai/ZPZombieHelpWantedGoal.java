@@ -7,7 +7,8 @@ import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 
@@ -35,7 +36,7 @@ public class ZPZombieHelpWantedGoal extends Goal {
             return false;
         }
         this.zombiesWantedForHelp.removeIf(abstractZombie -> abstractZombie == null || !abstractZombie.isAlive() || abstractZombie.getTarget() == null || !abstractZombie.getTarget().equals(this.mob.getTarget()));
-        if (this.zombiesWantedForHelp.size() > ZPConstants.MAX_ENTITIES_ZOMBIE_CAN_CALL_TO_HELP) {
+        if (this.zombiesWantedForHelp.size() > ZPZombieConfig.MAX_ENTITIES_ZOMBIE_CAN_CALL_TO_HELP.getVar()) {
             return false;
         }
         if (this.ticksToAlertHelp-- <= 0 && (livingentity instanceof Player || livingentity instanceof Villager)) {
@@ -60,7 +61,7 @@ public class ZPZombieHelpWantedGoal extends Goal {
     }
 
     protected float helpAlertRange() {
-        return ZPConstants.MAX_RADIUS_ZOMBIE_CAN_CALL_FOR_HELP;
+        return ZPZombieConfig.MAX_RADIUS_ZOMBIE_CAN_CALL_FOR_HELP.getVar();
     }
 
     protected void alertOthers() {

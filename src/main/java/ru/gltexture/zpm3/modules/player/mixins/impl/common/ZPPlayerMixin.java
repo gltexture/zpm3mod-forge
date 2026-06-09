@@ -10,7 +10,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import ru.gltexture.zpm3.engine.core.ZPNetworkHandler;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPNetworkConfig;
 import ru.gltexture.zpm3.modules.common.init.ZPDamageTypes;
 import ru.gltexture.zpm3.modules.net_pack.data.ZPNetSyncDataPack;
 import ru.gltexture.zpm3.modules.net_pack.packets.ZPNetCheckPacket;
@@ -19,9 +20,6 @@ import ru.gltexture.zpm3.engine.mixins.ext.IZPPlayerMixinExt;
 
 @Mixin(Player.class)
 public abstract class ZPPlayerMixin implements IZPPlayerMixinExt {
-    @Unique
-    private static final int zpm3forge$updateConst = ZPConstants.PLAYER_PING_PACKET_FREQ;
-
     @Unique
     private int zpm3forge$ping;
 
@@ -60,7 +58,7 @@ public abstract class ZPPlayerMixin implements IZPPlayerMixinExt {
             this.zpm3forge$waitingResponse = false;
         }
         if (!this.zpm3forge$waitingResponse) {
-            if (this.zpm3forge$pingTickTime++ >= ZPPlayerMixin.zpm3forge$updateConst) {
+            if (this.zpm3forge$pingTickTime++ >= ZPNetworkConfig.PLAYER_PING_PACKET_FREQ.getVar()) {
                 ZombiePlague3.net().sendToServer(new ZPNetCheckPacket(((Player) (Object) this).getId()));
                 this.zpm3forge$lastSentTime = System.currentTimeMillis();
                 this.zpm3forge$waitingResponse = true;
@@ -95,7 +93,7 @@ public abstract class ZPPlayerMixin implements IZPPlayerMixinExt {
         if ((Object) this instanceof ServerPlayer serverPlayer) {
             long now = System.currentTimeMillis();
             this.zpm3forge$ping = (int) (now - this.zpm3forge$lastSentTime);
-            this.zpm3forge$ping -= (ZPPlayerMixin.zpm3forge$updateConst / 20) * 1000;
+            this.zpm3forge$ping -= (ZPNetworkConfig.PLAYER_PING_PACKET_FREQ.getVar() / 20) * 1000;
             ZombiePlague3.net().sendToPlayer(new ZPNetCheckPacket(((Player) (Object) this).getId()), serverPlayer);
             this.zpm3forge$lastSentTime = now;
            // this.gotPackets++;

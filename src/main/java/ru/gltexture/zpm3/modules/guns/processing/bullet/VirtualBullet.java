@@ -28,9 +28,11 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.*;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPCombatConfig;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.modules.commands.zones.ZPZoneChecks;
 import ru.gltexture.zpm3.modules.common.damage.ZPDamageSources;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
 import ru.gltexture.zpm3.modules.common.init.ZPTorchBlocks;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPCommonZombie;
@@ -72,7 +74,7 @@ public class VirtualBullet {
 
     @SuppressWarnings("all")
     private boolean isBlockFragile(@NotNull ServerLevel serverLevel, @NotNull BlockPos blockPos) {
-        if (!ZPConstants.CAN_BULLET_BREAK_BLOCK) {
+        if (!ZPWorldConfig.CAN_BULLET_BREAK_BLOCK.getVar()) {
             return false;
         }
         if (!ZPFakePlayer.canBreakBlock((ServerLevel) serverLevel, blockPos)) {
@@ -84,7 +86,7 @@ public class VirtualBullet {
         BlockState blockState = serverLevel.getBlockState(blockPos);
         {
             if (VirtualBullet.blockBlackListToBreak == null) {
-                VirtualBullet.blockBlackListToBreak = Arrays.stream(ZPConstants.BULLET_BLOCK_BREAKING_BLACKLIST.split(";")).toList();
+                VirtualBullet.blockBlackListToBreak = Arrays.stream(ZPWorldConfig.BULLET_BLOCK_BREAKING_BLACKLIST.getVar().split(";")).toList();
             }
             ResourceLocation id = BuiltInRegistries.BLOCK.getKey(blockState.getBlock());
             if (VirtualBullet.blockBlackListToBreak.stream().anyMatch(e -> e.equals(id.toString()))) {
@@ -93,7 +95,7 @@ public class VirtualBullet {
         }
         if (blockState.getBlock().soundType.equals(SoundType.GLASS)) {
             float hardness = blockState.getDestroySpeed(serverLevel, blockPos);
-            if (hardness >= 0 && hardness <= ZPConstants.MAX_BULLET_HIT_BLOCK_HARDNESS) {
+            if (hardness >= 0 && hardness <= ZPCombatConfig.MAX_BULLET_HIT_BLOCK_HARDNESS.getVar()) {
                 return true;
             }
         }
@@ -128,7 +130,7 @@ public class VirtualBullet {
         VirtualBulletHitResult hitResult = null;
         Vector3f localStart = new Vector3f(startPoint);
         Vector3f localEnd = new Vector3f(potentialEndPoint);
-        for (int i = 0; i < ZPConstants.MAX_BULLET_BLOCK_HITS; i++) {
+        for (int i = 0; i < ZPCombatConfig.MAX_BULLET_BLOCK_HITS.getVar(); i++) {
             BlockHitResult blockHitResult = this.clip(level, new ClipContext(
                     new Vec3(localStart),
                     new Vec3(localEnd),
@@ -221,7 +223,7 @@ public class VirtualBullet {
     }
 
     public static boolean isHeadshot(Entity entity, Vec3 hitPoint) {
-        if (ZPConstants.BULLET_HEADSHOT_BONUS_DAMAGE <= 0) {
+        if (ZPCombatConfig.BULLET_HEADSHOT_BONUS_DAMAGE.getVar() <= 0) {
             return false;
         }
         if (!(entity instanceof Player) && !(entity instanceof Villager) && !(entity instanceof ZPCommonZombie) && !(entity instanceof ZPMinerZombie)) {
@@ -237,7 +239,7 @@ public class VirtualBullet {
     private float damageEntity(boolean isHeadshot, @NotNull Vec3 hitPoint, @NotNull Level level, @NotNull Entity entityToDamage, @NotNull Entity attacker, float amount) {
         float damage = amount * this.getBulletReductionMultiplier(entityToDamage);
         if (isHeadshot) {
-            damage += ZPConstants.BULLET_HEADSHOT_BONUS_DAMAGE;
+            damage += ZPCombatConfig.BULLET_HEADSHOT_BONUS_DAMAGE.getVar();
         }
         if (!(entityToDamage instanceof ZPAbstractZombie)) {
             if (entityToDamage instanceof Animal) {
@@ -263,7 +265,7 @@ public class VirtualBullet {
                     reduction += materialReduction;
                 }
             }
-            return Math.max(0.0f, 1.0f - ((reduction / 20.0f) * ZPConstants.ARMOR_BULLET_DAMAGE_REDUCTION_MULTIPLIER));
+            return Math.max(0.0f, 1.0f - ((reduction / 20.0f) * ZPCombatConfig.ARMOR_BULLET_DAMAGE_REDUCTION_MULTIPLIER.getVar()));
         }
         return 1.0f;
     }

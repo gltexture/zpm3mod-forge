@@ -16,9 +16,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
 import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
 import ru.gltexture.zpm3.engine.client.rendering.crosshair.ZPClientCrosshairRecoilManager;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPClientConfig;
 
 @Mixin(GameRenderer.class)
 public class ZPGameRendererFovFixMixin {
@@ -45,7 +46,7 @@ public class ZPGameRendererFovFixMixin {
 
     @Inject(method = "renderItemInHand", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;pushPose()V", shift = At.Shift.AFTER))
     private void renderItemInHand(PoseStack pPoseStack, Camera pActiveRenderInfo, float pPartialTicks, CallbackInfo ci) {
-        if (ZPConstants.FIRST_PERSON_RENDER_SPACE_SCALE_BY_FOV) {
+        if (ZPClientConfig.FIRST_PERSON_RENDER_SPACE_SCALE_BY_FOV.getVar()) {
             double f1 = ZPRenderHelper.fovItemOffset(Minecraft.getInstance().gameRenderer.getMainCamera(), pPartialTicks, pPoseStack) * 0.5f;
             pPoseStack.translate(0.0f, f1 * -0.0625f, f1 * 0.25f);
         }
@@ -53,7 +54,7 @@ public class ZPGameRendererFovFixMixin {
 
     @Inject(method = "getFov", at = @At("HEAD"), cancellable = true)
     private void getFov(Camera pActiveRenderInfo, float pPartialTicks, boolean pUseFOVSetting, CallbackInfoReturnable<Double> cir) {
-        if (ZPConstants.FIRST_PERSON_RENDER_SPACE_SCALE_BY_FOV) {
+        if (ZPClientConfig.FIRST_PERSON_RENDER_SPACE_SCALE_BY_FOV.getVar()) {
             if (this.panoramicMode) {
                 cir.setReturnValue(90.0D);
             } else {

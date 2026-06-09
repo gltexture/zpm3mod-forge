@@ -10,7 +10,8 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
 import ru.gltexture.zpm3.modules.common.init.ZPEntityAttributes;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
@@ -55,7 +56,7 @@ public class ZPZombieThrowAGiftGoal extends Goal {
             this.throwAGiftChance = this.zombiesAroundMul * this.getThrowChance(this.mob);
             float defaultCooldown = 400;
             defaultCooldown -= 250 * (1.0f - this.throwAGiftChance);
-            defaultCooldown *= ZPConstants.ZOMBIE_THROW_A_GIFT_TRY_COOLDOWN_MULTIPLIER;
+            defaultCooldown *= ZPZombieConfig.ZOMBIE_THROW_A_GIFT_TRY_COOLDOWN_MULTIPLIER.getVar();
             this.ticksBeforeThrowSomething = (int) (defaultCooldown + ZPRandom.getRandom().nextInt(101));
             return ZPRandom.getRandom().nextFloat() <= this.throwAGiftChance;
         }

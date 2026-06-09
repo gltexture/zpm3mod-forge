@@ -23,9 +23,11 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPClientConfig;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.modules.net_pack.data.DefaultDataKeys;
 import ru.gltexture.zpm3.modules.player.events.client.ZPRenderWorldEventWithPickUpCheck;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
 import ru.gltexture.zpm3.modules.player.keybind.ZPPickUpKeyBindings;
 import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
 import ru.gltexture.zpm3.modules.guns.item.ZPGunPistol;
@@ -70,7 +72,7 @@ public class ZPRenderEntityItem extends ItemEntityRenderer {
     @Override
     public void render(@NotNull ItemEntity pEntity, float pEntityYaw, float pPartialTicks, @NotNull PoseStack pPoseStack, @NotNull MultiBufferSource pBuffer, int pPackedLight) {
         float scale = 0.0f;
-        if (ZPConstants.FANCY_ITEM_ENTITIES) {
+        if (ZPClientConfig.FANCY_ITEM_ENTITIES.getVar()) {
             pPoseStack.pushPose();
             ItemStack itemstack = pEntity.getItem();
             int itemId = Item.getId(itemstack.getItem()) * pEntity.getId();
@@ -121,8 +123,8 @@ public class ZPRenderEntityItem extends ItemEntityRenderer {
         } else {
             super.render(pEntity, pEntityYaw, pPartialTicks, pPoseStack, pBuffer, pPackedLight);
         }
-        final boolean pickUpOnKey = ZombiePlague3.getClient_netSyncDataPack().getBoolean(DefaultDataKeys.StoC__SERVER_PICK_UP_ON_F, ZPConstants.PICK_UP_ON_F);
-        if (ZPConstants.PICK_UP_ON_F && pickUpOnKey && ZPRenderWorldEventWithPickUpCheck.entityToPickUp != null && ZPRenderWorldEventWithPickUpCheck.entityToPickUp.equals(pEntity)) {
+        final boolean pickUpOnKey = ZombiePlague3.getClient_netSyncDataPack().getBoolean(DefaultDataKeys.StoC__SERVER_PICK_UP_ON_F, ZPWorldConfig.PICK_UP_ON_F.getVar());
+        if (ZPWorldConfig.PICK_UP_ON_F.getVar() && pickUpOnKey && ZPRenderWorldEventWithPickUpCheck.entityToPickUp != null && ZPRenderWorldEventWithPickUpCheck.entityToPickUp.equals(pEntity)) {
             this.renderPickUpTip(pEntity, pPoseStack, pBuffer, 0.0f);
         }
     }

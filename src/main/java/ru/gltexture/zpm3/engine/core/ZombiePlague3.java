@@ -35,13 +35,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+import ru.gltexture.zpm3.engine.core.config.ZPConfigConstantsClass;
+import ru.gltexture.zpm3.engine.core.config.ZPConfigManager;
+import ru.gltexture.zpm3.engine.core.config.builtin.*;
 import ru.gltexture.zpm3.modules.entity.population.ZPSetupPopulation;
 import ru.gltexture.zpm3.modules.loot_cases.registry.ZPLootTablesRegistry;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPDefaultShaders;
 import ru.gltexture.zpm3.engine.core.module.ZPModule;
 import ru.gltexture.zpm3.engine.core.module.ZPModuleData;
-import ru.gltexture.zpm3.engine.core.config.ZPConfigurator;
 import ru.gltexture.zpm3.engine.helpers.ZPTiersRegistryHelper;
 import ru.gltexture.zpm3.engine.instances.items.tier.ZPTier;
 import ru.gltexture.zpm3.engine.population.ZPPopulationController;
@@ -88,15 +89,15 @@ public final class ZombiePlague3 {
     private final List<ZPModule> assets;
     private ZPNetwork zpNetwork;
     private static ZPPopulationController populationController;
-    private static ZPConfigurator configurator;
     private static ZPRecipesController recipesController;
+    private static ZPConfigManager zpConfigManager;
 
     @OnlyIn(Dist.CLIENT) private static ZPNetSyncDataPack client_netSyncDataPack;
 
     static {
         ZombiePlague3.populationController = new ZPPopulationController();
-        ZombiePlague3.configurator = new ZPConfigurator();
         ZombiePlague3.recipesController = new ZPRecipesController();
+        ZombiePlague3.zpConfigManager = new ZPConfigManager();
     }
 
     private static boolean commonInitSwitch = true;
@@ -127,6 +128,12 @@ public final class ZombiePlague3 {
         ZPLogger.info(this + " INIT");
         final IEventBus modEventBus = ZombiePlague3.getModEventBus();
         this.createNet();
+
+        {
+            ZombiePlague3.processCoreConfiguration();
+            ZombiePlague3.processDefaultConfigurations();
+        }
+
         this.initModules();
         this.registerTiers();
         modEventBus.addListener(this::fml_commonSetupEvent);
@@ -137,17 +144,8 @@ public final class ZombiePlague3 {
         });
         ZPLogger.info(this + " END INIT");
     }
-
-    public static void registerConfigClass(@NotNull ZPConfigurator.ZPClassWithConfConstants zpClassWithConfConstants) {
-        ZombiePlague3.configurator.addClass(zpClassWithConfConstants);
-    }
-
     public static void registerKeyBindings(@NotNull ZPKeyBindingsManager keyBindingsManager) {
         ZPKeyBindingsRegistryHelper.addNewKeybinding(keyBindingsManager);
-    }
-
-    public static void processConfigurations() {
-        ZombiePlague3.configurator.processConfiguration(new ZPPath(FMLPaths.GAMEDIR.get().toString(), ZombiePlague3.ZP_MAIN_DIR));
     }
 
     public static void registerTier(@NotNull ZPTierData tier) {
@@ -158,11 +156,39 @@ public final class ZombiePlague3 {
         deferredRegister.register(ZombiePlague3.getModEventBus());
     }
 
+    private static void processCoreConfiguration() {
+        try {
+            ZombiePlague3.zpConfigManager.processConfigConstants(new ZPPath(FMLPaths.GAMEDIR.get().toString(), ZombiePlague3.ZP_MAIN_DIR), "core", ZPCoreConfig.class);
+        } catch (IllegalAccessException | IOException e) {
+            throw new ZPIOException(e);
+        }
+    }
+
+    private static void processDefaultConfigurations() {
+        try {
+            ZombiePlague3.zpConfigManager.processConfigConstants(new ZPPath(FMLPaths.GAMEDIR.get().toString(), ZombiePlague3.ZP_MAIN_DIR), "client", ZPClientConfig.class);
+            ZombiePlague3.zpConfigManager.processConfigConstants(new ZPPath(FMLPaths.GAMEDIR.get().toString(), ZombiePlague3.ZP_MAIN_DIR), "combat", ZPCombatConfig.class);
+            ZombiePlague3.zpConfigManager.processConfigConstants(new ZPPath(FMLPaths.GAMEDIR.get().toString(), ZombiePlague3.ZP_MAIN_DIR), "network", ZPNetworkConfig.class);
+            ZombiePlague3.zpConfigManager.processConfigConstants(new ZPPath(FMLPaths.GAMEDIR.get().toString(), ZombiePlague3.ZP_MAIN_DIR), "world", ZPWorldConfig.class);
+            ZombiePlague3.zpConfigManager.processConfigConstants(new ZPPath(FMLPaths.GAMEDIR.get().toString(), ZombiePlague3.ZP_MAIN_DIR), "zombie", ZPZombieConfig.class);
+        } catch (IllegalAccessException | IOException e) {
+            throw new ZPIOException(e);
+        }
+    }
+
+    public static void processConfiguration(ZPModule zpModule, Class<ZPConfigConstantsClass> clazz) {
+        try {
+            ZombiePlague3.zpConfigManager.processConfigConstants(new ZPPath(FMLPaths.GAMEDIR.get().toString(), ZombiePlague3.ZP_MAIN_DIR), zpModule.getModuleData().name(), clazz);
+        } catch (IllegalAccessException | IOException e) {
+            throw new ZPIOException(e);
+        }
+    }
+
     public static class ZPDevOverlay {
         @OnlyIn(Dist.CLIENT)
         @SubscribeEvent
         public void onRenderGui(RenderGuiOverlayEvent.Post event) {
-            if (ZPConstants.SHOW_VERSION_INFO_ON_SCREEN) {
+            if (ZPClientConfig.SHOW_VERSION_INFO_ON_SCREEN.getVar()) {
                 Minecraft mc = Minecraft.getInstance();
                 String text = "ZP3 Dev Preview" + " | " + ZombiePlague3.MOD_VERSION();
                 if (!ZombiePlague3.DEV_PREVIEW) {
@@ -188,10 +214,6 @@ public final class ZombiePlague3 {
 
         for (ZPModule zpModule : this.assets) {
             zpModule.preInitialize();
-        }
-
-        {
-            ZombiePlague3.processConfigurations();
         }
 
         for (ZPModule zpModule : this.assets) {
@@ -407,10 +429,6 @@ public final class ZombiePlague3 {
 
     public static ZPPopulationController getPopulationController() {
         return ZombiePlague3.populationController;
-    }
-
-    public static ZPConfigurator getConfigurator() {
-        return configurator;
     }
 
     public static ZPRecipesController getRecipesController() {

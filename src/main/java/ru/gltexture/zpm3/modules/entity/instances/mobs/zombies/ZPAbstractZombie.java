@@ -45,8 +45,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
 import ru.gltexture.zpm3.modules.commands.zones.ZPZoneChecks;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
 import ru.gltexture.zpm3.modules.common.init.ZPDamageTypes;
 import ru.gltexture.zpm3.modules.common.init.ZPEntityAttributes;
 import ru.gltexture.zpm3.modules.common.instances.blocks.ZPAntiZombie;
@@ -92,12 +93,12 @@ public abstract class ZPAbstractZombie extends Monster {
     public static boolean isDarkEnoughToSpawn(ServerLevelAccessor pLevel, @NotNull BlockPos pPos, RandomSource pRandom) {
         DimensionType dimensiontype = pLevel.dimensionType();
         int j = pLevel.getLevel().isThundering() ? pLevel.getMaxLocalRawBrightness(pPos, 10) : pLevel.getMaxLocalRawBrightness(pPos);
-        return (j - ZPConstants.ZOMBIE_BRIGHTNESS_SPAWN_SENSITIVITY_REDUCE) <= dimensiontype.monsterSpawnLightTest().sample(pRandom);
+        return (j - ZPZombieConfig.ZOMBIE_BRIGHTNESS_SPAWN_SENSITIVITY_REDUCE.getVar()) <= dimensiontype.monsterSpawnLightTest().sample(pRandom);
     }
 
     @SuppressWarnings("all")
     public static boolean checkZombieSpawnRules(@NotNull EntityType<? extends Monster> pType, ServerLevelAccessor pLevel, @NotNull MobSpawnType pSpawnType, @NotNull BlockPos pPos, @NotNull RandomSource pRandom) {
-        float f1 = ZPConstants.ZOMBIE_SPAWN_AT_DAY_TIME_CHANCE;
+        float f1 = ZPZombieConfig.ZOMBIE_SPAWN_AT_DAY_TIME_CHANCE.getVar();
         if (pLevel.getDifficulty() == Difficulty.NORMAL) {
             f1 *= 0.5f;
         } else  if (pLevel.getDifficulty() == Difficulty.EASY) {
@@ -153,12 +154,12 @@ public abstract class ZPAbstractZombie extends Monster {
             this.attackTicks -= 1;
 
             if (this.getTarget() != null) {
-                if (this.stopDespawning < ZPConstants.ZOMBIE_MAX_ANGRY_PERSISTENCE_TICKS) {
+                if (this.stopDespawning < ZPZombieConfig.ZOMBIE_MAX_ANGRY_PERSISTENCE_TICKS.getVar()) {
                     this.stopDespawning += 1;
                 }
             } else {
-                if (ZPConstants.ZOMBIE_STOP_DESPAWNING_IF_HAS_IMPORTANT_LOOT && this.hasImportantLoot()) {
-                    this.stopDespawning = ZPConstants.ZOMBIE_MAX_ANGRY_PERSISTENCE_TICKS;
+                if (ZPZombieConfig.ZOMBIE_STOP_DESPAWNING_IF_HAS_IMPORTANT_LOOT.getVar() && this.hasImportantLoot()) {
+                    this.stopDespawning = ZPZombieConfig.ZOMBIE_MAX_ANGRY_PERSISTENCE_TICKS.getVar();
                 } else {
                     if (this.stopDespawning > 0) {
                         this.stopDespawning -= 1;
@@ -166,7 +167,7 @@ public abstract class ZPAbstractZombie extends Monster {
                 }
             }
             if (this.isEating()) {
-                if (this.eatingTime++ >= ZPConstants.ZOMBIE_EATING_TIME) {
+                if (this.eatingTime++ >= ZPZombieConfig.ZOMBIE_EATING_TIME.getVar()) {
                     ItemStack stack = this.getMainHandItem();
                     if (!stack.isEmpty()) {
                         this.heal(stack.getItem().equals(Items.ROTTEN_FLESH) ? 4.0f : 2.0f);
@@ -261,7 +262,7 @@ public abstract class ZPAbstractZombie extends Monster {
 
     public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
         if (this.level() instanceof ServerLevel serverLevel && pSource.type().equals(ZPDamageTypes.getDamageType(serverLevel, ZPDamageTypes.zp_bullet).get())) {
-            pAmount *= ZPConstants.ZOMBIE_BULLET_DAMAGE_MULTIPLIER;
+            pAmount *= ZPZombieConfig.ZOMBIE_BULLET_DAMAGE_MULTIPLIER.getVar();
         }
         if (!super.hurt(pSource, pAmount)) {
             return false;
@@ -412,17 +413,17 @@ public abstract class ZPAbstractZombie extends Monster {
 
     @Override
     public boolean canHoldItem(@NotNull ItemStack pStack) {
-        return ZPConstants.ZOMBIE_CAN_PICK_UP_LOOT;
+        return ZPZombieConfig.ZOMBIE_CAN_PICK_UP_LOOT.getVar();
     }
 
     @Override
     public boolean wantsToPickUp(@NotNull ItemStack pStack) {
-        return ZPConstants.ZOMBIE_CAN_PICK_UP_LOOT;
+        return ZPZombieConfig.ZOMBIE_CAN_PICK_UP_LOOT.getVar();
     }
 
     @Override
     public boolean canPickUpLoot() {
-        return ZPConstants.ZOMBIE_CAN_PICK_UP_LOOT;
+        return ZPZombieConfig.ZOMBIE_CAN_PICK_UP_LOOT.getVar();
     }
 
     @Override
@@ -525,8 +526,8 @@ public abstract class ZPAbstractZombie extends Monster {
             return;
         }
 
-        if (entity instanceof Player && ZPRandom.getRandom().nextFloat() <= 0.03f * ZPConstants.ZOMBIE_PLAGUE_EFFECT_CHANCE_MULTIPLIER) {
-            entity.addEffect(new MobEffectInstance(ZPMobEffects.zombie_plague.get(), ZPConstants.ZOMBIE_PLAGUE_VIRUS_EFFECT_TIME_TICKS, 0, false, false));
+        if (entity instanceof Player && ZPRandom.getRandom().nextFloat() <= 0.03f * ZPZombieConfig.ZOMBIE_PLAGUE_EFFECT_CHANCE_MULTIPLIER.getVar()) {
+            entity.addEffect(new MobEffectInstance(ZPMobEffects.zombie_plague.get(), ZPZombieConfig.ZOMBIE_PLAGUE_VIRUS_EFFECT_TIME_TICKS.getVar(), 0, false, false));
         }
 
         float roll = ZPRandom.getRandom().nextFloat();

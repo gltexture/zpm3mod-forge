@@ -9,7 +9,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.modules.entity.mixins.ext.IPlayerZmTargetsExt;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
@@ -179,7 +180,7 @@ public class ZPZombieNearestAttackableTarget extends Goal {
     }
 
     protected float getReducedFollowDistanceForXRay() {
-        return (float) (this.getFollowDistance() * 0.575f) * ZPConstants.ZOMBIE_XRAY_LOOK_DIST_MULTIPLIER;
+        return (float) (this.getFollowDistance() * 0.575f) * ZPZombieConfig.ZOMBIE_XRAY_LOOK_DIST_MULTIPLIER.getVar();
     }
 
     @Nullable

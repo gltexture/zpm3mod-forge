@@ -13,7 +13,9 @@ import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.AABB;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPCommonZombie;
 import ru.gltexture.zpm3.modules.entity.mixins.ext.IPlayerZmTargetsExt;
@@ -145,7 +147,7 @@ public abstract class ZPPathFindingGoal extends Goal {
             */
 
             if (!flag) {
-                int updTicks = (int) (0.5f * Math.pow(distanceInBlocksToEntity, ZPConstants.ZOMBIE_PATH_UPDATE_COOLDOWN_PUNISHMENT_GRADE));
+                int updTicks = (int) (0.5f * Math.pow(distanceInBlocksToEntity, ZPZombieConfig.ZOMBIE_PATH_UPDATE_COOLDOWN_PUNISHMENT_GRADE.getVar()));
                 updTicks *= (int) (1.0f / this.speedModifier);
                 if (this.timeBeforeNextRecalculation-- <= 0) {
                     if (!this.followEvenNotSeeTarget && !this.mob.getSensing().hasLineOfSight(livingentity)) {

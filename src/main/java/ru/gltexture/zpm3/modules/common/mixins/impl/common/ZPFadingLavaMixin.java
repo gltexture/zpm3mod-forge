@@ -18,7 +18,9 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPClientConfig;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.modules.common.init.ZPBlockEntities;
 import ru.gltexture.zpm3.modules.common.instances.block_entities.ZPFadingBlockEntity;
 import ru.gltexture.zpm3.modules.common.instances.blocks.torch.IFadingBlock;
@@ -34,7 +36,7 @@ public abstract class ZPFadingLavaMixin implements EntityBlock, IFadingBlock, IH
 
     @Override
     public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState) {
-        return !ZPConstants.FADING_LAVAS ? null : new ZPFadingBlockEntity(pPos, pState, ZPConstants.LAVA_FADING_TIME, false);
+        return !ZPWorldConfig.FADING_LAVAS.getVar() ? null : new ZPFadingBlockEntity(pPos, pState, ZPWorldConfig.LAVA_FADING_TIME.getVar(), false);
     }
 
     @Override
@@ -42,7 +44,7 @@ public abstract class ZPFadingLavaMixin implements EntityBlock, IFadingBlock, IH
         if (!pState.getBlock().equals(Blocks.LAVA) || !this.getFluid().isSource(this.getFluidState(pState))) {
             return null;
         }
-        return !ZPConstants.FADING_LAVAS ? null : ZPFadingTorchBlock.createTickerHelper(pBlockEntityType, ZPBlockEntities.fading_block_entity.get(), ZPFadingBlockEntity::tick);
+        return !ZPWorldConfig.FADING_LAVAS.getVar() ? null : ZPFadingTorchBlock.createTickerHelper(pBlockEntityType, ZPBlockEntities.fading_block_entity.get(), ZPFadingBlockEntity::tick);
     }
 
     @Inject(method = "randomTick", at = @At("HEAD"))

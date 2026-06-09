@@ -12,7 +12,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.modules.common.init.ZPBlockEntities;
 import ru.gltexture.zpm3.modules.common.instances.block_entities.ZPFadingBlockEntity;
 import ru.gltexture.zpm3.modules.common.instances.blocks.torch.IFadingBlock;
@@ -25,7 +26,7 @@ import java.util.function.Supplier;
 public class ZPFadingPumpkinMixin implements EntityBlock, IFadingBlock, ITorchPlayerExt {
     @Override
     public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState) {
-        return !ZPConstants.FADING_PUMPKINS ? null : new ZPFadingBlockEntity(pPos, pState, ZPConstants.PUMPKIN_FADING_TIME, true);
+        return !ZPWorldConfig.FADING_PUMPKINS.getVar() ? null : new ZPFadingBlockEntity(pPos, pState, ZPWorldConfig.PUMPKIN_FADING_TIME.getVar(), true);
     }
 
     @Override
@@ -33,7 +34,7 @@ public class ZPFadingPumpkinMixin implements EntityBlock, IFadingBlock, ITorchPl
         if (!pState.getBlock().equals(Blocks.JACK_O_LANTERN)) {
             return null;
         }
-        return !ZPConstants.FADING_PUMPKINS ? null : ZPFadingTorchBlock.createTickerHelper(pBlockEntityType, ZPBlockEntities.fading_block_entity.get(), ZPFadingBlockEntity::tick);
+        return !ZPWorldConfig.FADING_PUMPKINS.getVar() ? null : ZPFadingTorchBlock.createTickerHelper(pBlockEntityType, ZPBlockEntities.fading_block_entity.get(), ZPFadingBlockEntity::tick);
     }
 
     @Override

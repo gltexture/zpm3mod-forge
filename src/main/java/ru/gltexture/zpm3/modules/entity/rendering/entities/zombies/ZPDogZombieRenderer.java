@@ -9,7 +9,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPDogZombie;
 import ru.gltexture.zpm3.modules.entity.rendering.entities.layers.ZPDogZombieItemLayer;
 import ru.gltexture.zpm3.modules.entity.rendering.entities.models.ZPCommonDogZombieModel;
@@ -27,7 +28,7 @@ public class ZPDogZombieRenderer extends MobRenderer<ZPDogZombie, ZPCommonDogZom
         this.addLayer(new ZPDogZombieItemLayer(this, p_174452_.getItemInHandRenderer()));
 
         this.ZOMBIE_LOCATION = new ArrayList<>();
-        for (int i = 0; i < ZPConstants.TOTAL_COMMON_ZOMBIE_TEXTURES; i++) {
+        for (int i = 0; i < ZPZombieConfig.TOTAL_COMMON_ZOMBIE_TEXTURES.getVar(); i++) {
             this.ZOMBIE_LOCATION.add(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), String.format("textures/entity/zombie_dog/wolf%d.png", i)));
         }
     }

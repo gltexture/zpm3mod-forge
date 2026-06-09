@@ -2,7 +2,8 @@ package ru.gltexture.zpm3.modules.entity.mixins.ext;
 
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
 
 import java.util.Iterator;
@@ -25,7 +26,7 @@ public interface IPlayerZmTargetsExt {
             return true;
         }
         List<ZPAbstractZombie> list = this.zpm3forge$angryZombies();
-        int max = ZPConstants.MAX_ZOMBIES_TARGETED_ON_PLAYER;
+        int max = ZPZombieConfig.MAX_ZOMBIES_TARGETED_ON_PLAYER.getVar();
         if (list.size() < max) {
             list.add(zombie);
             this.sortByDistance();
@@ -33,7 +34,7 @@ public interface IPlayerZmTargetsExt {
         }
         ZPAbstractZombie farthest = list.get(list.size() - 1);
         float distDiff = this.dist(zombie) - this.dist(farthest);
-        float minDist = list.size() == 1 ? -1.0f : Math.min(this.dist(list.get(0)) * ZPConstants.CLOSEST_ZOMBIE_SWAP_TARGET_PERCENTAGE, 8.0f);
+        float minDist = list.size() == 1 ? -1.0f : Math.min(this.dist(list.get(0)) * ZPZombieConfig.CLOSEST_ZOMBIE_SWAP_TARGET_PERCENTAGE.getVar(), 8.0f);
         if (distDiff < -minDist) {
             list.remove(list.size() - 1);
             this.zpm3forge$angryZombiesRegistrySet().remove(farthest);
@@ -53,7 +54,7 @@ public interface IPlayerZmTargetsExt {
             return true;
         }
         List<ZPAbstractZombie> list = this.zpm3forge$angryZombies();
-        int max = ZPConstants.MAX_ZOMBIES_TARGETED_ON_PLAYER;
+        int max = ZPZombieConfig.MAX_ZOMBIES_TARGETED_ON_PLAYER.getVar();
         if (list.size() < max) {
             return true;
         }

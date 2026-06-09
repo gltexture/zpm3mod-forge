@@ -7,7 +7,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
+
 
 @Mixin(AbstractCookingRecipe.class)
 public class ZPCookingRecipeMixin {
@@ -15,6 +16,6 @@ public class ZPCookingRecipeMixin {
 
     @Inject(method = "getCookingTime", at = @At("HEAD"), cancellable = true)
     private void getCookingTime(CallbackInfoReturnable<Integer> cir) {
-        cir.setReturnValue((int) (this.cookingTime * ZPConstants.ZP_COOKING_TIME_MULTIPLIER));
+        cir.setReturnValue((int) (this.cookingTime * ZPWorldConfig.ZP_COOKING_TIME_MULTIPLIER.getVar()));
     }
 }

@@ -11,7 +11,8 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPClientConfig;
+
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -29,7 +30,7 @@ public final class ZPBulletTracerManager {
     }
 
     public boolean addNew(@NotNull Vector3f start, @NotNull Vector3f end) {
-        if (!ZPConstants.RENDER_BULLET_TRACERS) {
+        if (!ZPClientConfig.RENDER_BULLET_TRACERS.getVar()) {
             return false;
         }
         if (start.distance(end) <= 8.0f) {

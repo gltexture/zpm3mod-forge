@@ -15,7 +15,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.modules.common.init.ZPBlockEntities;
 import ru.gltexture.zpm3.modules.common.init.ZPTorchBlocks;
 import ru.gltexture.zpm3.modules.common.instances.block_entities.ZPFadingBlockEntity;
@@ -29,7 +30,7 @@ import java.util.function.Supplier;
 public class ZPFadingTorchMixin implements EntityBlock, IFadingBlock, ITorchPlayerExt {
     @Override
     public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState) {
-        return !ZPConstants.FADING_TORCHES ? null : new ZPFadingBlockEntity(pPos, pState, ZPConstants.TORCH_FADING_TIME, true);
+        return !ZPWorldConfig.FADING_TORCHES.getVar() ? null : new ZPFadingBlockEntity(pPos, pState, ZPWorldConfig.TORCH_FADING_TIME.getVar(), true);
     }
 
     @Override
@@ -37,7 +38,7 @@ public class ZPFadingTorchMixin implements EntityBlock, IFadingBlock, ITorchPlay
         if (!pState.getBlock().equals(Blocks.TORCH) && !pState.getBlock().equals(Blocks.WALL_TORCH)) {
             return null;
         }
-        return !ZPConstants.FADING_TORCHES ? null : ZPFadingTorchBlock.createTickerHelper(pBlockEntityType, ZPBlockEntities.fading_block_entity.get(), ZPFadingBlockEntity::tick);
+        return !ZPWorldConfig.FADING_TORCHES.getVar() ? null : ZPFadingTorchBlock.createTickerHelper(pBlockEntityType, ZPBlockEntities.fading_block_entity.get(), ZPFadingBlockEntity::tick);
     }
 
     @Override

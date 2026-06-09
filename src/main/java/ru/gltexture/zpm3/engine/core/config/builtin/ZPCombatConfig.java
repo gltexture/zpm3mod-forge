@@ -1,0 +1,107 @@
+package ru.gltexture.zpm3.engine.core.config.builtin;
+
+import ru.gltexture.zpm3.engine.core.config.ZPConfigConstantsClass;
+import ru.gltexture.zpm3.engine.core.config.vars.*;
+
+public class ZPCombatConfig implements ZPConfigConstantsClass {
+
+    @ZPVarDefinition(description = "Randomized poison effect, then fry food has been eaten.")
+    public static final ZPConfig_FLOAT RANDOM_FRY_FOOD_POSIONING =
+            new ZPConfig_FLOAT(1.0f);
+
+    @ZPVarDefinition(description = "Default hand reach for players measured in blocks used for melee interaction logic.")
+    public static final ZPConfig_FLOAT PLAYER_DEFAULT_HAND_REACH_DISTANCE =
+            new ZPConfig_FLOAT(2.375f);
+
+    @ZPVarDefinition(description = "Multiplier used to reduce damage taken from bullets based on armor. 1.0 = no reduction, 0 = full reduction.")
+    public static final ZPConfig_FLOAT ARMOR_BULLET_DAMAGE_REDUCTION_MULTIPLIER =
+            new ZPConfig_FLOAT(0.75f, ZPConfigVar.FLOAT, 0.0f, 1.0f);
+
+    @ZPVarDefinition(description = "If enabled, only players can receive bleeding debuffs from attacks")
+    public static final ZPConfig_BOOL BLEEDING_ONLY_FOR_PLAYERS =
+            new ZPConfig_BOOL(false);
+
+    @ZPVarDefinition(description = "Multiplier that increases the chance of fracture. 1.0 = default fracture probability, 0 = fractures disabled.")
+    public static final ZPConfig_FLOAT FRACTURE_CHANCE_MULTIPLIER =
+            new ZPConfig_FLOAT(1.0f, ZPConfigVar.FLOAT, 0.0f, 1.0f);
+
+    @ZPVarDefinition(description = "Multiplier for the chance to inflict bleeding. 1.0 = default chance, 0 = disables bleeding, 5.0 = 5× more likely.")
+    public static final ZPConfig_FLOAT BLEEDING_CHANCE_MULTIPLIER =
+            new ZPConfig_FLOAT(1.0f, ZPConfigVar.FLOAT, 0.0f, 5.0f);
+
+    @ZPVarDefinition(description = "Acid inventory damage tick rate.")
+    public static final ZPConfig_INT ACID_DAMAGE_TICK_RATE =
+            new ZPConfig_INT(5);
+
+    @ZPVarDefinition(description = "Duration in ticks for acid bottle debuff (inventory breaking + damage) applied when hitting an entity directly.")
+    public static final ZPConfig_INT ACID_BOTTLE_DIRECT_HIT_AFFECT_TIME =
+            new ZPConfig_INT(100);
+
+    @ZPVarDefinition(description = "Acid bottle splash radius.")
+    public static final ZPConfig_FLOAT ACID_BOTTLE_SPLASH_RADIUS =
+            new ZPConfig_FLOAT(1.5f);
+
+    @ZPVarDefinition(description = "Duration in ticks for acid bottle splash debuff (inventory breaking + damage). Set to 0 to disable splash effect.")
+    public static final ZPConfig_INT ACID_BOTTLE_SPLASH_HIT_MAX_AFFECT_TIME =
+            new ZPConfig_INT(80);
+
+    @ZPVarDefinition(description = "Base damage dealt to entity on direct hit.")
+    public static final ZPConfig_FLOAT ACID_BOTTLE_DAMAGE =
+            new ZPConfig_FLOAT(2.0f);
+
+    @ZPVarDefinition(description = "Base damage dealt to inventory items by acid.")
+    public static final ZPConfig_INT ACID_INVENTORY_DAMAGE =
+            new ZPConfig_INT(4);
+
+    @ZPVarDefinition(description = "Base damage dealt by a thrown plate when hitting an entity.")
+    public static final ZPConfig_FLOAT PLATE_DAMAGE =
+            new ZPConfig_FLOAT(1.0f);
+
+    @ZPVarDefinition(description = "Base damage dealt by a thrown brick when hitting an entity.")
+    public static final ZPConfig_FLOAT BRICK_DAMAGE =
+            new ZPConfig_FLOAT(3.0f);
+
+    @ZPVarDefinition(description = "Damage dealt by thrown rotten flesh when hitting an entity.")
+    public static final ZPConfig_FLOAT ROTTEN_FLESH_DAMAGE =
+            new ZPConfig_FLOAT(2.0f);
+
+    @ZPVarDefinition(description = "Base damage dealt by a thrown rock when hitting an entity.")
+    public static final ZPConfig_FLOAT ROCK_DAMAGE =
+            new ZPConfig_FLOAT(6.0f);
+
+    @ZPVarDefinition(description = "Number of ticks entity AABB hitbox data is stored for anti-lag memory. Higher values improve lag compensation at the cost of memory.")
+    public static final ZPConfig_INT ENTITY_MAX_AABB_MEMORY_ANTILAG =
+            new ZPConfig_INT(20);
+
+    @ZPVarDefinition(description = "Maximum number of times a bullet raycast can register block hits before stopping penetration calculations.")
+    public static final ZPConfig_INT MAX_BULLET_BLOCK_HITS =
+            new ZPConfig_INT(3);
+
+    @ZPVarDefinition(description = "Send a net packet for headshot and bullet entity-hit effects (blood + sound).")
+    public static final ZPConfig_BOOL SEND_PACKET_ABOUT_BULLET_ENTITY_HIT =
+            new ZPConfig_BOOL(true);
+
+    @ZPVarDefinition(description = "Bonus damage caused by a headshot.")
+    public static final ZPConfig_FLOAT BULLET_HEADSHOT_BONUS_DAMAGE =
+            new ZPConfig_FLOAT(2.0f);
+
+    @ZPVarDefinition(description = "Cooldown in ticks before a medicine item can be used again, preventing spamming.")
+    public static final ZPConfig_INT MEDICINE_USE_COOLDOWN =
+            new ZPConfig_INT(60);
+
+    @ZPVarDefinition(description = "Maximum block hardness that can be broken by a bullet.")
+    public static final ZPConfig_FLOAT MAX_BULLET_HIT_BLOCK_HARDNESS =
+            new ZPConfig_FLOAT(1.0f);
+
+    @ZPVarDefinition(description = "Default throw velocity applied to items when thrown by players.")
+    public static final ZPConfig_FLOAT ITEMS_THROW_VELOCITY =
+            new ZPConfig_FLOAT(1.2f);
+
+    @ZPVarDefinition(description = "Default inaccuracy angle applied to items when thrown by players.")
+    public static final ZPConfig_FLOAT ITEMS_THROW_INACCURACY =
+            new ZPConfig_FLOAT(8.0f);
+
+    @ZPVarDefinition(description = "Cooldown in ticks between item throws by a player.")
+    public static final ZPConfig_INT ITEMS_THROW_COOLDOWN =
+            new ZPConfig_INT(20);
+}

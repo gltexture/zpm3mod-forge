@@ -8,7 +8,7 @@ import net.minecraftforge.event.TickEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.opengl.GL46;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
 import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
 import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacksManager;
 import ru.gltexture.zpm3.engine.client.rendering.crosshair.ZPClientCrosshairRecoilManager;
@@ -17,6 +17,7 @@ import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooksManager;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPDefaultShaders;
 import ru.gltexture.zpm3.engine.client.rendering.ui.imgui.ZPDearUIRenderer;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPClientConfig;
 import ru.gltexture.zpm3.engine.events.client.ZPClientForge;
 import ru.gltexture.zpm3.engine.mixins.impl.client.render.ZPGameRendererFovAccessor;
 
@@ -35,7 +36,7 @@ public final class ZPRenderHelper implements ZPClientCallbacks.ZPClientResourceD
     }
 
     public static double fovItemOffset(Camera camera, float partialTicks, PoseStack poseStack) {
-        if (ZPConstants.FIRST_PERSON_RENDER_SCALE_TYPE == 1) {
+        if (ZPClientConfig.FIRST_PERSON_RENDER_SCALE_TYPE.getVar() == 1) {
             return 0.0f;
         }
         final double def = 70.0f;

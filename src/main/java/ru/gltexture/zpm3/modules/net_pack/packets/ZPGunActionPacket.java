@@ -13,7 +13,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPCombatConfig;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPNetworkConfig;
 import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.network.ZPNetwork;
@@ -89,7 +91,7 @@ public class ZPGunActionPacket implements ZPNetwork.ZPPacket {
     }
 
     private void sendPacketFromServer(@NotNull Player sender, @NotNull ServerLevel serverLevel) {
-        ZombiePlague3.net().sendToDimensionRadius(new ZPGunActionPacket(sender.getId(), this.action, this.isRightHand), serverLevel.dimension(), sender.position(), ZPConstants.GUN_ACTION_PACKET_RANGE);
+        ZombiePlague3.net().sendToDimensionRadius(new ZPGunActionPacket(sender.getId(), this.action, this.isRightHand), serverLevel.dimension(), sender.position(), ZPNetworkConfig.GUN_ACTION_PACKET_RANGE.getVar());
     }
 
     @OnlyIn(Dist.CLIENT)

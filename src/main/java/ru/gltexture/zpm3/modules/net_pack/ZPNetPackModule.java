@@ -4,8 +4,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPNetworkHandler;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
 import ru.gltexture.zpm3.modules.net_pack.data.DefaultDataKeys;
 import ru.gltexture.zpm3.modules.net_pack.packets.*;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
@@ -54,17 +55,17 @@ public class ZPNetPackModule extends ZPModule {
         ZPUtility.sides().onlyClient(() -> {
             moduleEntry.registerNetSyncedConfigData_ClientToServer(
                     new ZPNetworkHandler.NetSyncDataFabric.Builder()
-                            .addBoolean(DefaultDataKeys.CtoS__PICK_UP_ON_KEY, () -> ZPConstants.PICK_UP_ON_F)
+                            .addBoolean(DefaultDataKeys.CtoS__PICK_UP_ON_KEY, ZPWorldConfig.PICK_UP_ON_F::getVar)
             );
         });
 
         moduleEntry.registerNetSyncedConfigData_ServerToClient(
                 new ZPNetworkHandler.NetSyncDataFabric.Builder()
-                        .addBoolean(DefaultDataKeys.StoC__DARKNESS_ENABLED, () -> ZPConstants.ENABLE_HARDCORE_DARKNESS_SERVER_SIDE)
-                        .addBoolean(DefaultDataKeys.StoC__SERVER_PICK_UP_ON_F, () -> ZPConstants.PICK_UP_ON_F)
-                        .addInt(DefaultDataKeys.StoC__DAY_TIME_CYCLE_TICKS_FREEZE, () -> ZPConstants.WORLD_DAY_SLOWDOWN_CYCLE_TICKING)
-                        .addInt(DefaultDataKeys.StoC__NIGHT_TIME_CYCLE_TICKS_FREEZE, () -> ZPConstants.WORLD_NIGHT_SLOWDOWN_CYCLE_TICKING)
-                        .addFloat(DefaultDataKeys.StoC__DARKNESS_FACTOR, () -> ZPConstants.DARKNESS_GAMMA_STATIC_FACTOR_SERVER_SIDE)
+                        .addBoolean(DefaultDataKeys.StoC__DARKNESS_ENABLED, ZPWorldConfig.ENABLE_HARDCORE_DARKNESS_SERVER_SIDE::getVar)
+                        .addBoolean(DefaultDataKeys.StoC__SERVER_PICK_UP_ON_F, ZPWorldConfig.PICK_UP_ON_F::getVar)
+                        .addInt(DefaultDataKeys.StoC__DAY_TIME_CYCLE_TICKS_FREEZE, ZPWorldConfig.WORLD_DAY_SLOWDOWN_CYCLE_TICKING::getVar)
+                        .addInt(DefaultDataKeys.StoC__NIGHT_TIME_CYCLE_TICKS_FREEZE, ZPWorldConfig.WORLD_NIGHT_SLOWDOWN_CYCLE_TICKING::getVar)
+                        .addFloat(DefaultDataKeys.StoC__DARKNESS_FACTOR, ZPWorldConfig.DARKNESS_GAMMA_STATIC_FACTOR_SERVER_SIDE::getVar)
         );
     }
 

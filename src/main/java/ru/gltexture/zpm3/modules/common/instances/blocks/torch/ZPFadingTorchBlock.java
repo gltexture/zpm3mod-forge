@@ -14,7 +14,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.modules.common.init.ZPBlockEntities;
 import ru.gltexture.zpm3.modules.common.instances.block_entities.ZPFadingBlockEntity;
 import ru.gltexture.zpm3.engine.instances.blocks.ZPTorchBlock;
@@ -37,7 +38,7 @@ public class ZPFadingTorchBlock extends ZPTorchBlock implements EntityBlock, IFa
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
-        return !ZPConstants.FADING_TORCHES ? null : ZPFadingTorchBlock.createTickerHelper(type, ZPBlockEntities.fading_block_entity.get(), ZPFadingBlockEntity::tick);
+        return !ZPWorldConfig.FADING_TORCHES.getVar() ? null : ZPFadingTorchBlock.createTickerHelper(type, ZPBlockEntities.fading_block_entity.get(), ZPFadingBlockEntity::tick);
     }
 
     @SuppressWarnings("all")
@@ -47,7 +48,7 @@ public class ZPFadingTorchBlock extends ZPTorchBlock implements EntityBlock, IFa
 
     @Override
     public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState) {
-        return !ZPConstants.FADING_TORCHES ? null : new ZPFadingBlockEntity(pPos, pState, ZPConstants.TORCH_FADING_TIME, true);
+        return !ZPWorldConfig.FADING_TORCHES.getVar() ? null : new ZPFadingBlockEntity(pPos, pState, ZPWorldConfig.TORCH_FADING_TIME.getVar(), true);
     }
 
     @Override
@@ -65,7 +66,7 @@ public class ZPFadingTorchBlock extends ZPTorchBlock implements EntityBlock, IFa
     public static void activationCheck(@NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, @Nullable LivingEntity pPlacer, @NotNull ItemStack pStack) {
         BlockEntity entity = pLevel.getBlockEntity(pPos);
         if (entity instanceof ZPFadingBlockEntity fadingBlockEntity && pPlacer instanceof Player player) {
-            if (ZPConstants.SKIP_FADE_TICKING_TORCHES_PUMPKINS_PLACED_IN_CREATIVE && player.isCreative()) {
+            if (ZPWorldConfig.SKIP_FADE_TICKING_TORCHES_PUMPKINS_PLACED_IN_CREATIVE.getVar() && player.isCreative()) {
                 fadingBlockEntity.setActive(false);
             }
         }

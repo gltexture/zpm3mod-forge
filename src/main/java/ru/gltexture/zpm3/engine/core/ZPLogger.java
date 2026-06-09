@@ -5,6 +5,10 @@ public final class ZPLogger {
         ZombiePlague3.LOGGER.info(message);
     }
 
+    public static void trace(String message) {
+        ZombiePlague3.LOGGER.trace(message);
+    }
+
     public static void warn(String message) {
         ZombiePlague3.LOGGER.warn(message);
     }

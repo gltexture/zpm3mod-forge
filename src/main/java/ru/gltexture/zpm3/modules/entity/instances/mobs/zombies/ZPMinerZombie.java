@@ -23,7 +23,9 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.common.ForgeMod;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
 import ru.gltexture.zpm3.modules.common.init.ZPEntities;
 import ru.gltexture.zpm3.modules.common.init.ZPEntityAttributes;
 import ru.gltexture.zpm3.modules.common.init.ZPSounds;
@@ -55,7 +57,7 @@ public class ZPMinerZombie extends ZPAbstractZombie {
                 Pair.of(() -> new ZPBrickEntity(ZPEntities.brock_entity.get(), this.level()), 20),
                 Pair.of(() -> new ZPAcidBottleEntity(ZPEntities.acid_bottle_entity.get(), this.level()), 5)
         ));
-        if (ZPConstants.ZP_PATH_UPDATER_ALG == 0) {
+        if (ZPWorldConfig.ZP_PATH_UPDATER_ALG.getVar() == 0) {
             this.goalSelector.addGoal(3, new ZPZombieAttackGoalVanilla(this, 1.0D, true));
         } else {
             this.goalSelector.addGoal(3, new ZPZombieAttackGoalRewrite(this, 1.0D, true));
@@ -66,28 +68,28 @@ public class ZPMinerZombie extends ZPAbstractZombie {
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(9, new ZPZombieRandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, ZPZombieNearestAttackableTarget.player(this, 1.0f, ZPConstants.ZOMBIE_XRAY_LOOK, 10, (e) -> true));
-        this.targetSelector.addGoal(2, ZPZombieNearestAttackableTarget.nonPlayer(this, List.of(AbstractVillager.class), 0.5f, ZPConstants.ZOMBIE_XRAY_LOOK, 20, (e) -> true));
+        this.targetSelector.addGoal(1, ZPZombieNearestAttackableTarget.player(this, 1.0f, ZPZombieConfig.ZOMBIE_XRAY_LOOK.getVar(), 10, (e) -> true));
+        this.targetSelector.addGoal(2, ZPZombieNearestAttackableTarget.nonPlayer(this, List.of(AbstractVillager.class), 0.5f, ZPZombieConfig.ZOMBIE_XRAY_LOOK.getVar(), 20, (e) -> true));
         this.targetSelector.addGoal(3, ZPZombieNearestAttackableTarget.nonPlayer(this, List.of(Cow.class, IronGolem.class, Horse.class, Sheep.class, Pig.class), 0.35f, false, 60, (e) -> true));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
                 .add(ForgeMod.SWIM_SPEED.get(), 1.0f)
-                .add(Attributes.MAX_HEALTH, 60.0f * ZPConstants.ZOMBIE_MAX_HEALTH_MULTIPLIER)
-                .add(Attributes.FOLLOW_RANGE, ZPConstants.ZOMBIE_FOLLOW_RANGE * 0.8f)
-                .add(Attributes.MOVEMENT_SPEED, 0.22f * ZPConstants.ZOMBIE_MOVEMENT_SPEED_MULTIPLIER)
-                .add(Attributes.ATTACK_DAMAGE, 3.0f * ZPConstants.ZOMBIE_ATTACK_DAMAGE_MULTIPLIER)
+                .add(Attributes.MAX_HEALTH, 60.0f * ZPZombieConfig.ZOMBIE_MAX_HEALTH_MULTIPLIER.getVar())
+                .add(Attributes.FOLLOW_RANGE, ZPZombieConfig.ZOMBIE_FOLLOW_RANGE.getVar() * 0.8f)
+                .add(Attributes.MOVEMENT_SPEED, 0.22f * ZPZombieConfig.ZOMBIE_MOVEMENT_SPEED_MULTIPLIER.getVar())
+                .add(Attributes.ATTACK_DAMAGE, 3.0f * ZPZombieConfig.ZOMBIE_ATTACK_DAMAGE_MULTIPLIER.getVar())
                 .add(Attributes.ARMOR, 1.0f)
-                .add(ZPEntityAttributes.zm_attack_range_multiplier.get(), 0.55f / ZPConstants.ZOMBIE_ATTACK_RANGE_MULTIPLIER)
-                .add(ZPEntityAttributes.zm_mining_speed.get(), 0.0075f * ZPConstants.ZOMBIE_MINING_SPEED_MULTIPLIER)
-                .add(ZPEntityAttributes.zm_random_effect_chance.get(), 0.015f * ZPConstants.ZOMBIE_APPLY_NEGATIVE_EFFECT_ON_ENTITY_CHANCE_MULTIPLIER)
-                .add(ZPEntityAttributes.zm_throw_a_gift_chance.get(), 0.008f * ZPConstants.ZOMBIE_THROW_A_GIFT_CHANCE_MULTIPLIER);
+                .add(ZPEntityAttributes.zm_attack_range_multiplier.get(), 0.55f / ZPZombieConfig.ZOMBIE_ATTACK_RANGE_MULTIPLIER.getVar())
+                .add(ZPEntityAttributes.zm_mining_speed.get(), 0.0075f * ZPZombieConfig.ZOMBIE_MINING_SPEED_MULTIPLIER.getVar())
+                .add(ZPEntityAttributes.zm_random_effect_chance.get(), 0.015f * ZPZombieConfig.ZOMBIE_APPLY_NEGATIVE_EFFECT_ON_ENTITY_CHANCE_MULTIPLIER.getVar())
+                .add(ZPEntityAttributes.zm_throw_a_gift_chance.get(), 0.008f * ZPZombieConfig.ZOMBIE_THROW_A_GIFT_CHANCE_MULTIPLIER.getVar());
     }
 
     @Override
     protected int getTotalZombieSkins() {
-        return ZPConstants.TOTAL_MINER_ZOMBIE_TEXTURES;
+        return ZPZombieConfig.TOTAL_MINER_ZOMBIE_TEXTURES.getVar();
     }
 
     @Override

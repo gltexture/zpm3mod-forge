@@ -9,7 +9,9 @@ import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPCombatConfig;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
@@ -33,7 +35,7 @@ public class ZPPlayerEatFoodEvent implements ZPEventClass {
                 ZPAbstractZombie.applyRandomEffect(entity);
             }
             if (stack.is(Items.BEEF) || stack.is(Items.PORKCHOP) || stack.is(Items.CHICKEN) || stack.is(Items.MUTTON) || stack.is(Items.RABBIT) || stack.is(Items.COD) || stack.is(Items.SALMON) || stack.is(Items.TROPICAL_FISH)) {
-                if (ZPRandom.getRandom().nextFloat() <= ZPConstants.RANDOM_FRY_FOOD_POSIONING) {
+                if (ZPRandom.getRandom().nextFloat() <= ZPCombatConfig.RANDOM_FRY_FOOD_POSIONING.getVar()) {
                     entity.addEffect(new MobEffectInstance(MobEffects.HUNGER, 2400));
                 }
             }

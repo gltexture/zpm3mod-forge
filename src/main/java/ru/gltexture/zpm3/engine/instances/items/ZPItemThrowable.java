@@ -9,7 +9,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPCombatConfig;
 import ru.gltexture.zpm3.modules.common.init.ZPEntities;
 import ru.gltexture.zpm3.modules.entity.instances.throwables.ZPAcidBottleEntity;
 import ru.gltexture.zpm3.engine.instances.entities.ZPThrowableEntity;
@@ -32,11 +33,11 @@ public class ZPItemThrowable extends ZPItem {
 
         pLevel.playSound(null, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (pLevel.getRandom().nextFloat() * 0.4F + 0.8F));
         if (!pLevel.isClientSide) {
-            pPlayer.getCooldowns().addCooldown(this, ZPConstants.ITEMS_THROW_COOLDOWN);
+            pPlayer.getCooldowns().addCooldown(this, ZPCombatConfig.ITEMS_THROW_COOLDOWN.getVar());
             ZPAcidBottleEntity acidBottle = new ZPAcidBottleEntity(ZPEntities.acid_bottle_entity.get(), pPlayer, pLevel);
             acidBottle.setItem(itemstack);
             acidBottle.shootFromRotation(pPlayer, pPlayer.getXRot(), pPlayer.getYRot(), 0.0F, 1.0F, 12.0F);
-            pLevel.addFreshEntity(this.getThrowableProjectileFabric().createThrowableEntity(ZPConstants.ITEMS_THROW_INACCURACY, ZPConstants.ITEMS_THROW_VELOCITY, itemstack, pLevel, pPlayer, pHand));
+            pLevel.addFreshEntity(this.getThrowableProjectileFabric().createThrowableEntity(ZPCombatConfig.ITEMS_THROW_INACCURACY.getVar(), ZPCombatConfig.ITEMS_THROW_VELOCITY.getVar(), itemstack, pLevel, pPlayer, pHand));
         }
 
         pPlayer.awardStat(Stats.ITEM_USED.get(this));

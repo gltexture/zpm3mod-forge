@@ -16,8 +16,10 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPCombatConfig;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.modules.commands.zones.ZPZoneChecks;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
 import ru.gltexture.zpm3.modules.common.init.ZPItems;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.modules.common.utils.ZPCommonClientUtils;
@@ -93,9 +95,9 @@ public class ZPAcidBottleEntity extends ZPThrowableEntity {
         Entity entity = pResult.getEntity();
         if (!entity.level().isClientSide()) {
             if (entity instanceof IZPEntityExt izpEntityExt) {
-                izpEntityExt.addAcidLevel(ZPConstants.ACID_BOTTLE_DIRECT_HIT_AFFECT_TIME);
+                izpEntityExt.addAcidLevel(ZPCombatConfig.ACID_BOTTLE_DIRECT_HIT_AFFECT_TIME.getVar());
             }
-            entity.hurt(this.damageSources().thrown(this, this.getOwner()), ZPConstants.ACID_BOTTLE_DAMAGE);
+            entity.hurt(this.damageSources().thrown(this, this.getOwner()), ZPCombatConfig.ACID_BOTTLE_DAMAGE.getVar());
             this.affectSplash(entity);
         }
     }
@@ -118,7 +120,7 @@ public class ZPAcidBottleEntity extends ZPThrowableEntity {
                 if (!this.level().isEmptyBlock(pos)) {
                     if (this.level() instanceof IZPLevelExt ext) {
                         if (ZPFakePlayer.canBreakBlock((ServerLevel) this.level(), pos) && !ZPZoneChecks.INSTANCE.isNoThrowableBlockDamage((ServerLevel) this.level(), pos)) {
-                            ext.zpm3forge$getGlobalBlocksDestroyMemory().addNewEntryLongMem(this.level(), pos, (0.25f + ZPRandom.getRandom().nextFloat(0.15f)) * ZPConstants.THROWABLES_BLOCK_BREAK_MULTIPLIER);
+                            ext.zpm3forge$getGlobalBlocksDestroyMemory().addNewEntryLongMem(this.level(), pos, (0.25f + ZPRandom.getRandom().nextFloat(0.15f)) * ZPWorldConfig.THROWABLES_BLOCK_BREAK_MULTIPLIER.getVar());
                             ZPGlobalBlocksDestroyMemory.spawnBlockCrackParticles((ServerLevel) this.level(), pos);
                         }
                     }
@@ -131,9 +133,9 @@ public class ZPAcidBottleEntity extends ZPThrowableEntity {
 
     protected void affectSplash(@Nullable Entity hitEntity) {
         if (!this.level().isClientSide()) {
-            if (ZPConstants.ACID_BOTTLE_SPLASH_HIT_MAX_AFFECT_TIME > 0) {
-                final double radius = ZPConstants.ACID_BOTTLE_SPLASH_RADIUS;
-                final int maxTime = ZPConstants.ACID_BOTTLE_SPLASH_HIT_MAX_AFFECT_TIME;
+            if (ZPCombatConfig.ACID_BOTTLE_SPLASH_HIT_MAX_AFFECT_TIME.getVar() > 0) {
+                final double radius = ZPCombatConfig.ACID_BOTTLE_SPLASH_RADIUS.getVar();
+                final int maxTime = ZPCombatConfig.ACID_BOTTLE_SPLASH_HIT_MAX_AFFECT_TIME.getVar();
                 final int minTime = 20;
                 final float dY = hitEntity == null ? 0.0f : (float) (hitEntity.getBoundingBox().maxY - hitEntity.getBoundingBox().minY);
                 Vec3 center = hitEntity != null ? new Vec3(hitEntity.position().toVector3f().add(0.0f, dY, 0.0f)) : this.position();

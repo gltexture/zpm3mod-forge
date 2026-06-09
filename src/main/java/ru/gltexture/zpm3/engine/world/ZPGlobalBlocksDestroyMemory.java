@@ -10,9 +10,12 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3i;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 
 import java.util.*;
@@ -51,11 +54,11 @@ public class ZPGlobalBlocksDestroyMemory {
         }
     }
     public void addNewEntryShortMem(@NotNull Level level, @NotNull BlockPos blockPos, float progressInc) {
-        this.addNewEntry(level, blockPos, progressInc, ZPConstants.TIME_TO_CLEAR_SHARED_ZOMBIE_MINING_SHORT_MEM);
+        this.addNewEntry(level, blockPos, progressInc, ZPZombieConfig.TIME_TO_CLEAR_SHARED_ZOMBIE_MINING_SHORT_MEM.getVar());
     }
 
     public void addNewEntryLongMem(@NotNull Level level, @NotNull BlockPos blockPos, float progressInc) {
-        this.addNewEntry(level, blockPos, progressInc, ZPConstants.TIME_TO_CLEAR_SHARED_ZOMBIE_MINING_LONG_MEM);
+        this.addNewEntry(level, blockPos, progressInc, ZPZombieConfig.TIME_TO_CLEAR_SHARED_ZOMBIE_MINING_LONG_MEM.getVar());
     }
 
     private void addNewEntry(@NotNull Level level, @NotNull BlockPos blockPos, float progressInc, int memTicks) {
@@ -64,14 +67,14 @@ public class ZPGlobalBlocksDestroyMemory {
         final BlockState blockState = level.getBlockState(blockPos);
         {
             if (ZPGlobalBlocksDestroyMemory.blockBlackListToBreak == null) {
-                ZPGlobalBlocksDestroyMemory.blockBlackListToBreak = Arrays.stream(ZPConstants.GLOBAL_BLOCK_DAMAGE_MEMORY_BLACKLIST.split(";")).toList();
+                ZPGlobalBlocksDestroyMemory.blockBlackListToBreak = Arrays.stream(ZPWorldConfig.GLOBAL_BLOCK_DAMAGE_MEMORY_BLACKLIST.getVar().split(";")).toList();
             }
-            ResourceLocation id = BuiltInRegistries.BLOCK.getKey(blockState.getBlock());
-            if (ZPGlobalBlocksDestroyMemory.blockBlackListToBreak.stream().anyMatch(e -> e.equals(id.toString()))) {
+            ResourceLocation id = ForgeRegistries.BLOCKS.getKey(blockState.getBlock());
+            if (id == null || ZPGlobalBlocksDestroyMemory.blockBlackListToBreak.stream().anyMatch(e -> e.equals(id.toString()))) {
                 return;
             }
         }
-        float blockHardness = blockState.getDestroySpeed(level, blockPos) * ZPConstants.ZOMBIE_MINING_BLOCK_HARDNESS_MULTIPLIER;
+        float blockHardness = blockState.getDestroySpeed(level, blockPos) * ZPZombieConfig.ZOMBIE_MINING_BLOCK_HARDNESS_MULTIPLIER.getVar();
         if (blockHardness < 0) {
             return;
         }
@@ -118,7 +121,7 @@ public class ZPGlobalBlocksDestroyMemory {
                 continue;
             }
             final BlockState blockState = level.getBlockState(blockPos);
-            final float blockHardness = blockState.getDestroySpeed(level, blockPos) * ZPConstants.ZOMBIE_MINING_BLOCK_HARDNESS_MULTIPLIER;
+            final float blockHardness = blockState.getDestroySpeed(level, blockPos) * ZPZombieConfig.ZOMBIE_MINING_BLOCK_HARDNESS_MULTIPLIER.getVar();
             final int visualProgress = this.getVisualProgress(entry.getValue().progress, blockHardness);
             {
                 if (level.getGameTime() % 60 == 0 || entry.getValue().getPrevVisualProgress() != visualProgress) {

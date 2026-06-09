@@ -17,7 +17,8 @@ import org.joml.Matrix4f;
 import org.joml.Vector2i;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL46;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPClientConfig;
 import ru.gltexture.zpm3.modules.debug.imgui.DearUITRSInterface;
 import ru.gltexture.zpm3.modules.guns.mixins.ext.IZPPlayerClientDataExt;
 import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
@@ -258,11 +259,11 @@ public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderH
     }
 
     public static boolean renderMuzzleflash1Person() {
-        return ZPDefaultGunMuzzleflashFX.minQuality() >= 2 && ZPConstants.RENDER_MUZZLE_FLASHES;
+        return ZPDefaultGunMuzzleflashFX.minQuality() >= 2 && ZPClientConfig.RENDER_MUZZLE_FLASHES.getVar();
     }
 
     public static boolean renderMuzzleflash3Person() {
-        return ZPDefaultGunMuzzleflashFX.minQuality() >= 2 && ZPConstants.RENDER_MUZZLE_FLASHES;
+        return ZPDefaultGunMuzzleflashFX.minQuality() >= 2 && ZPClientConfig.RENDER_MUZZLE_FLASHES.getVar();
     }
 
     public static boolean useFancyRendering1person() {

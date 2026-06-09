@@ -7,7 +7,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
+
 
 @Mixin(ItemEntity.class)
 public abstract class ZPEntityItemLifespanMixin {
@@ -25,13 +26,13 @@ public abstract class ZPEntityItemLifespanMixin {
 
     @Inject(method = "<init>*", at = @At("TAIL"))
     private void tick(CallbackInfo ci) {
-        this.lifespan = ZPConstants.ENTITY_ITEM_LIFESPAN;
+        this.lifespan = ZPWorldConfig.ENTITY_ITEM_LIFESPAN.getVar();
     }
 
     @Inject(method = "makeFakeItem", at = @At("HEAD"), cancellable = true)
     public void makeFakeItem(CallbackInfo ci) {
         this.setNeverPickUp();
-        this.age = ZPConstants.ENTITY_ITEM_LIFESPAN - 1;
+        this.age = ZPWorldConfig.ENTITY_ITEM_LIFESPAN.getVar() - 1;
         ci.cancel();
     }
 }

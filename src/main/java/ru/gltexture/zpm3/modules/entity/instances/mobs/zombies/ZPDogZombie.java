@@ -30,7 +30,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeMod;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
 import ru.gltexture.zpm3.modules.common.init.ZPEntities;
 import ru.gltexture.zpm3.modules.common.init.ZPEntityAttributes;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.ai.*;
@@ -53,7 +55,7 @@ public class ZPDogZombie extends ZPAbstractZombie {
 
     @Override
     protected void registerGoals() {
-        if (ZPConstants.ZP_PATH_UPDATER_ALG == 0) {
+        if (ZPWorldConfig.ZP_PATH_UPDATER_ALG.getVar() == 0) {
             this.goalSelector.addGoal(3, new ZPZombieAttackGoalVanilla(this, 1.0D, false));
         } else {
             this.goalSelector.addGoal(3, new ZPZombieAttackGoalRewrite(this, 1.0D, false));
@@ -72,14 +74,14 @@ public class ZPDogZombie extends ZPAbstractZombie {
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
                 .add(ForgeMod.SWIM_SPEED.get(), 1.0f)
-                .add(Attributes.MAX_HEALTH, 20.0f * ZPConstants.ZOMBIE_MAX_HEALTH_MULTIPLIER)
-                .add(Attributes.FOLLOW_RANGE, ZPConstants.ZOMBIE_FOLLOW_RANGE)
-                .add(Attributes.MOVEMENT_SPEED, 0.34f * ZPConstants.ZOMBIE_MOVEMENT_SPEED_MULTIPLIER)
-                .add(Attributes.ATTACK_DAMAGE, 2.0f * ZPConstants.ZOMBIE_ATTACK_DAMAGE_MULTIPLIER)
+                .add(Attributes.MAX_HEALTH, 20.0f * ZPZombieConfig.ZOMBIE_MAX_HEALTH_MULTIPLIER.getVar())
+                .add(Attributes.FOLLOW_RANGE, ZPZombieConfig.ZOMBIE_FOLLOW_RANGE.getVar())
+                .add(Attributes.MOVEMENT_SPEED, 0.34f * ZPZombieConfig.ZOMBIE_MOVEMENT_SPEED_MULTIPLIER.getVar())
+                .add(Attributes.ATTACK_DAMAGE, 2.0f * ZPZombieConfig.ZOMBIE_ATTACK_DAMAGE_MULTIPLIER.getVar())
                 .add(Attributes.ARMOR, 0.0f)
-                .add(ZPEntityAttributes.zm_attack_range_multiplier.get(), 1.0f / ZPConstants.ZOMBIE_DOG_ATTACK_RANGE_MULTIPLIER)
+                .add(ZPEntityAttributes.zm_attack_range_multiplier.get(), 1.0f / ZPZombieConfig.ZOMBIE_DOG_ATTACK_RANGE_MULTIPLIER.getVar())
                 .add(ZPEntityAttributes.zm_mining_speed.get(), 0.0f)
-                .add(ZPEntityAttributes.zm_random_effect_chance.get(), 0.025f * ZPConstants.ZOMBIE_APPLY_NEGATIVE_EFFECT_ON_ENTITY_CHANCE_MULTIPLIER)
+                .add(ZPEntityAttributes.zm_random_effect_chance.get(), 0.025f * ZPZombieConfig.ZOMBIE_APPLY_NEGATIVE_EFFECT_ON_ENTITY_CHANCE_MULTIPLIER.getVar())
                 .add(ZPEntityAttributes.zm_throw_a_gift_chance.get(), 0.0f);
     }
 
@@ -124,7 +126,7 @@ public class ZPDogZombie extends ZPAbstractZombie {
 
     @Override
     protected int getTotalZombieSkins() {
-        return ZPConstants.TOTAL_DOG_ZOMBIE_TEXTURES;
+        return ZPZombieConfig.TOTAL_DOG_ZOMBIE_TEXTURES.getVar();
     }
 
     @Override

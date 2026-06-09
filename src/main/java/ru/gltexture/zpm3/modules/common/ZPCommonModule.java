@@ -25,7 +25,8 @@ import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.modules.common.init.*;
 import ru.gltexture.zpm3.modules.common.instances.block_entities.ZPFadingBlockEntity;
 import ru.gltexture.zpm3.modules.common.tiers.ZPCommonTiers;
@@ -54,42 +55,42 @@ public class ZPCommonModule extends ZPModule {
     @Override
     public void fml_commonSetupEvent() {
         {
-            Blocks.CYAN_CONCRETE.explosionResistance = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
-            Blocks.WHITE_CONCRETE.explosionResistance = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
-            Blocks.ORANGE_CONCRETE.explosionResistance = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
-            Blocks.MAGENTA_CONCRETE.explosionResistance = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
-            Blocks.LIGHT_BLUE_CONCRETE.explosionResistance = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
-            Blocks.YELLOW_CONCRETE.explosionResistance = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
-            Blocks.LIME_CONCRETE.explosionResistance = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
-            Blocks.PINK_CONCRETE.explosionResistance = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
-            Blocks.GRAY_CONCRETE.explosionResistance = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
-            Blocks.LIGHT_GRAY_CONCRETE.explosionResistance = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
-            Blocks.CYAN_CONCRETE.explosionResistance = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
-            Blocks.PURPLE_CONCRETE.explosionResistance = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
-            Blocks.BLUE_CONCRETE.explosionResistance = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
-            Blocks.BROWN_CONCRETE.explosionResistance = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
-            Blocks.GREEN_CONCRETE.explosionResistance = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
-            Blocks.RED_CONCRETE.explosionResistance = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
-            Blocks.BLACK_CONCRETE.explosionResistance = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
+            Blocks.CYAN_CONCRETE.explosionResistance = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
+            Blocks.WHITE_CONCRETE.explosionResistance = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
+            Blocks.ORANGE_CONCRETE.explosionResistance = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
+            Blocks.MAGENTA_CONCRETE.explosionResistance = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
+            Blocks.LIGHT_BLUE_CONCRETE.explosionResistance = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
+            Blocks.YELLOW_CONCRETE.explosionResistance = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
+            Blocks.LIME_CONCRETE.explosionResistance = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
+            Blocks.PINK_CONCRETE.explosionResistance = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
+            Blocks.GRAY_CONCRETE.explosionResistance = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
+            Blocks.LIGHT_GRAY_CONCRETE.explosionResistance = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
+            Blocks.CYAN_CONCRETE.explosionResistance = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
+            Blocks.PURPLE_CONCRETE.explosionResistance = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
+            Blocks.BLUE_CONCRETE.explosionResistance = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
+            Blocks.BROWN_CONCRETE.explosionResistance = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
+            Blocks.GREEN_CONCRETE.explosionResistance = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
+            Blocks.RED_CONCRETE.explosionResistance = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
+            Blocks.BLACK_CONCRETE.explosionResistance = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
             Blocks.OBSIDIAN.explosionResistance = 4.0f;
 
-            Blocks.CYAN_CONCRETE.defaultBlockState().destroySpeed = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
-            Blocks.WHITE_CONCRETE.defaultBlockState().destroySpeed = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
-            Blocks.ORANGE_CONCRETE.defaultBlockState().destroySpeed = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
-            Blocks.MAGENTA_CONCRETE.defaultBlockState().destroySpeed = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
-            Blocks.LIGHT_BLUE_CONCRETE.defaultBlockState().destroySpeed = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
-            Blocks.YELLOW_CONCRETE.defaultBlockState().destroySpeed = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
-            Blocks.LIME_CONCRETE.defaultBlockState().destroySpeed = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
-            Blocks.PINK_CONCRETE.defaultBlockState().destroySpeed = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
-            Blocks.GRAY_CONCRETE.defaultBlockState().destroySpeed = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
-            Blocks.LIGHT_GRAY_CONCRETE.defaultBlockState().destroySpeed = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
-            Blocks.CYAN_CONCRETE.defaultBlockState().destroySpeed = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
-            Blocks.PURPLE_CONCRETE.defaultBlockState().destroySpeed = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
-            Blocks.BLUE_CONCRETE.defaultBlockState().destroySpeed = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
-            Blocks.BROWN_CONCRETE.defaultBlockState().destroySpeed = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
-            Blocks.GREEN_CONCRETE.defaultBlockState().destroySpeed = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
-            Blocks.RED_CONCRETE.defaultBlockState().destroySpeed = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
-            Blocks.BLACK_CONCRETE.defaultBlockState().destroySpeed = ZPConstants.ZP_VANILLA_CONCRETE_DESTROY_SPEED;
+            Blocks.CYAN_CONCRETE.defaultBlockState().destroySpeed = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
+            Blocks.WHITE_CONCRETE.defaultBlockState().destroySpeed = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
+            Blocks.ORANGE_CONCRETE.defaultBlockState().destroySpeed = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
+            Blocks.MAGENTA_CONCRETE.defaultBlockState().destroySpeed = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
+            Blocks.LIGHT_BLUE_CONCRETE.defaultBlockState().destroySpeed = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
+            Blocks.YELLOW_CONCRETE.defaultBlockState().destroySpeed = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
+            Blocks.LIME_CONCRETE.defaultBlockState().destroySpeed = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
+            Blocks.PINK_CONCRETE.defaultBlockState().destroySpeed = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
+            Blocks.GRAY_CONCRETE.defaultBlockState().destroySpeed = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
+            Blocks.LIGHT_GRAY_CONCRETE.defaultBlockState().destroySpeed = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
+            Blocks.CYAN_CONCRETE.defaultBlockState().destroySpeed = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
+            Blocks.PURPLE_CONCRETE.defaultBlockState().destroySpeed = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
+            Blocks.BLUE_CONCRETE.defaultBlockState().destroySpeed = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
+            Blocks.BROWN_CONCRETE.defaultBlockState().destroySpeed = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
+            Blocks.GREEN_CONCRETE.defaultBlockState().destroySpeed = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
+            Blocks.RED_CONCRETE.defaultBlockState().destroySpeed = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
+            Blocks.BLACK_CONCRETE.defaultBlockState().destroySpeed = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
             Blocks.OBSIDIAN.defaultBlockState().destroySpeed = 6.0f;
 
             Blocks.BRICK_WALL.defaultBlockState().destroySpeed = 12.0F;
@@ -246,7 +247,6 @@ public class ZPCommonModule extends ZPModule {
 
     @Override
     public void preInitialize() {
-        ZombiePlague3.registerConfigClass(new ZPConstants());
     }
 
     @Override

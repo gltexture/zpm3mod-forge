@@ -19,8 +19,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.modules.commands.zones.ZPZoneChecks;
-import ru.gltexture.zpm3.modules.common.global.ZPConstants;
+
 import ru.gltexture.zpm3.modules.common.init.ZPBlockEntities;
 import ru.gltexture.zpm3.modules.common.instances.block_entities.ZPFadingBlockEntity;
 import ru.gltexture.zpm3.modules.common.instances.blocks.torch.IFadingBlock;
@@ -53,7 +54,7 @@ public class ZPAcidLiquidBlock extends ZPLiquidBlock implements EntityBlock, IHo
     }
 
     private boolean isAcidFallTooHigh(Level level, BlockPos pos) {
-        final int maxHeight = ZPConstants.ACID_BLOCK_DESTRUCTION_CONSTRAINT;
+        final int maxHeight = ZPWorldConfig.ACID_BLOCK_DESTRUCTION_CONSTRAINT.getVar();
         BlockPos.MutableBlockPos checkPos = pos.mutable();
         int height = 0;
 
@@ -85,7 +86,7 @@ public class ZPAcidLiquidBlock extends ZPLiquidBlock implements EntityBlock, IHo
         if (pState.getFluidState().isRandomlyTicking()) {
             super.randomTick(pState, pLevel, pPos, pRandom);
         }
-        if (ZPConstants.ALLOW_ACID_LIQUID_DESTROY_BLOCKS) {
+        if (ZPWorldConfig.ALLOW_ACID_LIQUID_DESTROY_BLOCKS.getVar()) {
             if (this.isAcidFallTooHigh(pLevel, pPos)) {
                 return;
             }
@@ -111,7 +112,7 @@ public class ZPAcidLiquidBlock extends ZPLiquidBlock implements EntityBlock, IHo
                 if (!flagIsGlass && !flagIsSand) {
                     if (pLevel instanceof IZPLevelExt ext) {
                         if (ZPFakePlayer.canBreakBlock(pLevel, blockPos) && !ZPZoneChecks.INSTANCE.isNoAcidAffection(pLevel, blockPos) && !ZPZoneChecks.INSTANCE.isNoAcidBlockDestruction(pLevel, blockPos)) {
-                            ext.zpm3forge$getGlobalBlocksDestroyMemory().addNewEntryLongMem(pLevel, blockPos, ZPConstants.ACID_BLOCK_BASE_BLOCK_DAMAGE + ZPRandom.getRandom().nextFloat() * 0.35f);
+                            ext.zpm3forge$getGlobalBlocksDestroyMemory().addNewEntryLongMem(pLevel, blockPos, ZPWorldConfig.ACID_BLOCK_BASE_BLOCK_DAMAGE.getVar() + ZPRandom.getRandom().nextFloat() * 0.35f);
                             ZPGlobalBlocksDestroyMemory.spawnBlockCrackParticles(pLevel, blockPos);
                         }
                     }
@@ -146,12 +147,12 @@ public class ZPAcidLiquidBlock extends ZPLiquidBlock implements EntityBlock, IHo
 
     @Override
     public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState) {
-        return !ZPConstants.FADING_ACIDS ? null : new ZPFadingBlockEntity(pPos, pState, ZPConstants.ACID_FADING_TIME, false);
+        return !ZPWorldConfig.FADING_ACIDS.getVar() ? null : new ZPFadingBlockEntity(pPos, pState, ZPWorldConfig.ACID_FADING_TIME.getVar(), false);
     }
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level pLevel, @NotNull BlockState pState, @NotNull BlockEntityType<T> pBlockEntityType) {
-        return !ZPConstants.FADING_ACIDS ? null : ZPFadingTorchBlock.createTickerHelper(pBlockEntityType, ZPBlockEntities.fading_block_entity.get(), ZPFadingBlockEntity::tick);
+        return !ZPWorldConfig.FADING_ACIDS.getVar() ? null : ZPFadingTorchBlock.createTickerHelper(pBlockEntityType, ZPBlockEntities.fading_block_entity.get(), ZPFadingBlockEntity::tick);
     }
 
     @Override

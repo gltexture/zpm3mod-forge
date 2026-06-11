@@ -180,7 +180,7 @@ public class ZPZombieNearestAttackableTarget extends Goal {
     }
 
     protected float getReducedFollowDistanceForXRay() {
-        return (float) (this.getFollowDistance() * 0.575f) * ZPZombieConfig.ZOMBIE_XRAY_LOOK_DIST_MULTIPLIER.getVar();
+        return (float) (this.getFollowDistance() * 0.575f) * ZPZombieConfig.ZOMBIE_XRAY_VISION_DIST_MULTIPLIER.getVar();
     }
 
     @Nullable

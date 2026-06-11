@@ -29,7 +29,7 @@ public class ZPDearUIRenderer implements ZPClientCallbacks.ZPClientResourceDepen
     private final Supplier<ShaderInstance> shaderManager;
     private DearUIMesh dearImGuiMesh;
     private TextureSimple2DProgram textureSample;
-    public static int sampler;
+    public int sampler;
 
     public ZPDearUIRenderer(@NotNull Supplier<ShaderInstance> imguiShader) {
         this.zpDearUIInterfacesManager = new ZPDearUIInterfacesManager(this);

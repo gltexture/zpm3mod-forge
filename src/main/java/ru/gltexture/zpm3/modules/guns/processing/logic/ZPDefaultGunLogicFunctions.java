@@ -20,9 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import org.joml.Vector3i;
 
-import ru.gltexture.zpm3.engine.core.config.builtin.ZPCombatConfig;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPNetworkConfig;
-import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.modules.common.init.ZPSounds;
 import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
 import ru.gltexture.zpm3.modules.guns.processing.bullet.VirtualBullet;
@@ -349,7 +347,7 @@ public abstract class ZPDefaultGunLogicFunctions {
                 final Vector3f motion = new Vector3f(startPos.x, startPos.y, startPos.z).sub(new Vector3f(pos.x, pos.y, pos.z)).normalize();
                 ZombiePlague3.net().sendToDimensionRadius(new ZPBulletHitPacket(blockPos.x, blockPos.y, blockPos.z, motion.x, motion.y, motion.z, pos.x, pos.y, pos.z, virtualBulletHitResult.bulletHitType().getFlag()), serverLevel.dimension(), new Vec3(pos), ZPNetworkConfig.BULLET_HIT_PACKET_RANGE.getVar());
                 ZombiePlague3.net().sendToPlayer(new ZPBulletTracePacket(pos.x, pos.y, pos.z, isRightHand), (ServerPlayer) player);
-                if (ZPCombatConfig.SEND_PACKET_ABOUT_BULLET_ENTITY_HIT.getVar() && virtualBulletHitResult.bulletHitType().equals(VirtualBullet.VirtualBulletHitType.ENTITY)) {
+                if (ZPNetworkConfig.SEND_PACKET_ABOUT_BULLET_ENTITY_HIT.getVar() && virtualBulletHitResult.bulletHitType().equals(VirtualBullet.VirtualBulletHitType.ENTITY)) {
                     if (virtualBulletHitResult.damagedEntity() != null && virtualBulletHitResult.damagedEntity().isAlive()) {
                         ZombiePlague3.net().sendToDimensionRadius(new ZPBulletBloodFXPacket(
                                 virtualBulletHitResult.hitPoint().x, virtualBulletHitResult.hitPoint().y, virtualBulletHitResult.hitPoint().z,
@@ -391,7 +389,7 @@ public abstract class ZPDefaultGunLogicFunctions {
                     final Vector3f motion = new Vector3f(startPos.x, startPos.y, startPos.z).sub(new Vector3f(pos.x, pos.y, pos.z)).normalize();
                     ZombiePlague3.net().sendToDimensionRadius(new ZPBulletHitPacket(blockPos.x, blockPos.y, blockPos.z, motion.x, motion.y, motion.z, pos.x, pos.y, pos.z, virtualBulletHitResult.bulletHitType().getFlag()), serverLevel.dimension(), new Vec3(pos), ZPNetworkConfig.BULLET_HIT_PACKET_RANGE.getVar());
                     ZombiePlague3.net().sendToPlayer(new ZPBulletTracePacket(pos.x, pos.y, pos.z, isRightHand), (ServerPlayer) player);
-                    if (ZPCombatConfig.SEND_PACKET_ABOUT_BULLET_ENTITY_HIT.getVar() && virtualBulletHitResult.bulletHitType().equals(VirtualBullet.VirtualBulletHitType.ENTITY)) {
+                    if (ZPNetworkConfig.SEND_PACKET_ABOUT_BULLET_ENTITY_HIT.getVar() && virtualBulletHitResult.bulletHitType().equals(VirtualBullet.VirtualBulletHitType.ENTITY)) {
                         if (virtualBulletHitResult.damagedEntity() != null && virtualBulletHitResult.damagedEntity().isAlive()) {
                             ZombiePlague3.net().sendToDimensionRadius(new ZPBulletBloodFXPacket(
                                     virtualBulletHitResult.hitPoint().x, virtualBulletHitResult.hitPoint().y, virtualBulletHitResult.hitPoint().z,

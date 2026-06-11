@@ -24,7 +24,6 @@ import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.common.ForgeMod;
 import org.jetbrains.annotations.NotNull;
 
-import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
 import ru.gltexture.zpm3.modules.common.init.ZPEntities;
 import ru.gltexture.zpm3.modules.common.init.ZPEntityAttributes;
@@ -57,7 +56,7 @@ public class ZPMinerZombie extends ZPAbstractZombie {
                 Pair.of(() -> new ZPBrickEntity(ZPEntities.brock_entity.get(), this.level()), 20),
                 Pair.of(() -> new ZPAcidBottleEntity(ZPEntities.acid_bottle_entity.get(), this.level()), 5)
         ));
-        if (ZPWorldConfig.ZP_PATH_UPDATER_ALG.getVar() == 0) {
+        if (ZPZombieConfig.ZP_PATH_UPDATER_ALG.getVar() == 0) {
             this.goalSelector.addGoal(3, new ZPZombieAttackGoalVanilla(this, 1.0D, true));
         } else {
             this.goalSelector.addGoal(3, new ZPZombieAttackGoalRewrite(this, 1.0D, true));
@@ -68,8 +67,8 @@ public class ZPMinerZombie extends ZPAbstractZombie {
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(9, new ZPZombieRandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, ZPZombieNearestAttackableTarget.player(this, 1.0f, ZPZombieConfig.ZOMBIE_XRAY_LOOK.getVar(), 10, (e) -> true));
-        this.targetSelector.addGoal(2, ZPZombieNearestAttackableTarget.nonPlayer(this, List.of(AbstractVillager.class), 0.5f, ZPZombieConfig.ZOMBIE_XRAY_LOOK.getVar(), 20, (e) -> true));
+        this.targetSelector.addGoal(1, ZPZombieNearestAttackableTarget.player(this, 1.0f, ZPZombieConfig.ZOMBIE_XRAY_VISION.getVar(), 10, (e) -> true));
+        this.targetSelector.addGoal(2, ZPZombieNearestAttackableTarget.nonPlayer(this, List.of(AbstractVillager.class), 0.5f, ZPZombieConfig.ZOMBIE_XRAY_VISION.getVar(), 20, (e) -> true));
         this.targetSelector.addGoal(3, ZPZombieNearestAttackableTarget.nonPlayer(this, List.of(Cow.class, IronGolem.class, Horse.class, Sheep.class, Pig.class), 0.35f, false, 60, (e) -> true));
     }
 

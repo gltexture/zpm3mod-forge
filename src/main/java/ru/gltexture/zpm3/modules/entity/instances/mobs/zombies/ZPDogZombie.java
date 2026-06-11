@@ -31,7 +31,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeMod;
 import org.jetbrains.annotations.NotNull;
 
-import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
 import ru.gltexture.zpm3.modules.common.init.ZPEntities;
 import ru.gltexture.zpm3.modules.common.init.ZPEntityAttributes;
@@ -55,7 +54,7 @@ public class ZPDogZombie extends ZPAbstractZombie {
 
     @Override
     protected void registerGoals() {
-        if (ZPWorldConfig.ZP_PATH_UPDATER_ALG.getVar() == 0) {
+        if (ZPZombieConfig.ZP_PATH_UPDATER_ALG.getVar() == 0) {
             this.goalSelector.addGoal(3, new ZPZombieAttackGoalVanilla(this, 1.0D, false));
         } else {
             this.goalSelector.addGoal(3, new ZPZombieAttackGoalRewrite(this, 1.0D, false));

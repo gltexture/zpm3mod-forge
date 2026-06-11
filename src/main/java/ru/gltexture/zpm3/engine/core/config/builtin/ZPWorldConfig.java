@@ -5,7 +5,7 @@ import ru.gltexture.zpm3.engine.core.config.vars.*;
 
 public class ZPWorldConfig implements ZPConfigConstantsClass {
 
-    @ZPVarDefinition(description = "Black list of blocks, that cannot be damaged and destroyed. Example: \"minecraft\\:grass;minecraft\\:stone\".")
+    @ZPVarDefinition(description = "Black list of blocks, that cannot be damaged and destroyed. Example: 'minecraft:grass;minecraft:stone'")
     public static final ZPConfig_STRING GLOBAL_BLOCK_DAMAGE_MEMORY_BLACKLIST =
             new ZPConfig_STRING("");
 
@@ -29,32 +29,24 @@ public class ZPWorldConfig implements ZPConfigConstantsClass {
     public static final ZPConfig_FLOAT ACID_BLOCK_BASE_BLOCK_DAMAGE =
             new ZPConfig_FLOAT(1.0f);
 
-    @ZPVarDefinition(description = "Allow acid blocks to break surrounding blocks (EXPERIMENTAL, may cause lag).")
-    public static final ZPConfig_BOOL ALLOW_ACID_LIQUID_DESTROY_BLOCKS =
-            new ZPConfig_BOOL(true);
-
-    @ZPVarDefinition(description = "Path update algorithm (0 = Vanilla, 1 = Rewritten).")
-    public static final ZPConfig_INT ZP_PATH_UPDATER_ALG =
-            new ZPConfig_INT(1, ZPConfigVar.INT, 0, 1);
-
     @ZPVarDefinition(description = "Night time progression divider. During night, the world time is incremented once every N server ticks. Higher values slow down night duration.")
     public static final ZPConfig_INT WORLD_NIGHT_SLOWDOWN_CYCLE_TICKING =
-            new ZPConfig_INT(2, ZPConfigVar.INT, 1, Integer.MAX_VALUE);
+            new ZPConfig_INT(2, 1, Integer.MAX_VALUE);
 
     @ZPVarDefinition(description = "Day time progression divider. During day, the world time is incremented once every N server ticks. Higher values slow down day duration.")
     public static final ZPConfig_INT WORLD_DAY_SLOWDOWN_CYCLE_TICKING =
-            new ZPConfig_INT(3, ZPConfigVar.INT, 1, Integer.MAX_VALUE);
+            new ZPConfig_INT(3, 1, Integer.MAX_VALUE);
 
     @ZPVarDefinition(description = "New vanilla concrete destroy speed.")
     public static final ZPConfig_FLOAT ZP_VANILLA_CONCRETE_DESTROY_SPEED =
-            new ZPConfig_FLOAT(256.0f, ZPConfigVar.FLOAT, 0.0f, Float.MAX_VALUE);
+            new ZPConfig_FLOAT(256.0f, 0.0f, Float.MAX_VALUE);
 
     @ZPVarDefinition(description = "New entity-item lifespan in ticks.")
     public static final ZPConfig_INT ENTITY_ITEM_LIFESPAN =
-            new ZPConfig_INT(16000, ZPConfigVar.INT, 0, Integer.MAX_VALUE);
+            new ZPConfig_INT(16000, 0, Integer.MAX_VALUE);
 
     @ZPVarDefinition(description = "Enables item pickup via the <key>. Works on both client and server. If disabled on the server, the feature is forcibly disabled on all clients.")
-    public static final ZPConfig_BOOL PICK_UP_ON_F =
+    public static final ZPConfig_BOOL ALLOW_ITEMS_PICKING_ON_KEY =
             new ZPConfig_BOOL(true);
 
     @ZPVarDefinition(description = "If enabled, server applies extreme darkness shader gamma reduction for all players regardless of client settings.")
@@ -63,19 +55,7 @@ public class ZPWorldConfig implements ZPConfigConstantsClass {
 
     @ZPVarDefinition(description = "Static gamma factor applied to players when hardcore darkness is enabled. Negative values darken the world, positive values brighten it.")
     public static final ZPConfig_FLOAT DARKNESS_GAMMA_STATIC_FACTOR_SERVER_SIDE =
-            new ZPConfig_FLOAT(-0.5f, ZPConfigVar.FLOAT, -1.0f, 1.0f);
-
-    @ZPVarDefinition(description = "Multiplier for block breaking power of thrown items (plates, bricks, rocks) when interacting with destructible world objects.")
-    public static final ZPConfig_FLOAT THROWABLES_BLOCK_BREAK_MULTIPLIER =
-            new ZPConfig_FLOAT(1.0f);
-
-    @ZPVarDefinition(description = "Black list of blocks, that cannot be destroyed by bullet. Example: \"minecraft\\:grass;minecraft\\:stone\".")
-    public static final ZPConfig_STRING BULLET_BLOCK_BREAKING_BLACKLIST =
-            new ZPConfig_STRING("");
-
-    @ZPVarDefinition(description = "If enabled, bullets can break specific marked blocks if the block has the destructible flag.")
-    public static final ZPConfig_BOOL CAN_BULLET_BREAK_BLOCK =
-            new ZPConfig_BOOL(true);
+            new ZPConfig_FLOAT(-0.5f, -1.0f, 1.0f);
 
     @ZPVarDefinition(description = "Increases cooking time. Affects all vanilla crafting blocks (furnace, campfire, etc.).")
     public static final ZPConfig_FLOAT ZP_COOKING_TIME_MULTIPLIER =

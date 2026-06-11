@@ -40,7 +40,7 @@ public class ZPZombieConfig implements ZPConfigConstantsClass {
     public static final ZPConfig_INT ZOMBIE_PLAGUE_VIRUS_EFFECT_TIME_TICKS =
             new ZPConfig_INT(20 * (20 * 60));
 
-    @ZPVarDefinition(description = "Multiplier for firearm projectile damage on zombies.")
+    @ZPVarDefinition(description = "Multiplier for firearm bullet damage on zombies.")
     public static final ZPConfig_FLOAT ZOMBIE_BULLET_DAMAGE_MULTIPLIER =
             new ZPConfig_FLOAT(3.25f);
 
@@ -93,11 +93,11 @@ public class ZPZombieConfig implements ZPConfigConstantsClass {
             new ZPConfig_BOOL(true);
 
     @ZPVarDefinition(description = "X-ray look distance multiplier.")
-    public static final ZPConfig_FLOAT ZOMBIE_XRAY_LOOK_DIST_MULTIPLIER =
+    public static final ZPConfig_FLOAT ZOMBIE_XRAY_VISION_DIST_MULTIPLIER =
             new ZPConfig_FLOAT(1.0f);
 
     @ZPVarDefinition(description = "Enable zombie X-ray target tracing.")
-    public static final ZPConfig_BOOL ZOMBIE_XRAY_LOOK =
+    public static final ZPConfig_BOOL ZOMBIE_XRAY_VISION =
             new ZPConfig_BOOL(true);
 
     @ZPVarDefinition(description = "Allow zombies to pick up loot.")
@@ -106,7 +106,7 @@ public class ZPZombieConfig implements ZPConfigConstantsClass {
 
     @ZPVarDefinition(description = "Zombie eating time in ticks.")
     public static final ZPConfig_INT ZOMBIE_EATING_TIME =
-            new ZPConfig_INT(300);
+            new ZPConfig_INT(360);
 
     @ZPVarDefinition(description = "Throw cooldown multiplier.")
     public static final ZPConfig_FLOAT ZOMBIE_THROW_A_GIFT_TRY_COOLDOWN_MULTIPLIER =
@@ -114,11 +114,11 @@ public class ZPZombieConfig implements ZPConfigConstantsClass {
 
     @ZPVarDefinition(description = "Maximum mining height.")
     public static final ZPConfig_FLOAT ZOMBIE_MAX_MINING_HEIGHT =
-            new ZPConfig_FLOAT(9999999.0f);
+            new ZPConfig_FLOAT(256.0f);
 
     @ZPVarDefinition(description = "Minimum mining height.")
     public static final ZPConfig_FLOAT ZOMBIE_MIN_MINING_HEIGHT =
-            new ZPConfig_FLOAT(-9999999.0f);
+            new ZPConfig_FLOAT(-256.0f);
 
     @ZPVarDefinition(description = "Max zombies per chunk.")
     public static final ZPConfig_INT MAX_ZOMBIES_SPAWN_IN_CHUNK =
@@ -155,4 +155,8 @@ public class ZPZombieConfig implements ZPConfigConstantsClass {
     @ZPVarDefinition(description = "Miner zombie textures count.")
     public static final ZPConfig_INT TOTAL_MINER_ZOMBIE_TEXTURES =
             new ZPConfig_INT(6);
+
+    @ZPVarDefinition(description = "Path update algorithm (0 = Vanilla, 1 = Rewritten).")
+    public static final ZPConfig_INT ZP_PATH_UPDATER_ALG =
+            new ZPConfig_INT(1, 0, 1);
 }

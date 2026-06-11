@@ -16,4 +16,8 @@ public class ZPNetworkConfig implements ZPConfigConstantsClass {
     @ZPVarDefinition(description = "Maximum distance in blocks at which players receive bullet hit result packets (raycast impact, blood, entity hit validation).")
     public static final ZPConfig_FLOAT BULLET_HIT_PACKET_RANGE =
             new ZPConfig_FLOAT(128.0f);
+
+    @ZPVarDefinition(description = "Send a net packet for headshot and bullet entity-hit effects (blood + sound).")
+    public static final ZPConfig_BOOL SEND_PACKET_ABOUT_BULLET_ENTITY_HIT =
+            new ZPConfig_BOOL(true);
 }

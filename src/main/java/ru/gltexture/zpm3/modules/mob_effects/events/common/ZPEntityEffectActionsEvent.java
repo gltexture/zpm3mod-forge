@@ -14,6 +14,7 @@ import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPCombatConfig;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPEntityConfig;
 import ru.gltexture.zpm3.modules.common.init.ZPDamageTypes;
 import ru.gltexture.zpm3.modules.common.init.ZPSounds;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
@@ -47,7 +48,7 @@ public class ZPEntityEffectActionsEvent implements ZPEventClass {
             }
 
             LivingEntity entity = event.getEntity();
-            if (!ZPCombatConfig.BLEEDING_ONLY_FOR_PLAYERS.getVar() || (entity instanceof Player)) {
+            if (!ZPEntityConfig.BLEEDING_ONLY_FOR_PLAYERS.getVar() || (entity instanceof Player)) {
                 boolean flag =
                         event.getSource().type().equals(ZPDamageTypes.getDamageType(serverLevel, DamageTypes.FALL).get()) ||
                                 event.getSource().type().equals(ZPDamageTypes.getDamageType(serverLevel, ZPDamageTypes.zp_bleeding).get());

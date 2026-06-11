@@ -123,8 +123,8 @@ public class ZPRenderEntityItem extends ItemEntityRenderer {
         } else {
             super.render(pEntity, pEntityYaw, pPartialTicks, pPoseStack, pBuffer, pPackedLight);
         }
-        final boolean pickUpOnKey = ZombiePlague3.getClient_netSyncDataPack().getBoolean(DefaultDataKeys.StoC__SERVER_PICK_UP_ON_F, ZPWorldConfig.PICK_UP_ON_F.getVar());
-        if (ZPWorldConfig.PICK_UP_ON_F.getVar() && pickUpOnKey && ZPRenderWorldEventWithPickUpCheck.entityToPickUp != null && ZPRenderWorldEventWithPickUpCheck.entityToPickUp.equals(pEntity)) {
+        final boolean pickUpOnKey = ZombiePlague3.getClient_netSyncDataPack().getBoolean(DefaultDataKeys.StoC__SERVER_PICK_UP_ON_F, ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY.getVar());
+        if (ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY.getVar() && pickUpOnKey && ZPRenderWorldEventWithPickUpCheck.entityToPickUp != null && ZPRenderWorldEventWithPickUpCheck.entityToPickUp.equals(pEntity)) {
             this.renderPickUpTip(pEntity, pPoseStack, pBuffer, 0.0f);
         }
     }

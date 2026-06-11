@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.gltexture.zpm3.engine.core.config.builtin.ZPCombatConfig;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPEntityConfig;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.modules.commands.zones.ZPZoneChecks;
 
@@ -40,7 +40,7 @@ public class ZPBarbaredWireBlock extends Block implements EntityBlock {
             if (entity instanceof LivingEntity livingEntity) {
                 entity.hurt(entity.damageSources().generic(), entity instanceof Player ? 1 : 2);
                 if (entity.tickCount % 20 == 0 && ZPRandom.getRandom().nextFloat() <= 0.1f) {
-                    if (!ZPCombatConfig.BLEEDING_ONLY_FOR_PLAYERS.getVar() || entity instanceof Player) {
+                    if (!ZPEntityConfig.BLEEDING_ONLY_FOR_PLAYERS.getVar() || entity instanceof Player) {
                         if (!ZPEffectUtils.isBleeding(livingEntity)) {
                             livingEntity.addEffect(new MobEffectInstance(ZPMobEffects.bleeding.get(), 300));
                         }

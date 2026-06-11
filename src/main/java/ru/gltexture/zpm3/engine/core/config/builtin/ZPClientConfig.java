@@ -29,7 +29,7 @@ public class ZPClientConfig implements ZPConfigConstantsClass {
     public static final ZPConfig_BOOL FIRST_PERSON_RENDER_SPACE_SCALE_BY_FOV =
             new ZPConfig_BOOL(true);
 
-    @ZPVarDefinition(description = "(CLIENT) First-person FOV scaling type: 0 = progressive (position-based), 1 = static.")
+    @ZPVarDefinition(description = "(CLIENT) First-person FOV scaling type: 0 = progressive (projection-based), 1 = static.")
     public static final ZPConfig_INT FIRST_PERSON_RENDER_SCALE_TYPE =
-            new ZPConfig_INT(0, ZPConfigVar.INT, 0, 1);
+            new ZPConfig_INT(0, 0, 1);
 }

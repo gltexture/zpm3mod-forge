@@ -28,7 +28,7 @@ public class ZPDebugModule extends ZPModule {
     @Override
     public void fml_clientSetupEvent() {
         if (ZPRenderHelper.INSTANCE.getDearUIRenderer() != null) {
-            ZPRenderHelper.INSTANCE.getDearUIRenderer().getInterfacesManager().addActiveInterface(new DearUITRSInterface());
+            ZPRenderHelper.INSTANCE.getDearUIRenderer().getInterfacesManager().addInterface(new DearUITRSInterface());
         }
     }
 

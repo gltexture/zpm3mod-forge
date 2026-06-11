@@ -13,8 +13,8 @@ public class ZPConfig_INT extends ZPConfigVar<Integer> {
         this.max = 127000;
     }
 
-    public ZPConfig_INT(Integer var, String type, int min, int max) {
-        super(var, type);
+    public ZPConfig_INT(Integer var, int min, int max) {
+        super(var, ZPConfigVar.INT);
         this.min = min;
         this.max = max;
     }

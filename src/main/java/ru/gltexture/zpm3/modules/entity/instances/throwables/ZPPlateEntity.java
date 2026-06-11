@@ -16,7 +16,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPCombatConfig;
-import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.modules.commands.zones.ZPZoneChecks;
 
 import ru.gltexture.zpm3.modules.common.init.ZPItems;
@@ -88,7 +87,7 @@ public class ZPPlateEntity extends ZPThrowableEntity {
                 if (!this.level().isEmptyBlock(pos)) {
                     if (this.level() instanceof IZPLevelExt ext) {
                         if (ZPFakePlayer.canBreakBlock((ServerLevel) this.level(), pos) && !ZPZoneChecks.INSTANCE.isNoThrowableBlockDamage((ServerLevel) this.level(), pos)) {
-                            ext.zpm3forge$getGlobalBlocksDestroyMemory().addNewEntryLongMem(this.level(), pos, (0.1f + ZPRandom.getRandom().nextFloat(0.2f)) * ZPWorldConfig.THROWABLES_BLOCK_BREAK_MULTIPLIER.getVar());
+                            ext.zpm3forge$getGlobalBlocksDestroyMemory().addNewEntryLongMem(this.level(), pos, (0.1f + ZPRandom.getRandom().nextFloat(0.2f)) * ZPCombatConfig.THROWABLES_BLOCK_BREAK_MULTIPLIER.getVar());
                             ZPGlobalBlocksDestroyMemory.spawnBlockCrackParticles((ServerLevel) this.level(), pos);
                         }
                     }

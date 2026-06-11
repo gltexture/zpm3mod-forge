@@ -13,8 +13,8 @@ public class ZPConfig_FLOAT extends ZPConfigVar<Float> {
         this.max = 127000.0f;
     }
 
-    public ZPConfig_FLOAT(Float var, String type, float min, float max) {
-        super(var, type);
+    public ZPConfig_FLOAT(Float var, float min, float max) {
+        super(var, ZPConfigVar.FLOAT);
         this.min = min;
         this.max = max;
     }

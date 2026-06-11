@@ -1,4 +1,4 @@
-package ru.gltexture.zpm3.modules.player.events.client;
+package ru.gltexture.zpm3.modules.ui.events.client;
 
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;

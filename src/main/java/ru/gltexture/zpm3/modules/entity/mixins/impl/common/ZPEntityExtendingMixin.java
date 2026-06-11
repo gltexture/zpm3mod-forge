@@ -19,8 +19,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import ru.gltexture.zpm3.engine.core.config.builtin.ZPCombatConfig;
-import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPEntityConfig;
 import ru.gltexture.zpm3.modules.common.init.ZPBlocks;
 import ru.gltexture.zpm3.engine.mixins.ext.ZPEntityExtTicking;
 import ru.gltexture.zpm3.engine.mixins.ext.IZPEntityExt;
@@ -63,7 +62,7 @@ public abstract class ZPEntityExtendingMixin implements IZPEntityExt {
         } else {
             AABB aabb = this.getBoundingBox();
             this.zpm3forge$aabbDeque.addFirst(new Snapshot(System.currentTimeMillis(), aabb));
-            if (this.zpm3forge$aabbDeque.size() > ZPCombatConfig.ENTITY_MAX_AABB_MEMORY_ANTILAG.getVar()) {
+            if (this.zpm3forge$aabbDeque.size() > ZPEntityConfig.ENTITY_MAX_AABB_MEMORY_ANTILAG.getVar()) {
                 this.zpm3forge$aabbDeque.removeLast();
             }
             if (ZPUtility.entity().isCollidingWithBlock((Entity) (Object) this, ZPBlocks.acid_block.get())) {

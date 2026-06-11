@@ -50,7 +50,6 @@ public class ZPPlayerModule extends ZPModule {
         ZPUtility.sides().onlyClient(() -> {
             moduleEntry.addEventClass(ZPRenderWorldEventWithPickUpCheck.class);
             moduleEntry.addEventClass(ZPPlayerItemToolTipsEvent.class);
-            moduleEntry.addEventClass(ZPMenuPatchEvent.class);
             moduleEntry.addEventClass(ZPRenderGuiEvent.class);
             moduleEntry.addEventClass(ZPResourcePackEvent.class);
             moduleEntry.addEventClass(ZPPlayerLyingCheckEvent.class);

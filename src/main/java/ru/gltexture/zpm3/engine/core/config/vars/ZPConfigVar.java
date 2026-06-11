@@ -32,6 +32,11 @@ public abstract class ZPConfigVar <T extends Serializable> {
         this.var = (T) var;
     }
 
+    @Override
+    public String toString() {
+        return String.valueOf(this.var);
+    }
+
     public String getType() {
         return this.type;
     }

@@ -53,7 +53,7 @@ public class ZPRenderWorldEventWithPickUpCheck implements ZPEventClass {
 
     @SubscribeEvent
     public static void onRenderWorld(RenderLevelStageEvent event) {
-        final boolean pickUpOnKey = ZombiePlague3.getClient_netSyncDataPack().getBoolean(DefaultDataKeys.StoC__SERVER_PICK_UP_ON_F, ZPWorldConfig.PICK_UP_ON_F.getVar());
+        final boolean pickUpOnKey = ZombiePlague3.getClient_netSyncDataPack().getBoolean(DefaultDataKeys.StoC__SERVER_PICK_UP_ON_F, ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY.getVar());
         if (pickUpOnKey && event.getStage() == RenderLevelStageEvent.Stage.AFTER_SOLID_BLOCKS) {
             Minecraft mc = Minecraft.getInstance();
             if (mc.level == null || mc.player == null) {

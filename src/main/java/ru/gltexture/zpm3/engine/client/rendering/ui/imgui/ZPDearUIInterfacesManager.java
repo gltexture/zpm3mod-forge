@@ -22,11 +22,11 @@ public class ZPDearUIInterfacesManager {
         });
     }
 
-    public void removeActiveInterface(@NotNull DearUIInterface dearUIInterface) {
+    public void removeInterface(@NotNull DearUIInterface dearUIInterface) {
         this.getDearUIInterfaceSet().remove(dearUIInterface);
     }
 
-    public void addActiveInterface(@NotNull DearUIInterface dearUIInterface) {
+    public void addInterface(@NotNull DearUIInterface dearUIInterface) {
         this.getDearUIInterfaceSet().add(dearUIInterface);
     }
 

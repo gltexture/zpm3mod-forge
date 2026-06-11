@@ -29,7 +29,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.*;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPCombatConfig;
-import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.modules.commands.zones.ZPZoneChecks;
 import ru.gltexture.zpm3.modules.common.damage.ZPDamageSources;
 
@@ -74,7 +73,7 @@ public class VirtualBullet {
 
     @SuppressWarnings("all")
     private boolean isBlockFragile(@NotNull ServerLevel serverLevel, @NotNull BlockPos blockPos) {
-        if (!ZPWorldConfig.CAN_BULLET_BREAK_BLOCK.getVar()) {
+        if (!ZPCombatConfig.CAN_BULLET_BREAK_BLOCK.getVar()) {
             return false;
         }
         if (!ZPFakePlayer.canBreakBlock((ServerLevel) serverLevel, blockPos)) {
@@ -86,7 +85,7 @@ public class VirtualBullet {
         BlockState blockState = serverLevel.getBlockState(blockPos);
         {
             if (VirtualBullet.blockBlackListToBreak == null) {
-                VirtualBullet.blockBlackListToBreak = Arrays.stream(ZPWorldConfig.BULLET_BLOCK_BREAKING_BLACKLIST.getVar().split(";")).toList();
+                VirtualBullet.blockBlackListToBreak = Arrays.stream(ZPCombatConfig.BULLET_BLOCK_BREAKING_BLACKLIST.getVar().split(";")).toList();
             }
             ResourceLocation id = BuiltInRegistries.BLOCK.getKey(blockState.getBlock());
             if (VirtualBullet.blockBlackListToBreak.stream().anyMatch(e -> e.equals(id.toString()))) {

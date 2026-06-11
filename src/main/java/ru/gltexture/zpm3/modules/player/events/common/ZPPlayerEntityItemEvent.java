@@ -20,7 +20,7 @@ public class ZPPlayerEntityItemEvent implements ZPEventClass {
     @SubscribeEvent
     public static void exec(@NotNull EntityItemPickupEvent event) {
         if (event.getEntity() instanceof IZPPlayerMixinExt ext) {
-            if (ZPWorldConfig.PICK_UP_ON_F.getVar() && ext.zpm3forge$zpNetDataPack_fromClient().getBoolean(DefaultDataKeys.StoC__SERVER_PICK_UP_ON_F, ZPWorldConfig.PICK_UP_ON_F.getVar())) {
+            if (ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY.getVar() && ext.zpm3forge$zpNetDataPack_fromClient().getBoolean(DefaultDataKeys.StoC__SERVER_PICK_UP_ON_F, ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY.getVar())) {
                 event.setCanceled(true);
             }
         }

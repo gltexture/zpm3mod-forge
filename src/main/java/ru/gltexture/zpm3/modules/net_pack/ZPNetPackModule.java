@@ -55,14 +55,14 @@ public class ZPNetPackModule extends ZPModule {
         ZPUtility.sides().onlyClient(() -> {
             moduleEntry.registerNetSyncedConfigData_ClientToServer(
                     new ZPNetworkHandler.NetSyncDataFabric.Builder()
-                            .addBoolean(DefaultDataKeys.CtoS__PICK_UP_ON_KEY, ZPWorldConfig.PICK_UP_ON_F::getVar)
+                            .addBoolean(DefaultDataKeys.CtoS__PICK_UP_ON_KEY, ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY::getVar)
             );
         });
 
         moduleEntry.registerNetSyncedConfigData_ServerToClient(
                 new ZPNetworkHandler.NetSyncDataFabric.Builder()
                         .addBoolean(DefaultDataKeys.StoC__DARKNESS_ENABLED, ZPWorldConfig.ENABLE_HARDCORE_DARKNESS_SERVER_SIDE::getVar)
-                        .addBoolean(DefaultDataKeys.StoC__SERVER_PICK_UP_ON_F, ZPWorldConfig.PICK_UP_ON_F::getVar)
+                        .addBoolean(DefaultDataKeys.StoC__SERVER_PICK_UP_ON_F, ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY::getVar)
                         .addInt(DefaultDataKeys.StoC__DAY_TIME_CYCLE_TICKS_FREEZE, ZPWorldConfig.WORLD_DAY_SLOWDOWN_CYCLE_TICKING::getVar)
                         .addInt(DefaultDataKeys.StoC__NIGHT_TIME_CYCLE_TICKS_FREEZE, ZPWorldConfig.WORLD_NIGHT_SLOWDOWN_CYCLE_TICKING::getVar)
                         .addFloat(DefaultDataKeys.StoC__DARKNESS_FACTOR, ZPWorldConfig.DARKNESS_GAMMA_STATIC_FACTOR_SERVER_SIDE::getVar)

@@ -13,8 +13,8 @@ public class ZPConfig_DOUBLE extends ZPConfigVar<Double> {
         this.max = 127000.0f;
     }
 
-    public ZPConfig_DOUBLE(Double var, String type, double min, double max) {
-        super(var, type);
+    public ZPConfig_DOUBLE(Double var, double min, double max) {
+        super(var, ZPConfigVar.DOUBLE);
         this.min = min;
         this.max = max;
     }

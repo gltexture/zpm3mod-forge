@@ -43,7 +43,7 @@ public class ZPPlayerWantToPickUpItem implements ZPNetwork.ZPPacket {
     public void onServer(@NotNull Player sender, @NotNull ServerLevel level) {
         if (sender instanceof IZPPlayerMixinExt ext) {
             Entity entity = level.getEntity(this.itemId);
-            if (ext.zpm3forge$zpNetDataPack_fromClient().getBoolean(DefaultDataKeys.StoC__SERVER_PICK_UP_ON_F, ZPWorldConfig.PICK_UP_ON_F.getVar()) && entity instanceof ItemEntity entity1) {
+            if (ext.zpm3forge$zpNetDataPack_fromClient().getBoolean(DefaultDataKeys.StoC__SERVER_PICK_UP_ON_F, ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY.getVar()) && entity instanceof ItemEntity entity1) {
                 if (entity1.isAlive() && !entity1.hasPickUpDelay() && sender.distanceTo(entity1) <= 2.25f) {
                     this.pickUpItem(sender, entity1);
                 }

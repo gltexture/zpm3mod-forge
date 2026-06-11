@@ -170,6 +170,8 @@ public final class ZombiePlague3 {
             ZombiePlague3.zpConfigManager.processConfigConstants(new ZPPath(FMLPaths.GAMEDIR.get().toString(), ZombiePlague3.ZP_MAIN_DIR), "combat", ZPCombatConfig.class);
             ZombiePlague3.zpConfigManager.processConfigConstants(new ZPPath(FMLPaths.GAMEDIR.get().toString(), ZombiePlague3.ZP_MAIN_DIR), "network", ZPNetworkConfig.class);
             ZombiePlague3.zpConfigManager.processConfigConstants(new ZPPath(FMLPaths.GAMEDIR.get().toString(), ZombiePlague3.ZP_MAIN_DIR), "world", ZPWorldConfig.class);
+            ZombiePlague3.zpConfigManager.processConfigConstants(new ZPPath(FMLPaths.GAMEDIR.get().toString(), ZombiePlague3.ZP_MAIN_DIR), "experimental", ZPExperimentalConfig.class);
+            ZombiePlague3.zpConfigManager.processConfigConstants(new ZPPath(FMLPaths.GAMEDIR.get().toString(), ZombiePlague3.ZP_MAIN_DIR), "entity", ZPEntityConfig.class);
             ZombiePlague3.zpConfigManager.processConfigConstants(new ZPPath(FMLPaths.GAMEDIR.get().toString(), ZombiePlague3.ZP_MAIN_DIR), "zombie", ZPZombieConfig.class);
         } catch (IllegalAccessException | IOException e) {
             throw new ZPIOException(e);
@@ -441,6 +443,10 @@ public final class ZombiePlague3 {
 
     public ZPNetwork getZpNetwork() {
         return this.zpNetwork;
+    }
+
+    public static ZPConfigManager getZpConfigManager() {
+        return ZombiePlague3.zpConfigManager;
     }
 
     public ZPRegistryConveyor getZpRegistryConveyor() {

@@ -141,5 +141,13 @@
   "death.attack.damage.zpm3.zp_bullet.player": "%1$s was shot by %2$s!",
 
   "death.attack.damage.zpm3.zp_bleeding": "%1$s bled out!",
-  "death.attack.damage.zpm3.zp_bleeding.player": "%1$s bled out because of %2$s!"
+  "death.attack.damage.zpm3.zp_bleeding.player": "%1$s bled out because of %2$s!",
+
+  "ui.zpm3.config.SHOW_VERSION_INFO_ON_SCREEN": "Version On Screen: %s",
+  "ui.zpm3.config.RENDER_MUZZLE_FLASHES": "Muzzle Flashes: %s",
+  "ui.zpm3.config.RENDER_BULLET_TRACERS": "Bullet Tracers: %s",
+  "ui.zpm3.config.RENDER_ARMOR_LAYERS_ON_HANDS": "Armor On Hands: %s",
+  "ui.zpm3.config.FANCY_ITEM_ENTITIES": "Fancy Item-Entity: %s",
+  "ui.zpm3.config.FIRST_PERSON_RENDER_SPACE_SCALE_BY_FOV": "FP FOV Scaling: %s",
+  "ui.zpm3.config.FIRST_PERSON_RENDER_SCALE_TYPE": "FP FOV Scaling Type"
 }

@@ -19,6 +19,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPExperimentalConfig;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.modules.commands.zones.ZPZoneChecks;
 
@@ -86,7 +87,7 @@ public class ZPAcidLiquidBlock extends ZPLiquidBlock implements EntityBlock, IHo
         if (pState.getFluidState().isRandomlyTicking()) {
             super.randomTick(pState, pLevel, pPos, pRandom);
         }
-        if (ZPWorldConfig.ALLOW_ACID_LIQUID_DESTROY_BLOCKS.getVar()) {
+        if (ZPExperimentalConfig.ALLOW_ACID_LIQUID_DESTROY_BLOCKS.getVar()) {
             if (this.isAcidFallTooHigh(pLevel, pPos)) {
                 return;
             }

@@ -5,6 +5,10 @@
       "class": "ru.gltexture.zpm3.modules.debug.ZPDebugModule"
     },
     {
+      "name": "ZP3UIModule",
+      "class": "ru.gltexture.zpm3.modules.ui.ZPUIModule"
+    },
+    {
       "name": "ZP3NetPackModule",
       "class": "ru.gltexture.zpm3.modules.net_pack.ZPNetPackModule"
     },

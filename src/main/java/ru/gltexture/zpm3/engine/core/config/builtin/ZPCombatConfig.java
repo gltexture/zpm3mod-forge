@@ -5,29 +5,21 @@ import ru.gltexture.zpm3.engine.core.config.vars.*;
 
 public class ZPCombatConfig implements ZPConfigConstantsClass {
 
-    @ZPVarDefinition(description = "Randomized poison effect, then fry food has been eaten.")
-    public static final ZPConfig_FLOAT RANDOM_FRY_FOOD_POSIONING =
-            new ZPConfig_FLOAT(1.0f);
-
     @ZPVarDefinition(description = "Default hand reach for players measured in blocks used for melee interaction logic.")
     public static final ZPConfig_FLOAT PLAYER_DEFAULT_HAND_REACH_DISTANCE =
             new ZPConfig_FLOAT(2.375f);
 
     @ZPVarDefinition(description = "Multiplier used to reduce damage taken from bullets based on armor. 1.0 = no reduction, 0 = full reduction.")
     public static final ZPConfig_FLOAT ARMOR_BULLET_DAMAGE_REDUCTION_MULTIPLIER =
-            new ZPConfig_FLOAT(0.75f, ZPConfigVar.FLOAT, 0.0f, 1.0f);
-
-    @ZPVarDefinition(description = "If enabled, only players can receive bleeding debuffs from attacks")
-    public static final ZPConfig_BOOL BLEEDING_ONLY_FOR_PLAYERS =
-            new ZPConfig_BOOL(false);
+            new ZPConfig_FLOAT(0.75f, 0.0f, 1.0f);
 
     @ZPVarDefinition(description = "Multiplier that increases the chance of fracture. 1.0 = default fracture probability, 0 = fractures disabled.")
     public static final ZPConfig_FLOAT FRACTURE_CHANCE_MULTIPLIER =
-            new ZPConfig_FLOAT(1.0f, ZPConfigVar.FLOAT, 0.0f, 1.0f);
+            new ZPConfig_FLOAT(1.0f, 0.0f, 1.0f);
 
     @ZPVarDefinition(description = "Multiplier for the chance to inflict bleeding. 1.0 = default chance, 0 = disables bleeding, 5.0 = 5× more likely.")
     public static final ZPConfig_FLOAT BLEEDING_CHANCE_MULTIPLIER =
-            new ZPConfig_FLOAT(1.0f, ZPConfigVar.FLOAT, 0.0f, 5.0f);
+            new ZPConfig_FLOAT(1.0f, 0.0f, 5.0f);
 
     @ZPVarDefinition(description = "Acid inventory damage tick rate.")
     public static final ZPConfig_INT ACID_DAMAGE_TICK_RATE =
@@ -69,17 +61,9 @@ public class ZPCombatConfig implements ZPConfigConstantsClass {
     public static final ZPConfig_FLOAT ROCK_DAMAGE =
             new ZPConfig_FLOAT(6.0f);
 
-    @ZPVarDefinition(description = "Number of ticks entity AABB hitbox data is stored for anti-lag memory. Higher values improve lag compensation at the cost of memory.")
-    public static final ZPConfig_INT ENTITY_MAX_AABB_MEMORY_ANTILAG =
-            new ZPConfig_INT(20);
-
     @ZPVarDefinition(description = "Maximum number of times a bullet raycast can register block hits before stopping penetration calculations.")
     public static final ZPConfig_INT MAX_BULLET_BLOCK_HITS =
             new ZPConfig_INT(3);
-
-    @ZPVarDefinition(description = "Send a net packet for headshot and bullet entity-hit effects (blood + sound).")
-    public static final ZPConfig_BOOL SEND_PACKET_ABOUT_BULLET_ENTITY_HIT =
-            new ZPConfig_BOOL(true);
 
     @ZPVarDefinition(description = "Bonus damage caused by a headshot.")
     public static final ZPConfig_FLOAT BULLET_HEADSHOT_BONUS_DAMAGE =
@@ -104,4 +88,16 @@ public class ZPCombatConfig implements ZPConfigConstantsClass {
     @ZPVarDefinition(description = "Cooldown in ticks between item throws by a player.")
     public static final ZPConfig_INT ITEMS_THROW_COOLDOWN =
             new ZPConfig_INT(20);
+
+    @ZPVarDefinition(description = "Multiplier for block breaking power of thrown items (plates, bricks, rocks) when interacting with destructible world objects.")
+    public static final ZPConfig_FLOAT THROWABLES_BLOCK_BREAK_MULTIPLIER =
+            new ZPConfig_FLOAT(1.0f);
+
+    @ZPVarDefinition(description = "Black list of blocks, that cannot be destroyed by bullet. Example: \"minecraft\\:grass;minecraft\\:stone\".")
+    public static final ZPConfig_STRING BULLET_BLOCK_BREAKING_BLACKLIST =
+            new ZPConfig_STRING("");
+
+    @ZPVarDefinition(description = "If enabled, bullets can break specific marked blocks if the block has the destructible flag.")
+    public static final ZPConfig_BOOL CAN_BULLET_BREAK_BLOCK =
+            new ZPConfig_BOOL(true);
 }

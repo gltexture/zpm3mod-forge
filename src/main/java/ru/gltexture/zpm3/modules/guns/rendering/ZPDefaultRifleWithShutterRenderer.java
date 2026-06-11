@@ -42,12 +42,12 @@ public class ZPDefaultRifleWithShutterRenderer extends ZPAbstractGunRenderer {
 
             @Override
             public Vector3f translationGunRight() {
-                return new Vector3f(0.213f, 0.139f, -0.607f);
+                return new Vector3f(0.14f, 0.136f, -0.607f);
             }
 
             @Override
             public Vector3f rotationGunRight() {
-                return new Vector3f(-6.21f, 8.5f, 0.82f);
+                return new Vector3f(-4.21f, 9.1f, 1.11f);
             }
 
             @Override
@@ -62,7 +62,7 @@ public class ZPDefaultRifleWithShutterRenderer extends ZPAbstractGunRenderer {
 
             @Override
             public Vector3f translationGunLeft() {
-                return new Vector3f(-0.35f, 0.3f, -0.4f);
+                return new Vector3f(-0.30f, 0.3f, -0.38f);
             }
 
             @Override

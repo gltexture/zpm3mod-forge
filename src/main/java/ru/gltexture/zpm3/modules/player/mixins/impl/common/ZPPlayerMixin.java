@@ -3,23 +3,28 @@ package ru.gltexture.zpm3.modules.player.mixins.impl.common;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import ru.gltexture.zpm3.engine.core.ZPNetworkHandler;
 
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPNetworkConfig;
 import ru.gltexture.zpm3.modules.common.init.ZPDamageTypes;
 import ru.gltexture.zpm3.modules.net_pack.data.ZPNetSyncDataPack;
 import ru.gltexture.zpm3.modules.net_pack.packets.ZPNetCheckPacket;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.mixins.ext.IZPPlayerMixinExt;
+import ru.gltexture.zpm3.modules.player.mixins.ext.IZPPlayerMixinExt;
 
 @Mixin(Player.class)
 public abstract class ZPPlayerMixin implements IZPPlayerMixinExt {
+    @Shadow
+    public abstract void setForcedPose(@Nullable Pose pose);
+
     @Unique
     private int zpm3forge$ping;
 
@@ -33,6 +38,9 @@ public abstract class ZPPlayerMixin implements IZPPlayerMixinExt {
     private int zpm3forge$pingTickTime = 0;
 
     @Unique
+    private boolean zpm3forge$playerLying = false;
+
+    @Unique
     private ZPNetSyncDataPack zpm3forge$zpNetDataPack_fromClient;
 
     @Override
@@ -42,6 +50,13 @@ public abstract class ZPPlayerMixin implements IZPPlayerMixinExt {
         }
         return this.zpm3forge$zpNetDataPack_fromClient;
     }
+
+    //@Inject(method = "jumpFromGround", at = @At("HEAD"), cancellable = true)
+    //public void jumpFromGround(CallbackInfo ci) {
+    //    if (this.zpm3forge$isLying()) {
+    //        ci.cancel();
+    //    }
+    //}
 
     @Inject(method = "tick", at = @At("TAIL"))
     private void onTick(CallbackInfo ci) {
@@ -67,6 +82,17 @@ public abstract class ZPPlayerMixin implements IZPPlayerMixinExt {
         }
     }
 
+    @Inject(method = "updatePlayerPose", at = @At("TAIL"), cancellable = true)
+    protected void updatePlayerPose(CallbackInfo ci) {
+        Player player = (Player) (Object) this;
+        if (this.zpm3forge$isLying()) {
+            if (IZPPlayerMixinExt.checkIfPlayerCanLieOnGround(player)) {
+                player.setPose(Pose.SWIMMING);
+                ci.cancel();
+            }
+        }
+    }
+
     @Inject(method = "hurtArmor", at = @At("HEAD"), cancellable = true)
     public void hurtArmor(DamageSource pDamageSource, float pDamage, CallbackInfo ci) {
         if (pDamageSource.type().equals(ZPDamageTypes.getDamageType((ServerLevel) ((Player) (Object) this).level(), ZPDamageTypes.zp_bleeding).get())) {
@@ -79,6 +105,18 @@ public abstract class ZPPlayerMixin implements IZPPlayerMixinExt {
         if (pDamageSource.type().equals(ZPDamageTypes.getDamageType((ServerLevel) ((Player) (Object) this).level(), ZPDamageTypes.zp_bleeding).get())) {
             ci.cancel();
         }
+    }
+
+    @Override
+    @Unique
+    public boolean zpm3forge$isLying() {
+        return this.zpm3forge$playerLying;
+    }
+
+    @Override
+    @Unique
+    public void zpm3forge$setLying(boolean zpm3forge$playerLying) {
+        this.zpm3forge$playerLying = zpm3forge$playerLying;
     }
 
     @Override

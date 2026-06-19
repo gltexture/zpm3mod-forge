@@ -79,12 +79,10 @@ import java.util.*;
 public final class ZombiePlague3 {
     public static final String ZP_MAIN_DIR = "zpm3_files";
 
-    public static boolean DEV_PREVIEW = true;
-
     public static final String assetsJsonPath = "zpm3.modules.json";
     public static final String MOD_ID = "zpm3";
     static final Logger LOGGER = LoggerFactory.getLogger(ZombiePlague3.MOD_ID);
-    private static final ZPProject MOD_INFO = new ZPProject("ZombiePlague3Mod", ZombiePlague3.MOD_ID, "0.2.0a");
+    private static final ZPProject MOD_INFO = new ZPProject("ZombiePlague3Mod", ZombiePlague3.MOD_ID, "0.2.0a DEV");
     private final ZPRegistryConveyor zpRegistryConveyor;
     private final List<ZPModule> assets;
     private ZPNetwork zpNetwork;
@@ -107,6 +105,14 @@ public final class ZombiePlague3 {
         this.assets = new ArrayList<>();
         this.zpRegistryConveyor = new ZPRegistryConveyor();
         this.init();
+    }
+
+    public static boolean DEV_MODE() {
+        return ZPCoreConfig.DEV_MODE.getVar();
+    }
+
+    public static boolean WIP_MODE() {
+        return ZPCoreConfig.WIP_MODE.getVar();
     }
 
     public static boolean isDevEnvironment() {
@@ -137,7 +143,7 @@ public final class ZombiePlague3 {
         this.initModules();
         this.registerTiers();
         modEventBus.addListener(this::fml_commonSetupEvent);
-        modEventBus.addListener(this::completeSetup);
+        modEventBus.addListener(this::fml_completeSetup);
         ZPUtility.sides().onlyClient(() -> {
             modEventBus.addListener(this::fml_clientSetupEvent);
             MinecraftForge.EVENT_BUS.register(new ZPDevOverlay());
@@ -192,10 +198,7 @@ public final class ZombiePlague3 {
         public void onRenderGui(RenderGuiOverlayEvent.Post event) {
             if (ZPClientConfig.SHOW_VERSION_INFO_ON_SCREEN.getVar()) {
                 Minecraft mc = Minecraft.getInstance();
-                String text = "ZP3 Dev Preview" + " | " + ZombiePlague3.MOD_VERSION();
-                if (!ZombiePlague3.DEV_PREVIEW) {
-                    text = "ZP3" + " | " + ZombiePlague3.MOD_VERSION();
-                }
+                String text = "ZP3" + " | " + ZombiePlague3.MOD_VERSION();
                 GuiGraphics gg = event.getGuiGraphics();
                 int screenWidth = event.getWindow().getGuiScaledWidth();
                 int x = screenWidth - mc.font.width(text) - 6;
@@ -361,7 +364,7 @@ public final class ZombiePlague3 {
         });
     }
 
-    private void completeSetup(final FMLLoadCompleteEvent event) {
+    private void fml_completeSetup(final FMLLoadCompleteEvent event) {
         this.getZpRegistryConveyor().launchLaterList();
     }
 
@@ -434,7 +437,7 @@ public final class ZombiePlague3 {
     }
 
     public static ZPRecipesController getRecipesController() {
-        return recipesController;
+        return ZombiePlague3.recipesController;
     }
 
     public static ZPNetworkHandler net() {

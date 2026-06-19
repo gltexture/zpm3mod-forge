@@ -1,4 +1,4 @@
-package ru.gltexture.zpm3.modules.guns.rendering.basic;
+package ru.gltexture.zpm3.modules.guns.rendering.fx;
 
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -25,8 +25,6 @@ import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
 import ru.gltexture.zpm3.engine.client.rendering.gl.programs.fbo.FBOTexture2DProgram;
 import ru.gltexture.zpm3.engine.client.rendering.gl.programs.fbo.attachments.T2DAttachmentContainer;
 import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooks;
-import ru.gltexture.zpm3.modules.guns.rendering.fx.IZPGunMuzzleflashFX;
-import ru.gltexture.zpm3.modules.guns.rendering.fx.ZPGunFXGlobalData;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPDefaultShaders;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
@@ -34,6 +32,7 @@ import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 
 import java.util.Objects;
 
+@Deprecated(forRemoval = true)
 public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderHooks.ZPItemSceneRendering1PersonHooks, ZPRenderHooks.ZPItemSceneRendering3PersonHooks {
     public static final int DEFAULT_PINGPONG_FBO_OPERATIONS_1P = 8;
     //public static final float DEFAULT_BLURRING_1P = 3.0f;
@@ -79,17 +78,23 @@ public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderH
         if (gunFXData.muzzleflashTime() < 0.0f) {
             return;
         }
+        final boolean firstPerson = Minecraft.getInstance().options.getCameraType().isFirstPerson();
         final int id = this.hand(gunFXData.isRightHand());
         this.initialRotation[id] = ZPRandom.instance.randomFloat((float) Math.PI);
-        final boolean isTheSame = player.equals(Minecraft.getInstance().player);
-        if (isTheSame) {
-            this.muzzleflashTime1Person = gunFXData.muzzleflashTime();
-            this.muzzleflashScissor1Person[id] = this.muzzleflashScissor1Person[id] > 0.01f ? 0.35f : 0.0f;
+        final boolean isLocalPlayer = player.equals(Minecraft.getInstance().player);
+        if (isLocalPlayer && firstPerson) {
+            if (ZPDefaultGunMuzzleflashFX.renderMuzzleflash1Person()) {
+                this.muzzleflashTime1Person = gunFXData.muzzleflashTime();
+                this.muzzleflashScissor1Person[id] = this.muzzleflashScissor1Person[id] > 0.01f ? 0.35f : 0.0f;
+            } else {
+                this.muzzleflashTime1Person = 0.0f;
+                this.muzzleflashScissor1Person[id] = 0.0f;
+            }
         }
         if (Minecraft.getInstance().getCameraEntity() != null) {
-            if (isTheSame || Minecraft.getInstance().getEntityRenderDispatcher().shouldRender(player, Minecraft.getInstance().levelRenderer.getFrustum(), Minecraft.getInstance().getCameraEntity().getX(), Minecraft.getInstance().getCameraEntity().getY(), Minecraft.getInstance().getCameraEntity().getZ())) {
+            if (isLocalPlayer || Minecraft.getInstance().getEntityRenderDispatcher().shouldRender(player, Minecraft.getInstance().levelRenderer.getFrustum(), Minecraft.getInstance().getCameraEntity().getX(), Minecraft.getInstance().getCameraEntity().getY(), Minecraft.getInstance().getCameraEntity().getZ())) {
                 if (player instanceof IZPPlayerClientDataExt playerClientDataExt) {
-                    if (!isTheSame || !Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
+                    if (!isLocalPlayer || !firstPerson) {
                         playerClientDataExt.zpm3forge$getPlayerMuzzleflashScissor3Person()[id] = 0.0f;
                     }
                 }

@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.engine.mixins.ext.IZPPlayerMixinExt;
+import ru.gltexture.zpm3.modules.player.mixins.ext.IZPPlayerMixinExt;
 import ru.gltexture.zpm3.engine.network.ZPNetwork;
 
 import java.util.Objects;

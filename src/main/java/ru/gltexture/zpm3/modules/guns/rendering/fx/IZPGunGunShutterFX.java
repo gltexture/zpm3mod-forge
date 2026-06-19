@@ -8,6 +8,7 @@ import org.joml.Matrix4f;
 import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
 import ru.gltexture.zpm3.engine.service.Pair;
 
+@Deprecated(forRemoval = true)
 public interface IZPGunGunShutterFX extends IZPGunFX {
     void onTrigger(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, boolean isRightHand);
     @Nullable Pair<Matrix4f, Matrix4f> getCurrentShutterTransformationGunArm(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, boolean rightHand, float deltaTicks);

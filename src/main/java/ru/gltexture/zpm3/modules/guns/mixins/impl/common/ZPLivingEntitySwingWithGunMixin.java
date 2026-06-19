@@ -1,6 +1,7 @@
 package ru.gltexture.zpm3.modules.guns.mixins.impl.common;
 
 
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -9,6 +10,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
 
 @Mixin(LivingEntity.class)

@@ -12,13 +12,19 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL46;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.modules.guns.rendering.basic.ZPDefaultGunMuzzleflashFX;
+import ru.gltexture.zpm3.modules.guns.rendering.fx.ZPDefaultGunMuzzleflashFX;
 import ru.gltexture.zpm3.engine.client.rendering.ui.imgui.interfaces.DearUIInterface;
-import ru.gltexture.zpm3.engine.mixins.ext.IZPPlayerMixinExt;
+import ru.gltexture.zpm3.modules.player.mixins.ext.IZPPlayerMixinExt;
 
 public class DearUITRSInterface implements DearUIInterface {
     public DearUITRSInterface() {
     }
+
+    public static float[] PARAM1 = new float[] { 0.0f };
+    public static float[] PARAM2 = new float[] { 0.0f };
+    public static float[] PARAM3 = new float[] { 0.0f };
+    public static float[] PARAM4 = new float[] { 0.0f };
+    public static float[] PARAM5 = new float[] { 0.0f };
 
     public static final TRS trsGun3d = new TRS("Matrix Gun 3d Person");
     public static final TRS trsMflash3d = new TRS("Matrix Mflash 3d Person");
@@ -165,6 +171,13 @@ public class DearUITRSInterface implements DearUIInterface {
                     ImGui.text(k + " = " + v);
                 });
             }
+        }
+        if (ImGui.collapsingHeader("Debug Params")) {
+            ImGui.dragFloat("PARAM1", DearUITRSInterface.PARAM1);
+            ImGui.dragFloat("PARAM2", DearUITRSInterface.PARAM2);
+            ImGui.dragFloat("PARAM3", DearUITRSInterface.PARAM3);
+            ImGui.dragFloat("PARAM4", DearUITRSInterface.PARAM4);
+            ImGui.dragFloat("PARAM5", DearUITRSInterface.PARAM5);
         }
         ImGui.end();
     }

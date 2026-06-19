@@ -30,7 +30,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL46;
 import ru.gltexture.zpm3.modules.debug.imgui.DearUITRSInterface;
-import ru.gltexture.zpm3.modules.guns.rendering.basic.ZPDefaultGunMuzzleflashFX;
+import ru.gltexture.zpm3.modules.guns.rendering.fx.ZPDefaultGunMuzzleflashFX;
 import ru.gltexture.zpm3.modules.guns.rendering.fx.ZPGunFXGlobalData;
 import ru.gltexture.zpm3.modules.guns.rendering.transforms.AbstractGunTransforms;
 import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
@@ -39,6 +39,7 @@ import ru.gltexture.zpm3.engine.exceptions.ZPNullException;
 
 import java.util.Objects;
 
+@Deprecated(forRemoval = true)
 public abstract class ZPAbstractGunRenderer implements ZPRenderHooks.ZPItemRendering1PersonHook, ZPRenderHooks.ZPItemRendering3PersonHook, ZPClientCallbacks.ZPClientTickCallback, ZPClientCallbacks.ZPGunShotCallback, ZPClientCallbacks.ZPGunReloadStartCallback, ZPClientCallbacks.ZPClientResourceDependentObject {
     protected ZPAbstractGunRenderer() {
     }

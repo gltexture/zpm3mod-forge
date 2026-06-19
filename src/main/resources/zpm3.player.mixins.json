@@ -13,6 +13,9 @@
   ],
   "client": [
     "client.ZPCPlayerFeaturesMixin",
+    "client.ZPCPlayerMixin",
+    "client.ZPLocalPlayerMixin",
+    "client.ZPMouseHandlerTurnMixin",
     "client.ZPPlayerItemReanimateMixin"
   ],
   "server": [

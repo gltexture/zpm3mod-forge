@@ -51,13 +51,13 @@ public class ZPNetPackModule extends ZPModule {
         moduleEntry.addNetworkPacket(new ZPNetwork.PacketData<>(8, ZPSyncConfigSettings.class, ZPSyncConfigSettings.encoder(), ZPSyncConfigSettings.decoder()));
         moduleEntry.addNetworkPacket(new ZPNetwork.PacketData<>(9, ZPPlayerWantToPickUpItem.class, ZPPlayerWantToPickUpItem.encoder(), ZPPlayerWantToPickUpItem.decoder()));
         moduleEntry.addNetworkPacket(new ZPNetwork.PacketData<>(10, ZPBulletBloodFXPacket.class, ZPBulletBloodFXPacket.encoder(), ZPBulletBloodFXPacket.decoder()));
+        moduleEntry.addNetworkPacket(new ZPNetwork.PacketData<>(11, ZPValidateMode.class, ZPValidateMode.encoder(), ZPValidateMode.decoder()));
+        moduleEntry.addNetworkPacket(new ZPNetwork.PacketData<>(12, ZPLyingStateEvent.class, ZPLyingStateEvent.encoder(), ZPLyingStateEvent.decoder()));
 
-        ZPUtility.sides().onlyClient(() -> {
-            moduleEntry.registerNetSyncedConfigData_ClientToServer(
-                    new ZPNetworkHandler.NetSyncDataFabric.Builder()
-                            .addBoolean(DefaultDataKeys.CtoS__PICK_UP_ON_KEY, ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY::getVar)
-            );
-        });
+        ZPUtility.sides().onlyClient(() -> moduleEntry.registerNetSyncedConfigData_ClientToServer(
+                new ZPNetworkHandler.NetSyncDataFabric.Builder()
+                        .addBoolean(DefaultDataKeys.CtoS__PICK_UP_ON_KEY, ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY::getVar)
+        ));
 
         moduleEntry.registerNetSyncedConfigData_ServerToClient(
                 new ZPNetworkHandler.NetSyncDataFabric.Builder()

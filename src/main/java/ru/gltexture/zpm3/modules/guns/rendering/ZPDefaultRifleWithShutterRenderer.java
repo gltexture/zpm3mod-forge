@@ -20,6 +20,7 @@ import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
 
 import java.util.Objects;
 
+@Deprecated(forRemoval = true)
 public class ZPDefaultRifleWithShutterRenderer extends ZPAbstractGunRenderer {
     private final float[] timerShutter;
 

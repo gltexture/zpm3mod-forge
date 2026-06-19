@@ -8,7 +8,7 @@ import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.modules.guns.rendering.ZPDefaultGunRenderers;
 import ru.gltexture.zpm3.modules.guns.rendering.ZPGunLayersProcessing;
-import ru.gltexture.zpm3.modules.guns.rendering.basic.ZPDefaultGunMuzzleflashFX;
+import ru.gltexture.zpm3.modules.guns.rendering.fx.ZPDefaultGunMuzzleflashFX;
 import ru.gltexture.zpm3.modules.guns.rendering.tracer.ZPBulletTracerManager;
 import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
 import ru.gltexture.zpm3.engine.core.ZPSide;

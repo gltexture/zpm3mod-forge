@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ShaderInstance;
@@ -17,7 +18,6 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL46;
@@ -33,6 +33,15 @@ import java.util.function.Consumer;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class ClientRenderFunctions {
+    @SuppressWarnings("all")
+    public static boolean isPlayerModelSlim() {
+        PlayerInfo info = Minecraft.getInstance().getConnection().getPlayerInfo(Minecraft.getInstance().player.getUUID());
+        if (info != null) {
+            boolean slim = info.getModelName().equals("slim");
+        }
+        return false;
+    }
+
     public static void blockAnimation(AbstractClientPlayer pPlayer, float pPartialTicks, InteractionHand pHand, ItemStack pStack, PoseStack pPoseStack) {
         if (pStack.getItem() instanceof ZPItemMedicine) {
             if (pPlayer.isUsingItem() && pPlayer.getUseItemRemainingTicks() > 0 && pPlayer.getUsedItemHand() == pHand) {

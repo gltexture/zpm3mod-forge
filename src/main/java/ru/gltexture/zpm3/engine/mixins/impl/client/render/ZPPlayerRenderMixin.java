@@ -9,6 +9,8 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,6 +19,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPClientConfig;
 import ru.gltexture.zpm3.engine.mixins.util.HumanoidArmorLayerOnArm;
 
@@ -50,6 +53,13 @@ public abstract class ZPPlayerRenderMixin {
     private void renderLeftHand(PoseStack pPoseStack, MultiBufferSource pBuffer, int pCombinedLight, AbstractClientPlayer pPlayer, CallbackInfo ci) {
         if (ZPClientConfig.RENDER_ARMOR_LAYERS_ON_HANDS.getVar()) {
             this.zpm3forge$humanoidArmorLayer.renderArmorPiece(pPoseStack, pBuffer, false, pPlayer, pCombinedLight);
+        }
+    }
+
+    @Inject(method = "getRenderOffset*", at = @At("HEAD"), cancellable = true)
+    public void getRenderOffset(AbstractClientPlayer pEntity, float pPartialTicks, CallbackInfoReturnable<Vec3> cir) {
+        if (pEntity.getPose() == Pose.SWIMMING) {
+            cir.setReturnValue(new Vec3(0.0f, -0.125f, 0.0f));
         }
     }
 }

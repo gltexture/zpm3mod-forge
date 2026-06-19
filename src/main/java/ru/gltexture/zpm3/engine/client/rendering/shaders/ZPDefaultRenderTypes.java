@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import ru.gltexture.zpm3.modules.guns.rendering.basic.ZPDefaultGunMuzzleflashFX;
+import ru.gltexture.zpm3.modules.guns.rendering.fx.ZPDefaultGunMuzzleflashFX;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class ZPDefaultRenderTypes {

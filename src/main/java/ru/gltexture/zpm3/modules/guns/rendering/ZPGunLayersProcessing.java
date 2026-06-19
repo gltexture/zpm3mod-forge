@@ -12,7 +12,7 @@ import org.joml.*;
 import org.lwjgl.opengl.GL46;
 import ru.gltexture.zpm3.modules.debug.imgui.DearUITRSInterface;
 import ru.gltexture.zpm3.engine.client.rendering.gl.programs.fbo.FBOTexture2DProgram;
-import ru.gltexture.zpm3.modules.guns.rendering.basic.ZPDefaultGunMuzzleflashFX;
+import ru.gltexture.zpm3.modules.guns.rendering.fx.ZPDefaultGunMuzzleflashFX;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPDefaultShaders;
 import ru.gltexture.zpm3.engine.client.utils.ClientRenderFunctions;
 import ru.gltexture.zpm3.engine.service.Pair;
@@ -20,6 +20,7 @@ import ru.gltexture.zpm3.engine.service.Pair;
 import java.util.List;
 import java.util.Objects;
 
+@Deprecated(forRemoval = true)
 @OnlyIn(Dist.CLIENT)
 public abstract class ZPGunLayersProcessing {
     @SuppressWarnings("unchecked")

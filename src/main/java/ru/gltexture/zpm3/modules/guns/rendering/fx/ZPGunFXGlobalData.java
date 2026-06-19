@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 
+@Deprecated(forRemoval = true)
 public abstract class ZPGunFXGlobalData {
     public static @NotNull ClientGunRenderGlobalData leftGunData = new ClientGunRenderGlobalData();
     public static @NotNull ClientGunRenderGlobalData rightGunData = new ClientGunRenderGlobalData();

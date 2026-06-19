@@ -1,4 +1,4 @@
-package ru.gltexture.zpm3.modules.guns.rendering.basic;
+package ru.gltexture.zpm3.modules.guns.rendering.fx;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
@@ -11,10 +11,9 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import ru.gltexture.zpm3.modules.debug.imgui.DearUITRSInterface;
 import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
-import ru.gltexture.zpm3.modules.guns.rendering.fx.IZPGunReloadingFX;
-import ru.gltexture.zpm3.modules.guns.rendering.fx.ZPGunFXGlobalData;
 import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
 
+@Deprecated(forRemoval = true)
 public class ZPDefaultGunReloadingFX implements IZPGunReloadingFX {
     private final float[] reloadPrev;
     private final float[] reload;

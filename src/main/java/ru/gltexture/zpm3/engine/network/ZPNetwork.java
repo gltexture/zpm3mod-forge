@@ -22,7 +22,17 @@ public class ZPNetwork {
     private final SimpleChannel mainChannel;
 
     public ZPNetwork(String channel, String version) {
-        this.mainChannel = NetworkRegistry.newSimpleChannel(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), channel), () -> version, version::equals, version::equals);
+        String protoFullVer = version;
+        {
+            if (ZombiePlague3.DEV_MODE()) {
+                protoFullVer += "DEV ";
+            }
+            if (ZombiePlague3.WIP_MODE()) {
+                protoFullVer += "WIP ";
+            }
+        }
+        final String finalProtoFullVer = protoFullVer;
+        this.mainChannel = NetworkRegistry.newSimpleChannel(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), channel), () -> finalProtoFullVer, finalProtoFullVer::equals, finalProtoFullVer::equals);
     }
 
     @SuppressWarnings("all")

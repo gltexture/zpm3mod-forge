@@ -13,7 +13,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
-import ru.gltexture.zpm3.engine.mixins.ext.IZPPlayerMixinExt;
+import ru.gltexture.zpm3.modules.player.mixins.ext.IZPPlayerMixinExt;
 import ru.gltexture.zpm3.engine.network.ZPNetwork;
 
 import ru.gltexture.zpm3.modules.net_pack.data.DefaultDataKeys;

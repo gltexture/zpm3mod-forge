@@ -1,11 +1,11 @@
 package ru.gltexture.zpm3.modules.guns.rendering;
 
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.modules.guns.rendering.basic.*;
 import ru.gltexture.zpm3.modules.guns.rendering.fx.*;
 import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
 import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacksManager;
 
+@Deprecated(forRemoval = true)
 public abstract class ZPDefaultGunRenderers {
     public static final @NotNull IZPGunRecoilFX defaultRecoilFXUniversal = ZPDefaultGunRecoilFX.create();
     public static final @NotNull IZPGunMuzzleflashFX defaultMuzzleflashFXUniversal = ZPDefaultGunMuzzleflashFX.create();

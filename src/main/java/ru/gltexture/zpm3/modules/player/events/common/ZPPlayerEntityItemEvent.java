@@ -13,7 +13,7 @@ import org.joml.Vector3f;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.engine.events.ZPEventClass;
-import ru.gltexture.zpm3.engine.mixins.ext.IZPPlayerMixinExt;
+import ru.gltexture.zpm3.modules.player.mixins.ext.IZPPlayerMixinExt;
 import ru.gltexture.zpm3.modules.net_pack.data.DefaultDataKeys;
 
 public class ZPPlayerEntityItemEvent implements ZPEventClass {

@@ -4,11 +4,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.gltexture.zpm3.modules.guns.rendering.basic.ZPDefaultGunParticlesFX;
 import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
 import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 
+@Deprecated(forRemoval = true)
 public interface IZPGunParticlesFX extends IZPGunFX, ZPClientCallbacks.ZPClientTickCallback, ZPClientCallbacks.ZPGunShotCallback {
     void onEmmitSmoke(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, boolean isRightHand);
     void onEmmitShell(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, boolean isRightHand);
@@ -18,7 +18,7 @@ public interface IZPGunParticlesFX extends IZPGunFX, ZPClientCallbacks.ZPClientT
         public @NotNull ParticlesEmitter smokeEmitter() {
             return ((player, baseGun, itemStack, isRightHand) -> {
                 for (int i = 0; i < Math.max(baseGun.getGunProperties().getClientRecoil() / 3.0f, 1.0f) + ZPRandom.getRandom().nextInt(2); i++) {
-                    ZPDefaultGunParticlesFX.emmitParticleSmoke(isRightHand, player, false, baseGun);
+                    ZPDefaultGunParticlesFX.emitParticleSmoke(isRightHand, player, false, baseGun);
                 }
             });
         }
@@ -36,7 +36,7 @@ public interface IZPGunParticlesFX extends IZPGunFX, ZPClientCallbacks.ZPClientT
         public @NotNull ParticlesEmitter smokeEmitter() {
             return ((player, baseGun, itemStack, isRightHand) -> {
                 for (int i = 0; i < Math.max(baseGun.getGunProperties().getClientRecoil() / 3.0f, 1.0f) + ZPRandom.getRandom().nextInt(2); i++) {
-                    ZPDefaultGunParticlesFX.emmitParticleSmoke(isRightHand, player, false, baseGun);
+                    ZPDefaultGunParticlesFX.emitParticleSmoke(isRightHand, player, false, baseGun);
                 }
             });
         }
@@ -66,7 +66,7 @@ public interface IZPGunParticlesFX extends IZPGunFX, ZPClientCallbacks.ZPClientT
         public @NotNull ParticlesEmitter smokeEmitter() {
             return ((player, baseGun, itemStack, isRightHand) -> {
                 for (int i = 0; i < baseGun.getGunProperties().getClientRecoil() + ZPRandom.getRandom().nextInt(8) + 8; i++) {
-                    ZPDefaultGunParticlesFX.emmitParticleSmoke(isRightHand, player, true, baseGun);
+                    ZPDefaultGunParticlesFX.emitParticleSmoke(isRightHand, player, true, baseGun);
                 }
             });
         }
@@ -84,6 +84,6 @@ public interface IZPGunParticlesFX extends IZPGunFX, ZPClientCallbacks.ZPClientT
 
     @FunctionalInterface
     interface ParticlesEmitter {
-        void emmit(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, boolean isRightHand);
+        void emit(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, boolean isRightHand);
     }
 }

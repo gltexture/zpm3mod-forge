@@ -20,7 +20,7 @@ import ru.gltexture.zpm3.engine.service.ZPUtility;
 public abstract class ZPRegItems {
     public static void init(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
         ZPItems.wrench = regSupplier.register("wrench",
-                () -> new ZPWrenchTool(ZPCommonTiers.ZP_WRENCH, 1, -3.8F, new Item.Properties())
+                () -> new ZPWrenchTool(ZPCommonTiers.ZP_WRENCH, 1, 0.0f, new Item.Properties())
         ).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addTagToItem(e, ZPTags.I_MINEABLE_WITH_WRENCH);

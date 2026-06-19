@@ -30,6 +30,7 @@ import ru.gltexture.zpm3.engine.service.Pair;
 
 import java.util.Objects;
 
+@Deprecated(forRemoval = true)
 public class ZPDefaultRifleRenderer extends ZPAbstractGunRenderer {
     public static final float armScaling1 = 0.5f; // EMPTY
     public static final float armScaling2 = 1.25f; // NOT EMPTY

@@ -52,7 +52,7 @@ public class ZPPlayerModule extends ZPModule {
             moduleEntry.addEventClass(ZPPlayerItemToolTipsEvent.class);
             moduleEntry.addEventClass(ZPRenderGuiEvent.class);
             moduleEntry.addEventClass(ZPResourcePackEvent.class);
-            moduleEntry.addEventClass(ZPPlayerLyingCheckEvent.class);
+            moduleEntry.addEventClass(ZPPlayerLyingClientCheckEvent.class);
         });
 
         moduleEntry.addEventClass(ZPPlayerGunCancelInterEvent.class);

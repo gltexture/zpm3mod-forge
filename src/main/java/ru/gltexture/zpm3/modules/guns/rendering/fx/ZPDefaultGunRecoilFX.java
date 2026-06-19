@@ -1,4 +1,4 @@
-package ru.gltexture.zpm3.modules.guns.rendering.basic;
+package ru.gltexture.zpm3.modules.guns.rendering.fx;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
@@ -10,9 +10,9 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
-import ru.gltexture.zpm3.modules.guns.rendering.fx.IZPGunRecoilFX;
 import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
 
+@Deprecated(forRemoval = true)
 public class ZPDefaultGunRecoilFX implements IZPGunRecoilFX {
     private final float[] recoilPrev;
     private final float[] recoil;

@@ -13,9 +13,10 @@
     "client.ZPDisableAttackMixin",
     "client.ZPDisableBlockDestroyingMixin",
     "client.ZPItemStackClDataGunSyncMixin",
-    "client.ZPPlayerClientDataMuzzleflash3PMixin",
     "client.ZPLevelRenderOutlineGunDisableMixin",
-    "client.ZPReanimateArmMixin"
+    "client.ZPPlayerClientDataMuzzleflash3PMixin",
+    "client.ZPReanimateLivingEntityRendererMixin",
+    "client.ZPReanimateModelMixin"
   ],
   "server": [
   ],

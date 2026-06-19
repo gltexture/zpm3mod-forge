@@ -1,4 +1,4 @@
-package ru.gltexture.zpm3.modules.guns.rendering.basic;
+package ru.gltexture.zpm3.modules.guns.rendering.fx;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -9,25 +9,28 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.TickEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.*;
+import ru.gltexture.zpm3.engine.client.utils.ClientRenderFunctions;
 import ru.gltexture.zpm3.modules.debug.imgui.DearUITRSInterface;
 import ru.gltexture.zpm3.modules.fx.init.ZPParticles;
 import ru.gltexture.zpm3.modules.fx.particles.options.ColoredDefaultParticleOptions;
 import ru.gltexture.zpm3.modules.fx.particles.options.GunShellOptions;
 import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
-import ru.gltexture.zpm3.modules.guns.rendering.fx.IZPGunParticlesFX;
-import ru.gltexture.zpm3.modules.guns.rendering.fx.ZPGunFXGlobalData;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
 
 import java.lang.Math;
 import java.util.Objects;
 
+@SuppressWarnings("removal")
+@Deprecated(forRemoval = true)
 public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
     private final float[] shotTicksAccumulator;
 
@@ -53,19 +56,19 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
 
     @Override
     public void onEmmitSmoke(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, boolean isRightHand) {
-        if (ZPDefaultGunMuzzleflashFX.minQuality() <= 1) {
-            return;
-        }
+      //  if (ZPDefaultGunMuzzleflashFX.minQuality() <= 1) {
+      //      return;
+      //  }
         final Minecraft mc = Minecraft.getInstance();
         if (player.equals(mc.player)) {
             this.shotTicksAccumulator[isRightHand ? 1 : 0] = Math.min(this.shotTicksAccumulator[isRightHand ? 1 : 0] + Math.max(baseGun.getGunProperties().getClientRecoil() / 1.5f, 0.75f), 8.0f);
         }
         if (baseGun.getGunProperties().getCustomShotParticlesEmitter() != null) {
             if (baseGun.getGunProperties().getCustomShotParticlesEmitter().smokeEmitter() != null) {
-                Objects.requireNonNull(baseGun.getGunProperties().getCustomShotParticlesEmitter().smokeEmitter()).emmit(player, baseGun, itemStack, isRightHand);
+                Objects.requireNonNull(baseGun.getGunProperties().getCustomShotParticlesEmitter().smokeEmitter()).emit(player, baseGun, itemStack, isRightHand);
             }
         } else {
-            Objects.requireNonNull(IZPGunParticlesFX.DEFAULT_PARTICLES_EMITTER.smokeEmitter()).emmit(player, baseGun, itemStack, isRightHand);
+            Objects.requireNonNull(IZPGunParticlesFX.DEFAULT_PARTICLES_EMITTER.smokeEmitter()).emit(player, baseGun, itemStack, isRightHand);
         }
     }
 
@@ -73,15 +76,15 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
     public void onEmmitShell(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, boolean isRightHand) {
         if (baseGun.getGunProperties().getCustomShotParticlesEmitter() != null) {
             if (baseGun.getGunProperties().getCustomShotParticlesEmitter().shellsEmitter() != null) {
-                Objects.requireNonNull(baseGun.getGunProperties().getCustomShotParticlesEmitter().shellsEmitter()).emmit(player, baseGun, itemStack, isRightHand);
+                Objects.requireNonNull(baseGun.getGunProperties().getCustomShotParticlesEmitter().shellsEmitter()).emit(player, baseGun, itemStack, isRightHand);
             }
         } else {
-            Objects.requireNonNull(IZPGunParticlesFX.DEFAULT_PARTICLES_EMITTER.shellsEmitter()).emmit(player, baseGun, itemStack, isRightHand);
+            Objects.requireNonNull(IZPGunParticlesFX.DEFAULT_PARTICLES_EMITTER.shellsEmitter()).emit(player, baseGun, itemStack, isRightHand);
         }
     }
 
-    public static void emmitParticleSmoke(boolean isRightHand, Player player, boolean smoky, ZPBaseGun baseGun) {
-        ZPDefaultGunParticlesFX.emmitParticleSmoke(isRightHand, player, smoky, false, baseGun);
+    public static void emitParticleSmoke(boolean isRightHand, Player player, boolean smoky, ZPBaseGun baseGun) {
+        ZPDefaultGunParticlesFX.emitParticleSmoke(isRightHand, player, smoky, false, baseGun);
     }
 
     private static float getFovScale(Minecraft mc) {
@@ -90,7 +93,7 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
         return (float)(currentFov / fov);
     }
 
-    public static void emmitParticleSmoke(boolean isRightHand, Player player, boolean smoky, boolean hotBarrel, ZPBaseGun baseGun) {
+    public static void emitParticleSmoke(boolean isRightHand, Player player, boolean smoky, boolean hotBarrel, ZPBaseGun baseGun) {
         final Minecraft mc = Minecraft.getInstance();
 
         Vector3f spawnPos = new Vector3f(0.0f);
@@ -123,6 +126,13 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
         } else {
             spawnPos = ZPDefaultGunParticlesFX.pickSpawnPosFor3Person(player, 1.0f, isRightHand);
             motion = player.getLookAngle().toVector3f().mul(0.2f);
+            if (!player.isInWater() && player.getPose().equals(Pose.SWIMMING)) {
+                float yaw = -player.getYRot() * ((float) Math.PI / 180F);
+                final Matrix4f space = new Matrix4f().identity();
+                space.rotate(Axis.YP.rotation(yaw));
+                Vector4f trVec = space.transform(new Vector4f(0.0f, 0.0f, 0.5f, 1.0f));
+                spawnPos.add(trVec.x, trVec.y, trVec.z);
+            }
         }
 
         motion.mul(smoky ? 0.2f : 1.0f);
@@ -150,7 +160,7 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
 
         boolean isFirstPersonSelf = (player == mc.player && mc.options.getCameraType().isFirstPerson());
 
-        final Vector3f spawnPos;
+        Vector3f spawnPos;
         final Vector3f motion;
 
         if (isFirstPersonSelf) {
@@ -188,10 +198,17 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
             float side = (isRightHand ? 1f : -1f);
             spawnPos = ZPDefaultGunParticlesFX.pickSpawnPosFor3Person(player, 0.675f, isRightHand);
 
+            final Matrix4f space = new Matrix4f().identity();
+            if (!player.isInWater() && player.getPose().equals(Pose.SWIMMING)) {
+                float yaw = -player.getYRot() * ((float) Math.PI / 180F);
+                space.rotate(Axis.YP.rotation(yaw));
+                Vector4f trVec = space.transform(new Vector4f(0.0f, 0.0f, 0.5f, 1.0f));
+                spawnPos.add(trVec.x, trVec.y, trVec.z);
+            }
             float yaw = -player.getYRot() * ((float) Math.PI / 180F);
             float pitch = player.getXRot() * ((float) Math.PI / 180F);
 
-            final Matrix4f space = new Matrix4f().identity();
+            space.identity();
             space.rotate(Axis.YP.rotation(yaw));
             space.rotate(Axis.XP.rotation(pitch));
 
@@ -210,31 +227,53 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
         Vector3f spawnPos = new Vector3f(0.0f);
         if ((renderer instanceof PlayerRenderer playerRenderer)) {
             HumanoidModel<?> model = playerRenderer.getModel();
-            ModelPart hand = isRightHand ? model.rightArm : model.leftArm;
-
             PoseStack poseStack = new PoseStack();
             poseStack.pushPose();
 
             float yaw = -player.getYRot() * ((float) Math.PI / 180F);
             float pitch = player.getXRot() * ((float) Math.PI / 180F);
 
-            Vector3f center = new Vector3f((float) player.getX(), (float) player.getY() + player.getBbHeight() * 0.75f, (float) player.getZ());
+            Vector3f center = new Vector3f((float) player.getX(), (float) player.getY() + player.getBbHeight() * 0.85f, (float) player.getZ());
 
             poseStack.translate(center.x, center.y, center.z);
             poseStack.mulPose(Axis.YP.rotation(yaw));
             poseStack.mulPose(Axis.XP.rotation(pitch));
-            poseStack.translate(0.0f, 0.0f, zOffset);
+            poseStack.translate(0.0f, player.isCrouching() ? -0.25f : 0.0f, zOffset);
 
-            hand.translateAndRotate(poseStack);
+            model.translateToHand(isRightHand ? HumanoidArm.RIGHT : HumanoidArm.LEFT, poseStack);
+            //translateToHandFix(isRightHand ? model.rightArm : model.leftArm, isRightHand ? HumanoidArm.RIGHT : HumanoidArm.LEFT, poseStack);
 
             Matrix4f m = poseStack.last().pose();
-            Vector4f p = new Vector4f(0, 0, 0, 1).mul(m);
+            Vector4f p = new Vector4f(0, 0, 0.0f, 1).mul(m);
             spawnPos = new Vector3f(p.x, p.y, p.z);
 
             poseStack.popPose();
         }
 
         return spawnPos;
+    }
+
+    //TODO REMAKE
+    private static void translateToHandFix(ModelPart modelpart, HumanoidArm pSide, PoseStack pPoseStack) {
+        if (ClientRenderFunctions.isPlayerModelSlim()) {
+            float f = 0.5F * (float)(pSide == HumanoidArm.RIGHT ? 1 : -1);
+            modelpart.x += f;
+            translateAndRotate(modelpart, pPoseStack);
+            modelpart.x -= f;
+        } else {
+            translateAndRotate(modelpart, pPoseStack);
+        }
+    }
+
+    //TODO REMAKE
+    private static void translateAndRotate(ModelPart modelPart, PoseStack pPoseStack) {
+        pPoseStack.translate(modelPart.x / 16.0F, modelPart.y / 16.0F, modelPart.z / 16.0F);
+        if (modelPart.xRot != 0.0F || modelPart.yRot != 0.0F || modelPart.zRot != 0.0F) {
+            pPoseStack.mulPose((new Quaternionf()).rotationZYX(modelPart.zRot, modelPart.yRot, modelPart.xRot));
+        }
+        if (modelPart.xScale != 1.0F || modelPart.yScale != 1.0F || modelPart.zScale != 1.0F) {
+            pPoseStack.scale(modelPart.xScale, modelPart.yScale, modelPart.zScale);
+        }
     }
 
     @Override
@@ -251,14 +290,14 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
                     }
                     if (player.tickCount % 3 == 0) {
                         if (this.shotTicksAccumulator[1] >= 3.0f) {
-                            ZPDefaultGunParticlesFX.emmitParticleSmoke(true, player, false, true, baseGun);
+                            ZPDefaultGunParticlesFX.emitParticleSmoke(true, player, false, true, baseGun);
                         }
                     }
                     if (DearUITRSInterface.emmitShells) {
                         ZPDefaultGunParticlesFX.emmitParticleShell(true, Minecraft.getInstance().player, baseGun);
                     }
                     if (DearUITRSInterface.emmitSmoke) {
-                        ZPDefaultGunParticlesFX.emmitParticleSmoke(true, Minecraft.getInstance().player, false, baseGun);
+                        ZPDefaultGunParticlesFX.emitParticleSmoke(true, Minecraft.getInstance().player, false, baseGun);
                     }
                 } else {
                     this.shotTicksAccumulator[1] = 0.0f;
@@ -269,14 +308,14 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
                     }
                     if (player.tickCount % 3 == 0) {
                         if (this.shotTicksAccumulator[0] >= 3.0f) {
-                            ZPDefaultGunParticlesFX.emmitParticleSmoke(false, player, false, true, baseGun);
+                            ZPDefaultGunParticlesFX.emitParticleSmoke(false, player, false, true, baseGun);
                         }
                     }
                     if (DearUITRSInterface.emmitShells) {
                         ZPDefaultGunParticlesFX.emmitParticleShell(false, Minecraft.getInstance().player, baseGun);
                     }
                     if (DearUITRSInterface.emmitSmoke) {
-                        ZPDefaultGunParticlesFX.emmitParticleSmoke(false, Minecraft.getInstance().player, false, baseGun);
+                        ZPDefaultGunParticlesFX.emitParticleSmoke(false, Minecraft.getInstance().player, false, baseGun);
                     }
                 } else {
                     this.shotTicksAccumulator[0] = 0.0f;

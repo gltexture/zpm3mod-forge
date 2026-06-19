@@ -11,7 +11,7 @@ import ru.gltexture.zpm3.modules.guns.keybind.ZPGunKeyBindings;
 import ru.gltexture.zpm3.modules.guns.processing.input.ZPClientGunClientTickProcessing;
 import ru.gltexture.zpm3.modules.guns.rendering.ZPAbstractGunRenderer;
 import ru.gltexture.zpm3.modules.guns.rendering.ZPDefaultGunRenderers;
-import ru.gltexture.zpm3.modules.guns.rendering.basic.ZPDefaultGunMuzzleflashFX;
+import ru.gltexture.zpm3.modules.guns.rendering.fx.ZPDefaultGunMuzzleflashFX;
 import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacksManager;
 import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
 import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooks;
@@ -63,7 +63,7 @@ public class ZPGunsModule extends ZPModule {
     //@Override
     //public void initMixins(ZombiePlague3.@NotNull IMixinEntry mixinEntry) {
     //    mixinEntry.addMixinConfigData(new ZombiePlague3.IMixinEntry.MixinConfig("guns", "ru.gltexture.zpm3.modules.guns.mixins.impl"),
-    //            new ZombiePlague3.IMixinEntry.MixinClass("client.ZPReanimateArmMixin", ZPSide.CLIENT),
+    //            new ZombiePlague3.IMixinEntry.MixinClass("client.ZPReanimateModelMixin", ZPSide.CLIENT),
     //            new ZombiePlague3.IMixinEntry.MixinClass("client.ZPPlayerClientDataMuzzleflash3PMixin", ZPSide.CLIENT),
     //            new ZombiePlague3.IMixinEntry.MixinClass("client.ZPClientPacketStackNBTCopyMixin", ZPSide.CLIENT),
     //            new ZombiePlague3.IMixinEntry.MixinClass("common.ZPItemMixin", ZPSide.COMMON),

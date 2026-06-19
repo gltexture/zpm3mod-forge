@@ -4,6 +4,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.modules.player.mixins.ext.IZPPlayerMixinExt;
 
 import java.util.Deque;
 import java.util.Objects;

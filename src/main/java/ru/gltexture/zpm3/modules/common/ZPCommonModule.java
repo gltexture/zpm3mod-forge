@@ -22,6 +22,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
@@ -226,6 +227,12 @@ public class ZPCommonModule extends ZPModule {
             );
         }
 
+        ZPDataGenHelper.addBlockLootTable(() -> Blocks.CAMPFIRE, () -> new LootPool.Builder()
+                .add(LootItem.lootTableItem(Items.STICK))
+                .setRolls(UniformGenerator.between(8, 16))
+                .when(ExplosionCondition.survivesExplosion())
+        );
+
         moduleEntry.addTier(ZPCommonTiers.values());
         moduleEntry.addRecipesRegistry(new ZPCommonRecipeRegistry());
         moduleEntry.addRegistryClass(ZPSounds.class);
@@ -233,6 +240,8 @@ public class ZPCommonModule extends ZPModule {
         moduleEntry.addRegistryClass(ZPBlockItems.class);
         moduleEntry.addRegistryClass(ZPBlocks.class);
         moduleEntry.addRegistryClass(ZPTorchBlocks.class);
+        moduleEntry.addRegistryClass(ZPLanternBlocks.class);
+        moduleEntry.addRegistryClass(ZPCampfireBlocks.class);
         moduleEntry.addRegistryClass(ZPEntityAttributes.class);
         moduleEntry.addRegistryClass(ZPEntities.class);
         moduleEntry.addRegistryClass(ZPBlockEntities.class);

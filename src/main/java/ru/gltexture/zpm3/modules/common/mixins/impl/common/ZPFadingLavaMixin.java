@@ -19,11 +19,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import ru.gltexture.zpm3.engine.core.config.builtin.ZPClientConfig;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.modules.common.init.ZPBlockEntities;
 import ru.gltexture.zpm3.modules.common.instances.block_entities.ZPFadingBlockEntity;
-import ru.gltexture.zpm3.modules.common.instances.blocks.torch.IFadingBlock;
+import ru.gltexture.zpm3.modules.common.instances.blocks.fading.IFadingBlock;
 import ru.gltexture.zpm3.modules.common.instances.blocks.torch.ZPFadingTorchBlock;
 import ru.gltexture.zpm3.engine.instances.blocks.IHotLiquid;
 

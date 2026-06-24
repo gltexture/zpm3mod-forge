@@ -14,7 +14,7 @@ public class ZPWorldConfig implements ZPConfigConstantsClass {
             new ZPConfig_BOOL(true);
 
     @ZPVarDefinition(description = "Prevents fading torches and pumpkins when placed in Creative mode.")
-    public static final ZPConfig_BOOL SKIP_FADE_TICKING_TORCHES_PUMPKINS_PLACED_IN_CREATIVE =
+    public static final ZPConfig_BOOL SKIP_FADING_BLOCKS_PLACED_IN_CREATIVE =
             new ZPConfig_BOOL(true);
 
     @ZPVarDefinition(description = "How much internal damage can receive barbared wire, before it breaks.")
@@ -65,6 +65,14 @@ public class ZPWorldConfig implements ZPConfigConstantsClass {
     public static final ZPConfig_INT TORCH_FADING_TIME =
             new ZPConfig_INT(12000);
 
+    @ZPVarDefinition(description = "Duration in ticks before a placed lantern light source fades.")
+    public static final ZPConfig_INT LANTERN_FADING_TIME =
+            new ZPConfig_INT(12000);
+
+    @ZPVarDefinition(description = "Duration in ticks before a placed lantern light source fades.")
+    public static final ZPConfig_INT CAMPFIRE_FADING_TIME =
+            new ZPConfig_INT(12000);
+
     @ZPVarDefinition(description = "Duration in ticks before a placed pumpkin light source fades and is removed.")
     public static final ZPConfig_INT PUMPKIN_FADING_TIME =
             new ZPConfig_INT(24000);
@@ -79,6 +87,14 @@ public class ZPWorldConfig implements ZPConfigConstantsClass {
 
     @ZPVarDefinition(description = "Allows torches to fade over time when enabled.")
     public static final ZPConfig_BOOL FADING_TORCHES =
+            new ZPConfig_BOOL(true);
+
+    @ZPVarDefinition(description = "Allows lanterns to fade over time when enabled.")
+    public static final ZPConfig_BOOL FADING_LANTERNS =
+            new ZPConfig_BOOL(true);
+
+    @ZPVarDefinition(description = "Allows campfires to fade over time when enabled.")
+    public static final ZPConfig_BOOL FADING_CAMPFIRES =
             new ZPConfig_BOOL(true);
 
     @ZPVarDefinition(description = "Allows pumpkins to fade over time when enabled.")

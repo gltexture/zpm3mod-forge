@@ -99,12 +99,11 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
         Vector3f spawnPos = new Vector3f(0.0f);
         Vector3f motion;
 
+        final boolean isRifle = baseGun.getGunProperties().getHeldType().equals(ZPBaseGun.GunProperties.HeldType.RIFLE);
         if (player == mc.player && mc.options.getCameraType().isFirstPerson()) {
             final Camera camera = mc.gameRenderer.getMainCamera();
             final Vector3f camPos = camera.getPosition().toVector3f();
             final Quaternionf camRot = camera.rotation();
-
-            final boolean isRifle = baseGun.getGunProperties().getHeldType().equals(ZPBaseGun.GunProperties.HeldType.RIFLE);
 
             Vector4f muzzle = new Vector4f(0.0f, 0.0f, 0.0f, 1.0f);
             Objects.requireNonNull(ZPGunFXGlobalData.getGunData(isRightHand).getMflash1spTransformationTarget()).transform(muzzle);
@@ -130,7 +129,7 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
                 float yaw = -player.getYRot() * ((float) Math.PI / 180F);
                 final Matrix4f space = new Matrix4f().identity();
                 space.rotate(Axis.YP.rotation(yaw));
-                Vector4f trVec = space.transform(new Vector4f(0.0f, 0.0f, 0.5f, 1.0f));
+                Vector4f trVec = space.transform(new Vector4f(0.0f, 0.0f, isRifle ? 0.5f : 0.2f, 1.0f));
                 spawnPos.add(trVec.x, trVec.y, trVec.z);
             }
         }
@@ -163,11 +162,11 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
         Vector3f spawnPos;
         final Vector3f motion;
 
+        final boolean isRifle = baseGun.getGunProperties().getHeldType().equals(ZPBaseGun.GunProperties.HeldType.RIFLE);
         if (isFirstPersonSelf) {
             final Camera camera = mc.gameRenderer.getMainCamera();
             final Vector3f camPos = camera.getPosition().toVector3f();
             final Quaternionf camRot = camera.rotation();
-            final boolean isRifle = baseGun.getGunProperties().getHeldType().equals(ZPBaseGun.GunProperties.HeldType.RIFLE);
             final float xOff = isRifle ? 0.0f : 0.5f;
             float distanceToGun = ZPGunFXGlobalData.getGunData(isRightHand).getCurrentGunItemMatrix().getScale(new Vector3f()).z / (xOff + 2.0f);
 
@@ -202,7 +201,7 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
             if (!player.isInWater() && player.getPose().equals(Pose.SWIMMING)) {
                 float yaw = -player.getYRot() * ((float) Math.PI / 180F);
                 space.rotate(Axis.YP.rotation(yaw));
-                Vector4f trVec = space.transform(new Vector4f(0.0f, 0.0f, 0.5f, 1.0f));
+                Vector4f trVec = space.transform(new Vector4f(0.0f, 0.0f, isRifle ? 0.5f : 0.2f, 1.0f));
                 spawnPos.add(trVec.x, trVec.y, trVec.z);
             }
             float yaw = -player.getYRot() * ((float) Math.PI / 180F);

@@ -1,4 +1,4 @@
-package ru.gltexture.zpm3.modules.common.instances.blocks.torch;
+package ru.gltexture.zpm3.modules.common.instances.blocks.fading;
 
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.Nullable;

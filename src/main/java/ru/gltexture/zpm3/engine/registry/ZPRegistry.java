@@ -391,8 +391,8 @@ public abstract class ZPRegistry<T> {
             }
 
             @OnlyIn(Dist.CLIENT)
-            public void setBlockItemModelExecutor(@NotNull RegistryObject<? extends Block> block, @Nullable ZPBlockModelProvider.BlockModelExecutor.EItem<?> itemModelExecutor) {
-                ZPDataGenHelper.setBlockModelExecutor(block, () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(DefaultBlockModelExecutors.getDefault(), itemModelExecutor));
+            public void setBlockItemModelExecutor(@NotNull RegistryObject<? extends Block> block, @NotNull ZPBlockModelProvider.BlockModelExecutor.EBlock<?> blockModelExecutor, @Nullable ZPBlockModelProvider.BlockModelExecutor.EItem<?> itemModelExecutor) {
+                ZPDataGenHelper.setBlockModelExecutor(block, () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(blockModelExecutor, itemModelExecutor));
             }
 
             @OnlyIn(Dist.CLIENT)

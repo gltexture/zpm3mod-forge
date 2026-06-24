@@ -19,6 +19,7 @@ import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.modules.common.init.ZPBlockEntities;
 import ru.gltexture.zpm3.modules.common.instances.block_entities.ZPFadingBlockEntity;
 import ru.gltexture.zpm3.engine.instances.blocks.ZPTorchBlock;
+import ru.gltexture.zpm3.modules.common.instances.blocks.fading.IFadingBlock;
 
 import java.util.function.Supplier;
 
@@ -66,7 +67,7 @@ public class ZPFadingTorchBlock extends ZPTorchBlock implements EntityBlock, IFa
     public static void activationCheck(@NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, @Nullable LivingEntity pPlacer, @NotNull ItemStack pStack) {
         BlockEntity entity = pLevel.getBlockEntity(pPos);
         if (entity instanceof ZPFadingBlockEntity fadingBlockEntity && pPlacer instanceof Player player) {
-            if (ZPWorldConfig.SKIP_FADE_TICKING_TORCHES_PUMPKINS_PLACED_IN_CREATIVE.getVar() && player.isCreative()) {
+            if (ZPWorldConfig.SKIP_FADING_BLOCKS_PLACED_IN_CREATIVE.getVar() && player.isCreative()) {
                 fadingBlockEntity.setActive(false);
             }
         }

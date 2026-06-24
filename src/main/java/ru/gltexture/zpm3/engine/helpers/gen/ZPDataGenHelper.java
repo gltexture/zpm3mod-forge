@@ -22,6 +22,7 @@ import ru.gltexture.zpm3.engine.helpers.gen.providers.ZPSoundListProvider;
 import ru.gltexture.zpm3.engine.service.ZPPath;
 
 import java.util.function.Supplier;
+import java.util.*;
 
 public abstract class ZPDataGenHelper {
     public static final String DEFAULT_RENDER_TYPE = "solid";
@@ -32,11 +33,18 @@ public abstract class ZPDataGenHelper {
     public static final MinecraftModelParentReference DEFAULT_CHEST_BLOCK = new MinecraftModelParentReference("block/chest");
     public static final MinecraftModelParentReference DEFAULT_CHEST_ITEM = new MinecraftModelParentReference("item/chest");
     public static final MinecraftModelParentReference DEFAULT_WATER = new MinecraftModelParentReference("block/water");
+    public static final MinecraftModelParentReference DEFAULT_BLOCK_LAYER = new MinecraftModelParentReference("block/snow_height");
     public static final MinecraftModelParentReference DEFAULT_BLOCK_CUBE = new MinecraftModelParentReference("block/cobblestone");
     public static final MinecraftModelParentReference DEFAULT_BLOCK_STAIRS = new MinecraftModelParentReference("block/cobblestone_stairs");
     public static final MinecraftModelParentReference DEFAULT_BLOCK_SLAB = new MinecraftModelParentReference("block/cobblestone_slab");
     public static final MinecraftModelParentReference DEFAULT_BLOCK_CROSS = new MinecraftModelParentReference("block/cross");
     public static final @Nullable MinecraftModelParentReference NO_REFERENCE = null;
+
+    public static final MinecraftModelParentReference DEFAULT_LANTERN = new MinecraftModelParentReference("block/template_lantern",
+            Map.of("hanging", "block/template_hanging_lantern"));
+
+    public static final MinecraftModelParentReference DEFAULT_CAMPFIRE = new MinecraftModelParentReference("block/template_campfire",
+            Map.of("off", "block/campfire_off"));
 
     public static final MinecraftModelParentReference DEFAULT_TORCH = new MinecraftModelParentReference("block/template_torch");
     public static final MinecraftModelParentReference DEFAULT_TORCH_WALL = new MinecraftModelParentReference("block/template_torch_wall");
@@ -55,6 +63,8 @@ public abstract class ZPDataGenHelper {
 
     public static final ZPPath COMMON_BLOCKS_DIRECTORY = new ZPPath("common");
     public static final ZPPath TORCH_BLOCKS_DIRECTORY = new ZPPath("torch");
+    public static final ZPPath LANTERN_BLOCKS_DIRECTORY = new ZPPath("lantern");
+    public static final ZPPath CAMPFIRE_BLOCKS_DIRECTORY = new ZPPath("campfire");
     public static final ZPPath PILLAR_BLOCKS_DIRECTORY = new ZPPath("pillar");
     public static final ZPPath MINECRAFT_VANILLA_ROOT = new ZPPath("VANILLA_MC$");
 
@@ -62,6 +72,7 @@ public abstract class ZPDataGenHelper {
     public static final ZPPath FOOD_ITEMS_DIRECTORY = new ZPPath("food");
     public static final ZPPath ITEMS_ITEMS_DIRECTORY = new ZPPath("items");
     public static final ZPPath TOOLS_ITEMS_DIRECTORY = new ZPPath("tools");
+    public static final ZPPath BLOCKS_ITEMS_DIRECTORY = new ZPPath("blocks");
     public static final ZPPath MISC_ITEMS_DIRECTORY = new ZPPath("misc");
     public static final ZPPath MELEE_ITEMS_DIRECTORY = new ZPPath("melee");
     public static final ZPPath MEDICINE_ITEMS_DIRECTORY = new ZPPath("medicine");

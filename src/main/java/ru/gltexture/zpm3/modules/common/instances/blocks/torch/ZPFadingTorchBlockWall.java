@@ -18,6 +18,7 @@ import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.modules.common.init.ZPBlockEntities;
 import ru.gltexture.zpm3.modules.common.instances.block_entities.ZPFadingBlockEntity;
 import ru.gltexture.zpm3.engine.instances.blocks.ZPWallTorchBlock;
+import ru.gltexture.zpm3.modules.common.instances.blocks.fading.IFadingBlock;
 
 import java.util.function.Supplier;
 

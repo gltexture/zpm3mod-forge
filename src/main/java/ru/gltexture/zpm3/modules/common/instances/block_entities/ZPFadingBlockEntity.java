@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.modules.common.init.ZPBlockEntities;
-import ru.gltexture.zpm3.modules.common.instances.blocks.torch.IFadingBlock;
+import ru.gltexture.zpm3.modules.common.instances.blocks.fading.IFadingBlock;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.instances.block_entities.ZPBlockEntity;
 import ru.gltexture.zpm3.engine.instances.blocks.ZPTorchBlock;
@@ -19,7 +19,7 @@ import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 import java.util.Objects;
 
-public class ZPFadingBlockEntity extends ZPBlockEntity {
+public class ZPFadingBlockEntity extends ZPBlockEntity implements IFadingBlockEntity {
     public static final String NBT_TIMELOCK = "timeLock";
     public static final String NBT_ACTIVE = "active";
     public static final String NBT_FADING_TIME = "fadingTime";
@@ -81,7 +81,7 @@ public class ZPFadingBlockEntity extends ZPBlockEntity {
         }
     }
 
-    public boolean isActive() {
+    public boolean zpm3forge$isActive() {
         return this.active;
     }
 

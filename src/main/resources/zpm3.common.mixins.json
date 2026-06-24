@@ -5,12 +5,17 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "zpm3.refmap.json",
   "mixins": [
-    "common.ZPFluidPlacedFadingBlockMixin",
+    "BlockInvoker",
+    "common.ZPCampfireEntityMixin",
+    "common.ZPCampfireMixin",
+    "common.ZPFadingLanternMixin",
     "common.ZPFadingLavaMixin",
-    "common.ZPMilkDisableMixin",
-    "common.ZPMobCategoryIncreaseSpawnMixin",
     "common.ZPFadingPumpkinMixin",
     "common.ZPFadingTorchMixin",
+    "common.ZPFlintAndSteelTorchMixin",
+    "common.ZPFluidPlacedFadingBlockMixin",
+    "common.ZPMilkDisableMixin",
+    "common.ZPMobCategoryIncreaseSpawnMixin",
     "common.ZPWallTorchMixin"
   ],
   "client": [

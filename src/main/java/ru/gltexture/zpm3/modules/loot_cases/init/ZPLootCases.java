@@ -4,6 +4,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockModelExecutors;
 import ru.gltexture.zpm3.modules.loot_cases.instances.blocks.ZPDefaultBlockLootCase;
 import ru.gltexture.zpm3.modules.loot_cases.loot_tables.ZPLootTable;
 import ru.gltexture.zpm3.modules.loot_cases.registry.ZPLootTablesCollection;
@@ -37,7 +38,7 @@ public class ZPLootCases extends ZPRegistry<ZPDefaultBlockLootCase> implements I
             ).afterCreated((e, utils) -> {
                 ZPUtility.sides().onlyClient(() -> {
                     utils.blocks().addBlockModelKey_ValueArray(e, ZPDataGenHelper.DEFAULT_CHEST_BLOCK, Pair.of("particle", () -> new ZPPath(ZPDataGenHelper.MINECRAFT_VANILLA_ROOT, "oak_planks")));
-                    utils.blocks().setBlockItemModelExecutor(e, DefaultBlockItemModelExecutors.getDefaultItemAsVanillaParent(ZPDataGenHelper.DEFAULT_CHEST_ITEM));
+                    utils.blocks().setBlockItemModelExecutor(e, DefaultBlockModelExecutors.getDefault(), DefaultBlockItemModelExecutors.getDefaultItemAsVanillaParent(ZPDataGenHelper.DEFAULT_CHEST_ITEM));
                 });
             }).end();
             ZPLootCases.generatedLootCases.put(lootCaseName, syntheticLootCase);

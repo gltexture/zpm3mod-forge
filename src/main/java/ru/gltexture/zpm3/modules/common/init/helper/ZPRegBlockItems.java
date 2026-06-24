@@ -6,9 +6,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.modules.common.init.ZPBlocks;
-import ru.gltexture.zpm3.modules.common.init.ZPTabs;
-import ru.gltexture.zpm3.modules.common.init.ZPTorchBlocks;
+import ru.gltexture.zpm3.modules.common.init.*;
 import ru.gltexture.zpm3.engine.core.ZPLogger;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.engine.helpers.ZPItemBlockHelper;
@@ -21,6 +19,11 @@ public abstract class ZPRegBlockItems {
     public static void init(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
         ZPRegBlockItems.commonBlocks(regSupplier);
         ZPRegBlockItems.regTorchBlocks(regSupplier);
+        ZPRegBlockItems.regLanternBlocks(regSupplier);
+
+        {
+            ZPRegBlockItems.regLanternOrCampfireBlock(regSupplier, ZPCampfireBlocks.campfire2);
+        }
     }
 
     private static void regTorchBlocks(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
@@ -30,6 +33,13 @@ public abstract class ZPRegBlockItems {
         ZPRegBlockItems.regTorchBlock(regSupplier, ZPTorchBlocks.torch3, ZPTorchBlocks.torch3_wall);
         ZPRegBlockItems.regTorchBlock(regSupplier, ZPTorchBlocks.torch4, ZPTorchBlocks.torch4_wall);
         ZPRegBlockItems.regTorchBlock(regSupplier, ZPTorchBlocks.torch5, ZPTorchBlocks.torch5_wall);
+    }
+
+    private static void regLanternBlocks(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
+        ZPRegBlockItems.regLanternOrCampfireBlock(regSupplier, ZPLanternBlocks.lantern2);
+        ZPRegBlockItems.regLanternOrCampfireBlock(regSupplier, ZPLanternBlocks.lantern3);
+        ZPRegBlockItems.regLanternOrCampfireBlock(regSupplier, ZPLanternBlocks.lantern4);
+        ZPRegBlockItems.regLanternOrCampfireBlock(regSupplier, ZPLanternBlocks.lantern5);
     }
 
     private static void commonBlocks(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
@@ -51,9 +61,22 @@ public abstract class ZPRegBlockItems {
     }
 
     private static void regTorchBlock(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier, @NotNull RegistryObject<? extends Block> block, @NotNull RegistryObject<? extends Block> wallBlock) {
-        final RegistryObject<CreativeModeTab> tabToAdd = ZPTabs.zp_blocks_tab;
+        final RegistryObject<CreativeModeTab> tabToAdd = ZPTabs.zp_fading_blocks_tab;
 
         RegistryObject<BlockItem> blockItemRegistryObject = ZPItemBlockHelper.createWallBlockItem(regSupplier, block, wallBlock
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.items().addItemInTab(e, tabToAdd);
+            });
+        }).end();
+
+        ZPBlockItemsRegistry.putNewEntry(block, blockItemRegistryObject);
+    }
+
+    private static void regLanternOrCampfireBlock(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier, @NotNull RegistryObject<? extends Block> block) {
+        final RegistryObject<CreativeModeTab> tabToAdd = ZPTabs.zp_fading_blocks_tab;
+
+        RegistryObject<BlockItem> blockItemRegistryObject = ZPItemBlockHelper.createBlockItem(regSupplier, block
         ).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, tabToAdd);

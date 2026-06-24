@@ -1,8 +1,10 @@
 package ru.gltexture.zpm3.modules.common.init;
 
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
+import org.spongepowered.asm.mixin.injection.struct.InjectorGroupInfo;
 import ru.gltexture.zpm3.modules.common.init.helper.ZPRegTorchBlocks;
 import ru.gltexture.zpm3.modules.common.instances.blocks.torch.ZPFadingTorchBlock;
 import ru.gltexture.zpm3.modules.common.instances.blocks.torch.ZPFadingTorchBlockWall;
@@ -10,6 +12,7 @@ import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.engine.instances.blocks.*;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.registry.collection.IZPCollectRegistryObjects;
+import java.util.*;
 
 public class ZPTorchBlocks extends ZPRegistry<Block> implements IZPCollectRegistryObjects {
     public static RegistryObject<ZPTorchBlock> wall_lamp;

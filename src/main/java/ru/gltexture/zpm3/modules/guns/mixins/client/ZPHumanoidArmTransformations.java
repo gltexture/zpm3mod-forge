@@ -55,16 +55,14 @@ public abstract class ZPHumanoidArmTransformations {
         final boolean crouchAnim = !swimAnim && entity.isCrouching();
 
 
-        if (!entity.isInWater()) {
-            headPitch = (float) Math.max(headPitch, Math.toRadians(ZPHumanoidArmTransformations.X_CONSTR_DEG_P));
-            if (!ZPHumanoidArmTransformations.canEntityInSwimPosLookDown(entity)) {
-                headPitch = Math.min(headPitch, ZPHumanoidArmTransformations.X_CONSTR_RAD_M);
-            }
-            if (swimAnim) {
-                model.head.xRot = (float) Mth.clamp(headPitch * ((float)Math.PI / 180F) - (Math.PI / 3.0f), Math.PI * -0.6f, Math.PI * -0.125f);
-            }
-        } else {
-            if (swimAnim) {
+        if (swimAnim) {
+            if (!entity.isInWater()) {
+                headPitch = Math.max(headPitch, ZPHumanoidArmTransformations.X_CONSTR_DEG_P);
+                if (!ZPHumanoidArmTransformations.canEntityInSwimPosLookDown(entity)) {
+                    headPitch = (float) Math.min(headPitch, Math.toDegrees(ZPHumanoidArmTransformations.X_CONSTR_RAD_M));
+                }
+                model.head.xRot = (float) Mth.clamp(headPitch * ((float) Math.PI / 180F) - (Math.PI / 3.0f), Math.PI * -0.6f, Math.PI * -0.125f);
+            } else {
                 headPitch = -(float) Math.PI / 4F;
                 model.head.xRot = rotlerpRad(model.swimAmount, headPitch, -(float) Math.PI / 4F);
             }

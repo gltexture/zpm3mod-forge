@@ -45,6 +45,16 @@ public class ZPBlocks extends ZPRegistry<Block> implements IZPCollectRegistryObj
     public static RegistryObject<ZPAcidLiquidBlock> acid_block;
     public static RegistryObject<ZPToxicLiquidBlock> toxic_block;
 
+    public static RegistryObject<ZPLayerBlock> sand_layer;
+    public static RegistryObject<ZPLayerBlock> ash_layer;
+    public static RegistryObject<ZPLayerBlock> gravel_layer;
+
+    /*
+       public static final Block SNOW = register("snow", new SnowLayerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.SNOW).replaceable().forceSolidOff().randomTicks().strength(0.1F).requiresCorrectToolForDrops().sound(SoundType.SNOW).isViewBlocking((p_187417_, p_187418_, p_187419_) -> {
+      return p_187417_.getValue(SnowLayerBlock.LAYERS) >= 8;
+   }).pushReaction(PushReaction.DESTROY)));
+     */
+
     public ZPBlocks() {
         super(ZPRegistryConveyor.Target.BLOCK);
     }

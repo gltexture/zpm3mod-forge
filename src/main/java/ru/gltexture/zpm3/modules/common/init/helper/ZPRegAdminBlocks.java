@@ -2,6 +2,7 @@ package ru.gltexture.zpm3.modules.common.init.helper;
 
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockModelExecutors;
 import ru.gltexture.zpm3.modules.common.init.ZPBlocks;
 import ru.gltexture.zpm3.modules.common.instances.blocks.ZPAntiZombie;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
@@ -11,10 +12,10 @@ import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public abstract class ZPRegAdminBlocks {
     public static void init(@NotNull ZPRegistry.ZPRegSupplier<Block> regSupplier) {
-        ZPBlocks.anti_zombie = regSupplier.register("anti_zombie", () -> new ZPAntiZombie()
+        ZPBlocks.anti_zombie = regSupplier.register("anti_zombie", ZPAntiZombie::new
         ).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
-                utils.blocks().setBlockItemModelExecutor(e, DefaultBlockItemModelExecutors.getDefaultItemAs2DTexture("zpm3:item/misc/admin_block"));
+                utils.blocks().setBlockItemModelExecutor(e, DefaultBlockModelExecutors.getDefault(), DefaultBlockItemModelExecutors.getDefaultItemAs2DTexture("zpm3:item/blocks/admin_block"));
                 utils.blocks().addBlockModelWithVanillaTexture(e, ZPDataGenHelper.DEFAULT_BLOCK_AIR);
             });
         }).end();

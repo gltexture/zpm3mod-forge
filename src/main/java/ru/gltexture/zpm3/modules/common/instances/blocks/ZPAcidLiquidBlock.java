@@ -25,7 +25,7 @@ import ru.gltexture.zpm3.modules.commands.zones.ZPZoneChecks;
 
 import ru.gltexture.zpm3.modules.common.init.ZPBlockEntities;
 import ru.gltexture.zpm3.modules.common.instances.block_entities.ZPFadingBlockEntity;
-import ru.gltexture.zpm3.modules.common.instances.blocks.torch.IFadingBlock;
+import ru.gltexture.zpm3.modules.common.instances.blocks.fading.IFadingBlock;
 import ru.gltexture.zpm3.modules.common.instances.blocks.torch.ZPFadingTorchBlock;
 import ru.gltexture.zpm3.modules.common.utils.ZPCommonClientUtils;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;

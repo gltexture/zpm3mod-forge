@@ -2,13 +2,11 @@ package ru.gltexture.zpm3.engine.helpers.gen.providers;
 
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
@@ -48,7 +46,7 @@ public class ZPItemModelProvider extends ItemModelProvider {
             throw new ZPRuntimeException("Item's model should be extended by vanilla model");
         }
 
-        String modelRef = genTextureData.getVanillaModelReference().reference();
+        String modelRef = genTextureData.getVanillaModelReference().mainBlockReference();
         Supplier<ZPPath> supplier = genTextureData.getTextureByKey(ZPGenTextureData.LAYER0_KEY);
         if (supplier != null) {
             ZPPath texture = supplier.get();

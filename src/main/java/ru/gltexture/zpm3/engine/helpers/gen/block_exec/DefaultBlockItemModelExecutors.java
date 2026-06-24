@@ -11,15 +11,22 @@ import ru.gltexture.zpm3.engine.helpers.gen.providers.ZPBlockModelProvider;
 public abstract class DefaultBlockItemModelExecutors {
     public static @NotNull ZPBlockModelProvider.BlockModelExecutor.EItem<? extends Block> getDefaultItemAsModParent(@NotNull MinecraftModelParentReference reference) {
         return (blockStateProvider, block, name, textureData) -> {
-            blockStateProvider.itemModels().withExistingParent(name, blockStateProvider.modLoc(reference.reference()));
+            blockStateProvider.itemModels().withExistingParent(name, blockStateProvider.modLoc(reference.mainBlockReference()));
         };
     }
 
     public static @NotNull ZPBlockModelProvider.BlockModelExecutor.EItem<? extends Block> getDefaultItemAsVanillaParent(@NotNull MinecraftModelParentReference reference) {
         return (blockStateProvider, block, name, textureData) -> {
-            blockStateProvider.itemModels().withExistingParent(name, blockStateProvider.mcLoc(reference.reference()));
+            blockStateProvider.itemModels().withExistingParent(name, blockStateProvider.mcLoc(reference.mainBlockReference()));
         };
     }
+
+    public static @NotNull ZPBlockModelProvider.BlockModelExecutor.EItem<? extends Block> getDefaultItemAsModBlock(String link) {
+        return (blockStateProvider, block, name, textureData) -> {
+            blockStateProvider.itemModels().withExistingParent(name, blockStateProvider.modLoc("block/" + link));
+        };
+    }
+
 
     public static @NotNull ZPBlockModelProvider.BlockModelExecutor.EItem<? extends Block> getDefaultItemAsBlock() {
         return (blockStateProvider, block, name, textureData) -> {

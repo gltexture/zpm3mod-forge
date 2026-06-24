@@ -3,19 +3,24 @@ package ru.gltexture.zpm3.modules.common.init.helper;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockItemModelExecutors;
 import ru.gltexture.zpm3.modules.common.init.ZPBlocks;
 import ru.gltexture.zpm3.modules.common.init.ZPItems;
 import ru.gltexture.zpm3.modules.common.init.ZPTags;
 import ru.gltexture.zpm3.modules.common.instances.blocks.ZPBarbaredWireBlock;
 import ru.gltexture.zpm3.engine.instances.blocks.*;
 import ru.gltexture.zpm3.modules.common.instances.blocks.ZPFallingBlock;
+import ru.gltexture.zpm3.modules.common.instances.blocks.ZPLayerBlock;
 import ru.gltexture.zpm3.modules.common.instances.blocks.ZPUraniumBlock;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
 import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockModelExecutors;
@@ -27,6 +32,56 @@ import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public abstract class ZPRegCommonBlocks {
     public static void init(@NotNull ZPRegistry.ZPRegSupplier<Block> regSupplier) {
+        ZPBlocks.sand_layer = regSupplier.register("sand_layer", () -> new ZPLayerBlock(BlockBehaviour.Properties.of()
+                .mapColor(MapColor.SAND)
+                .replaceable()
+                .forceSolidOff()
+                .randomTicks()
+                .strength(0.1F)
+                .requiresCorrectToolForDrops()
+                .sound(SoundType.SAND)
+                .isViewBlocking((p_187417_, p_187418_, p_187419_) -> p_187417_.getValue(SnowLayerBlock.LAYERS) >= 8).pushReaction(PushReaction.DESTROY))
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.blocks().setBlockItemModelExecutor(e, DefaultBlockModelExecutors.getDefaultLayerBlock(), DefaultBlockItemModelExecutors.getDefaultItemAsModBlock("sand_layer_height2"));
+                utils.blocks().addBlockModelKey_ValueArray(e, ZPDataGenHelper.DEFAULT_BLOCK_LAYER,
+                        Pair.of(ZPGenTextureData.ALL_KEY, () -> new ZPPath(ZPDataGenHelper.MINECRAFT_VANILLA_ROOT, "sand")));
+            });
+        }).end();
+
+        ZPBlocks.gravel_layer = regSupplier.register("gravel_layer", () -> new ZPLayerBlock(BlockBehaviour.Properties.of()
+                .mapColor(MapColor.COLOR_GRAY)
+                .replaceable()
+                .forceSolidOff()
+                .randomTicks()
+                .strength(0.1F)
+                .requiresCorrectToolForDrops()
+                .sound(SoundType.GRAVEL)
+                .isViewBlocking((p_187417_, p_187418_, p_187419_) -> p_187417_.getValue(SnowLayerBlock.LAYERS) >= 8).pushReaction(PushReaction.DESTROY))
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.blocks().setBlockItemModelExecutor(e, DefaultBlockModelExecutors.getDefaultLayerBlock(), DefaultBlockItemModelExecutors.getDefaultItemAsModBlock("gravel_layer_height2"));
+                utils.blocks().addBlockModelKey_ValueArray(e, ZPDataGenHelper.DEFAULT_BLOCK_LAYER,
+                        Pair.of(ZPGenTextureData.ALL_KEY, () -> new ZPPath(ZPDataGenHelper.MINECRAFT_VANILLA_ROOT, "gravel")));
+            });
+        }).end();
+
+        ZPBlocks.ash_layer = regSupplier.register("ash_layer", () -> new ZPLayerBlock(BlockBehaviour.Properties.of()
+                .mapColor(MapColor.COLOR_GRAY)
+                .replaceable()
+                .forceSolidOff()
+                .randomTicks()
+                .strength(0.1F)
+                .requiresCorrectToolForDrops()
+                .sound(SoundType.SAND)
+                .isViewBlocking((p_187417_, p_187418_, p_187419_) -> p_187417_.getValue(SnowLayerBlock.LAYERS) >= 8).pushReaction(PushReaction.DESTROY))
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.blocks().setBlockItemModelExecutor(e, DefaultBlockModelExecutors.getDefaultLayerBlock(), DefaultBlockItemModelExecutors.getDefaultItemAsModBlock("ash_layer_height2"));
+                utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_BLOCK_LAYER, ZPGenTextureData.ALL_KEY, ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY);
+            });
+        }).end();
+
         ZPBlocks.block_lamp = regSupplier.register("block_lamp", () -> new ZPBlock(BlockBehaviour.Properties.of().strength(0.5f).sound(SoundType.GLASS).lightLevel((e) -> 15))
         ).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
@@ -214,7 +269,9 @@ public abstract class ZPRegCommonBlocks {
             utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
             ZPUtility.sides().onlyClient(() -> {
                 utils.blocks().setBlockModelExecutor(e, DefaultBlockModelExecutors.DEFAULT_PILLAR_BLOCK_EXEC_PAIR);
-                utils.blocks().addBlockModelKey_ValueArray(e, ZPDataGenHelper.DEFAULT_BLOCK_CUBE, Pair.of("side", () -> new ZPPath(ZPDataGenHelper.PILLAR_BLOCKS_DIRECTORY, "concrete_fence_side")), Pair.of("end", () -> new ZPPath(ZPDataGenHelper.PILLAR_BLOCKS_DIRECTORY, "concrete_fence_end")));
+                utils.blocks().addBlockModelKey_ValueArray(e, ZPDataGenHelper.DEFAULT_BLOCK_PILLAR,
+                        Pair.of("side", () -> new ZPPath(ZPDataGenHelper.PILLAR_BLOCKS_DIRECTORY, "concrete_fence_side")),
+                        Pair.of("end", () -> new ZPPath(ZPDataGenHelper.PILLAR_BLOCKS_DIRECTORY, "concrete_fence_end")));
             });
         }).end();
     }

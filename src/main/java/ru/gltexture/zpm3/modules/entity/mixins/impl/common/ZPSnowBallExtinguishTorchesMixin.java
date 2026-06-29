@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import ru.gltexture.zpm3.modules.common.init.ZPTorchBlocks;
+import ru.gltexture.zpm3.modules.blocks.init.ZPTorchBlocks;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 @Mixin(Snowball.class)

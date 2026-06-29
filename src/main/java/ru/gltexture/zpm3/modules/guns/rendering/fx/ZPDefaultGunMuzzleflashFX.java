@@ -19,7 +19,7 @@ import org.joml.Vector3f;
 import org.lwjgl.opengl.GL46;
 
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPClientConfig;
-import ru.gltexture.zpm3.modules.debug.imgui.DearUITRSInterface;
+import ru.gltexture.zpm3.modules.debug.imgui.DearUIDebugInterface;
 import ru.gltexture.zpm3.modules.guns.mixins.ext.IZPPlayerClientDataExt;
 import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
 import ru.gltexture.zpm3.engine.client.rendering.gl.programs.fbo.FBOTexture2DProgram;
@@ -112,8 +112,8 @@ public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderH
             player.zpm3forge$getPlayerMuzzleflashScissor3Person()[0] += deltaTicks / ZPDefaultGunMuzzleflashFX.MUZZLEFLASH_3PERSON_TIME;
             player.zpm3forge$getPlayerMuzzleflashScissor3Person()[1] += deltaTicks / ZPDefaultGunMuzzleflashFX.MUZZLEFLASH_3PERSON_TIME;
 
-            if (DearUITRSInterface.muzzleflashHandling) {
-                player.zpm3forge$getPlayerMuzzleflashScissor3Person()[0] = player.zpm3forge$getPlayerMuzzleflashScissor3Person()[1] = DearUITRSInterface.scissor3P;
+            if (DearUIDebugInterface.muzzleflashHandling) {
+                player.zpm3forge$getPlayerMuzzleflashScissor3Person()[0] = player.zpm3forge$getPlayerMuzzleflashScissor3Person()[1] = DearUIDebugInterface.scissor3P;
             }
             if (player.zpm3forge$getPlayerMuzzleflashScissor3Person()[this.hand(isRightHanded)] <= 0.0f || player.zpm3forge$getPlayerMuzzleflashScissor3Person()[this.hand(isRightHanded)] > 1.0f) {
                 return;
@@ -130,7 +130,7 @@ public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderH
     private void renderMuzzleflash3Person(@NotNull IZPPlayerClientDataExt player, @NotNull MultiBufferSource buffer, float deltaTicks, @NotNull Matrix4f matrix, boolean isRightHanded) {
         //final Matrix4f viewMatrix = new Matrix4f().identity().rotate(camRot).translate(camPos.negate());
         {
-            matrix.translate(DearUITRSInterface.trsMflash3d.position);
+            matrix.translate(DearUIDebugInterface.trsMflash3d.position);
             matrix.setRotationXYZ(0.0f, (float) Math.PI, 0.0f);
         }
 
@@ -165,8 +165,8 @@ public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderH
     public void render1Person(@NotNull MultiBufferSource buffer, float partialTicks, float deltaTicks) {
         this.muzzleflashScissor1Person[0] += deltaTicks / this.muzzleflashTime1Person;
         this.muzzleflashScissor1Person[1] += deltaTicks / this.muzzleflashTime1Person;
-        if (DearUITRSInterface.muzzleflashHandling) {
-            this.muzzleflashScissor1Person[0] = this.muzzleflashScissor1Person[1] = DearUITRSInterface.scissor1P;
+        if (DearUIDebugInterface.muzzleflashHandling) {
+            this.muzzleflashScissor1Person[0] = this.muzzleflashScissor1Person[1] = DearUIDebugInterface.scissor1P;
         }
         if (ZPDefaultGunMuzzleflashFX.useFancyRendering1person()) {
             GL46.glBlendFuncSeparate(GL46.GL_SRC_ALPHA, GL46.GL_ONE_MINUS_SRC_ALPHA, GL46.GL_ONE, GL46.GL_ONE_MINUS_SRC_ALPHA);
@@ -280,7 +280,7 @@ public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderH
     }
 
     public static int quality() {
-        return DearUITRSInterface.muzzleflashRenderingMode;
+        return DearUIDebugInterface.muzzleflashRenderingMode;
     }
 
     public ZPClientCallbacks.ZPReloadGameResourcesCallback reloadGameResourcesCallback() {

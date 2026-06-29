@@ -35,7 +35,7 @@ public class ZPBiomeModifyingProvider implements DataProvider {
             }
             json.add("biomes", biomesArray);
             JsonObject spawner = new JsonObject();
-            spawner.addProperty("type", entry.spawnerEntry().type());
+            spawner.addProperty("type", entry.spawnerEntry().type().get());
             spawner.addProperty("weight", entry.spawnerEntry().weight());
             spawner.addProperty("minCount", entry.spawnerEntry().minCount());
             spawner.addProperty("maxCount", entry.spawnerEntry().maxCount());

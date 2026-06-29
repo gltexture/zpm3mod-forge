@@ -1,0 +1,49 @@
+package ru.gltexture.zpm3.modules.blocks.mixins.impl.common;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Mixin;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
+import ru.gltexture.zpm3.modules.blocks.init.ZPBlockEntities;
+import ru.gltexture.zpm3.modules.blocks.init.ZPLanternBlocks;
+import ru.gltexture.zpm3.modules.blocks.instances.block_entities.ZPFadingBlockEntity;
+import ru.gltexture.zpm3.modules.blocks.instances.blocks.fading.IFadingBlock;
+import ru.gltexture.zpm3.modules.blocks.instances.blocks.torch.ZPFadingTorchBlock;
+import ru.gltexture.zpm3.modules.blocks.mixins.ext.ITorchPlayerExt;
+
+import java.util.function.Supplier;
+
+@Mixin(LanternBlock.class)
+public class ZPFadingLanternMixin implements EntityBlock, IFadingBlock, ITorchPlayerExt {
+    @Override
+    public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState) {
+        return !ZPWorldConfig.FADING_LANTERNS.getVar() ? null : new ZPFadingBlockEntity(pPos, pState, ZPWorldConfig.LANTERN_FADING_TIME.getVar(), true);
+    }
+
+    @Override
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level pLevel, @NotNull BlockState pState, @NotNull BlockEntityType<T> pBlockEntityType) {
+        if (!pState.getBlock().equals(Blocks.LANTERN)) {
+            return null;
+        }
+        return !ZPWorldConfig.FADING_LANTERNS.getVar() ? null : ZPFadingTorchBlock.createTickerHelper(pBlockEntityType, ZPBlockEntities.fading_block_entity.get(), ZPFadingBlockEntity::tick);
+    }
+
+    @Override
+    public @Nullable Supplier<Block> zpm3forge$getTurnInto() {
+        return () -> ZPLanternBlocks.lantern2.get();
+    }
+
+    @Override
+    public void zpm3forge$setPlacedBy(@NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, @Nullable LivingEntity pPlacer, @NotNull ItemStack pStack) {
+        ZPFadingTorchBlock.activationCheck(pLevel, pPos, pState, pPlacer, pStack);
+    }
+}

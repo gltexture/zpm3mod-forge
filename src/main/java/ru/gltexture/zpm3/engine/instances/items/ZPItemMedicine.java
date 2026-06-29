@@ -17,8 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPCombatConfig;
-import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
-import ru.gltexture.zpm3.modules.common.init.ZPItems;
+import ru.gltexture.zpm3.modules.misc_items.init.ZPMiscItems;
 import ru.gltexture.zpm3.engine.core.ZPLogger;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.engine.registry.ZPRegistryCollections;
@@ -45,7 +44,7 @@ public class ZPItemMedicine extends ZPItem {
 
     protected void cooldownForMedicine(@NotNull Player player) {
         try {
-            for (RegistryObject<Item> registryObject : ZPRegistryCollections.getCollectionById(ZPItems.class, "medicine")) {
+            for (RegistryObject<Item> registryObject : ZPRegistryCollections.getCollectionById(ZPMiscItems.class, "medicine")) {
                 player.getCooldowns().addCooldown(registryObject.get(), ZPCombatConfig.MEDICINE_USE_COOLDOWN.getVar());
             }
         } catch (ZPRuntimeException e) {

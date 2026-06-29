@@ -1,0 +1,24 @@
+{
+  "vertex": "zpm3:post_fx_nightvis/vertex",
+  "fragment": "zpm3:post_fx_nightvis/fragment",
+  "samplers": [
+  ],
+  "attributes": [
+    "position",
+    "texture"
+  ],
+  "uniforms": [
+    {
+      "name": "texture_map",
+      "type": "int",
+      "count": 1,
+      "values": [0]
+    },
+    {
+      "name": "timer",
+      "type": "float",
+      "count": 1,
+      "values": [ 0.0 ]
+    }
+  ]
+}

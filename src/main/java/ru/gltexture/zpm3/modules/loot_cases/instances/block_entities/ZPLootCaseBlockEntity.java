@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.modules.common.instances.block_entities.ZPFadingBlockEntity;
+import ru.gltexture.zpm3.modules.blocks.instances.block_entities.ZPFadingBlockEntity;
 import ru.gltexture.zpm3.modules.loot_cases.init.ZPBlockLootCaseEntities;
 import ru.gltexture.zpm3.modules.loot_cases.instances.blocks.ZPDefaultBlockLootCase;
 import ru.gltexture.zpm3.modules.loot_cases.loot_tables.ZPLootTable;

@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPEntityConfig;
-import ru.gltexture.zpm3.modules.common.init.ZPBlocks;
+import ru.gltexture.zpm3.modules.blocks.init.ZPBlocks;
 import ru.gltexture.zpm3.engine.mixins.ext.ZPEntityExtTicking;
 import ru.gltexture.zpm3.engine.mixins.ext.IZPEntityExt;
 import ru.gltexture.zpm3.engine.service.ZPUtility;

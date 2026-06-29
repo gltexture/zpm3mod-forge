@@ -14,6 +14,7 @@
   ],
   "client": [
     "client.ZPClientLevelSlowdownTimeMixin",
+    "client.ZPGameRendererAfterHandMixin",
     "client.ZPItemHookReequipFixMixin",
     "client.ZPItemMixin",
     "client.ZPLocalPlayerMixin",

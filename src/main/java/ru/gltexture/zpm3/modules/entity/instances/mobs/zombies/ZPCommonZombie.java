@@ -22,8 +22,8 @@ import net.minecraftforge.common.ForgeMod;
 import org.jetbrains.annotations.NotNull;
 
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
-import ru.gltexture.zpm3.modules.common.init.ZPEntities;
-import ru.gltexture.zpm3.modules.common.init.ZPEntityAttributes;
+import ru.gltexture.zpm3.modules.entity.init.ZPEntities;
+import ru.gltexture.zpm3.modules.entity.init.ZPEntityAttributes;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.ai.*;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.ai.attack.ZPZombieAttackGoalRewrite;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.ai.attack.ZPZombieAttackGoalVanilla;

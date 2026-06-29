@@ -1,0 +1,11 @@
+{
+  "vertex": "zpm3:post_fx_sample/vertex",
+  "fragment": "zpm3:post_fx_sample/fragment",
+  "samplers": [
+  ],
+  "attributes": [
+    "position"
+  ],
+  "uniforms": [
+  ]
+}

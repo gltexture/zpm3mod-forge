@@ -49,8 +49,8 @@ import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
 import ru.gltexture.zpm3.modules.commands.zones.ZPZoneChecks;
 
 import ru.gltexture.zpm3.modules.common.init.ZPDamageTypes;
-import ru.gltexture.zpm3.modules.common.init.ZPEntityAttributes;
-import ru.gltexture.zpm3.modules.common.instances.blocks.ZPAntiZombie;
+import ru.gltexture.zpm3.modules.entity.init.ZPEntityAttributes;
+import ru.gltexture.zpm3.modules.blocks.instances.blocks.ZPAntiZombie;
 import ru.gltexture.zpm3.modules.entity.mixins.ext.IPlayerZmTargetsExt;
 import ru.gltexture.zpm3.modules.mob_effects.init.ZPMobEffects;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;

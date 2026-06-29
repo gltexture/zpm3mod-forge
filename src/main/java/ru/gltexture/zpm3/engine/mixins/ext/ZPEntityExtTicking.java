@@ -11,13 +11,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPCombatConfig;
-import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.modules.commands.zones.ZPZoneChecks;
 
 import ru.gltexture.zpm3.modules.common.utils.ZPCommonServerUtils;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
-import ru.gltexture.zpm3.engine.client.utils.ClientRenderFunctions;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 
 public abstract class ZPEntityExtTicking {
@@ -60,7 +59,7 @@ public abstract class ZPEntityExtTicking {
 
     public static void clientEntityTickPre(@NotNull Entity entity, @NotNull IZPEntityExt izpEntityExt) {
         if (izpEntityExt.zpm3forge$getAcidLevel() > 0) {
-            ClientRenderFunctions.addAcidParticles(izpEntityExt.zpm3forge$getAcidLevel(), entity);
+            ZPRenderHelper.addAcidParticles(izpEntityExt.zpm3forge$getAcidLevel(), entity);
             if (entity.tickCount % 3 == 0) {
                 entity.level().playLocalSound(entity.getOnPos(), SoundEvents.FIRE_EXTINGUISH, SoundSource.MASTER, 0.375f, 1.0f + ZPRandom.getRandom().nextFloat() * 0.2f, false);
             }

@@ -35,6 +35,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
 import ru.gltexture.zpm3.engine.core.config.ZPConfigConstantsClass;
 import ru.gltexture.zpm3.engine.core.config.ZPConfigManager;
 import ru.gltexture.zpm3.engine.core.config.builtin.*;
@@ -227,7 +228,11 @@ public final class ZombiePlague3 {
             zpModule.initialize(moduleEntry);
             this.getZpNetwork().register(moduleEntry.getPacketDataSet());
             this.getZpRegistryConveyor().launch(moduleEntry.getRegistrySet());
-            
+
+            ZPUtility.sides().onlyClient(() -> {
+                ZPRenderHelper.INSTANCE.registerEvents();
+            });
+
             moduleEntry.getEventClasses().forEach(e -> {
                 try {
                     Method getDistMethod = e.getDeclaredMethod("getSide");

@@ -5,7 +5,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.modules.debug.events.ZPFreeCameraEvents;
 import ru.gltexture.zpm3.modules.debug.events.ZPRenderStuffEvent;
-import ru.gltexture.zpm3.modules.debug.imgui.DearUITRSInterface;
+import ru.gltexture.zpm3.modules.debug.imgui.DearUIDebugInterface;
 import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.module.ZPModule;
@@ -28,7 +28,7 @@ public class ZPDebugModule extends ZPModule {
     @Override
     public void fml_clientSetupEvent() {
         if (ZPRenderHelper.INSTANCE.getDearUIRenderer() != null) {
-            ZPRenderHelper.INSTANCE.getDearUIRenderer().getInterfacesManager().addInterface(new DearUITRSInterface());
+            ZPRenderHelper.INSTANCE.getDearUIRenderer().getInterfacesManager().addInterface(new DearUIDebugInterface());
         }
     }
 

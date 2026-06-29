@@ -16,10 +16,40 @@
       "name": "ZP3FXModule",
       "class": "ru.gltexture.zpm3.modules.fx.ZPFXModule"
     },
+
     {
       "name": "ZP3CommonModule",
       "class": "ru.gltexture.zpm3.modules.common.ZPCommonModule"
     },
+    {
+      "name": "ZP3MiscItemsModule",
+      "class": "ru.gltexture.zpm3.modules.misc_items.ZPMiscItemsModule"
+    },
+    {
+      "name": "ZP3MeleeThrowableToolsModule",
+      "class": "ru.gltexture.zpm3.modules.melee_throwables_tools.ZPMeleeThrowableToolsModule"
+    },
+    {
+      "name": "ZP3FoodMedicineModule",
+      "class": "ru.gltexture.zpm3.modules.food_medicine.ZPFoodMedicineModule"
+    },
+    {
+      "name": "ZP3GunsModule",
+      "class": "ru.gltexture.zpm3.modules.guns.ZPGunsModule"
+    },
+    {
+      "name": "ZP3ArmorModule",
+      "class": "ru.gltexture.zpm3.modules.armor.ZPArmorModule"
+    },
+    {
+      "name": "ZP3BlocksModule",
+      "class": "ru.gltexture.zpm3.modules.blocks.ZPBlocksModule"
+    },
+    {
+      "name": "ZP3FluidsModule",
+      "class": "ru.gltexture.zpm3.modules.fluids.ZPFluidsModule"
+    },
+
     {
       "name": "ZP3EntityModule",
       "class": "ru.gltexture.zpm3.modules.entity.ZPEntityModule"
@@ -31,10 +61,6 @@
     {
       "name": "ZP3MobEffectsModule",
       "class": "ru.gltexture.zpm3.modules.mob_effects.ZPMobEffectsModule"
-    },
-    {
-      "name": "ZP3GunsModule",
-      "class": "ru.gltexture.zpm3.modules.guns.ZPGunsModule"
     },
     {
       "name": "ZP3LootCasesModule",

@@ -9,8 +9,10 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.modules.common.init.ZPEntities;
+import ru.gltexture.zpm3.modules.entity.init.ZPEntities;
 import ru.gltexture.zpm3.modules.entity.events.common.*;
+import ru.gltexture.zpm3.modules.entity.init.ZPEntityAttributes;
+import ru.gltexture.zpm3.modules.entity.init.ZPSpawnItems;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.modules.entity.rendering.entities.misc.ZPRenderEntityItem;
 import ru.gltexture.zpm3.modules.entity.population.ZPSetupPopulation;
@@ -61,107 +63,9 @@ public class ZPEntityModule extends ZPModule {
 
     @Override
     public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
-        {
-            List<String> allBiomes = List.of(
-                "minecraft:the_void",
-                "minecraft:plains",
-                "minecraft:sunflower_plains",
-                "minecraft:snowy_plains",
-                "minecraft:ice_spikes",
-                "minecraft:desert",
-                "minecraft:swamp",
-                "minecraft:mangrove_swamp",
-                "minecraft:forest",
-                "minecraft:flower_forest",
-                "minecraft:birch_forest",
-                "minecraft:dark_forest",
-                "minecraft:old_growth_birch_forest",
-                "minecraft:old_growth_pine_taiga",
-                "minecraft:old_growth_spruce_taiga",
-                "minecraft:taiga",
-                "minecraft:snowy_taiga",
-                "minecraft:savanna",
-                "minecraft:savanna_plateau",
-                "minecraft:windswept_hills",
-                "minecraft:windswept_gravelly_hills",
-                "minecraft:windswept_forest",
-                "minecraft:windswept_savanna",
-                "minecraft:jungle",
-                "minecraft:sparse_jungle",
-                "minecraft:bamboo_jungle",
-                "minecraft:badlands",
-                "minecraft:eroded_badlands",
-                "minecraft:wooded_badlands",
-                "minecraft:meadow",
-                "minecraft:cherry_grove",
-                "minecraft:grove",
-                "minecraft:snowy_slopes",
-                "minecraft:frozen_peaks",
-                "minecraft:jagged_peaks",
-                "minecraft:stony_peaks",
-                "minecraft:river",
-                "minecraft:frozen_river",
-                "minecraft:beach",
-                "minecraft:snowy_beach",
-                "minecraft:stony_shore",
-                "minecraft:warm_ocean",
-                "minecraft:lukewarm_ocean",
-                "minecraft:deep_lukewarm_ocean",
-                "minecraft:ocean",
-                "minecraft:deep_ocean",
-                "minecraft:cold_ocean",
-                "minecraft:deep_cold_ocean",
-                "minecraft:frozen_ocean",
-                "minecraft:deep_frozen_ocean",
-                "minecraft:mushroom_fields",
-                "minecraft:dripstone_caves",
-                "minecraft:lush_caves",
-                "minecraft:deep_dark",
-                "minecraft:nether_wastes",
-                "minecraft:warped_forest",
-                "minecraft:crimson_forest",
-                "minecraft:soul_sand_valley",
-                "minecraft:basalt_deltas",
-                "minecraft:the_end",
-                "minecraft:end_highlands",
-                "minecraft:end_midlands",
-                "minecraft:small_end_islands",
-                "minecraft:end_barrens"
-            );
-            List<String> overworldHostiles = List.of(
-                    "minecraft:zombie",
-                    "minecraft:zombie_villager",
-                    "minecraft:husk",
-                    "minecraft:drowned",
-                    "minecraft:skeleton",
-                    "minecraft:stray",
-                    "minecraft:spider",
-                    "minecraft:cave_spider",
-                    "minecraft:witch",
-                    "minecraft:slime",
-                    "minecraft:enderman",
-                    "minecraft:pillager",
-                    "minecraft:ravager",
-                    "minecraft:creeper",
-                    "minecraft:phantom",
-                    "minecraft:vindicator",
-                    "minecraft:evoker",
-                    "minecraft:illusioner",
-                    "minecraft:warden",
-                    "minecraft:allay"
-            );
-
-            ZPDataGenHelper.addNewBiomeSpawnAddModifier(new ZPBiomeModifyingHelper.ModifyEntryAddSpawns("add_zp3_common_zombie", allBiomes,
-                    new ZPBiomeModifyingHelper.SpawnerEntry(Objects.requireNonNull(ZPEntities.zp_common_zombie_entity.getKey()).location().toString(), 100, 1, 4)
-            ));
-            ZPDataGenHelper.addNewBiomeSpawnAddModifier(new ZPBiomeModifyingHelper.ModifyEntryAddSpawns("add_zp3_dog_zombie", allBiomes,
-                    new ZPBiomeModifyingHelper.SpawnerEntry(Objects.requireNonNull(ZPEntities.zp_dog_zombie_entity.getKey()).location().toString(), 6, 2, 4)
-            ));
-            ZPDataGenHelper.addNewBiomeSpawnAddModifier(new ZPBiomeModifyingHelper.ModifyEntryAddSpawns("add_zp3_miner_zombie", allBiomes,
-                    new ZPBiomeModifyingHelper.SpawnerEntry(Objects.requireNonNull(ZPEntities.zp_miner_zombie_entity.getKey()).location().toString(), 65, 1, 2)
-            ));
-            ZPDataGenHelper.addNewBiomeSpawnRemoveModifier(new ZPBiomeModifyingHelper.ModifyEntryRemoveSpawns("remove_from_spawn", allBiomes, overworldHostiles));
-        }
+        moduleEntry.addRegistryClass(ZPEntityAttributes.class);
+        moduleEntry.addRegistryClass(ZPEntities.class);
+        moduleEntry.addRegistryClass(ZPSpawnItems.class);
 
         moduleEntry.setPopulationSetup(new ZPEntityModule.ZPCommonPopulationSetup());
         moduleEntry.addEventClass(ZPEntitySpawnEvent.class);

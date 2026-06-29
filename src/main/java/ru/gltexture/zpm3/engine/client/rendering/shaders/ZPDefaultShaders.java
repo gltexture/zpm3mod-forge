@@ -15,6 +15,8 @@ public abstract class ZPDefaultShaders {
     public static final ZPShaderLoader.ZPShaderInstance image = new ZPShaderLoader.ZPShaderInstance();
     public static final ZPShaderLoader.ZPShaderInstance blur13 = new ZPShaderLoader.ZPShaderInstance();
     public static final ZPShaderLoader.ZPShaderInstance gun_gluing = new ZPShaderLoader.ZPShaderInstance();
+    public static final ZPShaderLoader.ZPShaderInstance post_fx_sample = new ZPShaderLoader.ZPShaderInstance();
+    public static final ZPShaderLoader.ZPShaderInstance post_fx_nightvis = new ZPShaderLoader.ZPShaderInstance();
 
     public static void init() {
         ZPLogger.info("ZP init default shaders");
@@ -24,5 +26,7 @@ public abstract class ZPDefaultShaders {
         ZPShaderLoader.createNewShader(new ZPShaderLoader.ShaderData(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "image"), DefaultVertexFormat.POSITION_TEX), ZPDefaultShaders.image);
         ZPShaderLoader.createNewShader(new ZPShaderLoader.ShaderData(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "blur13"), DefaultVertexFormat.POSITION_TEX), ZPDefaultShaders.blur13);
         ZPShaderLoader.createNewShader(new ZPShaderLoader.ShaderData(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "gun_gluing"), DefaultVertexFormat.POSITION_TEX), ZPDefaultShaders.gun_gluing);
+        ZPShaderLoader.createNewShader(new ZPShaderLoader.ShaderData(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "post_fx_sample"), DefaultVertexFormat.POSITION_TEX), ZPDefaultShaders.post_fx_sample);
+        ZPShaderLoader.createNewShader(new ZPShaderLoader.ShaderData(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "post_fx_nightvis"), DefaultVertexFormat.POSITION_TEX), ZPDefaultShaders.post_fx_nightvis);
     }
 }

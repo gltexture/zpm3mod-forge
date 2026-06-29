@@ -29,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL46;
-import ru.gltexture.zpm3.modules.debug.imgui.DearUITRSInterface;
+import ru.gltexture.zpm3.modules.debug.imgui.DearUIDebugInterface;
 import ru.gltexture.zpm3.modules.guns.rendering.fx.ZPDefaultGunMuzzleflashFX;
 import ru.gltexture.zpm3.modules.guns.rendering.fx.ZPGunFXGlobalData;
 import ru.gltexture.zpm3.modules.guns.rendering.transforms.AbstractGunTransforms;
@@ -66,12 +66,12 @@ public abstract class ZPAbstractGunRenderer implements ZPRenderHooks.ZPItemRende
             final Matrix4f transformation = new Matrix4f().identity();
 
             final Vector3f startTranslation = new Vector3f(!flag ? (0.12f * Objects.requireNonNull(this.gunTransforms().scalingGun3P()).x) : 0.0f, -0.13f, 0.09f);
-            startTranslation.add(DearUITRSInterface.trsGun3d.position);
+            startTranslation.add(DearUIDebugInterface.trsGun3d.position);
 
             final Vector3f startRotation = new Vector3f(0.0f, -90.0f, 45.0f);
-            startRotation.add(DearUITRSInterface.trsGun3d.rotation);
+            startRotation.add(DearUIDebugInterface.trsGun3d.rotation);
 
-            final Vector3f startScale = Objects.requireNonNull(this.gunTransforms().scalingGun3P()).add(new Vector3f(DearUITRSInterface.trsGun3d.scale).sub(new Vector3f(1.0f)));
+            final Vector3f startScale = Objects.requireNonNull(this.gunTransforms().scalingGun3P()).add(new Vector3f(DearUIDebugInterface.trsGun3d.scale).sub(new Vector3f(1.0f)));
 
             transformation
                     .translate(startTranslation)
@@ -142,13 +142,13 @@ public abstract class ZPAbstractGunRenderer implements ZPRenderHooks.ZPItemRende
             final Matrix4f transformation = new Matrix4f().identity();
 
             final Vector3f startTranslation = new Vector3f(Objects.requireNonNull(isRightHanded ? this.gunTransforms().translationArmRight() : this.gunTransforms().translationArmLeft()));
-            startTranslation.add(DearUITRSInterface.trsArm.position);
+            startTranslation.add(DearUIDebugInterface.trsArm.position);
 
             final Vector3f startRotation = new Vector3f(Objects.requireNonNull(isRightHanded ? this.gunTransforms().rotationArmRight() : this.gunTransforms().rotationArmLeft()));
-            startRotation.add(DearUITRSInterface.trsArm.rotation);
+            startRotation.add(DearUIDebugInterface.trsArm.rotation);
 
             final Vector3f startScale = new Vector3f(Objects.requireNonNull(isRightHanded ? this.gunTransforms().scaleArmRight() : this.gunTransforms().scaleArmLeft()));
-            startScale.add(new Vector3f(DearUITRSInterface.trsArm.scale).sub(new Vector3f(1.0f)));
+            startScale.add(new Vector3f(DearUIDebugInterface.trsArm.scale).sub(new Vector3f(1.0f)));
 
             transformation
                     .translate(startTranslation)

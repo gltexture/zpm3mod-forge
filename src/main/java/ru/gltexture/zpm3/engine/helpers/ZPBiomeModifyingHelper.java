@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 public abstract class ZPBiomeModifyingHelper {
     private static List<ModifyEntryAddSpawns> modifyAddSpawnsEntries = new ArrayList<>();
@@ -35,7 +36,7 @@ public abstract class ZPBiomeModifyingHelper {
         ZPBiomeModifyingHelper.modifyRemoveSpawnsEntries.clear();
     }
 
-    public record SpawnerEntry(@NotNull String type, int weight, int minCount, int maxCount) {;}
+    public record SpawnerEntry(@NotNull Supplier<String> type, int weight, int minCount, int maxCount) {;}
     public record ModifyEntryAddSpawns(@NotNull String fileName, @NotNull List<String> biomes, @NotNull SpawnerEntry spawnerEntry) {
     }
     public record ModifyEntryRemoveSpawns(@NotNull String fileName, @NotNull List<String> biomes, @NotNull List<String> entityTypes) {

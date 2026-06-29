@@ -10,11 +10,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.joml.*;
 import org.lwjgl.opengl.GL46;
-import ru.gltexture.zpm3.modules.debug.imgui.DearUITRSInterface;
+import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
+import ru.gltexture.zpm3.modules.debug.imgui.DearUIDebugInterface;
 import ru.gltexture.zpm3.engine.client.rendering.gl.programs.fbo.FBOTexture2DProgram;
 import ru.gltexture.zpm3.modules.guns.rendering.fx.ZPDefaultGunMuzzleflashFX;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPDefaultShaders;
-import ru.gltexture.zpm3.engine.client.utils.ClientRenderFunctions;
 import ru.gltexture.zpm3.engine.service.Pair;
 
 import java.util.List;
@@ -34,10 +34,10 @@ public abstract class ZPGunLayersProcessing {
             ZPDefaultGunMuzzleflashFX.muzzleflashFBO.unBindFBO();
         }
 
-        final int w = ClientRenderFunctions.getWindowSize().x;
-        final int h = ClientRenderFunctions.getWindowSize().y;
+        final int w = ZPRenderHelper.getWindowSize().x;
+        final int h = ZPRenderHelper.getWindowSize().y;
 
-        final int iterations = DearUITRSInterface.muzzleflash1PersonFboPingPongOperations;
+        final int iterations = DearUIDebugInterface.muzzleflash1PersonFboPingPongOperations;
         FBOTexture2DProgram mainFbo = ZPDefaultGunMuzzleflashFX.muzzleflashBlurFBO;
         FBOTexture2DProgram secondFbo = ZPDefaultGunMuzzleflashFX.muzzleflashBlurFBOPingPong;
         FBOTexture2DProgram temp = null;
@@ -50,7 +50,7 @@ public abstract class ZPGunLayersProcessing {
             GL46.glClearBufferfv(GL46.GL_COLOR, 0, new float[]{1.0f, 1.0f, 1.0f, 0.0f});
             GL46.glViewport(0, 0, w, h);
             {
-                ClientRenderFunctions.renderTextureIDScreenOverlayFromFBO(Objects.requireNonNull(ZPDefaultShaders.image.getShaderInstance()), (shaderToRender) -> {
+                ZPRenderHelper.renderTextureIDScreenOverlayFromFBO(Objects.requireNonNull(ZPDefaultShaders.image.getShaderInstance()), (shaderToRender) -> {
                     Uniform mod = shaderToRender.getUniform("sModelViewMat");
                     Uniform proj = shaderToRender.getUniform("sProjMat");
                     Objects.requireNonNull(proj).set(orthographic2D);
@@ -64,7 +64,7 @@ public abstract class ZPGunLayersProcessing {
             for (int i = 0; i < iterations; i++) {
                 mainFbo.bindFBO();
                 int finalI = i;
-                ClientRenderFunctions.renderTextureIDScreenOverlayFromFBO(Objects.requireNonNull(ZPDefaultShaders.blur13.getShaderInstance()), (shaderToRender) -> {
+                ZPRenderHelper.renderTextureIDScreenOverlayFromFBO(Objects.requireNonNull(ZPDefaultShaders.blur13.getShaderInstance()), (shaderToRender) -> {
                     Uniform mod = shaderToRender.getUniform("sModelViewMat");
                     Uniform proj = shaderToRender.getUniform("sProjMat");
                     Uniform direction = shaderToRender.getUniform("direction");
@@ -102,7 +102,7 @@ public abstract class ZPGunLayersProcessing {
         Minecraft.getInstance().getMainRenderTarget().bindWrite(true);
         GL46.glBlendFuncSeparate(GL46.GL_ONE, GL46.GL_ONE_MINUS_SRC_ALPHA, GL46.GL_ONE, GL46.GL_ONE_MINUS_SRC_ALPHA);
 
-        ClientRenderFunctions.renderTextureIDScreenOverlayFromFBO(Objects.requireNonNull(ZPDefaultShaders.gun_gluing.getShaderInstance()), (shaderToRender) -> {
+        ZPRenderHelper.renderTextureIDScreenOverlayFromFBO(Objects.requireNonNull(ZPDefaultShaders.gun_gluing.getShaderInstance()), (shaderToRender) -> {
             Uniform mod = shaderToRender.getUniform("sModelViewMat");
             Uniform proj = shaderToRender.getUniform("sProjMat");
 
@@ -144,8 +144,8 @@ public abstract class ZPGunLayersProcessing {
     }
 
     public static void postRender(ZPDefaultGunMuzzleflashFX defaultMuzzleflashFXUniversal) {
-        final int w = ClientRenderFunctions.getWindowSize().x;
-        final int h = ClientRenderFunctions.getWindowSize().y;
+        final int w = ZPRenderHelper.getWindowSize().x;
+        final int h = ZPRenderHelper.getWindowSize().y;
         final Matrix4f orthographic2D = new Matrix4f().setOrtho2D(0, w, h, 0);
         final Matrix4f fullMatrix = new Matrix4f().identity().translate(new Vector3f(0, h, 0f)).scale(w, -h, 1.0F);
         final Matrix4f halfMatrix = (new Matrix4f().identity().translate(new Vector3f(0, h, 0f)).scaleXY(w * ZPDefaultGunMuzzleflashFX.MFLASH_FBO_SCALE, -h * ZPDefaultGunMuzzleflashFX.MFLASH_FBO_SCALE));

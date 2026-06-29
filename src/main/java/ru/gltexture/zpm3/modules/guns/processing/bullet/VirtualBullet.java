@@ -32,7 +32,7 @@ import ru.gltexture.zpm3.engine.core.config.builtin.ZPCombatConfig;
 import ru.gltexture.zpm3.modules.commands.zones.ZPZoneChecks;
 import ru.gltexture.zpm3.modules.common.damage.ZPDamageSources;
 
-import ru.gltexture.zpm3.modules.common.init.ZPTorchBlocks;
+import ru.gltexture.zpm3.modules.blocks.init.ZPTorchBlocks;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPCommonZombie;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPMinerZombie;

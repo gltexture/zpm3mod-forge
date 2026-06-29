@@ -6,7 +6,6 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.texture.DynamicTexture;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -24,7 +23,7 @@ import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
-import ru.gltexture.zpm3.modules.debug.imgui.DearUITRSInterface;
+import ru.gltexture.zpm3.modules.debug.imgui.DearUIDebugInterface;
 import ru.gltexture.zpm3.modules.mob_effects.init.ZPMobEffects;
 import ru.gltexture.zpm3.modules.mob_effects.utils.ZPEffectUtils;
 import ru.gltexture.zpm3.modules.net_pack.data.DefaultDataKeys;
@@ -140,8 +139,8 @@ public abstract class ZPGameLightMapMixin {
                             final boolean darkness = ZombiePlague3.getClient_netSyncDataPack().getBoolean(DefaultDataKeys.StoC__DARKNESS_ENABLED, ZPWorldConfig.ENABLE_HARDCORE_DARKNESS_SERVER_SIDE.getVar());
                             if (darkness) {
                                 f14 = ZombiePlague3.getClient_netSyncDataPack().getFloat(DefaultDataKeys.StoC__DARKNESS_FACTOR, ZPWorldConfig.DARKNESS_GAMMA_STATIC_FACTOR_SERVER_SIDE.getVar());
-                                if (DearUITRSInterface.debugDarknessValueEnable) {
-                                    f14 = DearUITRSInterface.debugDarknessValue;
+                                if (DearUIDebugInterface.debugDarknessValueEnable) {
+                                    f14 = DearUIDebugInterface.debugDarknessValue;
                                 }
                             }
                             if (ZPEffectUtils.isBetterVisioned(this.minecraft.player)) {

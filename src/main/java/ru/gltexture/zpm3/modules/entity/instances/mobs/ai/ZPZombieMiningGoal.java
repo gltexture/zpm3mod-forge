@@ -25,7 +25,7 @@ import org.joml.Vector3f;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
 import ru.gltexture.zpm3.modules.commands.zones.ZPZoneChecks;
 
-import ru.gltexture.zpm3.modules.common.init.ZPEntityAttributes;
+import ru.gltexture.zpm3.modules.entity.init.ZPEntityAttributes;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.engine.fake.ZPFakePlayer;
 import ru.gltexture.zpm3.engine.instances.blocks.ZPTorchBlock;

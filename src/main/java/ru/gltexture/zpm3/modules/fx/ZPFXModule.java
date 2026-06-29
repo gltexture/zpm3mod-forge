@@ -35,7 +35,7 @@ public class ZPFXModule extends ZPModule {
 
     @Override
     public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
-        moduleEntry.addRegistryClass(ZPParticles.class);
+        moduleEntry.addMinecraftRegistryClass(ZPParticles.class);
     }
 
     @Override

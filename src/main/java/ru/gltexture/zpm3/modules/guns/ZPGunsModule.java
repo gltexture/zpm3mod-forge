@@ -86,12 +86,12 @@ public class ZPGunsModule extends ZPModule {
     @Override
     public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
         moduleEntry.addRecipesRegistry(new ZPGunsRecipeRegistry());
-        moduleEntry.addRegistryClass(ZPGunItems.class);
+        moduleEntry.addMinecraftRegistryClass(ZPGunItems.class);
         ZPUtility.sides().onlyClient(() -> {
-            moduleEntry.addEventClass(ZPGunsUI.class);
-            moduleEntry.addEventClass(ZPGunPostRender.class);
+            moduleEntry.addMinecraftEventClass(ZPGunsUI.class);
+            moduleEntry.addMinecraftEventClass(ZPGunPostRender.class);
         });
-        moduleEntry.addEventClass(ZPGunTossEvent.class);
+        moduleEntry.addMinecraftEventClass(ZPGunTossEvent.class);
     }
 
     @Override

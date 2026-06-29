@@ -57,8 +57,8 @@ public class ZPCommandsModule extends ZPModule {
 
     @Override
     public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
-        moduleEntry.addEventClass(ZPCommandsEvent.class);
-        moduleEntry.addEventClass(ZPLevelSaveReadEvents.class);
+        moduleEntry.addMinecraftEventClass(ZPCommandsEvent.class);
+        moduleEntry.addMinecraftEventClass(ZPLevelSaveReadEvents.class);
     }
 
     @Override

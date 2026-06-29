@@ -1,4 +1,4 @@
-package ru.gltexture.zpm3.modules.player.misc;
+package ru.gltexture.zpm3.modules.melee_throwables_tools.misc;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.AxeItem;

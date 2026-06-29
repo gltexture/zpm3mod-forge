@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.modules.guns.mixins.client.ZPHumanoidArmTransformations;
 import ru.gltexture.zpm3.modules.player.events.client.ZPPlayerLyingClientCheckEvent;
-import ru.gltexture.zpm3.modules.player.misc.ZPDefaultItemsHandReach;
+import ru.gltexture.zpm3.modules.melee_throwables_tools.misc.ZPDefaultItemsHandReach;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.events.ZPEventClass;
 

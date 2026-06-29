@@ -49,7 +49,7 @@ public class ZPFoodMedicineModule extends ZPModule {
     @Override
     public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
         moduleEntry.addRecipesRegistry(new ZPFoodMedicineRecipeRegistry());
-        moduleEntry.addRegistryClass(ZPFoodMedicineItems.class);
+        moduleEntry.addMinecraftRegistryClass(ZPFoodMedicineItems.class);
         ZPUtility.sides().onlyClient(() -> {
         });
     }

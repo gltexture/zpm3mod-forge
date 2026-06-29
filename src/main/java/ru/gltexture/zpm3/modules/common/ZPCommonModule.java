@@ -1,35 +1,14 @@
 package ru.gltexture.zpm3.modules.common;
 
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
-import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.world.item.*;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.block.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
-import ru.gltexture.zpm3.modules.blocks.init.*;
 import ru.gltexture.zpm3.modules.common.init.*;
-import ru.gltexture.zpm3.modules.food_medicine.init.ZPFoodMedicineItems;
-import ru.gltexture.zpm3.modules.guns.init.ZPGunItems;
-import ru.gltexture.zpm3.modules.melee_throwables_tools.init.ZPMeleeThrowableToolsItems;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.module.ZPModule;
 import ru.gltexture.zpm3.engine.core.module.ZPModuleData;
-import ru.gltexture.zpm3.engine.recipes.ZPRecipesController;
-import ru.gltexture.zpm3.engine.recipes.ZPRecipesRegistry;
-import ru.gltexture.zpm3.engine.recipes.IZPRecipeSpec;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
-import ru.gltexture.zpm3.modules.misc_items.init.ZPMiscItems;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.*;
 
 public class ZPCommonModule extends ZPModule {
     public ZPCommonModule(@NotNull ZPModuleData zpModuleData) {
@@ -69,10 +48,10 @@ public class ZPCommonModule extends ZPModule {
 
     @Override
     public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
-        moduleEntry.addRegistryClass(ZPSounds.class);
-        moduleEntry.addRegistryClass(ZPDamageTypes.class);
+        moduleEntry.addMinecraftRegistryClass(ZPSounds.class);
+        moduleEntry.addMinecraftRegistryClass(ZPDamageTypes.class);
         ZPUtility.sides().onlyClient(() -> {
-            moduleEntry.addRegistryClass(ZPTabs.class);
+            moduleEntry.addMinecraftRegistryClass(ZPTabs.class);
         });
     }
 

@@ -36,6 +36,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
+import ru.gltexture.zpm3.engine.core.api.events.ZPEventBus;
 import ru.gltexture.zpm3.engine.core.config.ZPConfigConstantsClass;
 import ru.gltexture.zpm3.engine.core.config.ZPConfigManager;
 import ru.gltexture.zpm3.engine.core.config.builtin.*;
@@ -90,6 +91,7 @@ public final class ZombiePlague3 {
     private static ZPPopulationController populationController;
     private static ZPRecipesController recipesController;
     private static ZPConfigManager zpConfigManager;
+    static Zp_SYS_EventsManager ZP_EVENTS;
 
     @OnlyIn(Dist.CLIENT) private static ZPNetSyncDataPack client_netSyncDataPack;
 
@@ -97,6 +99,7 @@ public final class ZombiePlague3 {
         ZombiePlague3.populationController = new ZPPopulationController();
         ZombiePlague3.recipesController = new ZPRecipesController();
         ZombiePlague3.zpConfigManager = new ZPConfigManager();
+        ZombiePlague3.ZP_EVENTS = new Zp_SYS_EventsManager();
     }
 
     private static boolean commonInitSwitch = true;
@@ -222,6 +225,7 @@ public final class ZombiePlague3 {
             zpModule.preInitialize();
         }
 
+        Set<Class<?>> classesWithEvents = new HashSet<>();
         for (ZPModule zpModule : this.assets) {
             ZPLogger.info("Init module: " + zpModule);
             ModuleEntry moduleEntry = new ModuleEntry();
@@ -246,6 +250,7 @@ public final class ZombiePlague3 {
                 }
             });
 
+            classesWithEvents.addAll(moduleEntry.getZpEventClasses());
             moduleEntry.getEventClassObjects().forEach(e -> {
                 this.registerSomeEvents(e, e.getBus(), e.getSide());
             });
@@ -273,6 +278,8 @@ public final class ZombiePlague3 {
         for (ZPModule zpModule : this.assets) {
             zpModule.postInitialize();
         }
+
+        ZombiePlague3.ZP_EVENTS.initEvents(ZPEventBus.class, classesWithEvents);
     }
 
     private void registerSomeEvents(Object eventClass, Mod.EventBusSubscriber.Bus bus, ZPSide side) {
@@ -494,8 +501,9 @@ public final class ZombiePlague3 {
     }
 
     public interface IModuleEntry {
-        void addRegistryClass(@NotNull Class<? extends ZPRegistry<?>> zpRegistryProcessorClass);
-        void addEventClass(@NotNull Class<? extends ZPEventClass> clazz);
+        void addMinecraftRegistryClass(@NotNull Class<? extends ZPRegistry<?>> zpRegistryProcessorClass);
+        void addMinecraftEventClass(@NotNull Class<? extends ZPEventClass> clazz);
+        void addZP3EventClass(@NotNull Class<?> clazz);
         void addEventClassObject(@NotNull ZPEventClass object);
         void addNetworkPacket(@NotNull ZPNetwork.PacketData<?> packetData);
         void registerNetSyncedConfigData_ClientToServer(@NotNull ZPNetworkHandler.NetSyncDataFabric.Builder zpNetSyncDataPackBuilder);
@@ -516,23 +524,30 @@ public final class ZombiePlague3 {
         private final Set<ZPEventClass> eventClassObjects;
         private final List<ZPNetwork.PacketData<?>> packetDataSet;
         private @Nullable ZPLootTablesRegistry zpLootTablesRegistry;
+        private final Set<Class<?>> zpEventClasses;
 
         public ModuleEntry() {
             this.registrySet = new HashSet<>();
             this.eventClasses = new HashSet<>();
             this.eventClassObjects = new HashSet<>();
             this.packetDataSet = new ArrayList<>();
+            this.zpEventClasses = new HashSet<>();
             this.zpLootTablesRegistry = null;
         }
 
         @Override
-        public final void addRegistryClass(@NotNull Class<? extends ZPRegistry<?>> zpRegistryClass) {
+        public final void addMinecraftRegistryClass(@NotNull Class<? extends ZPRegistry<?>> zpRegistryClass) {
             this.getRegistrySet().add(zpRegistryClass);
         }
 
         @Override
-        public final void addEventClass(@NotNull Class<? extends ZPEventClass> clazz) {
+        public final void addMinecraftEventClass(@NotNull Class<? extends ZPEventClass> clazz) {
             this.getEventClasses().add(clazz);
+        }
+
+        @Override
+        public void addZP3EventClass(@NotNull Class<?> clazz) {
+            this.zpEventClasses.add(clazz);
         }
 
         @Override
@@ -568,6 +583,10 @@ public final class ZombiePlague3 {
         @Override
         public void setPopulationSetup(@NotNull ZPSetupPopulation setup) {
             setup.setup(ZombiePlague3.getPopulationController());
+        }
+
+        public Set<Class<?>> getZpEventClasses() {
+            return this.zpEventClasses;
         }
 
         @Override

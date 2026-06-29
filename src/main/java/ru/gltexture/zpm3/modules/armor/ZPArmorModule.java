@@ -3,15 +3,13 @@ package ru.gltexture.zpm3.modules.armor;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.module.ZPModule;
 import ru.gltexture.zpm3.engine.core.module.ZPModuleData;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
+import ru.gltexture.zpm3.modules.armor.events.client.ZPAdjustNightVisionGogglesLightMap;
 import ru.gltexture.zpm3.modules.armor.init.ZPArmorItems;
-import ru.gltexture.zpm3.modules.debug.events.ZPFreeCameraEvents;
 import ru.gltexture.zpm3.modules.debug.events.ZPRenderStuffEvent;
-import ru.gltexture.zpm3.modules.debug.imgui.DearUIDebugInterface;
 
 public class ZPArmorModule extends ZPModule {
     public ZPArmorModule(@NotNull ZPModuleData zpModuleData) {
@@ -41,7 +39,8 @@ public class ZPArmorModule extends ZPModule {
 
     @Override
     public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
-        moduleEntry.addRegistryClass(ZPArmorItems.class);
+        moduleEntry.addZP3EventClass(ZPAdjustNightVisionGogglesLightMap.class);
+        moduleEntry.addMinecraftRegistryClass(ZPArmorItems.class);
         ZPUtility.sides().onlyClient(() -> {
         });
     }

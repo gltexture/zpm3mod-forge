@@ -4,14 +4,8 @@ import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
@@ -22,12 +16,7 @@ import ru.gltexture.zpm3.engine.recipes.IZPRecipeSpec;
 import ru.gltexture.zpm3.engine.recipes.ZPRecipesController;
 import ru.gltexture.zpm3.engine.recipes.ZPRecipesRegistry;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
-import ru.gltexture.zpm3.modules.blocks.init.ZPBlocks;
-import ru.gltexture.zpm3.modules.common.ZPCommonModule;
 import ru.gltexture.zpm3.modules.debug.events.ZPRenderStuffEvent;
-import ru.gltexture.zpm3.modules.food_medicine.init.ZPFoodMedicineItems;
-import ru.gltexture.zpm3.modules.guns.init.ZPGunItems;
-import ru.gltexture.zpm3.modules.melee_throwables_tools.init.ZPMeleeThrowableToolsItems;
 import ru.gltexture.zpm3.modules.misc_items.init.ZPMiscItems;
 
 import java.util.*;
@@ -61,7 +50,7 @@ public class ZPMiscItemsModule extends ZPModule {
     @Override
     public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
         moduleEntry.addRecipesRegistry(new ZPMiscItemsModule.ZPMiscItemsRecipeRegistry());
-        moduleEntry.addRegistryClass(ZPMiscItems.class);
+        moduleEntry.addMinecraftRegistryClass(ZPMiscItems.class);
         ZPUtility.sides().onlyClient(() -> {
         });
     }

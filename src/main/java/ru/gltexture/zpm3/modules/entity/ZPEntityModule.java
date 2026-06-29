@@ -20,14 +20,9 @@ import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.module.ZPModule;
 import ru.gltexture.zpm3.engine.core.module.ZPModuleData;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
-import ru.gltexture.zpm3.engine.helpers.ZPBiomeModifyingHelper;
 import ru.gltexture.zpm3.engine.helpers.ZPEntityRenderMatchHelper;
-import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
 import ru.gltexture.zpm3.engine.population.ZPPopulationController;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
-
-import java.util.List;
-import java.util.Objects;
 
 public class ZPEntityModule extends ZPModule {
     public ZPEntityModule(@NotNull ZPModuleData zpModuleData) {
@@ -63,16 +58,16 @@ public class ZPEntityModule extends ZPModule {
 
     @Override
     public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
-        moduleEntry.addRegistryClass(ZPEntityAttributes.class);
-        moduleEntry.addRegistryClass(ZPEntities.class);
-        moduleEntry.addRegistryClass(ZPSpawnItems.class);
+        moduleEntry.addMinecraftRegistryClass(ZPEntityAttributes.class);
+        moduleEntry.addMinecraftRegistryClass(ZPEntities.class);
+        moduleEntry.addMinecraftRegistryClass(ZPSpawnItems.class);
 
         moduleEntry.setPopulationSetup(new ZPEntityModule.ZPCommonPopulationSetup());
-        moduleEntry.addEventClass(ZPEntitySpawnEvent.class);
-        moduleEntry.addEventClass(ZPEntityTickEvent.class);
-        moduleEntry.addEventClass(ZPEntityLivingEvents.class);
-        moduleEntry.addEventClass(ZPEntityMobAttributes.class);
-        moduleEntry.addEventClass(ZPWorldTickEvent.class);
+        moduleEntry.addMinecraftEventClass(ZPEntitySpawnEvent.class);
+        moduleEntry.addMinecraftEventClass(ZPEntityTickEvent.class);
+        moduleEntry.addMinecraftEventClass(ZPEntityLivingEvents.class);
+        moduleEntry.addMinecraftEventClass(ZPEntityMobAttributes.class);
+        moduleEntry.addMinecraftEventClass(ZPWorldTickEvent.class);
     }
 
     @Override

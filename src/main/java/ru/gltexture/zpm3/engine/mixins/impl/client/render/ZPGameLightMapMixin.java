@@ -6,6 +6,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -19,8 +20,11 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import ru.gltexture.zpm3.engine.client.rendering.lightmap.ZPLightMapModifier;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 
+import ru.gltexture.zpm3.engine.core.Zp_SYS_EventsManager;
+import ru.gltexture.zpm3.engine.core.api.events.ZPEventBus;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
 import ru.gltexture.zpm3.modules.debug.imgui.DearUIDebugInterface;
@@ -40,6 +44,10 @@ public abstract class ZPGameLightMapMixin {
     @Shadow protected abstract float getDarknessGamma(float pPartialTicks);
     @Shadow protected abstract float calculateDarknessScale(LivingEntity pEntity, float pGamma, float pPartialTick);
     @Shadow protected abstract float notGamma(float pValue);
+
+    @Shadow
+    @Final
+    private ResourceLocation lightTextureLocation;
 
     @Unique
     private static void zpm3forge$clampColor(Vector3f pColor) {
@@ -68,6 +76,7 @@ public abstract class ZPGameLightMapMixin {
             this.minecraft.getProfiler().push("lightTex");
             ClientLevel clientlevel = this.minecraft.level;
             if (clientlevel != null && this.minecraft.player != null) {
+                Zp_SYS_EventsManager.pushEvent(new ZPEventBus.PreCalcMinecraftLightMapEvent(ZPLightMapModifier.INSTANCE));
                 float f = clientlevel.getSkyDarken(1.0F);
                 float f1;
                 if (clientlevel.getSkyFlashTime() > 0) {
@@ -136,20 +145,25 @@ public abstract class ZPGameLightMapMixin {
 
                         float f14 = this.minecraft.options.gamma().get().floatValue();
                         if (this.minecraft.player != null && (!this.minecraft.player.isCreative() || this.minecraft.options.hideGui)) {
-                            final boolean darkness = ZombiePlague3.getClient_netSyncDataPack().getBoolean(DefaultDataKeys.StoC__DARKNESS_ENABLED, ZPWorldConfig.ENABLE_HARDCORE_DARKNESS_SERVER_SIDE.getVar());
-                            if (darkness) {
+                            final boolean serverDarkness = ZombiePlague3.getClient_netSyncDataPack().getBoolean(DefaultDataKeys.StoC__DARKNESS_ENABLED, ZPWorldConfig.ENABLE_HARDCORE_DARKNESS_SERVER_SIDE.getVar());
+                            if (serverDarkness) {
                                 f14 = ZombiePlague3.getClient_netSyncDataPack().getFloat(DefaultDataKeys.StoC__DARKNESS_FACTOR, ZPWorldConfig.DARKNESS_GAMMA_STATIC_FACTOR_SERVER_SIDE.getVar());
                                 if (DearUIDebugInterface.debugDarknessValueEnable) {
                                     f14 = DearUIDebugInterface.debugDarknessValue;
                                 }
                             }
-                            if (ZPEffectUtils.isBetterVisioned(this.minecraft.player)) {
-                                f14 = darkness ? f14 + 0.2f : Math.max(f14, 0.2f);
-                            }
                         }
-                        {
-                            final float plag = 1.0f - (ZPGameLightMapMixin.zpm3forge$getPlagueProgressPercent() * 0.25f);
-                            vector3f1.mul(1.0f, plag, plag);
+                        Zp_SYS_EventsManager.pushEvent(new ZPEventBus.PostCalcMinecraftLightMapEvent(ZPLightMapModifier.INSTANCE, vector3f1, f14));
+                        ZPLightMapModifier.LightMapModRequest lightTextureLocation = null;
+                        while ((lightTextureLocation = ZPLightMapModifier.INSTANCE.pop()) != null) {
+                            if (lightTextureLocation.rgb_MUL() != null) {
+                                vector3f1.mul(lightTextureLocation.rgb_MUL());
+                            }
+                            if (lightTextureLocation.rgb_ADD() != null) {
+                                vector3f1.add(lightTextureLocation.rgb_ADD());
+                            }
+                            f14 *= lightTextureLocation.gamma_MUL();
+                            f14 += lightTextureLocation.gamme_ADD();
                         }
                         Vector3f vector3f4 = new Vector3f(this.notGamma(vector3f1.x), this.notGamma(vector3f1.y), this.notGamma(vector3f1.z));
                         vector3f1.lerp(vector3f4, Math.max(-10.0F, f14 - f3));

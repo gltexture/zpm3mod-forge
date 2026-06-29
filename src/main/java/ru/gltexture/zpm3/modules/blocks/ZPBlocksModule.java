@@ -223,12 +223,12 @@ public class ZPBlocksModule extends ZPModule {
         );
 
         moduleEntry.addRecipesRegistry(new ZPBlocksRecipeRegistry());
-        moduleEntry.addRegistryClass(ZPBlockItems.class);
-        moduleEntry.addRegistryClass(ZPBlocks.class);
-        moduleEntry.addRegistryClass(ZPTorchBlocks.class);
-        moduleEntry.addRegistryClass(ZPLanternBlocks.class);
-        moduleEntry.addRegistryClass(ZPCampfireBlocks.class);
-        moduleEntry.addRegistryClass(ZPBlockEntities.class);
+        moduleEntry.addMinecraftRegistryClass(ZPBlockItems.class);
+        moduleEntry.addMinecraftRegistryClass(ZPBlocks.class);
+        moduleEntry.addMinecraftRegistryClass(ZPTorchBlocks.class);
+        moduleEntry.addMinecraftRegistryClass(ZPLanternBlocks.class);
+        moduleEntry.addMinecraftRegistryClass(ZPCampfireBlocks.class);
+        moduleEntry.addMinecraftRegistryClass(ZPBlockEntities.class);
         ZPUtility.sides().onlyClient(() -> {
         });
     }

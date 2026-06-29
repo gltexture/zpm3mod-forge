@@ -52,8 +52,8 @@ public class ZPDebugModule extends ZPModule {
     @Override
     public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
         ZPUtility.sides().onlyClient(() -> {
-            moduleEntry.addEventClass(ZPFreeCameraEvents.class);
-            moduleEntry.addEventClass(ZPRenderStuffEvent.class);
+            moduleEntry.addMinecraftEventClass(ZPFreeCameraEvents.class);
+            moduleEntry.addMinecraftEventClass(ZPRenderStuffEvent.class);
         });
     }
 

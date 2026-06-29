@@ -7,7 +7,6 @@ import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.module.ZPModule;
 import ru.gltexture.zpm3.engine.core.module.ZPModuleData;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
-import ru.gltexture.zpm3.modules.armor.init.ZPArmorItems;
 import ru.gltexture.zpm3.modules.debug.events.ZPRenderStuffEvent;
 import ru.gltexture.zpm3.modules.fluids.init.ZPFluidTypes;
 import ru.gltexture.zpm3.modules.fluids.init.ZPFluids;
@@ -40,8 +39,8 @@ public class ZPFluidsModule extends ZPModule {
 
     @Override
     public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
-        moduleEntry.addRegistryClass(ZPFluids.class);
-        moduleEntry.addRegistryClass(ZPFluidTypes.class);
+        moduleEntry.addMinecraftRegistryClass(ZPFluids.class);
+        moduleEntry.addMinecraftRegistryClass(ZPFluidTypes.class);
 
         ZPUtility.sides().onlyClient(() -> {
         });

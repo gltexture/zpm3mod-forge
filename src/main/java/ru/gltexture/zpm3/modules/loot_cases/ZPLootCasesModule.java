@@ -46,13 +46,13 @@ public class ZPLootCasesModule extends ZPModule {
     @Override
     public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
         //assetEntry.addEventClass(ZPFreeCameraEvents.class);
-        moduleEntry.addEventClass(ZPLootTablesGatherDataEvent.class);
+        moduleEntry.addMinecraftEventClass(ZPLootTablesGatherDataEvent.class);
 
         moduleEntry.setLootTablesRegistry(new ZPDefaultLootTables());
 
-        moduleEntry.addRegistryClass(ZPLootCases.class);
-        moduleEntry.addRegistryClass(ZPBlockLootCaseEntities.class);
-        moduleEntry.addRegistryClass(ZPLootCaseBlockItems.class);
+        moduleEntry.addMinecraftRegistryClass(ZPLootCases.class);
+        moduleEntry.addMinecraftRegistryClass(ZPBlockLootCaseEntities.class);
+        moduleEntry.addMinecraftRegistryClass(ZPLootCaseBlockItems.class);
     }
 
     @Override

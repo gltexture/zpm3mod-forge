@@ -141,7 +141,7 @@ public class ZPPostFXChain implements ZPClientCallbacks.ZPClientResourceDependen
         this.createFBOs(width, height);
     }
 
-   // @SubscribeEvent
+   // @ZombiePlagueEvent
    // public void exec(@NotNull RenderGuiEvent.Pre renderLevelStageEvent) {
    //     this.render();
    // }

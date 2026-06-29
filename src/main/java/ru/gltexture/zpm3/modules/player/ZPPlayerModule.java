@@ -48,20 +48,20 @@ public class ZPPlayerModule extends ZPModule {
     @Override
     public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
         ZPUtility.sides().onlyClient(() -> {
-            moduleEntry.addEventClass(ZPRenderWorldEventWithPickUpCheck.class);
-            moduleEntry.addEventClass(ZPPlayerItemToolTipsEvent.class);
-            moduleEntry.addEventClass(ZPRenderGuiEvent.class);
-            moduleEntry.addEventClass(ZPResourcePackEvent.class);
-            moduleEntry.addEventClass(ZPPlayerLyingClientCheckEvent.class);
+            moduleEntry.addMinecraftEventClass(ZPRenderWorldEventWithPickUpCheck.class);
+            moduleEntry.addMinecraftEventClass(ZPPlayerItemToolTipsEvent.class);
+            moduleEntry.addMinecraftEventClass(ZPRenderGuiEvent.class);
+            moduleEntry.addMinecraftEventClass(ZPResourcePackEvent.class);
+            moduleEntry.addMinecraftEventClass(ZPPlayerLyingClientCheckEvent.class);
         });
 
-        moduleEntry.addEventClass(ZPPlayerGunCancelInterEvent.class);
-        moduleEntry.addEventClass(ZPPlayerEntityItemEvent.class);
-        moduleEntry.addEventClass(ZPPlayerTickEvent.class);
-        moduleEntry.addEventClass(ZPPlayerFillBucketEvent.class);
-        moduleEntry.addEventClass(ZPPlaceLiquidEvent.class);
-        moduleEntry.addEventClass(ZPPlayerEatFoodEvent.class);
-        moduleEntry.addEventClass(ZPPlayerJoinOrSpawnEvent.class);
+        moduleEntry.addMinecraftEventClass(ZPPlayerGunCancelInterEvent.class);
+        moduleEntry.addMinecraftEventClass(ZPPlayerEntityItemEvent.class);
+        moduleEntry.addMinecraftEventClass(ZPPlayerTickEvent.class);
+        moduleEntry.addMinecraftEventClass(ZPPlayerFillBucketEvent.class);
+        moduleEntry.addMinecraftEventClass(ZPPlaceLiquidEvent.class);
+        moduleEntry.addMinecraftEventClass(ZPPlayerEatFoodEvent.class);
+        moduleEntry.addMinecraftEventClass(ZPPlayerJoinOrSpawnEvent.class);
     }
 
     @Override

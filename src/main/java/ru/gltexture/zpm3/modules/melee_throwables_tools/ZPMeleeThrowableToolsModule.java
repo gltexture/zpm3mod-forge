@@ -52,7 +52,7 @@ public class ZPMeleeThrowableToolsModule extends ZPModule {
     public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
         moduleEntry.addRecipesRegistry(new ZPMeleeThrowableToolsModule.ZPMeleeThrowablesToolsRecipeRegistry());
         moduleEntry.addTier(ZPCommonToolMeleeTiers.values());
-        moduleEntry.addRegistryClass(ZPMeleeThrowableToolsItems.class);
+        moduleEntry.addMinecraftRegistryClass(ZPMeleeThrowableToolsItems.class);
         ZPUtility.sides().onlyClient(() -> {
         });
     }

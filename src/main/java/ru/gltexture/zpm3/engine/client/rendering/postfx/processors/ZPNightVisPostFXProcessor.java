@@ -5,9 +5,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ShaderInstance;
 import org.lwjgl.opengl.GL46;
 import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
+import ru.gltexture.zpm3.engine.client.rendering.lightmap.ZPLightMapModifier;
 import ru.gltexture.zpm3.engine.client.rendering.postfx.ZPPostFXChain;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPDefaultShaders;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPShaderLoader;
+import ru.gltexture.zpm3.modules.armor.utils.ZPArmorUtils;
 import ru.gltexture.zpm3.modules.debug.imgui.DearUIDebugInterface;
 
 import java.util.Objects;
@@ -40,6 +42,11 @@ public class ZPNightVisPostFXProcessor extends ZPPostFXProcessor{
 
     @Override
     public boolean bypass() {
+        if (Minecraft.getInstance().player != null) {
+            if (ZPArmorUtils.isEntityHasNightVisionGoggles(Minecraft.getInstance().player)) {
+                return false;
+            }
+        }
         return !DearUIDebugInterface.FORCE_ENABLE_NIGHTVIS_POST_FX_SHADER;
     }
 }

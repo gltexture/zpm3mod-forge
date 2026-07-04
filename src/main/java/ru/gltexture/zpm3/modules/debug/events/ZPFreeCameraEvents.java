@@ -13,6 +13,7 @@ import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.events.ZPEventClass;
 
+// ONLY DEBUG!!!!!!
 public class ZPFreeCameraEvents implements ZPEventClass {
     public static boolean enabled = false;
     public static Vec3 freecamPos = new Vec3(0, 70, 0);

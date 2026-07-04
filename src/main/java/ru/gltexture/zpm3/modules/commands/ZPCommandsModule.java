@@ -12,13 +12,20 @@ import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.modules.commands.zones.ZPFlagZones;
-import ru.gltexture.zpm3.modules.commands.zones.events.ZPLevelSaveReadEvents;
+import org.joml.Vector3i;
+import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
+import ru.gltexture.zpm3.engine.service.ZPUtility;
+import ru.gltexture.zpm3.engine.zones.ZPFlagZones;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.module.ZPModule;
 import ru.gltexture.zpm3.engine.core.module.ZPModuleData;
 import ru.gltexture.zpm3.engine.events.ZPEventClass;
+import ru.gltexture.zpm3.modules.commands.events.client.ZPCreativeUtilityMenuEvent;
+import ru.gltexture.zpm3.modules.commands.events.client.ZPRenderZones;
+import ru.gltexture.zpm3.modules.commands.imgui.ZPCreativeUtilityUI;
+import ru.gltexture.zpm3.modules.common.init.ZPTabs;
+import ru.gltexture.zpm3.modules.debug.imgui.DearUIDebugInterface;
 
 import java.util.*;
 
@@ -37,6 +44,9 @@ public class ZPCommandsModule extends ZPModule {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void fml_clientSetupEvent() {
+        if (ZPRenderHelper.INSTANCE.getDearUIRenderer() != null) {
+            ZPRenderHelper.INSTANCE.getDearUIRenderer().getInterfacesManager().addInterface(new ZPCreativeUtilityUI());
+        }
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -58,7 +68,10 @@ public class ZPCommandsModule extends ZPModule {
     @Override
     public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
         moduleEntry.addMinecraftEventClass(ZPCommandsEvent.class);
-        moduleEntry.addMinecraftEventClass(ZPLevelSaveReadEvents.class);
+        ZPUtility.sides().onlyClient(() -> {
+            moduleEntry.addMinecraftEventClass(ZPRenderZones.class);
+            moduleEntry.addMinecraftEventClass(ZPCreativeUtilityMenuEvent.class);
+        });
     }
 
     @Override
@@ -128,17 +141,65 @@ public class ZPCommandsModule extends ZPModule {
                                                                                                     return 0;
                                                                                                 }
                                                                                                 String id = StringArgumentType.getString(ctx, "id");
+                                                                                                final int x1 = IntegerArgumentType.getInteger(ctx, "x1");
+                                                                                                final int y1 = IntegerArgumentType.getInteger(ctx, "y1");
+                                                                                                final int z1 = IntegerArgumentType.getInteger(ctx, "z1");
+                                                                                                final int x2 = IntegerArgumentType.getInteger(ctx, "x2");
+                                                                                                final int y2 = IntegerArgumentType.getInteger(ctx, "y2");
+                                                                                                final int z2 = IntegerArgumentType.getInteger(ctx, "z2");
+                                                                                                final int minX = Math.min(x1, x2);
+                                                                                                final int maxX = Math.max(x1, x2);
+                                                                                                final int minY = Math.min(y1, y2);
+                                                                                                final int maxY = Math.max(y1, y2);
+                                                                                                final int minZ = Math.min(z1, z2);
+                                                                                                final int maxZ = Math.max(z1, z2);
+                                                                                                ZPFlagZones.Zone zone = new ZPFlagZones.Zone(id, new Vector3i(minX, minY, minZ), new Vector3i(maxX, maxY, maxZ), new HashSet<>());
+                                                                                                ZPFlagZones.INSTANCE.addNewZone(level, zone);
+
+                                                                                                ctx.getSource().sendSuccess(() -> Component.literal("Zone " + id + " created!"), false);
+                                                                                                return 1;
+                                                                                            })
+                                                                                    )
+                                                                            )
+                                                                    )
+                                                            )
+                                                    )
+                                            )
+                                    )
+                            )
+                            .then(Commands.literal("zoneSetBounds")
+                                    .then(Commands.argument("id", StringArgumentType.string())
+                                            .then(Commands.argument("x1", IntegerArgumentType.integer())
+                                                    .then(Commands.argument("y1", IntegerArgumentType.integer())
+                                                            .then(Commands.argument("z1", IntegerArgumentType.integer())
+                                                                    .then(Commands.argument("x2", IntegerArgumentType.integer())
+                                                                            .then(Commands.argument("y2", IntegerArgumentType.integer())
+                                                                                    .then(Commands.argument("z2", IntegerArgumentType.integer())
+                                                                                            .executes(ctx -> {
+                                                                                                ServerPlayer player = ctx.getSource().getPlayerOrException();
+                                                                                                ServerLevel level = (ServerLevel) player.level();
+                                                                                                if (!player.hasPermissions(3)) {
+                                                                                                    return 0;
+                                                                                                }
+                                                                                                String id = StringArgumentType.getString(ctx, "id");
                                                                                                 int x1 = IntegerArgumentType.getInteger(ctx, "x1");
                                                                                                 int y1 = IntegerArgumentType.getInteger(ctx, "y1");
                                                                                                 int z1 = IntegerArgumentType.getInteger(ctx, "z1");
                                                                                                 int x2 = IntegerArgumentType.getInteger(ctx, "x2");
                                                                                                 int y2 = IntegerArgumentType.getInteger(ctx, "y2");
                                                                                                 int z2 = IntegerArgumentType.getInteger(ctx, "z2");
-
-                                                                                                ZPFlagZones.Zone zone = new ZPFlagZones.Zone(id, x1, y1, z1, x2, y2, z2, new HashSet<>());
-                                                                                                ZPFlagZones.INSTANCE.addNewZone(level, zone);
-
-                                                                                                ctx.getSource().sendSuccess(() -> Component.literal("Zone " + id + " created!"), false);
+                                                                                                int minX = Math.min(x1, x2);
+                                                                                                int minY = Math.min(y1, y2);
+                                                                                                int minZ = Math.min(z1, z2);
+                                                                                                int maxX = Math.max(x1, x2);
+                                                                                                int maxY = Math.max(y1, y2);
+                                                                                                int maxZ = Math.max(z1, z2);
+                                                                                                if (ZPFlagZones.INSTANCE.getZoneById(level, id) == null) {
+                                                                                                    ctx.getSource().sendFailure(Component.literal("Zone " + id + " doesn't exist."));
+                                                                                                    return 0;
+                                                                                                }
+                                                                                                ZPFlagZones.INSTANCE.newZoneBounds(level, id, new Vector3i(minX, minY, minZ), new Vector3i(maxX, maxY, maxZ));
+                                                                                                ctx.getSource().sendSuccess(() -> Component.literal("Zone " + id + " bounds updated."), false);
                                                                                                 return 1;
                                                                                             })
                                                                                     )
@@ -176,13 +237,13 @@ public class ZPCommandsModule extends ZPModule {
                                             return 0;
                                         }
                                         ServerLevel level = (ServerLevel) player.level();
-                                        Collection<ZPFlagZones.Zone> zones = ZPFlagZones.INSTANCE.getZonesInfo(level);
+                                        Collection<ZPFlagZones.Zone> zones = ZPFlagZones.INSTANCE.getAllZonesOnLevel(level);
                                         if (zones == null || zones.isEmpty()) {
                                             ctx.getSource().sendSuccess(() -> Component.literal("Empty!"), false);
                                             return 0;
                                         }
                                         for (ZPFlagZones.Zone zone : zones) {
-                                            ctx.getSource().sendSuccess(() -> Component.literal(zone.uniqueId() + " [" + zone.startX() + "," + zone.startY() + "," + zone.startZ() + "] - [" + zone.endX() + "," + zone.endY() + "," + zone.endZ() + "] Flags: " + zone.flags()), false);
+                                            ctx.getSource().sendSuccess(() -> Component.literal(zone.uniqueId() + " : " + zone.min() + " | " + zone.max() + " Flags: " + zone.flags()), false);
                                         }
                                         return 1;
                                     })
@@ -198,7 +259,7 @@ public class ZPCommandsModule extends ZPModule {
                                                 String id = StringArgumentType.getString(ctx, "id");
                                                 boolean updated = ZPFlagZones.INSTANCE.replaceFlags(level, id, new HashSet<>());
                                                 if (updated) {
-                                                    ctx.getSource().sendSuccess(() -> Component.literal("Flags of " + id + " updated!"), false);
+                                                    ctx.getSource().sendSuccess(() -> Component.literal("Flags of " + id + " erased!"), false);
                                                     return 1;
                                                 }
                                                 ctx.getSource().sendFailure(Component.literal("Zone " + id + " not found!"));
@@ -206,7 +267,7 @@ public class ZPCommandsModule extends ZPModule {
                                             })
                                     )
                             )
-                            .then(Commands.literal("zoneAddFlag")
+                            .then(Commands.literal("zoneAddFlags")
                                     .then(Commands.argument("id", StringArgumentType.string())
                                             .then(Commands.argument("flag", StringArgumentType.string())
                                                     .suggests((ctx, builder) -> {
@@ -236,12 +297,59 @@ public class ZPCommandsModule extends ZPModule {
                                                             return 0;
                                                         }
                                                         flags = new HashSet<>(flags);
-                                                        flags.add(flag);
+                                                        if (!flags.add(flag)) {
+                                                            ctx.getSource().sendSuccess(() -> Component.literal("Fail"), false);
+                                                            return 0;
+                                                        }
                                                         if (!ZPFlagZones.INSTANCE.replaceFlags(level, id, flags)) {
                                                             ctx.getSource().sendSuccess(() -> Component.literal("Fail"), false);
                                                             return 0;
                                                         }
                                                         ctx.getSource().sendSuccess(() -> Component.literal("Flag " + flag.name() + " added to zone " + id + "!"), false);
+                                                        return 1;
+                                                    })
+                                            )
+                                    )
+                            )
+                            .then(Commands.literal("zoneRemoveFlags")
+                                    .then(Commands.argument("id", StringArgumentType.string())
+                                            .then(Commands.argument("flag", StringArgumentType.string())
+                                                    .suggests((ctx, builder) -> {
+                                                        for (ZPFlagZones.Zone.AvailableFlags f : ZPFlagZones.Zone.AvailableFlags.values()) {
+                                                            builder.suggest(f.name());
+                                                        }
+                                                        return builder.buildFuture();
+                                                    })
+                                                    .executes(ctx -> {
+                                                        ServerPlayer player = ctx.getSource().getPlayerOrException();
+                                                        if (!player.hasPermissions(3)) {
+                                                            return 0;
+                                                        }
+                                                        ServerLevel level = (ServerLevel) player.level();
+                                                        String id = StringArgumentType.getString(ctx, "id");
+                                                        String flagStr = StringArgumentType.getString(ctx, "flag");
+                                                        ZPFlagZones.Zone.AvailableFlags flag;
+                                                        try {
+                                                            flag = ZPFlagZones.Zone.AvailableFlags.valueOf(flagStr);
+                                                        } catch (IllegalArgumentException e) {
+                                                            ctx.getSource().sendFailure(Component.literal("The flag " + flagStr + " doesn't exist. Try /zp3 zoneFlagsList"));
+                                                            return 0;
+                                                        }
+                                                        Set<ZPFlagZones.Zone.AvailableFlags> flags = ZPFlagZones.INSTANCE.getFlags(level, id);
+                                                        if (flags == null) {
+                                                            ctx.getSource().sendFailure(Component.literal("Zone " + id + " not found!"));
+                                                            return 0;
+                                                        }
+                                                        flags = new HashSet<>(flags);
+                                                        if (!flags.remove(flag)) {
+                                                            ctx.getSource().sendSuccess(() -> Component.literal("Fail"), false);
+                                                            return 0;
+                                                        }
+                                                        if (!ZPFlagZones.INSTANCE.replaceFlags(level, id, flags)) {
+                                                            ctx.getSource().sendSuccess(() -> Component.literal("Fail"), false);
+                                                            return 0;
+                                                        }
+                                                        ctx.getSource().sendSuccess(() -> Component.literal("Flag " + flag.name() + " removed from zone " + id + "!"), false);
                                                         return 1;
                                                     })
                                             )

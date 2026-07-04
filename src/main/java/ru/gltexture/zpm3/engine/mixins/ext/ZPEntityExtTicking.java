@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPCombatConfig;
-import ru.gltexture.zpm3.modules.commands.zones.ZPZoneChecks;
+import ru.gltexture.zpm3.engine.zones.ZPZoneChecks;
 
 import ru.gltexture.zpm3.modules.common.utils.ZPCommonServerUtils;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;

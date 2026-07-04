@@ -24,13 +24,12 @@ import ru.gltexture.zpm3.engine.client.rendering.lightmap.ZPLightMapModifier;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 
 import ru.gltexture.zpm3.engine.core.Zp_SYS_EventsManager;
-import ru.gltexture.zpm3.engine.core.api.events.ZPEventBus;
+import ru.gltexture.zpm3.engine.core.api.events.ZPModEventBus;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
 import ru.gltexture.zpm3.modules.debug.imgui.DearUIDebugInterface;
 import ru.gltexture.zpm3.modules.mob_effects.init.ZPMobEffects;
-import ru.gltexture.zpm3.modules.mob_effects.utils.ZPEffectUtils;
-import ru.gltexture.zpm3.modules.net_pack.data.DefaultDataKeys;
+import ru.gltexture.zpm3.modules.net_pack.data.ZPDefaultDataKeys;
 
 @Mixin(LightTexture.class)
 public abstract class ZPGameLightMapMixin {
@@ -76,7 +75,7 @@ public abstract class ZPGameLightMapMixin {
             this.minecraft.getProfiler().push("lightTex");
             ClientLevel clientlevel = this.minecraft.level;
             if (clientlevel != null && this.minecraft.player != null) {
-                Zp_SYS_EventsManager.pushEvent(new ZPEventBus.PreCalcMinecraftLightMapEvent(ZPLightMapModifier.INSTANCE));
+                Zp_SYS_EventsManager.pushEvent(new ZPModEventBus.PreCalcMinecraftLightMapEvent(ZPLightMapModifier.INSTANCE));
                 float f = clientlevel.getSkyDarken(1.0F);
                 float f1;
                 if (clientlevel.getSkyFlashTime() > 0) {
@@ -145,15 +144,15 @@ public abstract class ZPGameLightMapMixin {
 
                         float f14 = this.minecraft.options.gamma().get().floatValue();
                         if (this.minecraft.player != null && (!this.minecraft.player.isCreative() || this.minecraft.options.hideGui)) {
-                            final boolean serverDarkness = ZombiePlague3.getClient_netSyncDataPack().getBoolean(DefaultDataKeys.StoC__DARKNESS_ENABLED, ZPWorldConfig.ENABLE_HARDCORE_DARKNESS_SERVER_SIDE.getVar());
+                            final boolean serverDarkness = ZombiePlague3.getClient_netSyncDataPack().getBoolean(ZPDefaultDataKeys.StoC__DARKNESS_ENABLED, ZPWorldConfig.ENABLE_HARDCORE_DARKNESS_SERVER_SIDE.getVar());
                             if (serverDarkness) {
-                                f14 = ZombiePlague3.getClient_netSyncDataPack().getFloat(DefaultDataKeys.StoC__DARKNESS_FACTOR, ZPWorldConfig.DARKNESS_GAMMA_STATIC_FACTOR_SERVER_SIDE.getVar());
+                                f14 = ZombiePlague3.getClient_netSyncDataPack().getFloat(ZPDefaultDataKeys.StoC__DARKNESS_FACTOR, ZPWorldConfig.DARKNESS_GAMMA_STATIC_FACTOR_SERVER_SIDE.getVar());
                                 if (DearUIDebugInterface.debugDarknessValueEnable) {
                                     f14 = DearUIDebugInterface.debugDarknessValue;
                                 }
                             }
                         }
-                        Zp_SYS_EventsManager.pushEvent(new ZPEventBus.PostCalcMinecraftLightMapEvent(ZPLightMapModifier.INSTANCE, vector3f1, f14));
+                        Zp_SYS_EventsManager.pushEvent(new ZPModEventBus.PostCalcMinecraftLightMapEvent(ZPLightMapModifier.INSTANCE, vector3f1, f14));
                         ZPLightMapModifier.LightMapModRequest lightTextureLocation = null;
                         while ((lightTextureLocation = ZPLightMapModifier.INSTANCE.pop()) != null) {
                             if (lightTextureLocation.rgb_MUL() != null) {

@@ -6,8 +6,10 @@
   "refmap": "zpm3.refmap.json",
   "mixins": [
     "BlockInvoker",
+    "common.ZPBlockBehaviourStateCandleMixin",
     "common.ZPCampfireEntityMixin",
     "common.ZPCampfireMixin",
+    "common.ZPCandleBlock",
     "common.ZPFadingLanternMixin",
     "common.ZPFadingPumpkinMixin",
     "common.ZPFadingTorchMixin",

@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
+import ru.gltexture.zpm3.modules.armor.utils.ZPArmorUtils;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.modules.entity.mixins.ext.IPlayerZmTargetsExt;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
@@ -168,7 +169,9 @@ public class ZPZombieNearestAttackableTarget extends Goal {
     }
 
     protected LivingEntity closestEntity() {
-        final Predicate<LivingEntity> pFilter = (p) -> this.targetTypes.stream().anyMatch(e -> e.isAssignableFrom(p.getClass()));
+        final Predicate<LivingEntity> pFilter = (p) -> {
+            return this.targetTypes.stream().anyMatch(e -> e.isAssignableFrom(p.getClass()));
+        };
         LivingEntity livingEntity = this.getNearestEntity(this.zombie.level().getEntitiesOfClass(LivingEntity.class, this.getTargetSearchArea(this.getFollowDistance()), pFilter), this.directViewConditions, this.zombie.getX(), this.zombie.getEyeY(), this.zombie.getZ());
         if (livingEntity == null) {
             if (this.xRayViewConditions == null) {
@@ -219,7 +222,7 @@ public class ZPZombieNearestAttackableTarget extends Goal {
     }
     public static class SpecialTargetConditions {
         public static final SpecialTargetConditions DEFAULT = forCombat();
-        private static final double MIN_VISIBILITY_DISTANCE_FOR_INVISIBLE_TARGET = (double)2.0F;
+        private static final double MIN_VISIBILITY_DISTANCE_FOR_INVISIBLE_TARGET = 2.0F;
         private final boolean isCombat;
         private double range = (double)-1.0F;
         private boolean checkLineOfSight = true;
@@ -275,6 +278,10 @@ public class ZPZombieNearestAttackableTarget extends Goal {
             return true;
         }
 
+        protected double followDistanceBonus(LivingEntity target) {
+            return ZPArmorUtils.getReductionForArmorPeaceOnEntity(target);
+        }
+
         public boolean test(@Nullable ZPAbstractZombie pAttacker, @NotNull LivingEntity pTarget) {
             if (pAttacker == pTarget) {
                 return false;
@@ -292,9 +299,10 @@ public class ZPZombieNearestAttackableTarget extends Goal {
                     if (this.isCombat && (!pAttacker.canAttack(pTarget) || !pAttacker.canAttackType(pTarget.getType()) || pAttacker.isAlliedTo(pTarget))) {
                         return false;
                     }
-                    if (this.range > (double) 0.0F) {
+                    final double range = this.range - this.followDistanceBonus(pTarget);
+                    if (range > (double) 0.0F) {
                         double $$2 = this.testInvisible ? pTarget.getVisibilityPercent(pAttacker) : (double) 1.0F;
-                        double $$3 = Math.max(this.range * $$2, 2.0F);
+                        double $$3 = Math.max(range * $$2, 2.0F);
                         double $$4 = pAttacker.distanceToSqr(pTarget.getX(), pTarget.getY(), pTarget.getZ());
                         if ($$4 > $$3 * $$3) {
                             return false;

@@ -12,8 +12,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
+import ru.gltexture.zpm3.modules.debug.render.ZPRenderLines;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
-import ru.gltexture.zpm3.modules.guns.rendering.tracer.ZPBulletTracerManager;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.events.ZPEventClass;
 
@@ -41,7 +41,7 @@ public class ZPRenderStuffEvent implements ZPEventClass {
     public static void onRenderWorld(RenderLevelStageEvent event) {
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS) {
             ZPRenderStuffEvent.lineRequestList.forEach((e) -> {
-                ZPBulletTracerManager.drawLine(event.getPoseStack(), e.start, e.end, 1.0f, 0.0f, 0.0f, 1.0f);
+                ZPRenderLines.drawLine(event.getPoseStack(), e.start, e.end, 1.0f, 0.0f, 0.0f, 1.0f);
             });
             ZPRenderStuffEvent.lineRequestList.clear();
             if (false && Minecraft.getInstance().player != null) {
@@ -83,14 +83,14 @@ public class ZPRenderStuffEvent implements ZPEventClass {
             Vector3f vector6N = angle6.normalize();
             final Vector3f end6 = new Vector3f(rayCenter).add(new Vector3f(vector6N).mul(1.5f));
 
-            ZPBulletTracerManager.drawLine(poseStack, rayCenter, end1,1.0f, 0.0f, 0.0f, 1.0f);
-            ZPBulletTracerManager.drawLine(poseStack, rayCenter, end2,1.0f, 1.0f, 0.0f, 1.0f);
-            ZPBulletTracerManager.drawLine(poseStack, rayCenter, end3,1.0f, 1.0f, 0.0f, 1.0f);
-            ZPBulletTracerManager.drawLine(poseStack, rayCenter, end4,1.0f, 1.0f, 0.0f, 1.0f);
-            ZPBulletTracerManager.drawLine(poseStack, rayCenter, end5,1.0f, 1.0f, 0.0f, 1.0f);
+            ZPRenderLines.drawLine(poseStack, rayCenter, end1,1.0f, 0.0f, 0.0f, 1.0f);
+            ZPRenderLines.drawLine(poseStack, rayCenter, end2,1.0f, 1.0f, 0.0f, 1.0f);
+            ZPRenderLines.drawLine(poseStack, rayCenter, end3,1.0f, 1.0f, 0.0f, 1.0f);
+            ZPRenderLines.drawLine(poseStack, rayCenter, end4,1.0f, 1.0f, 0.0f, 1.0f);
+            ZPRenderLines.drawLine(poseStack, rayCenter, end5,1.0f, 1.0f, 0.0f, 1.0f);
 
             if (Math.abs(vector6N.dot(lookAt)) < 0.7f) {
-                ZPBulletTracerManager.drawLine(poseStack, rayCenter, end6, 1.0f, 0.0f, 1.0f, 1.0f);
+                ZPRenderLines.drawLine(poseStack, rayCenter, end6, 1.0f, 0.0f, 1.0f, 1.0f);
             }
         }
     }

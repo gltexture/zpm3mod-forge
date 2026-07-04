@@ -3,7 +3,6 @@ package ru.gltexture.zpm3.modules.ui.screen;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.components.StringWidget;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.layouts.FrameLayout;
 import net.minecraft.client.gui.layouts.GridLayout;
@@ -16,8 +15,8 @@ import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.config.ZPConfigConstantsClass;
 import ru.gltexture.zpm3.engine.core.config.ZPConfigManager;
 import ru.gltexture.zpm3.engine.core.config.vars.*;
-import ru.gltexture.zpm3.modules.ui.screen.instances.LabeledEditBox;
-import ru.gltexture.zpm3.modules.ui.screen.instances.ZpConfigEditBox;
+import ru.gltexture.zpm3.modules.ui.screen.instances.ZPConfigEditBox;
+import ru.gltexture.zpm3.modules.ui.screen.instances.ZPLabeledEditBox;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -70,7 +69,7 @@ public class ZPClientConfigOptionsScreen extends ZPScreen {
                 b.setMessage(buttonMsg(configVar));
             }).tooltip(Tooltip.create(Component.literal(configVar.varDescription()))).build());
         } else if (configVar.var() instanceof ZPConfig_INT) {
-            ZpConfigEditBox box = this.getEditBoxFor(configVar,
+            ZPConfigEditBox box = this.getEditBoxFor(configVar,
                     s -> {
                         if (s.isEmpty()) {
                             return true;
@@ -85,7 +84,7 @@ public class ZPClientConfigOptionsScreen extends ZPScreen {
                     Integer::parseInt).setOnUpdateText(onUpdateText);
             this.createEditBoxWidget(rowHelper, box, Component.translatable("ui.zpm3.config." + configVar.varName()));
         } else if (configVar.var() instanceof ZPConfig_DOUBLE) {
-            ZpConfigEditBox box = this.getEditBoxFor(configVar,
+            ZPConfigEditBox box = this.getEditBoxFor(configVar,
                     s -> {
                         if (s.isEmpty()) {
                             return true;
@@ -100,7 +99,7 @@ public class ZPClientConfigOptionsScreen extends ZPScreen {
                     Double::parseDouble).setOnUpdateText(onUpdateText);
             this.createEditBoxWidget(rowHelper, box, Component.translatable("ui.zpm3.config." + configVar.varName()));
         } else if (configVar.var() instanceof ZPConfig_FLOAT) {
-            ZpConfigEditBox box = this.getEditBoxFor(configVar,
+            ZPConfigEditBox box = this.getEditBoxFor(configVar,
                     s -> {
                         if (s.isEmpty()) {
                             return true;
@@ -115,23 +114,23 @@ public class ZPClientConfigOptionsScreen extends ZPScreen {
                     Float::parseFloat).setOnUpdateText(onUpdateText);
             this.createEditBoxWidget(rowHelper, box, Component.translatable("ui.zpm3.config." + configVar.varName()));
         } else if (configVar.var() instanceof ZPConfig_STRING configString) {
-            ZpConfigEditBox box = this.getEditBoxFor(configVar,
+            ZPConfigEditBox box = this.getEditBoxFor(configVar,
                     s -> true,
                     (s) -> s).setOnUpdateText(onUpdateText);
             this.createEditBoxWidget(rowHelper, box, Component.translatable("ui.zpm3.config." + configVar.varName()));
         }
     }
 
-    protected LabeledEditBox createEditBoxWidget(GridLayout.RowHelper rowHelper, ZpConfigEditBox editBox, Component name) {
-        LabeledEditBox labeledEditBox = new LabeledEditBox(this.font, name, editBox);
-        rowHelper.addChild(labeledEditBox);
-        this.addWidget(labeledEditBox.getEditBox());
-        this.addWidget(labeledEditBox.getLabel());
-        return labeledEditBox;
+    protected ZPLabeledEditBox createEditBoxWidget(GridLayout.RowHelper rowHelper, ZPConfigEditBox editBox, Component name) {
+        ZPLabeledEditBox ZPLabeledEditBox = new ZPLabeledEditBox(this.font, name, editBox);
+        rowHelper.addChild(ZPLabeledEditBox);
+        this.addWidget(ZPLabeledEditBox.getEditBox());
+        this.addWidget(ZPLabeledEditBox.getLabel());
+        return ZPLabeledEditBox;
     }
 
-    protected @NotNull <T extends Serializable> ZpConfigEditBox getEditBoxFor(ZPConfigManager.ConfigVarObjectForUI configVarUI, Predicate<String> filter, Function<String, T> converter) {
-        ZpConfigEditBox box = new ZpConfigEditBox(this.font, 0, 0, 100, 20, Component.literal(configVarUI.varName()));
+    protected @NotNull <T extends Serializable> ZPConfigEditBox getEditBoxFor(ZPConfigManager.ConfigVarObjectForUI configVarUI, Predicate<String> filter, Function<String, T> converter) {
+        ZPConfigEditBox box = new ZPConfigEditBox(this.font, 0, 0, 100, 20, Component.literal(configVarUI.varName()));
         box.setValue(String.valueOf(configVarUI.var()));
         box.setFilter(filter);
         box.setResponder(s -> {

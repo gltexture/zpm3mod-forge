@@ -36,7 +36,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
-import ru.gltexture.zpm3.engine.core.api.events.ZPEventBus;
+import ru.gltexture.zpm3.engine.core.api.events.ZPModEventBus;
 import ru.gltexture.zpm3.engine.core.config.ZPConfigConstantsClass;
 import ru.gltexture.zpm3.engine.core.config.ZPConfigManager;
 import ru.gltexture.zpm3.engine.core.config.builtin.*;
@@ -120,7 +120,7 @@ public final class ZombiePlague3 {
     }
 
     public static boolean isDevEnvironment() {
-        return !FMLLoader.isProduction();
+        return !FMLLoader.isProduction() || ZPCoreConfig.DEV_MODE.getVar();
     }
 
     @SuppressWarnings("all")
@@ -279,7 +279,7 @@ public final class ZombiePlague3 {
             zpModule.postInitialize();
         }
 
-        ZombiePlague3.ZP_EVENTS.initEvents(ZPEventBus.class, classesWithEvents);
+        ZombiePlague3.ZP_EVENTS.initEvents(ZPModEventBus.class, classesWithEvents);
     }
 
     private void registerSomeEvents(Object eventClass, Mod.EventBusSubscriber.Bus bus, ZPSide side) {

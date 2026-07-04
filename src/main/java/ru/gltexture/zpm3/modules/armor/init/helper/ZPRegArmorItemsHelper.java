@@ -32,5 +32,113 @@ public abstract class ZPRegArmorItemsHelper {
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
             });
         }).end();
+
+        ZPArmorItems.forest_helmet = regSupplier.register("forest_helmet",
+                () -> new ZPArmorItem(ZPArmorMaterialsList.FOREST_CAM, ArmorItem.Type.HELMET, new Item.Properties())
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
+            });
+        }).end();
+
+        ZPArmorItems.forest_chestplate = regSupplier.register("forest_chestplate",
+                () -> new ZPArmorItem(ZPArmorMaterialsList.FOREST_CAM, ArmorItem.Type.CHESTPLATE, new Item.Properties())
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
+            });
+        }).end();
+
+        ZPArmorItems.forest_leggings = regSupplier.register("forest_leggings",
+                () -> new ZPArmorItem(ZPArmorMaterialsList.FOREST_CAM, ArmorItem.Type.LEGGINGS, new Item.Properties())
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
+            });
+        }).end();
+
+        ZPArmorItems.forest_boots = regSupplier.register("forest_boots",
+                () -> new ZPArmorItem(ZPArmorMaterialsList.FOREST_CAM, ArmorItem.Type.BOOTS, new Item.Properties())
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
+            });
+        }).end();
+
+        ZPArmorItems.sand_helmet = regSupplier.register("sand_helmet",
+                () -> new ZPArmorItem(ZPArmorMaterialsList.SAND_CAM, ArmorItem.Type.HELMET, new Item.Properties())
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
+            });
+        }).end();
+
+        ZPArmorItems.sand_chestplate = regSupplier.register("sand_chestplate",
+                () -> new ZPArmorItem(ZPArmorMaterialsList.SAND_CAM, ArmorItem.Type.CHESTPLATE, new Item.Properties())
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
+            });
+        }).end();
+
+        ZPArmorItems.sand_leggings = regSupplier.register("sand_leggings",
+                () -> new ZPArmorItem(ZPArmorMaterialsList.SAND_CAM, ArmorItem.Type.LEGGINGS, new Item.Properties())
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
+            });
+        }).end();
+
+        ZPArmorItems.sand_boots = regSupplier.register("sand_boots",
+                () -> new ZPArmorItem(ZPArmorMaterialsList.SAND_CAM, ArmorItem.Type.BOOTS, new Item.Properties())
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
+            });
+        }).end();
+
+        ZPArmorItems.winter_helmet = regSupplier.register("winter_helmet",
+                () -> new ZPArmorItem(ZPArmorMaterialsList.WINTER_CAM, ArmorItem.Type.HELMET, new Item.Properties())
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
+            });
+        }).end();
+
+        ZPArmorItems.winter_chestplate = regSupplier.register("winter_chestplate",
+                () -> new ZPArmorItem(ZPArmorMaterialsList.WINTER_CAM, ArmorItem.Type.CHESTPLATE, new Item.Properties())
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
+            });
+        }).end();
+
+        ZPArmorItems.winter_leggings = regSupplier.register("winter_leggings",
+                () -> new ZPArmorItem(ZPArmorMaterialsList.WINTER_CAM, ArmorItem.Type.LEGGINGS, new Item.Properties())
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
+            });
+        }).end();
+
+        ZPArmorItems.winter_boots = regSupplier.register("winter_boots",
+                () -> new ZPArmorItem(ZPArmorMaterialsList.WINTER_CAM, ArmorItem.Type.BOOTS, new Item.Properties())
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
+            });
+        }).end();
     }
 }

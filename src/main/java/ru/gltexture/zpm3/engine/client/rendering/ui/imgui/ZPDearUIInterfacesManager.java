@@ -17,9 +17,7 @@ public class ZPDearUIInterfacesManager {
     }
 
     public void renderAll(@NotNull Window window, float renderTicking) {
-        this.getDearUIInterfaceSet().forEach(e -> {
-            this.getDearUIRenderer().onRender(window, e, renderTicking);
-        });
+        this.getDearUIRenderer().onRender(window, this.getDearUIInterfaceSet(), renderTicking);
     }
 
     public void removeInterface(@NotNull DearUIInterface dearUIInterface) {

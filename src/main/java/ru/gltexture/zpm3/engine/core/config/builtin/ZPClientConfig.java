@@ -29,7 +29,23 @@ public class ZPClientConfig implements ZPConfigConstantsClass {
     public static final ZPConfig_BOOL FIRST_PERSON_RENDER_SPACE_SCALE_BY_FOV =
             new ZPConfig_BOOL(true);
 
+    @ZPVarDefinition(description = "(CLIENT) Armor looped sounds.")
+    public static final ZPConfig_BOOL ARMOR_LOOPED_SOUNDS =
+            new ZPConfig_BOOL(true);
+
     @ZPVarDefinition(description = "(CLIENT) First-person FOV scaling type: 0 = progressive (projection-based), 1 = static.")
     public static final ZPConfig_INT FIRST_PERSON_RENDER_SCALE_TYPE =
             new ZPConfig_INT(0, 0, 1);
+
+   //@ZPVarDefinition(description = "(CLIENT) TEST2.")
+   //public static final ZPConfig_BOOL TEST2 =
+   //        new ZPConfig_BOOL(true);
+
+   //@ZPVarDefinition(description = "(CLIENT) TEST4.")
+   //public static final ZPConfig_BOOL TEST4 =
+   //        new ZPConfig_BOOL(true);
+
+   //@ZPVarDefinition(description = "(CLIENT) TEST23.")
+   //public static final ZPConfig_BOOL TEST3 =
+   //        new ZPConfig_BOOL(true);
 }

@@ -5,6 +5,10 @@ import ru.gltexture.zpm3.engine.core.config.vars.*;
 
 public class ZPCombatConfig implements ZPConfigConstantsClass {
 
+    @ZPVarDefinition(description = "Spec types of armor (example: NV Goggles) can break, then used.")
+    public static final ZPConfig_BOOL SPEC_ARMOR_CAN_BREAK_PER_TICK =
+            new ZPConfig_BOOL(true);
+
     @ZPVarDefinition(description = "Default hand reach for players measured in blocks used for melee interaction logic.")
     public static final ZPConfig_FLOAT PLAYER_DEFAULT_HAND_REACH_DISTANCE =
             new ZPConfig_FLOAT(2.375f);

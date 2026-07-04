@@ -56,23 +56,6 @@ public final class ZPBulletTracerManager {
         }
     }
 
-    public static void drawLine(PoseStack poseStack, Vector3f start, Vector3f end, float r, float g, float b, float a) {
-        Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
-        Vec3 camPos = camera.getPosition();
-
-        final Vector3f s = new Vector3f(start).sub((float) camPos.x, (float) camPos.y, (float) camPos.z);
-        final Vector3f e = new Vector3f(end).sub((float) camPos.x, (float) camPos.y, (float) camPos.z);
-
-        Matrix4f matrix = poseStack.last().pose();
-        MultiBufferSource.BufferSource bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
-        VertexConsumer builder = bufferSource.getBuffer(RenderType.lines());
-        for (Direction direction : LevelRenderer.DIRECTIONS) {
-            builder.vertex(matrix, s.x(), s.y(), s.z()).color(r, g, b, a).normal(direction.getStepX(), direction.getStepY(), direction.getStepZ()).endVertex();
-            builder.vertex(matrix, e.x(), e.y(), e.z()).color(r, g, b, a).normal(direction.getStepX(), direction.getStepY(), direction.getStepZ()).endVertex();
-        }
-        bufferSource.endBatch(RenderType.lines());
-    }
-
     public static void drawShortLine(PoseStack poseStack, Vector3f start, Vector3f end, float pos, float r, float g, float b, float a) {
         Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
         Vec3 camPos = camera.getPosition();

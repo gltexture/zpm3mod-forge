@@ -5,6 +5,7 @@ import com.mojang.blaze3d.shaders.Uniform;
 import imgui.*;
 import imgui.flag.ImGuiKey;
 import imgui.type.ImInt;
+import net.minecraft.client.KeyboardHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
 import net.minecraft.client.renderer.ShaderInstance;
@@ -21,6 +22,7 @@ import ru.gltexture.zpm3.engine.client.rendering.gl.programs.textures.properties
 import ru.gltexture.zpm3.engine.client.rendering.ui.imgui.interfaces.DearUIInterface;
 
 import java.nio.ByteBuffer;
+import java.util.Set;
 import java.util.function.Supplier;
 
 @OnlyIn(Dist.CLIENT)
@@ -114,37 +116,34 @@ public class ZPDearUIRenderer implements ZPClientCallbacks.ZPClientResourceDepen
             io.setMouseWheel((float) y);
         });
 
-        ZPClientCallbacksManager.INSTANCE.addKeyboardHoldCallback((descriptor, key, scanCode, mods) -> {
-            if (!io.getWantCaptureKeyboard()) {
-                return;
-            }
+        ZPClientCallbacksManager.INSTANCE.addKeyboardClickCallback((descriptor, key, scanCode, mods) -> {
             io.setKeysDown(key, true);
-            io.setKeyCtrl(io.getKeysDown(GLFW.GLFW_KEY_LEFT_CONTROL));
-            io.setKeyShift(io.getKeysDown(GLFW.GLFW_KEY_LEFT_SHIFT));
-            io.setKeyAlt(io.getKeysDown(GLFW.GLFW_KEY_LEFT_ALT));
-            io.setKeySuper(io.getKeysDown(GLFW.GLFW_KEY_LEFT_SUPER));
+            updateModifiers(io);
+        });
+
+        ZPClientCallbacksManager.INSTANCE.addKeyboardHoldCallback((descriptor, key, scanCode, mods) -> {
+            io.setKeysDown(key, true);
+            updateModifiers(io);
         });
 
         ZPClientCallbacksManager.INSTANCE.addKeyboardReleaseCallback((descriptor, key, scanCode, mods) -> {
-            if (!io.getWantCaptureKeyboard()) {
-                return;
-            }
             io.setKeysDown(key, false);
-            io.setKeyCtrl(io.getKeysDown(GLFW.GLFW_KEY_LEFT_CONTROL));
-            io.setKeyShift(io.getKeysDown(GLFW.GLFW_KEY_LEFT_SHIFT));
-            io.setKeyAlt(io.getKeysDown(GLFW.GLFW_KEY_LEFT_ALT));
-            io.setKeySuper(io.getKeysDown(GLFW.GLFW_KEY_LEFT_SUPER));
+            updateModifiers(io);
         });
 
         ZPClientCallbacksManager.INSTANCE.addCharCallback((descriptor, c) -> {
-            if (!io.getWantCaptureKeyboard()) {
-                return;
-            }
             io.addInputCharacter(c);
         });
     }
 
-    public void onRender(@NotNull Window window, @NotNull DearUIInterface dearUIInterface, float frameTicking) {
+    private static void updateModifiers(ImGuiIO io) {
+        io.setKeyCtrl(io.getKeysDown(GLFW.GLFW_KEY_LEFT_CONTROL) || io.getKeysDown(GLFW.GLFW_KEY_RIGHT_CONTROL));
+        io.setKeyShift(io.getKeysDown(GLFW.GLFW_KEY_LEFT_SHIFT) || io.getKeysDown(GLFW.GLFW_KEY_RIGHT_SHIFT));
+        io.setKeyAlt(io.getKeysDown(GLFW.GLFW_KEY_LEFT_ALT) || io.getKeysDown(GLFW.GLFW_KEY_RIGHT_ALT));
+        io.setKeySuper(io.getKeysDown(GLFW.GLFW_KEY_LEFT_SUPER) || io.getKeysDown(GLFW.GLFW_KEY_RIGHT_SUPER));
+    }
+
+    public void onRender(@NotNull Window window, @NotNull Set<DearUIInterface> dearUIInterfaceSet, float frameTicking) {
         final ShaderInstance shader = this.getShaderManager().get();
         if (shader == null || Minecraft.getInstance().options.hideGui) {
             return;
@@ -152,15 +151,21 @@ public class ZPDearUIRenderer implements ZPClientCallbacks.ZPClientResourceDepen
 
         final Minecraft mc = Minecraft.getInstance();
         final MouseHandler mouse = mc.mouseHandler;
+        final KeyboardHandler keyboardHandler = mc.keyboardHandler;
+
+        ImGuiIO io = ImGui.getIO();
+        io.setMousePos((float) mouse.xpos(), (float) mouse.ypos());
+        long win = window.getWindow();
+        io.setMouseDown(0, GLFW.glfwGetMouseButton(win, GLFW.GLFW_MOUSE_BUTTON_LEFT) == GLFW.GLFW_PRESS);
+        io.setMouseDown(1, GLFW.glfwGetMouseButton(win, GLFW.GLFW_MOUSE_BUTTON_RIGHT) == GLFW.GLFW_PRESS);
 
         ImGui.newFrame();
-        dearUIInterface.drawGui(window, mouse);
-        ImGui.endFrame();
+        dearUIInterfaceSet.forEach(e -> {
+            e.drawGui(window, mouse, keyboardHandler);
+        });
         ImGui.render();
 
         ImDrawData drawData = ImGui.getDrawData();
-
-        ImGuiIO io = ImGui.getIO();
         float delta = frameTicking;
         if (delta == 0.0f) {
             delta = 1.0f;
@@ -243,11 +248,6 @@ public class ZPDearUIRenderer implements ZPClientCallbacks.ZPClientResourceDepen
         GL46.glEnable(GL46.GL_DEPTH_TEST);
         GL46.glEnable(GL46.GL_CULL_FACE);
         GL46.glEnable(GL46.GL_BLEND);
-
-        io.setMousePos((float) mouse.xpos(), (float) mouse.ypos());
-        long win = window.getWindow();
-        io.setMouseDown(0, GLFW.glfwGetMouseButton(win, GLFW.GLFW_MOUSE_BUTTON_LEFT) == GLFW.GLFW_PRESS);
-        io.setMouseDown(1, GLFW.glfwGetMouseButton(win, GLFW.GLFW_MOUSE_BUTTON_RIGHT) == GLFW.GLFW_PRESS);
 
         GL46.glBindSampler(0, 0);
     }

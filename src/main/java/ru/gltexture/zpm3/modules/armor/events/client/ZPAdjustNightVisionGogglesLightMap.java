@@ -5,15 +5,15 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import ru.gltexture.zpm3.engine.client.rendering.lightmap.ZPLightMapModifier;
 import ru.gltexture.zpm3.engine.core.api.events.ZombiePlagueEvent;
-import ru.gltexture.zpm3.engine.core.api.events.ZPEventBus;
+import ru.gltexture.zpm3.engine.core.api.events.ZPModEventBus;
 import ru.gltexture.zpm3.modules.armor.utils.ZPArmorUtils;
 
 @OnlyIn(Dist.CLIENT)
 public class ZPAdjustNightVisionGogglesLightMap {
-    public static final float NV_GAMM = 2.25f;
+    public static final float NV_GAMM = 2.0f;
 
     @ZombiePlagueEvent
-    public static void lightmapUpdate(ZPEventBus.PostCalcMinecraftLightMapEvent event) {
+    public static void lightmapUpdate(ZPModEventBus.PostCalcMinecraftLightMapEvent event) {
         if (Minecraft.getInstance().player != null) {
             if (ZPArmorUtils.isEntityHasNightVisionGoggles(Minecraft.getInstance().player)) {
                 event.getZpLightMapModifier().add(new ZPLightMapModifier.LightMapModRequest(1.0f, event.getCurrentGAMMA() < ZPAdjustNightVisionGogglesLightMap.NV_GAMM ? ZPAdjustNightVisionGogglesLightMap.NV_GAMM - event.getCurrentGAMMA() : 0.0f));

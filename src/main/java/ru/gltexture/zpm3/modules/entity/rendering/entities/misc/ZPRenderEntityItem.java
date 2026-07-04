@@ -25,7 +25,7 @@ import org.lwjgl.glfw.GLFW;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPClientConfig;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
-import ru.gltexture.zpm3.modules.net_pack.data.DefaultDataKeys;
+import ru.gltexture.zpm3.modules.net_pack.data.ZPDefaultDataKeys;
 import ru.gltexture.zpm3.modules.player.events.client.ZPRenderWorldEventWithPickUpCheck;
 
 import ru.gltexture.zpm3.modules.player.keybind.ZPPickUpKeyBindings;
@@ -123,7 +123,7 @@ public class ZPRenderEntityItem extends ItemEntityRenderer {
         } else {
             super.render(pEntity, pEntityYaw, pPartialTicks, pPoseStack, pBuffer, pPackedLight);
         }
-        final boolean pickUpOnKey = ZombiePlague3.getClient_netSyncDataPack().getBoolean(DefaultDataKeys.StoC__SERVER_PICK_UP_ON_F, ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY.getVar());
+        final boolean pickUpOnKey = ZombiePlague3.getClient_netSyncDataPack().getBoolean(ZPDefaultDataKeys.StoC__SERVER_PICK_UP_ON_KEY, ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY.getVar());
         if (ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY.getVar() && pickUpOnKey && ZPRenderWorldEventWithPickUpCheck.entityToPickUp != null && ZPRenderWorldEventWithPickUpCheck.entityToPickUp.equals(pEntity)) {
             this.renderPickUpTip(pEntity, pPoseStack, pBuffer, 0.0f);
         }

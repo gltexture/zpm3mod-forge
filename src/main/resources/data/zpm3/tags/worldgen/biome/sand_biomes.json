@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:desert",
+    "minecraft:badlands",
+    "minecraft:eroded_badlands",
+    "minecraft:wooded_badlands",
+    "minecraft:savanna",
+    "minecraft:savanna_plateau",
+    "minecraft:windswept_savanna",
+    "minecraft:beach",
+    "minecraft:stony_shore",
+    "minecraft:river",
+    "minecraft:warm_ocean"
+  ]
+}

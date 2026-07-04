@@ -5,19 +5,18 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.gltexture.zpm3.engine.core.config.vars.ZPConfigVar;
 
 import java.util.function.BiConsumer;
 
-public class ZpConfigEditBox extends EditBox {
+public class ZPConfigEditBox extends EditBox {
     private @Nullable BiConsumer<EditBox, String> onUpdateText;
  //   private @Nullable ZPConfigVar<?> linkedConfigVar;
 
-    public ZpConfigEditBox(Font pFont, int pX, int pY, int pWidth, int pHeight, Component pMessage) {
+    public ZPConfigEditBox(Font pFont, int pX, int pY, int pWidth, int pHeight, Component pMessage) {
         super(pFont, pX, pY, pWidth, pHeight, pMessage);
     }
 
-    public ZpConfigEditBox(Font pFont, int pX, int pY, int pWidth, int pHeight, @Nullable EditBox pEditBox, Component pMessage) {
+    public ZPConfigEditBox(Font pFont, int pX, int pY, int pWidth, int pHeight, @Nullable EditBox pEditBox, Component pMessage) {
         super(pFont, pX, pY, pWidth, pHeight, pEditBox, pMessage);
     }
 
@@ -29,12 +28,12 @@ public class ZpConfigEditBox extends EditBox {
    //    return this.linkedConfigVar;
    //}
 
-   //public ZpConfigEditBox setLinkedConfigVar(@Nullable ZPConfigVar<?> linkedConfigVar) {
+   //public ZPConfigEditBox setLinkedConfigVar(@Nullable ZPConfigVar<?> linkedConfigVar) {
    //    this.linkedConfigVar = linkedConfigVar;
    //    return this;
    //}
 
-    public ZpConfigEditBox setOnUpdateText(@Nullable BiConsumer<EditBox, String> onUpdateText) {
+    public ZPConfigEditBox setOnUpdateText(@Nullable BiConsumer<EditBox, String> onUpdateText) {
         this.onUpdateText = onUpdateText;
         return this;
     }

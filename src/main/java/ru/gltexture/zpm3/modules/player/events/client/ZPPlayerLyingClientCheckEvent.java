@@ -14,7 +14,7 @@ import org.lwjgl.glfw.GLFW;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.events.ZPEventClass;
-import ru.gltexture.zpm3.modules.net_pack.packets.ZPLyingStateEvent;
+import ru.gltexture.zpm3.modules.net_pack.packets.ZPLyingStatePacket;
 import ru.gltexture.zpm3.modules.player.mixins.ext.IZPPlayerMixinExt;
 
 @OnlyIn(Dist.CLIENT)
@@ -81,7 +81,7 @@ public class ZPPlayerLyingClientCheckEvent implements ZPEventClass {
     }
 
     public static void syncLyingState() {
-        ZombiePlague3.net().sendToServer(new ZPLyingStateEvent(ZPPlayerLyingClientCheckEvent.isLocalPlayerInLyingAnimationNow));
+        ZombiePlague3.net().sendToServer(new ZPLyingStatePacket(ZPPlayerLyingClientCheckEvent.isLocalPlayerInLyingAnimationNow));
     }
 
     private static boolean lieCheck() {

@@ -14,13 +14,13 @@ import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.engine.events.ZPEventClass;
 import ru.gltexture.zpm3.modules.player.mixins.ext.IZPPlayerMixinExt;
-import ru.gltexture.zpm3.modules.net_pack.data.DefaultDataKeys;
+import ru.gltexture.zpm3.modules.net_pack.data.ZPDefaultDataKeys;
 
 public class ZPPlayerEntityItemEvent implements ZPEventClass {
     @SubscribeEvent
     public static void exec(@NotNull EntityItemPickupEvent event) {
         if (event.getEntity() instanceof IZPPlayerMixinExt ext) {
-            if (ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY.getVar() && ext.zpm3forge$zpNetDataPack_fromClient().getBoolean(DefaultDataKeys.StoC__SERVER_PICK_UP_ON_F, ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY.getVar())) {
+            if (ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY.getVar() && ext.zpm3forge$zpNetDataPack_fromClient().getBoolean(ZPDefaultDataKeys.StoC__SERVER_PICK_UP_ON_KEY, ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY.getVar())) {
                 event.setCanceled(true);
             }
         }

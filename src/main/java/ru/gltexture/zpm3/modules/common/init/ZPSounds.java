@@ -8,6 +8,10 @@ import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 
 public class ZPSounds extends ZPRegistry<SoundEvent> {
+    public static RegistryObject<SoundEvent> nv_goggles;
+    public static RegistryObject<SoundEvent> breath;
+    public static RegistryObject<SoundEvent> breath_water;
+
     public static RegistryObject<SoundEvent> zm_miner_hurt;
 
     public static RegistryObject<SoundEvent> syringe;

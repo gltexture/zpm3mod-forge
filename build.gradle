@@ -105,6 +105,11 @@ mixin {
     config "zpm3.common.mixins.json"
     config "zpm3.mob_effects.mixins.json"
     config "zpm3.entities.mixins.json"
+    config "zpm3.blocks.mixins.json"
+    config "zpm3.fluids.mixins.json"
+    config "zpm3.food_medicine.mixins.json"
+    config "zpm3.melee_tools.mixins.json"
+    config "zpm3.misc_items.mixins.json"
     config "zpm3.player.mixins.json"
     config "zpm3.debug.mixins.json"
 }

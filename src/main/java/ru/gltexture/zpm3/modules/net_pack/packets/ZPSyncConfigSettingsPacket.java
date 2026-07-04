@@ -13,14 +13,14 @@ import ru.gltexture.zpm3.modules.player.mixins.ext.IZPPlayerMixinExt;
 import ru.gltexture.zpm3.engine.network.ZPNetwork;
 import ru.gltexture.zpm3.modules.net_pack.data.ZPNetSyncDataPack;
 
-public class ZPSyncConfigSettings implements ZPNetwork.ZPPacket {
+public class ZPSyncConfigSettingsPacket implements ZPNetwork.ZPPacket {
     private final ZPNetSyncDataPack zpNetSyncDataPack;
 
-    public ZPSyncConfigSettings(ZPNetSyncDataPack zpNetSyncDataPack) {
+    public ZPSyncConfigSettingsPacket(ZPNetSyncDataPack zpNetSyncDataPack) {
         this.zpNetSyncDataPack = zpNetSyncDataPack;
     }
 
-    public ZPSyncConfigSettings(FriendlyByteBuf buf) {
+    public ZPSyncConfigSettingsPacket(FriendlyByteBuf buf) {
         this.zpNetSyncDataPack = new ZPNetSyncDataPack(buf.readMap(
                 FriendlyByteBuf::readUtf,
                 b -> {
@@ -36,7 +36,7 @@ public class ZPSyncConfigSettings implements ZPNetwork.ZPPacket {
         ));
     }
 
-    public static Encoder<ZPSyncConfigSettings> encoder() {
+    public static Encoder<ZPSyncConfigSettingsPacket> encoder() {
         return (packet, buf) -> {
             buf.writeMap(
                     packet.zpNetSyncDataPack.dataPack(),
@@ -60,15 +60,15 @@ public class ZPSyncConfigSettings implements ZPNetwork.ZPPacket {
         };
     }
 
-    public static Decoder<ZPSyncConfigSettings> decoder() {
-        return ZPSyncConfigSettings::new;
+    public static Decoder<ZPSyncConfigSettingsPacket> decoder() {
+        return ZPSyncConfigSettingsPacket::new;
     }
 
     @Override
     public void onServer(@NotNull Player sender, @NotNull ServerLevel level) {
         if (sender instanceof IZPPlayerMixinExt ext) {
             ext.zpm3forge$zpNetDataPack_fromClient().replace(this.zpNetSyncDataPack);
-            ZPLogger.info(sender.getDisplayName() + " : ZPSyncConfigSettings onServer : " + this.zpNetSyncDataPack);
+            ZPLogger.info(sender.getDisplayName() + " : ZPSyncConfigSettingsPacket onServer : " + this.zpNetSyncDataPack);
         }
     }
 
@@ -76,6 +76,6 @@ public class ZPSyncConfigSettings implements ZPNetwork.ZPPacket {
     @Override
     public void onClient(@NotNull Player localPlayer) {
         ZombiePlague3.getClient_netSyncDataPack().replace(this.zpNetSyncDataPack);
-        ZPLogger.info("ZPSyncConfigSettings onClient : " + this.zpNetSyncDataPack);
+        ZPLogger.info("ZPSyncConfigSettingsPacket onClient : " + this.zpNetSyncDataPack);
     }
 }

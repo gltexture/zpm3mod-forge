@@ -18,27 +18,27 @@ import ru.gltexture.zpm3.engine.network.ZPNetwork;
 
 import java.util.Objects;
 
-public class ZPBlockCrack implements ZPNetwork.ZPPacket {
+public class ZPBlockCrackPacket implements ZPNetwork.ZPPacket {
     private final int num;
     private final int blockX;
     private final int blockY;
     private final int blockZ;
 
-    public ZPBlockCrack(int num, int blockX, int blockY, int blockZ) {
+    public ZPBlockCrackPacket(int num, int blockX, int blockY, int blockZ) {
         this.num = num;
         this.blockX = blockX;
         this.blockY = blockY;
         this.blockZ = blockZ;
     }
 
-    public ZPBlockCrack(FriendlyByteBuf buf) {
+    public ZPBlockCrackPacket(FriendlyByteBuf buf) {
         this.num = buf.readVarInt();
         this.blockX = buf.readVarInt();
         this.blockY = buf.readVarInt();
         this.blockZ = buf.readVarInt();
     }
 
-    public static Encoder<ZPBlockCrack> encoder() {
+    public static Encoder<ZPBlockCrackPacket> encoder() {
         return (packet, buf) -> {
             buf.writeVarInt(packet.num);
             buf.writeVarInt(packet.blockX);
@@ -47,8 +47,8 @@ public class ZPBlockCrack implements ZPNetwork.ZPPacket {
         };
     }
 
-    public static Decoder<ZPBlockCrack> decoder() {
-        return ZPBlockCrack::new;
+    public static Decoder<ZPBlockCrackPacket> decoder() {
+        return ZPBlockCrackPacket::new;
     }
 
     @Override

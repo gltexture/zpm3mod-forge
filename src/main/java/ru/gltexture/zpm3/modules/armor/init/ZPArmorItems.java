@@ -11,6 +11,21 @@ import ru.gltexture.zpm3.engine.registry.collection.IZPCollectRegistryObjects;
 import ru.gltexture.zpm3.modules.armor.init.helper.ZPRegArmorItemsHelper;
 
 public class ZPArmorItems extends ZPRegistry<Item> implements IZPCollectRegistryObjects {
+    public static RegistryObject<ZPArmorItem> forest_helmet;
+    public static RegistryObject<ZPArmorItem> forest_chestplate;
+    public static RegistryObject<ZPArmorItem> forest_leggings;
+    public static RegistryObject<ZPArmorItem> forest_boots;
+
+    public static RegistryObject<ZPArmorItem> winter_helmet;
+    public static RegistryObject<ZPArmorItem> winter_chestplate;
+    public static RegistryObject<ZPArmorItem> winter_leggings;
+    public static RegistryObject<ZPArmorItem> winter_boots;
+
+    public static RegistryObject<ZPArmorItem> sand_helmet;
+    public static RegistryObject<ZPArmorItem> sand_chestplate;
+    public static RegistryObject<ZPArmorItem> sand_leggings;
+    public static RegistryObject<ZPArmorItem> sand_boots;
+
     public static RegistryObject<ZPArmorItem> night_vision_goggles;
 
     public ZPArmorItems() {

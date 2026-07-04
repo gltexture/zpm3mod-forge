@@ -10,25 +10,25 @@ import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.network.ZPNetwork;
 import ru.gltexture.zpm3.modules.player.mixins.ext.IZPPlayerMixinExt;
 
-public class ZPLyingStateEvent implements ZPNetwork.ZPPacket {
+public class ZPLyingStatePacket implements ZPNetwork.ZPPacket {
     private final boolean forceLying;
 
-    public ZPLyingStateEvent(boolean forceLying) {
+    public ZPLyingStatePacket(boolean forceLying) {
         this.forceLying = forceLying;
     }
 
-    public ZPLyingStateEvent(FriendlyByteBuf buf) {
+    public ZPLyingStatePacket(FriendlyByteBuf buf) {
         this.forceLying = buf.readBoolean();
     }
 
-    public static Encoder<ZPLyingStateEvent> encoder() {
+    public static Encoder<ZPLyingStatePacket> encoder() {
         return (packet, buf) -> {
             buf.writeBoolean(packet.forceLying);
         };
     }
 
-    public static Decoder<ZPLyingStateEvent> decoder() {
-        return ZPLyingStateEvent::new;
+    public static Decoder<ZPLyingStatePacket> decoder() {
+        return ZPLyingStatePacket::new;
     }
 
     @Override

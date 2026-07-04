@@ -46,7 +46,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
-import ru.gltexture.zpm3.modules.commands.zones.ZPZoneChecks;
+import ru.gltexture.zpm3.engine.zones.ZPZoneChecks;
 
 import ru.gltexture.zpm3.modules.common.init.ZPDamageTypes;
 import ru.gltexture.zpm3.modules.entity.init.ZPEntityAttributes;

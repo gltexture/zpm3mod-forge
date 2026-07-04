@@ -33,6 +33,23 @@ public abstract class ZPRegSounds {
                     ));
                 }).end();
 
+
+        ZPSounds.nv_goggles = regSupplier.register("nv_goggles", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "nv_goggles")))
+                .afterCreated((e, utils) -> {
+                    utils.sounds().addNewSound(new ZPSoundListProvider.ZPSoundEvent("nv_goggles", false, "sounds.zpm3.nv_goggles", List.of(new ZPSoundListProvider.SoundData("armor/nv_goggles"))));
+                }).end();
+
+        ZPSounds.breath = regSupplier.register("breath", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "breath")))
+                .afterCreated((e, utils) -> {
+                    utils.sounds().addNewSound(new ZPSoundListProvider.ZPSoundEvent("breath", false, "sounds.zpm3.breath", List.of(new ZPSoundListProvider.SoundData("armor/breath"))));
+                }).end();
+
+        ZPSounds.breath_water = regSupplier.register("breath_water", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "breath_water")))
+                .afterCreated((e, utils) -> {
+                    utils.sounds().addNewSound(new ZPSoundListProvider.ZPSoundEvent("breath_water", false, "sounds.zpm3.breath_water", List.of(new ZPSoundListProvider.SoundData("armor/breath_water"))));
+                }).end();
+
+
         ZPSounds.syringe = regSupplier.register("syringe", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "syringe")))
                 .afterCreated((e, utils) -> {
             utils.sounds().addNewSound(new ZPSoundListProvider.ZPSoundEvent("syringe", false, "sounds.zpm3.syringe", List.of(new ZPSoundListProvider.SoundData("medicine/syringe"))));

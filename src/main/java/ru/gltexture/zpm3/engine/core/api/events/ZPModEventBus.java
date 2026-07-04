@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import ru.gltexture.zpm3.engine.client.rendering.lightmap.ZPLightMapModifier;
 
-public abstract class ZPEventBus {
+public abstract class ZPModEventBus {
     public enum ObjectState {
         SPAWN,
         DESTROY
@@ -91,7 +91,7 @@ public abstract class ZPEventBus {
     }
 }
 /*
-EventLauncher.pushEvent(new ZPEventBus.RenderOGLSceneEvent(this, frameTicking, ZPEventBus.Run.POST, toRenderObjects, toRenderLiquids), TODO);
+EventLauncher.pushEvent(new ZPModEventBus.RenderOGLSceneEvent(this, frameTicking, ZPModEventBus.Run.POST, toRenderObjects, toRenderLiquids), TODO);
 
     public static final class Class123 implements IEvent {
 

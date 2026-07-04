@@ -59,7 +59,6 @@ public final class ZPRenderHelper implements ZPClientCallbacks.ZPClientResourceD
 
         try {
             Class.forName("imgui.ImGui", false, ZPRenderHelper.class.getClassLoader());
-            Class.forName("imgui.gl3.ImGuiImplGl3", false, ZPRenderHelper.class.getClassLoader());
             this.dearUIRenderer = new ZPDearUIRenderer(ZPDefaultShaders.imgui::getShaderInstance);
         } catch (ClassNotFoundException e) {
         }

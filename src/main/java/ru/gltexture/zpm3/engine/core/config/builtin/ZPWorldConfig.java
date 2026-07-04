@@ -108,4 +108,8 @@ public class ZPWorldConfig implements ZPConfigConstantsClass {
     @ZPVarDefinition(description = "Allows lava to fade over time when enabled.")
     public static final ZPConfig_BOOL FADING_LAVAS =
             new ZPConfig_BOOL(true);
+
+    @ZPVarDefinition(description = "Candles extinguish rate, each tick.")
+    public static final ZPConfig_FLOAT CANDLE_EACH_TICK_RANDOM_EXTINGUISH_CONST =
+            new ZPConfig_FLOAT(0.05f);
 }

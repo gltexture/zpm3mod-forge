@@ -1,4 +1,4 @@
-package ru.gltexture.zpm3.modules.commands.zones;
+package ru.gltexture.zpm3.engine.zones;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -62,28 +62,32 @@ public final class ZPZoneChecks {
         return this.checkFlag(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ZPFlagZones.Zone.AvailableFlags.noBulletBlockDmg);
     }
 
-    private boolean checkFlag(ServerLevel level, int x, int y, int z, ZPFlagZones.Zone.AvailableFlags flag) {
-        Collection<ZPFlagZones.Zone> zones = ZPFlagZones.INSTANCE.getZonesInfo(level);
+    private boolean checkFlag(ServerLevel level, BlockPos blockPos, ZPFlagZones.Zone.AvailableFlags flag) {
+        Collection<ZPFlagZones.Zone> zones = ZPFlagZones.INSTANCE.getZonesInChunk(level, blockPos);
         if (zones == null) {
             return false;
         }
         for (ZPFlagZones.Zone zone : zones) {
-            final boolean flag1 = this.isInside(zone, x, y, z);
-            final boolean flag2 = zone.flags().contains(flag);
-            if (flag1 && flag2) {
-                return true;
+            if (this.isInside(zone, blockPos)) {
+                if (zone.flags().contains(flag)) {
+                    return true;
+                }
             }
         }
         return false;
     }
 
-    private boolean isInside(ZPFlagZones.Zone zone, int x, int y, int z) {
-        int minX = Math.min(zone.startX(), zone.endX());
-        int maxX = Math.max(zone.startX(), zone.endX());
-        int minY = Math.min(zone.startY(), zone.endY());
-        int maxY = Math.max(zone.startY(), zone.endY());
-        int minZ = Math.min(zone.startZ(), zone.endZ());
-        int maxZ = Math.max(zone.startZ(), zone.endZ());
-        return x >= minX && x <= maxX && y >= minY && y <= maxY && z >= minZ && z <= maxZ;
+    private boolean checkFlag(ServerLevel level, int x, int y, int z, ZPFlagZones.Zone.AvailableFlags flag) {
+        return this.checkFlag(level, new BlockPos(x, y, z), flag);
+    }
+
+    private boolean isInside(ZPFlagZones.Zone zone, BlockPos blockPos) {
+        return
+                blockPos.getX() >= zone.min().x &&
+                blockPos.getX() <= zone.max().x &&
+                blockPos.getY() >= zone.min().y &&
+                blockPos.getY() <= zone.max().y &&
+                blockPos.getZ() >= zone.min().z &&
+                blockPos.getZ() <= zone.max().z;
     }
 }

@@ -16,34 +16,34 @@ import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.modules.player.mixins.ext.IZPPlayerMixinExt;
 import ru.gltexture.zpm3.engine.network.ZPNetwork;
 
-import ru.gltexture.zpm3.modules.net_pack.data.DefaultDataKeys;
+import ru.gltexture.zpm3.modules.net_pack.data.ZPDefaultDataKeys;
 
-public class ZPPlayerWantToPickUpItem implements ZPNetwork.ZPPacket {
+public class ZPPlayerWantToPickUpItemPacket implements ZPNetwork.ZPPacket {
     private final int itemId;
 
-    public ZPPlayerWantToPickUpItem(int itemId) {
+    public ZPPlayerWantToPickUpItemPacket(int itemId) {
         this.itemId = itemId;
     }
 
-    public ZPPlayerWantToPickUpItem(FriendlyByteBuf buf) {
+    public ZPPlayerWantToPickUpItemPacket(FriendlyByteBuf buf) {
         this.itemId = buf.readInt();
     }
 
-    public static Encoder<ZPPlayerWantToPickUpItem> encoder() {
+    public static Encoder<ZPPlayerWantToPickUpItemPacket> encoder() {
         return (packet, buf) -> {
             buf.writeInt(packet.itemId);
         };
     }
 
-    public static Decoder<ZPPlayerWantToPickUpItem> decoder() {
-        return ZPPlayerWantToPickUpItem::new;
+    public static Decoder<ZPPlayerWantToPickUpItemPacket> decoder() {
+        return ZPPlayerWantToPickUpItemPacket::new;
     }
 
     @Override
     public void onServer(@NotNull Player sender, @NotNull ServerLevel level) {
         if (sender instanceof IZPPlayerMixinExt ext) {
             Entity entity = level.getEntity(this.itemId);
-            if (ext.zpm3forge$zpNetDataPack_fromClient().getBoolean(DefaultDataKeys.StoC__SERVER_PICK_UP_ON_F, ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY.getVar()) && entity instanceof ItemEntity entity1) {
+            if (ext.zpm3forge$zpNetDataPack_fromClient().getBoolean(ZPDefaultDataKeys.StoC__SERVER_PICK_UP_ON_KEY, ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY.getVar()) && entity instanceof ItemEntity entity1) {
                 if (entity1.isAlive() && !entity1.hasPickUpDelay() && sender.distanceTo(entity1) <= 2.25f) {
                     this.pickUpItem(sender, entity1);
                 }

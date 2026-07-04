@@ -1,7 +1,7 @@
 package ru.gltexture.zpm3.engine.core;
 
+import ru.gltexture.zpm3.engine.core.api.events.ZPModEventBus;
 import ru.gltexture.zpm3.engine.core.api.events.ZombiePlagueEvent;
-import ru.gltexture.zpm3.engine.core.api.events.ZPEventBus;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 
 import java.lang.reflect.InvocationTargetException;
@@ -13,17 +13,17 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class Zp_SYS_EventsManager {
-    private final HashMap<Class<ZPEventBus.IEvent>, TreeSet<PriorityMethod>> eventMap;
+    private final HashMap<Class<ZPModEventBus.IEvent>, TreeSet<PriorityMethod>> eventMap;
 
     public Zp_SYS_EventsManager() {
         this.eventMap = new HashMap<>();
     }
 
-    public static void pushEvent(ZPEventBus.IEvent event) {
+    public static void pushEvent(ZPModEventBus.IEvent event) {
         ZombiePlague3.ZP_EVENTS.exec(event);
     }
 
-    private void exec(ZPEventBus.IEvent event) {
+    private void exec(ZPModEventBus.IEvent event) {
         if (!this.eventMap.containsKey(event.getClass())) {
             return;
         }
@@ -34,7 +34,7 @@ public class Zp_SYS_EventsManager {
                 return;
             }
             try {
-                method.invoke(ZPEventBus.IEvent.class, event);
+                method.invoke(ZPModEventBus.IEvent.class, event);
             } catch (IllegalAccessException | InvocationTargetException e) {
                 throw new ZPRuntimeException(e);
             }
@@ -47,7 +47,7 @@ public class Zp_SYS_EventsManager {
             Class<?>[] eventClasses = APIEventsClass.getClasses();
             for (Class<?> cl : eventClasses) {
                 Class<?>[] interfaces = cl.getInterfaces();
-                if (interfaces.length == 1 && ZPEventBus.IEvent.class.isAssignableFrom(interfaces[0])) {
+                if (interfaces.length == 1 && ZPModEventBus.IEvent.class.isAssignableFrom(interfaces[0])) {
                     if (!Modifier.isFinal(cl.getModifiers())) {
                         ZombiePlague3.LOGGER.error(cl.getName() + " should be final class");
                         continue;
@@ -60,7 +60,7 @@ public class Zp_SYS_EventsManager {
                         ZombiePlague3.LOGGER.error(cl.getName() + " should be static class");
                         continue;
                     }
-                    this.eventMap.put((Class<ZPEventBus.IEvent>) cl, new TreeSet<PriorityMethod>(Comparator.comparingInt(PriorityMethod::priority).thenComparingInt(System::identityHashCode)));
+                    this.eventMap.put((Class<ZPModEventBus.IEvent>) cl, new TreeSet<PriorityMethod>(Comparator.comparingInt(PriorityMethod::priority).thenComparingInt(System::identityHashCode)));
                     ZombiePlague3.LOGGER.debug("Created API ClassEvent: " + cl.getName());
                 }
             }
@@ -75,7 +75,7 @@ public class Zp_SYS_EventsManager {
                             ZombiePlague3.LOGGER.error("Method has more(or less) than 1 argument(? -> IEvent): " + method.getName() + " - Skip");
                             continue;
                         }
-                        if (parameters.length != 1 || !ZPEventBus.IEvent.class.isAssignableFrom(parameters[0])) {
+                        if (parameters.length != 1 || !ZPModEventBus.IEvent.class.isAssignableFrom(parameters[0])) {
                             ZombiePlague3.LOGGER.error("Method has wrong argument(? -> IEvent): " + method.getName());
                             continue;
                         }

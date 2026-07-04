@@ -2,12 +2,15 @@ package ru.gltexture.zpm3.engine.instances.armor;
 
 import net.minecraft.Util;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumMap;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class ZPArmorMaterial implements ArmorMaterial {
@@ -19,6 +22,7 @@ public class ZPArmorMaterial implements ArmorMaterial {
     private final float toughness;
     private final float knockbackResistance;
     private final Supplier<Ingredient> repairIngredient;
+    private final ZPArmorProperties zpArmorProperties;
 
     private static final EnumMap<ArmorItem.Type, Integer> HEALTH_FUNCTION_FOR_TYPE = Util.make(new EnumMap<>(ArmorItem.Type.class), (p_266653_) -> {
         p_266653_.put(ArmorItem.Type.BOOTS, 13);
@@ -27,8 +31,9 @@ public class ZPArmorMaterial implements ArmorMaterial {
         p_266653_.put(ArmorItem.Type.HELMET, 11);
     });
 
-    public ZPArmorMaterial(String pName, int pDurabilityMultiplier, EnumMap<ArmorItem.Type, Integer> pProtectionFunctionForType, int pEnchantmentValue, SoundEvent pSound, float pToughness, float pKnockbackResistance, Supplier<Ingredient> pRepairIngredient) {
+    public ZPArmorMaterial(String pName, ZPArmorProperties zpArmorProperties, int pDurabilityMultiplier, EnumMap<ArmorItem.Type, Integer> pProtectionFunctionForType, int pEnchantmentValue, SoundEvent pSound, float pToughness, float pKnockbackResistance, Supplier<Ingredient> pRepairIngredient) {
         this.name = pName;
+        this.zpArmorProperties = zpArmorProperties;
         this.durabilityMultiplier = pDurabilityMultiplier;
         this.protectionFunctionForType = pProtectionFunctionForType;
         this.enchantmentValue = pEnchantmentValue;
@@ -36,6 +41,10 @@ public class ZPArmorMaterial implements ArmorMaterial {
         this.toughness = pToughness;
         this.knockbackResistance = pKnockbackResistance;
         this.repairIngredient = pRepairIngredient;
+    }
+
+    public ZPArmorProperties getZpArmorProperties() {
+        return this.zpArmorProperties;
     }
 
     public int getDurabilityForType(ArmorItem.@NotNull Type pType) {
@@ -72,5 +81,33 @@ public class ZPArmorMaterial implements ArmorMaterial {
 
     public String getSerializedName() {
         return this.name;
+    }
+
+    public static class ZPArmorProperties {
+        private float[] bonusZombieLookRadiusIfOnPlayer;
+        private @Nullable Predicate<LivingEntity> bonusZombieLookRadiusPredicate;
+
+        public ZPArmorProperties() {
+            this.bonusZombieLookRadiusIfOnPlayer = new float[] {0.0f, 0.0f, 0.0f, 0.0f}; // EACH ARMOR SLOT
+            this.bonusZombieLookRadiusPredicate = null;
+        }
+
+        public @Nullable Predicate<LivingEntity> getBonusZombieLookRadiusPredicate() {
+            return this.bonusZombieLookRadiusPredicate;
+        }
+
+        public ZPArmorProperties setBonusZombieLookRadiusPredicate(@Nullable Predicate<LivingEntity> bonusZombieLookRadiusPredicate) {
+            this.bonusZombieLookRadiusPredicate = bonusZombieLookRadiusPredicate;
+            return this;
+        }
+
+        public float[] getReduceZombieLookRadiusIfOnEntity() {
+            return this.bonusZombieLookRadiusIfOnPlayer;
+        }
+
+        public ZPArmorProperties setBonusZombieLookRadiusIfOnPlayer(float[] bonusZombieLookRadiusIfOnPlayer) {
+            this.bonusZombieLookRadiusIfOnPlayer = bonusZombieLookRadiusIfOnPlayer;
+            return this;
+        }
     }
 }

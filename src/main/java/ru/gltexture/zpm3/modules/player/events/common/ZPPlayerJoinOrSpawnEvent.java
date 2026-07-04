@@ -12,12 +12,15 @@ import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPCombatConfig;
 
-import ru.gltexture.zpm3.modules.net_pack.packets.ZPSyncConfigSettings;
+import ru.gltexture.zpm3.engine.zones.ZPFlagZones;
+import ru.gltexture.zpm3.modules.net_pack.data.ZPClientZonesHelper;
+import ru.gltexture.zpm3.modules.net_pack.packets.ZPSendAllZones_StoC_Packet;
+import ru.gltexture.zpm3.modules.net_pack.packets.ZPSyncConfigSettingsPacket;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.events.ZPEventClass;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
-import ru.gltexture.zpm3.modules.net_pack.packets.ZPValidateMode;
+import ru.gltexture.zpm3.modules.net_pack.packets.ZPValidateModePacket;
 
 import java.util.Objects;
 
@@ -30,10 +33,11 @@ public class ZPPlayerJoinOrSpawnEvent implements ZPEventClass {
     public static void onPlayerSpawn(EntityJoinLevelEvent event) {
         ZPUtility.sides().onlyClient(() -> {
             if (event.getEntity() instanceof LocalPlayer) {
-                ZombiePlague3.net().sendToServer(new ZPSyncConfigSettings(ZombiePlague3.net().createdNetSyncDataPack_CtoS()));
+                ZombiePlague3.net().sendToServer(new ZPSyncConfigSettingsPacket(ZombiePlague3.net().createdNetSyncDataPack_CtoS()));
             }
         });
         if (event.getEntity() instanceof ServerPlayer sp) {
+            ZPClientZonesHelper.sendAllZonesTo(sp);
             if (sp.getAttribute(ForgeMod.ENTITY_REACH.get()) != null) {
                 Objects.requireNonNull(sp.getAttribute(ForgeMod.ENTITY_REACH.get())).setBaseValue(ZPCombatConfig.PLAYER_DEFAULT_HAND_REACH_DISTANCE.getVar());
             }
@@ -43,8 +47,8 @@ public class ZPPlayerJoinOrSpawnEvent implements ZPEventClass {
     @SubscribeEvent
     public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
         if (event.getEntity() instanceof ServerPlayer sp) {
-            ZombiePlague3.net().sendToPlayer(new ZPValidateMode(false, false), sp);
-            ZombiePlague3.net().sendToPlayer(new ZPSyncConfigSettings(ZombiePlague3.net().createdNetSyncDataPack_StoC()), sp);
+            ZombiePlague3.net().sendToPlayer(new ZPValidateModePacket(false, false), sp);
+            ZombiePlague3.net().sendToPlayer(new ZPSyncConfigSettingsPacket(ZombiePlague3.net().createdNetSyncDataPack_StoC()), sp);
         }
     }
 

@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.Window;
 import imgui.ImGui;
 import imgui.flag.ImGuiCol;
 import imgui.flag.ImGuiCond;
+import net.minecraft.client.KeyboardHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
 import net.minecraft.world.entity.player.Player;
@@ -15,6 +16,8 @@ import ru.gltexture.zpm3.engine.client.rendering.postfx.ZPPostFXChain;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.modules.guns.rendering.fx.ZPDefaultGunMuzzleflashFX;
 import ru.gltexture.zpm3.engine.client.rendering.ui.imgui.interfaces.DearUIInterface;
+import ru.gltexture.zpm3.modules.net_pack.data.ZPClientZonesData;
+import ru.gltexture.zpm3.modules.net_pack.data.ZPClientZonesHelper;
 import ru.gltexture.zpm3.modules.player.mixins.ext.IZPPlayerMixinExt;
 
 public class DearUIDebugInterface implements DearUIInterface {
@@ -67,7 +70,11 @@ public class DearUIDebugInterface implements DearUIInterface {
         }
     }
 
-    public void drawGui(@NotNull Window window, @NotNull MouseHandler mouseHandler) {
+    public void drawGui(@NotNull Window window, @NotNull MouseHandler mouseHandler, @NotNull KeyboardHandler keyboardHandler) {
+       // if (!ZombiePlague3.isDevEnvironment()) {
+       //     return;
+       // }
+
         ImGui.setNextWindowPos(0, 0, ImGuiCond.Once);
         ImGui.setNextWindowSize(400, 600, ImGuiCond.Once);
         ImGui.begin("debug");
@@ -77,6 +84,7 @@ public class DearUIDebugInterface implements DearUIInterface {
             ImGui.text("Ping: " + ext.zpm3forge$getPing());
         }
         ImGui.separator();
+
         if (ImGui.collapsingHeader("PostFX")) {
             if (ImGui.checkbox("Sample", DearUIDebugInterface.FORCE_ENABLE_SAMPLE_POST_FX_SHADER)) {
                 DearUIDebugInterface.FORCE_ENABLE_SAMPLE_POST_FX_SHADER = !DearUIDebugInterface.FORCE_ENABLE_SAMPLE_POST_FX_SHADER;

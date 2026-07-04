@@ -7,27 +7,26 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.StringWidget;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 
-public class LabeledEditBox extends AbstractWidget {
+public class ZPLabeledEditBox extends AbstractWidget {
     private final StringWidget label;
-    private final ZpConfigEditBox editBox;
+    private final ZPConfigEditBox editBox;
 
     private @Nullable Consumer<EditBox> onUpdate;
 
-    public LabeledEditBox(Font font, int x, int y, int width, int height, Component name, ZpConfigEditBox editBox) {
+    public ZPLabeledEditBox(Font font, int x, int y, int width, int height, Component name, ZPConfigEditBox editBox) {
         super(x, y, width, height, name);
 
         this.label = new StringWidget(name, font);
         this.editBox = editBox;
     }
 
-    public LabeledEditBox(Font font, Component name, ZpConfigEditBox editBox) {
+    public ZPLabeledEditBox(Font font, Component name, ZPConfigEditBox editBox) {
         super(0, 0, font.width(name), 30, name);
 
         this.label = new StringWidget(name, font);
@@ -37,10 +36,10 @@ public class LabeledEditBox extends AbstractWidget {
     @Override
     protected void renderWidget(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
         this.label.setX(this.getX());
-        this.label.setY(this.getY() + 6);
+        this.label.setY(this.getY());
 
         this.editBox.setX((int) (this.getX() + this.width * 0.5f - this.editBox.getWidth() * 0.5f));
-        this.editBox.setY(this.getY() + 16);
+        this.editBox.setY(this.getY() + 10);
 
         if (this.getOnUpdate() != null) {
             this.getOnUpdate().accept(this.editBox);
@@ -68,7 +67,7 @@ public class LabeledEditBox extends AbstractWidget {
         return this.onUpdate;
     }
 
-    public LabeledEditBox setOnUpdate(@Nullable Consumer<EditBox> onUpdate) {
+    public ZPLabeledEditBox setOnUpdate(@Nullable Consumer<EditBox> onUpdate) {
         this.onUpdate = onUpdate;
         return this;
     }

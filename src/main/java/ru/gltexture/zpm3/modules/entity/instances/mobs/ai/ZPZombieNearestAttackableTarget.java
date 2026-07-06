@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
-import ru.gltexture.zpm3.modules.armor.utils.ZPArmorUtils;
+import ru.gltexture.zpm3.modules.armor.utils.ZPArmorUtil;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.modules.entity.mixins.ext.IPlayerZmTargetsExt;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
@@ -279,7 +279,7 @@ public class ZPZombieNearestAttackableTarget extends Goal {
         }
 
         protected double followDistanceBonus(LivingEntity target) {
-            return ZPArmorUtils.getReductionForArmorPeaceOnEntity(target);
+            return ZPArmorUtil.getReductionForArmorPeaceOnEntity(target);
         }
 
         public boolean test(@Nullable ZPAbstractZombie pAttacker, @NotNull LivingEntity pTarget) {

@@ -14,13 +14,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.engine.client.rendering.ui.imgui.interfaces.DearUIInterface;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.zones.ZPFlagZones;
-import ru.gltexture.zpm3.modules.net_pack.data.ZPClientZonesData;
+import ru.gltexture.zpm3.engine.zones.ZPZoneFlag;
+import ru.gltexture.zpm3.engine.zones.ZPZoneManager;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class ZPCreativeUtilityUI implements DearUIInterface {
     public static @Nullable String currentSelectedZoneID;
@@ -29,7 +26,7 @@ public class ZPCreativeUtilityUI implements DearUIInterface {
     public static int[] inputStart = new int[]{0, 0, 0};
     public static int[] inputEnd = new int[]{0, 0, 0};
 
-    private static final Set<ZPFlagZones.Zone.AvailableFlags> inputFlags = new HashSet<>();
+    private static final Set<ZPZoneFlag> inputFlags = new HashSet<>();
 
     public static boolean ENABLE_UTILITY = ZombiePlague3.isDevEnvironment();
 
@@ -112,9 +109,9 @@ public class ZPCreativeUtilityUI implements DearUIInterface {
                     ImGui.separator();
                     ImGui.text("Flags");
 
-                    for (ZPFlagZones.Zone.AvailableFlags f : ZPFlagZones.Zone.AvailableFlags.values()) {
+                    for (ZPZoneFlag f : ZPZoneFlag.values()) {
                         final boolean flag = ZPCreativeUtilityUI.inputFlags.contains(f);
-                        if (ImGui.checkbox(f.name(), flag)) {
+                        if (ImGui.checkbox(f.id(), flag)) {
                             if (flag) {
                                 ZPCreativeUtilityUI.inputFlags.remove(f);
                             } else {
@@ -135,9 +132,9 @@ public class ZPCreativeUtilityUI implements DearUIInterface {
                                     ZPCreativeUtilityUI.inputEnd[2]
                             ));
 
-                            for (ZPFlagZones.Zone.AvailableFlags flag : ZPCreativeUtilityUI.inputFlags) {
+                            for (ZPZoneFlag flag : ZPCreativeUtilityUI.inputFlags) {
                                 Minecraft.getInstance().player.connection.sendCommand(
-                                        "zp3 zoneAddFlag " + ZPCreativeUtilityUI.inputId.get() + " " + flag.name()
+                                        "zp3 zoneAddFlags " + ZPCreativeUtilityUI.inputId.get() + " " + flag.id()
                                 );
                             }
 
@@ -155,13 +152,16 @@ public class ZPCreativeUtilityUI implements DearUIInterface {
                         if (ImGui.selectable("<None>", ZPCreativeUtilityUI.currentSelectedZoneID == null)) {
                             ZPCreativeUtilityUI.currentSelectedZoneID = null;
                         }
-                        for (String id : ZPClientZonesData.zoneDataList.keySet()) {
-                            boolean selected = id.equals(ZPCreativeUtilityUI.currentSelectedZoneID);
-                            if (ImGui.selectable(id, selected)) {
-                                ZPCreativeUtilityUI.currentSelectedZoneID = id;
-                            }
-                            if (selected) {
-                                ImGui.setItemDefaultFocus();
+                        final Collection<ZPZoneManager.Zone> zones = ZPZoneManager.INSTANCE.getAllZonesOnLevel(Minecraft.getInstance().player.level());
+                        if (zones != null) {
+                            for (ZPZoneManager.Zone zone : zones) {
+                                boolean selected = zone.uniqueId().equals(ZPCreativeUtilityUI.currentSelectedZoneID);
+                                if (ImGui.selectable(zone.uniqueId(), selected)) {
+                                    ZPCreativeUtilityUI.currentSelectedZoneID = zone.uniqueId();
+                                }
+                                if (selected) {
+                                    ImGui.setItemDefaultFocus();
+                                }
                             }
                         }
                         ImGui.endCombo();
@@ -169,9 +169,9 @@ public class ZPCreativeUtilityUI implements DearUIInterface {
 
                     boolean zoneSelected = ZPCreativeUtilityUI.currentSelectedZoneID != null;
                     ImGui.beginDisabled(!zoneSelected);
-                    @Nullable ZPClientZonesData.ZoneData zone = ZPClientZonesData.zoneDataList.get(ZPCreativeUtilityUI.currentSelectedZoneID);
-                    final int[] selZoneStartXYZ = zone != null ? new int[]{zone.min().x, zone.min().y, zone.min().z} : new int[]{0, 0, 0};
-                    final int[] selZoneEndXYZ = zone != null ? new int[]{zone.max().x, zone.max().y, zone.max().z} : new int[]{0, 0, 0};
+                    @Nullable ZPZoneManager.Zone zone = ZPZoneManager.INSTANCE.getZoneById(Minecraft.getInstance().player.level(), ZPCreativeUtilityUI.currentSelectedZoneID);
+                    final int[] selZoneStartXYZ = zone != null ? new int[]{zone.start().x, zone.start().y, zone.start().z} : new int[]{0, 0, 0};
+                    final int[] selZoneEndXYZ = zone != null ? new int[]{zone.end().x, zone.end().y, zone.end().z} : new int[]{0, 0, 0};
 
                     final int[] copyArrS = Arrays.copyOf(selZoneStartXYZ, 3);
                     final int[] copyArrE = Arrays.copyOf(selZoneEndXYZ, 3);
@@ -188,14 +188,13 @@ public class ZPCreativeUtilityUI implements DearUIInterface {
                     ImGui.separator();
                     ImGui.text("Flags");
 
-                    for (ZPFlagZones.Zone.AvailableFlags flag : ZPFlagZones.Zone.AvailableFlags.values()) {
-                        String[] splittedFlags = zone != null ? zone.flags().split(";") : null;
-                        boolean enabled = splittedFlags != null && Arrays.stream(zone.flags().split(";")).anyMatch(z -> z.equals(flag.name()));
-                        if (ImGui.checkbox(flag.name(), enabled)) {
+                    for (ZPZoneFlag flag : ZPZoneFlag.values()) {
+                        boolean enabled = zone != null && zone.flags().contains(flag);
+                        if (ImGui.checkbox(flag.id(), enabled)) {
                             if (enabled) {
-                                Minecraft.getInstance().player.connection.sendCommand("zp3 zoneRemoveFlags " + ZPCreativeUtilityUI.currentSelectedZoneID + " " + flag.name());
+                                Minecraft.getInstance().player.connection.sendCommand("zp3 zoneRemoveFlags " + ZPCreativeUtilityUI.currentSelectedZoneID + " " + flag.id());
                             } else {
-                                Minecraft.getInstance().player.connection.sendCommand("zp3 zoneAddFlags " + ZPCreativeUtilityUI.currentSelectedZoneID + " " + flag.name());
+                                Minecraft.getInstance().player.connection.sendCommand("zp3 zoneAddFlags " + ZPCreativeUtilityUI.currentSelectedZoneID + " " + flag.id());
                             }
                         }
                     }

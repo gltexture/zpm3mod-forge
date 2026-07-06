@@ -62,6 +62,7 @@ public abstract class ZPHumanoidArmTransformations {
                     headPitch = (float) Math.min(headPitch, Math.toDegrees(ZPHumanoidArmTransformations.X_CONSTR_RAD_M));
                 }
                 model.head.xRot = (float) Mth.clamp(headPitch * ((float) Math.PI / 180F) - (Math.PI / 3.0f), Math.PI * -0.6f, Math.PI * -0.125f);
+                model.hat.copyFrom(model.head);
             } else {
                 headPitch = -(float) Math.PI / 4F;
                 model.head.xRot = rotlerpRad(model.swimAmount, headPitch, -(float) Math.PI / 4F);

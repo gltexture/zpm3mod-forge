@@ -64,8 +64,9 @@ public class ZPEntityModule extends ZPModule {
 
         moduleEntry.setPopulationSetup(new ZPEntityModule.ZPCommonPopulationSetup());
         moduleEntry.addMinecraftEventClass(ZPEntitySpawnEvent.class);
-        moduleEntry.addMinecraftEventClass(ZPEntityTickEvent.class);
-        moduleEntry.addMinecraftEventClass(ZPEntityLivingEvents.class);
+        moduleEntry.addMinecraftEventClass(ZPEntityLivingRadiationTickEvent.class);
+        moduleEntry.addMinecraftEventClass(ZPEntityLivingToxicTickEvent.class);
+        moduleEntry.addMinecraftEventClass(ZPEntityLivingCombatEvents.class);
         moduleEntry.addMinecraftEventClass(ZPEntityMobAttributes.class);
         moduleEntry.addMinecraftEventClass(ZPWorldTickEvent.class);
     }

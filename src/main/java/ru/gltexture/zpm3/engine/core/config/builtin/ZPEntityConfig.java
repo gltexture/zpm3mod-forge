@@ -16,4 +16,8 @@ public class ZPEntityConfig implements ZPConfigConstantsClass {
     @ZPVarDefinition(description = "Number of ticks entity AABB hitbox data is stored for anti-lag memory. Higher values improve lag compensation at the cost of memory.")
     public static final ZPConfig_INT ENTITY_MAX_AABB_MEMORY_ANTILAG =
             new ZPConfig_INT(20);
+
+    @ZPVarDefinition(description = "Radiation point will be added on entity each N tick.")
+    public static final ZPConfig_INT ADD_RAD_PER_TICK =
+            new ZPConfig_INT(16);
 }

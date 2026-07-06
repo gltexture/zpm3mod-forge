@@ -21,7 +21,7 @@ public class ZPConfig_INT extends ZPConfigVar<Integer> {
 
     @Override
     public @Nullable String additionInfo() {
-        return "min=" + min + ", max=" + max;
+        return "start=" + min + ", end=" + max;
     }
 
     @Override

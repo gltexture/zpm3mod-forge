@@ -141,6 +141,7 @@ public abstract class ZPGunLayersProcessing {
             Objects.requireNonNull(mod).set(fullMatrix);
         }, List.of(Pair.of("mflash_map", ZPDefaultGunMuzzleflashFX.muzzleflashFBO.getTextureByIndex(1)), Pair.of("texture_map", ZPDefaultGunMuzzleflashFX.muzzleflashFBO.getTextureByIndex(0)), Pair.of("mfash_bloom_map", ZPDefaultGunMuzzleflashFX.muzzleflashBlurFBO.getTextureByIndex(0))));
         GL46.glBlendFuncSeparate(GL46.GL_SRC_ALPHA, GL46.GL_ONE_MINUS_SRC_ALPHA, GL46.GL_ONE, GL46.GL_ONE_MINUS_SRC_ALPHA);
+        GL46.glDisable(GL46.GL_BLEND);
     }
 
     public static void postRender(ZPDefaultGunMuzzleflashFX defaultMuzzleflashFXUniversal) {

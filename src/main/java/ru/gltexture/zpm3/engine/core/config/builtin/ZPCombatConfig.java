@@ -104,4 +104,12 @@ public class ZPCombatConfig implements ZPConfigConstantsClass {
     @ZPVarDefinition(description = "If enabled, bullets can break specific marked blocks if the block has the destructible flag.")
     public static final ZPConfig_BOOL CAN_BULLET_BREAK_BLOCK =
             new ZPConfig_BOOL(true);
+
+    @ZPVarDefinition(description = "Every N ticks this peace of armor will receive 1 damage on player.")
+    public static final ZPConfig_INT ZP_BREAK_NV_GOGGLES_PER_TICK =
+            new ZPConfig_INT(120);
+
+    @ZPVarDefinition(description = "Every N ticks this peace of armor will receive 1 damage by radiation on player.")
+    public static final ZPConfig_INT ZP_BREAK_RADIATION_COSTUME_PER_TICK =
+            new ZPConfig_INT(120);
 }

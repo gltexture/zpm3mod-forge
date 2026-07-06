@@ -8,6 +8,7 @@ import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.event.level.BlockEvent;
 
+@Deprecated
 public class ZPFakePlayer {
     public static FakePlayer getFakePlayer(ServerLevel world) {
         return FakePlayerFactory.getMinecraft(world);

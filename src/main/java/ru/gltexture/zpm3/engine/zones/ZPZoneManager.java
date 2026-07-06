@@ -2,28 +2,33 @@ package ru.gltexture.zpm3.engine.zones;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.LevelResource;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
+import org.joml.Vector3f;
 import org.joml.Vector3i;
 import ru.gltexture.zpm3.engine.core.ZPLogger;
 import ru.gltexture.zpm3.engine.exceptions.ZPIOException;
+import ru.gltexture.zpm3.engine.service.Pair;
 import ru.gltexture.zpm3.modules.net_pack.data.ZPClientZonesHelper;
 
 import java.io.*;
 import java.lang.reflect.Type;
 import java.util.*;
 
-public final class ZPFlagZones {
+public final class ZPZoneManager {
     private static final String jsonName = "zp_zones.json";
     private final Map<Level, ZonesContainer> zonesPerLevelMap;
-    public static ZPFlagZones INSTANCE = new ZPFlagZones();
+    public static ZPZoneManager INSTANCE = new ZPZoneManager();
 
-    private ZPFlagZones() {
+    private ZPZoneManager() {
         this.zonesPerLevelMap = new HashMap<>();
     }
 
@@ -33,7 +38,7 @@ public final class ZPFlagZones {
         return new Vector2i(chunkX, chunkZ);
     }
 
-    private static List<Vector2i> forEachChunkAABB(Vector3i min, Vector3i max) {
+    private static List<Vector2i> forEachChunkAABB(Vector3f min, Vector3f max) {
         List<Vector2i> vector2is = new ArrayList<>();
         int minChunkX = Mth.floor(min.x) >> 4;
         int maxChunkX = Mth.floor(max.x) >> 4;
@@ -60,7 +65,7 @@ public final class ZPFlagZones {
 
     @SuppressWarnings("all")
     public void writeToJSON(ServerLevel level) {
-        File file = new File(this.getWorldSaveDir(level), ZPFlagZones.jsonName);
+        File file = new File(this.getWorldSaveDir(level), ZPZoneManager.jsonName);
         try {
             if (!file.exists()) {
                 file.createNewFile();
@@ -83,7 +88,7 @@ public final class ZPFlagZones {
 
     @SuppressWarnings("all")
     public void loadFromJSON(ServerLevel level) {
-        File file = new File(this.getWorldSaveDir(level), ZPFlagZones.jsonName);
+        File file = new File(this.getWorldSaveDir(level), ZPZoneManager.jsonName);
         try {
             if (!file.exists()) {
                 file.createNewFile();
@@ -96,11 +101,11 @@ public final class ZPFlagZones {
         final Gson gson = (new GsonBuilder()).create();
         try (Reader reader = new FileReader(file)) {
             final Type type = new TypeToken<HashMap<String, Zone>>() {}.getType();
-            final HashMap<String, ZPFlagZones.Zone> hashMap = gson.fromJson(reader, type);
+            final HashMap<String, ZPZoneManager.Zone> hashMap = gson.fromJson(reader, type);
             if (hashMap != null) {
                 this.zonesPerLevelMap.remove(level);
                 this.zonesPerLevelMap.put(level, new ZonesContainer().setIdAccessMap(hashMap));
-                this.zonesPerLevelMap.get(level).buildFastPerChunkAccessMap(hashMap);
+                this.zonesPerLevelMap.get(level).buildFastPerChunkAccessMap(hashMap.values());
             }
             ZPLogger.info("Read: " + file.toString());
         } catch (IOException e) {
@@ -108,12 +113,12 @@ public final class ZPFlagZones {
         }
     }
 
-    public void newZoneBounds(ServerLevel level, String uniqueId, Vector3i min, Vector3i max) {
+    public void newZoneBounds(ServerLevel level, String uniqueId, Vector3i start, Vector3i end) {
         this.zonesPerLevelMap.computeIfAbsent(level, k -> new ZonesContainer());
         final Zone zone = this.zonesPerLevelMap.get(level).getIdAccessMap().get(uniqueId);
-        zone.min().set(min);
-        zone.max().set(max);
-        this.zonesPerLevelMap.get(level).buildFastPerChunkAccessMap(this.zonesPerLevelMap.get(level).getIdAccessMap());
+        zone.start().set(start);
+        zone.end().set(end);
+        this.zonesPerLevelMap.get(level).buildFastPerChunkAccessMap(this.zonesPerLevelMap.get(level).getIdAccessMap().values());
         ZPClientZonesHelper.sendZoneToAll(zone, level, false);
         this.writeToJSON(level);
     }
@@ -121,13 +126,13 @@ public final class ZPFlagZones {
     public void addNewZone(ServerLevel level, Zone zone) {
         this.zonesPerLevelMap.computeIfAbsent(level, k -> new ZonesContainer());
         this.zonesPerLevelMap.get(level).getIdAccessMap().put(zone.uniqueId(), zone);
-        this.zonesPerLevelMap.get(level).buildFastPerChunkAccessMap(this.zonesPerLevelMap.get(level).getIdAccessMap());
+        this.zonesPerLevelMap.get(level).buildFastPerChunkAccessMap(this.zonesPerLevelMap.get(level).getIdAccessMap().values());
         ZPClientZonesHelper.sendZoneToAll(zone, level, false);
         this.writeToJSON(level);
     }
 
-    public @Nullable Collection<Zone> getZonesInChunk(ServerLevel level, BlockPos pos) {
-        Vector2i chunkId = ZPFlagZones.blockChunk(pos);
+    public @Nullable Collection<Zone> getZonesInChunk(Level level, BlockPos pos) {
+        Vector2i chunkId = ZPZoneManager.blockChunk(pos);
         if (this.zonesPerLevelMap.containsKey(level) && this.zonesPerLevelMap.get(level) != null) {
             return this.zonesPerLevelMap.get(level).getFastPerChunkAccessMap().get(chunkId);
         }
@@ -138,7 +143,7 @@ public final class ZPFlagZones {
         final Map<String, Zone> flagsMap = this.zonesPerLevelMap.get(level).getIdAccessMap();
         if (this.zonesPerLevelMap.containsKey(level) && flagsMap.containsKey(uniqueId)) {
             final Zone zone = flagsMap.remove(uniqueId);
-            this.zonesPerLevelMap.get(level).buildFastPerChunkAccessMap(flagsMap);
+            this.zonesPerLevelMap.get(level).buildFastPerChunkAccessMap(flagsMap.values());
             ZPClientZonesHelper.sendZoneToAll(zone, level, true);
             this.writeToJSON(level);
             return true;
@@ -146,15 +151,7 @@ public final class ZPFlagZones {
         return false;
     }
 
-    public @Nullable Collection<Zone> getAllZonesOnLevel(ServerLevel level) {
-        final Map<String, Zone> flagsMap = this.zonesPerLevelMap.get(level).getIdAccessMap();
-        if (flagsMap == null) {
-            return null;
-        }
-        return flagsMap.values();
-    }
-
-    public boolean replaceFlags(ServerLevel level, String uniqueId, Set<Zone.AvailableFlags> flags) {
+    public boolean replaceFlags(ServerLevel level, String uniqueId, Set<ZPZoneFlag> flags) {
         Zone zone = this.getZoneById(level, uniqueId);
         if (zone != null) {
             zone.flags().clear();
@@ -166,7 +163,47 @@ public final class ZPFlagZones {
         return false;
     }
 
-    public @Nullable Zone getZoneById(ServerLevel level, String id) {
+    public boolean addFlag(ServerLevel level, String uniqueId, ZPZoneFlag flag) {
+        Zone zone = this.getZoneById(level, uniqueId);
+        if (zone != null) {
+            if (!zone.flags().add(flag)) {
+                return false;
+            }
+            ZPClientZonesHelper.sendZoneToAll(zone, level, false);
+            this.writeToJSON(level);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean removeFlag(ServerLevel level, String uniqueId, ZPZoneFlag flag) {
+        Zone zone = this.getZoneById(level, uniqueId);
+        if (zone != null) {
+            if (!zone.flags().remove(flag)) {
+                return false;
+            }
+            ZPClientZonesHelper.sendZoneToAll(zone, level, false);
+            this.writeToJSON(level);
+            return true;
+        }
+        return false;
+    }
+
+    public @Nullable Collection<Zone> getAllZonesOnLevel(Level level) {
+        if (!this.zonesPerLevelMap.containsKey(level)) {
+            return null;
+        }
+        final Map<String, Zone> flagsMap = this.zonesPerLevelMap.get(level).getIdAccessMap();
+        if (flagsMap == null) {
+            return null;
+        }
+        return flagsMap.values();
+    }
+
+    public @Nullable Zone getZoneById(Level level, String id) {
+        if (!this.zonesPerLevelMap.containsKey(level)) {
+            return null;
+        }
         final Map<String, Zone> flagsMap = this.zonesPerLevelMap.get(level).getIdAccessMap();
         if (flagsMap == null || !flagsMap.containsKey(id)) {
             return null;
@@ -174,7 +211,7 @@ public final class ZPFlagZones {
         return flagsMap.get(id);
     }
 
-    public @Nullable Set<Zone.AvailableFlags> getFlags(ServerLevel level, String uniqueId) {
+    public @Nullable Set<ZPZoneFlag> getFlags(Level level, String uniqueId) {
         Zone zone = this.getZoneById(level, uniqueId);
         if (zone != null) {
             return zone.flags();
@@ -182,20 +219,45 @@ public final class ZPFlagZones {
         return null;
     }
 
-    public record Zone(String uniqueId, Vector3i min, Vector3i max, Set<AvailableFlags> flags) {
-        public enum AvailableFlags {
-            noPlayersPvp,
-            noPlayersDamage,
-            noBlocksDestruction,
-            disableBarbaredWires,
+    @OnlyIn(Dist.CLIENT)
+    public void REPLACE_CLIENT_MAP(ClientLevel level, Collection<Zone> zones) {
+        this.zonesPerLevelMap.remove(level);
+        this.zonesPerLevelMap.put(level, new ZonesContainer().setIdAccessMap(zones));
+        this.zonesPerLevelMap.get(level).buildFastPerChunkAccessMap(zones);
+    }
 
-            noAcidAffection,
-            noAcidBlockDestruction,
-            noZombieMining,
-            noThrowableBlockDamage,
-            noBulletBlockDmg,
-            zombieErasing,
-            zombieSpawnBlocking
+    @OnlyIn(Dist.CLIENT)
+    public void ADD_ZONE_IN_CLIENT_MAP(ClientLevel level, Zone zone) {
+        if (!this.zonesPerLevelMap.containsKey(level)) {
+            this.zonesPerLevelMap.put(level, new ZonesContainer());
+        }
+        if (this.zonesPerLevelMap.get(level).getIdAccessMap().put(zone.uniqueId(), zone) != null) {
+            this.zonesPerLevelMap.get(level).buildFastPerChunkAccessMap(this.zonesPerLevelMap.get(level).getIdAccessMap().values());
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public void REMOVE_ZONE_FROM_CLIENT_MAP(ClientLevel level, String uniqueId) {
+        if (this.zonesPerLevelMap.containsKey(level)) {
+            if (this.zonesPerLevelMap.get(level).getIdAccessMap().remove(uniqueId) != null) {
+                this.zonesPerLevelMap.get(level).buildFastPerChunkAccessMap(this.zonesPerLevelMap.get(level).getIdAccessMap().values());
+            }
+        }
+    }
+
+    public record Zone(String uniqueId, Vector3i start, Vector3i end, Set<ZPZoneFlag> flags) {
+        public static Pair<Vector3f,Vector3f> min_max(Vector3i start, Vector3i end) {
+            return min_max(new Vector3f(start), new Vector3f(end));
+        }
+
+        public static Pair<Vector3f,Vector3f> min_max(Vector3f start, Vector3f end) {
+            final float minX = Math.min(start.x, end.x);
+            final float maxX = Math.max(start.x, end.x);
+            final float minY = Math.min(start.y, end.y);
+            final float maxY = Math.max(start.y, end.y);
+            final float minZ = Math.min(start.z, end.z);
+            final float maxZ = Math.max(start.z, end.z);
+            return Pair.of(new Vector3f(minX, minY, minZ), new Vector3f(maxX, maxY, maxZ));
         }
     }
 
@@ -209,7 +271,10 @@ public final class ZPFlagZones {
         }
 
         private void addFastPerChunkAccessMapOnZone(Zone zone) {
-            ZPFlagZones.forEachChunkAABB(zone.min(), zone.max()).forEach((e -> {
+            Pair<Vector3f, Vector3f> pair = ZPZoneManager.Zone.min_max(zone.start(), zone.end());
+            final Vector3f min = pair.first();
+            final Vector3f max = pair.second();
+            ZPZoneManager.forEachChunkAABB(min, max).forEach((e -> {
                 if (!this.fastPerChunkAccessMap.containsKey(e)) {
                     this.fastPerChunkAccessMap.put(e, new ArrayList<>());
                 }
@@ -217,13 +282,15 @@ public final class ZPFlagZones {
             }));
         }
 
-        private void buildFastPerChunkAccessMap(Map<String, Zone> allZones) {
+        private void buildFastPerChunkAccessMap(Collection<Zone> allZones) {
             this.fastPerChunkAccessMap.clear();
-            allZones.forEach((key, zone) -> {
-                this.addFastPerChunkAccessMapOnZone(zone);
-            });
+            allZones.forEach(this::addFastPerChunkAccessMapOnZone);
         }
 
+        public ZonesContainer setIdAccessMap(Collection<Zone> idAccessMap) {
+            idAccessMap.forEach(e -> this.idAccessMap.put(e.uniqueId(), e));
+            return this;
+        }
         public ZonesContainer setIdAccessMap(Map<String, Zone> idAccessMap) {
             this.idAccessMap = idAccessMap;
             return this;

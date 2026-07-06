@@ -1,4 +1,4 @@
-package ru.gltexture.zpm3.engine.mixins.ext;
+package ru.gltexture.zpm3.modules.entity.mixins.ext;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -11,15 +11,10 @@ import java.util.Objects;
 
 public interface IZPEntityExt {
     int zpm3forge$getAcidLevel();
-    int zpm3forge$getIntoxicationLevel();
-
     void zpm3forge$setAcidLevel(int acidLevel);
-    void zpm3forge$setIntoxicationLevel(int intoxicationLevel);
 
     void zpm3forge$defineZPSyncData();
 
-    boolean zpm3forge$touchesAcidBlock();
-    boolean zpm3forge$touchesToxicBlock();
 
     Deque<Snapshot> zpm3forge$getAabbDeque();
 
@@ -41,10 +36,6 @@ public interface IZPEntityExt {
 
     default void addAcidLevel(int acidLevel) {
         this.zpm3forge$setAcidLevel(this.zpm3forge$getAcidLevel() + acidLevel);
-    }
-
-    default void addIntoxicationLevel(int intoxicationLevel) {
-        this.zpm3forge$setIntoxicationLevel(this.zpm3forge$getIntoxicationLevel() + intoxicationLevel);
     }
 
     record Snapshot(long timeMillis, AABB box) {}

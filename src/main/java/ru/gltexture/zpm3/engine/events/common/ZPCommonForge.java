@@ -7,7 +7,7 @@ import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.mixins.ext.IZPRecipesManagerExt;
-import ru.gltexture.zpm3.engine.zones.ZPFlagZones;
+import ru.gltexture.zpm3.engine.zones.ZPZoneManager;
 
 public class ZPCommonForge {
     @SubscribeEvent
@@ -23,14 +23,14 @@ public class ZPCommonForge {
     @SubscribeEvent
     public void onWorldLoad(LevelEvent.Load event) {
         if (event.getLevel() instanceof ServerLevel level) {
-            ZPFlagZones.INSTANCE.loadFromJSON(level);
+            ZPZoneManager.INSTANCE.loadFromJSON(level);
         }
     }
 
     @SubscribeEvent
     public void onWorldSave(LevelEvent.Save event) {
         if (event.getLevel() instanceof ServerLevel level) {
-            ZPFlagZones.INSTANCE.writeToJSON(level);
+            ZPZoneManager.INSTANCE.writeToJSON(level);
         }
     }
 }

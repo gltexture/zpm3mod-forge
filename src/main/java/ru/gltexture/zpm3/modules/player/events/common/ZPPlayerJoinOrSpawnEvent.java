@@ -12,9 +12,7 @@ import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPCombatConfig;
 
-import ru.gltexture.zpm3.engine.zones.ZPFlagZones;
 import ru.gltexture.zpm3.modules.net_pack.data.ZPClientZonesHelper;
-import ru.gltexture.zpm3.modules.net_pack.packets.ZPSendAllZones_StoC_Packet;
 import ru.gltexture.zpm3.modules.net_pack.packets.ZPSyncConfigSettingsPacket;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;

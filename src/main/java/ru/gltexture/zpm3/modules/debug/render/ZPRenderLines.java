@@ -11,6 +11,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import ru.gltexture.zpm3.engine.service.Pair;
+import ru.gltexture.zpm3.engine.zones.ZPZoneManager;
 
 public class ZPRenderLines {
     public static void drawLine(PoseStack poseStack, Vector3f start, Vector3f end, float r, float g, float b, float a) {
@@ -30,7 +32,10 @@ public class ZPRenderLines {
         bufferSource.endBatch(RenderType.lines());
     }
 
-    public static void drawAABB(PoseStack poseStack, Vector3f min, Vector3f max, float r, float g, float b, float a) {
+    public static void drawAABB(PoseStack poseStack, Vector3f start, Vector3f end, float r, float g, float b, float a) {
+        Pair<Vector3f, Vector3f> pair = ZPZoneManager.Zone.min_max(start, end);
+        final Vector3f min = pair.first();
+        final Vector3f max = pair.second();
         float minX = min.x();
         float minY = min.y();
         float minZ = min.z();

@@ -22,5 +22,5 @@ void main()
     vec4 screen = texture(texture_map, quanted_uv);
     screen = (screen - 0.5) * ((1.18 + intensity) - (rand_fl * 0.02)) + 0.5;
     float core = dot(screen.rgb * vec3(rand_fl), vec3(0.2126, 0.7152, 0.0722));
-    frag_color = vec4(0., core, 0., 1.) * vec4(vec3(4.), 1.);
+    frag_color = vec4(0., core, 0., 1.) * vec4(vec3(2.5 + rand_fl * 0.1), 1.);
 }

@@ -7,8 +7,13 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import org.spongepowered.asm.mixin.Mixin;
@@ -19,28 +24,25 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPEntityConfig;
-import ru.gltexture.zpm3.modules.blocks.init.ZPBlocks;
-import ru.gltexture.zpm3.engine.mixins.ext.ZPEntityExtTicking;
-import ru.gltexture.zpm3.engine.mixins.ext.IZPEntityExt;
-import ru.gltexture.zpm3.engine.service.ZPUtility;
+import ru.gltexture.zpm3.engine.core.random.ZPRandom;
+import ru.gltexture.zpm3.modules.entity.mixins.ext.IZPEntityExt;
+import ru.gltexture.zpm3.modules.entity.util.ZPEntityUtil;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
 
 @Mixin(Entity.class)
 public abstract class ZPEntityExtendingMixin implements IZPEntityExt {
+    @Unique private static final EntityDataAccessor<Integer> ACID_LEVEL = SynchedEntityData.defineId(Entity.class, EntityDataSerializers.INT);
+
     @Shadow public abstract void fillCrashReportCategory(CrashReportCategory pCategory);
     @Shadow public abstract Level level();
     @Shadow public abstract SynchedEntityData getEntityData();
 
     @Shadow public abstract AABB getBoundingBox();
 
-    @Unique private static final EntityDataAccessor<Integer> ACID_LEVEL = SynchedEntityData.defineId(Entity.class, EntityDataSerializers.INT);
-    @Unique private static final EntityDataAccessor<Integer> INTOXICATION_LEVEL = SynchedEntityData.defineId(Entity.class, EntityDataSerializers.INT);
-
-    @Unique private boolean zpm3forge$touchesAcidBlock;
-    @Unique private boolean zpm3forge$touchesToxicBlock;
     @Unique private Deque<Snapshot> zpm3forge$aabbDeque = new ArrayDeque<>(20);
 
     @Inject(method = "<init>", at = @At("TAIL"))
@@ -52,45 +54,55 @@ public abstract class ZPEntityExtendingMixin implements IZPEntityExt {
     public void zpm3forge$defineZPSyncData() {
         Entity self = (Entity) (Object) this;
         self.getEntityData().define(ACID_LEVEL, 0);
-        self.getEntityData().define(INTOXICATION_LEVEL, 0);
     }
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void tickPre(CallbackInfo ci) {
+        final Entity entity = (Entity) (Object) this;
         if (this.level().isClientSide()) {
-            ZPEntityExtTicking.clientEntityTickPre((Entity) (Object) this, this);
+            if (this.zpm3forge$getAcidLevel() > 0) {
+                ZPRenderHelper.addAcidParticles(this.zpm3forge$getAcidLevel(), entity);
+                if (entity.tickCount % 3 == 0) {
+                    entity.level().playLocalSound(entity.getOnPos(), SoundEvents.FIRE_EXTINGUISH, SoundSource.MASTER, 0.375f, 1.0f + ZPRandom.getRandom().nextFloat() * 0.2f, false);
+                }
+            }
         } else {
             AABB aabb = this.getBoundingBox();
             this.zpm3forge$aabbDeque.addFirst(new Snapshot(System.currentTimeMillis(), aabb));
             if (this.zpm3forge$aabbDeque.size() > ZPEntityConfig.ENTITY_MAX_AABB_MEMORY_ANTILAG.getVar()) {
                 this.zpm3forge$aabbDeque.removeLast();
             }
-            if (ZPUtility.entity().isCollidingWithBlock((Entity) (Object) this, ZPBlocks.acid_block.get())) {
-                this.zpm3forge$touchesAcidBlock = true;
-            }
-            if (ZPUtility.entity().isCollidingWithBlock((Entity) (Object) this, ZPBlocks.toxic_block.get())) {
-                this.zpm3forge$touchesToxicBlock = true;
-            }
-            ZPEntityExtTicking.serverEntityTickPre((Entity) (Object) this, this);
-        }
-    }
 
-    @Inject(method = "tick", at = @At("TAIL"))
-    private void tickPost(CallbackInfo ci) {
-        if (this.level().isClientSide()) {
-            ZPEntityExtTicking.clientEntityTickPost((Entity)(Object)this, this);
-        } else {
-            ZPEntityExtTicking.serverEntityTickPost((Entity) (Object) this, this);
-            this.zpm3forge$touchesAcidBlock = false;
-            this.zpm3forge$touchesToxicBlock = false;
+            if (!(entity instanceof LivingEntity)) {
+                if (this.zpm3forge$getAcidLevel() > 120) {
+                    entity.discard();
+                }
+            }
+            final int getEntityAcidIncMultiplier = ZPEntityUtil.getEntityAcidIncMultiplier(entity);
+            if (getEntityAcidIncMultiplier > 0) {
+                if (entity.tickCount % (4 / getEntityAcidIncMultiplier) == 0) {
+                    this.addAcidLevel(1);
+                }
+            } else if (entity.tickCount % 2 == 0 && this.zpm3forge$getAcidLevel() > 0) {
+                this.addAcidLevel(-1);
+            }
+            if (this.zpm3forge$getAcidLevel() > 600) {
+                if (entity instanceof LivingEntity livingEntity) {
+                    livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON, 60, 0, false, true));
+                }
+            }
+            if (this.zpm3forge$getAcidLevel() > 0) {
+                if (entity.tickCount % (2 / getEntityAcidIncMultiplier) == 0) {
+                    ZPEntityUtil.damageEntityAndPossiblyEquipment(entity);
+                }
+            }
         }
     }
 
     @Inject(method = "saveWithoutId", at = @At("HEAD"))
     private void saveWithoutId(CompoundTag pCompound, CallbackInfoReturnable<CompoundTag> ci) {
         try {
-            pCompound.putInt("acidLevel", this.zpm3forge$getAcidLevel());
-            pCompound.putInt("intoxicationLevel", this.zpm3forge$getIntoxicationLevel());
+            pCompound.putInt("zp_acidLevel", this.zpm3forge$getAcidLevel());
         } catch (Throwable throwable) {
             CrashReport crashreport = CrashReport.forThrowable(throwable, "Saving entity NBT");
             CrashReportCategory crashreportcategory = crashreport.addCategory("MEntity being saved");
@@ -102,8 +114,7 @@ public abstract class ZPEntityExtendingMixin implements IZPEntityExt {
     @Inject(method = "load", at = @At("HEAD"))
     public void load(CompoundTag pCompound, CallbackInfo ci) {
         try {
-            this.zpm3forge$setAcidLevel(pCompound.getInt("acidLevel"));
-            this.zpm3forge$setIntoxicationLevel(pCompound.getInt("intoxicationLevel"));
+            this.zpm3forge$setAcidLevel(pCompound.getInt("zp_acidLevel"));
         } catch (Throwable throwable) {
             CrashReport crashreport = CrashReport.forThrowable(throwable, "Loading entity NBT");
             CrashReportCategory crashreportcategory = crashreport.addCategory("MEntity being loaded");
@@ -118,16 +129,6 @@ public abstract class ZPEntityExtendingMixin implements IZPEntityExt {
     }
 
     @Override
-    public boolean zpm3forge$touchesAcidBlock() {
-        return this.zpm3forge$touchesAcidBlock;
-    }
-
-    @Override
-    public boolean zpm3forge$touchesToxicBlock() {
-        return this.zpm3forge$touchesToxicBlock;
-    }
-
-    @Override
     public int zpm3forge$getAcidLevel() {
         return this.getEntityData().get(ACID_LEVEL);
     }
@@ -135,15 +136,5 @@ public abstract class ZPEntityExtendingMixin implements IZPEntityExt {
     @Override
     public void zpm3forge$setAcidLevel(int level) {
         this.getEntityData().set(ACID_LEVEL, level);
-    }
-
-    @Override
-    public int zpm3forge$getIntoxicationLevel() {
-        return this.getEntityData().get(INTOXICATION_LEVEL);
-    }
-
-    @Override
-    public void zpm3forge$setIntoxicationLevel(int level) {
-        this.getEntityData().set(INTOXICATION_LEVEL, level);
     }
 }

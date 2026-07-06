@@ -15,7 +15,8 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3i;
 import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
-import ru.gltexture.zpm3.engine.zones.ZPFlagZones;
+import ru.gltexture.zpm3.engine.zones.ZPZoneFlag;
+import ru.gltexture.zpm3.engine.zones.ZPZoneManager;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.module.ZPModule;
@@ -24,8 +25,6 @@ import ru.gltexture.zpm3.engine.events.ZPEventClass;
 import ru.gltexture.zpm3.modules.commands.events.client.ZPCreativeUtilityMenuEvent;
 import ru.gltexture.zpm3.modules.commands.events.client.ZPRenderZones;
 import ru.gltexture.zpm3.modules.commands.imgui.ZPCreativeUtilityUI;
-import ru.gltexture.zpm3.modules.common.init.ZPTabs;
-import ru.gltexture.zpm3.modules.debug.imgui.DearUIDebugInterface;
 
 import java.util.*;
 
@@ -147,14 +146,14 @@ public class ZPCommandsModule extends ZPModule {
                                                                                                 final int x2 = IntegerArgumentType.getInteger(ctx, "x2");
                                                                                                 final int y2 = IntegerArgumentType.getInteger(ctx, "y2");
                                                                                                 final int z2 = IntegerArgumentType.getInteger(ctx, "z2");
-                                                                                                final int minX = Math.min(x1, x2);
-                                                                                                final int maxX = Math.max(x1, x2);
-                                                                                                final int minY = Math.min(y1, y2);
-                                                                                                final int maxY = Math.max(y1, y2);
-                                                                                                final int minZ = Math.min(z1, z2);
-                                                                                                final int maxZ = Math.max(z1, z2);
-                                                                                                ZPFlagZones.Zone zone = new ZPFlagZones.Zone(id, new Vector3i(minX, minY, minZ), new Vector3i(maxX, maxY, maxZ), new HashSet<>());
-                                                                                                ZPFlagZones.INSTANCE.addNewZone(level, zone);
+                                                                                                //final int minX = Math.start(x1, x2);
+                                                                                                //final int maxX = Math.end(x1, x2);
+                                                                                                //final int minY = Math.start(y1, y2);
+                                                                                                //final int maxY = Math.end(y1, y2);
+                                                                                                //final int minZ = Math.start(z1, z2);
+                                                                                                //final int maxZ = Math.end(z1, z2);
+                                                                                                ZPZoneManager.Zone zone = new ZPZoneManager.Zone(id, new Vector3i(x1, y1, z1), new Vector3i(x2, y2, z2), new HashSet<>());
+                                                                                                ZPZoneManager.INSTANCE.addNewZone(level, zone);
 
                                                                                                 ctx.getSource().sendSuccess(() -> Component.literal("Zone " + id + " created!"), false);
                                                                                                 return 1;
@@ -188,17 +187,17 @@ public class ZPCommandsModule extends ZPModule {
                                                                                                 int x2 = IntegerArgumentType.getInteger(ctx, "x2");
                                                                                                 int y2 = IntegerArgumentType.getInteger(ctx, "y2");
                                                                                                 int z2 = IntegerArgumentType.getInteger(ctx, "z2");
-                                                                                                int minX = Math.min(x1, x2);
-                                                                                                int minY = Math.min(y1, y2);
-                                                                                                int minZ = Math.min(z1, z2);
-                                                                                                int maxX = Math.max(x1, x2);
-                                                                                                int maxY = Math.max(y1, y2);
-                                                                                                int maxZ = Math.max(z1, z2);
-                                                                                                if (ZPFlagZones.INSTANCE.getZoneById(level, id) == null) {
+                                                                                                //int minX = Math.start(x1, x2);
+                                                                                                //int minY = Math.start(y1, y2);
+                                                                                                //int minZ = Math.start(z1, z2);
+                                                                                                //int maxX = Math.end(x1, x2);
+                                                                                                //int maxY = Math.end(y1, y2);
+                                                                                                //int maxZ = Math.end(z1, z2);
+                                                                                                if (ZPZoneManager.INSTANCE.getZoneById(level, id) == null) {
                                                                                                     ctx.getSource().sendFailure(Component.literal("Zone " + id + " doesn't exist."));
                                                                                                     return 0;
                                                                                                 }
-                                                                                                ZPFlagZones.INSTANCE.newZoneBounds(level, id, new Vector3i(minX, minY, minZ), new Vector3i(maxX, maxY, maxZ));
+                                                                                                ZPZoneManager.INSTANCE.newZoneBounds(level, id, new Vector3i(x1, y1, z1), new Vector3i(x2, y2, z2));
                                                                                                 ctx.getSource().sendSuccess(() -> Component.literal("Zone " + id + " bounds updated."), false);
                                                                                                 return 1;
                                                                                             })
@@ -220,7 +219,7 @@ public class ZPCommandsModule extends ZPModule {
                                                 }
                                                 String id = StringArgumentType.getString(ctx, "id");
 
-                                                boolean removed = ZPFlagZones.INSTANCE.removeZone(level, id);
+                                                boolean removed = ZPZoneManager.INSTANCE.removeZone(level, id);
                                                 if (removed) {
                                                     ctx.getSource().sendSuccess(() -> Component.literal("Zone " + id + " Removed!"), false);
                                                     return 1;
@@ -237,13 +236,13 @@ public class ZPCommandsModule extends ZPModule {
                                             return 0;
                                         }
                                         ServerLevel level = (ServerLevel) player.level();
-                                        Collection<ZPFlagZones.Zone> zones = ZPFlagZones.INSTANCE.getAllZonesOnLevel(level);
+                                        Collection<ZPZoneManager.Zone> zones = ZPZoneManager.INSTANCE.getAllZonesOnLevel(level);
                                         if (zones == null || zones.isEmpty()) {
                                             ctx.getSource().sendSuccess(() -> Component.literal("Empty!"), false);
                                             return 0;
                                         }
-                                        for (ZPFlagZones.Zone zone : zones) {
-                                            ctx.getSource().sendSuccess(() -> Component.literal(zone.uniqueId() + " : " + zone.min() + " | " + zone.max() + " Flags: " + zone.flags()), false);
+                                        for (ZPZoneManager.Zone zone : zones) {
+                                            ctx.getSource().sendSuccess(() -> Component.literal(zone.uniqueId() + " : " + zone.start() + " | " + zone.end() + " Flags: " + zone.flags()), false);
                                         }
                                         return 1;
                                     })
@@ -257,7 +256,7 @@ public class ZPCommandsModule extends ZPModule {
                                                 }
                                                 ServerLevel level = (ServerLevel) player.level();
                                                 String id = StringArgumentType.getString(ctx, "id");
-                                                boolean updated = ZPFlagZones.INSTANCE.replaceFlags(level, id, new HashSet<>());
+                                                boolean updated = ZPZoneManager.INSTANCE.replaceFlags(level, id, new HashSet<>());
                                                 if (updated) {
                                                     ctx.getSource().sendSuccess(() -> Component.literal("Flags of " + id + " erased!"), false);
                                                     return 1;
@@ -271,8 +270,8 @@ public class ZPCommandsModule extends ZPModule {
                                     .then(Commands.argument("id", StringArgumentType.string())
                                             .then(Commands.argument("flag", StringArgumentType.string())
                                                     .suggests((ctx, builder) -> {
-                                                        for (ZPFlagZones.Zone.AvailableFlags f : ZPFlagZones.Zone.AvailableFlags.values()) {
-                                                            builder.suggest(f.name());
+                                                        for (ZPZoneFlag f : ZPZoneFlag.values()) {
+                                                            builder.suggest(f.id());
                                                         }
                                                         return builder.buildFuture();
                                                     })
@@ -284,28 +283,16 @@ public class ZPCommandsModule extends ZPModule {
                                                         ServerLevel level = (ServerLevel) player.level();
                                                         String id = StringArgumentType.getString(ctx, "id");
                                                         String flagStr = StringArgumentType.getString(ctx, "flag");
-                                                        ZPFlagZones.Zone.AvailableFlags flag;
-                                                        try {
-                                                            flag = ZPFlagZones.Zone.AvailableFlags.valueOf(flagStr);
-                                                        } catch (IllegalArgumentException e) {
+                                                        ZPZoneFlag flag = ZPZoneFlag.valueOf(flagStr);
+                                                        if (flag == null) {
                                                             ctx.getSource().sendFailure(Component.literal("The flag " + flagStr + " doesn't exist. Try /zp3 zoneFlagsList"));
                                                             return 0;
                                                         }
-                                                        Set<ZPFlagZones.Zone.AvailableFlags> flags = ZPFlagZones.INSTANCE.getFlags(level, id);
-                                                        if (flags == null) {
-                                                            ctx.getSource().sendFailure(Component.literal("Zone " + id + " not found!"));
+                                                        if (!ZPZoneManager.INSTANCE.addFlag(level, id, flag)) {
+                                                            ctx.getSource().sendFailure(Component.literal("Failed to add flag to zone."));
                                                             return 0;
                                                         }
-                                                        flags = new HashSet<>(flags);
-                                                        if (!flags.add(flag)) {
-                                                            ctx.getSource().sendSuccess(() -> Component.literal("Fail"), false);
-                                                            return 0;
-                                                        }
-                                                        if (!ZPFlagZones.INSTANCE.replaceFlags(level, id, flags)) {
-                                                            ctx.getSource().sendSuccess(() -> Component.literal("Fail"), false);
-                                                            return 0;
-                                                        }
-                                                        ctx.getSource().sendSuccess(() -> Component.literal("Flag " + flag.name() + " added to zone " + id + "!"), false);
+                                                        ctx.getSource().sendSuccess(() -> Component.literal("Flag " + flag.id() + " added to zone " + id + "!"), false);
                                                         return 1;
                                                     })
                                             )
@@ -315,8 +302,8 @@ public class ZPCommandsModule extends ZPModule {
                                     .then(Commands.argument("id", StringArgumentType.string())
                                             .then(Commands.argument("flag", StringArgumentType.string())
                                                     .suggests((ctx, builder) -> {
-                                                        for (ZPFlagZones.Zone.AvailableFlags f : ZPFlagZones.Zone.AvailableFlags.values()) {
-                                                            builder.suggest(f.name());
+                                                        for (ZPZoneFlag f : ZPZoneFlag.values()) {
+                                                            builder.suggest(f.id());
                                                         }
                                                         return builder.buildFuture();
                                                     })
@@ -328,28 +315,16 @@ public class ZPCommandsModule extends ZPModule {
                                                         ServerLevel level = (ServerLevel) player.level();
                                                         String id = StringArgumentType.getString(ctx, "id");
                                                         String flagStr = StringArgumentType.getString(ctx, "flag");
-                                                        ZPFlagZones.Zone.AvailableFlags flag;
-                                                        try {
-                                                            flag = ZPFlagZones.Zone.AvailableFlags.valueOf(flagStr);
-                                                        } catch (IllegalArgumentException e) {
+                                                        ZPZoneFlag flag = ZPZoneFlag.valueOf(flagStr);
+                                                        if (flag == null) {
                                                             ctx.getSource().sendFailure(Component.literal("The flag " + flagStr + " doesn't exist. Try /zp3 zoneFlagsList"));
                                                             return 0;
                                                         }
-                                                        Set<ZPFlagZones.Zone.AvailableFlags> flags = ZPFlagZones.INSTANCE.getFlags(level, id);
-                                                        if (flags == null) {
-                                                            ctx.getSource().sendFailure(Component.literal("Zone " + id + " not found!"));
+                                                        if (!ZPZoneManager.INSTANCE.removeFlag(level, id, flag)) {
+                                                            ctx.getSource().sendFailure(Component.literal("Failed to remove flag from zone."));
                                                             return 0;
                                                         }
-                                                        flags = new HashSet<>(flags);
-                                                        if (!flags.remove(flag)) {
-                                                            ctx.getSource().sendSuccess(() -> Component.literal("Fail"), false);
-                                                            return 0;
-                                                        }
-                                                        if (!ZPFlagZones.INSTANCE.replaceFlags(level, id, flags)) {
-                                                            ctx.getSource().sendSuccess(() -> Component.literal("Fail"), false);
-                                                            return 0;
-                                                        }
-                                                        ctx.getSource().sendSuccess(() -> Component.literal("Flag " + flag.name() + " removed from zone " + id + "!"), false);
+                                                        ctx.getSource().sendSuccess(() -> Component.literal("Flag " + flag.id() + " removed from zone " + id + "!"), false);
                                                         return 1;
                                                     })
                                             )
@@ -361,8 +336,8 @@ public class ZPCommandsModule extends ZPModule {
                                         if (!player.hasPermissions(3)) {
                                             return 0;
                                         }
-                                        for (ZPFlagZones.Zone.AvailableFlags availableFlags : ZPFlagZones.Zone.AvailableFlags.values()) {
-                                            ctx.getSource().sendSuccess(() -> Component.literal(availableFlags.name() + ", "), false);
+                                        for (ZPZoneFlag availableFlags : ZPZoneFlag.values()) {
+                                            ctx.getSource().sendSuccess(() -> Component.literal(availableFlags.id() + ", "), false);
                                         }
                                         return 1;
                                     })

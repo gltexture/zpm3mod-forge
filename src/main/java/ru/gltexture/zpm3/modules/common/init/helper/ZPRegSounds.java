@@ -203,5 +203,14 @@ public abstract class ZPRegSounds {
                 .afterCreated((e, utils) -> {
                     utils.sounds().addNewSound(new ZPSoundListProvider.ZPSoundEvent("fracture", false, "sounds.zpm3.fracture", List.of(new ZPSoundListProvider.SoundData("effects/fracture"))));
                 }).end();
+
+        ZPSounds.geiger_fx = regSupplier.register("geiger_fx", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "radiation")))
+                .afterCreated((e, utils) -> {
+                    utils.sounds().addNewSound(new ZPSoundListProvider.ZPSoundEvent("radiation", false, "sounds.zpm3.radiation", List.of(
+                            new ZPSoundListProvider.SoundData("radiation/geiger1"),
+                            new ZPSoundListProvider.SoundData("radiation/geiger2"),
+                            new ZPSoundListProvider.SoundData("radiation/geiger3")
+                    )));
+                }).end();
     }
 }

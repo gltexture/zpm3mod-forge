@@ -16,7 +16,7 @@ public class ZPZombieConfig implements ZPConfigConstantsClass {
     public static final ZPConfig_INT ZOMBIE_BRIGHTNESS_SPAWN_SENSITIVITY_REDUCE =
             new ZPConfig_INT(1);
 
-    @ZPVarDefinition(description = "Defines swap threshold percentage when max zombies targeting player is reached.")
+    @ZPVarDefinition(description = "Defines swap threshold percentage when end zombies targeting player is reached.")
     public static final ZPConfig_FLOAT CLOSEST_ZOMBIE_SWAP_TARGET_PERCENTAGE =
             new ZPConfig_FLOAT(0.05f);
 
@@ -64,7 +64,7 @@ public class ZPZombieConfig implements ZPConfigConstantsClass {
     public static final ZPConfig_FLOAT ZOMBIE_THROW_A_GIFT_CHANCE_MULTIPLIER =
             new ZPConfig_FLOAT(1.0f);
 
-    @ZPVarDefinition(description = "Global zombie max health multiplier.")
+    @ZPVarDefinition(description = "Global zombie end health multiplier.")
     public static final ZPConfig_FLOAT ZOMBIE_MAX_HEALTH_MULTIPLIER =
             new ZPConfig_FLOAT(1.0f);
 

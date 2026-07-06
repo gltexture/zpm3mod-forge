@@ -140,5 +140,77 @@ public abstract class ZPRegArmorItemsHelper {
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
             });
         }).end();
+
+        ZPArmorItems.acid_costume_helmet = regSupplier.register("acid_costume_helmet",
+                () -> new ZPArmorItem(ZPArmorMaterialsList.ACID_COSTUME, ArmorItem.Type.HELMET, new Item.Properties())
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
+            });
+        }).end();
+
+        ZPArmorItems.acid_costume_chestplate = regSupplier.register("acid_costume_chestplate",
+                () -> new ZPArmorItem(ZPArmorMaterialsList.ACID_COSTUME, ArmorItem.Type.CHESTPLATE, new Item.Properties())
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
+            });
+        }).end();
+
+        ZPArmorItems.acid_costume_leggings = regSupplier.register("acid_costume_leggings",
+                () -> new ZPArmorItem(ZPArmorMaterialsList.ACID_COSTUME, ArmorItem.Type.LEGGINGS, new Item.Properties())
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
+            });
+        }).end();
+
+        ZPArmorItems.acid_costume_boots = regSupplier.register("acid_costume_boots",
+                () -> new ZPArmorItem(ZPArmorMaterialsList.ACID_COSTUME, ArmorItem.Type.BOOTS, new Item.Properties())
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
+            });
+        }).end();
+
+        ZPArmorItems.radiation_costume_helmet = regSupplier.register("radiation_costume_helmet",
+                () -> new ZPArmorItem(ZPArmorMaterialsList.RADIATION_COSTUME, ArmorItem.Type.HELMET, new Item.Properties())
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
+            });
+        }).end();
+
+        ZPArmorItems.radiation_costume_chestplate = regSupplier.register("radiation_costume_chestplate",
+                () -> new ZPArmorItem(ZPArmorMaterialsList.RADIATION_COSTUME, ArmorItem.Type.CHESTPLATE, new Item.Properties())
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
+            });
+        }).end();
+
+        ZPArmorItems.radiation_costume_leggings = regSupplier.register("radiation_costume_leggings",
+                () -> new ZPArmorItem(ZPArmorMaterialsList.RADIATION_COSTUME, ArmorItem.Type.LEGGINGS, new Item.Properties())
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
+            });
+        }).end();
+
+        ZPArmorItems.radiation_costume_boots = regSupplier.register("radiation_costume_boots",
+                () -> new ZPArmorItem(ZPArmorMaterialsList.RADIATION_COSTUME, ArmorItem.Type.BOOTS, new Item.Properties())
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
+            });
+        }).end();
     }
 }

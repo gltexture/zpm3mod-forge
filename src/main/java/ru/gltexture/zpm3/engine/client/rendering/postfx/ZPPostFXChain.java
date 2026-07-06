@@ -14,14 +14,13 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL46;
 import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
 import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
 import ru.gltexture.zpm3.engine.client.rendering.gl.programs.fbo.FBOTexture2DProgram;
 import ru.gltexture.zpm3.engine.client.rendering.gl.programs.fbo.attachments.T2DAttachmentContainer;
-import ru.gltexture.zpm3.engine.client.rendering.postfx.processors.ZPNightVisPostFXProcessor;
-import ru.gltexture.zpm3.engine.client.rendering.postfx.processors.ZPPostFXProcessor;
-import ru.gltexture.zpm3.engine.client.rendering.postfx.processors.ZPSamplePostFXProcessor;
+import ru.gltexture.zpm3.engine.client.rendering.postfx.processors.*;
 import ru.gltexture.zpm3.engine.service.Pair;
 
 import java.util.Comparator;
@@ -31,6 +30,8 @@ import java.util.TreeSet;
 public class ZPPostFXChain implements ZPClientCallbacks.ZPClientResourceDependentObject {
     public static ZPPostFXProcessor SAMPLE = new ZPSamplePostFXProcessor(100);
     public static ZPPostFXProcessor NIGHTVIS = new ZPNightVisPostFXProcessor(200);
+    public static ZPPostFXProcessor MASK = new ZPMaskVignettePostFXProcessor(300);
+    public static ZPPostFXProcessor RADIATION = new ZPRadiationPostFXProcessor(400);
 
     public static @Nullable FBOTexture2DProgram screenFBO;
     private final TreeSet<ZPPostFXProcessor> processors;
@@ -46,7 +47,9 @@ public class ZPPostFXChain implements ZPClientCallbacks.ZPClientResourceDependen
 
     private void defaultFX() {
         this.processors.add(ZPPostFXChain.SAMPLE);
+        this.processors.add(ZPPostFXChain.RADIATION);
         this.processors.add(ZPPostFXChain.NIGHTVIS);
+        this.processors.add(ZPPostFXChain.MASK);
     }
 
     public void setupOverlayRenderState(boolean blend, boolean depthTest) {
@@ -69,24 +72,26 @@ public class ZPPostFXChain implements ZPClientCallbacks.ZPClientResourceDependen
 
     @SuppressWarnings("unchecked")
     public void render() {
-        if (ZPPostFXChain.screenFBO != null) {
-            ZPPostFXChain.TIMER += ZPRenderHelper.DELTA_TIME();
-            this.getProcessors().forEach(e -> {
-                if (!e.bypass()) {
-                   // GL46.glDisable(GL46.GL_DEPTH_TEST);
-                    {
-                        ZPPostFXChain.screenFBO.bindFBO();
-                        GL46.glClear(GL46.GL_COLOR_BUFFER_BIT | GL46.GL_DEPTH_BUFFER_BIT);
-                        e.renderTextureInFBO(Minecraft.getInstance().getMainRenderTarget().getColorTextureId());
-                        ZPPostFXChain.screenFBO.unBindFBO();
+        if (ZPPostFXChain.screenFBO != null && Minecraft.getInstance().getMainRenderTarget().width > 0 && Minecraft.getInstance().getMainRenderTarget().height > 0) {
+            if (GLFW.glfwGetWindowAttrib(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_ICONIFIED) == GLFW.GLFW_FALSE) {
+                ZPPostFXChain.TIMER += ZPRenderHelper.DELTA_TIME();
+                this.getProcessors().forEach(e -> {
+                    if (!e.bypass()) {
+                        // GL46.glDisable(GL46.GL_DEPTH_TEST);
+                        {
+                            ZPPostFXChain.screenFBO.bindFBO();
+                            GL46.glClear(GL46.GL_COLOR_BUFFER_BIT | GL46.GL_DEPTH_BUFFER_BIT);
+                            e.renderTextureInFBO(Minecraft.getInstance().getMainRenderTarget().getColorTextureId());
+                            ZPPostFXChain.screenFBO.unBindFBO();
 
-                       ZPPostFXChain.screenFBO.copyFBOtoFBOColor(Minecraft.getInstance().getMainRenderTarget().frameBufferId, new Pair[]{Pair.of(GL46.GL_COLOR_ATTACHMENT0, GL46.GL_COLOR_ATTACHMENT0)}
-                               , new Vector2i(Minecraft.getInstance().getMainRenderTarget().width, Minecraft.getInstance().getMainRenderTarget().height)
-                               , new Vector2i(Minecraft.getInstance().getMainRenderTarget().width, Minecraft.getInstance().getMainRenderTarget().height));
+                            ZPPostFXChain.screenFBO.copyFBOtoFBOColor(Minecraft.getInstance().getMainRenderTarget().frameBufferId, new Pair[]{Pair.of(GL46.GL_COLOR_ATTACHMENT0, GL46.GL_COLOR_ATTACHMENT0)}
+                                    , new Vector2i(Minecraft.getInstance().getMainRenderTarget().width, Minecraft.getInstance().getMainRenderTarget().height)
+                                    , new Vector2i(Minecraft.getInstance().getMainRenderTarget().width, Minecraft.getInstance().getMainRenderTarget().height));
+                        }
+                        // GL46.glEnable(GL46.GL_DEPTH_TEST);
                     }
-                   // GL46.glEnable(GL46.GL_DEPTH_TEST);
-                }
-            });
+                });
+            }
         }
     }
 

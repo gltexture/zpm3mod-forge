@@ -9,7 +9,7 @@ import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.events.ZPEventClass;
 
-public class ZPEntityLivingEvents implements ZPEventClass {
+public class ZPEntityLivingCombatEvents implements ZPEventClass {
     @SubscribeEvent
     public static void exec(@NotNull LivingKnockBackEvent event) {
         event.setStrength(0.25f);

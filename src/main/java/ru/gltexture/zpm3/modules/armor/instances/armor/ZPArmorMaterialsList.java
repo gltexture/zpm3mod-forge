@@ -12,10 +12,10 @@ import java.util.EnumMap;
 import java.util.function.Predicate;
 
 public abstract class ZPArmorMaterialsList {
-    public static final float CAM_REDUCTION_ZM_LOOK_HELMET = 4.0f;
-    public static final float CAM_REDUCTION_ZM_LOOK_CHESTPLATE = 6.0f;
-    public static final float CAM_REDUCTION_ZM_LOOK_LEGGINGS = 6.0f;
-    public static final float CAM_REDUCTION_ZM_LOOK_BOOTS = 4.0f;
+    public static final float CAM_REDUCTION_ZM_LOOK_HELMET = 6.0f;
+    public static final float CAM_REDUCTION_ZM_LOOK_CHESTPLATE = 12.0f;
+    public static final float CAM_REDUCTION_ZM_LOOK_LEGGINGS = 12.0f;
+    public static final float CAM_REDUCTION_ZM_LOOK_BOOTS = 6.0f;
 
     public static final Predicate<LivingEntity> FOREST_TEST = (livingEntity -> livingEntity.level().getBiome(livingEntity.blockPosition()).is(ZPTags.FOREST_BIOMES));
     public static final Predicate<LivingEntity> WINTER_TEST = (livingEntity -> livingEntity.level().getBiome(livingEntity.blockPosition()).is(ZPTags.WINTER_BIOMES));
@@ -62,4 +62,22 @@ public abstract class ZPArmorMaterialsList {
         e.put(ArmorItem.Type.CHESTPLATE, 3);
         e.put(ArmorItem.Type.HELMET, 1);
     }), 9, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> null);
+
+    public static final ZPArmorMaterial ACID_COSTUME = new ZPArmorMaterial(ZombiePlague3.MOD_ID + ":acid_costume",
+            new ZPArmorMaterial.ZPArmorProperties(),
+            17, Util.make(new EnumMap<>(ArmorItem.Type.class), (e) -> {
+        e.put(ArmorItem.Type.BOOTS, 2);
+        e.put(ArmorItem.Type.LEGGINGS, 2);
+        e.put(ArmorItem.Type.CHESTPLATE, 3);
+        e.put(ArmorItem.Type.HELMET, 2);
+    }), 9, SoundEvents.ARMOR_EQUIP_ELYTRA, 0.0F, 0.0F, () -> null);
+
+    public static final ZPArmorMaterial RADIATION_COSTUME = new ZPArmorMaterial(ZombiePlague3.MOD_ID + ":radiation_costume",
+            new ZPArmorMaterial.ZPArmorProperties(),
+            17, Util.make(new EnumMap<>(ArmorItem.Type.class), (e) -> {
+        e.put(ArmorItem.Type.BOOTS, 2);
+        e.put(ArmorItem.Type.LEGGINGS, 2);
+        e.put(ArmorItem.Type.CHESTPLATE, 3);
+        e.put(ArmorItem.Type.HELMET, 2);
+    }), 9, SoundEvents.ARMOR_EQUIP_ELYTRA, 0.0F, 0.0F, () -> null);
 }

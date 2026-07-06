@@ -38,7 +38,7 @@ import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPCommonZombie;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPMinerZombie;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.fake.ZPFakePlayer;
-import ru.gltexture.zpm3.engine.mixins.ext.IZPEntityExt;
+import ru.gltexture.zpm3.modules.entity.mixins.ext.IZPEntityExt;
 
 import java.lang.Math;
 import java.util.Arrays;

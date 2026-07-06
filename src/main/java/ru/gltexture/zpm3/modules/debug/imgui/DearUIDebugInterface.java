@@ -12,12 +12,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL46;
-import ru.gltexture.zpm3.engine.client.rendering.postfx.ZPPostFXChain;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.modules.guns.rendering.fx.ZPDefaultGunMuzzleflashFX;
 import ru.gltexture.zpm3.engine.client.rendering.ui.imgui.interfaces.DearUIInterface;
-import ru.gltexture.zpm3.modules.net_pack.data.ZPClientZonesData;
-import ru.gltexture.zpm3.modules.net_pack.data.ZPClientZonesHelper;
 import ru.gltexture.zpm3.modules.player.mixins.ext.IZPPlayerMixinExt;
 
 public class DearUIDebugInterface implements DearUIInterface {
@@ -26,6 +23,9 @@ public class DearUIDebugInterface implements DearUIInterface {
 
     public static boolean FORCE_ENABLE_SAMPLE_POST_FX_SHADER = false;
     public static boolean FORCE_ENABLE_NIGHTVIS_POST_FX_SHADER = false;
+    public static boolean FORCE_ENABLE_RADIATION_POST_FX_SHADER = false;
+    public static boolean FORCE_ENABLE_MASK_POST_FX_SHADER = false;
+    public static float[] PARAM_RAD_POSTFX = new float[] { 0.0f };
 
     public static float[] PARAM1 = new float[] { 0.0f };
     public static float[] PARAM2 = new float[] { 0.0f };
@@ -92,6 +92,13 @@ public class DearUIDebugInterface implements DearUIInterface {
             if (ImGui.checkbox("NightVis", DearUIDebugInterface.FORCE_ENABLE_NIGHTVIS_POST_FX_SHADER)) {
                 DearUIDebugInterface.FORCE_ENABLE_NIGHTVIS_POST_FX_SHADER = !DearUIDebugInterface.FORCE_ENABLE_NIGHTVIS_POST_FX_SHADER;
             }
+            if (ImGui.checkbox("Radiation", DearUIDebugInterface.FORCE_ENABLE_RADIATION_POST_FX_SHADER)) {
+                DearUIDebugInterface.FORCE_ENABLE_RADIATION_POST_FX_SHADER = !DearUIDebugInterface.FORCE_ENABLE_RADIATION_POST_FX_SHADER;
+            }
+            if (ImGui.checkbox("Mask", DearUIDebugInterface.FORCE_ENABLE_MASK_POST_FX_SHADER)) {
+                DearUIDebugInterface.FORCE_ENABLE_MASK_POST_FX_SHADER = !DearUIDebugInterface.FORCE_ENABLE_MASK_POST_FX_SHADER;
+            }
+            ImGui.dragFloat("RadParam", DearUIDebugInterface.PARAM_RAD_POSTFX, 0.01f, 0.0f, 100.0f);
            //if (ZPPostFXChain.screenFBO != null) {
            //    ImGui.image(ZPPostFXChain.screenFBO.getTextureByIndex(0).getTextureId(), 400, 200, 0.0f, 1.0f, 1.0f, 0.0f);
            //}
@@ -192,6 +199,12 @@ public class DearUIDebugInterface implements DearUIInterface {
             } else {
                 ZombiePlague3.getClient_netSyncDataPack().dataPack().forEach((k, v) -> {
                     ImGui.text(k + " = " + v);
+                });
+            }
+            if (player != null && player.getEntityData().getNonDefaultValues() != null) {
+                player.getEntityData().getNonDefaultValues().forEach(e -> {
+                    ImGui.bullet();
+                    ImGui.textWrapped(e.id() + " / " + e + " " + e.value());
                 });
             }
         }

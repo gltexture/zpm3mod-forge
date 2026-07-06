@@ -24,7 +24,7 @@ import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.modules.common.utils.ZPCommonClientUtils;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.fake.ZPFakePlayer;
-import ru.gltexture.zpm3.engine.mixins.ext.IZPEntityExt;
+import ru.gltexture.zpm3.modules.entity.mixins.ext.IZPEntityExt;
 import ru.gltexture.zpm3.engine.instances.entities.ZPThrowableEntity;
 import ru.gltexture.zpm3.engine.mixins.ext.IZPLevelExt;
 import ru.gltexture.zpm3.engine.world.ZPGlobalBlocksDestroyMemory;

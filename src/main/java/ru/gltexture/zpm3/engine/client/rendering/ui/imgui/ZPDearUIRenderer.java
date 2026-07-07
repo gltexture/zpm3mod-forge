@@ -113,40 +113,40 @@ public class ZPDearUIRenderer implements ZPClientCallbacks.ZPClientResourceDepen
         io.setKeyMap(ImGuiKey.KeyPadEnter, GLFW.GLFW_KEY_KP_ENTER);
 
         ZPClientCallbacksManager.INSTANCE.addMouseScrollCallback((descriptor, x, y) -> {
-            if (Minecraft.getInstance().mouseHandler.isMouseGrabbed()) {
+            if (GLFW.glfwGetInputMode(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_CURSOR) == GLFW.GLFW_CURSOR_DISABLED) {
                 return;
             }
             io.setMouseWheel((float) y);
         });
 
         ZPClientCallbacksManager.INSTANCE.addKeyboardClickCallback((descriptor, key, scanCode, mods) -> {
-            if (Minecraft.getInstance().mouseHandler.isMouseGrabbed()) {
-                return;
-            }
+            //if (GLFW.glfwGetInputMode(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_CURSOR) == GLFW.GLFW_CURSOR_DISABLED) {
+            //    return;
+            //}
             io.setKeysDown(key, true);
             updateModifiers(io);
         });
 
         ZPClientCallbacksManager.INSTANCE.addKeyboardHoldCallback((descriptor, key, scanCode, mods) -> {
-            if (Minecraft.getInstance().mouseHandler.isMouseGrabbed()) {
-                return;
-            }
+            //if (GLFW.glfwGetInputMode(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_CURSOR) == GLFW.GLFW_CURSOR_DISABLED) {
+            //    return;
+            //}
             io.setKeysDown(key, true);
             updateModifiers(io);
         });
 
         ZPClientCallbacksManager.INSTANCE.addKeyboardReleaseCallback((descriptor, key, scanCode, mods) -> {
-            if (Minecraft.getInstance().mouseHandler.isMouseGrabbed()) {
-                return;
-            }
+            //if (GLFW.glfwGetInputMode(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_CURSOR) == GLFW.GLFW_CURSOR_DISABLED) {
+            //    return;
+            //}
             io.setKeysDown(key, false);
             updateModifiers(io);
         });
 
         ZPClientCallbacksManager.INSTANCE.addCharCallback((descriptor, c) -> {
-            if (Minecraft.getInstance().mouseHandler.isMouseGrabbed()) {
-                return;
-            }
+            //if (GLFW.glfwGetInputMode(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_CURSOR) == GLFW.GLFW_CURSOR_DISABLED) {
+            //    return;
+            //}
             io.addInputCharacter(c);
         });
     }
@@ -171,8 +171,9 @@ public class ZPDearUIRenderer implements ZPClientCallbacks.ZPClientResourceDepen
         ImGuiIO io = ImGui.getIO();
         io.setMousePos((float) mouse.xpos(), (float) mouse.ypos());
         long win = window.getWindow();
-        io.setMouseDown(0, !Minecraft.getInstance().mouseHandler.isMouseGrabbed() && GLFW.glfwGetMouseButton(win, GLFW.GLFW_MOUSE_BUTTON_LEFT) == GLFW.GLFW_PRESS);
-        io.setMouseDown(1, !Minecraft.getInstance().mouseHandler.isMouseGrabbed() && GLFW.glfwGetMouseButton(win, GLFW.GLFW_MOUSE_BUTTON_RIGHT) == GLFW.GLFW_PRESS);
+
+        io.setMouseDown(0, GLFW.glfwGetInputMode(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_CURSOR) != GLFW.GLFW_CURSOR_DISABLED && GLFW.glfwGetMouseButton(win, GLFW.GLFW_MOUSE_BUTTON_LEFT) == GLFW.GLFW_PRESS);
+        io.setMouseDown(1, GLFW.glfwGetInputMode(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_CURSOR) != GLFW.GLFW_CURSOR_DISABLED && GLFW.glfwGetMouseButton(win, GLFW.GLFW_MOUSE_BUTTON_RIGHT) == GLFW.GLFW_PRESS);
 
         ImGui.newFrame();
         dearUIInterfaceSet.forEach(e -> {

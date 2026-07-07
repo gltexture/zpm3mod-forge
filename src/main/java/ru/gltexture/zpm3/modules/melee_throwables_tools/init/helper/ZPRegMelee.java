@@ -70,6 +70,15 @@ public abstract class ZPRegMelee {
             utils.items().setItemDistanceBonus(e.getId(), -0.125f);
         }).end();
 
+        ZPMeleeThrowableToolsItems.broom = regSupplier.register("broom", () -> new ZPItemSword(ZPCommonToolMeleeTiers.ZP_WOOD_FUN, 1, 0.0F, new Item.Properties())
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_melee_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_MELEE, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MELEE_ITEMS_DIRECTORY);
+            });
+            utils.items().setItemDistanceBonus(e.getId(), 0.0f);
+        }).end();
+
         ZPMeleeThrowableToolsItems.hatchet = regSupplier.register("hatchet", () -> new ZPItemAxe(ZPCommonToolMeleeTiers.ZP_IRON_3, 5.0f, -3.2F, new Item.Properties())
         ).afterCreated((e, utils) -> {
                     ZPUtility.sides().onlyClient(() -> {

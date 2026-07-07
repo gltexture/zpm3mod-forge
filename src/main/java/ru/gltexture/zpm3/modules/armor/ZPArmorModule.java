@@ -75,6 +75,7 @@ public class ZPArmorModule extends ZPModule {
             });
 
 
+            /*
             ZPPlayerArmorSoundOnClientEvent.registerArmorSound(new ZPPlayerArmorSoundOnClientEvent.TrackedSoundLauncher() {
                 @Override
                 public @NotNull Supplier<SoundEvent> getSoundEvent() {
@@ -96,7 +97,7 @@ public class ZPArmorModule extends ZPModule {
                     return e -> (e instanceof Player) && (ZPArmorUtil.isEntityHasSpecialMaskForBreathEffect(e));
                 }
             });
-
+            */
         });
     }
 

@@ -7,6 +7,7 @@ import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.NotNull;
 
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
+import ru.gltexture.zpm3.modules.entity.mixins.ext.IZPLivingEntityExt;
 import ru.gltexture.zpm3.modules.misc_items.init.ZPMiscItems;
 import ru.gltexture.zpm3.modules.common.init.ZPSounds;
 import ru.gltexture.zpm3.modules.common.init.ZPTabs;
@@ -19,6 +20,16 @@ import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public abstract class ZPRegMedicine {
+    public static final FoodProperties VODKA = ZPRegMedicine.DEFAULT_MEDICINE()
+            .effect(() -> new MobEffectInstance(MobEffects.CONFUSION, 1200, 0), 1.0F)
+            .effect(() -> new MobEffectInstance(ZPMobEffects.adrenaline.get(), 300), 1.0F)
+            .effect(() -> new MobEffectInstance(ZPMobEffects.radiation_protection.get(), 600), 1.0F)
+            .build();
+
+    public static final FoodProperties RADIOPROTECTION = ZPRegMedicine.DEFAULT_MEDICINE()
+            .effect(() -> new MobEffectInstance(ZPMobEffects.radiation_protection.get(), 3600), 1.0F)
+            .build();
+
     public static final FoodProperties ADRENALINE = ZPRegMedicine.DEFAULT_MEDICINE()
             .effect(() -> new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 1200, 1), 1.0F)
             .effect(() -> new MobEffectInstance(ZPMobEffects.adrenaline.get(), 1200), 1.0F)
@@ -236,6 +247,29 @@ public abstract class ZPRegMedicine {
         ZPFoodMedicineItems.tire = regSupplier.register("tire", () -> new ZPItemMedicine(new Item.Properties().stacksTo(1), ZPRegMedicine.TIRE, new ZPItemMedicine.ZPMedicineProperties()
                 .setMedicineAnim(ZPItemMedicine.MedicineAnim.BLOCK)
                 .setSoundToPlayOnConsume(() -> ZPSounds.bandage.get())
+        )).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_medicine_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_FOOD, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MEDICINE_ITEMS_DIRECTORY);
+            });
+        }).end();
+
+        ZPFoodMedicineItems.vodka_medicine = regSupplier.register("vodka_medicine", () -> new ZPItemMedicine(new Item.Properties().stacksTo(8), ZPRegMedicine.VODKA, new ZPItemMedicine.ZPMedicineProperties()
+                .setMedicineAnim(ZPItemMedicine.MedicineAnim.DRINK)
+                .setConsumer((livingEntity -> {
+                    if (!livingEntity.level().isClientSide() && livingEntity instanceof IZPLivingEntityExt livingEntityExt) {
+                        livingEntityExt.zpm3forge$addIntoxicationLevel(80);
+                    }
+                }))
+        )).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_medicine_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_FOOD, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MEDICINE_ITEMS_DIRECTORY);
+            });
+        }).end();
+
+        ZPFoodMedicineItems.radiation_protection_pill = regSupplier.register("radiation_protection_pill", () -> new ZPItemMedicine(new Item.Properties().stacksTo(16), ZPRegMedicine.RADIOPROTECTION, new ZPItemMedicine.ZPMedicineProperties()
+                .setMedicineAnim(ZPItemMedicine.MedicineAnim.EAT)
         )).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_medicine_tab);

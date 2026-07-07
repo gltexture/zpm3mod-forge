@@ -12,6 +12,7 @@
     "common.ZPSPlayerFeaturesMixin"
   ],
   "client": [
+    "client.ZPClientChunkCacheStorageAccessor",
     "client.ZPCPlayerFeaturesMixin",
     "client.ZPCPlayerMixin",
     "client.ZPLocalPlayerMixin",

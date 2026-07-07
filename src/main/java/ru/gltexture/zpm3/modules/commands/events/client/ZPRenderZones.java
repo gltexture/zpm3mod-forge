@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.events.ZPEventClass;
-import ru.gltexture.zpm3.engine.zones.ZPZoneManager;
+import ru.gltexture.zpm3.modules.commands.zones.ZPZoneManager;
 import ru.gltexture.zpm3.modules.commands.imgui.ZPCreativeUtilityUI;
 import ru.gltexture.zpm3.modules.debug.render.ZPRenderLines;
 

@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.instances.armor.ZPArmorItem;
 import ru.gltexture.zpm3.engine.instances.armor.ZPArmorMaterial;
 import ru.gltexture.zpm3.modules.armor.init.ZPArmorItems;
+import ru.gltexture.zpm3.modules.entity.util.ZPEntityUtil;
 
 import java.util.function.Predicate;
 
@@ -25,6 +26,33 @@ public class ZPArmorUtil {
             return helmet.getItem().equals(ZPArmorItems.night_vision_goggles.get());
         }
         return false;
+    }
+
+    public static boolean isFullAqualungBreathingRightNow(LivingEntity entity) {
+        if (!entity.isUnderWater()) {
+            return false;
+        }
+        if (!ZPEntityUtil.hasOxygenInHands(entity)) {
+            return false;
+        }
+        return ZPArmorUtil.canEntityBreathUnderWaterViaAqualung(entity);
+    }
+
+    public static boolean canEntityBreathUnderWaterViaAqualung(final LivingEntity entity) {
+        int pieces = 0;
+        if (entity.getItemBySlot(EquipmentSlot.HEAD).is(ZPArmorItems.aqualung_costume_helmet.get())) {
+            pieces++;
+        }
+        if (entity.getItemBySlot(EquipmentSlot.CHEST).is(ZPArmorItems.aqualung_costume_chestplate.get())) {
+            pieces++;
+        }
+        if (entity.getItemBySlot(EquipmentSlot.LEGS).is(ZPArmorItems.aqualung_costume_leggings.get())) {
+            pieces++;
+        }
+        if (entity.getItemBySlot(EquipmentSlot.FEET).is(ZPArmorItems.aqualung_costume_boots.get())) {
+            pieces++;
+        }
+        return pieces == 4;
     }
 
     //-1 = 0 factor

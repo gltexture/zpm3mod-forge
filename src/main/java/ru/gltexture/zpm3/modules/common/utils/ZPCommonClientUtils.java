@@ -29,21 +29,29 @@ public abstract class ZPCommonClientUtils {
     }
 
     public static void emmitToxicParticle(final float scale, final @NotNull Vector3f position, final @NotNull Vector3f velocity) {
+        emmitToxicParticle(true, scale, position, velocity);
+    }
+
+    public static void emmitAcidParticle(final float scale, final @NotNull Vector3f position, final @NotNull Vector3f velocity) {
+        emmitAcidParticle(true, scale, position, velocity);
+    }
+
+    public static void emmitToxicParticle(boolean renderAlways, final float scale, final @NotNull Vector3f position, final @NotNull Vector3f velocity) {
         final Vector3f color = new Vector3f(0.65f, 0.7f, 0.3f).add(ZPRandom.instance.randomVector3f(0.0f, new Vector3f(0.2f, 0.0f, 0.2f)));
         final int lifetime = 30 + ZPRandom.getRandom().nextInt(15);
         final double x = position.x;
         final double y = position.y;
         final double z = position.z;
-        Objects.requireNonNull(Minecraft.getInstance().level).addParticle(new ColoredDefaultParticleOptions(ZPParticles.colored_cloud.get(), color, scale, lifetime), true, x, y, z, velocity.x(), velocity.y(), velocity.z());
+        Objects.requireNonNull(Minecraft.getInstance().level).addParticle(new ColoredDefaultParticleOptions(ZPParticles.colored_cloud.get(), color, scale, lifetime), renderAlways, x, y, z, velocity.x(), velocity.y(), velocity.z());
     }
 
-    public static void emmitAcidParticle(final float scale, final @NotNull Vector3f position, final @NotNull Vector3f velocity) {
+    public static void emmitAcidParticle(boolean renderAlways, final float scale, final @NotNull Vector3f position, final @NotNull Vector3f velocity) {
         final Vector3f color = new Vector3f(0.8f, 0.9f, 0.8f).add(ZPRandom.instance.randomVector3f(0.0f, new Vector3f(0.2f, 0.0f, 0.2f)));
         final int lifetime = 40 + ZPRandom.getRandom().nextInt(15);
         final double x = position.x;
         final double y = position.y;
         final double z = position.z;
-        Objects.requireNonNull(Minecraft.getInstance().level).addParticle(new ColoredDefaultParticleOptions(ZPParticles.colored_cloud.get(), color, scale, lifetime), true, x, y, z, velocity.x(), velocity.y(), velocity.z());
+        Objects.requireNonNull(Minecraft.getInstance().level).addParticle(new ColoredDefaultParticleOptions(ZPParticles.colored_cloud.get(), color, scale, lifetime), renderAlways, x, y, z, velocity.x(), velocity.y(), velocity.z());
     }
 
     public static void emmitItemBreakParticle(final @NotNull ItemStack item, final @NotNull Vector3f position, final @NotNull Vector3f entityMotion) {

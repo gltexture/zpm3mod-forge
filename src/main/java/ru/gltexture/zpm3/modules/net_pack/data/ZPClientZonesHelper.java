@@ -4,7 +4,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import org.joml.Vector3i;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.zones.ZPZoneManager;
+import ru.gltexture.zpm3.modules.commands.zones.ZPZoneManager;
 import ru.gltexture.zpm3.modules.net_pack.packets.ZPSendAllZones_StoC_Packet;
 import ru.gltexture.zpm3.modules.net_pack.packets.ZPSendTheOnlyZone_StoC_Packet;
 

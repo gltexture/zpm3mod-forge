@@ -55,6 +55,7 @@ public abstract class ZPDataGenHelper {
 
     public static final MinecraftModelParentReference DEFAULT_FOOD = new MinecraftModelParentReference("item/bread");
     public static final MinecraftModelParentReference DEFAULT_ITEM = new MinecraftModelParentReference("item/diamond");
+    public static final MinecraftModelParentReference DEFAULT_STICK = new MinecraftModelParentReference("item/stick");
     public static final MinecraftModelParentReference DEFAULT_MELEE = new MinecraftModelParentReference("item/diamond_sword");
     public static final MinecraftModelParentReference DEFAULT_AXE = new MinecraftModelParentReference("item/diamond_axe");
     public static final MinecraftModelParentReference DEFAULT_PICKAXE = new MinecraftModelParentReference("item/diamond_pickaxe");

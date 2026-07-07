@@ -12,7 +12,7 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import ru.gltexture.zpm3.engine.service.Pair;
-import ru.gltexture.zpm3.engine.zones.ZPZoneManager;
+import ru.gltexture.zpm3.modules.commands.zones.ZPZoneManager;
 
 public class ZPRenderLines {
     public static void drawLine(PoseStack poseStack, Vector3f start, Vector3f end, float r, float g, float b, float a) {

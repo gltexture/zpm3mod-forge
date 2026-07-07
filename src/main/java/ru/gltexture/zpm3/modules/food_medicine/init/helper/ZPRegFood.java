@@ -16,13 +16,19 @@ import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public abstract class ZPRegFood {
-    public static final FoodProperties BEAN = (new FoodProperties.Builder()).nutrition(6).saturationMod(0.6F).build();
-    public static final FoodProperties JAM = (new FoodProperties.Builder()).nutrition(4).saturationMod(0.3F).build();
-    public static final FoodProperties MYSTERIOUS_CAN = (new FoodProperties.Builder()).nutrition(5).saturationMod(0.6F).effect(() -> new MobEffectInstance(MobEffects.HUNGER, 600), 0.5F).build();
-    public static final FoodProperties PEACHES = (new FoodProperties.Builder()).nutrition(6).saturationMod(0.6F).build();
-    public static final FoodProperties FRIED_EGG = (new FoodProperties.Builder()).nutrition(2).saturationMod(0.2F).build();
+    public static final FoodProperties BEAN = (new FoodProperties.Builder()).nutrition(6).saturationMod(0.8F).build();
+    public static final FoodProperties JAM = (new FoodProperties.Builder()).nutrition(4).saturationMod(0.4F).build();
+    public static final FoodProperties MYSTERIOUS_CAN = (new FoodProperties.Builder()).nutrition(5).saturationMod(1.0F).effect(() -> new MobEffectInstance(MobEffects.HUNGER, 600), 0.5F).build();
+    public static final FoodProperties PEACHES = (new FoodProperties.Builder()).nutrition(6).saturationMod(0.8F).build();
+    public static final FoodProperties FRIED_EGG = (new FoodProperties.Builder()).nutrition(3).saturationMod(0.4F).build();
+    public static final FoodProperties CHOCOLATE = (new FoodProperties.Builder()).nutrition(2).saturationMod(0.2F).build();
+    public static final FoodProperties MINECAKE = (new FoodProperties.Builder()).nutrition(4).saturationMod(0.3F).build();
+    public static final FoodProperties ROTTEN_APPLE = (new FoodProperties.Builder()).nutrition(3).saturationMod(0.1F)
+            .effect(() -> new MobEffectInstance(MobEffects.HUNGER, 200), 0.25F)
+            .effect(() -> new MobEffectInstance(MobEffects.POISON, 200), 0.05F)
+            .effect(() -> new MobEffectInstance(MobEffects.CONFUSION, 200), 0.15F).build();
     public static final FoodProperties SODA = (new FoodProperties.Builder()).nutrition(2).saturationMod(0.3F).build();
-    public static final FoodProperties SPRATS = (new FoodProperties.Builder()).nutrition(4).saturationMod(0.3F).effect(() -> new MobEffectInstance(MobEffects.POISON, 400), 0.5F).build();
+    public static final FoodProperties SPRATS = (new FoodProperties.Builder()).nutrition(4).saturationMod(0.5F).effect(() -> new MobEffectInstance(MobEffects.POISON, 400), 0.3F).build();
     public static final FoodProperties WATER = (new FoodProperties.Builder()).nutrition(3).saturationMod(0.6F).build();
 
     public static void init(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
@@ -75,6 +81,30 @@ public abstract class ZPRegFood {
                 }).end();
 
         ZPFoodMedicineItems.sprats = regSupplier.register("sprats", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.SPRATS, new ZPItemFood.ZPFoodProperties()))
+                .afterCreated((e, utils) -> {
+                    ZPUtility.sides().onlyClient(() -> {
+                        utils.items().addItemInTab(e, ZPTabs.zp_food_tab);
+                        utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_FOOD, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.FOOD_ITEMS_DIRECTORY);
+                    });
+                }).end();
+
+        ZPFoodMedicineItems.minecake = regSupplier.register("minecake", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.MINECAKE, new ZPItemFood.ZPFoodProperties()))
+                .afterCreated((e, utils) -> {
+                    ZPUtility.sides().onlyClient(() -> {
+                        utils.items().addItemInTab(e, ZPTabs.zp_food_tab);
+                        utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_FOOD, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.FOOD_ITEMS_DIRECTORY);
+                    });
+                }).end();
+
+        ZPFoodMedicineItems.chocolate = regSupplier.register("chocolate", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.CHOCOLATE, new ZPItemFood.ZPFoodProperties().setEatTime(16)))
+                .afterCreated((e, utils) -> {
+                    ZPUtility.sides().onlyClient(() -> {
+                        utils.items().addItemInTab(e, ZPTabs.zp_food_tab);
+                        utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_FOOD, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.FOOD_ITEMS_DIRECTORY);
+                    });
+                }).end();
+
+        ZPFoodMedicineItems.rotten_apple = regSupplier.register("rotten_apple", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.ROTTEN_APPLE, new ZPItemFood.ZPFoodProperties()))
                 .afterCreated((e, utils) -> {
                     ZPUtility.sides().onlyClient(() -> {
                         utils.items().addItemInTab(e, ZPTabs.zp_food_tab);

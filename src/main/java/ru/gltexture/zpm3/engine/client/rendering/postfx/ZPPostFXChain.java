@@ -29,9 +29,10 @@ import java.util.TreeSet;
 @OnlyIn(Dist.CLIENT)
 public class ZPPostFXChain implements ZPClientCallbacks.ZPClientResourceDependentObject {
     public static ZPPostFXProcessor SAMPLE = new ZPSamplePostFXProcessor(100);
-    public static ZPPostFXProcessor NIGHTVIS = new ZPNightVisPostFXProcessor(200);
-    public static ZPPostFXProcessor MASK = new ZPMaskVignettePostFXProcessor(300);
-    public static ZPPostFXProcessor RADIATION = new ZPRadiationPostFXProcessor(400);
+    public static ZPPostFXProcessor INFECTION = new ZPInfectionPostFXProcessor(200);
+    public static ZPPostFXProcessor NIGHTVIS = new ZPNightVisPostFXProcessor(300);
+    public static ZPPostFXProcessor MASK = new ZPMaskVignettePostFXProcessor(400);
+    public static ZPPostFXProcessor RADIATION = new ZPRadiationPostFXProcessor(500);
 
     public static @Nullable FBOTexture2DProgram screenFBO;
     private final TreeSet<ZPPostFXProcessor> processors;
@@ -50,6 +51,7 @@ public class ZPPostFXChain implements ZPClientCallbacks.ZPClientResourceDependen
         this.processors.add(ZPPostFXChain.RADIATION);
         this.processors.add(ZPPostFXChain.NIGHTVIS);
         this.processors.add(ZPPostFXChain.MASK);
+        this.processors.add(ZPPostFXChain.INFECTION);
     }
 
     public void setupOverlayRenderState(boolean blend, boolean depthTest) {

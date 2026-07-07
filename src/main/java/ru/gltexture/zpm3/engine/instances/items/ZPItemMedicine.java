@@ -23,6 +23,7 @@ import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.engine.registry.ZPRegistryCollections;
 
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class ZPItemMedicine extends ZPItem {
@@ -67,6 +68,9 @@ public class ZPItemMedicine extends ZPItem {
                 pLevel.playSound(null, entityToAffect.getX(), entityToAffect.getY(), entityToAffect.getZ(), this.getZpMedicineProperties().getSoundToPlayOnConsume().get(), SoundSource.NEUTRAL, 1.0F, 1.0F + (pLevel.random.nextFloat() - pLevel.random.nextFloat()) * 0.4F);
             }
             this.addEatEffect(pFood, pLevel, entityToAffect);
+            if (this.getZpMedicineProperties().getConsumer() != null) {
+                this.getZpMedicineProperties().getConsumer().accept(entityToAffect);
+            }
             if (!(entityToAffect instanceof Player) || !((Player) entityToAffect).getAbilities().instabuild) {
                 if (pFood.isDamageableItem()) {
                     pFood.hurtAndBreak(1, entityWhoUsed, e -> {
@@ -152,6 +156,7 @@ public class ZPItemMedicine extends ZPItem {
         private int eatTime;
         private Supplier<SoundEvent> soundToPlayOnConsume;
         private boolean canBeAffectedOnOther;
+        private @Nullable Consumer<LivingEntity> consumer;
 
         public ZPMedicineProperties() {
             this.setDefaults();
@@ -162,6 +167,7 @@ public class ZPItemMedicine extends ZPItem {
             this.eatTime = 32;
             this.soundToPlayOnConsume = null;
             this.canBeAffectedOnOther = false;
+            this.consumer = null;
         }
 
         public boolean isCanBeAffectedOnOther() {
@@ -193,6 +199,15 @@ public class ZPItemMedicine extends ZPItem {
 
         public ZPItemMedicine.ZPMedicineProperties setEatTime(int eatTime) {
             this.eatTime = eatTime;
+            return this;
+        }
+
+        public @Nullable Consumer<LivingEntity> getConsumer() {
+            return this.consumer;
+        }
+
+        public ZPMedicineProperties setConsumer(@Nullable Consumer<LivingEntity> consumer) {
+            this.consumer = consumer;
             return this;
         }
 

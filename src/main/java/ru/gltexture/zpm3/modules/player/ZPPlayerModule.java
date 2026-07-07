@@ -1,17 +1,17 @@
 package ru.gltexture.zpm3.modules.player;
 
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPCombatConfig;
 import ru.gltexture.zpm3.engine.core.module.ZPModule;
-import ru.gltexture.zpm3.engine.instances.armor.ZPArmorItem;
 import ru.gltexture.zpm3.modules.armor.init.ZPArmorItems;
 import ru.gltexture.zpm3.modules.armor.utils.ZPArmorUtil;
 import ru.gltexture.zpm3.modules.entity.util.ZPEntityUtil;
+import ru.gltexture.zpm3.modules.misc_items.init.ZPMiscItems;
 import ru.gltexture.zpm3.modules.player.events.client.*;
 import ru.gltexture.zpm3.modules.player.events.common.*;
 import ru.gltexture.zpm3.modules.player.keybind.ZPPickUpKeyBindings;
@@ -88,17 +88,64 @@ public class ZPPlayerModule extends ZPModule {
     @Override
     public void postInitialize() {
         ZPPlayerTickedBreakEquipmentEvent.registerArmorBreakPerTickCondition(ZPArmorItems.night_vision_goggles::get, (entity, armorItem, slot, tick) -> {
+            if (ZPCombatConfig.ZP_BREAK_NV_GOGGLES_PER_TICK.getVar() < 0) {
+                return false;
+            }
             final int tickRate = entity.isUnderWater() ? ZPCombatConfig.ZP_BREAK_NV_GOGGLES_PER_TICK.getVar() / 8 : ZPCombatConfig.ZP_BREAK_NV_GOGGLES_PER_TICK.getVar();
             return entity.tickCount % tickRate == 0;
         });
         Arrays.stream(new Supplier[]{ZPArmorItems.radiation_costume_helmet, ZPArmorItems.radiation_costume_chestplate, ZPArmorItems.radiation_costume_leggings, ZPArmorItems.radiation_costume_boots}).forEach(e -> {
             ZPPlayerTickedBreakEquipmentEvent.registerArmorBreakPerTickCondition(e, (entity, armorItem, slot, tick) -> {
-                final int radReductionTick = ZPEntityUtil.getLivingEntityRadiationIncMultiplier(entity);
+                final int radReductionTick = ZPEntityUtil.getLivingEntityRadiationIncMultiplier((LivingEntity) entity);
                 if (radReductionTick <= 0) {
+                    return false;
+                }
+                if (ZPCombatConfig.ZP_BREAK_RADIATION_COSTUME_PER_TICK.getVar() < 0) {
                     return false;
                 }
                 return entity.tickCount % (ZPCombatConfig.ZP_BREAK_RADIATION_COSTUME_PER_TICK.getVar() / radReductionTick) == 0;
             });
         });
+        Arrays.stream(new Supplier[]{ZPArmorItems.acid_costume_helmet, ZPArmorItems.acid_costume_chestplate, ZPArmorItems.acid_costume_leggings, ZPArmorItems.acid_costume_boots}).forEach(e -> {
+            ZPPlayerTickedBreakEquipmentEvent.registerArmorBreakPerTickCondition(e, (entity, armorItem, slot, tick) -> {
+                final int acidReductionTick = ZPEntityUtil.getEntityAcidIncMultiplier(entity);
+                if (acidReductionTick <= 0) {
+                    return false;
+                }
+                if (ZPCombatConfig.ZP_BREAK_ACID_COSTUME_PER_TICK.getVar() < 0) {
+                    return false;
+                }
+                return entity.tickCount % (ZPCombatConfig.ZP_BREAK_ACID_COSTUME_PER_TICK.getVar() / acidReductionTick) == 0;
+            });
+        });
+        Arrays.stream(new Supplier[]{ZPArmorItems.aqualung_costume_helmet, ZPArmorItems.aqualung_costume_chestplate, ZPArmorItems.aqualung_costume_leggings, ZPArmorItems.aqualung_costume_boots}).forEach(e -> {
+            ZPPlayerTickedBreakEquipmentEvent.registerArmorBreakPerTickCondition(e, (entity, armorItem, slot, tick) -> {
+                        if (!ZPArmorUtil.isFullAqualungBreathingRightNow((LivingEntity) entity)) {
+                            return false;
+                        }
+                        int base = ZPCombatConfig.ZP_BREAK_ACID_COSTUME_PER_TICK.getVar();
+                        if (base <= 0) {
+                            return false;
+                        }
+                        return entity.tickCount % base == 0;
+                    }
+            );
+        });
+        ZPPlayerTickedBreakEquipmentEvent.registerItemBreakPerTickCondition(ZPMiscItems.oxygen::get,
+                (entity, item, slot, tick) -> {
+                    ItemStack stackInHan_oxygen = ZPEntityUtil.getOxygenStackInHand((LivingEntity) entity);
+                    if (!item.equals(stackInHan_oxygen)) {
+                        return false;
+                    }
+                    if (!ZPArmorUtil.isFullAqualungBreathingRightNow((LivingEntity) entity)) {
+                        return false;
+                    }
+                    int base = ZPCombatConfig.ZP_BREAK_ACID_COSTUME_PER_TICK.getVar();
+                    if (base <= 0) {
+                        return false;
+                    }
+                    return entity.tickCount % base == 0;
+                }
+        );
     }
 }

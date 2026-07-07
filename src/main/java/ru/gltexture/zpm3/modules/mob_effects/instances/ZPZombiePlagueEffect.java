@@ -46,13 +46,13 @@ public class ZPZombiePlagueEffect extends ZPDefaultMobEffect {
                     }
                 }
                 if (progress >= 0.75f) {
-                    player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 0, false, false));
+                    player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 300, 0, false, false));
                 }
                 if (progress >= 0.50f) {
-                    player.addEffect(new MobEffectInstance(MobEffects.HUNGER, 60, 0, false, false));
+                    player.addEffect(new MobEffectInstance(MobEffects.HUNGER, 300, 0, false, false));
                 }
                 if (progress >= 0.25f) {
-                    player.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 80, 0, false, false));
+                    player.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 300, 0, false, false));
                 }
                 if (duration <= 20) {
                     this.finishPlague(player);

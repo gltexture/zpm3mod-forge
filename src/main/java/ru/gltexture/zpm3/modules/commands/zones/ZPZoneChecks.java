@@ -1,9 +1,8 @@
-package ru.gltexture.zpm3.engine.zones;
+package ru.gltexture.zpm3.modules.commands.zones;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
@@ -63,7 +62,11 @@ public final class ZPZoneChecks {
     }
 
     public boolean isNoToxicAffection(@NotNull Level level, @NotNull BlockPos blockPos) {
-        return this.checkFlag(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ZPZoneFlag.noAcidAffection);
+        return this.checkFlag(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ZPZoneFlag.noToxicAffection);
+    }
+
+    public boolean isNoRadiationAffection(@NotNull Level level, @NotNull BlockPos blockPos) {
+        return this.checkFlag(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ZPZoneFlag.noRadiationAffection);
     }
 
     public boolean isNoAcidAffection(@NotNull Level level, @NotNull BlockPos blockPos) {

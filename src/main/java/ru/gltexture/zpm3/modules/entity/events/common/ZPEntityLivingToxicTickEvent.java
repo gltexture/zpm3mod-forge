@@ -21,19 +21,19 @@ public class ZPEntityLivingToxicTickEvent implements ZPEventClass {
 
         if (!level.isClientSide()) {
             if (entity instanceof IZPLivingEntityExt izpLivingEntityExt) {
-                final int toxicIncMultiplier = ZPEntityUtil.getEntityToxicIncMultiplier(entity);
-                if (toxicIncMultiplier > 0) {
-                    if (entity.tickCount % (4) / toxicIncMultiplier == 0) {
+                final int toxicTickRate = ZPEntityUtil.getEntityToxicAffectionTickRate(entity);
+                if (toxicTickRate > 0) {
+                    if (entity.tickCount % toxicTickRate == 0) {
                         izpLivingEntityExt.zpm3forge$addIntoxicationLevel(1);
                     }
-                    if (izpLivingEntityExt.zpm3forge$getIntoxicationLevel() > 260) {
-                        entity.addEffect(new MobEffectInstance(MobEffects.HUNGER, 600, 1, false, true));
-                        entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 1200, 0, false, true));
-                    }
                 } else {
-                    if (izpLivingEntityExt.zpm3forge$getIntoxicationLevel() > 0) {
+                    if (entity.tickCount % 10 == 0 && izpLivingEntityExt.zpm3forge$getIntoxicationLevel() > 0) {
                         izpLivingEntityExt.zpm3forge$addIntoxicationLevel(-1);
                     }
+                }
+                if (entity.tickCount % 20 == 0 && izpLivingEntityExt.zpm3forge$getIntoxicationLevel() > 260) {
+                    entity.addEffect(new MobEffectInstance(MobEffects.HUNGER, 600, 1, false, true));
+                    entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 1200, 0, false, true));
                 }
             }
         }

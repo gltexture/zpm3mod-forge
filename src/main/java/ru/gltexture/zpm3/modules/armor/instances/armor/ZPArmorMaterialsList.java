@@ -80,4 +80,13 @@ public abstract class ZPArmorMaterialsList {
         e.put(ArmorItem.Type.CHESTPLATE, 3);
         e.put(ArmorItem.Type.HELMET, 2);
     }), 9, SoundEvents.ARMOR_EQUIP_ELYTRA, 0.0F, 0.0F, () -> null);
+
+    public static final ZPArmorMaterial AQUALUNG_COSTUME = new ZPArmorMaterial(ZombiePlague3.MOD_ID + ":aqualung_costume",
+            new ZPArmorMaterial.ZPArmorProperties(),
+            14, Util.make(new EnumMap<>(ArmorItem.Type.class), (e) -> {
+        e.put(ArmorItem.Type.BOOTS, 2);
+        e.put(ArmorItem.Type.LEGGINGS, 2);
+        e.put(ArmorItem.Type.CHESTPLATE, 3);
+        e.put(ArmorItem.Type.HELMET, 2);
+    }), 9, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> null);
 }

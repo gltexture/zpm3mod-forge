@@ -105,11 +105,19 @@ public class ZPCombatConfig implements ZPConfigConstantsClass {
     public static final ZPConfig_BOOL CAN_BULLET_BREAK_BLOCK =
             new ZPConfig_BOOL(true);
 
-    @ZPVarDefinition(description = "Every N ticks this peace of armor will receive 1 damage on player.")
+    @ZPVarDefinition(description = "Every N ticks this peace of armor will receive 1 damage on player. < 0 = disable")
     public static final ZPConfig_INT ZP_BREAK_NV_GOGGLES_PER_TICK =
             new ZPConfig_INT(120);
 
-    @ZPVarDefinition(description = "Every N ticks this peace of armor will receive 1 damage by radiation on player.")
+    @ZPVarDefinition(description = "Every N ticks this peace of armor will receive 1 damage by radiation on player. < 0 = disable")
     public static final ZPConfig_INT ZP_BREAK_RADIATION_COSTUME_PER_TICK =
             new ZPConfig_INT(120);
+
+    @ZPVarDefinition(description = "Every N ticks this peace of armor will receive 1 damage by acid on player. < 0 = disable")
+    public static final ZPConfig_INT ZP_BREAK_ACID_COSTUME_PER_TICK =
+            new ZPConfig_INT(120);
+
+    @ZPVarDefinition(description = "Every N ticks this peace of armor will receive 1 damage by water(breath??? idk) on player. < 0 = disable")
+    public static final ZPConfig_INT ZP_BREAK_AQUALUNG_COSTUME_PER_TICK =
+            new ZPConfig_INT(180);
 }

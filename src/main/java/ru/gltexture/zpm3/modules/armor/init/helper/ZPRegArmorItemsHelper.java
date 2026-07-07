@@ -212,5 +212,41 @@ public abstract class ZPRegArmorItemsHelper {
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
             });
         }).end();
+
+        ZPArmorItems.aqualung_costume_helmet = regSupplier.register("aqualung_costume_helmet",
+                () -> new ZPArmorItem(ZPArmorMaterialsList.AQUALUNG_COSTUME, ArmorItem.Type.HELMET, new Item.Properties())
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
+            });
+        }).end();
+
+        ZPArmorItems.aqualung_costume_chestplate = regSupplier.register("aqualung_costume_chestplate",
+                () -> new ZPArmorItem(ZPArmorMaterialsList.AQUALUNG_COSTUME, ArmorItem.Type.CHESTPLATE, new Item.Properties())
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
+            });
+        }).end();
+
+        ZPArmorItems.aqualung_costume_leggings = regSupplier.register("aqualung_costume_leggings",
+                () -> new ZPArmorItem(ZPArmorMaterialsList.AQUALUNG_COSTUME, ArmorItem.Type.LEGGINGS, new Item.Properties())
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
+            });
+        }).end();
+
+        ZPArmorItems.aqualung_costume_boots = regSupplier.register("aqualung_costume_boots",
+                () -> new ZPArmorItem(ZPArmorMaterialsList.AQUALUNG_COSTUME, ArmorItem.Type.BOOTS, new Item.Properties())
+        ).afterCreated((e, utils) -> {
+            ZPUtility.sides().onlyClient(() -> {
+                utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
+                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
+            });
+        }).end();
     }
 }

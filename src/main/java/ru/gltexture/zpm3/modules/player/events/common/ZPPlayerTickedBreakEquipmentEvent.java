@@ -2,6 +2,7 @@ package ru.gltexture.zpm3.modules.player.events.common;
 
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -112,11 +113,11 @@ public class ZPPlayerTickedBreakEquipmentEvent implements ZPEventClass {
 
     @FunctionalInterface
     public interface ArmorBreakPredicate {
-        boolean canBreak(LivingEntity entity, ArmorItem armorItem, EquipmentSlot slot, int tick);
+        boolean canBreak(Entity entity, ArmorItem armorItem, EquipmentSlot slot, int tick);
     }
 
     @FunctionalInterface
     public interface ItemBreakPredicate {
-        boolean canBreak(LivingEntity entity, ItemStack stack, Item item, int tick);
+        boolean canBreak(Entity entity, ItemStack stack, Item item, int tick);
     }
 }

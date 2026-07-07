@@ -1,4 +1,4 @@
-package ru.gltexture.zpm3.engine.zones;
+package ru.gltexture.zpm3.modules.commands.zones;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,6 +26,7 @@ public final class ZPZoneFlag {
     public static final ZPZoneFlag disableBarbaredWires = ZPZoneFlag.register("disableBarbaredWires");
     public static final ZPZoneFlag noAcidAffection = ZPZoneFlag.register("noAcidAffection");
     public static final ZPZoneFlag noToxicAffection = ZPZoneFlag.register("noToxicAffection");
+    public static final ZPZoneFlag noRadiationAffection = ZPZoneFlag.register("noRadiationAffection");
     public static final ZPZoneFlag noAcidBlockDestruction = ZPZoneFlag.register("noAcidBlockDestruction");
     public static final ZPZoneFlag noZombieMining = ZPZoneFlag.register("noZombieMining");
     public static final ZPZoneFlag noThrowableBlockDamage = ZPZoneFlag.register("noThrowableBlockDamage");

@@ -38,6 +38,15 @@ public class ZPSounds extends ZPRegistry<SoundEvent> {
     public static RegistryObject<SoundEvent> colt_fire;
     public static RegistryObject<SoundEvent> colt_reload;
 
+    public static RegistryObject<SoundEvent> m16_fire;
+    public static RegistryObject<SoundEvent> m16_reload;
+
+    public static RegistryObject<SoundEvent> mp5_fire;
+    public static RegistryObject<SoundEvent> mp5_reload;
+
+    public static RegistryObject<SoundEvent> machinegun_fire;
+    public static RegistryObject<SoundEvent> machinegun_reload;
+
     public static RegistryObject<SoundEvent> handmade_pistol_fire;
     public static RegistryObject<SoundEvent> handmade_pistol_reload;
 

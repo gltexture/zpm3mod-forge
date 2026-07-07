@@ -40,7 +40,7 @@ public class ZPMaskVignettePostFXProcessor extends ZPPostFXProcessor {
 
     @Override
     public boolean bypass() {
-        if (Minecraft.getInstance().player != null) {
+        if (Minecraft.getInstance().player != null && Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
             if (ZPArmorUtil.isEntityHasSpecialMaskForBreathEffect(Minecraft.getInstance().player)) {
                 return false;
             }

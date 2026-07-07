@@ -26,12 +26,13 @@ public class ZPEntityLivingRadiationTickEvent implements ZPEventClass {
 
         if (!level.isClientSide()) {
             if (entity instanceof IZPLivingEntityExt izpLivingEntityExt) {
-                final int radMultiplier = ZPEntityUtil.getLivingEntityRadiationIncMultiplier(entity);
-                ZPEntityUtil.applyRadiationEffects(entity, izpLivingEntityExt.zpm3forge$getRadiationLevel());
-                final int radIncReductionFactor = ZPArmorUtil.getRadiationIncTickSlowdown(entity, radMultiplier);
-                if (radMultiplier > 0 && radIncReductionFactor >= 0) {
+                if (entity.tickCount % 20 == 0) {
+                    ZPEntityUtil.applyRadiationEffects(entity, izpLivingEntityExt.zpm3forge$getRadiationLevel());
+                }
+                final int radTickRate = ZPEntityUtil.getEntityRadAffectionTickRate(entity);
+                if (radTickRate > 0) {
                     if (izpLivingEntityExt.zpm3forge$getRadiationLevel() < 100) {
-                        if (entity.tickCount % (ZPEntityConfig.ADD_RAD_PER_TICK.getVar() / radMultiplier + radIncReductionFactor) == 0) {
+                        if (entity.tickCount % radTickRate == 0) {
                             izpLivingEntityExt.zpm3forge$addRadiationLevel(1);
                             //System.out.println(izpLivingEntityExt.zpm3forge$getRadiationLevel());
                         }

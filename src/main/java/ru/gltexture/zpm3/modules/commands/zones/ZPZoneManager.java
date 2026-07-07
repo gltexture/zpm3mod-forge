@@ -1,4 +1,4 @@
-package ru.gltexture.zpm3.engine.zones;
+package ru.gltexture.zpm3.modules.commands.zones;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -243,6 +243,11 @@ public final class ZPZoneManager {
                 this.zonesPerLevelMap.get(level).buildFastPerChunkAccessMap(this.zonesPerLevelMap.get(level).getIdAccessMap().values());
             }
         }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public @Nullable ZonesContainer ZONES_CONTAINER(ClientLevel level) {
+        return this.zonesPerLevelMap.get(level);
     }
 
     public record Zone(String uniqueId, Vector3i start, Vector3i end, Set<ZPZoneFlag> flags) {

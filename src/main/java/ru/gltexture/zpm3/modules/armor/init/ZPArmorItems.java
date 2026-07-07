@@ -36,6 +36,11 @@ public class ZPArmorItems extends ZPRegistry<Item> implements IZPCollectRegistry
     public static RegistryObject<ZPArmorItem> radiation_costume_leggings;
     public static RegistryObject<ZPArmorItem> radiation_costume_boots;
 
+    public static RegistryObject<ZPArmorItem> aqualung_costume_helmet;
+    public static RegistryObject<ZPArmorItem> aqualung_costume_chestplate;
+    public static RegistryObject<ZPArmorItem> aqualung_costume_leggings;
+    public static RegistryObject<ZPArmorItem> aqualung_costume_boots;
+
     public static RegistryObject<ZPArmorItem> night_vision_goggles;
 
     public ZPArmorItems() {

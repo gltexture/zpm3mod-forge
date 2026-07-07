@@ -18,6 +18,7 @@ public class ZPMiscItems extends ZPRegistry<Item> implements IZPCollectRegistryO
     public static RegistryObject<ZPItem> scrap_stack_material;
     public static RegistryObject<ZPItem> shelves_material;
     public static RegistryObject<ZPItem> table_material;
+    public static RegistryObject<ZPItem> oxygen;
 
     public ZPMiscItems() {
         super(ZPRegistryConveyor.Target.ITEM);

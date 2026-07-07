@@ -20,4 +20,12 @@ public class ZPEntityConfig implements ZPConfigConstantsClass {
     @ZPVarDefinition(description = "Radiation point will be added on entity each N tick.")
     public static final ZPConfig_INT ADD_RAD_PER_TICK =
             new ZPConfig_INT(16);
+
+    @ZPVarDefinition(description = "Acid point-factor will be added on entity each N tick.")
+    public static final ZPConfig_INT ADD_ACID_FACTOR_PER_TICK =
+            new ZPConfig_INT(4);
+
+    @ZPVarDefinition(description = "Toxic point-factor will be added on entity each N tick.")
+    public static final ZPConfig_INT ADD_TOXIC_FACTOR_PER_TICK =
+            new ZPConfig_INT(4);
 }

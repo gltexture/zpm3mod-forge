@@ -22,7 +22,7 @@ import ru.gltexture.zpm3.modules.player.mixins.ext.IZPPlayerMixinExt;
 
 @Mixin(Player.class)
 public abstract class ZPPlayerMixin implements IZPPlayerMixinExt {
-    @Shadow
+    @Shadow(remap = false)
     public abstract void setForcedPose(@Nullable Pose pose);
 
     @Unique

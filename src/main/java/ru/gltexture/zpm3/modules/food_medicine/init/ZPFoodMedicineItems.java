@@ -20,6 +20,9 @@ public class ZPFoodMedicineItems extends ZPRegistry<Item> implements IZPCollectR
     public static RegistryObject<ZPItemFood> soda;
     public static RegistryObject<ZPItemFood> water;
     public static RegistryObject<ZPItemFood> fried_egg;
+    public static RegistryObject<ZPItemFood> rotten_apple;
+    public static RegistryObject<ZPItemFood> chocolate;
+    public static RegistryObject<ZPItemFood> minecake;
 
     //MEDICINE
     public static RegistryObject<ZPItemMedicine> adrenaline_syringe;
@@ -34,6 +37,8 @@ public class ZPFoodMedicineItems extends ZPRegistry<Item> implements IZPCollectR
     public static RegistryObject<ZPItemMedicine> bandage;
     public static RegistryObject<ZPItemMedicine> military_bandage;
     public static RegistryObject<ZPItemMedicine> meth_pill;
+    public static RegistryObject<ZPItemMedicine> vodka_medicine;
+    public static RegistryObject<ZPItemMedicine> radiation_protection_pill;
     public static RegistryObject<ZPItemMedicine> healing_pill;
     public static RegistryObject<ZPItemMedicine> better_vision_pill;
     public static RegistryObject<ZPItemMedicine> aid_kit;

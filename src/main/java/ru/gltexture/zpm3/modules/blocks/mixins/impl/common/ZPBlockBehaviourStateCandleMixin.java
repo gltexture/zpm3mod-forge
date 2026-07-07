@@ -23,7 +23,11 @@ public abstract class ZPBlockBehaviourStateCandleMixin {
     @Inject(method = "randomTick", at = @At("HEAD"))
     private void randomTick(ServerLevel pLevel, BlockPos pPos, RandomSource pRandom, CallbackInfo ci) {
         if (this.getBlock() instanceof AbstractCandleBlock abstractCandleBlock && pLevel.getBlockState(pPos).getValue(AbstractCandleBlock.LIT)) {
-            if (ZPRandom.getRandom().nextFloat() <= ZPWorldConfig.CANDLE_EACH_TICK_RANDOM_EXTINGUISH_CONST.getVar()) {
+            float chance = ZPWorldConfig.CANDLE_EACH_TICK_RANDOM_EXTINGUISH_CONST.getVar();
+            if(pLevel.isRainingAt(pPos)) {
+                chance *= 10.0f;
+            }
+            if (ZPRandom.getRandom().nextFloat() <= chance) {
                 AbstractCandleBlock.extinguish(null, pLevel.getBlockState(pPos), pLevel, pPos);
             }
         }

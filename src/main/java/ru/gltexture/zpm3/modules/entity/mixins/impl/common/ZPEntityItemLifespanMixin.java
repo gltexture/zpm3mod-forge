@@ -21,7 +21,7 @@ public abstract class ZPEntityItemLifespanMixin {
     @Shadow
     public abstract ItemStack getItem();
 
-    @Shadow
+    @Shadow(remap = false)
     public int lifespan;
 
     @Inject(method = "<init>*", at = @At("TAIL"))

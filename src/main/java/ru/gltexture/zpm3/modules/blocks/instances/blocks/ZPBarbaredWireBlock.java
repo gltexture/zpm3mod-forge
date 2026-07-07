@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPEntityConfig;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
-import ru.gltexture.zpm3.engine.zones.ZPZoneChecks;
+import ru.gltexture.zpm3.modules.commands.zones.ZPZoneChecks;
 
 import ru.gltexture.zpm3.modules.blocks.instances.block_entities.ZPBarbaredWireBlockEntity;
 import ru.gltexture.zpm3.modules.mob_effects.init.ZPMobEffects;

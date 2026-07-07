@@ -42,7 +42,7 @@ public class ZPNightVisPostFXProcessor extends ZPPostFXProcessor{
     @Override
     public boolean bypass() {
         if (Minecraft.getInstance().player != null) {
-            if (ZPArmorUtil.isEntityHasNightVisionGoggles(Minecraft.getInstance().player)) {
+            if (ZPArmorUtil.isEntityHasNightVisionGoggles(Minecraft.getInstance().player) && Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
                 return false;
             }
         }

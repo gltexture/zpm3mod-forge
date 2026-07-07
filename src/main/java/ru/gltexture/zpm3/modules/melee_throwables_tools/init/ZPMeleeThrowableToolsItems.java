@@ -56,6 +56,7 @@ public class ZPMeleeThrowableToolsItems extends ZPRegistry<Item> implements IZPC
     public static RegistryObject<ZPItemPickaxe> sledgehammer;
     public static RegistryObject<ZPItemSword> crowbar;
     public static RegistryObject<ZPItemSword> cleaver;
+    public static RegistryObject<ZPItemSword> broom;
 
     public ZPMeleeThrowableToolsItems() {
         super(ZPRegistryConveyor.Target.ITEM);

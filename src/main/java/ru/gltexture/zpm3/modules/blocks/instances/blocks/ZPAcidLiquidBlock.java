@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPExperimentalConfig;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
-import ru.gltexture.zpm3.engine.zones.ZPZoneChecks;
+import ru.gltexture.zpm3.modules.commands.zones.ZPZoneChecks;
 
 import ru.gltexture.zpm3.modules.blocks.init.ZPBlockEntities;
 import ru.gltexture.zpm3.modules.blocks.instances.block_entities.ZPFadingBlockEntity;

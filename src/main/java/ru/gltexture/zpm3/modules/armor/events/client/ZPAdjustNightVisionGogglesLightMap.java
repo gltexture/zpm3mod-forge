@@ -15,7 +15,7 @@ public class ZPAdjustNightVisionGogglesLightMap {
     @ZombiePlagueEvent
     public static void lightmapUpdate(ZPModEventBus.PostCalcMinecraftLightMapEvent event) {
         if (Minecraft.getInstance().player != null) {
-            if (ZPArmorUtil.isEntityHasNightVisionGoggles(Minecraft.getInstance().player)) {
+            if (ZPArmorUtil.isEntityHasNightVisionGoggles(Minecraft.getInstance().player) && Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
                 event.getZpLightMapModifier().add(new ZPLightMapModifier.LightMapModRequest(1.0f, event.getCurrentGAMMA() < ZPAdjustNightVisionGogglesLightMap.NV_GAMM ? ZPAdjustNightVisionGogglesLightMap.NV_GAMM - event.getCurrentGAMMA() : 0.0f));
             }
         }

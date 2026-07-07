@@ -374,5 +374,101 @@ public abstract class ZPRegGuns {
                 });
             }).end();
         }
+
+        {
+            ZPGunItems._m16 = regSupplier.register("_m16",
+                    () -> new ZPItem(new Item.Properties().stacksTo(32))
+            ).afterCreated((e, utils) -> {
+                ZPUtility.sides().onlyClient(() -> {
+                    utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                    utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+                });
+            }).end();
+
+            ZPGunItems.m16 = regSupplier.register("m16",
+                    () -> new ZPGunPistol(new Item.Properties(), new ZPBaseGun.GunProperties(ZPGunItems._m16.get(), ZPBaseGun.GunProperties.HeldType.RIFLE)
+                            .setDamage(3)
+                            .setAuto(true)
+                            .setDurability(740)
+                            .setInaccuracy(1.08f)
+                            .setMaxAmmo(30)
+                            .setReloadTime(84)
+                            .setShootCooldown(2)
+                            .setClientRecoil(1.2f)
+                            .setReloadSound(() -> ZPSounds.m16_reload.get())
+                            .setFireSound(() -> ZPSounds.m16_fire.get())
+                    )
+            ).afterCreated((e, utils) -> {
+                ZPUtility.sides().onlyClient(() -> {
+                    utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                    utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+                    utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultRifleRenderer, ZPDefaultGunRenderers.defaultRifleRenderer);
+                });
+            }).end();
+        }
+
+        {
+            ZPGunItems._mp5 = regSupplier.register("_mp5",
+                    () -> new ZPItem(new Item.Properties().stacksTo(32))
+            ).afterCreated((e, utils) -> {
+                ZPUtility.sides().onlyClient(() -> {
+                    utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                    utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+                });
+            }).end();
+
+            ZPGunItems.mp5 = regSupplier.register("mp5",
+                    () -> new ZPGunPistol(new Item.Properties(), new ZPBaseGun.GunProperties(ZPGunItems._mp5.get(), ZPBaseGun.GunProperties.HeldType.RIFLE)
+                            .setDamage(3)
+                            .setAuto(true)
+                            .setDurability(520)
+                            .setInaccuracy(1.0f)
+                            .setMaxAmmo(30)
+                            .setReloadTime(76)
+                            .setShootCooldown(3)
+                            .setClientRecoil(1.4f)
+                            .setReloadSound(() -> ZPSounds.mp5_reload.get())
+                            .setFireSound(() -> ZPSounds.mp5_fire.get())
+                    )
+            ).afterCreated((e, utils) -> {
+                ZPUtility.sides().onlyClient(() -> {
+                    utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                    utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+                    utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultRifleRenderer, ZPDefaultGunRenderers.defaultRifleRenderer);
+                });
+            }).end();
+        }
+
+        {
+            ZPGunItems._machinegun = regSupplier.register("_machinegun",
+                    () -> new ZPItem(new Item.Properties().stacksTo(32))
+            ).afterCreated((e, utils) -> {
+                ZPUtility.sides().onlyClient(() -> {
+                    utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                    utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+                });
+            }).end();
+
+            ZPGunItems.machinegun = regSupplier.register("machinegun",
+                    () -> new ZPGunPistol(new Item.Properties(), new ZPBaseGun.GunProperties(ZPGunItems._machinegun.get(), ZPBaseGun.GunProperties.HeldType.RIFLE)
+                            .setDamage(2)
+                            .setAuto(true)
+                            .setDurability(700)
+                            .setInaccuracy(1.8f)
+                            .setMaxAmmo(64)
+                            .setReloadTime(100)
+                            .setShootCooldown(2)
+                            .setClientRecoil(2.0f)
+                            .setReloadSound(() -> ZPSounds.machinegun_reload.get())
+                            .setFireSound(() -> ZPSounds.machinegun_fire.get())
+                    )
+            ).afterCreated((e, utils) -> {
+                ZPUtility.sides().onlyClient(() -> {
+                    utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                    utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+                    utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultRifleRenderer, ZPDefaultGunRenderers.defaultRifleRenderer);
+                });
+            }).end();
+        }
     }
 }

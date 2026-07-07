@@ -47,6 +47,15 @@ public class ZPGunItems extends ZPRegistry<Item> implements IZPCollectRegistryOb
     public static RegistryObject<ZPGunClassicRifle> mosin;
     public static RegistryObject<ZPItem> _mosin;
 
+    public static RegistryObject<ZPGunPistol> mp5;
+    public static RegistryObject<ZPItem> _mp5;
+
+    public static RegistryObject<ZPGunPistol> m16;
+    public static RegistryObject<ZPItem> _m16;
+
+    public static RegistryObject<ZPGunPistol> machinegun;
+    public static RegistryObject<ZPItem> _machinegun;
+
     public ZPGunItems() {
         super(ZPRegistryConveyor.Target.ITEM);
     }

@@ -27,6 +27,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPEntityConfig;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
+import ru.gltexture.zpm3.modules.armor.utils.ZPArmorUtil;
 import ru.gltexture.zpm3.modules.entity.mixins.ext.IZPEntityExt;
 import ru.gltexture.zpm3.modules.entity.util.ZPEntityUtil;
 
@@ -78,9 +79,9 @@ public abstract class ZPEntityExtendingMixin implements IZPEntityExt {
                     entity.discard();
                 }
             }
-            final int getEntityAcidIncMultiplier = ZPEntityUtil.getEntityAcidIncMultiplier(entity);
-            if (getEntityAcidIncMultiplier > 0) {
-                if (entity.tickCount % (4 / getEntityAcidIncMultiplier) == 0) {
+            final int acidTickRate = ZPEntityUtil.getEntityAcidAffectionTickRate(entity);
+            if (acidTickRate > 0) {
+                if (entity.tickCount % acidTickRate == 0) {
                     this.addAcidLevel(1);
                 }
             } else if (entity.tickCount % 2 == 0 && this.zpm3forge$getAcidLevel() > 0) {
@@ -92,9 +93,9 @@ public abstract class ZPEntityExtendingMixin implements IZPEntityExt {
                 }
             }
             if (this.zpm3forge$getAcidLevel() > 0) {
-                if (entity.tickCount % (2 / getEntityAcidIncMultiplier) == 0) {
+                //if (entity.tickCount % (2 / ZPEntityUtil.getEntityAcidIncMultiplier(entity)) == 0) {
                     ZPEntityUtil.damageEntityAndPossiblyEquipment(entity);
-                }
+                //}
             }
         }
     }

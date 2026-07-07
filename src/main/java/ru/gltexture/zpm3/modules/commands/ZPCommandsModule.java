@@ -15,8 +15,9 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3i;
 import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
-import ru.gltexture.zpm3.engine.zones.ZPZoneFlag;
-import ru.gltexture.zpm3.engine.zones.ZPZoneManager;
+import ru.gltexture.zpm3.modules.commands.events.client.ZPRenderSpecialZoneEffectsOnClient;
+import ru.gltexture.zpm3.modules.commands.zones.ZPZoneFlag;
+import ru.gltexture.zpm3.modules.commands.zones.ZPZoneManager;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.module.ZPModule;
@@ -68,8 +69,19 @@ public class ZPCommandsModule extends ZPModule {
     public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
         moduleEntry.addMinecraftEventClass(ZPCommandsEvent.class);
         ZPUtility.sides().onlyClient(() -> {
-            moduleEntry.addMinecraftEventClass(ZPRenderZones.class);
-            moduleEntry.addMinecraftEventClass(ZPCreativeUtilityMenuEvent.class);
+            if (ZPRenderHelper.INSTANCE.getDearUIRenderer() != null) {
+                moduleEntry.addMinecraftEventClass(ZPRenderZones.class);
+                moduleEntry.addMinecraftEventClass(ZPCreativeUtilityMenuEvent.class);
+            }
+            moduleEntry.addMinecraftEventClass(ZPRenderSpecialZoneEffectsOnClient.class);
+
+            ZPRenderSpecialZoneEffectsOnClient.registerZoneEffect(ZPZoneFlag.toxicCloud, (zone, chunkX, chunkZ) -> {
+                ZPRenderSpecialZoneEffectsOnClient.renderCloudDefaultFun(zone, chunkX, chunkZ, false);
+            });
+
+            ZPRenderSpecialZoneEffectsOnClient.registerZoneEffect(ZPZoneFlag.acidCloud, (zone, chunkX, chunkZ) -> {
+                ZPRenderSpecialZoneEffectsOnClient.renderCloudDefaultFun(zone, chunkX, chunkZ, true);
+            });
         });
     }
 

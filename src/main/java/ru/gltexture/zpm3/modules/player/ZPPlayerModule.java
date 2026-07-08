@@ -5,7 +5,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPCombatConfig;
 import ru.gltexture.zpm3.engine.core.module.ZPModule;
 import ru.gltexture.zpm3.modules.armor.init.ZPArmorItems;
@@ -64,7 +63,7 @@ public class ZPPlayerModule extends ZPModule {
             moduleEntry.addMinecraftEventClass(ZPRenderGuiEvent.class);
             moduleEntry.addMinecraftEventClass(ZPResourcePackEvent.class);
             moduleEntry.addMinecraftEventClass(ZPPlayerLyingClientCheckEvent.class);
-            moduleEntry.addMinecraftEventClass(ZPPlayerClientTickEventEvent.class);
+            moduleEntry.addMinecraftEventClass(ZPPlayerClientTickGeigerSoundEvent.class);
         });
 
         moduleEntry.addMinecraftEventClass(ZPPlayerGunCancelInterEvent.class);

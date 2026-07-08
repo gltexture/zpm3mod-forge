@@ -36,9 +36,23 @@ public abstract class ZPCommonClientUtils {
         emmitAcidParticle(true, scale, position, velocity);
     }
 
+    public static void emmitDustParticle(final float scale, final @NotNull Vector3f position, final @NotNull Vector3f velocity) {
+        emmitDustParticle(true, scale, position, velocity);
+    }
+
+
     public static void emmitToxicParticle(boolean renderAlways, final float scale, final @NotNull Vector3f position, final @NotNull Vector3f velocity) {
         final Vector3f color = new Vector3f(0.65f, 0.7f, 0.3f).add(ZPRandom.instance.randomVector3f(0.0f, new Vector3f(0.2f, 0.0f, 0.2f)));
         final int lifetime = 30 + ZPRandom.getRandom().nextInt(15);
+        final double x = position.x;
+        final double y = position.y;
+        final double z = position.z;
+        Objects.requireNonNull(Minecraft.getInstance().level).addParticle(new ColoredDefaultParticleOptions(ZPParticles.colored_cloud.get(), color, scale, lifetime), renderAlways, x, y, z, velocity.x(), velocity.y(), velocity.z());
+    }
+
+    public static void emmitDustParticle(boolean renderAlways, final float scale, final @NotNull Vector3f position, final @NotNull Vector3f velocity) {
+        final Vector3f color = new Vector3f(0.5f, 0.5f, 0.5f).add(new Vector3f(ZPRandom.instance.randomFloat(0.45f))).add(ZPRandom.instance.randomVector3f(0.0f, new Vector3f(0.05f, 0.05f, 0.05f)));
+        final int lifetime = 30 + ZPRandom.getRandom().nextInt(10);
         final double x = position.x;
         final double y = position.y;
         final double z = position.z;

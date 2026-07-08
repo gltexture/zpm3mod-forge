@@ -1,12 +1,19 @@
 package ru.gltexture.zpm3.modules.melee_throwables_tools;
 
+import com.mojang.math.Axis;
+import net.minecraft.client.model.ArmedModel;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
+import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooksManager;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.module.ZPModule;
 import ru.gltexture.zpm3.engine.core.module.ZPModuleData;
@@ -15,8 +22,11 @@ import ru.gltexture.zpm3.engine.recipes.ZPRecipesController;
 import ru.gltexture.zpm3.engine.recipes.ZPRecipesRegistry;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 import ru.gltexture.zpm3.modules.debug.events.ZPRenderStuffEvent;
+import ru.gltexture.zpm3.modules.melee_throwables_tools.events.client.ZPPlayerClientTickBroomEvent;
 import ru.gltexture.zpm3.modules.melee_throwables_tools.init.ZPMeleeThrowableToolsItems;
+import ru.gltexture.zpm3.modules.melee_throwables_tools.instances.melee.ZPBroomSword;
 import ru.gltexture.zpm3.modules.melee_throwables_tools.tiers.ZPCommonToolMeleeTiers;
+import ru.gltexture.zpm3.modules.player.events.client.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -50,11 +60,12 @@ public class ZPMeleeThrowableToolsModule extends ZPModule {
 
     @Override
     public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
+        ZPUtility.sides().onlyClient(() -> {
+            moduleEntry.addMinecraftEventClass(ZPPlayerClientTickBroomEvent.class);
+        });
         moduleEntry.addRecipesRegistry(new ZPMeleeThrowableToolsModule.ZPMeleeThrowablesToolsRecipeRegistry());
         moduleEntry.addTier(ZPCommonToolMeleeTiers.values());
         moduleEntry.addMinecraftRegistryClass(ZPMeleeThrowableToolsItems.class);
-        ZPUtility.sides().onlyClient(() -> {
-        });
     }
 
     @Override
@@ -64,7 +75,22 @@ public class ZPMeleeThrowableToolsModule extends ZPModule {
 
     @Override
     public void postInitialize() {
-
+        ZPUtility.sides().onlyClient(() -> {
+            ZPRenderHooksManager.INSTANCE.addItemRendering3PersonHook(() -> ZPMeleeThrowableToolsItems.broom.get(), ((itemInHandRenderer, deltaTicks, entityModel, pLivingEntity, pItemStack, pDisplayContext, pArm, pPoseStack, pBuffer, pPackedLight) -> {
+                        final float t = pLivingEntity.getTicksUsingItem() + deltaTicks;
+                        final float swing = Mth.sin(t * 0.5F) * 0.58F;
+                        pPoseStack.pushPose();
+                        ((ArmedModel) entityModel).translateToHand(pArm, pPoseStack);
+                        pPoseStack.mulPose(Axis.XP.rotationDegrees(-90.0F));
+                        pPoseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
+                        pPoseStack.mulPose(Axis.ZP.rotation(swing));
+                        boolean flag = pArm == HumanoidArm.LEFT;
+                        pPoseStack.translate((float) (flag ? -1 : 1) / 16.0F, 0.125F, -0.625F);
+                        itemInHandRenderer.renderItem(pLivingEntity, pItemStack, pDisplayContext, flag, pPoseStack, pBuffer, pPackedLight);
+                        pPoseStack.popPose();
+                    })
+            );
+        });
     }
 
     private static class ZPMeleeThrowablesToolsRecipeRegistry extends ZPRecipesRegistry {

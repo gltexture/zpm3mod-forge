@@ -31,6 +31,7 @@ import ru.gltexture.zpm3.modules.melee_throwables_tools.init.helper.ZPRegMelee;
 import ru.gltexture.zpm3.modules.melee_throwables_tools.init.helper.ZPRegThrowable;
 import ru.gltexture.zpm3.modules.melee_throwables_tools.instances.items.ZPMatches;
 import ru.gltexture.zpm3.modules.melee_throwables_tools.instances.items.ZPWrenchTool;
+import ru.gltexture.zpm3.modules.melee_throwables_tools.instances.melee.ZPBroomSword;
 import ru.gltexture.zpm3.modules.misc_items.init.ZPMiscItems;
 
 import java.util.*;
@@ -56,7 +57,7 @@ public class ZPMeleeThrowableToolsItems extends ZPRegistry<Item> implements IZPC
     public static RegistryObject<ZPItemPickaxe> sledgehammer;
     public static RegistryObject<ZPItemSword> crowbar;
     public static RegistryObject<ZPItemSword> cleaver;
-    public static RegistryObject<ZPItemSword> broom;
+    public static RegistryObject<ZPBroomSword> broom;
 
     public ZPMeleeThrowableToolsItems() {
         super(ZPRegistryConveyor.Target.ITEM);

@@ -1,4 +1,4 @@
-package ru.gltexture.zpm3.modules.commands.zones;
+package ru.gltexture.zpm3.engine.zones;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
@@ -17,76 +17,76 @@ public final class ZPZoneChecks {
     }
 
     public boolean isZombieErasing(@NotNull Level level, @NotNull Entity entity) {
-        return this.checkFlag(level, Mth.floor(entity.getX()), Mth.floor(entity.getY()), Mth.floor(entity.getZ()), ZPZoneFlag.zombieErasing);
+        return this.checkFlag(level, Mth.floor(entity.getX()), Mth.floor(entity.getY()), Mth.floor(entity.getZ()), ZPZonesRegistry.zombieErasing);
     }
 
     public boolean isNoPlayersPvp(@NotNull Level level, @NotNull Entity entity) {
-        return this.checkFlag(level, Mth.floor(entity.getX()), Mth.floor(entity.getY()), Mth.floor(entity.getZ()), ZPZoneFlag.noPlayersPvp);
+        return this.checkFlag(level, Mth.floor(entity.getX()), Mth.floor(entity.getY()), Mth.floor(entity.getZ()), ZPZonesRegistry.noPlayersPvp);
     }
 
     public boolean isNoPlayersDamage(@NotNull Level level, @NotNull Entity entity) {
-        return this.checkFlag(level, Mth.floor(entity.getX()), Mth.floor(entity.getY()), Mth.floor(entity.getZ()), ZPZoneFlag.noPlayersDamage);
+        return this.checkFlag(level, Mth.floor(entity.getX()), Mth.floor(entity.getY()), Mth.floor(entity.getZ()), ZPZonesRegistry.noPlayersDamage);
     }
 
     public boolean isInRadLVL1(@NotNull Level level, @NotNull Entity entity) {
-        return this.checkFlag(level, Mth.floor(entity.getX()), Mth.floor(entity.getY()), Mth.floor(entity.getZ()), ZPZoneFlag.radiationLevel1);
+        return this.checkFlag(level, Mth.floor(entity.getX()), Mth.floor(entity.getY()), Mth.floor(entity.getZ()), ZPZonesRegistry.radiationLevel1);
     }
 
     public boolean isInRadLVL2(@NotNull Level level, @NotNull Entity entity) {
-        return this.checkFlag(level, Mth.floor(entity.getX()), Mth.floor(entity.getY()), Mth.floor(entity.getZ()), ZPZoneFlag.radiationLevel2);
+        return this.checkFlag(level, Mth.floor(entity.getX()), Mth.floor(entity.getY()), Mth.floor(entity.getZ()), ZPZonesRegistry.radiationLevel2);
     }
 
     public boolean isInAcidCloud(@NotNull Level level, @NotNull Entity entity) {
-        return this.checkFlag(level, Mth.floor(entity.getX()), Mth.floor(entity.getY()), Mth.floor(entity.getZ()), ZPZoneFlag.acidCloud);
+        return this.checkFlag(level, Mth.floor(entity.getX()), Mth.floor(entity.getY()), Mth.floor(entity.getZ()), ZPZonesRegistry.acidCloud);
     }
 
     public boolean isInToxicCloud(@NotNull Level level, @NotNull Entity entity) {
-        return this.checkFlag(level, Mth.floor(entity.getX()), Mth.floor(entity.getY()), Mth.floor(entity.getZ()), ZPZoneFlag.toxicCloud);
+        return this.checkFlag(level, Mth.floor(entity.getX()), Mth.floor(entity.getY()), Mth.floor(entity.getZ()), ZPZonesRegistry.toxicCloud);
     }
 
     public boolean isNoBlocksDestruction(@NotNull Level level, @NotNull BlockPos pos) {
-        return this.checkFlag(level, pos.getX(), pos.getY(), pos.getZ(), ZPZoneFlag.noBlocksDestruction);
+        return this.checkFlag(level, pos.getX(), pos.getY(), pos.getZ(), ZPZonesRegistry.noBlocksDestruction);
     }
 
     public boolean isBarbaredWiresDisabled(@NotNull Level level, @NotNull BlockPos pos) {
-        return this.checkFlag(level, pos.getX(), pos.getY(), pos.getZ(), ZPZoneFlag.disableBarbaredWires);
+        return this.checkFlag(level, pos.getX(), pos.getY(), pos.getZ(), ZPZonesRegistry.disableBarbaredWires);
     }
 
 
     public boolean isZombieBlockSpawn(@NotNull Level level, @NotNull Entity entity) {
-        return this.checkFlag(level, Mth.floor(entity.getX()), Mth.floor(entity.getY()), Mth.floor(entity.getZ()), ZPZoneFlag.zombieSpawnBlocking);
+        return this.checkFlag(level, Mth.floor(entity.getX()), Mth.floor(entity.getY()), Mth.floor(entity.getZ()), ZPZonesRegistry.zombieSpawnBlocking);
     }
 
     public boolean isZombieBlockSpawn(@NotNull Level level, @NotNull BlockPos blockPos) {
-        return this.checkFlag(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ZPZoneFlag.zombieSpawnBlocking);
+        return this.checkFlag(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ZPZonesRegistry.zombieSpawnBlocking);
     }
 
     public boolean isNoToxicAffection(@NotNull Level level, @NotNull BlockPos blockPos) {
-        return this.checkFlag(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ZPZoneFlag.noToxicAffection);
+        return this.checkFlag(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ZPZonesRegistry.noToxicAffection);
     }
 
     public boolean isNoRadiationAffection(@NotNull Level level, @NotNull BlockPos blockPos) {
-        return this.checkFlag(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ZPZoneFlag.noRadiationAffection);
+        return this.checkFlag(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ZPZonesRegistry.noRadiationAffection);
     }
 
     public boolean isNoAcidAffection(@NotNull Level level, @NotNull BlockPos blockPos) {
-        return this.checkFlag(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ZPZoneFlag.noAcidAffection);
+        return this.checkFlag(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ZPZonesRegistry.noAcidAffection);
     }
 
     public boolean isNoAcidBlockDestruction(@NotNull Level level, @NotNull BlockPos blockPos) {
-        return this.checkFlag(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ZPZoneFlag.noAcidBlockDestruction);
+        return this.checkFlag(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ZPZonesRegistry.noAcidBlockDestruction);
     }
 
     public boolean isNoZombieMining(@NotNull Level level, @NotNull BlockPos blockPos) {
-        return this.checkFlag(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ZPZoneFlag.noZombieMining);
+        return this.checkFlag(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ZPZonesRegistry.noZombieMining);
     }
 
     public boolean isNoThrowableBlockDamage(@NotNull Level level, @NotNull BlockPos blockPos) {
-        return this.checkFlag(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ZPZoneFlag.noThrowableBlockDamage);
+        return this.checkFlag(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ZPZonesRegistry.noThrowableBlockDamage);
     }
 
     public boolean isNoBulletBlockDmg(@NotNull Level level, @NotNull BlockPos blockPos) {
-        return this.checkFlag(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ZPZoneFlag.noBulletBlockDmg);
+        return this.checkFlag(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ZPZonesRegistry.noBulletBlockDmg);
     }
 
     private boolean checkFlag(Level level, BlockPos blockPos, ZPZoneFlag flag) {

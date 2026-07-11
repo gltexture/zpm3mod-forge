@@ -16,7 +16,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
-import ru.gltexture.zpm3.modules.commands.zones.ZPZoneChecks;
+import ru.gltexture.zpm3.engine.zones.ZPZoneChecks;
 
 import ru.gltexture.zpm3.modules.entity.instances.mobs.ai.ZPZombieMiningGoal;
 import ru.gltexture.zpm3.modules.net_pack.packets.ZPBlockCrackPacket;

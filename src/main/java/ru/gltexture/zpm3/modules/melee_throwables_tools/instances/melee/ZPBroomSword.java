@@ -28,7 +28,7 @@ public class ZPBroomSword extends ZPItemSword {
 
     @Override
     public int getUseDuration(@NotNull ItemStack stack) {
-        return 200;
+        return 600;
     }
 
     @Override

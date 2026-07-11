@@ -15,9 +15,10 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3i;
 import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
+import ru.gltexture.zpm3.engine.zones.vars.ZPZoneIntVar;
 import ru.gltexture.zpm3.modules.commands.events.client.ZPRenderSpecialZoneEffectsOnClient;
-import ru.gltexture.zpm3.modules.commands.zones.ZPZoneFlag;
-import ru.gltexture.zpm3.modules.commands.zones.ZPZoneManager;
+import ru.gltexture.zpm3.engine.zones.ZPZoneFlag;
+import ru.gltexture.zpm3.engine.zones.ZPZoneManager;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.module.ZPModule;
@@ -26,6 +27,7 @@ import ru.gltexture.zpm3.engine.events.ZPEventClass;
 import ru.gltexture.zpm3.modules.commands.events.client.ZPCreativeUtilityMenuEvent;
 import ru.gltexture.zpm3.modules.commands.events.client.ZPRenderZones;
 import ru.gltexture.zpm3.modules.commands.imgui.ZPCreativeUtilityUI;
+import ru.gltexture.zpm3.engine.zones.ZPZonesRegistry;
 
 import java.util.*;
 
@@ -75,11 +77,11 @@ public class ZPCommandsModule extends ZPModule {
             }
             moduleEntry.addMinecraftEventClass(ZPRenderSpecialZoneEffectsOnClient.class);
 
-            ZPRenderSpecialZoneEffectsOnClient.registerZoneEffect(ZPZoneFlag.toxicCloud, (zone, chunkX, chunkZ) -> {
+            ZPRenderSpecialZoneEffectsOnClient.registerZoneEffect(ZPZonesRegistry.toxicCloud, (zone, chunkX, chunkZ) -> {
                 ZPRenderSpecialZoneEffectsOnClient.renderCloudDefaultFun(zone, chunkX, chunkZ, false);
             });
 
-            ZPRenderSpecialZoneEffectsOnClient.registerZoneEffect(ZPZoneFlag.acidCloud, (zone, chunkX, chunkZ) -> {
+            ZPRenderSpecialZoneEffectsOnClient.registerZoneEffect(ZPZonesRegistry.acidCloud, (zone, chunkX, chunkZ) -> {
                 ZPRenderSpecialZoneEffectsOnClient.renderCloudDefaultFun(zone, chunkX, chunkZ, true);
             });
         });
@@ -138,7 +140,12 @@ public class ZPCommandsModule extends ZPModule {
                             //        })
                             //)
                             .then(Commands.literal("zoneCreate")
-                                    .then(Commands.argument("id", StringArgumentType.string())
+                                    .then(Commands.argument("zoneId", StringArgumentType.string())
+                                            .suggests((ctx, builder) -> {
+                                                ServerLevel level = ctx.getSource().getLevel();
+                                                Objects.requireNonNull(ZPZoneManager.INSTANCE.getAllZonesOnLevel(level)).forEach(e -> builder.suggest(e.uniqueId()));
+                                                return builder.buildFuture();
+                                            })
                                             .then(Commands.argument("x1", IntegerArgumentType.integer())
                                                     .then(Commands.argument("y1", IntegerArgumentType.integer())
                                                             .then(Commands.argument("z1", IntegerArgumentType.integer())
@@ -151,7 +158,7 @@ public class ZPCommandsModule extends ZPModule {
                                                                                                 if (!player.hasPermissions(3)) {
                                                                                                     return 0;
                                                                                                 }
-                                                                                                String id = StringArgumentType.getString(ctx, "id");
+                                                                                                String id = StringArgumentType.getString(ctx, "zoneId");
                                                                                                 final int x1 = IntegerArgumentType.getInteger(ctx, "x1");
                                                                                                 final int y1 = IntegerArgumentType.getInteger(ctx, "y1");
                                                                                                 final int z1 = IntegerArgumentType.getInteger(ctx, "z1");
@@ -164,7 +171,7 @@ public class ZPCommandsModule extends ZPModule {
                                                                                                 //final int maxY = Math.end(y1, y2);
                                                                                                 //final int minZ = Math.start(z1, z2);
                                                                                                 //final int maxZ = Math.end(z1, z2);
-                                                                                                ZPZoneManager.Zone zone = new ZPZoneManager.Zone(id, new Vector3i(x1, y1, z1), new Vector3i(x2, y2, z2), new HashSet<>());
+                                                                                                ZPZoneManager.Zone zone = ZPZoneManager.CREATE_DEFAULT_ZONE(id, new Vector3i(x1, y1, z1), new Vector3i(x2, y2, z2));
                                                                                                 ZPZoneManager.INSTANCE.addNewZone(level, zone);
 
                                                                                                 ctx.getSource().sendSuccess(() -> Component.literal("Zone " + id + " created!"), false);
@@ -179,7 +186,12 @@ public class ZPCommandsModule extends ZPModule {
                                     )
                             )
                             .then(Commands.literal("zoneSetBounds")
-                                    .then(Commands.argument("id", StringArgumentType.string())
+                                    .then(Commands.argument("zoneId", StringArgumentType.string())
+                                            .suggests((ctx, builder) -> {
+                                                ServerLevel level = ctx.getSource().getLevel();
+                                                Objects.requireNonNull(ZPZoneManager.INSTANCE.getAllZonesOnLevel(level)).forEach(e -> builder.suggest(e.uniqueId()));
+                                                return builder.buildFuture();
+                                            })
                                             .then(Commands.argument("x1", IntegerArgumentType.integer())
                                                     .then(Commands.argument("y1", IntegerArgumentType.integer())
                                                             .then(Commands.argument("z1", IntegerArgumentType.integer())
@@ -192,7 +204,7 @@ public class ZPCommandsModule extends ZPModule {
                                                                                                 if (!player.hasPermissions(3)) {
                                                                                                     return 0;
                                                                                                 }
-                                                                                                String id = StringArgumentType.getString(ctx, "id");
+                                                                                                String id = StringArgumentType.getString(ctx, "zoneId");
                                                                                                 int x1 = IntegerArgumentType.getInteger(ctx, "x1");
                                                                                                 int y1 = IntegerArgumentType.getInteger(ctx, "y1");
                                                                                                 int z1 = IntegerArgumentType.getInteger(ctx, "z1");
@@ -222,14 +234,19 @@ public class ZPCommandsModule extends ZPModule {
                                     )
                             )
                             .then(Commands.literal("zoneRemove")
-                                    .then(Commands.argument("id", StringArgumentType.string())
+                                    .then(Commands.argument("zoneId", StringArgumentType.string())
+                                            .suggests((ctx, builder) -> {
+                                                ServerLevel level = ctx.getSource().getLevel();
+                                                Objects.requireNonNull(ZPZoneManager.INSTANCE.getAllZonesOnLevel(level)).forEach(e -> builder.suggest(e.uniqueId()));
+                                                return builder.buildFuture();
+                                            })
                                             .executes(ctx -> {
                                                 ServerPlayer player = ctx.getSource().getPlayerOrException();
                                                 ServerLevel level = (ServerLevel) player.level();
                                                 if (!player.hasPermissions(3)) {
                                                     return 0;
                                                 }
-                                                String id = StringArgumentType.getString(ctx, "id");
+                                                String id = StringArgumentType.getString(ctx, "zoneId");
 
                                                 boolean removed = ZPZoneManager.INSTANCE.removeZone(level, id);
                                                 if (removed) {
@@ -254,20 +271,25 @@ public class ZPCommandsModule extends ZPModule {
                                             return 0;
                                         }
                                         for (ZPZoneManager.Zone zone : zones) {
-                                            ctx.getSource().sendSuccess(() -> Component.literal(zone.uniqueId() + " : " + zone.start() + " | " + zone.end() + " Flags: " + zone.flags()), false);
+                                            ctx.getSource().sendSuccess(() -> Component.literal(zone.uniqueId() + " : " + zone.start() + " | " + zone.end() + " Flags: " + zone.flags() + " Vars: " + zone.int_vars().values()), false);
                                         }
                                         return 1;
                                     })
                             )
                             .then(Commands.literal("zoneEraseFlags")
-                                    .then(Commands.argument("id", StringArgumentType.string())
+                                    .then(Commands.argument("zoneId", StringArgumentType.string())
+                                            .suggests((ctx, builder) -> {
+                                                ServerLevel level = ctx.getSource().getLevel();
+                                                Objects.requireNonNull(ZPZoneManager.INSTANCE.getAllZonesOnLevel(level)).forEach(e -> builder.suggest(e.uniqueId()));
+                                                return builder.buildFuture();
+                                            })
                                             .executes(ctx -> {
                                                 ServerPlayer player = ctx.getSource().getPlayerOrException();
                                                 if (!player.hasPermissions(3)) {
                                                     return 0;
                                                 }
                                                 ServerLevel level = (ServerLevel) player.level();
-                                                String id = StringArgumentType.getString(ctx, "id");
+                                                String id = StringArgumentType.getString(ctx, "zoneId");
                                                 boolean updated = ZPZoneManager.INSTANCE.replaceFlags(level, id, new HashSet<>());
                                                 if (updated) {
                                                     ctx.getSource().sendSuccess(() -> Component.literal("Flags of " + id + " erased!"), false);
@@ -279,10 +301,15 @@ public class ZPCommandsModule extends ZPModule {
                                     )
                             )
                             .then(Commands.literal("zoneAddFlags")
-                                    .then(Commands.argument("id", StringArgumentType.string())
+                                    .then(Commands.argument("zoneId", StringArgumentType.string())
+                                            .suggests((ctx, builder) -> {
+                                                ServerLevel level = ctx.getSource().getLevel();
+                                                Objects.requireNonNull(ZPZoneManager.INSTANCE.getAllZonesOnLevel(level)).forEach(e -> builder.suggest(e.uniqueId()));
+                                                return builder.buildFuture();
+                                            })
                                             .then(Commands.argument("flag", StringArgumentType.string())
                                                     .suggests((ctx, builder) -> {
-                                                        for (ZPZoneFlag f : ZPZoneFlag.values()) {
+                                                        for (ZPZoneFlag f : ZPZonesRegistry.flagValues()) {
                                                             builder.suggest(f.id());
                                                         }
                                                         return builder.buildFuture();
@@ -293,9 +320,9 @@ public class ZPCommandsModule extends ZPModule {
                                                             return 0;
                                                         }
                                                         ServerLevel level = (ServerLevel) player.level();
-                                                        String id = StringArgumentType.getString(ctx, "id");
+                                                        String id = StringArgumentType.getString(ctx, "zoneId");
                                                         String flagStr = StringArgumentType.getString(ctx, "flag");
-                                                        ZPZoneFlag flag = ZPZoneFlag.valueOf(flagStr);
+                                                        ZPZoneFlag flag = ZPZonesRegistry.flagValueOf(flagStr);
                                                         if (flag == null) {
                                                             ctx.getSource().sendFailure(Component.literal("The flag " + flagStr + " doesn't exist. Try /zp3 zoneFlagsList"));
                                                             return 0;
@@ -311,10 +338,15 @@ public class ZPCommandsModule extends ZPModule {
                                     )
                             )
                             .then(Commands.literal("zoneRemoveFlags")
-                                    .then(Commands.argument("id", StringArgumentType.string())
+                                    .then(Commands.argument("zoneId", StringArgumentType.string())
+                                            .suggests((ctx, builder) -> {
+                                                ServerLevel level = ctx.getSource().getLevel();
+                                                Objects.requireNonNull(ZPZoneManager.INSTANCE.getAllZonesOnLevel(level)).forEach(e -> builder.suggest(e.uniqueId()));
+                                                return builder.buildFuture();
+                                            })
                                             .then(Commands.argument("flag", StringArgumentType.string())
                                                     .suggests((ctx, builder) -> {
-                                                        for (ZPZoneFlag f : ZPZoneFlag.values()) {
+                                                        for (ZPZoneFlag f : ZPZonesRegistry.flagValues()) {
                                                             builder.suggest(f.id());
                                                         }
                                                         return builder.buildFuture();
@@ -325,9 +357,9 @@ public class ZPCommandsModule extends ZPModule {
                                                             return 0;
                                                         }
                                                         ServerLevel level = (ServerLevel) player.level();
-                                                        String id = StringArgumentType.getString(ctx, "id");
+                                                        String id = StringArgumentType.getString(ctx, "zoneId");
                                                         String flagStr = StringArgumentType.getString(ctx, "flag");
-                                                        ZPZoneFlag flag = ZPZoneFlag.valueOf(flagStr);
+                                                        ZPZoneFlag flag = ZPZonesRegistry.flagValueOf(flagStr);
                                                         if (flag == null) {
                                                             ctx.getSource().sendFailure(Component.literal("The flag " + flagStr + " doesn't exist. Try /zp3 zoneFlagsList"));
                                                             return 0;
@@ -348,11 +380,95 @@ public class ZPCommandsModule extends ZPModule {
                                         if (!player.hasPermissions(3)) {
                                             return 0;
                                         }
-                                        for (ZPZoneFlag availableFlags : ZPZoneFlag.values()) {
+                                        for (ZPZoneFlag availableFlags : ZPZonesRegistry.flagValues()) {
                                             ctx.getSource().sendSuccess(() -> Component.literal(availableFlags.id() + ", "), false);
                                         }
                                         return 1;
                                     })
+                            )
+                            .then(Commands.literal("zoneSetIntVar")
+                                    .then(Commands.argument("zoneId", StringArgumentType.string())
+                                            .suggests((ctx, builder) -> {
+                                                ServerLevel level = ctx.getSource().getLevel();
+                                                Objects.requireNonNull(ZPZoneManager.INSTANCE.getAllZonesOnLevel(level)).forEach(e -> builder.suggest(e.uniqueId()));
+                                                return builder.buildFuture();
+                                            })
+                                            .then(Commands.argument("varId", StringArgumentType.string())
+                                                    .suggests((ctx, builder) -> {
+                                                        ServerPlayer player = ctx.getSource().getPlayer();
+                                                        if (player != null) {
+                                                            String zoneId = StringArgumentType.getString(ctx, "zoneId");
+                                                            Collection<ZPZoneIntVar> variables = ZPZoneManager.INSTANCE.getAllZoneIntVariables(player.level(), zoneId);
+                                                            if (variables != null) {
+                                                                variables.forEach(e -> builder.suggest(e.getVariableId()));
+                                                            }
+                                                        }
+                                                        return builder.buildFuture();
+                                                    })
+                                                    .then(Commands.argument("value", IntegerArgumentType.integer())
+                                                            .executes(ctx -> {
+                                                                ServerPlayer player = ctx.getSource().getPlayerOrException();
+                                                                if (!player.hasPermissions(3)) {
+                                                                    return 0;
+                                                                }
+                                                                ServerLevel level = player.serverLevel();
+                                                                String zoneId = StringArgumentType.getString(ctx, "zoneId");
+                                                                if (ZPZoneManager.INSTANCE.getZoneById(level, zoneId) == null) {
+                                                                    ctx.getSource().sendFailure(Component.literal("Zone not found."));
+                                                                    return 0;
+                                                                }
+                                                                String varId = StringArgumentType.getString(ctx, "varId");
+                                                                int value = IntegerArgumentType.getInteger(ctx, "value");
+                                                                ZPZoneIntVar var = ZPZoneManager.INSTANCE.getZoneIntVariableByID(level, zoneId, varId);
+                                                                if (var == null) {
+                                                                    ctx.getSource().sendFailure(Component.literal("Variable not found"));
+                                                                    return 0;
+                                                                }
+                                                                final ZPZoneIntVar finalVar = new ZPZoneIntVar(varId, value, var.getMin(), var.getMax());
+                                                                if (!ZPZoneManager.INSTANCE.setZoneIntVariable(level, zoneId, finalVar)) {
+                                                                    ctx.getSource().sendFailure(Component.literal("Failed to set var."));
+                                                                    return 0;
+                                                                }
+                                                                ctx.getSource().sendSuccess(() -> Component.literal("Variable " + varId + " updated"), false);
+                                                                if (finalVar.additionalChatMsh() != null) {
+                                                                    ctx.getSource().sendSuccess(() -> Component.literal(Objects.requireNonNull(finalVar.additionalChatMsh())), false);
+                                                                }
+                                                                return 1;
+                                                            })
+                                                    )
+                                            )
+                                    )
+                            )
+                            .then(Commands.literal("zoneGetIntVars")
+                                    .then(Commands.argument("zoneId", StringArgumentType.string())
+                                            .suggests((ctx, builder) -> {
+                                                ServerLevel level = ctx.getSource().getLevel();
+                                                Objects.requireNonNull(ZPZoneManager.INSTANCE.getAllZonesOnLevel(level)).forEach(e -> builder.suggest(e.uniqueId()));
+                                                return builder.buildFuture();
+                                            })
+                                            .executes(ctx -> {
+                                                ServerPlayer player = ctx.getSource().getPlayerOrException();
+                                                if (!player.hasPermissions(3)) {
+                                                    return 0;
+                                                }
+                                                ServerLevel level = player.serverLevel();
+                                                String id = StringArgumentType.getString(ctx, "zoneId");
+                                                if (ZPZoneManager.INSTANCE.getZoneById(level, id) == null) {
+                                                    ctx.getSource().sendFailure(Component.literal("Zone " + id + " not found!"));
+                                                    return 0;
+                                                }
+                                                Collection<ZPZoneIntVar> vars = ZPZoneManager.INSTANCE.getAllZoneIntVariables(level, id);
+                                                if (vars == null || vars.isEmpty()) {
+                                                    ctx.getSource().sendSuccess(() -> Component.literal("Zone " + id + " has no int variables."), false);
+                                                    return 1;
+                                                }
+                                                ctx.getSource().sendSuccess(() -> Component.literal("Variables of zone '" + id + "':"), false);
+                                                for (ZPZoneIntVar var : vars) {
+                                                    ctx.getSource().sendSuccess(() -> Component.literal(" - " + var.getVariableId() + " = " + var.getValue()), false);
+                                                }
+                                                return 1;
+                                            })
+                                    )
                             )
             );
         }

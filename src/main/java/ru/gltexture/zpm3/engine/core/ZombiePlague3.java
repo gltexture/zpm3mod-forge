@@ -40,6 +40,8 @@ import ru.gltexture.zpm3.engine.core.api.events.ZPModEventBus;
 import ru.gltexture.zpm3.engine.core.config.ZPConfigConstantsClass;
 import ru.gltexture.zpm3.engine.core.config.ZPConfigManager;
 import ru.gltexture.zpm3.engine.core.config.builtin.*;
+import ru.gltexture.zpm3.engine.zones.ZPZoneManager;
+import ru.gltexture.zpm3.engine.zones.ZPZonesRegistry;
 import ru.gltexture.zpm3.modules.entity.population.ZPSetupPopulation;
 import ru.gltexture.zpm3.modules.loot_cases.registry.ZPLootTablesRegistry;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPDefaultShaders;
@@ -373,6 +375,7 @@ public final class ZombiePlague3 {
             }
             ZPSystemInit.clientRunDestroy(Minecraft.getInstance().getWindow());
             ZPRegistryCollections.clearAll();
+            ZPZonesRegistry.clear();
         });
     }
 
@@ -513,6 +516,10 @@ public final class ZombiePlague3 {
         void setPopulationSetup(@NotNull ZPSetupPopulation setup);
         void addTier(@NotNull ZPTier[] tier);
 
+        default @NotNull ZPZonesRegistry getZonesRegistry() {
+            return ZPZoneManager.ZP_ZONES_REGISTRY;
+        }
+
         default void registerTier(@NotNull ZPTierData tier) {
             ZombiePlague3.registerTier(tier);
         }
@@ -585,32 +592,35 @@ public final class ZombiePlague3 {
             setup.setup(ZombiePlague3.getPopulationController());
         }
 
-        public Set<Class<?>> getZpEventClasses() {
-            return this.zpEventClasses;
-        }
-
         @Override
         public void addTier(ZPTier[] tier) {
             ZPTiersRegistryHelper.addToRegister(tier);
         }
 
-        public @Nullable ZPLootTablesRegistry getZpLootTablesRegistry() {
+
+
+
+        Set<Class<?>> getZpEventClasses() {
+            return this.zpEventClasses;
+        }
+
+        @Nullable ZPLootTablesRegistry getZpLootTablesRegistry() {
             return this.zpLootTablesRegistry;
         }
 
-        public List<ZPNetwork.PacketData<?>> getPacketDataSet() {
+        List<ZPNetwork.PacketData<?>> getPacketDataSet() {
             return this.packetDataSet;
         }
 
-        public Set<Class<? extends ZPRegistry<?>>> getRegistrySet() {
+        Set<Class<? extends ZPRegistry<?>>> getRegistrySet() {
             return this.registrySet;
         }
 
-        public Set<Class<? extends ZPEventClass>> getEventClasses() {
+        Set<Class<? extends ZPEventClass>> getEventClasses() {
             return this.eventClasses;
         }
 
-        public Set<ZPEventClass> getEventClassObjects() {
+        Set<ZPEventClass> getEventClassObjects() {
             return this.eventClassObjects;
         }
     }

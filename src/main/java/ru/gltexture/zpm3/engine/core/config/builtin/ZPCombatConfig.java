@@ -31,7 +31,7 @@ public class ZPCombatConfig implements ZPConfigConstantsClass {
 
     @ZPVarDefinition(description = "Duration in ticks for acid bottle debuff (inventory breaking + damage) applied when hitting an entity directly.")
     public static final ZPConfig_INT ACID_BOTTLE_DIRECT_HIT_AFFECT_TIME =
-            new ZPConfig_INT(100);
+            new ZPConfig_INT(60);
 
     @ZPVarDefinition(description = "Acid bottle splash radius.")
     public static final ZPConfig_FLOAT ACID_BOTTLE_SPLASH_RADIUS =
@@ -39,7 +39,7 @@ public class ZPCombatConfig implements ZPConfigConstantsClass {
 
     @ZPVarDefinition(description = "Duration in ticks for acid bottle splash debuff (inventory breaking + damage). Set to 0 to disable splash effect.")
     public static final ZPConfig_INT ACID_BOTTLE_SPLASH_HIT_MAX_AFFECT_TIME =
-            new ZPConfig_INT(80);
+            new ZPConfig_INT(40);
 
     @ZPVarDefinition(description = "Base damage dealt to entity on direct hit.")
     public static final ZPConfig_FLOAT ACID_BOTTLE_DAMAGE =

@@ -16,9 +16,9 @@ import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.events.ZPEventClass;
 import ru.gltexture.zpm3.engine.service.Pair;
-import ru.gltexture.zpm3.modules.commands.zones.ZPZoneChecks;
-import ru.gltexture.zpm3.modules.commands.zones.ZPZoneFlag;
-import ru.gltexture.zpm3.modules.commands.zones.ZPZoneManager;
+import ru.gltexture.zpm3.engine.zones.ZPZoneChecks;
+import ru.gltexture.zpm3.engine.zones.ZPZoneFlag;
+import ru.gltexture.zpm3.engine.zones.ZPZoneManager;
 import ru.gltexture.zpm3.modules.common.utils.ZPCommonClientUtils;
 
 import java.util.*;
@@ -71,7 +71,7 @@ public class ZPRenderSpecialZoneEffectsOnClient implements ZPEventClass {
                 if (mc.level.getChunkSource().getChunk(chunkX, chunkZ, false) == null) {
                     continue;
                 }
-                List<ZPZoneManager.Zone> zones = container.getFastPerChunkAccessMap().get(new Vector2i(chunkX, chunkZ));
+                List<ZPZoneManager.Zone> zones = container.getFast_ChunkLookupTable().get(new Vector2i(chunkX, chunkZ));
                 if (zones == null) {
                     continue;
                 }

@@ -25,10 +25,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
+import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 import ru.gltexture.zpm3.modules.blocks.init.ZPBlocks;
 import ru.gltexture.zpm3.modules.blocks.init.ZPCampfireBlocks;
 import ru.gltexture.zpm3.modules.blocks.instances.block_entities.IFadingBlockEntity;
+import ru.gltexture.zpm3.modules.blocks.instances.block_entities.ZPCampfireBlockEntity;
+import ru.gltexture.zpm3.modules.blocks.instances.block_entities.ZPFadingBlockEntity;
 import ru.gltexture.zpm3.modules.blocks.mixins.ext.ICampfireExt;
 
 import java.util.Objects;
@@ -39,6 +42,7 @@ public abstract class ZPCampfireEntityMixin implements ICampfireExt {
     @Shadow protected abstract void markUpdated();
     @Shadow @Final private int[] cookingTime;
     @Shadow @Final private int[] cookingProgress;
+    @Unique private long zpm3forge$timeLock;
     @Unique private int zpm3forge$fadeCooldown;
     @Unique private boolean zpm3forge$active;
 
@@ -64,6 +68,15 @@ public abstract class ZPCampfireEntityMixin implements ICampfireExt {
         cir.setReturnValue(false);
     }
 
+    @Inject(method = "cooldownTick", at = @At("TAIL"))
+    private static void cooldownTick(Level pLevel, BlockPos pPos, BlockState pState, CampfireBlockEntity pBlockEntity, CallbackInfo ci) {
+        if (!pLevel.isClientSide()) {
+            if (pBlockEntity instanceof ICampfireExt fadingBlock) {
+                fadingBlock.zpm3forge$setTimeLock(-1);
+            }
+        }
+    }
+
     @Inject(method = "cookTick", at = @At("TAIL"))
     private static void cookTick(Level pLevel, BlockPos pPos, BlockState pState, CampfireBlockEntity pBlockEntity, CallbackInfo ci) {
         ZPCampfireEntityMixin.zpm3forge$fadeTick(pLevel, pPos, pState, pBlockEntity);
@@ -77,22 +90,27 @@ public abstract class ZPCampfireEntityMixin implements ICampfireExt {
                     if (!fadingBlock.zpm3forge$isActive() || !ZPWorldConfig.FADING_CAMPFIRES.getVar()) {
                         return;
                     }
+                    if (fadingBlock.zpm3forge$getTimeLock() <= 0) {
+                        fadingBlock.zpm3forge$setTimeLock(level.getGameTime() + ZPWorldConfig.CAMPFIRE_FADING_TIME.getVar());
+                    }
                     final boolean isFinalStage = !state.getBlock().equals(Blocks.CAMPFIRE);
                     Block turnInto = !isFinalStage ? ZPCampfireBlocks.campfire2.get() : ZPBlocks.ash_layer.get();
                     fadingBlock.zpm3forge$incCooldown(ZPUtility.blocks().isRainingOnBlock(level, pos) ? 100 : 1);
-                    if (fadingBlock.zpm3forge$fadeCooldown() <= ZPWorldConfig.CAMPFIRE_FADING_TIME.getVar()) {
-                        return;
+                    if (fadingBlock.zpm3forge$fadeCooldown() >= ZPWorldConfig.CAMPFIRE_FADING_TIME.getVar() || (level.getGameTime() >= fadingBlock.zpm3forge$getTimeLock())) {
+                        if (!isFinalStage) {
+                            BlockState newState = turnInto.defaultBlockState();
+                            newState = ZPUtility.blocks().copyProperties(state, newState);
+                            level.setBlock(pos, newState, Block.UPDATE_ALL);
+                        } else {
+                            Containers.dropContents(level, pos, blockEntity.getItems());
+                            level.setBlock(pos, turnInto.defaultBlockState(), Block.UPDATE_ALL);
+                            if ((Object) level.getBlockEntity(pos) instanceof ZPCampfireEntityMixin fadingBlockEntity) {
+                                fadingBlockEntity.setActive(true);
+                                fadingBlockEntity.zpm3forge$setTimeLock(fadingBlock.zpm3forge$getTimeLock() + ZPWorldConfig.CAMPFIRE_FADING_TIME.getVar());
+                            }
+                        }
+                        level.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 1.0F, 1.0F);
                     }
-
-                    if (!isFinalStage) {
-                        BlockState newState = turnInto.defaultBlockState();
-                        newState = ZPUtility.blocks().copyProperties(state, newState);
-                        level.setBlock(pos, newState, Block.UPDATE_ALL);
-                    } else {
-                        Containers.dropContents(level, pos, blockEntity.getItems());
-                        level.setBlock(pos, turnInto.defaultBlockState(), Block.UPDATE_ALL);
-                    }
-                    level.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 1.0F, 1.0F);
                 //}
             }
         }
@@ -106,6 +124,9 @@ public abstract class ZPCampfireEntityMixin implements ICampfireExt {
         if (pTag.contains("cooldown")) {
             this.zpm3forge$fadeCooldown = pTag.getInt("cooldown");
         }
+        if (pTag.contains("timeLock")) {
+            this.zpm3forge$timeLock = pTag.getInt("timeLock");
+        }
     }
 
     @Inject(method = "saveAdditional", at = @At("TAIL"))
@@ -113,6 +134,7 @@ public abstract class ZPCampfireEntityMixin implements ICampfireExt {
         if (!Objects.requireNonNull(((BlockEntity) (Object) this).getLevel()).isClientSide()) {
             pTag.putBoolean("active", this.zpm3forge$active);
             pTag.putInt("cooldown", this.zpm3forge$fadeCooldown);
+            pTag.putLong("timeLock", this.zpm3forge$timeLock);
         }
     }
 

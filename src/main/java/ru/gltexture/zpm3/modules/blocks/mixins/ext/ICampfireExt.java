@@ -6,4 +6,7 @@ public interface ICampfireExt extends IFadingBlockEntity {
     int zpm3forge$fadeCooldown();
     void zpm3forge$incCooldown(int inc);
     void zpm3forge$setCooldown(int cooldown);
+
+    long zpm3forge$getTimeLock();
+    void zpm3forge$setTimeLock(long timeLock);
 }

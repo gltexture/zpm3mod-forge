@@ -58,7 +58,7 @@ public class ZPPlayerClientTickBroomEvent implements ZPEventClass {
         }
         Vec3 start = player.getEyePosition();
         Vec3 end = start.add(player.getLookAngle().scale(4.0));
-        BlockHitResult hit = player.level().clip(new ClipContext(start, end, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player));
+        BlockHitResult hit = player.level().clip(new ClipContext(start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
         if (hit.getType() != HitResult.Type.BLOCK) {
             return;
         }

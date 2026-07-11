@@ -169,16 +169,18 @@ public class ZPDearUIRenderer implements ZPClientCallbacks.ZPClientResourceDepen
         final KeyboardHandler keyboardHandler = mc.keyboardHandler;
 
         ImGuiIO io = ImGui.getIO();
-        io.setMousePos((float) mouse.xpos(), (float) mouse.ypos());
+        if (GLFW.glfwGetInputMode(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_CURSOR) != GLFW.GLFW_CURSOR_DISABLED) {
+            io.setMousePos((float) mouse.xpos(), (float) mouse.ypos());
+        } else {
+            io.setMousePos(0, 0);
+        }
         long win = window.getWindow();
 
         io.setMouseDown(0, GLFW.glfwGetInputMode(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_CURSOR) != GLFW.GLFW_CURSOR_DISABLED && GLFW.glfwGetMouseButton(win, GLFW.GLFW_MOUSE_BUTTON_LEFT) == GLFW.GLFW_PRESS);
         io.setMouseDown(1, GLFW.glfwGetInputMode(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_CURSOR) != GLFW.GLFW_CURSOR_DISABLED && GLFW.glfwGetMouseButton(win, GLFW.GLFW_MOUSE_BUTTON_RIGHT) == GLFW.GLFW_PRESS);
 
         ImGui.newFrame();
-        dearUIInterfaceSet.forEach(e -> {
-            e.drawGui(window, mouse, keyboardHandler);
-        });
+        dearUIInterfaceSet.forEach(e -> e.drawGui(window, mouse, keyboardHandler));
         ImGui.render();
 
         ImDrawData drawData = ImGui.getDrawData();

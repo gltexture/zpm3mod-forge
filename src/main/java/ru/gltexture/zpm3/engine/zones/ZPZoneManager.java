@@ -1,4 +1,4 @@
-package ru.gltexture.zpm3.modules.commands.zones;
+package ru.gltexture.zpm3.engine.zones;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -17,6 +17,7 @@ import org.joml.Vector3i;
 import ru.gltexture.zpm3.engine.core.ZPLogger;
 import ru.gltexture.zpm3.engine.exceptions.ZPIOException;
 import ru.gltexture.zpm3.engine.service.Pair;
+import ru.gltexture.zpm3.engine.zones.vars.ZPZoneIntVar;
 import ru.gltexture.zpm3.modules.net_pack.data.ZPClientZonesHelper;
 
 import java.io.*;
@@ -24,6 +25,8 @@ import java.lang.reflect.Type;
 import java.util.*;
 
 public final class ZPZoneManager {
+    public static final ZPZonesRegistry ZP_ZONES_REGISTRY = new ZPZonesRegistry();
+
     private static final String jsonName = "zp_zones.json";
     private final Map<Level, ZonesContainer> zonesPerLevelMap;
     public static ZPZoneManager INSTANCE = new ZPZoneManager();
@@ -134,7 +137,7 @@ public final class ZPZoneManager {
     public @Nullable Collection<Zone> getZonesInChunk(Level level, BlockPos pos) {
         Vector2i chunkId = ZPZoneManager.blockChunk(pos);
         if (this.zonesPerLevelMap.containsKey(level) && this.zonesPerLevelMap.get(level) != null) {
-            return this.zonesPerLevelMap.get(level).getFastPerChunkAccessMap().get(chunkId);
+            return this.zonesPerLevelMap.get(level).getFast_ChunkLookupTable().get(chunkId);
         }
         return null;
     }
@@ -219,6 +222,35 @@ public final class ZPZoneManager {
         return null;
     }
 
+    public @Nullable Collection<ZPZoneIntVar> getAllZoneIntVariables(Level level, String uniqueId) {
+        Zone zone = this.getZoneById(level, uniqueId);
+        if (zone != null) {
+            return zone.int_vars().values();
+        }
+        return null;
+    }
+
+    public @Nullable ZPZoneIntVar getZoneIntVariableByID(Level level, String uniqueId, String variableId) {
+        Zone zone = this.getZoneById(level, uniqueId);
+        if (zone != null) {
+            return zone.int_vars().get(variableId);
+        }
+        return null;
+    }
+
+    public boolean setZoneIntVariable(ServerLevel level, String uniqueId, ZPZoneIntVar variable) {
+        Zone zone = this.getZoneById(level, uniqueId);
+        if (zone != null) {
+            if (zone.int_vars().put(variable.getVariableId(), variable) == null) {
+                return false;
+            }
+            ZPClientZonesHelper.sendZoneToAll(zone, level, false);
+            this.writeToJSON(level);
+            return true;
+        }
+        return false;
+    }
+
     @OnlyIn(Dist.CLIENT)
     public void REPLACE_CLIENT_MAP(ClientLevel level, Collection<Zone> zones) {
         this.zonesPerLevelMap.remove(level);
@@ -250,12 +282,18 @@ public final class ZPZoneManager {
         return this.zonesPerLevelMap.get(level);
     }
 
-    public record Zone(String uniqueId, Vector3i start, Vector3i end, Set<ZPZoneFlag> flags) {
-        public static Pair<Vector3f,Vector3f> min_max(Vector3i start, Vector3i end) {
+    public static Zone CREATE_DEFAULT_ZONE(String uniqueId, Vector3i start, Vector3i end) {
+        final Map<String, ZPZoneIntVar> intVarMap = new HashMap<>();
+        ZPZonesRegistry.int_variablesStream().forEach(v -> intVarMap.put(v.getVariableId(), v));
+        return new Zone(uniqueId, start, end, new HashSet<>(), intVarMap);
+    }
+
+    public record Zone(String uniqueId, Vector3i start, Vector3i end, Set<ZPZoneFlag> flags, Map<String, ZPZoneIntVar> int_vars) {
+        public static Pair<Vector3f, Vector3f> min_max(Vector3i start, Vector3i end) {
             return min_max(new Vector3f(start), new Vector3f(end));
         }
 
-        public static Pair<Vector3f,Vector3f> min_max(Vector3f start, Vector3f end) {
+        public static Pair<Vector3f, Vector3f> min_max(Vector3f start, Vector3f end) {
             final float minX = Math.min(start.x, end.x);
             final float maxX = Math.max(start.x, end.x);
             final float minY = Math.min(start.y, end.y);
@@ -268,11 +306,11 @@ public final class ZPZoneManager {
 
     public static class ZonesContainer {
         private Map<String, Zone> idAccessMap;
-        private final Map<Vector2i, List<Zone>> fastPerChunkAccessMap;
+        private final Map<Vector2i, List<Zone>> fast_ChunkLookupTable;
 
         public ZonesContainer() {
             this.idAccessMap = new HashMap<>();
-            this.fastPerChunkAccessMap = new HashMap<>();
+            this.fast_ChunkLookupTable = new HashMap<>();
         }
 
         private void addFastPerChunkAccessMapOnZone(Zone zone) {
@@ -280,15 +318,15 @@ public final class ZPZoneManager {
             final Vector3f min = pair.first();
             final Vector3f max = pair.second();
             ZPZoneManager.forEachChunkAABB(min, max).forEach((e -> {
-                if (!this.fastPerChunkAccessMap.containsKey(e)) {
-                    this.fastPerChunkAccessMap.put(e, new ArrayList<>());
+                if (!this.fast_ChunkLookupTable.containsKey(e)) {
+                    this.fast_ChunkLookupTable.put(e, new ArrayList<>());
                 }
-                this.fastPerChunkAccessMap.get(e).add(zone);
+                this.fast_ChunkLookupTable.get(e).add(zone);
             }));
         }
 
         private void buildFastPerChunkAccessMap(Collection<Zone> allZones) {
-            this.fastPerChunkAccessMap.clear();
+            this.fast_ChunkLookupTable.clear();
             allZones.forEach(this::addFastPerChunkAccessMapOnZone);
         }
 
@@ -305,8 +343,8 @@ public final class ZPZoneManager {
             return this.idAccessMap;
         }
 
-        public Map<Vector2i, List<Zone>> getFastPerChunkAccessMap() {
-            return this.fastPerChunkAccessMap;
+        public Map<Vector2i, List<Zone>> getFast_ChunkLookupTable() {
+            return this.fast_ChunkLookupTable;
         }
     }
 }

@@ -7,7 +7,7 @@ import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.mixins.ext.IZPRecipesManagerExt;
-import ru.gltexture.zpm3.modules.commands.zones.ZPZoneManager;
+import ru.gltexture.zpm3.engine.zones.ZPZoneManager;
 
 public class ZPCommonForge {
     @SubscribeEvent

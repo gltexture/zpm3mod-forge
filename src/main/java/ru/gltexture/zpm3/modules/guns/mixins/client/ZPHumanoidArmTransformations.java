@@ -84,14 +84,14 @@ public abstract class ZPHumanoidArmTransformations {
         final boolean rifleIsLeft = ZPHumanoidArmTransformations.isRifleType(offHand);
 
         final float animConstXRot = (float) (swimAnim ? -Math.PI : -Math.PI * 0.5f);
-        if (gunIsRight) {
+        if (gunIsRight || (swimAnim && entity.isUsingItem())) {
             model.rightArm.xRot = animConstXRot + headPitchRad;
             model.rightArm.yRot = headYawRad;
             model.rightArm.zRot = 0.0F;
             model.rightArm.x = -5.0F;
             model.rightArm.y = crouchAnim ? 5.0f : 2.0F;
         }
-        if (gunIsLeft) {
+        if (gunIsLeft || (swimAnim && entity.isUsingItem())) {
             model.leftArm.xRot = animConstXRot + headPitchRad;
             model.leftArm.yRot = headYawRad;
             model.leftArm.zRot = 0.0F;

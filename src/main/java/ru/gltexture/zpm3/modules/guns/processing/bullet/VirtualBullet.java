@@ -29,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.*;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPCombatConfig;
-import ru.gltexture.zpm3.modules.commands.zones.ZPZoneChecks;
+import ru.gltexture.zpm3.engine.zones.ZPZoneChecks;
 import ru.gltexture.zpm3.modules.common.damage.ZPDamageSources;
 
 import ru.gltexture.zpm3.modules.blocks.init.ZPTorchBlocks;

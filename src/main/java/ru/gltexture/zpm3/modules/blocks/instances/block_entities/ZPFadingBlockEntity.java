@@ -61,7 +61,7 @@ public class ZPFadingBlockEntity extends ZPBlockEntity implements IFadingBlockEn
                 }
                 if (fadingBlock.zpm3forge$getTurnInto() != null) {
                     if (blockEntity.timeLock <= 0L) {
-                        blockEntity.setTime(level, blockEntity.fadingTime, blockEntity.fadingTime / 4);
+                        blockEntity.setTimeLock(level, (long) (level.getGameTime() + blockEntity.fadingTime + ZPRandom.instance.randomFloat(blockEntity.fadingTime * 0.25f)));
                         return;
                     }
                     boolean flag = (state.getBlock() instanceof TorchBlock || state.getBlock() instanceof ZPTorchBlock) && (ZPUtility.blocks().isRainingOnBlock(level, pos) && level.getGameTime() % 40 == 0);
@@ -69,12 +69,14 @@ public class ZPFadingBlockEntity extends ZPBlockEntity implements IFadingBlockEn
                         flag = true;
                     }
                     if (flag) {
-                        BlockState newState = fadingBlock.zpm3forge$getTurnInto().get().defaultBlockState();
+                        BlockState newState = Objects.requireNonNull(fadingBlock.zpm3forge$getTurnInto()).get().defaultBlockState();
                         newState = ZPUtility.blocks().copyProperties(state, newState);
                         level.setBlock(pos, newState, Block.UPDATE_ALL);
-                        ((ZPFadingBlockEntity) (Objects.requireNonNull(level.getBlockEntity(pos)))).setActive(true);
+                        if (level.getBlockEntity(pos) instanceof ZPFadingBlockEntity fadingBlockEntity) {
+                            fadingBlockEntity.setActive(true);
+                            fadingBlockEntity.setTimeLock(level, (long) (blockEntity.timeLock + fadingBlockEntity.fadingTime + ZPRandom.instance.randomFloat(fadingBlockEntity.fadingTime * 0.25f)));
+                        }
                         level.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 1.0F, 1.0F);
-                        blockEntity.setTime(level, blockEntity.fadingTime, blockEntity.fadingTime / 4);
                     }
                 }
             }
@@ -90,8 +92,8 @@ public class ZPFadingBlockEntity extends ZPBlockEntity implements IFadingBlockEn
         return this;
     }
 
-    public void setTime(@NotNull Level level, long exact, long salt) {
-        this.timeLock = level.getGameTime() + (long) (exact + ZPRandom.instance.randomFloatDuo(salt));
+    public void setTimeLock(@NotNull Level level, long lock) {
+        this.timeLock = lock;
     }
 
     @Override

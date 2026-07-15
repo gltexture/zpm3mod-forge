@@ -7,6 +7,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -140,7 +141,7 @@ public class ZPAcidBottleEntity extends ZPThrowableEntity {
                 Vec3 center = hitEntity != null ? new Vec3(hitEntity.position().toVector3f().add(0.0f, dY, 0.0f)) : this.position();
                 Level level = this.level();
                 AABB area = new AABB(center, center).inflate(radius);
-                for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, area, e -> e != hitEntity)) {
+                for (Entity target : level.getEntitiesOfClass(Entity.class, area, e -> (e != hitEntity && (e instanceof LivingEntity || e instanceof ItemEntity)))) {
                     double dist = target.distanceTo(hitEntity != null ? hitEntity : this);
                     if (dist > radius) {
                         continue;

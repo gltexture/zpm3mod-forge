@@ -12,7 +12,7 @@ import java.util.*;
 import java.util.function.Supplier;
 
 public final class ZPPopulationController {
-    private final VanillaBiomePopulationManager vanillaBiomePopulationManager;
+    private final ZPVanillaBiomePopulationManager vanillaBiomePopulationManager;
     private final List<PopulationData<?>> AND_SpawnRulesMap;
     private final List<PopulationData<?>> OR_SpawnRulesMap;
     private final List<PopulationData<?>> REPLACE_SpawnRulesMap;
@@ -21,7 +21,7 @@ public final class ZPPopulationController {
         this.AND_SpawnRulesMap = new ArrayList<>();
         this.OR_SpawnRulesMap = new ArrayList<>();
         this.REPLACE_SpawnRulesMap = new ArrayList<>();
-        this.vanillaBiomePopulationManager = new VanillaBiomePopulationManager();
+        this.vanillaBiomePopulationManager = new ZPVanillaBiomePopulationManager();
     }
 
     public <T extends Entity> void addAND_Rule(Supplier<EntityType<T>> entityType, @Nullable SpawnPlacements.Type placementType, @Nullable Heightmap.Types heightmap, SpawnPlacements.SpawnPredicate<T> spawnPredicate) {
@@ -75,7 +75,7 @@ public final class ZPPopulationController {
     }
 
     @Deprecated
-    public VanillaBiomePopulationManager getVanillaBiomePopulationManager() {
+    public ZPVanillaBiomePopulationManager getVanillaBiomePopulationManager() {
         return this.vanillaBiomePopulationManager;
     }
 

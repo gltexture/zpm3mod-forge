@@ -1,4 +1,4 @@
-package ru.gltexture.zpm3.modules.ui.screen;
+package ru.gltexture.zpm3.modules.ui.screen.configs;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -15,6 +15,7 @@ import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.config.ZPConfigConstantsClass;
 import ru.gltexture.zpm3.engine.core.config.ZPConfigManager;
 import ru.gltexture.zpm3.engine.core.config.vars.*;
+import ru.gltexture.zpm3.modules.ui.screen.ZPScreen;
 import ru.gltexture.zpm3.modules.ui.screen.instances.ZPConfigEditBox;
 import ru.gltexture.zpm3.modules.ui.screen.instances.ZPLabeledEditBox;
 

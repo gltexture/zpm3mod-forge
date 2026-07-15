@@ -30,12 +30,12 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 @OnlyIn(Dist.CLIENT)
-public class HumanoidArmorLayerOnArm<T extends LivingEntity, M extends HumanoidModel<T>, A extends HumanoidModel<T>> extends RenderLayer<T, M> {
+public class ZPHumanoidArmorLayerOnArm<T extends LivingEntity, M extends HumanoidModel<T>, A extends HumanoidModel<T>> extends RenderLayer<T, M> {
    private static final Map<String, ResourceLocation> ARMOR_LOCATION_CACHE = Maps.newHashMap();
    private final A outerModel;
    private final TextureAtlas armorTrimAtlas;
 
-   public HumanoidArmorLayerOnArm(RenderLayerParent<T, M> pRenderer, A pOuterModel, ModelManager pModelManager) {
+   public ZPHumanoidArmorLayerOnArm(RenderLayerParent<T, M> pRenderer, A pOuterModel, ModelManager pModelManager) {
       super(pRenderer);
       this.outerModel = pOuterModel;
       this.armorTrimAtlas = pModelManager.getAtlas(Sheets.ARMOR_TRIMS_SHEET);

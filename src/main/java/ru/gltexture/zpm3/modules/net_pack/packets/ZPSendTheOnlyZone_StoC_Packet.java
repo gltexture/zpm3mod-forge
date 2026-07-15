@@ -6,17 +6,15 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3i;
+import ru.gltexture.zpm3.engine.core.ZPLogger;
 import ru.gltexture.zpm3.engine.network.ZPNetwork;
 import ru.gltexture.zpm3.engine.zones.ZPZoneFlag;
 import ru.gltexture.zpm3.engine.zones.ZPZoneManager;
 import ru.gltexture.zpm3.engine.zones.ZPZonesRegistry;
 import ru.gltexture.zpm3.engine.zones.vars.ZPZoneIntVar;
 
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class ZPSendTheOnlyZone_StoC_Packet implements ZPNetwork.ZPPacket {
     public static final String SEPARATOR = ";";
@@ -71,10 +69,12 @@ public class ZPSendTheOnlyZone_StoC_Packet implements ZPNetwork.ZPPacket {
                 buf.writeUtf(flag.id());
             }
 
-            buf.writeVarInt(z.int_vars().size());
-            for (ZPZoneIntVar var : z.int_vars().values()) {
-                buf.writeUtf(var.getVariableId());
-                buf.writeInt(var.getValue());
+            buf.writeVarInt(z.int_vars() == null ? 0 : z.int_vars().size());
+            if (z.int_vars() != null) {
+                for (ZPZoneIntVar var : z.int_vars().values()) {
+                    buf.writeUtf(var.getVariableId());
+                    buf.writeInt(var.getValue());
+                }
             }
         };
     }

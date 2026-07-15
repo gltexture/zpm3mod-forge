@@ -3,12 +3,10 @@ package ru.gltexture.zpm3.engine.mixins.impl.client.render;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.HumanoidArmorModel;
-import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,8 +14,6 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.jetbrains.annotations.NotNull;
-import org.lwjgl.opengl.GL46;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -26,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPClientConfig;
-import ru.gltexture.zpm3.engine.mixins.util.HumanoidArmorLayerOnArm;
+import ru.gltexture.zpm3.engine.mixins.util.ZPHumanoidArmorLayerOnArm;
 
 import java.util.Map;
 
@@ -37,12 +33,12 @@ public abstract class ZPPlayerRenderMixin<T extends LivingEntity> {
     private static final Map<String, ResourceLocation> ARMOR_LOCATION_CACHE = Maps.newHashMap();
     @Unique
     @SuppressWarnings("rawtypes")
-    private HumanoidArmorLayerOnArm zpm3forge$humanoidArmorLayer = null;
+    private ZPHumanoidArmorLayerOnArm zpm3forge$humanoidArmorLayer = null;
 
     @Inject(method = "<init>", at = @At("TAIL"))
     @SuppressWarnings("rawtypes")
     private void onInit(EntityRendererProvider.Context pContext, boolean pUseSlimModel, CallbackInfo ci) {
-        this.zpm3forge$humanoidArmorLayer = new HumanoidArmorLayerOnArm<>( (PlayerRenderer) (Object) this, new HumanoidArmorModel(pContext.bakeLayer(pUseSlimModel ? ModelLayers.PLAYER_SLIM_OUTER_ARMOR : ModelLayers.PLAYER_OUTER_ARMOR)), pContext.getModelManager());
+        this.zpm3forge$humanoidArmorLayer = new ZPHumanoidArmorLayerOnArm<>( (PlayerRenderer) (Object) this, new HumanoidArmorModel(pContext.bakeLayer(pUseSlimModel ? ModelLayers.PLAYER_SLIM_OUTER_ARMOR : ModelLayers.PLAYER_OUTER_ARMOR)), pContext.getModelManager());
     }
 
     @Inject(method = "renderRightHand", at = @At("TAIL"))

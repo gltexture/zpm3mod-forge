@@ -28,6 +28,19 @@ public class ZPArmorUtil {
         return false;
     }
 
+    public static boolean isArmorShouldHideName(LivingEntity entity) {
+        if (entity.getItemBySlot(EquipmentSlot.HEAD).is(ZPArmorItems.forest_helmet.get())) {
+            return true;
+        }
+        if (entity.getItemBySlot(EquipmentSlot.HEAD).is(ZPArmorItems.winter_helmet.get())) {
+            return true;
+        }
+        if (entity.getItemBySlot(EquipmentSlot.HEAD).is(ZPArmorItems.sand_helmet.get())) {
+            return true;
+        }
+        return false;
+    }
+
     public static boolean isFullAqualungBreathingRightNow(LivingEntity entity) {
         if (!entity.isUnderWater()) {
             return false;

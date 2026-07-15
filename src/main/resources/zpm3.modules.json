@@ -69,6 +69,10 @@
     {
       "name": "ZP3CommandsModule",
       "class": "ru.gltexture.zpm3.modules.commands.ZPCommandsModule"
+    },
+    {
+      "name": "ZP3WorldGenModule",
+      "class": "ru.gltexture.zpm3.modules.worldgen.ZPWorldGenModule"
     }
   ]
 }

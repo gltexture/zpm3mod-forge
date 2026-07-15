@@ -1,4 +1,4 @@
-package ru.gltexture.zpm3.modules.ui.screen;
+package ru.gltexture.zpm3.modules.ui.screen.configs;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -9,11 +9,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPClientConfig;
+import ru.gltexture.zpm3.modules.ui.screen.ZPScreen;
 
 import java.util.Objects;
 
 @OnlyIn(Dist.CLIENT)
-
 public class ZPSettingsMenuScreen extends ZPScreen {
     public ZPSettingsMenuScreen(Screen parent) {
         super(Component.translatable("ui.zpm3.settings"), parent);

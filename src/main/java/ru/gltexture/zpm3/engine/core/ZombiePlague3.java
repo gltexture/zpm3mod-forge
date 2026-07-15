@@ -73,6 +73,7 @@ import ru.gltexture.zpm3.engine.registry.ZPRegistryCollections;
 import ru.gltexture.zpm3.engine.service.ZPPath;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 import ru.gltexture.zpm3.modules.net_pack.data.ZPNetSyncDataPack;
+import ru.gltexture.zpm3.modules.worldgen.archiver.ZPMapArchivedRegistry;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -365,6 +366,14 @@ public final class ZombiePlague3 {
             ItemBlockRenderTypes.setRenderLayer(e.fluid().get(), e.type());
         });
         ZPBlocksRenderLayerHelper.clearAll();
+
+        event.enqueueWork(() -> {
+           try {
+               ZPMapArchivedRegistry.registerAll();
+           } catch (Exception e) {
+               throw new ZPRuntimeException(e);
+           }
+        });
     }
 
     private void clientShutDown() {

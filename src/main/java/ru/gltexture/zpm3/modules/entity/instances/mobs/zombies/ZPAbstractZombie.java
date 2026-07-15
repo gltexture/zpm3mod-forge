@@ -98,6 +98,15 @@ public abstract class ZPAbstractZombie extends Monster {
 
     @SuppressWarnings("all")
     public static boolean checkZombieSpawnRules(@NotNull EntityType<? extends Monster> pType, ServerLevelAccessor pLevel, @NotNull MobSpawnType pSpawnType, @NotNull BlockPos pPos, @NotNull RandomSource pRandom) {
+        {
+            final int spawnReduction = ZPZoneChecks.INSTANCE.getZombieScaleInt_ADDFUNC(pLevel.getLevel(), pPos, 0);
+            if (spawnReduction > 0) {
+                System.out.println(spawnReduction);
+                if (ZPRandom.getRandom().nextFloat() <= (spawnReduction / 100.0f)) {
+                    return false;
+                }
+            }
+        }
         float f1 = ZPZombieConfig.ZOMBIE_SPAWN_AT_DAY_TIME_CHANCE.getVar();
         if (pLevel.getDifficulty() == Difficulty.NORMAL) {
             f1 *= 0.5f;

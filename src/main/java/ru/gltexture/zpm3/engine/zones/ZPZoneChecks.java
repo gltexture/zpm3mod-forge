@@ -7,6 +7,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import ru.gltexture.zpm3.engine.service.Pair;
+import ru.gltexture.zpm3.engine.zones.vars.ZPZoneIntVar;
 
 import java.util.Collection;
 
@@ -87,6 +88,26 @@ public final class ZPZoneChecks {
 
     public boolean isNoBulletBlockDmg(@NotNull Level level, @NotNull BlockPos blockPos) {
         return this.checkFlag(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ZPZonesRegistry.noBulletBlockDmg);
+    }
+
+    public int getZombieScaleInt_ADDFUNC(@NotNull Level level, @NotNull BlockPos blockPos, int defaultValue) {
+        return this.intVars_ADDFUNC(level, blockPos, ZPZonesRegistry.zombiesSpawnPercentageReduction, defaultValue);
+    }
+
+    private int intVars_ADDFUNC(Level level, BlockPos blockPos, @NotNull ZPZoneIntVar var, int defaultValue) {
+        Collection<ZPZoneManager.Zone> zones = ZPZoneManager.INSTANCE.getZonesInChunk(level, blockPos);
+        if (zones == null) {
+            return defaultValue;
+        }
+        int i = 0;
+        for (ZPZoneManager.Zone zone : zones) {
+            if (zone.int_vars() != null && zone.int_vars().containsKey(var.getVariableId())) {
+                if (this.isInside(zone, blockPos)) {
+                    i += zone.int_vars().get(var.getVariableId()).getValue();
+                }
+            }
+        }
+        return i;
     }
 
     private boolean checkFlag(Level level, BlockPos blockPos, ZPZoneFlag flag) {

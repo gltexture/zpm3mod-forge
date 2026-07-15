@@ -302,6 +302,17 @@ public final class ZPZoneManager {
             final float maxZ = Math.max(start.z, end.z);
             return Pair.of(new Vector3f(minX, minY, minZ), new Vector3f(maxX, maxY, maxZ));
         }
+
+        @Override
+        public String toString() {
+            return "Zone{" +
+                    "uniqueId='" + uniqueId + '\'' +
+                    ", start=" + start +
+                    ", end=" + end +
+                    ", flags=" + flags +
+                    ", int_vars=" + int_vars +
+                    '}';
+        }
     }
 
     public static class ZonesContainer {

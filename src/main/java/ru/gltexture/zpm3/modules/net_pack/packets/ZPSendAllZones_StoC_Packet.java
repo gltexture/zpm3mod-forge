@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3i;
+import ru.gltexture.zpm3.engine.core.ZPLogger;
 import ru.gltexture.zpm3.engine.network.ZPNetwork;
 import ru.gltexture.zpm3.engine.zones.ZPZoneFlag;
 import ru.gltexture.zpm3.engine.zones.ZPZoneManager;
@@ -23,10 +24,10 @@ public class ZPSendAllZones_StoC_Packet implements ZPNetwork.ZPPacket {
     }
 
     public ZPSendAllZones_StoC_Packet(FriendlyByteBuf buf) {
-        int size = buf.readVarInt();
+        final int size = buf.readVarInt();
         this.zones = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
-            String uniqueId = buf.readUtf();
+            final String uniqueId = buf.readUtf();
             final Vector3i start = new Vector3i(buf.readInt(), buf.readInt(), buf.readInt());
             final Vector3i end = new Vector3i(buf.readInt(), buf.readInt(), buf.readInt());
             Set<ZPZoneFlag> flags = new HashSet<>();
@@ -38,10 +39,10 @@ public class ZPSendAllZones_StoC_Packet implements ZPNetwork.ZPPacket {
                 }
             }
             Map<String, ZPZoneIntVar> vars = new HashMap<>();
-            int varCount = buf.readVarInt();
+            final int varCount = buf.readVarInt();
             for (int j = 0; j < varCount; j++) {
-                String id = buf.readUtf();
-                int value = buf.readInt();
+                final String id = buf.readUtf();
+                final int value = buf.readInt();
                 final ZPZoneIntVar registered = ZPZonesRegistry.int_variableValueOf(id);
                 if (registered != null) {
                     vars.put(id, new ZPZoneIntVar(id, value, registered.getMin(), registered.getMax()));
@@ -70,10 +71,12 @@ public class ZPSendAllZones_StoC_Packet implements ZPNetwork.ZPPacket {
                     buf.writeUtf(flag.id());
                 }
 
-                buf.writeVarInt(z.int_vars().size());
-                for (ZPZoneIntVar var : z.int_vars().values()) {
-                    buf.writeUtf(var.getVariableId());
-                    buf.writeInt(var.getValue());
+                buf.writeVarInt(z.int_vars() == null ? 0 : z.int_vars().size());
+                if (z.int_vars() != null) {
+                    for (ZPZoneIntVar var : z.int_vars().values()) {
+                        buf.writeUtf(var.getVariableId());
+                        buf.writeInt(var.getValue());
+                    }
                 }
             }
         };

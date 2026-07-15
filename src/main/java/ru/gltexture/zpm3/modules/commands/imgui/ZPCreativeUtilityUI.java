@@ -2,13 +2,16 @@ package ru.gltexture.zpm3.modules.commands.imgui;
 
 import com.mojang.blaze3d.platform.Window;
 import imgui.ImGui;
+import imgui.flag.ImGuiCol;
 import imgui.flag.ImGuiCond;
 import imgui.type.ImInt;
 import imgui.type.ImString;
+import net.minecraft.Util;
 import net.minecraft.client.KeyboardHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +22,13 @@ import ru.gltexture.zpm3.engine.zones.ZPZoneFlag;
 import ru.gltexture.zpm3.engine.zones.ZPZoneManager;
 import ru.gltexture.zpm3.engine.zones.ZPZonesRegistry;
 import ru.gltexture.zpm3.engine.zones.vars.ZPZoneIntVar;
+import ru.gltexture.zpm3.modules.worldgen.archiver.ZPMapArchiver;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.*;
 
 public class ZPCreativeUtilityUI implements DearUIInterface {
@@ -96,6 +105,58 @@ public class ZPCreativeUtilityUI implements DearUIInterface {
             ImGui.setNextWindowPos(0, 0, ImGuiCond.Once);
             ImGui.setNextWindowSize(400, 600, ImGuiCond.Once);
             ImGui.begin("Creative Utility");
+
+            if (Minecraft.getInstance().getSingleplayerServer() != null && ImGui.collapsingHeader("Archive Map")) {
+                final Path zpMaps = Paths.get("zp_maps");
+                if (ImGui.button("Run")) {
+                    try {
+                        MinecraftServer server = Minecraft.getInstance().getSingleplayerServer();
+                        Files.createDirectories(zpMaps);
+                        final Path inner = zpMaps.resolve(server.getWorldData().getLevelName().toLowerCase().replaceAll(" ", "_"));
+                        Files.createDirectories(inner);
+                        final Path zip = inner.resolve(server.getWorldData().getLevelName().toLowerCase().replaceAll(" ", "_") + ".zip");
+                        ZPMapArchiver.archive(server, zip, a -> {
+                            a.file("level.dat");
+                            a.folder("region");
+                            a.folder("entities");
+                            a.folder("overworld");
+                        });
+                        {
+                            try {
+                                String template = """
+                                        {
+                                          "archive": "%s",
+                                          "preview": "",
+                                          "name": "%s",
+                                          "version": "1.0",
+                                          "authors": [
+                                            "UNKNOWN"
+                                          ],
+                                          "description": "TODO",
+                                          "recommendedPlayers": -1,
+                                          "modVersion": "0.0a"
+                                        }
+                                        """.formatted(
+                                        zip.getFileName(),
+                                        server.getWorldData().getLevelName()
+                                );
+
+                                Files.writeString(inner.resolve("map.json"), template, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+                            } catch (IOException e) {
+                                throw new RuntimeException("Failed to create map metadata", e);
+                            }
+                        }
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+
+                ImGui.pushStyleColor(ImGuiCol.Text, 0xff00ff00);
+                if (ImGui.button("Open Save Folder")) {
+                    Util.getPlatform().openFile(zpMaps.toFile());
+                }
+                ImGui.popStyleColor();
+            }
 
             if (ImGui.collapsingHeader("Zones")) {
                 ImGui.indent();

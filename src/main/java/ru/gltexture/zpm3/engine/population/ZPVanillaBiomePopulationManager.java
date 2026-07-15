@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class VanillaBiomePopulationManager {
+public class ZPVanillaBiomePopulationManager {
     private boolean cancelVanilla_farmAnimals_Method;
     private boolean cancelVanilla_monsters_Method;
     private boolean cancelVanilla_caveSpawns_Method;
@@ -38,7 +38,7 @@ public class VanillaBiomePopulationManager {
     private List<Consumer<MobSpawnSettings.Builder>> baseJungleSpawns_Consumers;
     private List<Consumer<MobSpawnSettings.Builder>> endSpawns_Consumers;
 
-    VanillaBiomePopulationManager() {
+    ZPVanillaBiomePopulationManager() {
         this.cancelVanilla_farmAnimals_Method = false;
         this.cancelVanilla_monsters_Method = false;
         this.cancelVanilla_caveSpawns_Method = false;
@@ -229,132 +229,132 @@ public class VanillaBiomePopulationManager {
         return this.endSpawns_Consumers;
     }
 
-    public VanillaBiomePopulationManager addFarmAnimal_Consumer(Consumer<MobSpawnSettings.Builder> consumer) {
+    public ZPVanillaBiomePopulationManager addFarmAnimal_Consumer(Consumer<MobSpawnSettings.Builder> consumer) {
         this.farmAnimals_Consumers.add(consumer);
         return this;
     }
 
-    public VanillaBiomePopulationManager addMonster_Consumer(Function5<MobSpawnSettings.Builder, Integer, Integer, Integer, Boolean, Void> consumer) {
+    public ZPVanillaBiomePopulationManager addMonster_Consumer(Function5<MobSpawnSettings.Builder, Integer, Integer, Integer, Boolean, Void> consumer) {
         this.monsters_Consumers.add(consumer);
         return this;
     }
 
-    public VanillaBiomePopulationManager addCaveSpawn_Consumer(Consumer<MobSpawnSettings.Builder> consumer) {
+    public ZPVanillaBiomePopulationManager addCaveSpawn_Consumer(Consumer<MobSpawnSettings.Builder> consumer) {
         this.caveSpawns_Consumers.add(consumer);
         return this;
     }
 
-    public VanillaBiomePopulationManager addCommonSpawn_Consumer(Consumer<MobSpawnSettings.Builder> consumer) {
+    public ZPVanillaBiomePopulationManager addCommonSpawn_Consumer(Consumer<MobSpawnSettings.Builder> consumer) {
         this.commonSpawns_Consumers.add(consumer);
         return this;
     }
 
-    public VanillaBiomePopulationManager addOceanSpawn_Consumer(Function4<MobSpawnSettings.Builder, Integer, Integer, Integer, Void> consumer) {
+    public ZPVanillaBiomePopulationManager addOceanSpawn_Consumer(Function4<MobSpawnSettings.Builder, Integer, Integer, Integer, Void> consumer) {
         this.oceanSpawns_Consumers.add(consumer);
         return this;
     }
 
-    public VanillaBiomePopulationManager addWarmOceanSpawn_Consumer(Function3<MobSpawnSettings.Builder, Integer, Integer, Void> consumer) {
+    public ZPVanillaBiomePopulationManager addWarmOceanSpawn_Consumer(Function3<MobSpawnSettings.Builder, Integer, Integer, Void> consumer) {
         this.warmOceanSpawns_Consumers.add(consumer);
         return this;
     }
 
-    public VanillaBiomePopulationManager addPlainsSpawn_Consumer(Consumer<MobSpawnSettings.Builder> consumer) {
+    public ZPVanillaBiomePopulationManager addPlainsSpawn_Consumer(Consumer<MobSpawnSettings.Builder> consumer) {
         this.plainsSpawns_Consumers.add(consumer);
         return this;
     }
 
-    public VanillaBiomePopulationManager addSnowySpawn_Consumer(Consumer<MobSpawnSettings.Builder> consumer) {
+    public ZPVanillaBiomePopulationManager addSnowySpawn_Consumer(Consumer<MobSpawnSettings.Builder> consumer) {
         this.snowySpawns_Consumers.add(consumer);
         return this;
     }
 
-    public VanillaBiomePopulationManager addDesertSpawn_Consumer(Consumer<MobSpawnSettings.Builder> consumer) {
+    public ZPVanillaBiomePopulationManager addDesertSpawn_Consumer(Consumer<MobSpawnSettings.Builder> consumer) {
         this.desertSpawns_Consumers.add(consumer);
         return this;
     }
 
-    public VanillaBiomePopulationManager addDripstoneCaveSpawn_Consumer(Consumer<MobSpawnSettings.Builder> consumer) {
+    public ZPVanillaBiomePopulationManager addDripstoneCaveSpawn_Consumer(Consumer<MobSpawnSettings.Builder> consumer) {
         this.dripstoneCavesSpawns_Consumers.add(consumer);
         return this;
     }
 
-    public VanillaBiomePopulationManager addMooshroomSpawn_Consumer(Consumer<MobSpawnSettings.Builder> consumer) {
+    public ZPVanillaBiomePopulationManager addMooshroomSpawn_Consumer(Consumer<MobSpawnSettings.Builder> consumer) {
         this.mooshroomSpawns_Consumers.add(consumer);
         return this;
     }
 
-    public VanillaBiomePopulationManager addBaseJungleSpawn_Consumer(Consumer<MobSpawnSettings.Builder> consumer) {
+    public ZPVanillaBiomePopulationManager addBaseJungleSpawn_Consumer(Consumer<MobSpawnSettings.Builder> consumer) {
         this.baseJungleSpawns_Consumers.add(consumer);
         return this;
     }
 
-    public VanillaBiomePopulationManager addEndSpawn_Consumer(Consumer<MobSpawnSettings.Builder> consumer) {
+    public ZPVanillaBiomePopulationManager addEndSpawn_Consumer(Consumer<MobSpawnSettings.Builder> consumer) {
         this.endSpawns_Consumers.add(consumer);
         return this;
     }
 
-    public VanillaBiomePopulationManager setFarmAnimals_Consumers(List<Consumer<MobSpawnSettings.Builder>> farmAnimals_Consumers) {
+    public ZPVanillaBiomePopulationManager setFarmAnimals_Consumers(List<Consumer<MobSpawnSettings.Builder>> farmAnimals_Consumers) {
         this.farmAnimals_Consumers = farmAnimals_Consumers;
         return this;
     }
 
-    public VanillaBiomePopulationManager setMonsters_Consumers(List<Function5<MobSpawnSettings.Builder, Integer, Integer, Integer, Boolean, Void>> monsters_Consumers) {
+    public ZPVanillaBiomePopulationManager setMonsters_Consumers(List<Function5<MobSpawnSettings.Builder, Integer, Integer, Integer, Boolean, Void>> monsters_Consumers) {
         this.monsters_Consumers = monsters_Consumers;
         return this;
     }
 
-    public VanillaBiomePopulationManager setCaveSpawns_Consumers(List<Consumer<MobSpawnSettings.Builder>> caveSpawns_Consumers) {
+    public ZPVanillaBiomePopulationManager setCaveSpawns_Consumers(List<Consumer<MobSpawnSettings.Builder>> caveSpawns_Consumers) {
         this.caveSpawns_Consumers = caveSpawns_Consumers;
         return this;
     }
 
-    public VanillaBiomePopulationManager setCommonSpawns_Consumers(List<Consumer<MobSpawnSettings.Builder>> commonSpawns_Consumers) {
+    public ZPVanillaBiomePopulationManager setCommonSpawns_Consumers(List<Consumer<MobSpawnSettings.Builder>> commonSpawns_Consumers) {
         this.commonSpawns_Consumers = commonSpawns_Consumers;
         return this;
     }
 
-    public VanillaBiomePopulationManager setOceanSpawns_Consumers(List<Function4<MobSpawnSettings.Builder, Integer, Integer, Integer, Void>> oceanSpawns_Consumers) {
+    public ZPVanillaBiomePopulationManager setOceanSpawns_Consumers(List<Function4<MobSpawnSettings.Builder, Integer, Integer, Integer, Void>> oceanSpawns_Consumers) {
         this.oceanSpawns_Consumers = oceanSpawns_Consumers;
         return this;
     }
 
-    public VanillaBiomePopulationManager setWarmOceanSpawns_Consumers(List<Function3<MobSpawnSettings.Builder, Integer, Integer, Void>> warmOceanSpawns_Consumers) {
+    public ZPVanillaBiomePopulationManager setWarmOceanSpawns_Consumers(List<Function3<MobSpawnSettings.Builder, Integer, Integer, Void>> warmOceanSpawns_Consumers) {
         this.warmOceanSpawns_Consumers = warmOceanSpawns_Consumers;
         return this;
     }
 
-    public VanillaBiomePopulationManager setPlainsSpawns_Consumers(List<Consumer<MobSpawnSettings.Builder>> plainsSpawns_Consumers) {
+    public ZPVanillaBiomePopulationManager setPlainsSpawns_Consumers(List<Consumer<MobSpawnSettings.Builder>> plainsSpawns_Consumers) {
         this.plainsSpawns_Consumers = plainsSpawns_Consumers;
         return this;
     }
 
-    public VanillaBiomePopulationManager setSnowySpawns_Consumers(List<Consumer<MobSpawnSettings.Builder>> snowySpawns_Consumers) {
+    public ZPVanillaBiomePopulationManager setSnowySpawns_Consumers(List<Consumer<MobSpawnSettings.Builder>> snowySpawns_Consumers) {
         this.snowySpawns_Consumers = snowySpawns_Consumers;
         return this;
     }
 
-    public VanillaBiomePopulationManager setDesertSpawns_Consumers(List<Consumer<MobSpawnSettings.Builder>> desertSpawns_Consumers) {
+    public ZPVanillaBiomePopulationManager setDesertSpawns_Consumers(List<Consumer<MobSpawnSettings.Builder>> desertSpawns_Consumers) {
         this.desertSpawns_Consumers = desertSpawns_Consumers;
         return this;
     }
 
-    public VanillaBiomePopulationManager setDripstoneCavesSpawns_Consumers(List<Consumer<MobSpawnSettings.Builder>> dripstoneCavesSpawns_Consumers) {
+    public ZPVanillaBiomePopulationManager setDripstoneCavesSpawns_Consumers(List<Consumer<MobSpawnSettings.Builder>> dripstoneCavesSpawns_Consumers) {
         this.dripstoneCavesSpawns_Consumers = dripstoneCavesSpawns_Consumers;
         return this;
     }
 
-    public VanillaBiomePopulationManager setMooshroomSpawns_Consumers(List<Consumer<MobSpawnSettings.Builder>> mooshroomSpawns_Consumers) {
+    public ZPVanillaBiomePopulationManager setMooshroomSpawns_Consumers(List<Consumer<MobSpawnSettings.Builder>> mooshroomSpawns_Consumers) {
         this.mooshroomSpawns_Consumers = mooshroomSpawns_Consumers;
         return this;
     }
 
-    public VanillaBiomePopulationManager setBaseJungleSpawns_Consumers(List<Consumer<MobSpawnSettings.Builder>> baseJungleSpawns_Consumers) {
+    public ZPVanillaBiomePopulationManager setBaseJungleSpawns_Consumers(List<Consumer<MobSpawnSettings.Builder>> baseJungleSpawns_Consumers) {
         this.baseJungleSpawns_Consumers = baseJungleSpawns_Consumers;
         return this;
     }
 
-    public VanillaBiomePopulationManager setEndSpawns_Consumers(List<Consumer<MobSpawnSettings.Builder>> endSpawns_Consumers) {
+    public ZPVanillaBiomePopulationManager setEndSpawns_Consumers(List<Consumer<MobSpawnSettings.Builder>> endSpawns_Consumers) {
         this.endSpawns_Consumers = endSpawns_Consumers;
         return this;
     }
@@ -363,7 +363,7 @@ public class VanillaBiomePopulationManager {
         return this.cancelVanilla_farmAnimals_Method;
     }
 
-    public VanillaBiomePopulationManager setCancelVanilla_farmAnimals_Method(boolean value) {
+    public ZPVanillaBiomePopulationManager setCancelVanilla_farmAnimals_Method(boolean value) {
         this.cancelVanilla_farmAnimals_Method = value;
         return this;
     }
@@ -372,7 +372,7 @@ public class VanillaBiomePopulationManager {
         return this.cancelVanilla_monsters_Method;
     }
 
-    public VanillaBiomePopulationManager setCancelVanilla_monsters_Method(boolean value) {
+    public ZPVanillaBiomePopulationManager setCancelVanilla_monsters_Method(boolean value) {
         this.cancelVanilla_monsters_Method = value;
         return this;
     }
@@ -381,7 +381,7 @@ public class VanillaBiomePopulationManager {
         return this.cancelVanilla_caveSpawns_Method;
     }
 
-    public VanillaBiomePopulationManager setCancelVanilla_caveSpawns_Method(boolean value) {
+    public ZPVanillaBiomePopulationManager setCancelVanilla_caveSpawns_Method(boolean value) {
         this.cancelVanilla_caveSpawns_Method = value;
         return this;
     }
@@ -390,7 +390,7 @@ public class VanillaBiomePopulationManager {
         return this.cancelVanilla_commonSpawns_Method;
     }
 
-    public VanillaBiomePopulationManager setCancelVanilla_commonSpawns_Method(boolean value) {
+    public ZPVanillaBiomePopulationManager setCancelVanilla_commonSpawns_Method(boolean value) {
         this.cancelVanilla_commonSpawns_Method = value;
         return this;
     }
@@ -399,7 +399,7 @@ public class VanillaBiomePopulationManager {
         return this.cancelVanilla_oceanSpawns_Method;
     }
 
-    public VanillaBiomePopulationManager setCancelVanilla_oceanSpawns_Method(boolean value) {
+    public ZPVanillaBiomePopulationManager setCancelVanilla_oceanSpawns_Method(boolean value) {
         this.cancelVanilla_oceanSpawns_Method = value;
         return this;
     }
@@ -408,7 +408,7 @@ public class VanillaBiomePopulationManager {
         return this.cancelVanilla_warmOceanSpawns_Method;
     }
 
-    public VanillaBiomePopulationManager setCancelVanilla_warmOceanSpawns_Method(boolean value) {
+    public ZPVanillaBiomePopulationManager setCancelVanilla_warmOceanSpawns_Method(boolean value) {
         this.cancelVanilla_warmOceanSpawns_Method = value;
         return this;
     }
@@ -417,7 +417,7 @@ public class VanillaBiomePopulationManager {
         return this.cancelVanilla_plainsSpawns_Method;
     }
 
-    public VanillaBiomePopulationManager setCancelVanilla_plainsSpawns_Method(boolean value) {
+    public ZPVanillaBiomePopulationManager setCancelVanilla_plainsSpawns_Method(boolean value) {
         this.cancelVanilla_plainsSpawns_Method = value;
         return this;
     }
@@ -426,7 +426,7 @@ public class VanillaBiomePopulationManager {
         return this.cancelVanilla_snowySpawns_Method;
     }
 
-    public VanillaBiomePopulationManager setCancelVanilla_snowySpawns_Method(boolean value) {
+    public ZPVanillaBiomePopulationManager setCancelVanilla_snowySpawns_Method(boolean value) {
         this.cancelVanilla_snowySpawns_Method = value;
         return this;
     }
@@ -435,7 +435,7 @@ public class VanillaBiomePopulationManager {
         return this.cancelVanilla_desertSpawns_Method;
     }
 
-    public VanillaBiomePopulationManager setCancelVanilla_desertSpawns_Method(boolean value) {
+    public ZPVanillaBiomePopulationManager setCancelVanilla_desertSpawns_Method(boolean value) {
         this.cancelVanilla_desertSpawns_Method = value;
         return this;
     }
@@ -444,7 +444,7 @@ public class VanillaBiomePopulationManager {
         return this.cancelVanilla_dripstoneCavesSpawns_Method;
     }
 
-    public VanillaBiomePopulationManager setCancelVanilla_dripstoneCavesSpawns_Method(boolean value) {
+    public ZPVanillaBiomePopulationManager setCancelVanilla_dripstoneCavesSpawns_Method(boolean value) {
         this.cancelVanilla_dripstoneCavesSpawns_Method = value;
         return this;
     }
@@ -453,7 +453,7 @@ public class VanillaBiomePopulationManager {
         return this.cancelVanilla_mooshroomSpawns_Method;
     }
 
-    public VanillaBiomePopulationManager setCancelVanilla_mooshroomSpawns_Method(boolean value) {
+    public ZPVanillaBiomePopulationManager setCancelVanilla_mooshroomSpawns_Method(boolean value) {
         this.cancelVanilla_mooshroomSpawns_Method = value;
         return this;
     }
@@ -462,7 +462,7 @@ public class VanillaBiomePopulationManager {
         return this.cancelVanilla_baseJungleSpawns_Method;
     }
 
-    public VanillaBiomePopulationManager setCancelVanilla_baseJungleSpawns_Method(boolean value) {
+    public ZPVanillaBiomePopulationManager setCancelVanilla_baseJungleSpawns_Method(boolean value) {
         this.cancelVanilla_baseJungleSpawns_Method = value;
         return this;
     }
@@ -471,7 +471,7 @@ public class VanillaBiomePopulationManager {
         return this.cancelVanilla_endSpawns_Method;
     }
 
-    public VanillaBiomePopulationManager setCancelVanilla_endSpawns_Method(boolean value) {
+    public ZPVanillaBiomePopulationManager setCancelVanilla_endSpawns_Method(boolean value) {
         this.cancelVanilla_endSpawns_Method = value;
         return this;
     }

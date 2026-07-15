@@ -139,6 +139,16 @@ public abstract class ZPCampfireEntityMixin implements ICampfireExt {
     }
 
     @Override
+    public long zpm3forge$getTimeLock() {
+        return this.zpm3forge$timeLock;
+    }
+
+    @Override
+    public void zpm3forge$setTimeLock(long timeLock) {
+        this.zpm3forge$timeLock = timeLock;
+    }
+
+    @Override
     public int zpm3forge$fadeCooldown() {
         return this.zpm3forge$fadeCooldown;
     }

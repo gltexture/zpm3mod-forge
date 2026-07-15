@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -16,6 +17,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import ru.gltexture.zpm3.modules.armor.utils.ZPArmorUtil;
 
 @Mixin(EntityRenderer.class)
 public class ZPEntityRendererNameTagMixin {
@@ -29,6 +31,11 @@ public class ZPEntityRendererNameTagMixin {
 
     @Inject(method = "renderNameTag", at = @At("HEAD"), cancellable = true)
     protected void renderNameTag(Entity pEntity, Component pDisplayName, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, CallbackInfo ci) {
+        if (pEntity instanceof LivingEntity livingEntity) {
+            if (ZPArmorUtil.isArmorShouldHideName(livingEntity)) {
+                ci.cancel();
+            }
+        }
         double d0 = this.entityRenderDispatcher.distanceToSqr(pEntity);
         if (ZPEntityRendererNameTagMixin.zpm3forge$isNameplateInRenderDistanceZP(pEntity, d0)) {
             boolean flag = !pEntity.isDiscrete();

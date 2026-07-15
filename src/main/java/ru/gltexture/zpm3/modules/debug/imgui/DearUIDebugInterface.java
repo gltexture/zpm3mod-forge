@@ -17,6 +17,8 @@ import ru.gltexture.zpm3.modules.guns.rendering.fx.ZPDefaultGunMuzzleflashFX;
 import ru.gltexture.zpm3.engine.client.rendering.ui.imgui.interfaces.DearUIInterface;
 import ru.gltexture.zpm3.modules.player.mixins.ext.IZPPlayerMixinExt;
 
+import java.nio.file.Path;
+
 public class DearUIDebugInterface implements DearUIInterface {
     public DearUIDebugInterface() {
     }

@@ -34,7 +34,7 @@ public final class ZPZonesRegistry {
     public static final ZPZoneFlag acidCloud = ZPZonesRegistry.RegisterFlag("acidCloud");
     public static final ZPZoneFlag toxicCloud = ZPZonesRegistry.RegisterFlag("toxicCloud");
 
-    public static final ZPZoneIntVar zombiesSpawnPercentageReduction = ZPZonesRegistry.RegisterIntVar(new ZPZoneIntVar("zombiesSpawnPercentageReduction", 100, 0, 100));
+    public static final ZPZoneIntVar zombiesSpawnPercentageReduction = ZPZonesRegistry.RegisterIntVar(new ZPZoneIntVar("zombiesSpawnPercentageReduction", 0, 0, 100));
 
     ZPZonesRegistry() {
     }

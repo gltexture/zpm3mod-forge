@@ -17,7 +17,7 @@ public abstract class ZPRegMiscItems {
                 () -> new ZPItem(new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1))
         ).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
-                utils.items().addItemInTab(e, ZPTabs.zp_misc_tab);
+                utils.items().addItemInTab(e, ZPTabs.zp_items_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MISC_ITEMS_DIRECTORY);
             });
         }).end();
@@ -26,16 +26,7 @@ public abstract class ZPRegMiscItems {
                 () -> new ZPItem(new Item.Properties().stacksTo(16))
         ).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
-                utils.items().addItemInTab(e, ZPTabs.zp_misc_tab);
-                utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MISC_ITEMS_DIRECTORY);
-            });
-        }).end();
-
-        ZPMiscItems.table_material = regSupplier.register("table_material",
-                () -> new ZPItem(new Item.Properties().stacksTo(64))
-        ).afterCreated((e, utils) -> {
-            ZPUtility.sides().onlyClient(() -> {
-                utils.items().addItemInTab(e, ZPTabs.zp_misc_tab);
+                utils.items().addItemInTab(e, ZPTabs.zp_items_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MISC_ITEMS_DIRECTORY);
             });
         }).end();
@@ -44,7 +35,7 @@ public abstract class ZPRegMiscItems {
                 () -> new ZPItem(new Item.Properties().stacksTo(16))
         ).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
-                utils.items().addItemInTab(e, ZPTabs.zp_misc_tab);
+                utils.items().addItemInTab(e, ZPTabs.zp_items_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MISC_ITEMS_DIRECTORY);
             });
         }).end();
@@ -53,7 +44,7 @@ public abstract class ZPRegMiscItems {
                 () -> new ZPItem(new Item.Properties().stacksTo(64))
         ).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
-                utils.items().addItemInTab(e, ZPTabs.zp_misc_tab);
+                utils.items().addItemInTab(e, ZPTabs.zp_items_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MISC_ITEMS_DIRECTORY);
             });
         }).end();
@@ -62,7 +53,7 @@ public abstract class ZPRegMiscItems {
                 () -> new ZPItem(new Item.Properties().stacksTo(16))
         ).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
-                utils.items().addItemInTab(e, ZPTabs.zp_misc_tab);
+                utils.items().addItemInTab(e, ZPTabs.zp_items_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MISC_ITEMS_DIRECTORY);
             });
         }).end();

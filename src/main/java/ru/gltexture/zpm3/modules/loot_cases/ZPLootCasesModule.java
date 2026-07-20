@@ -106,7 +106,6 @@ public class ZPLootCasesModule extends ZPModule {
                 )
                 .bonusGroup("bonus", 0.03f, (g) -> g
                         .addNonBreakable("zpm3:scrap_material",           2,  1, 1, 1.0f)
-                        .addNonBreakable("zpm3:table_material",           2,  1, 1, 1.0f)
                         .addNonBreakable("zpm3:shelves_material",         2,  1, 1, 1.0f)
                         .addBreakable("minecraft:stone_sword",            2, 0.6f, 1.0f, 1.0f)
                         .addBreakable("minecraft:stone_pickaxe",          2, 0.6f, 1.0f, 1.0f)
@@ -379,7 +378,6 @@ public class ZPLootCasesModule extends ZPModule {
                         .addNonBreakable("zpm3:asphalt_slab", 6, 1, 3, 1.0f)
                         .addNonBreakable("zpm3:cement_material", 8, 1, 1, 1.0f)
                         .addNonBreakable("zpm3:scrap", 8, 1, 4, 1.0f)
-                        .addNonBreakable("zpm3:table_material", 5, 1, 2, 1.0f)
                         .addNonBreakable("zpm3:wall_lamp", 3, 1, 1, 1.0f)
                         .addNonBreakable("zpm3:block_lamp", 3, 1, 1, 1.0f)
                 )

@@ -9,7 +9,7 @@
     "common.ZPEntityItemLifespanMixin",
     "common.ZPEntityLivingExtendingMixin",
     "common.ZPProjectileMethodsMixin",
-    "common.ZPSnowBallExtinguishTorchesMixin"
+    "common.ZPSnowBallExtinguishBlocksMixin"
   ],
   "client": [
     "client.ZPEntityRendererNameTagMixin"

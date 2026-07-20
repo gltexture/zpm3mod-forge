@@ -42,12 +42,12 @@ public class ZPCampfireBlock extends CampfireBlock implements EntityBlock {
         super.onPlace(pState, pLevel, pPos, pOldState, pMovedByPiston);
     }
 
-    public static void activationCheck(@NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, @Nullable LivingEntity pPlacer, @NotNull ItemStack pStack) {
-        BlockEntity entity = pLevel.getBlockEntity(pPos);
-        if (entity instanceof ICampfireExt iCampfireExt && pPlacer instanceof Player player) {
-            if (ZPWorldConfig.SKIP_FADING_BLOCKS_PLACED_IN_CREATIVE.getVar() && player.isCreative()) {
-                iCampfireExt.setActive(false);
-            }
-        }
-    }
+   // public static void activationCheck(@NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, @Nullable LivingEntity pPlacer, @NotNull ItemStack pStack) {
+   //     BlockEntity entity = pLevel.getBlockEntity(pPos);
+   //     if (entity instanceof ICampfireExt iCampfireExt && pPlacer instanceof Player player) {
+   //         if (ZPWorldConfig.SKIP_FADING_BLOCKS_PLACED_IN_CREATIVE.getVar() && player.isCreative()) {
+   //             iCampfireExt.setActive(false);
+   //         }
+   //     }
+   // }
 }

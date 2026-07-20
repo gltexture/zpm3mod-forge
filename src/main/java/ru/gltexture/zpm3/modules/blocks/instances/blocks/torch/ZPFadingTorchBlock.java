@@ -19,7 +19,7 @@ import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.modules.blocks.init.ZPBlockEntities;
 import ru.gltexture.zpm3.modules.blocks.instances.block_entities.ZPFadingBlockEntity;
 import ru.gltexture.zpm3.engine.instances.blocks.ZPTorchBlock;
-import ru.gltexture.zpm3.modules.blocks.instances.blocks.fading.IFadingBlock;
+import ru.gltexture.zpm3.modules.blocks.instances.blocks.IFadingBlock;
 
 import java.util.function.Supplier;
 
@@ -55,7 +55,7 @@ public class ZPFadingTorchBlock extends ZPTorchBlock implements EntityBlock, IFa
     @Override
     public void setPlacedBy(@NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, @Nullable LivingEntity pPlacer, @NotNull ItemStack pStack) {
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
-        ZPFadingTorchBlock.activationCheck(pLevel, pPos, pState, pPlacer, pStack);
+        //ZPFadingTorchBlock.activationCheck(pLevel, pPos, pState, pPlacer, pStack);
     }
 
     @SuppressWarnings("all")
@@ -64,12 +64,12 @@ public class ZPFadingTorchBlock extends ZPTorchBlock implements EntityBlock, IFa
         super.onPlace(pState, pLevel, pPos, pOldState, pMovedByPiston);
     }
 
-    public static void activationCheck(@NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, @Nullable LivingEntity pPlacer, @NotNull ItemStack pStack) {
-        BlockEntity entity = pLevel.getBlockEntity(pPos);
-        if (entity instanceof ZPFadingBlockEntity fadingBlockEntity && pPlacer instanceof Player player) {
-            if (ZPWorldConfig.SKIP_FADING_BLOCKS_PLACED_IN_CREATIVE.getVar() && player.isCreative()) {
-                fadingBlockEntity.setActive(false);
-            }
-        }
-    }
+   //public static void activationCheck(@NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, @Nullable LivingEntity pPlacer, @NotNull ItemStack pStack) {
+   //    BlockEntity entity = pLevel.getBlockEntity(pPos);
+   //    if (entity instanceof ZPFadingBlockEntity fadingBlockEntity && pPlacer instanceof Player player) {
+   //        if (ZPWorldConfig.SKIP_FADING_BLOCKS_PLACED_IN_CREATIVE.getVar() && player.isCreative()) {
+   //            fadingBlockEntity.setActive(false);
+   //        }
+   //    }
+   //}
 }

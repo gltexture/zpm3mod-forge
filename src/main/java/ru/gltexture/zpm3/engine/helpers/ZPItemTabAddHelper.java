@@ -12,7 +12,7 @@ public abstract class ZPItemTabAddHelper {
     private static final Map<RegistryObject<CreativeModeTab>, Set<RegistryObject<? extends Item>>> itemMap = new HashMap<>();
 
     public static void addItemInTab(@NotNull RegistryObject<? extends Item> item, @NotNull RegistryObject<CreativeModeTab> creativeModeTab) {
-        itemMap.computeIfAbsent(creativeModeTab, k -> new HashSet<>()).add(item);
+        ZPItemTabAddHelper.itemMap.computeIfAbsent(creativeModeTab, k -> new LinkedHashSet<>()).add(item);
     }
 
     public static void onBuildContents(BuildCreativeModeTabContentsEvent event) {

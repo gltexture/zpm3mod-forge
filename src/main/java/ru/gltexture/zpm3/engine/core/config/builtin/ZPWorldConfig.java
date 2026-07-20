@@ -13,9 +13,9 @@ public class ZPWorldConfig implements ZPConfigConstantsClass {
     public static final ZPConfig_BOOL SKIP_FADE_TICKING_LAVA_ACID_PLACED_IN_CREATIVE =
             new ZPConfig_BOOL(true);
 
-    @ZPVarDefinition(description = "Prevents fading torches and pumpkins when placed in Creative mode.")
-    public static final ZPConfig_BOOL SKIP_FADING_BLOCKS_PLACED_IN_CREATIVE =
-            new ZPConfig_BOOL(true);
+   // @ZPVarDefinition(description = "Prevents fading torches and pumpkins when placed in Creative mode.")
+   // public static final ZPConfig_BOOL SKIP_FADING_BLOCKS_PLACED_IN_CREATIVE =
+   //         new ZPConfig_BOOL(true);
 
     @ZPVarDefinition(description = "How much internal damage can receive barbared wire, before it breaks.")
     public static final ZPConfig_INT MAX_BARBARED_WIRE_STRENGTH =

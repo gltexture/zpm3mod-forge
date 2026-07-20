@@ -31,12 +31,12 @@ public abstract class ZPRegBlockItems {
     }
 
     private static void regTorchBlocks(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
-        ZPRegBlockItems.regTorchBlock(regSupplier, ZPTorchBlocks.wall_lamp, ZPTorchBlocks.wall_lamp_wall);
-        ZPRegBlockItems.regTorchBlock(regSupplier, ZPTorchBlocks.wall_lamp_off, ZPTorchBlocks.wall_lamp_off_wall);
         ZPRegBlockItems.regTorchBlock(regSupplier, ZPTorchBlocks.torch2, ZPTorchBlocks.torch2_wall);
         ZPRegBlockItems.regTorchBlock(regSupplier, ZPTorchBlocks.torch3, ZPTorchBlocks.torch3_wall);
         ZPRegBlockItems.regTorchBlock(regSupplier, ZPTorchBlocks.torch4, ZPTorchBlocks.torch4_wall);
         ZPRegBlockItems.regTorchBlock(regSupplier, ZPTorchBlocks.torch5, ZPTorchBlocks.torch5_wall);
+        ZPRegBlockItems.regTorchBlock(regSupplier, ZPTorchBlocks.wall_lamp, ZPTorchBlocks.wall_lamp_wall);
+        ZPRegBlockItems.regTorchBlock(regSupplier, ZPTorchBlocks.wall_lamp_off, ZPTorchBlocks.wall_lamp_off_wall);
     }
 
     private static void regLanternBlocks(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
@@ -65,7 +65,7 @@ public abstract class ZPRegBlockItems {
     }
 
     private static void regTorchBlock(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier, @NotNull RegistryObject<? extends Block> block, @NotNull RegistryObject<? extends Block> wallBlock) {
-        final RegistryObject<CreativeModeTab> tabToAdd = ZPTabs.zp_fading_blocks_tab;
+        final RegistryObject<CreativeModeTab> tabToAdd = ZPTabs.zp_blocks_tab;
 
         RegistryObject<BlockItem> blockItemRegistryObject = ZPItemBlockHelper.createWallBlockItem(regSupplier, block, wallBlock
         ).afterCreated((e, utils) -> {
@@ -78,7 +78,7 @@ public abstract class ZPRegBlockItems {
     }
 
     private static void regLanternOrCampfireBlock(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier, @NotNull RegistryObject<? extends Block> block) {
-        final RegistryObject<CreativeModeTab> tabToAdd = ZPTabs.zp_fading_blocks_tab;
+        final RegistryObject<CreativeModeTab> tabToAdd = ZPTabs.zp_blocks_tab;
 
         RegistryObject<BlockItem> blockItemRegistryObject = ZPItemBlockHelper.createBlockItem(regSupplier, block
         ).afterCreated((e, utils) -> {

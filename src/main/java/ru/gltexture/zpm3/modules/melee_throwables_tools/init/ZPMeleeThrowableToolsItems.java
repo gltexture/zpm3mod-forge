@@ -29,8 +29,11 @@ import ru.gltexture.zpm3.modules.guns.init.ZPGunItems;
 import ru.gltexture.zpm3.modules.melee_throwables_tools.init.helper.ZPRegToolItems;
 import ru.gltexture.zpm3.modules.melee_throwables_tools.init.helper.ZPRegMelee;
 import ru.gltexture.zpm3.modules.melee_throwables_tools.init.helper.ZPRegThrowable;
+import ru.gltexture.zpm3.modules.melee_throwables_tools.instances.items.ZPCrowbarSword;
 import ru.gltexture.zpm3.modules.melee_throwables_tools.instances.items.ZPMatches;
+import ru.gltexture.zpm3.modules.melee_throwables_tools.instances.items.ZPMetalCuttersTool;
 import ru.gltexture.zpm3.modules.melee_throwables_tools.instances.items.ZPWrenchTool;
+import ru.gltexture.zpm3.modules.melee_throwables_tools.instances.items.admin.ZPAdminWrenchFadingBlocks;
 import ru.gltexture.zpm3.modules.melee_throwables_tools.instances.melee.ZPBroomSword;
 import ru.gltexture.zpm3.modules.misc_items.init.ZPMiscItems;
 
@@ -45,8 +48,10 @@ public class ZPMeleeThrowableToolsItems extends ZPRegistry<Item> implements IZPC
     public static RegistryObject<ZPItemBucket> toxicwater_bucket;
 
     // TOOLS
+    public static RegistryObject<ZPMetalCuttersTool> metal_cutters;
     public static RegistryObject<ZPWrenchTool> wrench;
     public static RegistryObject<ZPMatches> matches;
+    public static RegistryObject<ZPAdminWrenchFadingBlocks> admin_wrench_torches;
 
     // MELEE
     public static RegistryObject<ZPItemSword> bat;
@@ -55,7 +60,7 @@ public class ZPMeleeThrowableToolsItems extends ZPRegistry<Item> implements IZPC
     public static RegistryObject<ZPItemSword> golf_club;
     public static RegistryObject<ZPItemAxe> hatchet;
     public static RegistryObject<ZPItemPickaxe> sledgehammer;
-    public static RegistryObject<ZPItemSword> crowbar;
+    public static RegistryObject<ZPCrowbarSword> crowbar;
     public static RegistryObject<ZPItemSword> cleaver;
     public static RegistryObject<ZPBroomSword> broom;
 

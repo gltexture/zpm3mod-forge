@@ -19,8 +19,8 @@ import java.util.function.Supplier;
 public enum ZPCommonToolMeleeTiers implements ZPTier {
     ZP_WOOD_FUN("zp_wood_fun", 1, 32, 4.0F, 0.0F, 1, BlockTags.NEEDS_STONE_TOOL, () -> Ingredient.of(ItemTags.PLANKS), null, Tiers.WOOD),
     ZP_WOOD("zp_wood", 1, 72, 2.0F, 0.0F, 15, BlockTags.NEEDS_STONE_TOOL, () -> Ingredient.of(ItemTags.PLANKS), null, Tiers.WOOD),
-    ZP_WRENCH("zp_wrench", 2, 128, 8.0F, 0.0F, 15, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(Items.IRON_INGOT), ZP_WOOD, Tiers.WOOD),
-    ZP_IRON_1("zp_iron_1", 2, 131, 4.0F, 1.0F, 15, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(Items.IRON_INGOT), ZP_WRENCH, Tiers.WOOD),
+    ZP_WRENCH_CUTTERS("zp_wrench", 4, 48, 8.0F, 0.0F, 15, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(Items.IRON_INGOT), ZP_WOOD, Tiers.WOOD),
+    ZP_IRON_1("zp_iron_1", 2, 131, 4.0F, 1.0F, 15, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(Items.IRON_INGOT), ZP_WRENCH_CUTTERS, Tiers.WOOD),
     ZP_IRON_2("zp_iron_2", 2, 342, 4.5F, 1.5F, 15, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(Items.IRON_INGOT), ZP_IRON_1, Tiers.WOOD),
     ZP_IRON_3("zp_iron_3", 3, 560, 6.0F, 2.5F, 15, BlockTags.NEEDS_DIAMOND_TOOL, () -> Ingredient.of(Items.IRON_INGOT), ZP_IRON_2, Tiers.WOOD),
     ZP_IRON_4("zp_iron_4", 3, 560, 8.0F, 3.5F, 15, BlockTags.NEEDS_DIAMOND_TOOL, () -> Ingredient.of(Items.IRON_INGOT), ZP_IRON_3, Tiers.WOOD),

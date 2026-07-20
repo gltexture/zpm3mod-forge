@@ -130,16 +130,18 @@ public abstract class ZPRegCommonBlocks {
             });
         }).end();
 
-        ZPBlocks.scrap = regSupplier.register("scrap", () -> new ZPBlock(BlockBehaviour.Properties.of().strength(8.0F, 3.0F).sound(SoundType.METAL))
+        ZPBlocks.scrap = regSupplier.register("scrap", () -> new ZPBlock(BlockBehaviour.Properties.of().strength(10.0F, 3.0F).sound(SoundType.METAL))
         ).afterCreated((e, utils) -> {
             utils.loot().addBlockLootTable(e, () -> new LootPool.Builder()
                     .setRolls(UniformGenerator.between(0, 2))
                     .add(LootItem.lootTableItem(ZPMiscItems.scrap_material.get()))
                     .when(MatchTool.toolMatches(
-                            ItemPredicate.Builder.item().of(ZPTags.I_MINEABLE_WITH_WRENCH)
+                            ItemPredicate.Builder.item().of(ZPTags.I_CAN_MINE_SCRAP)
                     ))
             );
+            utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
             utils.blocks().addTagToBlock(e, ZPTags.B_MINEABLE_WITH_WRENCH);
+            utils.blocks().addTagToBlock(e, ZPTags.B_MINEABLE_WITH_CROWBAR);
             ZPUtility.sides().onlyClient(() -> {
                 utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_BLOCK_CUBE, ZPGenTextureData.ALL_KEY, ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY);
             });
@@ -208,8 +210,15 @@ public abstract class ZPRegCommonBlocks {
             });
         }).end();
 
-        ZPBlocks.barbared_wire = regSupplier.register("barbared_wire", () -> new ZPBarbaredWireBlock(BlockBehaviour.Properties.of().strength(12.0F, 1.0F).forceSolidOn().noCollission().noOcclusion().sound(SoundType.METAL))
+        ZPBlocks.barbared_wire = regSupplier.register("barbared_wire", () -> new ZPBarbaredWireBlock(BlockBehaviour.Properties.of().strength(36.0F, 1.0F).forceSolidOn().noCollission().noOcclusion().sound(SoundType.METAL))
         ).afterCreated((e, utils) -> {
+            utils.loot().addBlockLootTable(e, () -> new LootPool.Builder()
+                    .add(LootItem.lootTableItem(e.get()))
+                    .when(MatchTool.toolMatches(
+                            ItemPredicate.Builder.item().of(ZPTags.I_CAN_MINE_BARBARED_WIRE)
+                    ))
+            );
+            utils.blocks().addTagToBlock(e, ZPTags.B_MINEABLE_WITH_METAL_CUTTERS);
             ZPUtility.sides().onlyClient(() -> {
                 utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_BLOCK_CROSS, ZPGenTextureData.CROSS_KEY, ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY);
                 utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);

@@ -8,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
 
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
 import ru.gltexture.zpm3.modules.entity.mixins.ext.IZPLivingEntityExt;
-import ru.gltexture.zpm3.modules.misc_items.init.ZPMiscItems;
 import ru.gltexture.zpm3.modules.common.init.ZPSounds;
 import ru.gltexture.zpm3.modules.common.init.ZPTabs;
 import ru.gltexture.zpm3.modules.food_medicine.init.ZPFoodMedicineItems;
@@ -20,83 +19,135 @@ import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public abstract class ZPRegMedicine {
-    public static final FoodProperties VODKA = ZPRegMedicine.DEFAULT_MEDICINE()
-            .effect(() -> new MobEffectInstance(MobEffects.CONFUSION, 1200, 0), 1.0F)
-            .effect(() -> new MobEffectInstance(ZPMobEffects.adrenaline.get(), 300), 1.0F)
+    public static final ZPItemMedicine.ZPMedicineProperties VODKA = new ZPItemMedicine.ZPMedicineProperties(ZPRegMedicine.DEFAULT_MEDICINE()
+            .effect(() -> new MobEffectInstance(MobEffects.CONFUSION, 2400, 0), 1.0F)
+            .effect(() -> new MobEffectInstance(ZPMobEffects.adrenaline.get(), 600), 1.0F)
             .effect(() -> new MobEffectInstance(ZPMobEffects.radiation_protection.get(), 600), 1.0F)
-            .build();
+            .build())
+                .setMedicineAnim(ZPItemMedicine.MedicineAnim.DRINK)
+                .setIntoxication(80);
 
-    public static final FoodProperties RADIOPROTECTION = ZPRegMedicine.DEFAULT_MEDICINE()
+    public static final ZPItemMedicine.ZPMedicineProperties WHISKEY = new ZPItemMedicine.ZPMedicineProperties(ZPRegMedicine.DEFAULT_MEDICINE()
+            .nutrition(1).saturationMod(0.05f)
+            .effect(() -> new MobEffectInstance(MobEffects.CONFUSION, 3000, 0), 1.0F)
+            .effect(() -> new MobEffectInstance(ZPMobEffects.adrenaline.get(), 300), 1.0F)
+            .effect(() -> new MobEffectInstance(ZPMobEffects.radiation_protection.get(), 900), 1.0F)
+            .build())
+                .setMedicineAnim(ZPItemMedicine.MedicineAnim.DRINK)
+                .setIntoxication(96);
+
+    public static final ZPItemMedicine.ZPMedicineProperties RADIOPROTECTION = new ZPItemMedicine.ZPMedicineProperties(ZPRegMedicine.DEFAULT_MEDICINE()
             .effect(() -> new MobEffectInstance(ZPMobEffects.radiation_protection.get(), 3600), 1.0F)
-            .build();
+            .build())
+                .setMedicineAnim(ZPItemMedicine.MedicineAnim.EAT);
 
-    public static final FoodProperties ADRENALINE = ZPRegMedicine.DEFAULT_MEDICINE()
-            .effect(() -> new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 1200, 1), 1.0F)
-            .effect(() -> new MobEffectInstance(ZPMobEffects.adrenaline.get(), 1200), 1.0F)
-            .build();
+    public static final ZPItemMedicine.ZPMedicineProperties ADRENALINE = new ZPItemMedicine.ZPMedicineProperties(ZPRegMedicine.DEFAULT_MEDICINE()
+            .effect(() -> new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 2400, 1), 1.0F)
+            .effect(() -> new MobEffectInstance(ZPMobEffects.adrenaline.get(), 6000), 1.0F).build())
+                .setMedicineAnim(ZPItemMedicine.MedicineAnim.BLOCK)
+                .setCanBeAffectedOnOther(true)
+                .setSoundToPlayOnConsume(() -> ZPSounds.syringe.get());
 
-    public static final FoodProperties MORPHINE = ZPRegMedicine.DEFAULT_MEDICINE()
-            .effect(() -> new MobEffectInstance(MobEffects.CONFUSION, 200), 1.0F)
+    public static final ZPItemMedicine.ZPMedicineProperties MORPHINE = new ZPItemMedicine.ZPMedicineProperties(ZPRegMedicine.DEFAULT_MEDICINE()
+            .effect(() -> new MobEffectInstance(MobEffects.CONFUSION, 400), 1.0F)
             .effect(() -> new MobEffectInstance(ZPMobEffects.fracture.get(), -10), 1.0F)
-            .build();
+            .build())
+                 .setMedicineAnim(ZPItemMedicine.MedicineAnim.BLOCK)
+                 .setCanBeAffectedOnOther(true)
+                 .setSoundToPlayOnConsume(() -> ZPSounds.syringe.get())
+                 .setIntoxication(100);
 
-    public static final FoodProperties AID_KIT = ZPRegMedicine.DEFAULT_MEDICINE()
+    public static final ZPItemMedicine.ZPMedicineProperties AID_KIT = new ZPItemMedicine.ZPMedicineProperties(ZPRegMedicine.DEFAULT_MEDICINE()
             .effect(() -> new MobEffectInstance(MobEffects.POISON, -10), 1.0F)
             .effect(() -> new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, -10), 1.0F)
             .effect(() -> new MobEffectInstance(MobEffects.HUNGER, -10), 1.0F)
             .effect(() -> new MobEffectInstance(MobEffects.CONFUSION, -10), 1.0F)
             .effect(() -> new MobEffectInstance(MobEffects.REGENERATION, 200, 1), 1.0F)
             .effect(() -> new MobEffectInstance(ZPMobEffects.bleeding.get(), -10), 1.0F)
-            .build();
+            .build())
+                .setMedicineAnim(ZPItemMedicine.MedicineAnim.BLOCK)
+                .setSoundToPlayOnConsume(() -> ZPSounds.bandage.get());
 
-    public static final FoodProperties ANTI_HEADACHE = ZPRegMedicine.DEFAULT_MEDICINE()
+    public static final ZPItemMedicine.ZPMedicineProperties ANTI_HEADACHE = new ZPItemMedicine.ZPMedicineProperties(ZPRegMedicine.DEFAULT_MEDICINE()
             .effect(() -> new MobEffectInstance(MobEffects.CONFUSION, -10), 1.0F)
-            .build();
+            .build())
+                .setMedicineAnim(ZPItemMedicine.MedicineAnim.EAT);
 
-    public static final FoodProperties ANTI_HUNGER = ZPRegMedicine.DEFAULT_MEDICINE()
+    public static final ZPItemMedicine.ZPMedicineProperties ANTI_HUNGER = new ZPItemMedicine.ZPMedicineProperties(ZPRegMedicine.DEFAULT_MEDICINE()
             .effect(() -> new MobEffectInstance(MobEffects.HUNGER, -10), 1.0F)
-            .build();
+            .nutrition(1).saturationMod(4.0f)
+            .build())
+                .setMedicineAnim(ZPItemMedicine.MedicineAnim.EAT);
 
-    public static final FoodProperties ANTI_POISON = ZPRegMedicine.DEFAULT_MEDICINE()
+    public static final ZPItemMedicine.ZPMedicineProperties ANTI_POISON = new ZPItemMedicine.ZPMedicineProperties(ZPRegMedicine.DEFAULT_MEDICINE()
             .effect(() -> new MobEffectInstance(MobEffects.POISON, -10), 1.0F)
-            .build();
+            .effect(() -> new MobEffectInstance(MobEffects.HUNGER, -10), 1.0F)
+            .effect(() -> new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, -10), 1.0F)
+            .effect(() -> new MobEffectInstance(MobEffects.DIG_SLOWDOWN, -10), 1.0F)
+            .effect(() -> new MobEffectInstance(MobEffects.WEAKNESS, -10), 1.0F)
+            .effect(() -> new MobEffectInstance(ZPMobEffects.immune.get(), 800), 1.0F)
+            .build())
+                .setMedicineAnim(ZPItemMedicine.MedicineAnim.EAT);
 
-    public static final FoodProperties ANTI_ZPLAGUE = ZPRegMedicine.DEFAULT_MEDICINE()
+    public static final ZPItemMedicine.ZPMedicineProperties ANTI_ZPLAGUE = new ZPItemMedicine.ZPMedicineProperties(ZPRegMedicine.DEFAULT_MEDICINE()
             .effect(() -> new MobEffectInstance(ZPMobEffects.zombie_plague.get(), -10), 1.0F)
-            .build();
+            .build())
+                .setMedicineAnim(ZPItemMedicine.MedicineAnim.BLOCK)
+                .setCanBeAffectedOnOther(true)
+                .setSoundToPlayOnConsume(() -> ZPSounds.syringe.get());
 
-    public static final FoodProperties ZPLAGUE = ZPRegMedicine.DEFAULT_MEDICINE()
+    public static final ZPItemMedicine.ZPMedicineProperties ZPLAGUE = new ZPItemMedicine.ZPMedicineProperties(ZPRegMedicine.DEFAULT_MEDICINE()
             .effect(() -> new MobEffectInstance(ZPMobEffects.zombie_plague.get(), ZPZombieConfig.ZOMBIE_PLAGUE_VIRUS_EFFECT_TIME_TICKS.getVar()), 1.0F)
-            .build();
+            .build())
+                .setMedicineAnim(ZPItemMedicine.MedicineAnim.BLOCK)
+                .setCanBeAffectedOnOther(true)
+                .setSoundToPlayOnConsume(() -> ZPSounds.syringe.get());
 
-    public static final FoodProperties ANTIBIOTICS = ZPRegMedicine.DEFAULT_MEDICINE()
+    public static final ZPItemMedicine.ZPMedicineProperties ANTIBIOTICS = new ZPItemMedicine.ZPMedicineProperties(ZPRegMedicine.DEFAULT_MEDICINE()
             .effect(() -> new MobEffectInstance(MobEffects.POISON, -10), 1.0F)
             .effect(() -> new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, -10), 1.0F)
             .effect(() -> new MobEffectInstance(MobEffects.HUNGER, -10), 1.0F)
             .effect(() -> new MobEffectInstance(MobEffects.CONFUSION, -10), 1.0F)
-            .build();
+            .effect(() -> new MobEffectInstance(ZPMobEffects.immune.get(), 1200), 1.0F)
+            .build())
+                .setMedicineAnim(ZPItemMedicine.MedicineAnim.BLOCK)
+                .setCanBeAffectedOnOther(true)
+                .setSoundToPlayOnConsume(() -> ZPSounds.syringe.get());
 
-    public static final FoodProperties BANDAGE = ZPRegMedicine.DEFAULT_MEDICINE()
+    public static final ZPItemMedicine.ZPMedicineProperties BANDAGE = new ZPItemMedicine.ZPMedicineProperties(ZPRegMedicine.DEFAULT_MEDICINE()
             .effect(() -> new MobEffectInstance(ZPMobEffects.bleeding.get(), -1), 1.0F)
-            .build();
+            .build())
+                .setMedicineAnim(ZPItemMedicine.MedicineAnim.BLOCK)
+                .setSoundToPlayOnConsume(() -> ZPSounds.bandage.get());
 
-    public static final FoodProperties BETTER_VISION = ZPRegMedicine.DEFAULT_MEDICINE()
+    public static final ZPItemMedicine.ZPMedicineProperties BETTER_VISION = new ZPItemMedicine.ZPMedicineProperties(ZPRegMedicine.DEFAULT_MEDICINE()
             .effect(() -> new MobEffectInstance(ZPMobEffects.better_vision.get(), 6000), 1.0F)
-            .build();
+            .build())
+                .setMedicineAnim(ZPItemMedicine.MedicineAnim.EAT);
 
-    public static final FoodProperties HEALING = ZPRegMedicine.DEFAULT_MEDICINE()
+    public static final ZPItemMedicine.ZPMedicineProperties VITAMIN = new ZPItemMedicine.ZPMedicineProperties(ZPRegMedicine.DEFAULT_MEDICINE()
             .effect(() -> new MobEffectInstance(MobEffects.REGENERATION, 600), 1.0F)
-            .build();
+            .effect(() -> new MobEffectInstance(ZPMobEffects.immune.get(), 4800), 1.0F)
+            .build())
+                .setMedicineAnim(ZPItemMedicine.MedicineAnim.EAT);
 
-    public static final FoodProperties METH = ZPRegMedicine.DEFAULT_MEDICINE()
-            .effect(() -> new MobEffectInstance(MobEffects.CONFUSION, 1800), 1.0F)
+    public static final ZPItemMedicine.ZPMedicineProperties DRUGS = new ZPItemMedicine.ZPMedicineProperties(ZPRegMedicine.DEFAULT_MEDICINE()
+            .effect(() -> new MobEffectInstance(MobEffects.CONFUSION, 6000), 1.0F)
+            .effect(() -> new MobEffectInstance(MobEffects.HUNGER, 600), 1.0F)
+            .effect(() -> new MobEffectInstance(MobEffects.POISON, 200), 1.0F)
             .effect(() -> new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 2400), 1.0F)
-            .effect(() -> new MobEffectInstance(ZPMobEffects.adrenaline.get(), 3600), 1.0F)
-            .build();
+            .effect(() -> new MobEffectInstance(MobEffects.DAMAGE_BOOST, 1200), 1.0F)
+            .effect(() -> new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 1200), 1.0F)
+            .effect(() -> new MobEffectInstance(ZPMobEffects.adrenaline.get(), 6000), 1.0F)
+            .build())
+                .setMedicineAnim(ZPItemMedicine.MedicineAnim.EAT)
+                .setIntoxication(200);
 
-    public static final FoodProperties TIRE = ZPRegMedicine.DEFAULT_MEDICINE()
+    public static final ZPItemMedicine.ZPMedicineProperties SPLINT = new ZPItemMedicine.ZPMedicineProperties(ZPRegMedicine.DEFAULT_MEDICINE()
             .effect(() -> new MobEffectInstance(ZPMobEffects.fracture.get(), -1), 1.0F)
-            .build();
+            .build())
+                .setMedicineAnim(ZPItemMedicine.MedicineAnim.BLOCK)
+                .setSoundToPlayOnConsume(() -> ZPSounds.bandage.get());
 
     private static FoodProperties.Builder DEFAULT_MEDICINE() {
         return (new FoodProperties.Builder()).nutrition(0).saturationMod(0.0F);
@@ -105,21 +156,15 @@ public abstract class ZPRegMedicine {
     public static void init(ZPFoodMedicineItems zpItems, @NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
         zpItems.initInstanceCollecting("medicine");
 
-        ZPFoodMedicineItems.adrenaline_syringe = regSupplier.register("adrenaline_syringe", () -> new ZPItemMedicine(new Item.Properties().stacksTo(4), ZPRegMedicine.ADRENALINE, new ZPItemMedicine.ZPMedicineProperties()
-                .setMedicineAnim(ZPItemMedicine.MedicineAnim.BLOCK)
-                .setCanBeAffectedOnOther(true)
-                .setSoundToPlayOnConsume(() -> ZPSounds.syringe.get())
-        )).afterCreated((e, utils) -> {
+        ZPFoodMedicineItems.adrenaline_syringe = regSupplier.register("adrenaline_syringe", () -> new ZPItemMedicine(new Item.Properties().stacksTo(4), ZPRegMedicine.ADRENALINE
+                )).afterCreated((e, utils) -> {
                     ZPUtility.sides().onlyClient(() -> {
                         utils.items().addItemInTab(e, ZPTabs.zp_medicine_tab);
                         utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_FOOD, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MEDICINE_ITEMS_DIRECTORY);
                     });
         }).end();
 
-        ZPFoodMedicineItems.morphine_syringe = regSupplier.register("morphine_syringe", () -> new ZPItemMedicine(new Item.Properties().stacksTo(4), ZPRegMedicine.MORPHINE, new ZPItemMedicine.ZPMedicineProperties()
-                .setMedicineAnim(ZPItemMedicine.MedicineAnim.BLOCK)
-                .setCanBeAffectedOnOther(true)
-                .setSoundToPlayOnConsume(() -> ZPSounds.syringe.get())
+        ZPFoodMedicineItems.morphine_syringe = regSupplier.register("morphine_syringe", () -> new ZPItemMedicine(new Item.Properties().stacksTo(4), ZPRegMedicine.MORPHINE
         )).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_medicine_tab);
@@ -127,9 +172,7 @@ public abstract class ZPRegMedicine {
             });
         }).end();
 
-        ZPFoodMedicineItems.bandage = regSupplier.register("bandage", () -> new ZPItemMedicine(new Item.Properties().durability(2), ZPRegMedicine.BANDAGE, new ZPItemMedicine.ZPMedicineProperties()
-                .setMedicineAnim(ZPItemMedicine.MedicineAnim.BLOCK)
-                .setSoundToPlayOnConsume(() -> ZPSounds.bandage.get())
+        ZPFoodMedicineItems.bandage = regSupplier.register("bandage", () -> new ZPItemMedicine(new Item.Properties().durability(4), ZPRegMedicine.BANDAGE
         )).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_medicine_tab);
@@ -137,9 +180,7 @@ public abstract class ZPRegMedicine {
             });
         }).end();
 
-        ZPFoodMedicineItems.aid_kit = regSupplier.register("aid_kit", () -> new ZPItemMedicine(new Item.Properties().durability(2), ZPRegMedicine.AID_KIT, new ZPItemMedicine.ZPMedicineProperties()
-                .setMedicineAnim(ZPItemMedicine.MedicineAnim.BLOCK)
-                .setSoundToPlayOnConsume(() -> ZPSounds.bandage.get())
+        ZPFoodMedicineItems.aid_kit = regSupplier.register("aid_kit", () -> new ZPItemMedicine(new Item.Properties().durability(2), ZPRegMedicine.AID_KIT
         )).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_medicine_tab);
@@ -147,8 +188,7 @@ public abstract class ZPRegMedicine {
             });
         }).end();
 
-        ZPFoodMedicineItems.anti_headache_pill = regSupplier.register("anti_headache_pill", () -> new ZPItemMedicine(new Item.Properties().stacksTo(16), ZPRegMedicine.ANTI_HEADACHE, new ZPItemMedicine.ZPMedicineProperties()
-                .setMedicineAnim(ZPItemMedicine.MedicineAnim.EAT)
+        ZPFoodMedicineItems.anti_headache_pill = regSupplier.register("anti_headache_pill", () -> new ZPItemMedicine(new Item.Properties().stacksTo(16), ZPRegMedicine.ANTI_HEADACHE
         )).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_medicine_tab);
@@ -156,8 +196,7 @@ public abstract class ZPRegMedicine {
             });
         }).end();
 
-        ZPFoodMedicineItems.anti_hunger_pill = regSupplier.register("anti_hunger_pill", () -> new ZPItemMedicine(new Item.Properties().stacksTo(16), ZPRegMedicine.ANTI_HUNGER, new ZPItemMedicine.ZPMedicineProperties()
-                .setMedicineAnim(ZPItemMedicine.MedicineAnim.EAT)
+        ZPFoodMedicineItems.anti_hunger_pill = regSupplier.register("anti_hunger_pill", () -> new ZPItemMedicine(new Item.Properties().stacksTo(16), ZPRegMedicine.ANTI_HUNGER
         )).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_medicine_tab);
@@ -165,8 +204,7 @@ public abstract class ZPRegMedicine {
             });
         }).end();
 
-        ZPFoodMedicineItems.anti_poison_pill = regSupplier.register("anti_poison_pill", () -> new ZPItemMedicine(new Item.Properties().stacksTo(16), ZPRegMedicine.ANTI_POISON, new ZPItemMedicine.ZPMedicineProperties()
-                .setMedicineAnim(ZPItemMedicine.MedicineAnim.EAT)
+        ZPFoodMedicineItems.anti_poison_pill = regSupplier.register("anti_poison_pill", () -> new ZPItemMedicine(new Item.Properties().stacksTo(16), ZPRegMedicine.ANTI_POISON
         )).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_medicine_tab);
@@ -174,10 +212,7 @@ public abstract class ZPRegMedicine {
             });
         }).end();
 
-        ZPFoodMedicineItems.zplague_syringe = regSupplier.register("zplague_syringe", () -> new ZPItemMedicine(new Item.Properties().stacksTo(1), ZPRegMedicine.ZPLAGUE, new ZPItemMedicine.ZPMedicineProperties()
-                .setMedicineAnim(ZPItemMedicine.MedicineAnim.BLOCK)
-                .setCanBeAffectedOnOther(true)
-                .setSoundToPlayOnConsume(() -> ZPSounds.syringe.get())
+        ZPFoodMedicineItems.zplague_syringe = regSupplier.register("zplague_syringe", () -> new ZPItemMedicine(new Item.Properties().stacksTo(1), ZPRegMedicine.ZPLAGUE
         )).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_medicine_tab);
@@ -185,10 +220,7 @@ public abstract class ZPRegMedicine {
             });
         }).end();
 
-        ZPFoodMedicineItems.anti_zplague_syringe = regSupplier.register("anti_zplague_syringe", () -> new ZPItemMedicine(new Item.Properties().stacksTo(1), ZPRegMedicine.ANTI_ZPLAGUE, new ZPItemMedicine.ZPMedicineProperties()
-                .setMedicineAnim(ZPItemMedicine.MedicineAnim.BLOCK)
-                .setCanBeAffectedOnOther(true)
-                .setSoundToPlayOnConsume(() -> ZPSounds.syringe.get())
+        ZPFoodMedicineItems.anti_zplague_syringe = regSupplier.register("anti_zplague_syringe", () -> new ZPItemMedicine(new Item.Properties().stacksTo(1), ZPRegMedicine.ANTI_ZPLAGUE
         )).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_medicine_tab);
@@ -196,10 +228,7 @@ public abstract class ZPRegMedicine {
             });
         }).end();
 
-        ZPFoodMedicineItems.antibiotics_syringe = regSupplier.register("antibiotics_syringe", () -> new ZPItemMedicine(new Item.Properties().stacksTo(4), ZPRegMedicine.ANTIBIOTICS, new ZPItemMedicine.ZPMedicineProperties()
-                .setMedicineAnim(ZPItemMedicine.MedicineAnim.BLOCK)
-                .setCanBeAffectedOnOther(true)
-                .setSoundToPlayOnConsume(() -> ZPSounds.syringe.get())
+        ZPFoodMedicineItems.antibiotics_syringe = regSupplier.register("antibiotics_syringe", () -> new ZPItemMedicine(new Item.Properties().stacksTo(4), ZPRegMedicine.ANTIBIOTICS
         )).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_medicine_tab);
@@ -207,8 +236,7 @@ public abstract class ZPRegMedicine {
             });
         }).end();
 
-        ZPFoodMedicineItems.better_vision_pill = regSupplier.register("better_vision_pill", () -> new ZPItemMedicine(new Item.Properties().stacksTo(16), ZPRegMedicine.BETTER_VISION, new ZPItemMedicine.ZPMedicineProperties()
-                .setMedicineAnim(ZPItemMedicine.MedicineAnim.EAT)
+        ZPFoodMedicineItems.better_vision_pill = regSupplier.register("better_vision_pill", () -> new ZPItemMedicine(new Item.Properties().stacksTo(16), ZPRegMedicine.BETTER_VISION
         )).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_medicine_tab);
@@ -216,8 +244,7 @@ public abstract class ZPRegMedicine {
             });
         }).end();
 
-        ZPFoodMedicineItems.meth_pill = regSupplier.register("meth_pill", () -> new ZPItemMedicine(new Item.Properties().stacksTo(16), ZPRegMedicine.METH, new ZPItemMedicine.ZPMedicineProperties()
-                .setMedicineAnim(ZPItemMedicine.MedicineAnim.EAT)
+        ZPFoodMedicineItems.drugs = regSupplier.register("drugs", () -> new ZPItemMedicine(new Item.Properties().stacksTo(16), ZPRegMedicine.DRUGS
         )).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_medicine_tab);
@@ -225,8 +252,7 @@ public abstract class ZPRegMedicine {
             });
         }).end();
 
-        ZPFoodMedicineItems.healing_pill = regSupplier.register("healing_pill", () -> new ZPItemMedicine(new Item.Properties().stacksTo(16), ZPRegMedicine.HEALING, new ZPItemMedicine.ZPMedicineProperties()
-                .setMedicineAnim(ZPItemMedicine.MedicineAnim.EAT)
+        ZPFoodMedicineItems.vitamin_pill = regSupplier.register("vitamin_pill", () -> new ZPItemMedicine(new Item.Properties().stacksTo(16), ZPRegMedicine.VITAMIN
         )).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_medicine_tab);
@@ -234,9 +260,7 @@ public abstract class ZPRegMedicine {
             });
         }).end();
 
-        ZPFoodMedicineItems.military_bandage = regSupplier.register("military_bandage", () -> new ZPItemMedicine(new Item.Properties().durability(6), ZPRegMedicine.BANDAGE, new ZPItemMedicine.ZPMedicineProperties()
-                .setMedicineAnim(ZPItemMedicine.MedicineAnim.BLOCK)
-                .setSoundToPlayOnConsume(() -> ZPSounds.bandage.get())
+        ZPFoodMedicineItems.splint = regSupplier.register("splint", () -> new ZPItemMedicine(new Item.Properties().stacksTo(1), ZPRegMedicine.SPLINT
         )).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_medicine_tab);
@@ -244,9 +268,7 @@ public abstract class ZPRegMedicine {
             });
         }).end();
 
-        ZPFoodMedicineItems.tire = regSupplier.register("tire", () -> new ZPItemMedicine(new Item.Properties().stacksTo(1), ZPRegMedicine.TIRE, new ZPItemMedicine.ZPMedicineProperties()
-                .setMedicineAnim(ZPItemMedicine.MedicineAnim.BLOCK)
-                .setSoundToPlayOnConsume(() -> ZPSounds.bandage.get())
+        ZPFoodMedicineItems.vodka_medicine = regSupplier.register("vodka_medicine", () -> new ZPItemMedicine(new Item.Properties().stacksTo(8), ZPRegMedicine.VODKA
         )).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_medicine_tab);
@@ -254,13 +276,7 @@ public abstract class ZPRegMedicine {
             });
         }).end();
 
-        ZPFoodMedicineItems.vodka_medicine = regSupplier.register("vodka_medicine", () -> new ZPItemMedicine(new Item.Properties().stacksTo(8), ZPRegMedicine.VODKA, new ZPItemMedicine.ZPMedicineProperties()
-                .setMedicineAnim(ZPItemMedicine.MedicineAnim.DRINK)
-                .setConsumer((livingEntity -> {
-                    if (!livingEntity.level().isClientSide() && livingEntity instanceof IZPLivingEntityExt livingEntityExt) {
-                        livingEntityExt.zpm3forge$addIntoxicationLevel(80);
-                    }
-                }))
+        ZPFoodMedicineItems.whiskey_medicine = regSupplier.register("whiskey_medicine", () -> new ZPItemMedicine(new Item.Properties().stacksTo(8), ZPRegMedicine.WHISKEY
         )).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_medicine_tab);
@@ -268,8 +284,7 @@ public abstract class ZPRegMedicine {
             });
         }).end();
 
-        ZPFoodMedicineItems.radiation_protection_pill = regSupplier.register("radiation_protection_pill", () -> new ZPItemMedicine(new Item.Properties().stacksTo(16), ZPRegMedicine.RADIOPROTECTION, new ZPItemMedicine.ZPMedicineProperties()
-                .setMedicineAnim(ZPItemMedicine.MedicineAnim.EAT)
+        ZPFoodMedicineItems.radiation_protection_pill = regSupplier.register("radiation_protection_pill", () -> new ZPItemMedicine(new Item.Properties().stacksTo(16), ZPRegMedicine.RADIOPROTECTION
         )).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_medicine_tab);

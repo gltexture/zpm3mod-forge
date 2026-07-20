@@ -17,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPCombatConfig;
+import ru.gltexture.zpm3.modules.entity.mixins.ext.IZPLivingEntityExt;
 import ru.gltexture.zpm3.modules.misc_items.init.ZPMiscItems;
 import ru.gltexture.zpm3.engine.core.ZPLogger;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
@@ -29,8 +30,8 @@ import java.util.function.Supplier;
 public class ZPItemMedicine extends ZPItem {
     private final ZPItemMedicine.ZPMedicineProperties zpMedicineProperties;
 
-    public ZPItemMedicine(@NotNull Properties pProperties, @NotNull FoodProperties foodProperties, @NotNull ZPItemMedicine.ZPMedicineProperties zpMedicineProperties) {
-        super(pProperties.food(foodProperties));
+    public ZPItemMedicine(@NotNull Properties pProperties, @NotNull ZPItemMedicine.ZPMedicineProperties zpMedicineProperties) {
+        super(pProperties.food(zpMedicineProperties.getFoodProperties()));
         this.zpMedicineProperties = zpMedicineProperties;
     }
 
@@ -68,6 +69,11 @@ public class ZPItemMedicine extends ZPItem {
                 pLevel.playSound(null, entityToAffect.getX(), entityToAffect.getY(), entityToAffect.getZ(), this.getZpMedicineProperties().getSoundToPlayOnConsume().get(), SoundSource.NEUTRAL, 1.0F, 1.0F + (pLevel.random.nextFloat() - pLevel.random.nextFloat()) * 0.4F);
             }
             this.addEatEffect(pFood, pLevel, entityToAffect);
+            if (this.getZpMedicineProperties().getIntoxication() > 0) {
+                if (entityToAffect instanceof IZPLivingEntityExt ext) {
+                    ext.zpm3forge$addIntoxicationLevel(this.getZpMedicineProperties().getIntoxication());
+                }
+            }
             if (this.getZpMedicineProperties().getConsumer() != null) {
                 this.getZpMedicineProperties().getConsumer().accept(entityToAffect);
             }
@@ -92,7 +98,12 @@ public class ZPItemMedicine extends ZPItem {
 
     private void addEatEffect(ItemStack pFood, Level pLevel, LivingEntity pLivingEntity) {
         Item item = pFood.getItem();
-        if (item.isEdible()) {
+        if (pFood.getFoodProperties(pLivingEntity) != null && item.isEdible()) {
+            if (pLivingEntity instanceof Player player) {
+                if (Objects.requireNonNull(pFood.getFoodProperties(pLivingEntity)).getNutrition() > 0) {
+                    player.eat(pLevel, pFood);
+                }
+            }
             for(Pair<MobEffectInstance, Float> pair : Objects.requireNonNull(pFood.getFoodProperties(pLivingEntity)).getEffects()) {
                 if (!pLevel.isClientSide && pair.getFirst() != null && pLevel.random.nextFloat() < pair.getSecond()) {
                     MobEffectInstance mobEffectInstance = new MobEffectInstance(pair.getFirst());
@@ -152,22 +163,43 @@ public class ZPItemMedicine extends ZPItem {
     }
 
     public static class ZPMedicineProperties {
+        private final FoodProperties foodProperties;
         private MedicineAnim medicineAnim;
         private int eatTime;
         private Supplier<SoundEvent> soundToPlayOnConsume;
         private boolean canBeAffectedOnOther;
         private @Nullable Consumer<LivingEntity> consumer;
+        private int intoxication;
 
-        public ZPMedicineProperties() {
+        public ZPMedicineProperties(@NotNull FoodProperties foodProperties) {
             this.setDefaults();
+            this.foodProperties = foodProperties;
         }
 
         protected void setDefaults() {
             this.medicineAnim = MedicineAnim.EAT;
             this.eatTime = 32;
+            this.intoxication = 0;
             this.soundToPlayOnConsume = null;
             this.canBeAffectedOnOther = false;
             this.consumer = null;
+        }
+
+        public FoodProperties getFoodProperties() {
+            return this.foodProperties;
+        }
+
+        public int getEatTime() {
+            return this.eatTime;
+        }
+
+        public int getIntoxication() {
+            return this.intoxication;
+        }
+
+        public ZPMedicineProperties setIntoxication(int intoxication) {
+            this.intoxication = intoxication;
+            return this;
         }
 
         public boolean isCanBeAffectedOnOther() {

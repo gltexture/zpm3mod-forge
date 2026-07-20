@@ -15,6 +15,7 @@ public class ZPMobEffects extends ZPRegistry<MobEffect> {
     public static RegistryObject<ZPAdrenalineEffect> adrenaline;
     public static RegistryObject<ZPBetterVisionEffect> better_vision;
     public static RegistryObject<ZPAntiRadiationEffect> radiation_protection;
+    public static RegistryObject<ZPImmuneEffect> immune;
 
     public ZPMobEffects() {
         super(ZPRegistryConveyor.Target.MOB_EFFECT);
@@ -28,6 +29,7 @@ public class ZPMobEffects extends ZPRegistry<MobEffect> {
         ZPMobEffects.adrenaline = regSupplier.register("adrenaline", () -> new ZPAdrenalineEffect(MobEffectCategory.BENEFICIAL, 0xff00ff)).end();
         ZPMobEffects.better_vision = regSupplier.register("better_vision", () -> new ZPBetterVisionEffect(MobEffectCategory.BENEFICIAL, 0x00ffff)).end();
         ZPMobEffects.radiation_protection = regSupplier.register("radiation_protection", () -> new ZPAntiRadiationEffect(MobEffectCategory.BENEFICIAL, 0xffff00)).end();
+        ZPMobEffects.immune = regSupplier.register("immune", () -> new ZPImmuneEffect(MobEffectCategory.BENEFICIAL, 0x44ff44)).end();
     }
 
     @Override

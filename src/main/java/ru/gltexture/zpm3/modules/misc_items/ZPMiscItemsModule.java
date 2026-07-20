@@ -4,6 +4,7 @@ import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.api.distmarker.Dist;
@@ -82,17 +83,9 @@ public class ZPMiscItemsModule extends ZPModule {
             recipeToAdd.add((writer -> {
                 ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ZPMiscItems.shelves_material.get())
                         .pattern("SS").pattern("SS")
-                        .define('S', ZPMiscItems.table_material.get())
-                        .unlockedBy("has_rf", IZPRecipeSpec.has(ZPMiscItems.table_material.get()))
+                        .define('S', ItemTags.PLANKS)
+                        .unlockedBy("has_rf", IZPRecipeSpec.has(ItemTags.PLANKS))
                         .save(writer, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "shelves_material"));
-            }));
-
-            recipeToAdd.add((writer -> {
-                ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ZPMiscItems.table_material.get())
-                        .pattern("SS").pattern("SS")
-                        .define('S', Items.STICK)
-                        .unlockedBy("has_rf", IZPRecipeSpec.has(Items.STICK))
-                        .save(writer, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "table_material"));
             }));
 
             recipeToAdd.add((writer -> {

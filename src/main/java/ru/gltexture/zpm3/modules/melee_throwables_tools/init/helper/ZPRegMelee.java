@@ -7,6 +7,8 @@ import ru.gltexture.zpm3.engine.helpers.gen.data.ZPGenTextureData;
 import ru.gltexture.zpm3.engine.instances.items.ZPItemAxe;
 import ru.gltexture.zpm3.engine.instances.items.ZPItemPickaxe;
 import ru.gltexture.zpm3.engine.instances.items.ZPItemSword;
+import ru.gltexture.zpm3.modules.common.init.ZPTags;
+import ru.gltexture.zpm3.modules.melee_throwables_tools.instances.items.ZPCrowbarSword;
 import ru.gltexture.zpm3.modules.melee_throwables_tools.instances.melee.ZPBroomSword;
 import ru.gltexture.zpm3.modules.melee_throwables_tools.tiers.ZPCommonToolMeleeTiers;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
@@ -53,9 +55,10 @@ public abstract class ZPRegMelee {
             utils.items().setItemDistanceBonus(e.getId(), 0.3f);
         }).end();
 
-        ZPMeleeThrowableToolsItems.crowbar = regSupplier.register("crowbar", () -> new ZPItemSword(ZPCommonToolMeleeTiers.ZP_IRON_3, 4, -0.8F, new Item.Properties())
+        ZPMeleeThrowableToolsItems.crowbar = regSupplier.register("crowbar", () -> new ZPCrowbarSword(ZPCommonToolMeleeTiers.ZP_IRON_3, 4, -0.8F, new Item.Properties())
         ).afterCreated((e, utils) -> {
                     ZPUtility.sides().onlyClient(() -> {
+                        utils.items().addTagToItem(e, ZPTags.I_CAN_MINE_SCRAP);
                         utils.items().addItemInTab(e, ZPTabs.zp_melee_tab);
                         utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_MELEE, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MELEE_ITEMS_DIRECTORY);
                     });

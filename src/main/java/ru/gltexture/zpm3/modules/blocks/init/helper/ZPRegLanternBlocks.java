@@ -11,13 +11,13 @@ import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockModelExecutor
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 import ru.gltexture.zpm3.modules.blocks.init.ZPLanternBlocks;
-import ru.gltexture.zpm3.modules.blocks.instances.blocks.lantern.ZPLanternBlock;
+import ru.gltexture.zpm3.modules.blocks.instances.blocks.lantern.ZPFadingLanternBlock;
 
 public abstract class ZPRegLanternBlocks {
     public static void init(ZPLanternBlocks lanternBLocks, @NotNull ZPRegistry.ZPRegSupplier<Block> regSupplier) {
         lanternBLocks.initInstanceCollecting("lanterns");
         
-        ZPLanternBlocks.lantern2 = regSupplier.register("lantern2", () -> new ZPLanternBlock(BlockBehaviour.Properties.of().lightLevel((p_50755_) -> 12).mapColor(MapColor.METAL).forceSolidOn().requiresCorrectToolForDrops().strength(3.5F).sound(SoundType.LANTERN), () -> ZPLanternBlocks.lantern3.get())
+        ZPLanternBlocks.lantern2 = regSupplier.register("lantern2", () -> new ZPFadingLanternBlock(BlockBehaviour.Properties.of().lightLevel((p_50755_) -> 12).mapColor(MapColor.METAL).forceSolidOn().requiresCorrectToolForDrops().strength(3.5F).sound(SoundType.LANTERN), () -> ZPLanternBlocks.lantern3.get())
         ).afterCreated((e, utils) -> {
             utils.loot().addSelfDropLootTable(e);
             ZPUtility.sides().onlyClient(() -> {
@@ -27,7 +27,7 @@ public abstract class ZPRegLanternBlocks {
             });
         }).end();
 
-        ZPLanternBlocks.lantern3 = regSupplier.register("lantern3", () -> new ZPLanternBlock(BlockBehaviour.Properties.of().lightLevel((p_50755_) -> 9).mapColor(MapColor.METAL).forceSolidOn().requiresCorrectToolForDrops().strength(3.5F).sound(SoundType.LANTERN), () -> ZPLanternBlocks.lantern4.get())
+        ZPLanternBlocks.lantern3 = regSupplier.register("lantern3", () -> new ZPFadingLanternBlock(BlockBehaviour.Properties.of().lightLevel((p_50755_) -> 9).mapColor(MapColor.METAL).forceSolidOn().requiresCorrectToolForDrops().strength(3.5F).sound(SoundType.LANTERN), () -> ZPLanternBlocks.lantern4.get())
         ).afterCreated((e, utils) -> {
             utils.loot().addSelfDropLootTable(e);
             ZPUtility.sides().onlyClient(() -> {
@@ -37,7 +37,7 @@ public abstract class ZPRegLanternBlocks {
             });
         }).end();
 
-        ZPLanternBlocks.lantern4 = regSupplier.register("lantern4", () -> new ZPLanternBlock(BlockBehaviour.Properties.of().lightLevel((p_50755_) -> 5).mapColor(MapColor.METAL).forceSolidOn().requiresCorrectToolForDrops().strength(3.5F).sound(SoundType.LANTERN), () -> ZPLanternBlocks.lantern5.get())
+        ZPLanternBlocks.lantern4 = regSupplier.register("lantern4", () -> new ZPFadingLanternBlock(BlockBehaviour.Properties.of().lightLevel((p_50755_) -> 5).mapColor(MapColor.METAL).forceSolidOn().requiresCorrectToolForDrops().strength(3.5F).sound(SoundType.LANTERN), () -> ZPLanternBlocks.lantern5.get())
         ).afterCreated((e, utils) -> {
             utils.loot().addSelfDropLootTable(e);
             ZPUtility.sides().onlyClient(() -> {
@@ -47,7 +47,7 @@ public abstract class ZPRegLanternBlocks {
             });
         }).end();
 
-        ZPLanternBlocks.lantern5 = regSupplier.register("lantern5", () -> new ZPLanternBlock(BlockBehaviour.Properties.of().lightLevel((p_50755_) -> 0).mapColor(MapColor.METAL).forceSolidOn().requiresCorrectToolForDrops().strength(3.5F).sound(SoundType.LANTERN), null)
+        ZPLanternBlocks.lantern5 = regSupplier.register("lantern5", () -> new ZPFadingLanternBlock(BlockBehaviour.Properties.of().lightLevel((p_50755_) -> 0).mapColor(MapColor.METAL).forceSolidOn().requiresCorrectToolForDrops().strength(3.5F).sound(SoundType.LANTERN), null)
         ).afterCreated((e, utils) -> {
             utils.loot().addSelfDropLootTable(e);
             ZPUtility.sides().onlyClient(() -> {

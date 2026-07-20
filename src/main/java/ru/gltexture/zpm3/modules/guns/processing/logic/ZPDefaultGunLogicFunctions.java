@@ -8,6 +8,8 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -22,6 +24,7 @@ import org.joml.Vector3i;
 
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPNetworkConfig;
 import ru.gltexture.zpm3.modules.common.init.ZPSounds;
+import ru.gltexture.zpm3.modules.entity.util.ZPEntityUtil;
 import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
 import ru.gltexture.zpm3.modules.guns.processing.bullet.VirtualBullet;
 import ru.gltexture.zpm3.modules.guns.processing.input.ZPClientGunClientTickProcessing;
@@ -43,6 +46,9 @@ public abstract class ZPDefaultGunLogicFunctions {
         final int currentAmmo = item.getCurrentAmmo(player, itemStack);
 
         if (player.equals(Minecraft.getInstance().player)) {
+            if (ZPEntityUtil.isUsingShield(Minecraft.getInstance().player)) {
+                return false;
+            }
             if (item.getCurrentTimeBeforeShoot(player, itemStack) > 0) {
                 return false;
             }
@@ -92,6 +98,9 @@ public abstract class ZPDefaultGunLogicFunctions {
         final int currentAmmo = item.getCurrentAmmo(player, itemStack);
 
         if (player.equals(Minecraft.getInstance().player)) {
+            if (ZPEntityUtil.isUsingShield(Minecraft.getInstance().player)) {
+                return false;
+            }
             if (item.getCurrentTimeBeforeShoot(player, itemStack) > 0) {
                 return false;
             }
@@ -328,7 +337,9 @@ public abstract class ZPDefaultGunLogicFunctions {
     public static boolean SERVER_DEFAULT_SHOT(@NotNull IGunLogicProcessor gunLogicProcessor, @NotNull Level level, @NotNull Player player, @NotNull ZPBaseGun item, @NotNull ItemStack itemStack, boolean isRightHand) {
         final int shootCooldownNominal = item.getGunProperties().getShootCooldown();
         final int currentAmmo = item.getCurrentAmmo(player, itemStack);
-
+        if (ZPEntityUtil.isUsingShield(player)) {
+            return false;
+        }
         if (!item.isUnloadingOrReloading(player, itemStack) && item.getCurrentShootCooldown(player, itemStack) <= 0 && !item.isJammed(player, itemStack)) {
             Vector3f startPos = new Vector3f(player.position().toVector3f().add(0.0f, player.getEyeHeight(), 0.0f));
             float inaccuracy = item.getGunProperties().getInaccuracy();
@@ -348,10 +359,12 @@ public abstract class ZPDefaultGunLogicFunctions {
                 ZombiePlague3.net().sendToDimensionRadius(new ZPBulletHitPacket(blockPos.x, blockPos.y, blockPos.z, motion.x, motion.y, motion.z, pos.x, pos.y, pos.z, virtualBulletHitResult.bulletHitType().getFlag()), serverLevel.dimension(), new Vec3(pos), ZPNetworkConfig.BULLET_HIT_PACKET_RANGE.getVar());
                 ZombiePlague3.net().sendToPlayer(new ZPBulletTracePacket(pos.x, pos.y, pos.z, isRightHand), (ServerPlayer) player);
                 if (ZPNetworkConfig.SEND_PACKET_ABOUT_BULLET_ENTITY_HIT.getVar() && virtualBulletHitResult.bulletHitType().equals(VirtualBullet.VirtualBulletHitType.ENTITY)) {
-                    if (virtualBulletHitResult.damagedEntity() != null && virtualBulletHitResult.damagedEntity().isAlive()) {
-                        ZombiePlague3.net().sendToDimensionRadius(new ZPBulletBloodFXPacket(
-                                virtualBulletHitResult.hitPoint().x, virtualBulletHitResult.hitPoint().y, virtualBulletHitResult.hitPoint().z,
-                                -motion.x, -motion.y, -motion.z, virtualBulletHitResult.wasHeadshot()), serverLevel.dimension(), new Vec3(pos), 32.0f);
+                    if (virtualBulletHitResult.damagedEntity() instanceof LivingEntity && virtualBulletHitResult.damagedEntity().isAlive()) {
+                        if (!(virtualBulletHitResult.damagedEntity() instanceof ArmorStand)) {
+                            ZombiePlague3.net().sendToDimensionRadius(new ZPBulletBloodFXPacket(
+                                    virtualBulletHitResult.hitPoint().x, virtualBulletHitResult.hitPoint().y, virtualBulletHitResult.hitPoint().z,
+                                    -motion.x, -motion.y, -motion.z, virtualBulletHitResult.wasHeadshot()), serverLevel.dimension(), new Vec3(pos), 32.0f);
+                        }
                     }
                 }
             }
@@ -375,7 +388,9 @@ public abstract class ZPDefaultGunLogicFunctions {
     public static boolean SERVER_DEFAULT_SHUTTER_ANIMATED_GUN_SHOT(@NotNull IGunLogicProcessor gunLogicProcessor, @NotNull Level level, @NotNull Player player, @NotNull ZPBaseGun item, @NotNull ItemStack itemStack, boolean isRightHand, int bullets) {
         final int shootCooldownNominal = item.getGunProperties().getShootCooldown();
         final int currentAmmo = item.getCurrentAmmo(player, itemStack);
-
+        if (ZPEntityUtil.isUsingShield(player)) {
+            return false;
+        }
         if (!item.isUnloadingOrReloading(player, itemStack) && item.getCurrentShootCooldown(player, itemStack) <= 0 && !item.isJammed(player, itemStack)) {
             Vector3f startPos = new Vector3f(player.position().toVector3f().add(0.0f, player.getEyeHeight(), 0.0f));
             for (int i = 0; i < bullets; i++) {
@@ -390,10 +405,12 @@ public abstract class ZPDefaultGunLogicFunctions {
                     ZombiePlague3.net().sendToDimensionRadius(new ZPBulletHitPacket(blockPos.x, blockPos.y, blockPos.z, motion.x, motion.y, motion.z, pos.x, pos.y, pos.z, virtualBulletHitResult.bulletHitType().getFlag()), serverLevel.dimension(), new Vec3(pos), ZPNetworkConfig.BULLET_HIT_PACKET_RANGE.getVar());
                     ZombiePlague3.net().sendToPlayer(new ZPBulletTracePacket(pos.x, pos.y, pos.z, isRightHand), (ServerPlayer) player);
                     if (ZPNetworkConfig.SEND_PACKET_ABOUT_BULLET_ENTITY_HIT.getVar() && virtualBulletHitResult.bulletHitType().equals(VirtualBullet.VirtualBulletHitType.ENTITY)) {
-                        if (virtualBulletHitResult.damagedEntity() != null && virtualBulletHitResult.damagedEntity().isAlive()) {
-                            ZombiePlague3.net().sendToDimensionRadius(new ZPBulletBloodFXPacket(
-                                    virtualBulletHitResult.hitPoint().x, virtualBulletHitResult.hitPoint().y, virtualBulletHitResult.hitPoint().z,
-                                    -motion.x, -motion.y, -motion.z, virtualBulletHitResult.wasHeadshot()), serverLevel.dimension(), new Vec3(pos), 32.0f);
+                        if (virtualBulletHitResult.damagedEntity() instanceof LivingEntity && virtualBulletHitResult.damagedEntity().isAlive()) {
+                            if (!(virtualBulletHitResult.damagedEntity() instanceof ArmorStand)) {
+                                ZombiePlague3.net().sendToDimensionRadius(new ZPBulletBloodFXPacket(
+                                        virtualBulletHitResult.hitPoint().x, virtualBulletHitResult.hitPoint().y, virtualBulletHitResult.hitPoint().z,
+                                        -motion.x, -motion.y, -motion.z, virtualBulletHitResult.wasHeadshot()), serverLevel.dimension(), new Vec3(pos), 32.0f);
+                            }
                         }
                     }
                 }

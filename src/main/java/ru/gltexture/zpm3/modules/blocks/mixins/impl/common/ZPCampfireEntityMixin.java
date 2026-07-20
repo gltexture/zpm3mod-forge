@@ -11,6 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.CampfireBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -95,7 +96,11 @@ public abstract class ZPCampfireEntityMixin implements ICampfireExt {
                     }
                     final boolean isFinalStage = !state.getBlock().equals(Blocks.CAMPFIRE);
                     Block turnInto = !isFinalStage ? ZPCampfireBlocks.campfire2.get() : ZPBlocks.ash_layer.get();
-                    fadingBlock.zpm3forge$incCooldown(ZPUtility.blocks().isRainingOnBlock(level, pos) ? 100 : 1);
+                    if (ZPUtility.blocks().isRainingOnBlock(level, pos) && ZPRandom.getRandom().nextFloat() <= 0.1f) {
+                        CampfireBlock.dowse(null, level, pos, state);
+                        return;
+                    }
+                    fadingBlock.zpm3forge$incCooldown(1);
                     if (fadingBlock.zpm3forge$fadeCooldown() >= ZPWorldConfig.CAMPFIRE_FADING_TIME.getVar() || (level.getGameTime() >= fadingBlock.zpm3forge$getTimeLock())) {
                         if (!isFinalStage) {
                             BlockState newState = turnInto.defaultBlockState();

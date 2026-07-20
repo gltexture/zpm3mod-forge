@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.modules.blocks.init.ZPBlockEntities;
 import ru.gltexture.zpm3.modules.blocks.instances.block_entities.ZPFadingBlockEntity;
-import ru.gltexture.zpm3.modules.blocks.instances.blocks.fading.IFadingBlock;
+import ru.gltexture.zpm3.modules.blocks.instances.blocks.IFadingBlock;
 import ru.gltexture.zpm3.modules.blocks.instances.blocks.torch.ZPFadingTorchBlock;
 import ru.gltexture.zpm3.modules.blocks.mixins.ext.ITorchPlayerExt;
 
@@ -44,6 +44,6 @@ public class ZPFadingPumpkinMixin implements EntityBlock, IFadingBlock, ITorchPl
 
     @Override
     public void zpm3forge$setPlacedBy(@NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, @Nullable LivingEntity pPlacer, @NotNull ItemStack pStack) {
-        ZPFadingTorchBlock.activationCheck(pLevel, pPos, pState, pPlacer, pStack);
+       //ZPFadingTorchBlock.activationCheck(pLevel, pPos, pState, pPlacer, pStack);
     }
 }

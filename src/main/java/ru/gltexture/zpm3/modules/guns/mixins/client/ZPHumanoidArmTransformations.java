@@ -3,8 +3,12 @@ package ru.gltexture.zpm3.modules.guns.mixins.client;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.PlayerModel;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.item.ItemStack;
@@ -14,6 +18,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
+import ru.gltexture.zpm3.engine.mixins.util.ZPHumanoidArmorLayerOnArm;
 import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
 
 @Deprecated(forRemoval = true)
@@ -47,6 +52,57 @@ public abstract class ZPHumanoidArmTransformations {
     public static void setupAnimZpPre(HumanoidModel<?> model, LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
     }
 
+    private static HumanoidArm getAttackArm(LivingEntity pEntity) {
+        HumanoidArm humanoidarm = pEntity.getMainArm();
+        return pEntity.swingingArm == InteractionHand.MAIN_HAND ? humanoidarm : humanoidarm.getOpposite();
+    }
+
+    private static ModelPart getArm(HumanoidModel<?> model, HumanoidArm pSide) {
+        return pSide == HumanoidArm.LEFT ? model.leftArm : model.rightArm;
+    }
+
+    private static void setupAttackAnimation(HumanoidModel<?> model, LivingEntity pLivingEntity, float pAgeInTicks) {
+        if (!(model.attackTime <= 0.0F)) {
+            HumanoidArm humanoidarm = ZPHumanoidArmTransformations.getAttackArm(pLivingEntity);
+            ModelPart modelpart = ZPHumanoidArmTransformations.getArm(model, humanoidarm);
+            float f = model.attackTime;
+            model.body.yRot = Mth.sin(Mth.sqrt(f) * ((float)Math.PI * 2F)) * 0.2F;
+            if (humanoidarm == HumanoidArm.LEFT) {
+                model.body.yRot *= -1.0F;
+            }
+
+            model.rightArm.z = Mth.sin(model.body.yRot) * 5.0F;
+            model.rightArm.x = -Mth.cos(model.body.yRot) * 5.0F;
+            model.leftArm.z = -Mth.sin(model.body.yRot) * 5.0F;
+            model.leftArm.x = Mth.cos(model.body.yRot) * 5.0F;
+            model.rightArm.yRot += model.body.yRot;
+            model.leftArm.yRot += model.body.yRot;
+            model.leftArm.xRot += model.body.yRot;
+            f = 1.0F - model.attackTime;
+            f *= f;
+            f *= f;
+            f = 1.0F - f;
+            float f1 = Mth.sin(f * (float)Math.PI);
+            float f2 = Mth.sin(-model.attackTime * (float)Math.PI) * -(model.head.xRot - 0.7F) * 0.75F;
+            modelpart.xRot -= f1 * 1.2F + f2;
+            modelpart.yRot += model.body.yRot * 2.0F;
+            modelpart.zRot += Mth.sin(-model.attackTime * (float)Math.PI) * -0.4F;
+        }
+    }
+
+    private static void animateCrawl(LivingEntity entity, HumanoidModel<?> model, float limbSwing, float limbSwingAmount) {
+        float speed = 0.6662F;
+        float swing = Mth.cos(limbSwing * speed);
+        float swingOpposite = Mth.cos(limbSwing * speed + (float)Math.PI);
+        model.leftArm.xRot = (float) (-Math.PI + swing * 1.2F * limbSwingAmount);
+        model.rightArm.xRot = (float) (-Math.PI + swingOpposite * 1.2F * limbSwingAmount);
+        model.leftArm.zRot = 0.1F;
+        model.rightArm.zRot = -0.1F;
+        model.leftArm.yRot = -0.1F;
+        model.rightArm.yRot = 0.2F;
+        setupAttackAnimation(model, entity, 0);
+    }
+
     public static void setupAnimZpPost(HumanoidModel<?> model, LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         Minecraft mc = Minecraft.getInstance();
         final boolean isLocalPlayer = entity.equals(mc.player);
@@ -54,9 +110,14 @@ public abstract class ZPHumanoidArmTransformations {
         final boolean swimAnim = entity.getPose() == Pose.SWIMMING;
         final boolean crouchAnim = !swimAnim && entity.isCrouching();
 
-
-        if (swimAnim) {
+        if ((!isLocalPlayer || isThirdPerson) && swimAnim) {
             if (!entity.isInWater()) {
+                if (!entity.isUsingItem()) {
+                    ZPHumanoidArmTransformations.animateCrawl(entity, model, limbSwing, limbSwingAmount);
+                }
+              // if (entity.swinging) {
+              //     model.rightArm.xRot += (float) (Math.PI / 4.0f);
+              // }
                 headPitch = Math.max(headPitch, ZPHumanoidArmTransformations.X_CONSTR_DEG_P);
                 if (!ZPHumanoidArmTransformations.canEntityInSwimPosLookDown(entity)) {
                     headPitch = (float) Math.min(headPitch, Math.toDegrees(ZPHumanoidArmTransformations.X_CONSTR_RAD_M));

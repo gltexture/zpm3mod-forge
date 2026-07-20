@@ -31,8 +31,14 @@ public abstract class ZPRegFood {
     public static final FoodProperties SPRATS = (new FoodProperties.Builder()).nutrition(4).saturationMod(0.5F).effect(() -> new MobEffectInstance(MobEffects.POISON, 400), 0.3F).build();
     public static final FoodProperties WATER = (new FoodProperties.Builder()).nutrition(3).saturationMod(0.6F).build();
 
+
+    public static final ZPItemFood.ZPFoodProperties DEFAULT = new ZPItemFood.ZPFoodProperties();
+    public static final ZPItemFood.ZPFoodProperties DRINK = new ZPItemFood.ZPFoodProperties().setDrinkable(true);
+    public static final ZPItemFood.ZPFoodProperties DRINK_FAST = new ZPItemFood.ZPFoodProperties().setDrinkable(true).setEatTime(16);
+    public static final ZPItemFood.ZPFoodProperties FAST_EAT = new ZPItemFood.ZPFoodProperties().setEatTime(16);
+
     public static void init(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
-        ZPFoodMedicineItems.bean = regSupplier.register("bean", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.BEAN, new ZPItemFood.ZPFoodProperties()))
+        ZPFoodMedicineItems.bean = regSupplier.register("bean", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.BEAN, ZPRegFood.DEFAULT))
                 .afterCreated((e, utils) -> {
                     ZPUtility.sides().onlyClient(() -> {
                         utils.items().addItemInTab(e, ZPTabs.zp_food_tab);
@@ -40,7 +46,7 @@ public abstract class ZPRegFood {
                     });
                 }).end();
 
-        ZPFoodMedicineItems.jam = regSupplier.register("jam", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.JAM, new ZPItemFood.ZPFoodProperties()))
+        ZPFoodMedicineItems.jam = regSupplier.register("jam", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.JAM, ZPRegFood.DEFAULT))
                 .afterCreated((e, utils) -> {
                     ZPUtility.sides().onlyClient(() -> {
                         utils.items().addItemInTab(e, ZPTabs.zp_food_tab);
@@ -48,7 +54,7 @@ public abstract class ZPRegFood {
                     });
                 }).end();
 
-        ZPFoodMedicineItems.mysterious_can = regSupplier.register("mysterious_can", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.MYSTERIOUS_CAN, new ZPItemFood.ZPFoodProperties()))
+        ZPFoodMedicineItems.mysterious_can = regSupplier.register("mysterious_can", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.MYSTERIOUS_CAN, ZPRegFood.DEFAULT))
                 .afterCreated((e, utils) -> {
                     ZPUtility.sides().onlyClient(() -> {
                         ZPItemTabAddHelper.addItemInTab(e, ZPTabs.zp_food_tab);
@@ -56,7 +62,7 @@ public abstract class ZPRegFood {
                     });
                 }).end();
 
-        ZPFoodMedicineItems.peaches = regSupplier.register("peaches", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.PEACHES, new ZPItemFood.ZPFoodProperties()))
+        ZPFoodMedicineItems.peaches = regSupplier.register("peaches", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.PEACHES, ZPRegFood.DEFAULT))
                 .afterCreated((e, utils) -> {
                     ZPUtility.sides().onlyClient(() -> {
                         utils.items().addItemInTab(e, ZPTabs.zp_food_tab);
@@ -64,7 +70,7 @@ public abstract class ZPRegFood {
                     });
                 }).end();
 
-        ZPFoodMedicineItems.fried_egg = regSupplier.register("fried_egg", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.FRIED_EGG, new ZPItemFood.ZPFoodProperties()))
+        ZPFoodMedicineItems.fried_egg = regSupplier.register("fried_egg", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.FRIED_EGG, ZPRegFood.DEFAULT))
                 .afterCreated((e, utils) -> {
                     ZPUtility.sides().onlyClient(() -> {
                         utils.items().addItemInTab(e, ZPTabs.zp_food_tab);
@@ -72,7 +78,7 @@ public abstract class ZPRegFood {
                     });
                 }).end();
 
-        ZPFoodMedicineItems.soda = regSupplier.register("soda", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.SODA, new ZPItemFood.ZPFoodProperties().setDrinkable(true).setEatTime(16)))
+        ZPFoodMedicineItems.soda = regSupplier.register("soda", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.SODA, ZPRegFood.DRINK_FAST))
                 .afterCreated((e, utils) -> {
                     ZPUtility.sides().onlyClient(() -> {
                         utils.items().addItemInTab(e, ZPTabs.zp_food_tab);
@@ -80,7 +86,7 @@ public abstract class ZPRegFood {
                     });
                 }).end();
 
-        ZPFoodMedicineItems.sprats = regSupplier.register("sprats", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.SPRATS, new ZPItemFood.ZPFoodProperties()))
+        ZPFoodMedicineItems.sprats = regSupplier.register("sprats", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.SPRATS, ZPRegFood.DEFAULT))
                 .afterCreated((e, utils) -> {
                     ZPUtility.sides().onlyClient(() -> {
                         utils.items().addItemInTab(e, ZPTabs.zp_food_tab);
@@ -88,7 +94,7 @@ public abstract class ZPRegFood {
                     });
                 }).end();
 
-        ZPFoodMedicineItems.minecake = regSupplier.register("minecake", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.MINECAKE, new ZPItemFood.ZPFoodProperties()))
+        ZPFoodMedicineItems.minecake = regSupplier.register("minecake", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.MINECAKE, ZPRegFood.DEFAULT))
                 .afterCreated((e, utils) -> {
                     ZPUtility.sides().onlyClient(() -> {
                         utils.items().addItemInTab(e, ZPTabs.zp_food_tab);
@@ -96,7 +102,7 @@ public abstract class ZPRegFood {
                     });
                 }).end();
 
-        ZPFoodMedicineItems.chocolate = regSupplier.register("chocolate", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.CHOCOLATE, new ZPItemFood.ZPFoodProperties().setEatTime(16)))
+        ZPFoodMedicineItems.chocolate = regSupplier.register("chocolate", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.CHOCOLATE, ZPRegFood.FAST_EAT))
                 .afterCreated((e, utils) -> {
                     ZPUtility.sides().onlyClient(() -> {
                         utils.items().addItemInTab(e, ZPTabs.zp_food_tab);
@@ -104,7 +110,7 @@ public abstract class ZPRegFood {
                     });
                 }).end();
 
-        ZPFoodMedicineItems.rotten_apple = regSupplier.register("rotten_apple", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.ROTTEN_APPLE, new ZPItemFood.ZPFoodProperties()))
+        ZPFoodMedicineItems.rotten_apple = regSupplier.register("rotten_apple", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.ROTTEN_APPLE, ZPRegFood.DEFAULT))
                 .afterCreated((e, utils) -> {
                     ZPUtility.sides().onlyClient(() -> {
                         utils.items().addItemInTab(e, ZPTabs.zp_food_tab);
@@ -112,7 +118,7 @@ public abstract class ZPRegFood {
                     });
                 }).end();
 
-        ZPFoodMedicineItems.water = regSupplier.register("water", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.WATER, new ZPItemFood.ZPFoodProperties().setDrinkable(true)))
+        ZPFoodMedicineItems.water = regSupplier.register("water", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.WATER, ZPRegFood.DRINK))
                 .afterCreated((e, utils) -> {
                     ZPUtility.sides().onlyClient(() -> {
                         utils.items().addItemInTab(e, ZPTabs.zp_food_tab);

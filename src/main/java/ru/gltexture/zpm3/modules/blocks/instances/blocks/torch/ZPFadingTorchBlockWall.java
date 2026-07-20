@@ -18,7 +18,7 @@ import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.modules.blocks.init.ZPBlockEntities;
 import ru.gltexture.zpm3.modules.blocks.instances.block_entities.ZPFadingBlockEntity;
 import ru.gltexture.zpm3.engine.instances.blocks.ZPWallTorchBlock;
-import ru.gltexture.zpm3.modules.blocks.instances.blocks.fading.IFadingBlock;
+import ru.gltexture.zpm3.modules.blocks.instances.blocks.IFadingBlock;
 
 import java.util.function.Supplier;
 
@@ -49,6 +49,6 @@ public class ZPFadingTorchBlockWall extends ZPWallTorchBlock implements EntityBl
     @Override
     public void setPlacedBy(@NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, @Nullable LivingEntity pPlacer, @NotNull ItemStack pStack) {
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
-        ZPFadingTorchBlock.activationCheck(pLevel, pPos, pState, pPlacer, pStack);
+        //ZPFadingTorchBlock.activationCheck(pLevel, pPos, pState, pPlacer, pStack);
     }
 }

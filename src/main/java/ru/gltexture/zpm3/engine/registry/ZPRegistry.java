@@ -67,6 +67,7 @@ public abstract class ZPRegistry<T> {
         this.deferredRegister = this.createDeferredRegister((ResourceKey<? extends Registry<T>>) target.getRegistryKey());
         this.target = target;
     }
+
     public ZPRegistry(@NotNull ResourceKey<? extends Registry<T>> registry, @NotNull ZPRegistryConveyor.Target target) {
         this.deferredRegister = this.createDeferredRegister(registry);
         this.target = target;

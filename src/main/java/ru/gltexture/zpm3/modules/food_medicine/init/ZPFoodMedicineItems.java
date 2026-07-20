@@ -33,13 +33,13 @@ public class ZPFoodMedicineItems extends ZPRegistry<Item> implements IZPCollectR
     public static RegistryObject<ZPItemMedicine> anti_poison_pill;
     public static RegistryObject<ZPItemMedicine> anti_zplague_syringe;
     public static RegistryObject<ZPItemMedicine> zplague_syringe;
-    public static RegistryObject<ZPItemMedicine> tire;
+    public static RegistryObject<ZPItemMedicine> splint;
     public static RegistryObject<ZPItemMedicine> bandage;
-    public static RegistryObject<ZPItemMedicine> military_bandage;
-    public static RegistryObject<ZPItemMedicine> meth_pill;
+    public static RegistryObject<ZPItemMedicine> drugs;
     public static RegistryObject<ZPItemMedicine> vodka_medicine;
+    public static RegistryObject<ZPItemMedicine> whiskey_medicine;
     public static RegistryObject<ZPItemMedicine> radiation_protection_pill;
-    public static RegistryObject<ZPItemMedicine> healing_pill;
+    public static RegistryObject<ZPItemMedicine> vitamin_pill;
     public static RegistryObject<ZPItemMedicine> better_vision_pill;
     public static RegistryObject<ZPItemMedicine> aid_kit;
 

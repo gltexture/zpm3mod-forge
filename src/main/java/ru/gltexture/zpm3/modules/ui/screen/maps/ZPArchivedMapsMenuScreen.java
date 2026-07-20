@@ -58,7 +58,7 @@ public class ZPArchivedMapsMenuScreen extends ZPScreen {
         {
             final int panelWidth = (int) (this.width * 0.7f);
             final int panelLeft = this.width - panelWidth + 10;
-            this.archivedMapInfoScrollScreen = new ZPArchivedMapInfoScrollScreen(this.minecraft, this.width - listWidth - (10), this.height - 35, 0, listWidth + 10, null);
+            this.archivedMapInfoScrollScreen = new ZPArchivedMapInfoScrollScreen(this.minecraft, this.width - listWidth - (20), this.height - 35, 0, listWidth + 10, null);
         }
 
         this.mapList = new ZPArchivedMapList(this.minecraft, listWidth, this.height - 50, 0, this.height - 35, 56, (mapEntry -> {

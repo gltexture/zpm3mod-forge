@@ -7,13 +7,13 @@ import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.registry.collection.IZPCollectRegistryObjects;
 import ru.gltexture.zpm3.modules.blocks.init.helper.ZPRegLanternBlocks;
-import ru.gltexture.zpm3.modules.blocks.instances.blocks.lantern.ZPLanternBlock;
+import ru.gltexture.zpm3.modules.blocks.instances.blocks.lantern.ZPFadingLanternBlock;
 
 public class ZPLanternBlocks extends ZPRegistry<Block> implements IZPCollectRegistryObjects {
-    public static RegistryObject<ZPLanternBlock> lantern2;
-    public static RegistryObject<ZPLanternBlock> lantern3;
-    public static RegistryObject<ZPLanternBlock> lantern4;
-    public static RegistryObject<ZPLanternBlock> lantern5;
+    public static RegistryObject<ZPFadingLanternBlock> lantern2;
+    public static RegistryObject<ZPFadingLanternBlock> lantern3;
+    public static RegistryObject<ZPFadingLanternBlock> lantern4;
+    public static RegistryObject<ZPFadingLanternBlock> lantern5;
 
     public ZPLanternBlocks() {
         super(ZPRegistryConveyor.Target.BLOCK);

@@ -10,7 +10,7 @@ public class ZPZombieConfig implements ZPConfigConstantsClass {
 
     @ZPVarDefinition(description = "Allows zombie to spawn at day time, via the chance random.")
     public static final ZPConfig_FLOAT ZOMBIE_SPAWN_AT_DAY_TIME_CHANCE =
-            new ZPConfig_FLOAT(0.00525f);
+            new ZPConfig_FLOAT(0.008f);
 
     @ZPVarDefinition(description = "Reduces brightness sensitivity for zombie's spawn calculation.")
     public static final ZPConfig_INT ZOMBIE_BRIGHTNESS_SPAWN_SENSITIVITY_REDUCE =
@@ -22,7 +22,7 @@ public class ZPZombieConfig implements ZPConfigConstantsClass {
 
     @ZPVarDefinition(description = "Maximum radius within which a zombie can call other zombies for assistance.")
     public static final ZPConfig_FLOAT MAX_RADIUS_ZOMBIE_CAN_CALL_FOR_HELP =
-            new ZPConfig_FLOAT(16.0f);
+            new ZPConfig_FLOAT(12.0f);
 
     @ZPVarDefinition(description = "Maximum number of zombies targeting a single player.")
     public static final ZPConfig_INT MAX_ZOMBIES_TARGETED_ON_PLAYER =

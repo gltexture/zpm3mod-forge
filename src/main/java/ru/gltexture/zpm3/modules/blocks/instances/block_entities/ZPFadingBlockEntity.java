@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.modules.blocks.init.ZPBlockEntities;
-import ru.gltexture.zpm3.modules.blocks.instances.blocks.fading.IFadingBlock;
+import ru.gltexture.zpm3.modules.blocks.instances.blocks.IFadingBlock;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.instances.block_entities.ZPBlockEntity;
 import ru.gltexture.zpm3.engine.instances.blocks.ZPTorchBlock;

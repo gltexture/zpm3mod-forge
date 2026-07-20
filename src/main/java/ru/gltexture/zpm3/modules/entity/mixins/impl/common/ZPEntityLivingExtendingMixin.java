@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import ru.gltexture.zpm3.modules.entity.mixins.ext.IZPLivingEntityExt;
+import ru.gltexture.zpm3.modules.mob_effects.init.ZPMobEffects;
 
 @Mixin(LivingEntity.class)
 public abstract class ZPEntityLivingExtendingMixin implements IZPLivingEntityExt {
@@ -52,8 +53,16 @@ public abstract class ZPEntityLivingExtendingMixin implements IZPLivingEntityExt
     }
 
     @Override
+    public void zpm3forge$setIntoxicationLevelForce(int intoxicationLevel) {
+        ((LivingEntity) (Object) this).getEntityData().set(INTOXICATION_LEVEL, Math.min(intoxicationLevel, 1024));
+    }
+
+    @Override
     public void zpm3forge$setIntoxicationLevel(int intoxicationLevel) {
-        ((LivingEntity) (Object) this).getEntityData().set(INTOXICATION_LEVEL, intoxicationLevel);
+        if (((LivingEntity) (Object) this).hasEffect(ZPMobEffects.immune.get())) {
+            return;
+        }
+        ((LivingEntity) (Object) this).getEntityData().set(INTOXICATION_LEVEL, Math.min(intoxicationLevel, 1024));
     }
 
     @Override

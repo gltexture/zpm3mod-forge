@@ -69,6 +69,6 @@ public abstract class ZPCampfireMixin implements EntityBlock, ITorchPlayerExt {
 
     @Override
     public void zpm3forge$setPlacedBy(@NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, @Nullable LivingEntity pPlacer, @NotNull ItemStack pStack) {
-        ZPCampfireBlock.activationCheck(pLevel, pPos, pState, pPlacer, pStack);
+        //ZPCampfireBlock.activationCheck(pLevel, pPos, pState, pPlacer, pStack);
     }
 }

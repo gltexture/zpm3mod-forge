@@ -26,7 +26,7 @@ public class ZPZombieHelpWantedGoal extends Goal {
         this.setFlags(EnumSet.of(Flag.TARGET));
         this.zombiesWantedForHelp = new ArrayList<>();
         this.HURT_BY_TARGETING = TargetingConditions.forCombat().range(this.helpAlertRange()).ignoreLineOfSight().ignoreInvisibilityTesting();
-        this.ticksToAlertHelp = ZPRandom.getRandom().nextInt(81);
+        this.ticksToAlertHelp = ZPRandom.getRandom().nextInt(121);
         this.mob = mob;
     }
 
@@ -40,7 +40,7 @@ public class ZPZombieHelpWantedGoal extends Goal {
             return false;
         }
         if (this.ticksToAlertHelp-- <= 0 && (livingentity instanceof Player || livingentity instanceof Villager)) {
-            this.ticksToAlertHelp = 80 + ZPRandom.getRandom().nextInt(21);
+            this.ticksToAlertHelp = 80 + ZPRandom.getRandom().nextInt(81);
             return this.canAttack(livingentity);
         } else {
             return false;
@@ -65,10 +65,11 @@ public class ZPZombieHelpWantedGoal extends Goal {
     }
 
     protected void alertOthers() {
-        AABB aabb = AABB.unitCubeFromLowerCorner(this.mob.position()).inflate(this.helpAlertRange(), this.helpAlertRange() / 2.0f, this.helpAlertRange());
+        final float callForHelpRange = this.helpAlertRange() + (this.helpAlertRange() * 0.25f - (ZPRandom.instance.randomFloat(this.helpAlertRange() * 0.5f)));
+        AABB aabb = AABB.unitCubeFromLowerCorner(this.mob.position()).inflate(callForHelpRange, this.helpAlertRange() / 2.0f, callForHelpRange);
         List<ZPAbstractZombie> list = this.mob.level().getEntitiesOfClass(ZPAbstractZombie.class, aabb, (e) -> !e.equals(this.mob));
         list.forEach(e -> {
-            if (e.getTarget() == null || (e.getTarget().position().distanceTo(e.position()) >= this.helpAlertRange() * 0.5f && (e.getTarget().position().distanceTo(e.position()) > Objects.requireNonNull(this.targetMob).position().distanceTo(e.position())))) {
+            if (e.getTarget() == null || (e.getTarget().position().distanceTo(e.position()) >= callForHelpRange * 0.5f && (e.getTarget().position().distanceTo(e.position()) > Objects.requireNonNull(this.targetMob).position().distanceTo(e.position())))) {
                 this.zombiesWantedForHelp.add(e);
                 e.setTarget(this.targetMob);
             }

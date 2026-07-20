@@ -14,6 +14,7 @@ public interface IZPLivingEntityExt {
 
     int zpm3forge$getIntoxicationLevel();
     void zpm3forge$setIntoxicationLevel(int intoxicationLevel);
+    void zpm3forge$setIntoxicationLevelForce(int intoxicationLevel);
 
     default void zpm3forge$addIntoxicationLevel(int intoxicationLevel) {
         this.zpm3forge$setIntoxicationLevel(this.zpm3forge$getIntoxicationLevel() + intoxicationLevel);

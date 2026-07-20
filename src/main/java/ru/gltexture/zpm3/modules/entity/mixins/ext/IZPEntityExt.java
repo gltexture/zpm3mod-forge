@@ -15,7 +15,6 @@ public interface IZPEntityExt {
 
     void zpm3forge$defineZPSyncData();
 
-
     Deque<Snapshot> zpm3forge$getAabbDeque();
 
     default AABB getAABBWithLagCompensation(@NotNull Entity entity, @NotNull ServerPlayer serverPlayer) {

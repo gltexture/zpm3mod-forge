@@ -101,7 +101,7 @@ public abstract class ZPAbstractZombie extends Monster {
         {
             final int spawnReduction = ZPZoneChecks.INSTANCE.getZombieScaleInt_ADDFUNC(pLevel.getLevel(), pPos, 0);
             if (spawnReduction > 0) {
-                System.out.println(spawnReduction);
+              //  System.out.println(spawnReduction);
                 if (ZPRandom.getRandom().nextFloat() <= (spawnReduction / 100.0f)) {
                     return false;
                 }
@@ -535,7 +535,7 @@ public abstract class ZPAbstractZombie extends Monster {
             return;
         }
 
-        if (entity instanceof Player && ZPRandom.getRandom().nextFloat() <= 0.03f * ZPZombieConfig.ZOMBIE_PLAGUE_EFFECT_CHANCE_MULTIPLIER.getVar()) {
+        if (entity instanceof Player && ZPRandom.getRandom().nextFloat() <= 0.1f * ZPZombieConfig.ZOMBIE_PLAGUE_EFFECT_CHANCE_MULTIPLIER.getVar()) {
             entity.addEffect(new MobEffectInstance(ZPMobEffects.zombie_plague.get(), ZPZombieConfig.ZOMBIE_PLAGUE_VIRUS_EFFECT_TIME_TICKS.getVar(), 0, false, false));
         }
 

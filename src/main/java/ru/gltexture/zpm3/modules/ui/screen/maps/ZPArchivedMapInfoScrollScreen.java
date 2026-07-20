@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.modules.ui.screen.maps.meta.ZPMapMetaData;
 
 public class ZPArchivedMapInfoScrollScreen extends ScrollPanel {
+    private static final int PIC_Y = 220;
     private static final int PADDING = 10;
     private final Font font;
     private ZPMapMetaData data;
@@ -38,7 +39,7 @@ public class ZPArchivedMapInfoScrollScreen extends ScrollPanel {
         }
         int height = PADDING;
         if (this.data.mapDataResourcesManager().getImageResourceLocation() != null) {
-            height += this.calcScaledImageHeight(this.getMaxImageWidth(), 180, this.data.mapDataResourcesManager().imageWidth(), this.data.mapDataResourcesManager().imageHeight()) + PADDING;
+            height += this.calcScaledImageHeight(this.getMaxImageWidth(), ZPArchivedMapInfoScrollScreen.PIC_Y, this.data.mapDataResourcesManager().imageWidth(), this.data.mapDataResourcesManager().imageHeight()) + PADDING;
         }
         height += font.lineHeight * 4;
         height += PADDING * 4;
@@ -78,15 +79,14 @@ public class ZPArchivedMapInfoScrollScreen extends ScrollPanel {
         int imageWidth = this.data.mapDataResourcesManager().imageWidth();
         int imageHeight = this.data.mapDataResourcesManager().imageHeight();
         final int maxWidth = this.getMaxImageWidth();
-        final int maxHeight = 180;
         if (this.data.mapDataResourcesManager().getImageResourceLocation() != null) {
-            graphics.blitInscribed(this.data.mapDataResourcesManager().getImageResourceLocation(), X + PADDING, y, maxWidth, maxHeight, imageWidth, imageHeight, false, false);
-            y += this.calcScaledImageHeight(this.getMaxImageWidth(), 180, this.data.mapDataResourcesManager().imageWidth(), this.data.mapDataResourcesManager().imageHeight()) + PADDING;
+            graphics.blitInscribed(this.data.mapDataResourcesManager().getImageResourceLocation(), X + PADDING, y, maxWidth, ZPArchivedMapInfoScrollScreen.PIC_Y, imageWidth, imageHeight, false, false);
+            y += this.calcScaledImageHeight(this.getMaxImageWidth(), ZPArchivedMapInfoScrollScreen.PIC_Y, this.data.mapDataResourcesManager().imageWidth(), this.data.mapDataResourcesManager().imageHeight()) + PADDING;
         }
         graphics.drawString(this.font, this.data.mapName() + " (" + this.data.version() + ")", X + PADDING, y, 0xFFFFFF);
         y += PADDING;
         graphics.drawString(this.font, "By: " + String.join(", ", this.data.authors()), X + PADDING, y, 0x88FF88);
-        y += PADDING;
+        y += PADDING + 4;
         graphics.drawString(this.font, "ZP3 Version: " + this.data.modVersion(), X + PADDING, y, 0xCCCCCC);
         y += PADDING;
         graphics.drawString(this.font, "Recommended Players: " + this.data.recommendedPlayers(), X + PADDING, y, 0xCCCCCC);

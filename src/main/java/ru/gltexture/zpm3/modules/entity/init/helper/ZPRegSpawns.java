@@ -15,7 +15,7 @@ public abstract class ZPRegSpawns {
         ZPSpawnItems.common_zm_spawn = regSupplier.register("common_zm_spawn", () -> new ForgeSpawnEggItem((() -> ZPEntities.zp_common_zombie_entity.get()), 0x3E3B36, 0x799C65, new Item.Properties())
         ).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
-                utils.items().addItemInTab(e, ZPTabs.zp_spawns_tab);
+                utils.items().addItemInTab(e, ZPTabs.zp_items_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_SPAWN_EGG);
             });
         }).end();
@@ -23,7 +23,7 @@ public abstract class ZPRegSpawns {
         ZPSpawnItems.miner_zm_spawn = regSupplier.register("miner_zm_spawn", () -> new ForgeSpawnEggItem((() -> ZPEntities.zp_miner_zombie_entity.get()), 0xA63B36, 0x7C9F65, new Item.Properties())
         ).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
-                utils.items().addItemInTab(e, ZPTabs.zp_spawns_tab);
+                utils.items().addItemInTab(e, ZPTabs.zp_items_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_SPAWN_EGG);
             });
         }).end();
@@ -31,7 +31,7 @@ public abstract class ZPRegSpawns {
         ZPSpawnItems.dog_zm_spawn = regSupplier.register("dog_zm_spawn", () -> new ForgeSpawnEggItem((() -> ZPEntities.zp_dog_zombie_entity.get()), 0xC8C8C8, 0xDD0205, new Item.Properties())
         ).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
-                utils.items().addItemInTab(e, ZPTabs.zp_spawns_tab);
+                utils.items().addItemInTab(e, ZPTabs.zp_items_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_SPAWN_EGG);
             });
         }).end();

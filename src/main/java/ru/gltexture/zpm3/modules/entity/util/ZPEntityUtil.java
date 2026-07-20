@@ -7,6 +7,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ShieldItem;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPCombatConfig;
@@ -21,6 +22,9 @@ import ru.gltexture.zpm3.modules.misc_items.init.ZPMiscItems;
 import ru.gltexture.zpm3.modules.mob_effects.init.ZPMobEffects;
 
 public class ZPEntityUtil {
+    public static boolean isUsingShield(@NotNull LivingEntity entity) {
+        return entity.isUsingItem() && entity.getUseItem().getItem() instanceof ShieldItem;
+    }
     public static @Nullable ItemStack getOxygenStackInHand(LivingEntity entity) {
         return entity.getMainHandItem().getItem().equals(ZPMiscItems.oxygen.get()) ? entity.getMainHandItem() : entity.getOffhandItem().getItem().equals(ZPMiscItems.oxygen.get()) ? entity.getOffhandItem() : null;
     }
@@ -41,6 +45,9 @@ public class ZPEntityUtil {
 
     // < 0 = NO
     public static int getEntityToxicAffectionTickRate(@NotNull final Entity entity) {
+        if (entity instanceof LivingEntity livingEntity && livingEntity.hasEffect(ZPMobEffects.immune.get())) {
+            return -1;
+        }
         final int getEntityToxicIncMultiplier = ZPEntityUtil.getEntityToxicIncMultiplier(entity);
         final int toxicAffectionSlowdownTicks = ((entity instanceof LivingEntity livingEntity) ? ZPArmorUtil.getAcidIncTickSlowdown(livingEntity, getEntityToxicIncMultiplier) : 0);
         if (toxicAffectionSlowdownTicks < 0 || getEntityToxicIncMultiplier <= 0) {
@@ -110,6 +117,7 @@ public class ZPEntityUtil {
     public static void applyRadiationEffects(LivingEntity entity, int rad) {
         if (rad >= 10) {
             entity.addEffect(new MobEffectInstance(MobEffects.HUNGER, 600, 0, true, true));
+            entity.removeEffect(ZPMobEffects.immune.get());
         }
 
         if (rad >= 20) {

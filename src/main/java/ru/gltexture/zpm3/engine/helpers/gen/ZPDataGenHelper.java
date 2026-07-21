@@ -64,6 +64,7 @@ public abstract class ZPDataGenHelper {
     public static final MinecraftModelParentReference DEFAULT_HOE = new MinecraftModelParentReference("item/diamond_hoe");
 
     public static final ZPPath COMMON_BLOCKS_DIRECTORY = new ZPPath("common");
+    public static final ZPPath COMMON_COLORED_BLOCKS_DIRECTORY = new ZPPath("common_color");
     public static final ZPPath TORCH_BLOCKS_DIRECTORY = new ZPPath("torch");
     public static final ZPPath LANTERN_BLOCKS_DIRECTORY = new ZPPath("lantern");
     public static final ZPPath CAMPFIRE_BLOCKS_DIRECTORY = new ZPPath("campfire");

@@ -7,11 +7,6 @@ import org.joml.Vector3f;
 import ru.gltexture.zpm3.engine.client.rendering.lightmap.ZPLightMapModifier;
 
 public abstract class ZPModEventBus {
-    public enum ObjectState {
-        SPAWN,
-        DESTROY
-    }
-
     public enum State {
         START,
         END

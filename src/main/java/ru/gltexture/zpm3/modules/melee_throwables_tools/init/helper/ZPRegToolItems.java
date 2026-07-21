@@ -43,6 +43,7 @@ public abstract class ZPRegToolItems {
         ).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addTagToItem(e, ZPTags.I_CAN_MINE_BARBARED_WIRE);
+                utils.items().addTagToItem(e, ZPTags.I_CAN_MINE_CHAIN_LINK);
                 utils.items().addItemInTab(e, ZPTabs.zp_items_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.TOOLS_ITEMS_DIRECTORY);
             });

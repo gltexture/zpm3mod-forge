@@ -14,10 +14,12 @@ public abstract class ZPTags {
 
     public static final TagKey<Block> B_MINEABLE_WITH_METAL_CUTTERS = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "b_mineable_with_mcutters"));
     public static final TagKey<Block> B_MINEABLE_WITH_WRENCH = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "b_mineable_with_wrench"));
-    public static final TagKey<Block> B_MINEABLE_WITH_CROWBAR = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "b_mineable_with_vrowbar"));
+    public static final TagKey<Block> B_MINEABLE_WITH_CROWBAR = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "b_mineable_with_crowbar"));
+    public static final TagKey<Block> B_IGNORE_ACID = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "b_ignore_acid"));
 
     public static final TagKey<Item> I_CAN_MINE_SCRAP = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "i_mineable_scrap"));
     public static final TagKey<Item> I_CAN_MINE_BARBARED_WIRE = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "i_mineable_barbared_wire"));
+    public static final TagKey<Item> I_CAN_MINE_CHAIN_LINK = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "i_mineable_chani_link"));
 
     public static final TagKey<Biome> FOREST_BIOMES = TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "forest_biomes"));
     public static final TagKey<Biome> WINTER_BIOMES = TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "winter_biomes"));

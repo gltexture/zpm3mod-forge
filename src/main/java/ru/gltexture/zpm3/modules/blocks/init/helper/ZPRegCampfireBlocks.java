@@ -33,7 +33,7 @@ public abstract class ZPRegCampfireBlocks {
         ).afterCreated((e, utils) -> {
             utils.loot().addSelfDropLootTable(e);
             ZPUtility.sides().onlyClient(() -> {
-                utils.blocks().setBlockItemModelExecutor(e, DefaultBlockModelExecutors.getDefaultCampfire(), DefaultBlockItemModelExecutors.getDefaultItemAs2DTexture("zpm3:item/blocks/campfire"));
+                utils.blocks().setBlockItemModelExecutor(e, DefaultBlockModelExecutors.getDefaultCampfire(), DefaultBlockItemModelExecutors.getDefaultItemAs2DTexture("item/blocks/campfire"));
                 utils.blocks().addBlockModelKey_ValueArray(e, ZPDataGenHelper.DEFAULT_CAMPFIRE,
                         Pair.of("fire", () -> new ZPPath(ZPDataGenHelper.CAMPFIRE_BLOCKS_DIRECTORY, "campfire_fire2")),
                         Pair.of("lit_log", () -> new ZPPath(ZPDataGenHelper.CAMPFIRE_BLOCKS_DIRECTORY, "campfire_log_lit2")),

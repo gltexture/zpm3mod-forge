@@ -62,10 +62,11 @@ public abstract class ZPRegMedicine {
             .effect(() -> new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, -10), 1.0F)
             .effect(() -> new MobEffectInstance(MobEffects.HUNGER, -10), 1.0F)
             .effect(() -> new MobEffectInstance(MobEffects.CONFUSION, -10), 1.0F)
-            .effect(() -> new MobEffectInstance(MobEffects.REGENERATION, 200, 1), 1.0F)
+            .effect(() -> new MobEffectInstance(MobEffects.REGENERATION, 300, 1), 1.0F)
             .effect(() -> new MobEffectInstance(ZPMobEffects.bleeding.get(), -10), 1.0F)
             .build())
                 .setMedicineAnim(ZPItemMedicine.MedicineAnim.BLOCK)
+                .setEatTime(128)
                 .setSoundToPlayOnConsume(() -> ZPSounds.bandage.get());
 
     public static final ZPItemMedicine.ZPMedicineProperties ANTI_HEADACHE = new ZPItemMedicine.ZPMedicineProperties(ZPRegMedicine.DEFAULT_MEDICINE()

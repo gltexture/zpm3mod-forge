@@ -13,6 +13,7 @@ public class ZPGenTextureData {
     public static final String LAYER1_KEY = "layer1";
     public static final String LAYER2_KEY = "layer2";
     public static final String ALL_KEY = "all";
+    public static final String BARS_KEY = "bars";
     public static final String CROSS_KEY = "cross";
     public static final String BOTTOM_KEY = "bottom";
     public static final String SIDE_KEY = "side";

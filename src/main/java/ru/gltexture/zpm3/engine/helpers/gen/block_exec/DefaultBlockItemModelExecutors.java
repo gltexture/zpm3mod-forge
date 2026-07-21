@@ -43,7 +43,7 @@ public abstract class DefaultBlockItemModelExecutors {
 
     public static @NotNull ZPBlockModelProvider.BlockModelExecutor.EItem<? extends Block> getDefaultItemAs2DTexture(@NotNull String path) {
         return (blockStateProvider, block, name, textureData) -> {
-            blockStateProvider.itemModels().withExistingParent(name, "item/generated").texture(ZPGenTextureData.LAYER0_KEY, path);
+            blockStateProvider.itemModels().withExistingParent(name, "item/generated").texture(ZPGenTextureData.LAYER0_KEY,  blockStateProvider.modLoc(path));
         };
     }
 }

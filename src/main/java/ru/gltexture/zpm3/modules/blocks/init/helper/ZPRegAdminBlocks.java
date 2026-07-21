@@ -15,7 +15,7 @@ public abstract class ZPRegAdminBlocks {
         ZPBlocks.anti_zombie = regSupplier.register("anti_zombie", ZPAntiZombie::new
         ).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
-                utils.blocks().setBlockItemModelExecutor(e, DefaultBlockModelExecutors.getDefault(), DefaultBlockItemModelExecutors.getDefaultItemAs2DTexture("zpm3:item/blocks/admin_block"));
+                utils.blocks().setBlockItemModelExecutor(e, DefaultBlockModelExecutors.getDefault(), DefaultBlockItemModelExecutors.getDefaultItemAs2DTexture("item/blocks/admin_block"));
                 utils.blocks().addBlockModelWithVanillaTexture(e, ZPDataGenHelper.DEFAULT_BLOCK_AIR);
             });
         }).end();

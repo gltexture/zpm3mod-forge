@@ -2,26 +2,29 @@ package ru.gltexture.zpm3.modules.blocks.init.helper;
 
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockItemModelExecutors;
 import ru.gltexture.zpm3.modules.blocks.init.ZPBlocks;
+import ru.gltexture.zpm3.modules.blocks.instances.blocks.*;
 import ru.gltexture.zpm3.modules.misc_items.init.ZPMiscItems;
 import ru.gltexture.zpm3.modules.common.init.ZPTags;
-import ru.gltexture.zpm3.modules.blocks.instances.blocks.ZPBarbaredWireBlock;
 import ru.gltexture.zpm3.engine.instances.blocks.*;
-import ru.gltexture.zpm3.modules.blocks.instances.blocks.ZPFallingBlock;
-import ru.gltexture.zpm3.modules.blocks.instances.blocks.ZPLayerBlock;
-import ru.gltexture.zpm3.modules.blocks.instances.blocks.ZPUraniumBlock;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
 import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockModelExecutors;
 import ru.gltexture.zpm3.engine.helpers.gen.data.ZPGenTextureData;
@@ -29,6 +32,8 @@ import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.service.Pair;
 import ru.gltexture.zpm3.engine.service.ZPPath;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class ZPRegCommonBlocks {
     public static void init(@NotNull ZPRegistry.ZPRegSupplier<Block> regSupplier) {
@@ -82,21 +87,21 @@ public abstract class ZPRegCommonBlocks {
             });
         }).end();
 
-        ZPBlocks.block_lamp = regSupplier.register("block_lamp", () -> new ZPBlock(BlockBehaviour.Properties.of().strength(0.5f).sound(SoundType.GLASS).lightLevel((e) -> 15))
+        ZPBlocks.block_lamp = regSupplier.register("block_lamp", () -> new ZPBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_YELLOW).instrument(NoteBlockInstrument.CHIME).strength(0.5f).sound(SoundType.GLASS).lightLevel((e) -> 15))
         ).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
                 utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_BLOCK_CUBE, ZPGenTextureData.ALL_KEY, ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY);
             });
         }).end();
 
-        ZPBlocks.block_lamp_off = regSupplier.register("block_lamp_off", () -> new ZPBlock(BlockBehaviour.Properties.of().strength(0.5f).sound(SoundType.GLASS).lightLevel((e) -> 0))
+        ZPBlocks.block_lamp_off = regSupplier.register("block_lamp_off", () -> new ZPBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).instrument(NoteBlockInstrument.CHIME).strength(0.5f).sound(SoundType.GLASS).lightLevel((e) -> 0))
         ).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
                 utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_BLOCK_CUBE, ZPGenTextureData.ALL_KEY, ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY);
             });
         }).end();
 
-        ZPBlocks.armored_glass = regSupplier.register("armored_glass", () -> new ZPBlock(BlockBehaviour.Properties.of().strength(30.0f).sound(SoundType.GLASS).noOcclusion().lightLevel((e) -> 0))
+        ZPBlocks.armored_glass = regSupplier.register("armored_glass", () -> new ZPBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLUE).instrument(NoteBlockInstrument.CHIME).strength(30.0f).sound(SoundType.GLASS).noOcclusion().lightLevel((e) -> 0))
         ).afterCreated((e, utils) -> {
             utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
             ZPUtility.sides().onlyClient(() -> {
@@ -105,33 +110,348 @@ public abstract class ZPRegCommonBlocks {
             });
         }).end();
 
-        ZPBlocks.armor_black = regSupplier.register("armor_black", () -> new ZPBlock(BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(300.0f, 10.0f).sound(SoundType.METAL))
-        ).afterCreated((e, utils) -> {
-            utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
-            ZPUtility.sides().onlyClient(() -> {
-                utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_BLOCK_CUBE, ZPGenTextureData.ALL_KEY, ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY);
-            });
-        }).end();
+        {
+            final AtomicReference<RegistryObject<ZPBlock>> b1 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPSlabBlock>> b2 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPStairsBlock>> b3 = new AtomicReference<>();
+            ZPRegCommonBlocks.<RegistryObject<? extends Block>>registerFamily(regSupplier, "camo_forest",
+                    new ZPBlockRegFamily(b1)
+                            .setSlab(b2)
+                            .setStairs(b3),
+                    BlockBehaviour.Properties.of().mapColor(MapColor.GRASS).instrument(NoteBlockInstrument.GUITAR).strength(1.0F).sound(SoundType.WOOL).ignitedByLava(),
+                    (e, regUtils) -> {
+                        regUtils.loot().addBlockLootTable(e, () -> new LootPool.Builder()
+                                .setRolls(ConstantValue.exactly(1))
+                                .add((LootItem.lootTableItem(e.get()))
+                                        .when(MatchTool.toolMatches(ItemPredicate.Builder.item().of(Items.SHEARS)))
+                                ));
+                        regUtils.blocks().addTagToBlock(e, BlockTags.WOOL);
+                    });
+            ZPBlocks.camo_forest = b1.get();
+            ZPBlocks.camo_slab_forest = b2.get();
+        }
 
-        ZPBlocks.armor_green = regSupplier.register("armor_green", () -> new ZPBlock(BlockBehaviour.Properties.of().strength(300.0f, 10.0f).sound(SoundType.METAL))
-        ).afterCreated((e, utils) -> {
-            utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
-            ZPUtility.sides().onlyClient(() -> {
-                utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_BLOCK_CUBE, ZPGenTextureData.ALL_KEY, ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY);
-            });
-        }).end();
+        {
+            final AtomicReference<RegistryObject<ZPBlock>> b1 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPSlabBlock>> b2 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPStairsBlock>> b3 = new AtomicReference<>();
+            ZPRegCommonBlocks.<RegistryObject<? extends Block>>registerFamily(regSupplier, "camo_sand",
+                    new ZPBlockRegFamily(b1)
+                            .setSlab(b2)
+                            .setStairs(b3),
+                    BlockBehaviour.Properties.of().mapColor(MapColor.SAND).instrument(NoteBlockInstrument.GUITAR).strength(1.0F).sound(SoundType.WOOL).ignitedByLava(),
+                    (e, regUtils) -> {
+                        regUtils.loot().addBlockLootTable(e, () -> new LootPool.Builder()
+                                .setRolls(ConstantValue.exactly(1))
+                                .add((LootItem.lootTableItem(e.get()))
+                                        .when(MatchTool.toolMatches(ItemPredicate.Builder.item().of(Items.SHEARS)))
+                                ));
+                        regUtils.blocks().addTagToBlock(e, BlockTags.WOOL);
+                    });
+            ZPBlocks.camo_sand = b1.get();
+            ZPBlocks.camo_slab_sand = b2.get();
+        }
 
-        ZPBlocks.sandbag = regSupplier.register("sandbag", () -> new ZPFallingBlock(BlockBehaviour.Properties.of().strength(5.0F, 1.0F).sound(SoundType.SAND))
-        ).afterCreated((e, utils) -> {
-            utils.loot().addSelfDropLootTable(e);
-            utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_HOE);
-            ZPUtility.sides().onlyClient(() -> {
-                utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_BLOCK_CUBE, ZPGenTextureData.ALL_KEY, ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY);
-            });
-        }).end();
+        {
+            final AtomicReference<RegistryObject<ZPBlock>> b1 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPSlabBlock>> b2 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPStairsBlock>> b3 = new AtomicReference<>();
+            ZPRegCommonBlocks.<RegistryObject<? extends Block>>registerFamily(regSupplier, "camo_snow",
+                    new ZPBlockRegFamily(b1)
+                            .setSlab(b2)
+                            .setStairs(b3),
+                    BlockBehaviour.Properties.of().mapColor(MapColor.SNOW).instrument(NoteBlockInstrument.GUITAR).strength(1.0F).sound(SoundType.WOOL).ignitedByLava(),
+                    (e, regUtils) -> {
+                        regUtils.loot().addBlockLootTable(e, () -> new LootPool.Builder()
+                                .setRolls(ConstantValue.exactly(1))
+                                .add((LootItem.lootTableItem(e.get()))
+                                        .when(MatchTool.toolMatches(ItemPredicate.Builder.item().of(Items.SHEARS)))
+                                ));
+                        regUtils.blocks().addTagToBlock(e, BlockTags.WOOL);
+                    });
+            ZPBlocks.camo_snow = b1.get();
+            ZPBlocks.camo_slab_snow = b2.get();
+        }
 
-        ZPBlocks.scrap = regSupplier.register("scrap", () -> new ZPBlock(BlockBehaviour.Properties.of().strength(10.0F, 3.0F).sound(SoundType.METAL))
+        {
+            final AtomicReference<RegistryObject<ZPBlock>> b1 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPSlabBlock>> b2 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPStairsBlock>> b3 = new AtomicReference<>();
+            ZPRegCommonBlocks.<RegistryObject<? extends Block>>registerFamily(regSupplier, "steel_black",
+                    new ZPBlockRegFamily(b1)
+                            .setSlab(b2)
+                            .setStairs(b3),
+                    BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).instrument(NoteBlockInstrument.BELL).strength(200.0f, 120.0f).sound(SoundType.METAL),
+                    (e, regUtils) -> {
+                        regUtils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
+                    });
+            ZPBlocks.steel_black = b1.get();
+            ZPBlocks.steel_slab_black = b2.get();
+            ZPBlocks.steel_stairs_black = b3.get();
+        }
+
+        {
+            final AtomicReference<RegistryObject<ZPBlock>> b1 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPSlabBlock>> b2 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPStairsBlock>> b3 = new AtomicReference<>();
+            ZPRegCommonBlocks.<RegistryObject<? extends Block>>registerFamily(regSupplier, "steel_green",
+                    new ZPBlockRegFamily(b1)
+                            .setSlab(b2)
+                            .setStairs(b3),
+                    BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).instrument(NoteBlockInstrument.BELL).strength(200.0f, 120.0f).sound(SoundType.METAL),
+                    (e, regUtils) -> {
+                        regUtils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
+                    });
+            ZPBlocks.steel_green = b1.get();
+            ZPBlocks.steel_slab_green = b2.get();
+            ZPBlocks.steel_stairs_green = b3.get();
+        }
+
+        {
+            final AtomicReference<RegistryObject<ZPBlock>> b1 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPSlabBlock>> b2 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPStairsBlock>> b3 = new AtomicReference<>();
+            ZPRegCommonBlocks.<RegistryObject<? extends Block>>registerFamily(regSupplier, "steel_gray",
+                    new ZPBlockRegFamily(b1)
+                            .setSlab(b2)
+                            .setStairs(b3),
+                    BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_GRAY).instrument(NoteBlockInstrument.BELL).strength(200.0f, 120.0f).sound(SoundType.METAL),
+                            (e, regUtils) -> {
+                                regUtils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
+                            });
+            ZPBlocks.steel_gray = b1.get();
+            ZPBlocks.steel_slab_gray = b2.get();
+            ZPBlocks.steel_stairs_gray = b3.get();
+        }
+
+        {
+            final AtomicReference<RegistryObject<ZPBlock>> b1 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPSlabBlock>> b2 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPStairsBlock>> b3 = new AtomicReference<>();
+            ZPRegCommonBlocks.<RegistryObject<? extends Block>>registerFamily(regSupplier, "steel_hazard",
+                    new ZPBlockRegFamily(b1)
+                            .setSlab(b2)
+                            .setStairs(b3),
+                    BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).instrument(NoteBlockInstrument.BELL).strength(200.0f, 120.0f).sound(SoundType.METAL),
+                    (e, regUtils) -> {
+                        regUtils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
+                    });
+            ZPBlocks.steel_hazard = b1.get();
+            ZPBlocks.steel_slab_hazard = b2.get();
+            ZPBlocks.steel_stairs_hazard = b3.get();
+        }
+
+        {
+            final AtomicReference<RegistryObject<ZPBlock>> b1 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPSlabBlock>> b2 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPStairsBlock>> b3 = new AtomicReference<>();
+            ZPRegCommonBlocks.<RegistryObject<? extends Block>>registerFamily(regSupplier, "steel_orange",
+                    new ZPBlockRegFamily(b1)
+                            .setSlab(b2)
+                            .setStairs(b3),
+                    BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).instrument(NoteBlockInstrument.BELL).strength(200.0f, 120.0f).sound(SoundType.METAL),
+                    (e, regUtils) -> {
+                        regUtils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
+                    });
+            ZPBlocks.steel_orange = b1.get();
+            ZPBlocks.steel_slab_orange = b2.get();
+            ZPBlocks.steel_stairs_orange = b3.get();
+        }
+
+        {
+            final AtomicReference<RegistryObject<ZPBlock>> b1 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPSlabBlock>> b2 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPStairsBlock>> b3 = new AtomicReference<>();
+            ZPRegCommonBlocks.<RegistryObject<? extends Block>>registerFamily(regSupplier, "steel_white",
+                    new ZPBlockRegFamily(b1)
+                            .setSlab(b2)
+                            .setStairs(b3),
+                    BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_WHITE).instrument(NoteBlockInstrument.BELL).strength(200.0f, 120.0f).sound(SoundType.METAL),
+                    (e, regUtils) -> {
+                        regUtils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
+                    });
+            ZPBlocks.steel_white = b1.get();
+            ZPBlocks.steel_slab_white = b2.get();
+            ZPBlocks.steel_stairs_white = b3.get();
+        }
+
+        {
+            final AtomicReference<RegistryObject<ZPBlock>> b1 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPSlabBlock>> b2 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPStairsBlock>> b3 = new AtomicReference<>();
+            ZPRegCommonBlocks.<RegistryObject<? extends Block>>registerFamily(regSupplier, "reactor_block",
+                    new ZPBlockRegFamily(b1)
+                            .setSlab(b2)
+                            .setStairs(b3),
+                    BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_WHITE).instrument(NoteBlockInstrument.BIT).strength(360.0f, 600.0f).pushReaction(PushReaction.IGNORE).sound(SoundType.METAL),
+                    (e, regUtils) -> {
+                        regUtils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
+                        regUtils.blocks().addTagToBlock(e, ZPTags.B_IGNORE_ACID);
+                    });
+            ZPBlocks.reactor_block = b1.get();
+            ZPBlocks.reactor_slab_block = b2.get();
+            ZPBlocks.reactor_stairs_block = b3.get();
+        }
+
+        {
+            final AtomicReference<RegistryObject<ZPBlock>> b1 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPSlabBlock>> b2 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPStairsBlock>> b3 = new AtomicReference<>();
+            ZPRegCommonBlocks.<RegistryObject<? extends Block>>registerFamily(regSupplier, "lab_block",
+                    new ZPBlockRegFamily(b1)
+                            .setSlab(b2)
+                            .setStairs(b3),
+                    BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_WHITE).instrument(NoteBlockInstrument.BIT).strength(360.0f, 600.0f).pushReaction(PushReaction.IGNORE).sound(SoundType.METAL),
+                    (e, regUtils) -> {
+                        regUtils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
+                        regUtils.blocks().addTagToBlock(e, ZPTags.B_IGNORE_ACID);
+                    });
+            ZPBlocks.lab_block = b1.get();
+            ZPBlocks.lab_slab_block = b2.get();
+            ZPBlocks.lab_stairs_block = b3.get();
+        }
+
+        {
+            final AtomicReference<RegistryObject<ZPBlock>> b1 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPSlabBlock>> b2 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPStairsBlock>> b3 = new AtomicReference<>();
+            ZPRegCommonBlocks.<RegistryObject<? extends Block>>registerFamily(regSupplier, "ancient_bricks",
+                    new ZPBlockRegFamily(b1)
+                            .setSlab(b2)
+                            .setStairs(b3),
+                    BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_GRAY).instrument(NoteBlockInstrument.COW_BELL).strength(12.0f, 8.0f).sound(SoundType.ANCIENT_DEBRIS),
+                    (e, regUtils) -> {
+                        regUtils.loot().addSelfDropLootTable(e);
+                        regUtils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
+                    });
+            ZPBlocks.ancient_bricks = b1.get();
+            ZPBlocks.ancient_slab_bricks = b2.get();
+            ZPBlocks.ancient_stairs_bricks = b3.get();
+        }
+
+        {
+            final AtomicReference<RegistryObject<ZPBlock>> b1 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPSlabBlock>> b2 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPStairsBlock>> b3 = new AtomicReference<>();
+            ZPRegCommonBlocks.<RegistryObject<? extends Block>>registerFamily(regSupplier, "black_bricks",
+                    new ZPBlockRegFamily(b1)
+                            .setSlab(b2)
+                            .setStairs(b3),
+                    BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).instrument(NoteBlockInstrument.CHIME).strength(12.0f, 8.0f).sound(SoundType.STONE),
+                    (e, regUtils) -> {
+                        regUtils.loot().addSelfDropLootTable(e);
+                        regUtils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
+                    });
+            ZPBlocks.black_bricks = b1.get();
+            ZPBlocks.black_slab_bricks = b2.get();
+            ZPBlocks.black_stairs_bricks = b3.get();
+        }
+
+        {
+            final AtomicReference<RegistryObject<ZPBlock>> b1 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPSlabBlock>> b2 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPStairsBlock>> b3 = new AtomicReference<>();
+            ZPRegCommonBlocks.<RegistryObject<? extends Block>>registerFamily(regSupplier, "green_bricks",
+                    new ZPBlockRegFamily(b1)
+                            .setSlab(b2)
+                            .setStairs(b3),
+                    BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).instrument(NoteBlockInstrument.DIDGERIDOO).strength(12.0f, 8.0f).sound(SoundType.STONE),
+                    (e, regUtils) -> {
+                        regUtils.loot().addSelfDropLootTable(e);
+                        regUtils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
+                    });
+            ZPBlocks.green_bricks = b1.get();
+            ZPBlocks.green_slab_bricks = b2.get();
+            ZPBlocks.green_stairs_bricks = b3.get();
+        }
+
+        {
+            final AtomicReference<RegistryObject<ZPBlock>> b1 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPSlabBlock>> b2 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPStairsBlock>> b3 = new AtomicReference<>();
+            ZPRegCommonBlocks.<RegistryObject<? extends Block>>registerFamily(regSupplier, "gray_bricks",
+                    new ZPBlockRegFamily(b1)
+                            .setSlab(b2)
+                            .setStairs(b3),
+                    BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY).instrument(NoteBlockInstrument.COW_BELL).strength(12.0f, 8.0f).sound(SoundType.STONE),
+                    (e, regUtils) -> {
+                        regUtils.loot().addSelfDropLootTable(e);
+                        regUtils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
+                    });
+            ZPBlocks.gray_bricks = b1.get();
+            ZPBlocks.gray_slab_bricks = b2.get();
+            ZPBlocks.gray_stairs_bricks = b3.get();
+        }
+
+        //      utils.loot().addSelfDropLootTable(e);
+
+        {
+            final AtomicReference<RegistryObject<ZPBlock>> b1 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPSlabBlock>> b2 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPStairsBlock>> b3 = new AtomicReference<>();
+            ZPRegCommonBlocks.<RegistryObject<? extends Block>>registerFamily(regSupplier, "asphalt",
+                    new ZPBlockRegFamily(b1)
+                            .setSlab(b2)
+                            .setStairs(b3),
+                    BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).instrument(NoteBlockInstrument.ZOMBIE).strength(2.0f, 6.0f).sound(SoundType.STONE),
+                    (e, regUtils) -> {
+                        regUtils.loot().addSelfDropLootTable(e);
+                        regUtils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
+                    });
+            ZPBlocks.asphalt = b1.get();
+            ZPBlocks.asphalt_slab = b2.get();
+            ZPBlocks.asphalt_stairs = b3.get();
+        }
+
+        {
+            final AtomicReference<RegistryObject<ZPBlock>> b1 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPSlabBlock>> b2 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPStairsBlock>> b3 = new AtomicReference<>();
+            ZPRegCommonBlocks.<RegistryObject<? extends Block>>registerFamily(regSupplier, "asphalt_marking",
+                    new ZPBlockRegFamily(b1)
+                            .setSlab(b2)
+                            .setStairs(b3),
+                    BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).instrument(NoteBlockInstrument.ZOMBIE).strength(2.0f, 6.0f).sound(SoundType.STONE),
+                    (e, regUtils) -> {
+                        regUtils.loot().addSelfDropLootTable(e);
+                        regUtils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
+                    });
+            ZPBlocks.asphalt_marking = b1.get();
+            ZPBlocks.asphalt_marking_slab = b2.get();
+            ZPBlocks.asphalt_marking_stairs = b3.get();
+        }
+
+
+        {
+            final AtomicReference<RegistryObject<ZPBlock>> b1 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPSlabBlock>> b2 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPStairsBlock>> b3 = new AtomicReference<>();
+            ZPRegCommonBlocks.<RegistryObject<? extends Block>>registerFamily(regSupplier, "scrap",
+                    new ZPBlockRegFamily(b1)
+                            .setSlab(b2)
+                            .setStairs(b3),
+                    BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).instrument(NoteBlockInstrument.BANJO).strength(10.0F, 3.0F).sound(SoundType.METAL),
+                    (e, regUtils) -> {
+                        regUtils.loot().addBlockLootTable(e, () -> new LootPool.Builder()
+                                .setRolls(UniformGenerator.between(0, 2))
+                                .add(LootItem.lootTableItem(ZPMiscItems.scrap_material.get()))
+                                .when(MatchTool.toolMatches(
+                                        ItemPredicate.Builder.item().of(ZPTags.I_CAN_MINE_SCRAP)
+                                ))
+                        );
+                        regUtils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
+                        regUtils.blocks().addTagToBlock(e, ZPTags.B_MINEABLE_WITH_WRENCH);
+                        regUtils.blocks().addTagToBlock(e, ZPTags.B_MINEABLE_WITH_CROWBAR);
+                    });
+            ZPBlocks.scrap_block = b1.get();
+            ZPBlocks.scrap_slab = b2.get();
+            ZPBlocks.scrap_stairs = b3.get();
+        }
+
+
+        ZPBlocks.scrap_door = regSupplier.register("scrap_door", () -> new ZPRustyDoor(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).strength(16.0F, 2.0F).sound(SoundType.METAL), BlockSetType.IRON)
         ).afterCreated((e, utils) -> {
+            //utils.addBlockLootTable(e, () -> new LootPool.Builder().setRolls(UniformGenerator.between(0, 2)).add(LootItem.lootTableItem(Items.IRON_NUGGET)));
             utils.loot().addBlockLootTable(e, () -> new LootPool.Builder()
                     .setRolls(UniformGenerator.between(0, 2))
                     .add(LootItem.lootTableItem(ZPMiscItems.scrap_material.get()))
@@ -143,11 +463,35 @@ public abstract class ZPRegCommonBlocks {
             utils.blocks().addTagToBlock(e, ZPTags.B_MINEABLE_WITH_WRENCH);
             utils.blocks().addTagToBlock(e, ZPTags.B_MINEABLE_WITH_CROWBAR);
             ZPUtility.sides().onlyClient(() -> {
-                utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_BLOCK_CUBE, ZPGenTextureData.ALL_KEY, ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY);
+                utils.blocks().setBlockItemModelExecutor(e, DefaultBlockModelExecutors.getDefaultDoor(), DefaultBlockItemModelExecutors.getDefaultItemAs2DTexture("item/blocks/scrap_door"));
+                utils.blocks().addBlockModelKey_ValueArray(e, ZPDataGenHelper.NO_REFERENCE,
+                        Pair.of(ZPGenTextureData.BOTTOM_KEY, () -> new ZPPath(ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY, "scrap_door_bottom")),
+                        Pair.of(ZPGenTextureData.TOP_KEY, () -> new ZPPath(ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY, "scrap_door_top")));
+            });
+            utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
+        }).end();
+
+        ZPBlocks.scrap_trapDoor = regSupplier.register("scrap_trapdoor", () -> new ZPRustyTrapDoor(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).strength(16.0F, 2.0F).sound(SoundType.METAL), BlockSetType.IRON)
+        ).afterCreated((e, utils) -> {
+            //utils.addBlockLootTable(e, () -> new LootPool.Builder().setRolls(UniformGenerator.between(0, 2)).add(LootItem.lootTableItem(Items.IRON_NUGGET)));
+            utils.loot().addBlockLootTable(e, () -> new LootPool.Builder()
+                    .setRolls(UniformGenerator.between(0, 2))
+                    .add(LootItem.lootTableItem(ZPMiscItems.scrap_material.get()))
+                    .when(MatchTool.toolMatches(
+                            ItemPredicate.Builder.item().of(ZPTags.I_CAN_MINE_SCRAP)
+                    ))
+            );
+            utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
+            utils.blocks().addTagToBlock(e, ZPTags.B_MINEABLE_WITH_WRENCH);
+            utils.blocks().addTagToBlock(e, ZPTags.B_MINEABLE_WITH_CROWBAR);
+            ZPUtility.sides().onlyClient(() -> {
+                utils.blocks().setBlockItemModelExecutor(e, DefaultBlockModelExecutors.getDefaultTrapDoor(), DefaultBlockItemModelExecutors.getDefaultItemAsModBlock("scrap_trapdoor_bottom"));
+                utils.blocks().addBlockModelKey_ValueArray(e, ZPDataGenHelper.NO_REFERENCE, Pair.of(ZPGenTextureData.ALL_KEY, () -> new ZPPath(ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY, "scrap_trapdoor")));
+                utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
             });
         }).end();
 
-        ZPBlocks.uranium = regSupplier.register("uranium", () -> new ZPUraniumBlock(BlockBehaviour.Properties.of().strength(12.0F, 12.0F).sound(SoundType.METAL).lightLevel((e) -> 3))
+        ZPBlocks.uranium = regSupplier.register("uranium", () -> new ZPUraniumBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_GREEN).instrument(NoteBlockInstrument.BASEDRUM).strength(12.0F, 12.0F).sound(SoundType.METAL).lightLevel((e) -> 3))
         ).afterCreated((e, utils) -> {
             //utils.addBlockLootTable(e, () -> new LootPool.Builder().setRolls(UniformGenerator.between(0, 2)).add(LootItem.lootTableItem(Items.IRON_NUGGET)));
             utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
@@ -156,61 +500,16 @@ public abstract class ZPRegCommonBlocks {
             });
         }).end();
 
-        ZPBlocks.asphalt = regSupplier.register("asphalt", () -> new ZPBlock(BlockBehaviour.Properties.of().strength(2.0F, 6.0F).sound(SoundType.STONE))
+        ZPBlocks.sandbag = regSupplier.register("sandbag", () -> new ZPFallingBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_YELLOW).instrument(NoteBlockInstrument.DRAGON).strength(5.0F, 1.0F).sound(SoundType.SAND))
         ).afterCreated((e, utils) -> {
             utils.loot().addSelfDropLootTable(e);
-            utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
+            utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_HOE);
             ZPUtility.sides().onlyClient(() -> {
                 utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_BLOCK_CUBE, ZPGenTextureData.ALL_KEY, ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY);
             });
         }).end();
 
-        ZPBlocks.asphalt_slab = regSupplier.register("asphalt_slab", () -> new ZPSlabBlock(BlockBehaviour.Properties.of().strength(2.0F, 6.0F).sound(SoundType.STONE))
-        ).afterCreated((e, utils) -> {
-            utils.loot().addSelfDropLootTable(e);
-            utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
-            ZPUtility.sides().onlyClient(() -> {
-                utils.blocks().addBlockModelWithCopiedTexture(e, ZPDataGenHelper.NO_REFERENCE, ZPBlocks.asphalt);
-            });
-        }).end();
-
-        ZPBlocks.asphalt_stairs = regSupplier.register("asphalt_stairs", () -> new ZPStairsBlock(() -> ZPBlocks.asphalt.get().defaultBlockState(), BlockBehaviour.Properties.of().strength(2.0F, 6.0F).sound(SoundType.STONE))
-        ).afterCreated((e, utils) -> {
-            utils.loot().addSelfDropLootTable(e);
-            utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
-            ZPUtility.sides().onlyClient(() -> {
-                utils.blocks().addBlockModelWithCopiedTexture(e, ZPDataGenHelper.NO_REFERENCE, ZPBlocks.asphalt);
-            });
-        }).end();
-
-        ZPBlocks.asphalt_marking = regSupplier.register("asphalt_marking", () -> new ZPBlock(BlockBehaviour.Properties.of().strength(2.0F, 6.0F).sound(SoundType.STONE))
-        ).afterCreated((e, utils) -> {
-            utils.loot().addSelfDropLootTable(e);
-            utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
-            ZPUtility.sides().onlyClient(() -> {
-                utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_BLOCK_CUBE, ZPGenTextureData.ALL_KEY, ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY);
-            });
-        }).end();
-
-        ZPBlocks.asphalt_marking_slab = regSupplier.register("asphalt_marking_slab", () -> new ZPSlabBlock(BlockBehaviour.Properties.of().strength(2.0F, 6.0F).sound(SoundType.STONE))
-        ).afterCreated((e, utils) -> {
-            utils.loot().addSelfDropLootTable(e);
-            utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
-            ZPUtility.sides().onlyClient(() -> {
-                utils.blocks().addBlockModelWithCopiedTexture(e, ZPDataGenHelper.NO_REFERENCE, ZPBlocks.asphalt_marking);
-            });
-        }).end();
-
-        ZPBlocks.asphalt_marking_stairs = regSupplier.register("asphalt_marking_stairs", () -> new ZPStairsBlock(() -> ZPBlocks.asphalt.get().defaultBlockState(), BlockBehaviour.Properties.of().strength(2.0F, 6.0F).sound(SoundType.STONE))
-        ).afterCreated((e, utils) -> {
-            utils.loot().addSelfDropLootTable(e);
-            utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
-            ZPUtility.sides().onlyClient(() -> {
-                utils.blocks().addBlockModelWithCopiedTexture(e, ZPDataGenHelper.NO_REFERENCE, ZPBlocks.asphalt_marking);
-            });
-        }).end();
-
-        ZPBlocks.barbared_wire = regSupplier.register("barbared_wire", () -> new ZPBarbaredWireBlock(BlockBehaviour.Properties.of().strength(36.0F, 1.0F).forceSolidOn().noCollission().noOcclusion().sound(SoundType.METAL))
+        ZPBlocks.barbared_wire = regSupplier.register("barbared_wire", () -> new ZPBarbaredWireBlock(BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_WHITE).instrument(NoteBlockInstrument.ZOMBIE).strength(36.0F, 1.0F).forceSolidOn().noCollission().noOcclusion().sound(SoundType.METAL))
         ).afterCreated((e, utils) -> {
             utils.loot().addBlockLootTable(e, () -> new LootPool.Builder()
                     .add(LootItem.lootTableItem(e.get()))
@@ -225,7 +524,22 @@ public abstract class ZPRegCommonBlocks {
             });
         }).end();
 
-        ZPBlocks.empty_bookshelf1 = regSupplier.register("empty_bookshelf1", () -> new ZPBlock(BlockBehaviour.Properties.of().strength(12.0F, 1.0F).sound(SoundType.WOOD))
+        ZPBlocks.chain_link = regSupplier.register("chain_link", () -> new ZPIronBarsBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY).instrument(NoteBlockInstrument.BANJO).strength(36.0F, 1.0F).sound(SoundType.METAL))
+        ).afterCreated((e, utils) -> {
+            utils.loot().addBlockLootTable(e, () -> new LootPool.Builder()
+                    .add(LootItem.lootTableItem(e.get()))
+                    .when(MatchTool.toolMatches(
+                            ItemPredicate.Builder.item().of(ZPTags.I_CAN_MINE_CHAIN_LINK)
+                    ))
+            );
+            utils.blocks().addTagToBlock(e, ZPTags.B_MINEABLE_WITH_METAL_CUTTERS);
+            ZPUtility.sides().onlyClient(() -> {
+                utils.blocks().addBlockModelKey_ValueArray(e, ZPDataGenHelper.NO_REFERENCE, Pair.of(ZPGenTextureData.ALL_KEY, () -> new ZPPath(ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY, "chain_link")));
+                utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
+            });
+        }).end();
+
+        ZPBlocks.empty_bookshelf1 = regSupplier.register("empty_bookshelf1", () -> new ZPBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).instrument(NoteBlockInstrument.BASEDRUM).strength(1.5f).sound(SoundType.WOOD))
         ).afterCreated((e, utils) -> {
             utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_AXE);
             ZPUtility.sides().onlyClient(() -> {
@@ -241,7 +555,7 @@ public abstract class ZPRegCommonBlocks {
             });
         }).end();
 
-        ZPBlocks.empty_bookshelf2 = regSupplier.register("empty_bookshelf2", () -> new ZPBlock(BlockBehaviour.Properties.of().strength(12.0F, 1.0F).sound(SoundType.WOOD))
+        ZPBlocks.empty_bookshelf2 = regSupplier.register("empty_bookshelf2", () -> new ZPBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).instrument(NoteBlockInstrument.BASEDRUM).strength(1.5f).sound(SoundType.WOOD))
         ).afterCreated((e, utils) -> {
             utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_AXE);
             ZPUtility.sides().onlyClient(() -> {
@@ -257,7 +571,7 @@ public abstract class ZPRegCommonBlocks {
             });
         }).end();
 
-        ZPBlocks.empty_bookshelf3 = regSupplier.register("empty_bookshelf3", () -> new ZPBlock(BlockBehaviour.Properties.of().strength(12.0F, 1.0F).sound(SoundType.WOOD))
+        ZPBlocks.empty_bookshelf3 = regSupplier.register("empty_bookshelf3", () -> new ZPBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).instrument(NoteBlockInstrument.BASEDRUM).strength(1.5f).sound(SoundType.WOOD))
         ).afterCreated((e, utils) -> {
             utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_AXE);
             ZPUtility.sides().onlyClient(() -> {
@@ -273,7 +587,7 @@ public abstract class ZPRegCommonBlocks {
             });
         }).end();
 
-        ZPBlocks.concrete_fence = regSupplier.register("concrete_fence", () -> new ZPPillarBlock(BlockBehaviour.Properties.of().strength(300.0F, 300.0F).sound(SoundType.STONE))
+        ZPBlocks.concrete_fence = regSupplier.register("concrete_fence", () -> new ZPPillarBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY).instrument(NoteBlockInstrument.BIT).strength(300.0F, 300.0F).sound(SoundType.STONE))
         ).afterCreated((e, utils) -> {
             utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
             ZPUtility.sides().onlyClient(() -> {
@@ -285,6 +599,75 @@ public abstract class ZPRegCommonBlocks {
         }).end();
     }
 
+    @SuppressWarnings("unchecked")
+    private static <T> void registerFamily(ZPRegistry.@NotNull ZPRegSupplier<Block> regSupplier, @NotNull String name, @NotNull ZPBlockRegFamily family, @NotNull BlockBehaviour.Properties properties, @Nullable ZPRegistry.ZPRegistryObject.Consumer<T> consumer) {
+        family.block.set(regSupplier.register(name, () -> new ZPBlock(properties)).afterCreated((e, utils) -> {
+            if (consumer != null) {
+                consumer.accept((T) e, utils);
+            }
+            ZPUtility.sides().onlyClient(() -> {
+                utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_BLOCK_CUBE, ZPGenTextureData.ALL_KEY, ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY);
+            });
+        }).end());
+        if (family.slab != null) {
+            family.slab.set(regSupplier.register(name + "_slab", () -> new ZPSlabBlock(properties)).afterCreated((e, utils) -> {
+                if (consumer != null) {
+                    consumer.accept((T) e, utils);
+                }
+                ZPUtility.sides().onlyClient(() -> {
+                    utils.blocks().addBlockModelWithCopiedTexture(e, ZPDataGenHelper.NO_REFERENCE, family.block.get());
+                });
+            }).end());
+        }
+        if (family.stairs != null) {
+            family.stairs.set(regSupplier.register(name + "_stairs", () -> new ZPStairsBlock(() -> family.block.get().get().defaultBlockState(), properties)
+            ).afterCreated((e, utils) -> {
+                if (consumer != null) {
+                    consumer.accept((T) e, utils);
+                }
+                ZPUtility.sides().onlyClient(() -> {
+                    utils.blocks().addBlockModelWithCopiedTexture(e, ZPDataGenHelper.NO_REFERENCE, family.block.get());
+                });
+            }).end());
+        }
+    }
+
+    public static class ZPBlockRegFamily {
+        private @NotNull AtomicReference<RegistryObject<ZPBlock>> block;
+        private @Nullable AtomicReference<RegistryObject<ZPSlabBlock>> slab;
+        private @Nullable AtomicReference<RegistryObject<ZPStairsBlock>> stairs;
+
+        public ZPBlockRegFamily(@NotNull AtomicReference<RegistryObject<ZPBlock>> block) {
+            this.block = block;
+        }
+
+        public @NotNull AtomicReference<RegistryObject<ZPBlock>> getBlock() {
+            return this.block;
+        }
+
+        public ZPBlockRegFamily setBlock(@NotNull AtomicReference<RegistryObject<ZPBlock>> block) {
+            this.block = block;
+            return this;
+        }
+
+        public @Nullable AtomicReference<RegistryObject<ZPSlabBlock>> getSlab() {
+            return this.slab;
+        }
+
+        public ZPBlockRegFamily setSlab(@Nullable AtomicReference<RegistryObject<ZPSlabBlock>> slab) {
+            this.slab = slab;
+            return this;
+        }
+
+        public @Nullable AtomicReference<RegistryObject<ZPStairsBlock>> getStairs() {
+            return this.stairs;
+        }
+
+        public ZPBlockRegFamily setStairs(@Nullable AtomicReference<RegistryObject<ZPStairsBlock>> stairs) {
+            this.stairs = stairs;
+            return this;
+        }
+    }
 
     /*
     public static final Block AIR = register("air", new AirBlock(BlockBehaviour.Properties.of().replaceable().noCollission().noLootTable().air()));

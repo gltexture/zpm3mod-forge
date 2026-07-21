@@ -21,7 +21,7 @@ public abstract class ZPRegLanternBlocks {
         ).afterCreated((e, utils) -> {
             utils.loot().addSelfDropLootTable(e);
             ZPUtility.sides().onlyClient(() -> {
-                utils.blocks().setBlockItemModelExecutor(e, DefaultBlockModelExecutors.getDefaultLantern(), DefaultBlockItemModelExecutors.getDefaultItemAs2DTexture("zpm3:item/blocks/lantern2"));
+                utils.blocks().setBlockItemModelExecutor(e, DefaultBlockModelExecutors.getDefaultLantern(), DefaultBlockItemModelExecutors.getDefaultItemAs2DTexture("item/blocks/lantern2"));
                 utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_LANTERN, "lantern", ZPDataGenHelper.LANTERN_BLOCKS_DIRECTORY);
                 utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
             });
@@ -31,7 +31,7 @@ public abstract class ZPRegLanternBlocks {
         ).afterCreated((e, utils) -> {
             utils.loot().addSelfDropLootTable(e);
             ZPUtility.sides().onlyClient(() -> {
-                utils.blocks().setBlockItemModelExecutor(e, DefaultBlockModelExecutors.getDefaultLantern(), DefaultBlockItemModelExecutors.getDefaultItemAs2DTexture("zpm3:item/blocks/lantern3"));
+                utils.blocks().setBlockItemModelExecutor(e, DefaultBlockModelExecutors.getDefaultLantern(), DefaultBlockItemModelExecutors.getDefaultItemAs2DTexture("item/blocks/lantern3"));
                 utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_LANTERN, "lantern", ZPDataGenHelper.LANTERN_BLOCKS_DIRECTORY);
                 utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
             });
@@ -41,7 +41,7 @@ public abstract class ZPRegLanternBlocks {
         ).afterCreated((e, utils) -> {
             utils.loot().addSelfDropLootTable(e);
             ZPUtility.sides().onlyClient(() -> {
-                utils.blocks().setBlockItemModelExecutor(e, DefaultBlockModelExecutors.getDefaultLantern(), DefaultBlockItemModelExecutors.getDefaultItemAs2DTexture("zpm3:item/blocks/lantern4"));
+                utils.blocks().setBlockItemModelExecutor(e, DefaultBlockModelExecutors.getDefaultLantern(), DefaultBlockItemModelExecutors.getDefaultItemAs2DTexture("item/blocks/lantern4"));
                 utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_LANTERN, "lantern", ZPDataGenHelper.LANTERN_BLOCKS_DIRECTORY);
                 utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
             });
@@ -51,7 +51,7 @@ public abstract class ZPRegLanternBlocks {
         ).afterCreated((e, utils) -> {
             utils.loot().addSelfDropLootTable(e);
             ZPUtility.sides().onlyClient(() -> {
-                utils.blocks().setBlockItemModelExecutor(e, DefaultBlockModelExecutors.getDefaultLantern(), DefaultBlockItemModelExecutors.getDefaultItemAs2DTexture("zpm3:item/blocks/lantern5"));
+                utils.blocks().setBlockItemModelExecutor(e, DefaultBlockModelExecutors.getDefaultLantern(), DefaultBlockItemModelExecutors.getDefaultItemAs2DTexture("item/blocks/lantern5"));
                 utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_LANTERN, "lantern", ZPDataGenHelper.LANTERN_BLOCKS_DIRECTORY);
                 utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
             });

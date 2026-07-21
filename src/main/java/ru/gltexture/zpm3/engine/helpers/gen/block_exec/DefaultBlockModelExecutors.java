@@ -1,11 +1,9 @@
 package ru.gltexture.zpm3.engine.helpers.gen.block_exec;
 
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
-import net.minecraftforge.client.model.generators.BlockModelBuilder;
-import net.minecraftforge.client.model.generators.ConfiguredModel;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.client.model.generators.VariantBlockStateBuilder;
+import net.minecraftforge.client.model.generators.*;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
@@ -14,7 +12,7 @@ import ru.gltexture.zpm3.engine.helpers.gen.data.ZPGenTextureData;
 import ru.gltexture.zpm3.engine.helpers.gen.providers.ZPBlockModelProvider;
 import ru.gltexture.zpm3.engine.service.ZPPath;
 
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Supplier;
 
 public abstract class DefaultBlockModelExecutors {
@@ -31,6 +29,9 @@ public abstract class DefaultBlockModelExecutors {
     public static final @NotNull ZPBlockModelProvider.BlockModelExecutor STAIR_BLOCK_EXEC_PAIR = () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(DefaultBlockModelExecutors.getStairs(), DefaultBlockItemModelExecutors.getDefaultItemAsBlock());
     public static final @NotNull ZPBlockModelProvider.BlockModelExecutor TORCH_BLOCK_EXEC_PAIR = () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(DefaultBlockModelExecutors.getDefaultTorch(), DefaultBlockItemModelExecutors.getDefaultItemAsItem());
     public static final @NotNull ZPBlockModelProvider.BlockModelExecutor TORCH_WALL_BLOCK_EXEC_PAIR = () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(DefaultBlockModelExecutors.getDefaultWallTorch(), DefaultBlockItemModelExecutors.getDefaultItemAsItem());
+
+    public static final @NotNull ZPBlockModelProvider.BlockModelExecutor IRON_BARS_BLOCK_EXEC_PAIR = () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(DefaultBlockModelExecutors.getDefaultIronBars(), DefaultBlockItemModelExecutors.getDefaultItemAsItem());
+
 
     public static @NotNull ZPBlockModelProvider.BlockModelExecutor.EBlock<SnowLayerBlock> getDefaultLayerBlock() {
         return (blockStateProvider, block, renderType, name, textureData) -> {
@@ -108,6 +109,68 @@ public abstract class DefaultBlockModelExecutors {
         };
     }
 
+    public static @NotNull ZPBlockModelProvider.BlockModelExecutor.EBlock<? extends Block> getDefaultIronBars() {
+        return (blockStateProvider, block, renderType, name, textureData) -> {
+            String texture = Objects.requireNonNull(textureData.getTextureByKey("all")).get().getFullPath();
+            ResourceLocation textureLoc = ZPDataGenHelper.locate(blockStateProvider, texture);
+            final BlockModelBuilder postEnds = blockStateProvider.models().withExistingParent(name + "_post_ends", "minecraft:block/iron_bars_post_ends").texture("particle", textureLoc).texture("edge", textureLoc).texture("bars", textureLoc).renderType(renderType);
+            final BlockModelBuilder post = blockStateProvider.models().withExistingParent(name + "_post", "minecraft:block/iron_bars_post").texture("particle", textureLoc).texture("edge", textureLoc).texture("bars", textureLoc).renderType(renderType);
+            final BlockModelBuilder cap = blockStateProvider.models().withExistingParent(name + "_cap", "minecraft:block/iron_bars_cap").texture("particle", textureLoc).texture("edge", textureLoc).texture("bars", textureLoc).renderType(renderType);
+            final BlockModelBuilder capAlt = blockStateProvider.models().withExistingParent(name + "_cap_alt", "minecraft:block/iron_bars_cap_alt").texture("particle", textureLoc).texture("edge", textureLoc).texture("bars", textureLoc).renderType(renderType);
+            final BlockModelBuilder side = blockStateProvider.models().withExistingParent(name + "_side", "minecraft:block/iron_bars_side").texture("particle", textureLoc).texture("edge", textureLoc).texture("bars", textureLoc).renderType(renderType);
+            final BlockModelBuilder sideAlt = blockStateProvider.models().withExistingParent(name + "_side_alt", "minecraft:block/iron_bars_side_alt").texture("particle", textureLoc).texture("edge", textureLoc).texture("bars", textureLoc).renderType(renderType);
+            final MultiPartBlockStateBuilder builder = blockStateProvider.getMultipartBuilder(block);
+
+            builder.part().modelFile(postEnds).addModel();
+
+            builder.part().modelFile(post).addModel()
+                    .condition(IronBarsBlock.EAST, false)
+                    .condition(IronBarsBlock.NORTH, false)
+                    .condition(IronBarsBlock.SOUTH, false)
+                    .condition(IronBarsBlock.WEST, false);
+
+            builder.part().modelFile(cap).addModel()
+                    .condition(IronBarsBlock.EAST, false)
+                    .condition(IronBarsBlock.NORTH, true)
+                    .condition(IronBarsBlock.SOUTH, false)
+                    .condition(IronBarsBlock.WEST, false);
+
+
+            builder.part().modelFile(cap).rotationY(90).addModel()
+                    .condition(IronBarsBlock.EAST, true)
+                    .condition(IronBarsBlock.NORTH, false)
+                    .condition(IronBarsBlock.SOUTH, false)
+                    .condition(IronBarsBlock.WEST, false);
+
+
+            builder.part().modelFile(capAlt).addModel()
+                    .condition(IronBarsBlock.EAST, false)
+                    .condition(IronBarsBlock.NORTH, false)
+                    .condition(IronBarsBlock.SOUTH, true)
+                    .condition(IronBarsBlock.WEST, false);
+
+
+            builder.part().modelFile(capAlt).rotationY(90).addModel()
+                    .condition(IronBarsBlock.EAST, false)
+                    .condition(IronBarsBlock.NORTH, false)
+                    .condition(IronBarsBlock.SOUTH, false)
+                    .condition(IronBarsBlock.WEST, true);
+
+
+            builder.part().modelFile(side).addModel()
+                    .condition(IronBarsBlock.NORTH, true);
+
+            builder.part().modelFile(side).rotationY(90).addModel()
+                    .condition(IronBarsBlock.EAST, true);
+
+            builder.part().modelFile(sideAlt).addModel()
+                    .condition(IronBarsBlock.SOUTH, true);
+
+            builder.part().modelFile(sideAlt).rotationY(90).addModel()
+                    .condition(IronBarsBlock.WEST, true);
+        };
+    }
+
     public static @NotNull ZPBlockModelProvider.BlockModelExecutor.EBlock<? extends Block> getDefaultTorch() {
         return (blockStateProvider, block, renderType, name, textureData) -> {
             String texture = Objects.requireNonNull(textureData.getTextureByKey("torch")).get().getFullPath();
@@ -145,7 +208,6 @@ public abstract class DefaultBlockModelExecutors {
                 throw new ZPRuntimeException("Block's default cube model should be extended by vanilla model");
             }
             BlockModelBuilder modelBuilder = blockStateProvider.models().withExistingParent(name, textureData.getVanillaModelReference().mainBlockReference());
-
             Supplier<ZPPath> sideTexture = textureData.getTextures().get("side");
             Supplier<ZPPath> endTexture = textureData.getTextures().get("end");
 
@@ -208,6 +270,21 @@ public abstract class DefaultBlockModelExecutors {
             final ModelFile stairOuter = blockStateProvider.models().stairsOuter(name + "_outer", ZPDataGenHelper.locate(blockStateProvider, side), ZPDataGenHelper.locate(blockStateProvider, bottom), ZPDataGenHelper.locate(blockStateProvider, top)).renderType(renderType);
 
             blockStateProvider.stairsBlock(block, stair, stairInner, stairOuter);
+        };
+    }
+
+    public static @NotNull ZPBlockModelProvider.BlockModelExecutor.EBlock<TrapDoorBlock> getDefaultTrapDoor() {
+        return (blockStateProvider, block, renderType, name, textureData) -> {
+            final String texture = Objects.requireNonNull(textureData.getTextureByKey(ZPGenTextureData.ALL_KEY)).get().getFullPath();
+            blockStateProvider.trapdoorBlockWithRenderType(block, ZPDataGenHelper.locate(blockStateProvider, texture), true, renderType);
+        };
+    }
+
+    public static @NotNull ZPBlockModelProvider.BlockModelExecutor.EBlock<DoorBlock> getDefaultDoor() {
+        return (blockStateProvider, block, renderType, name, textureData) -> {
+            final String textureTop = Objects.requireNonNull(textureData.getTextureByKey(ZPGenTextureData.TOP_KEY)).get().getFullPath();
+            final String textureBottom = Objects.requireNonNull(textureData.getTextureByKey(ZPGenTextureData.BOTTOM_KEY)).get().getFullPath();
+            blockStateProvider.doorBlockWithRenderType(block, ZPDataGenHelper.locate(blockStateProvider, textureBottom), ZPDataGenHelper.locate(blockStateProvider, textureTop), renderType);
         };
     }
 

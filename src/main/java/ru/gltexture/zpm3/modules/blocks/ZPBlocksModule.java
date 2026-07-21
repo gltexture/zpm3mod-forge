@@ -94,13 +94,13 @@ public class ZPBlocksModule extends ZPModule {
             Blocks.BLACK_CONCRETE.defaultBlockState().destroySpeed = ZPWorldConfig.ZP_VANILLA_CONCRETE_DESTROY_SPEED.getVar();
             Blocks.OBSIDIAN.defaultBlockState().destroySpeed = 6.0f;
 
-            Blocks.BRICK_WALL.defaultBlockState().destroySpeed = 12.0F;
+            Blocks.BRICK_WALL.getStateDefinition().getPossibleStates().forEach((e) -> e.destroySpeed = 12.0F);
             Blocks.BRICK_WALL.explosionResistance = 8.0f;
 
-            Blocks.BRICK_STAIRS.defaultBlockState().destroySpeed = 12.0F;
+            Blocks.BRICK_STAIRS.getStateDefinition().getPossibleStates().forEach((e) -> e.destroySpeed = 12.0F);
             Blocks.BRICK_STAIRS.explosionResistance = 8.0f;
 
-            Blocks.BRICK_SLAB.defaultBlockState().destroySpeed = 8.0F;
+            Blocks.BRICK_SLAB.getStateDefinition().getPossibleStates().forEach((e) -> e.destroySpeed = 12.0F);
             Blocks.BRICK_SLAB.explosionResistance = 8.0f;
 
             Blocks.BRICKS.defaultBlockState().destroySpeed = 12.0F;
@@ -109,9 +109,7 @@ public class ZPBlocksModule extends ZPModule {
             Blocks.IRON_BLOCK.explosionResistance = 9.0f;
             Blocks.IRON_DOOR.explosionResistance = 16.0f;
 
-            Blocks.IRON_BARS.getStateDefinition().getPossibleStates().forEach((e) -> {
-                e.destroySpeed = 12.0F;
-            });
+            Blocks.IRON_BARS.getStateDefinition().getPossibleStates().forEach((e) -> e.destroySpeed = 12.0F);
             Blocks.IRON_BARS.explosionResistance = 8.0f;
         }
 
@@ -315,7 +313,7 @@ public class ZPBlocksModule extends ZPModule {
             }));
 
             recipeToAdd.add((writer -> {
-                ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ZPBlocks.scrap.get(), 1)
+                ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ZPBlocks.scrap_block.get(), 1)
                         .pattern("FFF").pattern("FFF").pattern("FFF")
                         .define('F', ZPMiscItems.scrap_material.get())
                         .unlockedBy("has_rf", IZPRecipeSpec.has(ZPMiscItems.scrap_material.get()))

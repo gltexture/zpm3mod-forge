@@ -6,6 +6,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
@@ -39,6 +40,25 @@ public abstract class ZPRegColorBlocks {
             "purple",
             "red",
             "yellow"
+    };
+
+    private static final MapColor[] MAP_COLORS = {
+            MapColor.SNOW,         // white
+            MapColor.COLOR_BLACK,  // black
+            MapColor.COLOR_BLUE,   // blue
+            MapColor.COLOR_BROWN,  // brown
+            MapColor.COLOR_CYAN,   // cyan
+            MapColor.COLOR_GRAY,   // gray
+            MapColor.COLOR_GREEN,  // green
+            MapColor.COLOR_LIGHT_BLUE,
+            MapColor.COLOR_LIGHT_GRAY,
+            MapColor.COLOR_LIGHT_GREEN, // lime
+            MapColor.COLOR_MAGENTA,
+            MapColor.COLOR_ORANGE,
+            MapColor.COLOR_PINK,
+            MapColor.COLOR_PURPLE,
+            MapColor.COLOR_RED,
+            MapColor.COLOR_YELLOW
     };
 
     @SuppressWarnings("all")
@@ -104,17 +124,19 @@ public abstract class ZPRegColorBlocks {
     public static void init(@NotNull ZPRegistry.ZPRegSupplier<Block> regSupplier) {
         for (int i = 0; i < ZPRegColorBlocks.colorQueue.length; i++) {
             final int finalI = i;
-            ZPRegColorBlocks.coloredStones[i] = regSupplier.register("stone_" + ZPRegColorBlocks.colorQueue[i], () -> new ZPBlock(BlockBehaviour.Properties.of().strength(1.8F, 6.0F).instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.STONE))
+            ZPRegColorBlocks.coloredStones[i] = regSupplier.register("stone_" + ZPRegColorBlocks.colorQueue[i], () -> new ZPBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MAP_COLORS[finalI]).instrument(NoteBlockInstrument.BASEDRUM).strength(1.8F, 6.0F).instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.STONE))
             ).afterCreated((e, utils) -> {
                 utils.loot().addBlockLootTable(e, () -> new LootPool.Builder()
                         .add(LootItem.lootTableItem(Blocks.COBBLESTONE))
                 );
                 ZPUtility.sides().onlyClient(() -> {
-                    utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_BLOCK_CUBE, ZPGenTextureData.ALL_KEY, ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY);
+                    utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_BLOCK_CUBE, ZPGenTextureData.ALL_KEY, ZPDataGenHelper.COMMON_COLORED_BLOCKS_DIRECTORY);
                 });
             }).end();
 
-            ZPRegColorBlocks.coloredStoneSlabs[i] = regSupplier.register("stone_slab_" + ZPRegColorBlocks.colorQueue[i], () -> new ZPSlabBlock(BlockBehaviour.Properties.of().strength(1.8F, 6.0F).instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.STONE))
+            ZPRegColorBlocks.coloredStoneSlabs[i] = regSupplier.register("stone_slab_" + ZPRegColorBlocks.colorQueue[i], () -> new ZPSlabBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MAP_COLORS[finalI]).instrument(NoteBlockInstrument.BASEDRUM).strength(1.8F, 6.0F).instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.STONE))
             ).afterCreated((e, utils) -> {
                 utils.loot().addBlockLootTable(e, () -> new LootPool.Builder()
                         .add(LootItem.lootTableItem(Blocks.COBBLED_DEEPSLATE_SLAB))
@@ -125,7 +147,8 @@ public abstract class ZPRegColorBlocks {
             }).end();
 
 
-            ZPRegColorBlocks.coloredStoneStairs[i] = regSupplier.register("stone_stairs_" + ZPRegColorBlocks.colorQueue[i], () -> new ZPStairsBlock(() -> ZPRegColorBlocks.coloredStones[finalI].get().defaultBlockState(), BlockBehaviour.Properties.of().strength(1.8F, 6.0F).instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.STONE))
+            ZPRegColorBlocks.coloredStoneStairs[i] = regSupplier.register("stone_stairs_" + ZPRegColorBlocks.colorQueue[i], () -> new ZPStairsBlock(() -> ZPRegColorBlocks.coloredStones[finalI].get().defaultBlockState(), BlockBehaviour.Properties.of()
+                    .mapColor(MAP_COLORS[finalI]).instrument(NoteBlockInstrument.BASEDRUM).strength(1.8F, 6.0F).instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.STONE))
             ).afterCreated((e, utils) -> {
                 utils.loot().addBlockLootTable(e, () -> new LootPool.Builder()
                         .add(LootItem.lootTableItem(Blocks.COBBLESTONE_STAIRS))

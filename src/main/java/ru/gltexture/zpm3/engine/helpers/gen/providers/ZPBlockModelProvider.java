@@ -8,15 +8,12 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.gltexture.zpm3.engine.instances.blocks.*;
 import ru.gltexture.zpm3.modules.blocks.instances.blocks.ZPBarbaredWireBlock;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
 import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockModelExecutors;
 import ru.gltexture.zpm3.engine.helpers.gen.data.ZPGenTextureData;
-import ru.gltexture.zpm3.engine.instances.blocks.ZPSlabBlock;
-import ru.gltexture.zpm3.engine.instances.blocks.ZPStairsBlock;
-import ru.gltexture.zpm3.engine.instances.blocks.ZPTorchBlock;
-import ru.gltexture.zpm3.engine.instances.blocks.ZPWallTorchBlock;
 
 import java.util.Objects;
 import java.util.*;
@@ -34,6 +31,7 @@ public class ZPBlockModelProvider extends BlockStateProvider {
         ZPBlockModelProvider.classExecutors.put(ZPSlabBlock.class, DefaultBlockModelExecutors.SLAB_BLOCK_EXEC_PAIR);
         ZPBlockModelProvider.classExecutors.put(ZPStairsBlock.class, DefaultBlockModelExecutors.STAIR_BLOCK_EXEC_PAIR);
         ZPBlockModelProvider.classExecutors.put(ZPTorchBlock.class, DefaultBlockModelExecutors.TORCH_BLOCK_EXEC_PAIR);
+        ZPBlockModelProvider.classExecutors.put(ZPIronBarsBlock.class, DefaultBlockModelExecutors.IRON_BARS_BLOCK_EXEC_PAIR);
         ZPBlockModelProvider.classExecutors.put(ZPWallTorchBlock.class, DefaultBlockModelExecutors.TORCH_WALL_BLOCK_EXEC_PAIR);
         ZPBlockModelProvider.classExecutors.put(ZPBarbaredWireBlock.class, DefaultBlockModelExecutors.DEFAULT_FLAT_ITEM_BLOCK_EXEC_PAIR);
     }

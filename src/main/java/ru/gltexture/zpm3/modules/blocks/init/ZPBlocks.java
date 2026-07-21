@@ -19,10 +19,61 @@ public class ZPBlocks extends ZPRegistry<Block> implements IZPCollectRegistryObj
     public static RegistryObject<ZPBlock> block_lamp;
     public static RegistryObject<ZPBlock> block_lamp_off;
 
-    public static RegistryObject<ZPBlock> armor_green;
-    public static RegistryObject<ZPBlock> armor_black;
 
-    public static RegistryObject<ZPBlock> armored_glass;
+    public static RegistryObject<ZPBlock> camo_forest;
+    public static RegistryObject<ZPSlabBlock> camo_slab_forest;
+
+    public static RegistryObject<ZPBlock> camo_snow;
+    public static RegistryObject<ZPSlabBlock> camo_slab_snow;
+
+    public static RegistryObject<ZPBlock> camo_sand;
+    public static RegistryObject<ZPSlabBlock> camo_slab_sand;
+
+
+    public static RegistryObject<ZPBlock> steel_black;
+    public static RegistryObject<ZPBlock> steel_gray;
+    public static RegistryObject<ZPBlock> steel_green;
+    public static RegistryObject<ZPBlock> steel_hazard;
+    public static RegistryObject<ZPBlock> steel_orange;
+    public static RegistryObject<ZPBlock> steel_white;
+
+    public static RegistryObject<ZPSlabBlock> steel_slab_black;
+    public static RegistryObject<ZPSlabBlock> steel_slab_gray;
+    public static RegistryObject<ZPSlabBlock> steel_slab_green;
+    public static RegistryObject<ZPSlabBlock> steel_slab_hazard;
+    public static RegistryObject<ZPSlabBlock> steel_slab_orange;
+    public static RegistryObject<ZPSlabBlock> steel_slab_white;
+
+    public static RegistryObject<ZPStairsBlock> steel_stairs_black;
+    public static RegistryObject<ZPStairsBlock> steel_stairs_gray;
+    public static RegistryObject<ZPStairsBlock> steel_stairs_green;
+    public static RegistryObject<ZPStairsBlock> steel_stairs_hazard;
+    public static RegistryObject<ZPStairsBlock> steel_stairs_orange;
+    public static RegistryObject<ZPStairsBlock> steel_stairs_white;
+
+
+    public static RegistryObject<ZPBlock> black_bricks;
+    public static RegistryObject<ZPBlock> gray_bricks;
+    public static RegistryObject<ZPBlock> green_bricks;
+    public static RegistryObject<ZPBlock> ancient_bricks;
+
+    public static RegistryObject<ZPSlabBlock> black_slab_bricks;
+    public static RegistryObject<ZPSlabBlock> gray_slab_bricks;
+    public static RegistryObject<ZPSlabBlock> green_slab_bricks;
+    public static RegistryObject<ZPSlabBlock> ancient_slab_bricks;
+
+    public static RegistryObject<ZPStairsBlock> black_stairs_bricks;
+    public static RegistryObject<ZPStairsBlock> gray_stairs_bricks;
+    public static RegistryObject<ZPStairsBlock> green_stairs_bricks;
+    public static RegistryObject<ZPStairsBlock> ancient_stairs_bricks;
+
+    public static RegistryObject<ZPBlock> lab_block;
+    public static RegistryObject<ZPBlock> reactor_block;
+    public static RegistryObject<ZPSlabBlock> lab_slab_block;
+    public static RegistryObject<ZPSlabBlock> reactor_slab_block;
+    public static RegistryObject<ZPStairsBlock> lab_stairs_block;
+    public static RegistryObject<ZPStairsBlock> reactor_stairs_block;
+
     public static RegistryObject<ZPBlock> asphalt;
     public static RegistryObject<ZPSlabBlock> asphalt_slab;
     public static RegistryObject<ZPStairsBlock> asphalt_stairs;
@@ -31,10 +82,22 @@ public class ZPBlocks extends ZPRegistry<Block> implements IZPCollectRegistryObj
     public static RegistryObject<ZPSlabBlock> asphalt_marking_slab;
     public static RegistryObject<ZPStairsBlock> asphalt_marking_stairs;
 
+
+    public static RegistryObject<ZPIronBarsBlock> chain_link;
+
+    public static RegistryObject<ZPBlock> armored_glass;
+
     public static RegistryObject<ZPFallingBlock> sandbag;
-    public static RegistryObject<ZPBlock> scrap;
+    public static RegistryObject<ZPBlock> scrap_block;
+    public static RegistryObject<ZPSlabBlock> scrap_slab;
+    public static RegistryObject<ZPStairsBlock> scrap_stairs;
+
+    public static RegistryObject<ZPRustyTrapDoor> scrap_trapDoor;
+    public static RegistryObject<ZPRustyDoor> scrap_door;
+
     public static RegistryObject<ZPUraniumBlock> uranium;
     public static RegistryObject<ZPBarbaredWireBlock> barbared_wire;
+
 
     public static RegistryObject<ZPBlock> empty_bookshelf1;
     public static RegistryObject<ZPBlock> empty_bookshelf2;

@@ -26,6 +26,7 @@ import ru.gltexture.zpm3.engine.zones.ZPZoneChecks;
 import ru.gltexture.zpm3.modules.blocks.init.ZPBlockEntities;
 import ru.gltexture.zpm3.modules.blocks.instances.block_entities.ZPFadingBlockEntity;
 import ru.gltexture.zpm3.modules.blocks.instances.blocks.torch.ZPFadingTorchBlock;
+import ru.gltexture.zpm3.modules.common.init.ZPTags;
 import ru.gltexture.zpm3.modules.common.utils.ZPCommonClientUtils;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.fake.ZPFakePlayer;
@@ -109,7 +110,7 @@ public class ZPAcidLiquidBlock extends ZPLiquidBlock implements EntityBlock, IHo
                 }
                 boolean flagIsGlass = (!(block instanceof IceBlock)) && block.soundType == SoundType.GLASS;
                 boolean flagIsSand = block instanceof SandBlock;
-                if (!flagIsGlass && !flagIsSand) {
+                if (!flagIsGlass && !flagIsSand && !block.defaultBlockState().is(ZPTags.B_IGNORE_ACID)) {
                     if (pLevel instanceof IZPLevelExt ext) {
                         if (ZPFakePlayer.canBreakBlock(pLevel, blockPos) && !ZPZoneChecks.INSTANCE.isNoAcidAffection(pLevel, blockPos) && !ZPZoneChecks.INSTANCE.isNoAcidBlockDestruction(pLevel, blockPos)) {
                             ext.zpm3forge$getGlobalBlocksDestroyMemory().addNewEntryLongMem(pLevel, blockPos, ZPWorldConfig.ACID_BLOCK_BASE_BLOCK_DAMAGE.getVar() + ZPRandom.getRandom().nextFloat() * 0.35f);

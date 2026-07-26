@@ -6,6 +6,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.modules.blocks.init.ZPBlocks;
+import ru.gltexture.zpm3.modules.common.init.ZPTags;
 import ru.gltexture.zpm3.modules.fluids.init.ZPFluidTypes;
 import ru.gltexture.zpm3.modules.fluids.init.ZPFluids;
 import ru.gltexture.zpm3.modules.melee_throwables_tools.init.ZPMeleeThrowableToolsItems;
@@ -27,22 +28,28 @@ public abstract class ZPRegFluids {
                         utils.fluids().setFluidRenderLayer(e::get, RenderType.translucent());
                     });
                     utils.fluids().addTagToFluid(e, FluidTags.WATER);
+                    utils.fluids().addTagToFluid(e, ZPTags.F_ACID_PROPERTIES);
                 }).end();
+
         ZPFluids.acid_flowing_fluid = regSupplier.register("acid_flowing_fluid", () -> new ForgeFlowingFluid.Flowing(ZPRegFluids.ACID_PROPERTIES))
                 .afterCreated((e, utils) -> {
                     ZPUtility.sides().onlyClient(() -> {
                         utils.fluids().setFluidRenderLayer(e::get, RenderType.translucent());
                     });
                     utils.fluids().addTagToFluid(e, FluidTags.WATER);
+                    utils.fluids().addTagToFluid(e, ZPTags.F_ACID_PROPERTIES);
                 }).end();
 
         ZPFluids.toxic_fluid = regSupplier.register("toxic_fluid", () -> new ForgeFlowingFluid.Source(ZPRegFluids.TOXIC_PROPERTIES))
                 .afterCreated((e, utils) -> {
                     utils.fluids().addTagToFluid(e, FluidTags.WATER);
+                    utils.fluids().addTagToFluid(e, ZPTags.F_TOXIC_PROPERTIES);
                 }).end();
+
         ZPFluids.toxic_flowing_fluid = regSupplier.register("toxic_flowing_fluid", () -> new ForgeFlowingFluid.Flowing(ZPRegFluids.TOXIC_PROPERTIES))
                 .afterCreated((e, utils) -> {
                     utils.fluids().addTagToFluid(e, FluidTags.WATER);
+                    utils.fluids().addTagToFluid(e, ZPTags.F_TOXIC_PROPERTIES);
                 }).end();
     }
 }

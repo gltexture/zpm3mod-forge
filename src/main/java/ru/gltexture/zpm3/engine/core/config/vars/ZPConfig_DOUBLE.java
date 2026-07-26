@@ -21,7 +21,7 @@ public class ZPConfig_DOUBLE extends ZPConfigVar<Double> {
 
     @Override
     public @Nullable String additionInfo() {
-        return "start=" + min + ", end=" + max;
+        return "min=" + min + ", max=" + max;
     }
 
     @Override

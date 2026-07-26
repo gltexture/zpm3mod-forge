@@ -324,8 +324,8 @@ public abstract class ZPRegGuns {
 
             ZPGunItems.mosin = regSupplier.register("mosin",
                     () -> new ZPGunClassicRifle(new Item.Properties(), new ZPBaseGun.GunProperties(ZPGunItems._mosin.get(), ZPBaseGun.GunProperties.HeldType.RIFLE)
-                            .setDamage(10)
-                            .setDurability(220)
+                            .setDamage(12)
+                            .setDurability(160)
                             .setInaccuracy(0.05f)
                             .setMaxAmmo(5)
                             .setReloadTime(18)
@@ -355,7 +355,7 @@ public abstract class ZPRegGuns {
 
             ZPGunItems.akm = regSupplier.register("akm",
                     () -> new ZPGunPistol(new Item.Properties(), new ZPBaseGun.GunProperties(ZPGunItems._akm.get(), ZPBaseGun.GunProperties.HeldType.RIFLE)
-                            .setDamage(3)
+                            .setDamage(4)
                             .setAuto(true)
                             .setDurability(680)
                             .setInaccuracy(0.8f)
@@ -387,7 +387,7 @@ public abstract class ZPRegGuns {
 
             ZPGunItems.m16 = regSupplier.register("m16",
                     () -> new ZPGunPistol(new Item.Properties(), new ZPBaseGun.GunProperties(ZPGunItems._m16.get(), ZPBaseGun.GunProperties.HeldType.RIFLE)
-                            .setDamage(3)
+                            .setDamage(4)
                             .setAuto(true)
                             .setDurability(740)
                             .setInaccuracy(1.08f)

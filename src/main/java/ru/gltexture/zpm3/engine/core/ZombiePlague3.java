@@ -78,6 +78,7 @@ import ru.gltexture.zpm3.modules.worldgen.archiver.ZPMapArchivedRegistry;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.file.Files;
 import java.util.*;
 
 @Mod(ZombiePlague3.MOD_ID)
@@ -141,6 +142,12 @@ public final class ZombiePlague3 {
         ZPLogger.info(this + " INIT");
         final IEventBus modEventBus = ZombiePlague3.getModEventBus();
         this.createNet();
+
+        if (!Files.exists(new ZPPath(FMLPaths.GAMEDIR.get().toString(), ZombiePlague3.ZP_MAIN_DIR).toPath())) {
+            if (new ZPPath(FMLPaths.GAMEDIR.get().toString(), ZombiePlague3.ZP_MAIN_DIR).toFile().mkdirs()) {
+                ZPLogger.info(this + "Created ZP3 Folder");
+            }
+        }
 
         {
             ZombiePlague3.processCoreConfiguration();

@@ -75,13 +75,13 @@ public class ZPMinerZombie extends ZPAbstractZombie {
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
                 .add(ForgeMod.SWIM_SPEED.get(), 1.0f)
-                .add(Attributes.MAX_HEALTH, 60.0f * ZPZombieConfig.ZOMBIE_MAX_HEALTH_MULTIPLIER.getVar())
+                .add(Attributes.MAX_HEALTH, 40.0f * ZPZombieConfig.ZOMBIE_MAX_HEALTH_MULTIPLIER.getVar())
                 .add(Attributes.FOLLOW_RANGE, ZPZombieConfig.ZOMBIE_FOLLOW_RANGE.getVar() * 0.8f)
                 .add(Attributes.MOVEMENT_SPEED, 0.22f * ZPZombieConfig.ZOMBIE_MOVEMENT_SPEED_MULTIPLIER.getVar())
                 .add(Attributes.ATTACK_DAMAGE, 3.0f * ZPZombieConfig.ZOMBIE_ATTACK_DAMAGE_MULTIPLIER.getVar())
                 .add(Attributes.ARMOR, 1.0f)
                 .add(ZPEntityAttributes.zm_attack_range_multiplier.get(), 0.55f / ZPZombieConfig.ZOMBIE_ATTACK_RANGE_MULTIPLIER.getVar())
-                .add(ZPEntityAttributes.zm_mining_speed.get(), 0.005f * ZPZombieConfig.ZOMBIE_MINING_SPEED_MULTIPLIER.getVar())
+                .add(ZPEntityAttributes.zm_mining_speed.get(), 0.006f * ZPZombieConfig.ZOMBIE_MINING_SPEED_MULTIPLIER.getVar())
                 .add(ZPEntityAttributes.zm_random_effect_chance.get(), 0.015f * ZPZombieConfig.ZOMBIE_APPLY_NEGATIVE_EFFECT_ON_ENTITY_CHANCE_MULTIPLIER.getVar())
                 .add(ZPEntityAttributes.zm_throw_a_gift_chance.get(), 0.008f * ZPZombieConfig.ZOMBIE_THROW_A_GIFT_CHANCE_MULTIPLIER.getVar());
     }
@@ -99,7 +99,7 @@ public class ZPMinerZombie extends ZPAbstractZombie {
     @Override
     protected void randomizeAttributes() {
         this.addRandomAttributeValue(ForgeMod.SWIM_SPEED.get(), ZPAbstractZombie.getRandomSalt(0.0f, 0.25f));
-        this.addRandomAttributeValue(Attributes.MAX_HEALTH, ZPAbstractZombie.getRandomSalt(0.0f, 21.0f));
+        this.addRandomAttributeValue(Attributes.MAX_HEALTH, ZPAbstractZombie.getRandomSalt(0.0f, 20.0f));
         this.addRandomAttributeValue(Attributes.FOLLOW_RANGE, ZPAbstractZombie.getRandomSalt(-2.0f, 2.0f));
         this.addRandomAttributeValue(Attributes.MOVEMENT_SPEED, ZPAbstractZombie.getRandomSalt(-0.005f, 0.01f));
         this.addRandomAttributeValue(Attributes.ATTACK_DAMAGE, ZPAbstractZombie.getRandomSalt(0.0f, 0.5f));

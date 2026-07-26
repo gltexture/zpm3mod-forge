@@ -6,6 +6,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
@@ -19,6 +20,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 import ru.gltexture.zpm3.engine.mixins.util.ZPHumanoidArmorLayerOnArm;
+import ru.gltexture.zpm3.modules.entity.util.ZPEntityUtil;
 import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
 
 @Deprecated(forRemoval = true)
@@ -111,7 +113,7 @@ public abstract class ZPHumanoidArmTransformations {
         final boolean crouchAnim = !swimAnim && entity.isCrouching();
 
         if ((!isLocalPlayer || isThirdPerson) && swimAnim) {
-            if (!entity.isInWater()) {
+            if (!ZPEntityUtil.isCollidingWithFluid(entity, FluidTags.WATER)) {
                 if (!entity.isUsingItem()) {
                     ZPHumanoidArmTransformations.animateCrawl(entity, model, limbSwing, limbSwingAmount);
                 }

@@ -21,7 +21,7 @@ public class ZPConfig_FLOAT extends ZPConfigVar<Float> {
 
     @Override
     public @Nullable String additionInfo() {
-        return "start=" + min + ", end=" + max;
+        return "min=" + min + ", max=" + max;
     }
 
     @Override

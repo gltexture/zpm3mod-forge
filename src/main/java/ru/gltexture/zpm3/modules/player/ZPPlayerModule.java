@@ -139,7 +139,7 @@ public class ZPPlayerModule extends ZPModule {
                     if (!ZPArmorUtil.isFullAqualungBreathingRightNow((LivingEntity) entity)) {
                         return false;
                     }
-                    int base = ZPCombatConfig.ZP_BREAK_ACID_COSTUME_PER_TICK.getVar();
+                    int base = ZPCombatConfig.ZP_BREAK_OXYGEN_ITEM_PER_TICK.getVar();
                     if (base <= 0) {
                         return false;
                     }

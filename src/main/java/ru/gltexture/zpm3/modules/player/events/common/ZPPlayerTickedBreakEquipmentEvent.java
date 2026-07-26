@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.engine.core.ZPSide;
@@ -19,6 +20,8 @@ import ru.gltexture.zpm3.engine.events.ZPEventClass;
 
 import java.util.*;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ZPPlayerTickedBreakEquipmentEvent implements ZPEventClass {
     private static final Map<ArmorItem, ArmorBreakPredicate> armorBreakConditions = new HashMap<>();
@@ -94,7 +97,7 @@ public class ZPPlayerTickedBreakEquipmentEvent implements ZPEventClass {
             }
         }
 
-        for (ItemStack stack : player.getInventory().items) {
+        for (ItemStack stack : Stream.concat(player.getInventory().items.stream(), player.getInventory().offhand.stream()).toArray(ItemStack[]::new)) {
             if (stack.isEmpty()) {
                 continue;
             }

@@ -140,13 +140,13 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
         if (hotBarrel) {
             motion.mul(0.0f).add(0.0f, 0.05f, 0.0f);
         } else {
-            motion.add(0.0f, (smoky ? 0.02f : 0.1f), 0.0f);
+            motion.add(0.0f, (smoky ? 0.01f : 0.1f), 0.0f);
         }
 
         final Vector3f color = new Vector3f(smoky ? 0.9f : 0.7f).add(ZPRandom.instance.randomVector3f(0.05f, new Vector3f(0.1f, 0.1f, 0.1f)));
-        final int lifetime = (smoky ? 40 : 10) + ZPRandom.getRandom().nextInt(10);
+        final int lifetime = (smoky ? 60 : 10) + ZPRandom.getRandom().nextInt(10);
 
-        Objects.requireNonNull(mc.level).addParticle(new ColoredDefaultParticleOptions(ZPParticles.colored_cloud.get(), color, smoky ? 0.9f : 0.8f, lifetime), false, spawnPos.x, spawnPos.y, spawnPos.z, motion.x(), motion.y(), motion.z());
+        Objects.requireNonNull(mc.level).addParticle(new ColoredDefaultParticleOptions(ZPParticles.colored_cloud.get(), color, smoky ? 1.175f : 0.8f, lifetime), false, spawnPos.x, spawnPos.y, spawnPos.z, motion.x(), motion.y(), motion.z());
     }
 
     public static void emmitParticleShell(boolean isRightHand, Player player, ZPBaseGun baseGun) {
@@ -288,7 +288,7 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
                         this.shotTicksAccumulator[1] = 0.0f;
                     }
                     if (player.tickCount % 3 == 0) {
-                        if (this.shotTicksAccumulator[1] >= 3.0f) {
+                        if (this.shotTicksAccumulator[1] >= 2.5f) {
                             ZPDefaultGunParticlesFX.emitParticleSmoke(true, player, false, true, baseGun);
                         }
                     }
@@ -306,7 +306,7 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
                         this.shotTicksAccumulator[0] = 0.0f;
                     }
                     if (player.tickCount % 3 == 0) {
-                        if (this.shotTicksAccumulator[0] >= 3.0f) {
+                        if (this.shotTicksAccumulator[0] >= 2.5f) {
                             ZPDefaultGunParticlesFX.emitParticleSmoke(false, player, false, true, baseGun);
                         }
                     }

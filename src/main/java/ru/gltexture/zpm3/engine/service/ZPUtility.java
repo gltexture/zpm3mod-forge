@@ -5,16 +5,10 @@ import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -23,9 +17,6 @@ import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 
 import java.io.*;
-import java.util.Set;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public final class ZPUtility {
@@ -36,7 +27,6 @@ public final class ZPUtility {
     private final Sides sides;
     private final Sounds sounds;
     private final Math math;
-    private final MEntity entity;
 
     public ZPUtility() {
         this.blocks = new Blocks();
@@ -44,7 +34,6 @@ public final class ZPUtility {
         this.sides = new Sides();
         this.sounds = new Sounds();
         this.math = new Math();
-        this.entity = new MEntity();
     }
 
     public static Blocks blocks() {
@@ -67,59 +56,9 @@ public final class ZPUtility {
         return ZPUtility.instance.math;
     }
 
-    public static MEntity entity() {
-        return ZPUtility.instance.entity;
-    }
-
     public static boolean isDataGen() {
         return Boolean.getBoolean("zpm3.datagen");
     }
-
-    public static final class MEntity {
-        private MEntity() {
-        }
-
-        public int consumeItemFromInventory(@NotNull Inventory inventory, @NotNull Item item, int amount) {
-            int toRemove = amount;
-            int removed = 0;
-
-            for (int i = 0; i < inventory.items.size(); i++) {
-                ItemStack stack = inventory.items.get(i);
-                if (stack.getItem().equals(item)) {
-                    int stackSize = java.lang.Math.min(stack.getCount(), toRemove);
-                    inventory.removeItem(i, stackSize);
-                    removed += stackSize;
-                    toRemove -= stackSize;
-                    if (toRemove <= 0) {
-                        break;
-                    }
-                }
-            }
-
-            return removed;
-        }
-
-
-        public boolean isCollidingWithBlock(@NotNull Entity entity, @NotNull Block targetBlock) {
-            AABB box = entity.getBoundingBox();
-
-            final float s = 1.0e-7f;
-
-            BlockPos min = BlockPos.containing(box.minX, box.minY, box.minZ);
-            BlockPos max = BlockPos.containing(box.maxX - s, box.maxY - s, box.maxZ - s);
-
-            for (BlockPos pos : BlockPos.betweenClosed(min, max)) {
-                BlockState state = entity.level().getBlockState(pos);
-
-                if (state.is(targetBlock)) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-    }
-
     public static final class Blocks {
         private Blocks() {
         }

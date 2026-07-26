@@ -158,7 +158,7 @@ public class ZPAcidLiquidBlock extends ZPLiquidBlock implements EntityBlock, IHo
 
     @Override
     public float bucketFillingChance() {
-        return 0.04f;
+        return ZPWorldConfig.BUCKET_ACID_FILL_CHANCE.getVar();
     }
 
     @Override

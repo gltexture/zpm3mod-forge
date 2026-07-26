@@ -8,6 +8,7 @@ import ru.gltexture.zpm3.engine.helpers.gen.data.ZPGenTextureData;
 import ru.gltexture.zpm3.engine.instances.items.ZPItem;
 import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
+import ru.gltexture.zpm3.modules.common.init.ZPTags;
 import ru.gltexture.zpm3.modules.misc_items.init.ZPMiscItems;
 import ru.gltexture.zpm3.modules.common.init.ZPTabs;
 
@@ -61,6 +62,7 @@ public abstract class ZPRegMiscItems {
         ZPMiscItems.oxygen = regSupplier.register("oxygen",
                 () -> new ZPItem(new Item.Properties().stacksTo(1).durability(500))
         ).afterCreated((e, utils) -> {
+            utils.items().addTagToItem(e, ZPTags.I_AQUALUNG_O2_ITEM);
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_items_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_STICK, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ITEMS_ITEMS_DIRECTORY);

@@ -17,12 +17,12 @@ public abstract class ZPRegFluidBlocks {
     public static void init(ZPRegistry<Block> zpRegistry, @NotNull ZPRegistry.ZPRegSupplier<Block> regSupplier) {
         zpRegistry.initInstanceCollecting("fadingLiquids");
         ZPBlocks.acid_block = regSupplier.register("acid_block", () -> new ZPAcidLiquidBlock(() -> ZPFluids.acid_fluid.get(), BlockBehaviour.Properties.of()
-                .mapColor(MapColor.WATER).replaceable().noCollission().strength(100.0F).pushReaction(PushReaction.DESTROY).noLootTable().liquid().sound(SoundType.EMPTY))
+                .mapColor(MapColor.COLOR_LIGHT_GREEN).replaceable().noCollission().strength(100.0F).pushReaction(PushReaction.DESTROY).noLootTable().liquid().sound(SoundType.EMPTY))
         ).end();
         zpRegistry.stopInstanceCollecting();
 
         ZPBlocks.toxic_block = regSupplier.register("toxic_block", () -> new ZPToxicLiquidBlock(() -> ZPFluids.toxic_fluid.get(), BlockBehaviour.Properties.of()
-                .mapColor(MapColor.WATER).replaceable().noCollission().strength(100.0F).pushReaction(PushReaction.DESTROY).noLootTable().liquid().sound(SoundType.EMPTY))
+                .mapColor(MapColor.COLOR_GREEN).replaceable().noCollission().strength(100.0F).pushReaction(PushReaction.DESTROY).noLootTable().liquid().sound(SoundType.EMPTY))
         ).end();
     }
 

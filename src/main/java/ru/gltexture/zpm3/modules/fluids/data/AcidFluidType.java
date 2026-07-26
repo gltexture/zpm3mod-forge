@@ -75,12 +75,12 @@ public class AcidFluidType extends FluidType {
 
             @Override
             public int getTintColor() {
-                return 0xf8a3ff37;
+                return 0xf8C0E592;
             }
 
             @Override
             public int getTintColor(FluidState state, BlockAndTintGetter getter, BlockPos pos) {
-                return 0xf8a3ff37;
+                return 0xf8C0E592;
             }
 
             @Override

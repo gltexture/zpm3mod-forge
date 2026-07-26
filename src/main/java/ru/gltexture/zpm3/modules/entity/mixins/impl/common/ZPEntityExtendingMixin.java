@@ -87,9 +87,9 @@ public abstract class ZPEntityExtendingMixin implements IZPEntityExt {
             } else if (entity.tickCount % 2 == 0 && this.zpm3forge$getAcidLevel() > 0) {
                 this.addAcidLevel(-1);
             }
-            if (this.zpm3forge$getAcidLevel() > 600) {
+            if (this.zpm3forge$getAcidLevel() > 120) {
                 if (entity instanceof LivingEntity livingEntity) {
-                    livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON, 60, 0, false, true));
+                    livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON, 120, 1, false, true));
                 }
             }
             if (this.zpm3forge$getAcidLevel() > 0) {

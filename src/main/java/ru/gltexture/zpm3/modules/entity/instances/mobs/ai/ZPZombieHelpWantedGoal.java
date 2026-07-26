@@ -17,7 +17,7 @@ import java.util.*;
 
 public class ZPZombieHelpWantedGoal extends Goal {
     private final List<ZPAbstractZombie> zombiesWantedForHelp;
-    private final TargetingConditions HURT_BY_TARGETING;
+    private final TargetingConditions TEST;
     private int ticksToAlertHelp;
     protected final Mob mob;
     protected LivingEntity targetMob;
@@ -25,7 +25,7 @@ public class ZPZombieHelpWantedGoal extends Goal {
     public ZPZombieHelpWantedGoal(Mob mob) {
         this.setFlags(EnumSet.of(Flag.TARGET));
         this.zombiesWantedForHelp = new ArrayList<>();
-        this.HURT_BY_TARGETING = TargetingConditions.forCombat().range(this.helpAlertRange()).ignoreLineOfSight().ignoreInvisibilityTesting();
+        this.TEST = TargetingConditions.forCombat().range(this.helpAlertRange() * 2.0f).ignoreLineOfSight().ignoreInvisibilityTesting();
         this.ticksToAlertHelp = ZPRandom.getRandom().nextInt(121);
         this.mob = mob;
     }
@@ -79,7 +79,7 @@ public class ZPZombieHelpWantedGoal extends Goal {
     protected boolean canAttack(@Nullable LivingEntity pPotentialTarget) {
         if (pPotentialTarget == null) {
             return false;
-        } else if (!this.HURT_BY_TARGETING.test(this.mob, pPotentialTarget)) {
+        } else if (!this.TEST.test(this.mob, pPotentialTarget)) {
             return false;
         } else {
             return this.mob.isWithinRestriction(pPotentialTarget.blockPosition());

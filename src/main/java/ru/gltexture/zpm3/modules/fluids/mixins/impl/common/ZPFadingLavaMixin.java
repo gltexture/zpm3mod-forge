@@ -53,7 +53,7 @@ public abstract class ZPFadingLavaMixin implements EntityBlock, IFadingBlock, IH
     @SuppressWarnings("all")
     @Override
     public float bucketFillingChance() {
-        return ((Object) this) == Blocks.LAVA ? 0.25f : 1.0f;
+        return ((Object) this) == Blocks.LAVA ? ZPWorldConfig.BUCKET_LAVA_FILL_CHANCE.getVar() : 1.0f;
     }
 
     @Override

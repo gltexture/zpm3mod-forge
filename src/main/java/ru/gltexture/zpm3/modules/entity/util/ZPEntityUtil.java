@@ -1,24 +1,32 @@
 package ru.gltexture.zpm3.modules.entity.util;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShieldItem;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPCombatConfig;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPEntityConfig;
-import ru.gltexture.zpm3.engine.service.ZPUtility;
 import ru.gltexture.zpm3.engine.zones.ZPZoneChecks;
 import ru.gltexture.zpm3.modules.armor.utils.ZPArmorUtil;
 import ru.gltexture.zpm3.modules.blocks.init.ZPBlocks;
+import ru.gltexture.zpm3.modules.common.init.ZPTags;
 import ru.gltexture.zpm3.modules.common.utils.ZPCommonServerUtils;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
-import ru.gltexture.zpm3.modules.misc_items.init.ZPMiscItems;
 import ru.gltexture.zpm3.modules.mob_effects.init.ZPMobEffects;
 
 public class ZPEntityUtil {
@@ -26,11 +34,11 @@ public class ZPEntityUtil {
         return entity.isUsingItem() && entity.getUseItem().getItem() instanceof ShieldItem;
     }
     public static @Nullable ItemStack getOxygenStackInHand(LivingEntity entity) {
-        return entity.getMainHandItem().getItem().equals(ZPMiscItems.oxygen.get()) ? entity.getMainHandItem() : entity.getOffhandItem().getItem().equals(ZPMiscItems.oxygen.get()) ? entity.getOffhandItem() : null;
+        return entity.getMainHandItem().is(ZPTags.I_AQUALUNG_O2_ITEM) ? entity.getMainHandItem() : entity.getOffhandItem().is(ZPTags.I_AQUALUNG_O2_ITEM) ? entity.getOffhandItem() : null;
     }
 
     public static boolean hasOxygenInHands(LivingEntity entity) {
-        return entity.getMainHandItem().getItem().equals(ZPMiscItems.oxygen.get()) || entity.getOffhandItem().getItem().equals(ZPMiscItems.oxygen.get());
+        return entity.getMainHandItem().is(ZPTags.I_AQUALUNG_O2_ITEM) || entity.getOffhandItem().is(ZPTags.I_AQUALUNG_O2_ITEM);
     }
 
     // < 0 = NO
@@ -74,7 +82,7 @@ public class ZPEntityUtil {
         if (ZPZoneChecks.INSTANCE.isNoToxicAffection(entity.level(), entity.blockPosition())) {
             return 0;
         }
-        if (ZPUtility.entity().isCollidingWithBlock(entity, ZPBlocks.toxic_block.get())) {
+        if (ZPEntityUtil.isCollidingWithFluid(entity, ZPTags.F_TOXIC_PROPERTIES)) {
             return 2;
         }
         if (ZPZoneChecks.INSTANCE.isInToxicCloud(entity.level(), entity)) {
@@ -88,7 +96,7 @@ public class ZPEntityUtil {
         if (ZPZoneChecks.INSTANCE.isNoAcidAffection(entity.level(), entity.blockPosition())) {
             return 0;
         }
-        if (ZPUtility.entity().isCollidingWithBlock(entity, ZPBlocks.acid_block.get())) {
+        if (ZPEntityUtil.isCollidingWithFluid(entity, ZPTags.F_ACID_PROPERTIES)) {
             return 2;
         }
         if (ZPZoneChecks.INSTANCE.isInAcidCloud(entity.level(), entity)) {
@@ -153,7 +161,7 @@ public class ZPEntityUtil {
         }
 
         if (entity instanceof LivingEntity livingEntity) {
-            livingEntity.hurt(livingEntity.damageSources().generic(), livingEntity instanceof ZPAbstractZombie ? 8.0f : 1.25f);
+            livingEntity.hurt(livingEntity.damageSources().generic(), livingEntity instanceof ZPAbstractZombie ? 6.0f : 1.25f);
 
             if (livingEntity instanceof Player player) {
                 for (ItemStack stack : player.getInventory().items) {
@@ -183,5 +191,59 @@ public class ZPEntityUtil {
                 }
             }
         }
+    }
+
+    public static int consumeItemFromInventory(@NotNull Inventory inventory, @NotNull Item item, int amount) {
+        int toRemove = amount;
+        int removed = 0;
+
+        for (int i = 0; i < inventory.items.size(); i++) {
+            ItemStack stack = inventory.items.get(i);
+            if (stack.getItem().equals(item)) {
+                int stackSize = Math.min(stack.getCount(), toRemove);
+                inventory.removeItem(i, stackSize);
+                removed += stackSize;
+                toRemove -= stackSize;
+                if (toRemove <= 0) {
+                    break;
+                }
+            }
+        }
+
+        return removed;
+    }
+
+    public static boolean isCollidingWithFluid(@NotNull Entity entity, @NotNull TagKey<Fluid> targetFluid) {
+        AABB box = entity.getBoundingBox();
+        final double s = 1.0e-7;
+        BlockPos min = BlockPos.containing(box.minX, box.minY, box.minZ);
+        BlockPos max = BlockPos.containing(box.maxX - s, box.maxY - s, box.maxZ - s);
+        for (BlockPos pos : BlockPos.betweenClosed(min, max)) {
+            FluidState state = entity.level().getFluidState(pos);
+            if (!state.isEmpty() && state.is(targetFluid)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean isCollidingWithBlock(@NotNull Entity entity, @NotNull Block targetBlock) {
+        AABB box = entity.getBoundingBox();
+
+        final float s = 1.0e-7f;
+
+        BlockPos min = BlockPos.containing(box.minX, box.minY, box.minZ);
+        BlockPos max = BlockPos.containing(box.maxX - s, box.maxY - s, box.maxZ - s);
+
+        for (BlockPos pos : BlockPos.betweenClosed(min, max)) {
+            BlockState state = entity.level().getBlockState(pos);
+
+            if (state.is(targetBlock)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

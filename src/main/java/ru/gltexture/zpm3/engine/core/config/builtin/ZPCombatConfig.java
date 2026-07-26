@@ -117,6 +117,10 @@ public class ZPCombatConfig implements ZPConfigConstantsClass {
     public static final ZPConfig_INT ZP_BREAK_ACID_COSTUME_PER_TICK =
             new ZPConfig_INT(120);
 
+    @ZPVarDefinition(description = "Every N ticks oxygen will receive 1 damage by water-breath on player. < 0 = disable")
+    public static final ZPConfig_INT ZP_BREAK_OXYGEN_ITEM_PER_TICK =
+            new ZPConfig_INT(100);
+
     @ZPVarDefinition(description = "Every N ticks this peace of armor will receive 1 damage by water(breath??? idk) on player. < 0 = disable")
     public static final ZPConfig_INT ZP_BREAK_AQUALUNG_COSTUME_PER_TICK =
             new ZPConfig_INT(180);

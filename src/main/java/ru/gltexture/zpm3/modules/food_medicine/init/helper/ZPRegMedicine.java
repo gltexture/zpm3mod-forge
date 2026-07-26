@@ -21,7 +21,7 @@ import ru.gltexture.zpm3.engine.service.ZPUtility;
 public abstract class ZPRegMedicine {
     public static final ZPItemMedicine.ZPMedicineProperties VODKA = new ZPItemMedicine.ZPMedicineProperties(ZPRegMedicine.DEFAULT_MEDICINE()
             .effect(() -> new MobEffectInstance(MobEffects.CONFUSION, 2400, 0), 1.0F)
-            .effect(() -> new MobEffectInstance(ZPMobEffects.adrenaline.get(), 600), 1.0F)
+            .effect(() -> new MobEffectInstance(ZPMobEffects.adrenaline.get(), 900), 1.0F)
             .effect(() -> new MobEffectInstance(ZPMobEffects.radiation_protection.get(), 600), 1.0F)
             .build())
                 .setMedicineAnim(ZPItemMedicine.MedicineAnim.DRINK)
@@ -30,14 +30,14 @@ public abstract class ZPRegMedicine {
     public static final ZPItemMedicine.ZPMedicineProperties WHISKEY = new ZPItemMedicine.ZPMedicineProperties(ZPRegMedicine.DEFAULT_MEDICINE()
             .nutrition(1).saturationMod(0.05f)
             .effect(() -> new MobEffectInstance(MobEffects.CONFUSION, 3000, 0), 1.0F)
-            .effect(() -> new MobEffectInstance(ZPMobEffects.adrenaline.get(), 300), 1.0F)
+            .effect(() -> new MobEffectInstance(ZPMobEffects.adrenaline.get(), 1800), 1.0F)
             .effect(() -> new MobEffectInstance(ZPMobEffects.radiation_protection.get(), 900), 1.0F)
             .build())
                 .setMedicineAnim(ZPItemMedicine.MedicineAnim.DRINK)
                 .setIntoxication(96);
 
     public static final ZPItemMedicine.ZPMedicineProperties RADIOPROTECTION = new ZPItemMedicine.ZPMedicineProperties(ZPRegMedicine.DEFAULT_MEDICINE()
-            .effect(() -> new MobEffectInstance(ZPMobEffects.radiation_protection.get(), 3600), 1.0F)
+            .effect(() -> new MobEffectInstance(ZPMobEffects.radiation_protection.get(), 4800), 1.0F)
             .build())
                 .setMedicineAnim(ZPItemMedicine.MedicineAnim.EAT);
 

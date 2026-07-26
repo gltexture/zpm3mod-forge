@@ -11,6 +11,7 @@ import ru.gltexture.zpm3.engine.service.ZPUtility;
 import ru.gltexture.zpm3.modules.armor.init.ZPArmorItems;
 import ru.gltexture.zpm3.modules.armor.instances.armor.ZPArmorMaterialsList;
 import ru.gltexture.zpm3.modules.common.init.ZPTabs;
+import ru.gltexture.zpm3.modules.common.init.ZPTags;
 
 public abstract class ZPRegArmorItemsHelper {
     public static void init(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
@@ -36,6 +37,7 @@ public abstract class ZPRegArmorItemsHelper {
         ZPArmorItems.forest_helmet = regSupplier.register("forest_helmet",
                 () -> new ZPArmorItem(ZPArmorMaterialsList.FOREST_CAM, ArmorItem.Type.HELMET, new Item.Properties())
         ).afterCreated((e, utils) -> {
+            utils.items().addTagToItem(e, ZPTags.I_ARMOR_CAMO_FOREST);
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
@@ -45,6 +47,7 @@ public abstract class ZPRegArmorItemsHelper {
         ZPArmorItems.forest_chestplate = regSupplier.register("forest_chestplate",
                 () -> new ZPArmorItem(ZPArmorMaterialsList.FOREST_CAM, ArmorItem.Type.CHESTPLATE, new Item.Properties())
         ).afterCreated((e, utils) -> {
+            utils.items().addTagToItem(e, ZPTags.I_ARMOR_CAMO_FOREST);
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
@@ -54,6 +57,7 @@ public abstract class ZPRegArmorItemsHelper {
         ZPArmorItems.forest_leggings = regSupplier.register("forest_leggings",
                 () -> new ZPArmorItem(ZPArmorMaterialsList.FOREST_CAM, ArmorItem.Type.LEGGINGS, new Item.Properties())
         ).afterCreated((e, utils) -> {
+            utils.items().addTagToItem(e, ZPTags.I_ARMOR_CAMO_FOREST);
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
@@ -63,6 +67,7 @@ public abstract class ZPRegArmorItemsHelper {
         ZPArmorItems.forest_boots = regSupplier.register("forest_boots",
                 () -> new ZPArmorItem(ZPArmorMaterialsList.FOREST_CAM, ArmorItem.Type.BOOTS, new Item.Properties())
         ).afterCreated((e, utils) -> {
+            utils.items().addTagToItem(e, ZPTags.I_ARMOR_CAMO_FOREST);
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
@@ -72,6 +77,7 @@ public abstract class ZPRegArmorItemsHelper {
         ZPArmorItems.sand_helmet = regSupplier.register("sand_helmet",
                 () -> new ZPArmorItem(ZPArmorMaterialsList.SAND_CAM, ArmorItem.Type.HELMET, new Item.Properties())
         ).afterCreated((e, utils) -> {
+            utils.items().addTagToItem(e, ZPTags.I_ARMOR_CAMO_SAND);
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
@@ -81,6 +87,7 @@ public abstract class ZPRegArmorItemsHelper {
         ZPArmorItems.sand_chestplate = regSupplier.register("sand_chestplate",
                 () -> new ZPArmorItem(ZPArmorMaterialsList.SAND_CAM, ArmorItem.Type.CHESTPLATE, new Item.Properties())
         ).afterCreated((e, utils) -> {
+            utils.items().addTagToItem(e, ZPTags.I_ARMOR_CAMO_SAND);
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
@@ -90,6 +97,7 @@ public abstract class ZPRegArmorItemsHelper {
         ZPArmorItems.sand_leggings = regSupplier.register("sand_leggings",
                 () -> new ZPArmorItem(ZPArmorMaterialsList.SAND_CAM, ArmorItem.Type.LEGGINGS, new Item.Properties())
         ).afterCreated((e, utils) -> {
+            utils.items().addTagToItem(e, ZPTags.I_ARMOR_CAMO_SAND);
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
@@ -99,6 +107,7 @@ public abstract class ZPRegArmorItemsHelper {
         ZPArmorItems.sand_boots = regSupplier.register("sand_boots",
                 () -> new ZPArmorItem(ZPArmorMaterialsList.SAND_CAM, ArmorItem.Type.BOOTS, new Item.Properties())
         ).afterCreated((e, utils) -> {
+            utils.items().addTagToItem(e, ZPTags.I_ARMOR_CAMO_SAND);
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
@@ -108,6 +117,7 @@ public abstract class ZPRegArmorItemsHelper {
         ZPArmorItems.winter_helmet = regSupplier.register("winter_helmet",
                 () -> new ZPArmorItem(ZPArmorMaterialsList.WINTER_CAM, ArmorItem.Type.HELMET, new Item.Properties())
         ).afterCreated((e, utils) -> {
+            utils.items().addTagToItem(e, ZPTags.I_ARMOR_CAMO_WINTER);
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
@@ -117,6 +127,7 @@ public abstract class ZPRegArmorItemsHelper {
         ZPArmorItems.winter_chestplate = regSupplier.register("winter_chestplate",
                 () -> new ZPArmorItem(ZPArmorMaterialsList.WINTER_CAM, ArmorItem.Type.CHESTPLATE, new Item.Properties())
         ).afterCreated((e, utils) -> {
+            utils.items().addTagToItem(e, ZPTags.I_ARMOR_CAMO_WINTER);
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
@@ -126,6 +137,7 @@ public abstract class ZPRegArmorItemsHelper {
         ZPArmorItems.winter_leggings = regSupplier.register("winter_leggings",
                 () -> new ZPArmorItem(ZPArmorMaterialsList.WINTER_CAM, ArmorItem.Type.LEGGINGS, new Item.Properties())
         ).afterCreated((e, utils) -> {
+            utils.items().addTagToItem(e, ZPTags.I_ARMOR_CAMO_WINTER);
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
@@ -135,6 +147,7 @@ public abstract class ZPRegArmorItemsHelper {
         ZPArmorItems.winter_boots = regSupplier.register("winter_boots",
                 () -> new ZPArmorItem(ZPArmorMaterialsList.WINTER_CAM, ArmorItem.Type.BOOTS, new Item.Properties())
         ).afterCreated((e, utils) -> {
+            utils.items().addTagToItem(e, ZPTags.I_ARMOR_CAMO_WINTER);
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
@@ -144,6 +157,9 @@ public abstract class ZPRegArmorItemsHelper {
         ZPArmorItems.acid_costume_helmet = regSupplier.register("acid_costume_helmet",
                 () -> new ZPArmorItem(ZPArmorMaterialsList.ACID_COSTUME, ArmorItem.Type.HELMET, new Item.Properties())
         ).afterCreated((e, utils) -> {
+            utils.items().addTagToItem(e, ZPTags.I_ARMOR_AQUALUNG);
+            utils.items().addTagToItem(e, ZPTags.I_ARMOR_ACID_PROTECTION);
+            utils.items().addTagToItem(e, ZPTags.I_ARMOR_VIGNETTE);
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
@@ -153,6 +169,8 @@ public abstract class ZPRegArmorItemsHelper {
         ZPArmorItems.acid_costume_chestplate = regSupplier.register("acid_costume_chestplate",
                 () -> new ZPArmorItem(ZPArmorMaterialsList.ACID_COSTUME, ArmorItem.Type.CHESTPLATE, new Item.Properties())
         ).afterCreated((e, utils) -> {
+            utils.items().addTagToItem(e, ZPTags.I_ARMOR_AQUALUNG);
+            utils.items().addTagToItem(e, ZPTags.I_ARMOR_ACID_PROTECTION);
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
@@ -162,6 +180,8 @@ public abstract class ZPRegArmorItemsHelper {
         ZPArmorItems.acid_costume_leggings = regSupplier.register("acid_costume_leggings",
                 () -> new ZPArmorItem(ZPArmorMaterialsList.ACID_COSTUME, ArmorItem.Type.LEGGINGS, new Item.Properties())
         ).afterCreated((e, utils) -> {
+            utils.items().addTagToItem(e, ZPTags.I_ARMOR_AQUALUNG);
+            utils.items().addTagToItem(e, ZPTags.I_ARMOR_ACID_PROTECTION);
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
@@ -171,6 +191,8 @@ public abstract class ZPRegArmorItemsHelper {
         ZPArmorItems.acid_costume_boots = regSupplier.register("acid_costume_boots",
                 () -> new ZPArmorItem(ZPArmorMaterialsList.ACID_COSTUME, ArmorItem.Type.BOOTS, new Item.Properties())
         ).afterCreated((e, utils) -> {
+            utils.items().addTagToItem(e, ZPTags.I_ARMOR_AQUALUNG);
+            utils.items().addTagToItem(e, ZPTags.I_ARMOR_ACID_PROTECTION);
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
@@ -180,6 +202,8 @@ public abstract class ZPRegArmorItemsHelper {
         ZPArmorItems.radiation_costume_helmet = regSupplier.register("radiation_costume_helmet",
                 () -> new ZPArmorItem(ZPArmorMaterialsList.RADIATION_COSTUME, ArmorItem.Type.HELMET, new Item.Properties())
         ).afterCreated((e, utils) -> {
+            utils.items().addTagToItem(e, ZPTags.I_ARMOR_RADIOPROTECTION);
+            utils.items().addTagToItem(e, ZPTags.I_ARMOR_VIGNETTE);
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
@@ -189,6 +213,7 @@ public abstract class ZPRegArmorItemsHelper {
         ZPArmorItems.radiation_costume_chestplate = regSupplier.register("radiation_costume_chestplate",
                 () -> new ZPArmorItem(ZPArmorMaterialsList.RADIATION_COSTUME, ArmorItem.Type.CHESTPLATE, new Item.Properties())
         ).afterCreated((e, utils) -> {
+            utils.items().addTagToItem(e, ZPTags.I_ARMOR_RADIOPROTECTION);
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
@@ -198,6 +223,7 @@ public abstract class ZPRegArmorItemsHelper {
         ZPArmorItems.radiation_costume_leggings = regSupplier.register("radiation_costume_leggings",
                 () -> new ZPArmorItem(ZPArmorMaterialsList.RADIATION_COSTUME, ArmorItem.Type.LEGGINGS, new Item.Properties())
         ).afterCreated((e, utils) -> {
+            utils.items().addTagToItem(e, ZPTags.I_ARMOR_RADIOPROTECTION);
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
@@ -207,6 +233,7 @@ public abstract class ZPRegArmorItemsHelper {
         ZPArmorItems.radiation_costume_boots = regSupplier.register("radiation_costume_boots",
                 () -> new ZPArmorItem(ZPArmorMaterialsList.RADIATION_COSTUME, ArmorItem.Type.BOOTS, new Item.Properties())
         ).afterCreated((e, utils) -> {
+            utils.items().addTagToItem(e, ZPTags.I_ARMOR_RADIOPROTECTION);
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
@@ -216,6 +243,8 @@ public abstract class ZPRegArmorItemsHelper {
         ZPArmorItems.aqualung_costume_helmet = regSupplier.register("aqualung_costume_helmet",
                 () -> new ZPArmorItem(ZPArmorMaterialsList.AQUALUNG_COSTUME, ArmorItem.Type.HELMET, new Item.Properties())
         ).afterCreated((e, utils) -> {
+            utils.items().addTagToItem(e, ZPTags.I_ARMOR_AQUALUNG);
+            utils.items().addTagToItem(e, ZPTags.I_ARMOR_VIGNETTE);
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
@@ -225,6 +254,7 @@ public abstract class ZPRegArmorItemsHelper {
         ZPArmorItems.aqualung_costume_chestplate = regSupplier.register("aqualung_costume_chestplate",
                 () -> new ZPArmorItem(ZPArmorMaterialsList.AQUALUNG_COSTUME, ArmorItem.Type.CHESTPLATE, new Item.Properties())
         ).afterCreated((e, utils) -> {
+            utils.items().addTagToItem(e, ZPTags.I_ARMOR_AQUALUNG);
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
@@ -234,6 +264,7 @@ public abstract class ZPRegArmorItemsHelper {
         ZPArmorItems.aqualung_costume_leggings = regSupplier.register("aqualung_costume_leggings",
                 () -> new ZPArmorItem(ZPArmorMaterialsList.AQUALUNG_COSTUME, ArmorItem.Type.LEGGINGS, new Item.Properties())
         ).afterCreated((e, utils) -> {
+            utils.items().addTagToItem(e, ZPTags.I_ARMOR_AQUALUNG);
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);
@@ -243,6 +274,7 @@ public abstract class ZPRegArmorItemsHelper {
         ZPArmorItems.aqualung_costume_boots = regSupplier.register("aqualung_costume_boots",
                 () -> new ZPArmorItem(ZPArmorMaterialsList.AQUALUNG_COSTUME, ArmorItem.Type.BOOTS, new Item.Properties())
         ).afterCreated((e, utils) -> {
+            utils.items().addTagToItem(e, ZPTags.I_ARMOR_AQUALUNG);
             ZPUtility.sides().onlyClient(() -> {
                 utils.items().addItemInTab(e, ZPTabs.zp_armor_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.ARMOR_ITEMS_DIRECTORY);

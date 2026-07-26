@@ -533,6 +533,7 @@ public abstract class ZPRegCommonBlocks {
                     ))
             );
             utils.blocks().addTagToBlock(e, ZPTags.B_MINEABLE_WITH_METAL_CUTTERS);
+            utils.blocks().addTagToBlock(e, ZPTags.B_BOOST_ZOMBIE_MINE_SPEED);
             ZPUtility.sides().onlyClient(() -> {
                 utils.blocks().addBlockModelKey_ValueArray(e, ZPDataGenHelper.NO_REFERENCE, Pair.of(ZPGenTextureData.ALL_KEY, () -> new ZPPath(ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY, "chain_link")));
                 utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);

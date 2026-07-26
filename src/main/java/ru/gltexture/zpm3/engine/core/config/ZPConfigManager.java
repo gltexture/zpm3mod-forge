@@ -28,7 +28,7 @@ public class ZPConfigManager {
 
     public void processConfigConstants(ZPPath zpmFiles, String configName, Class<? extends ZPConfigConstantsClass> clazz) throws IllegalAccessException, IOException {
         final ZPPath pathToJson = new ZPPath(zpmFiles, configName + "_zp3_config.json");
-        final Map<String, String> existingConfigVars = this.readConfigExistingVars(pathToJson);
+        final Map<String, OldConfValue> existingConfigVars = this.readConfigExistingVars(pathToJson);
         List<ConfigVarObjectForUI> configVarObjectForUIList = new ArrayList<>();
         this.save(configVarObjectForUIList, existingConfigVars, pathToJson, clazz);
         this.configPathMap.put(clazz, pathToJson);
@@ -78,7 +78,7 @@ public class ZPConfigManager {
     }
 */
 
-    private void save(@Nullable List<ConfigVarObjectForUI> configVarObjectForUIList, @Nullable Map<String, String> existingConfig, ZPPath pathToJson, Class<? extends ZPConfigConstantsClass> clazz) throws IllegalAccessException, IOException {
+    private void save(@Nullable List<ConfigVarObjectForUI> configVarObjectForUIList, @Nullable Map<String, OldConfValue> existingConfig, ZPPath pathToJson, Class<? extends ZPConfigConstantsClass> clazz) throws IllegalAccessException, IOException {
         if (configVarObjectForUIList != null) {
             this.classConfigVarObjectForUIMap.put(clazz, configVarObjectForUIList);
         }
@@ -86,7 +86,7 @@ public class ZPConfigManager {
         for (Field field : clazz.getDeclaredFields()) {
             if (field.isAnnotationPresent(ZPVarDefinition.class)) {
                 final ZPVarDefinition zpVarDefinition = field.getAnnotation(ZPVarDefinition.class);
-                int mods = field.getModifiers();
+                final int mods = field.getModifiers();
                 if (!Modifier.isPublic(mods) || !Modifier.isStatic(mods) || !Modifier.isFinal(mods)) {
                     throw new ZPIOException(pathToJson + " - Config's Field " + field.getName() + " is not public static final!");
                 }
@@ -105,11 +105,15 @@ public class ZPConfigManager {
                         if (existingConfig != null) {
                             if (existingConfig.containsKey(fieldName)) {
                                 try {
-                                    ZPConfigVar<? extends Serializable> existingConfigVar = ZPConfigManager.parse(existingConfig.get(fieldName), origType);
-                                    if (existingConfigVar == null) {
-                                        throw new ZPIOException(pathToJson + " - Config's Field " + fieldName + " is null!");
+                                    final boolean invalidate = existingConfig.get(fieldName).defaultV().equals(existingConfig.get(fieldName).value());
+                                    if (!invalidate) {
+                                        ZPLogger.trace(pathToJson + " - Config's Field " + fieldName + " invalidated");
+                                        ZPConfigVar<? extends Serializable> existingConfigVar = ZPConfigManager.parse(existingConfig.get(fieldName).value(), origType);
+                                        if (existingConfigVar == null) {
+                                            throw new ZPIOException(pathToJson + " - Config's Field " + fieldName + " is null!");
+                                        }
+                                        var.setVarUnsafe(existingConfigVar.getVar());
                                     }
-                                    var.setVarUnsafe(existingConfigVar.getVar());
                                 } catch (Exception e) {
                                     ZPLogger.exception(e);
                                 }
@@ -130,7 +134,7 @@ public class ZPConfigManager {
         this.writeConfigJSONStructure(pathToJson, mainObj);
     }
 
-    private void writeConfigJSONStructure(@NotNull ZPPath pathToJson, @NotNull JsonObject mainObj) throws IllegalAccessException, IOException {
+    private void writeConfigJSONStructure(@NotNull ZPPath pathToJson, @NotNull JsonObject mainObj) throws IOException {
         try (FileWriter fileWriter = new FileWriter(pathToJson.toFile())) {
             fileWriter.write(this.getGson().toJson(mainObj));
         }
@@ -145,15 +149,16 @@ public class ZPConfigManager {
         return null;
     }
 
-    private Map<String, String> readConfigExistingVars(ZPPath pathToJson) {
-        final Map<String, String> vars = new HashMap<>();
+    private Map<String, OldConfValue> readConfigExistingVars(ZPPath pathToJson) {
+        final Map<String, OldConfValue> vars = new HashMap<>();
         JsonObject jsonObject = this.readConfigJSONStructure(pathToJson);
         if (jsonObject != null) {
             for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
-                String fieldName = entry.getKey();
-                JsonObject config = entry.getValue().getAsJsonObject();
-                String value = config.get("value").getAsString();
-                vars.put(fieldName, value);
+                final String fieldName = entry.getKey();
+                final JsonObject config = entry.getValue().getAsJsonObject();
+                final String value = config.get("value").getAsString();
+                final String def = !config.has("default") ? null : config.get("default").getAsString();
+                vars.put(fieldName, new OldConfValue(value, def == null ? "" : def));
             }
         }
         return vars;
@@ -185,6 +190,8 @@ public class ZPConfigManager {
     public Gson getGson() {
         return this.gson;
     }
+
+    public record OldConfValue(String value, String defaultV) { ; }
 
     public record ConfigVarObjectForUI(String varName, String varDescription, ZPConfigVar<?> var) {
         @SuppressWarnings("all")

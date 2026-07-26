@@ -25,6 +25,7 @@ import org.joml.Vector3f;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
 import ru.gltexture.zpm3.engine.zones.ZPZoneChecks;
 
+import ru.gltexture.zpm3.modules.common.init.ZPTags;
 import ru.gltexture.zpm3.modules.entity.init.ZPEntityAttributes;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.engine.fake.ZPFakePlayer;
@@ -134,12 +135,12 @@ public class ZPZombieMiningGoal extends Goal {
 
     protected float getMiningSpeedWithBonus(@NotNull BlockState blockState, @NotNull BlockPos pos, @NotNull ZPAbstractZombie zombie) {
         ItemStack held = zombie.getMainHandItem();
-        float bonus = 1.0f;
+        float bonus = blockState.is(ZPTags.B_BOOST_ZOMBIE_MINE_SPEED) ? 2.0f : 1.0f;
 
         if (!held.isEmpty()) {
             float efficiency = held.getDestroySpeed(blockState);
             if (efficiency > 1.0f && held.isCorrectToolForDrops(blockState)) {
-                bonus += (efficiency - 1.0f) * 0.15f;
+                bonus += (efficiency - 1.0f) * 0.2f;
             }
         }
 
@@ -235,7 +236,7 @@ public class ZPZombieMiningGoal extends Goal {
 
             if (ZPZombieConfig.USE_ZOMBIE_MINING_SHARED_GLOBAL_MEM.getVar()) {
                 if (this.mob.level() instanceof IZPLevelExt ext) {
-                    ext.zpm3forge$getGlobalBlocksDestroyMemory().addNewEntryShortMem(this.mob.level(), blockToMine, this.getMiningSpeedWithBonus(state, blockToMine, this.mob));
+                    ext.zpm3forge$getGlobalBlocksDestroyMemory().addNewEntryLongMem(this.mob.level(), blockToMine, this.getMiningSpeedWithBonus(state, blockToMine, this.mob));
                 }
             } else {
                 this.miningTicks += this.getMiningSpeedWithBonus(state, blockToMine, this.mob);

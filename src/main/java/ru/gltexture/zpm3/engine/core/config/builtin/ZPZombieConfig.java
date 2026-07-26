@@ -30,7 +30,7 @@ public class ZPZombieConfig implements ZPConfigConstantsClass {
 
     @ZPVarDefinition(description = "Maximum number of zombies a zombie can call for help.")
     public static final ZPConfig_INT MAX_ENTITIES_ZOMBIE_CAN_CALL_TO_HELP =
-            new ZPConfig_INT(3);
+            new ZPConfig_INT(2);
 
     @ZPVarDefinition(description = "Increases interval between zombie path updates.")
     public static final ZPConfig_FLOAT ZOMBIE_PATH_UPDATE_COOLDOWN_PUNISHMENT_GRADE =
@@ -42,7 +42,7 @@ public class ZPZombieConfig implements ZPConfigConstantsClass {
 
     @ZPVarDefinition(description = "Multiplier for firearm bullet damage on zombies.")
     public static final ZPConfig_FLOAT ZOMBIE_BULLET_DAMAGE_MULTIPLIER =
-            new ZPConfig_FLOAT(3.25f);
+            new ZPConfig_FLOAT(2.25f);
 
     @ZPVarDefinition(description = "Global zombie melee attack reach multiplier.")
     public static final ZPConfig_FLOAT ZOMBIE_ATTACK_RANGE_MULTIPLIER =
@@ -86,7 +86,7 @@ public class ZPZombieConfig implements ZPConfigConstantsClass {
 
     @ZPVarDefinition(description = "Angry persistence time in ticks.")
     public static final ZPConfig_INT ZOMBIE_MAX_ANGRY_PERSISTENCE_TICKS =
-            new ZPConfig_INT(1800);
+            new ZPConfig_INT(2400);
 
     @ZPVarDefinition(description = "Stop despawn if zombie has loot.")
     public static final ZPConfig_BOOL ZOMBIE_STOP_DESPAWNING_IF_HAS_IMPORTANT_LOOT =
@@ -134,11 +134,11 @@ public class ZPZombieConfig implements ZPConfigConstantsClass {
 
     @ZPVarDefinition(description = "Short memory clear time.")
     public static final ZPConfig_INT TIME_TO_CLEAR_SHARED_ZOMBIE_MINING_SHORT_MEM =
-            new ZPConfig_INT(600);
+            new ZPConfig_INT(1200);
 
     @ZPVarDefinition(description = "Long memory clear time.")
     public static final ZPConfig_INT TIME_TO_CLEAR_SHARED_ZOMBIE_MINING_LONG_MEM =
-            new ZPConfig_INT(3600);
+            new ZPConfig_INT(6000);
 
     @ZPVarDefinition(description = "Zombie hand mining reach.")
     public static final ZPConfig_FLOAT ZOMBIE_HANDS_LENGTH_FOR_MINING =

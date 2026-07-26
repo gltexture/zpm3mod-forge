@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "#zpm3:f_acid_properties",
+    "#zpm3:f_toxic_properties"
+  ]
+}

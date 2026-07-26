@@ -2,6 +2,7 @@ package ru.gltexture.zpm3.engine.core.config.builtin;
 
 import ru.gltexture.zpm3.engine.core.config.ZPConfigConstantsClass;
 import ru.gltexture.zpm3.engine.core.config.vars.*;
+import ru.gltexture.zpm3.engine.service.Pair;
 
 public class ZPWorldConfig implements ZPConfigConstantsClass {
 
@@ -108,6 +109,14 @@ public class ZPWorldConfig implements ZPConfigConstantsClass {
     @ZPVarDefinition(description = "Allows lava to fade over time when enabled.")
     public static final ZPConfig_BOOL FADING_LAVAS =
             new ZPConfig_BOOL(true);
+
+    @ZPVarDefinition(description = "Chance to fill bucket with lava.")
+    public static final ZPConfig_FLOAT BUCKET_LAVA_FILL_CHANCE =
+            new ZPConfig_FLOAT(0.25f);
+
+    @ZPVarDefinition(description = "Chance to fill bucket with acid.")
+    public static final ZPConfig_FLOAT BUCKET_ACID_FILL_CHANCE =
+            new ZPConfig_FLOAT(0.05f);
 
     @ZPVarDefinition(description = "Candles extinguish rate, each tick.")
     public static final ZPConfig_FLOAT CANDLE_EACH_TICK_RANDOM_EXTINGUISH_CONST =

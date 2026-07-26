@@ -6,6 +6,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.Fluid;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 
 public abstract class ZPTags {
@@ -17,9 +18,28 @@ public abstract class ZPTags {
     public static final TagKey<Block> B_MINEABLE_WITH_CROWBAR = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "b_mineable_with_crowbar"));
     public static final TagKey<Block> B_IGNORE_ACID = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "b_ignore_acid"));
 
+    public static final TagKey<Block> B_BOOST_ZOMBIE_MINE_SPEED = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "b_boost_zombie_mine_speed"));
+
+    public static final TagKey<Fluid> F_ACID_COSTUME_BREATHABLE = TagKey.create(Registries.FLUID, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "f_acid_costume_breathable"));
+    public static final TagKey<Fluid> F_AQUALUNG_COSTUME_BREATHABLE = TagKey.create(Registries.FLUID, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "f_aqualung_breathable"));
+
+    public static final TagKey<Fluid> F_ACID_PROPERTIES = TagKey.create(Registries.FLUID, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "f_acid_properties"));
+    public static final TagKey<Fluid> F_TOXIC_PROPERTIES = TagKey.create(Registries.FLUID, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "f_toxic_properties"));
+
     public static final TagKey<Item> I_CAN_MINE_SCRAP = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "i_mineable_scrap"));
     public static final TagKey<Item> I_CAN_MINE_BARBARED_WIRE = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "i_mineable_barbared_wire"));
     public static final TagKey<Item> I_CAN_MINE_CHAIN_LINK = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "i_mineable_chani_link"));
+
+    public static final TagKey<Item> I_AQUALUNG_O2_ITEM = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "i_aqualung_o2_item"));
+    public static final TagKey<Item> I_ARMOR_AQUALUNG = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "i_aqualung"));
+    public static final TagKey<Item> I_ARMOR_ACID_PROTECTION = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "i_acid_protection"));
+    public static final TagKey<Item> I_ARMOR_RADIOPROTECTION = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "i_radioprotection"));
+
+    public static final TagKey<Item> I_ARMOR_VIGNETTE = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "i_armor_vignette_screen"));
+
+    public static final TagKey<Item> I_ARMOR_CAMO_FOREST = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "i_camo_forest"));
+    public static final TagKey<Item> I_ARMOR_CAMO_WINTER = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "i_camo_winter"));
+    public static final TagKey<Item> I_ARMOR_CAMO_SAND = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "i_camo_sand"));
 
     public static final TagKey<Biome> FOREST_BIOMES = TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "forest_biomes"));
     public static final TagKey<Biome> WINTER_BIOMES = TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "winter_biomes"));

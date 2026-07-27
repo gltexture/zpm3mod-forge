@@ -1,3 +1,23 @@
+/*
+ *
+ *  * zpm3forge
+ *  * Copyright (C) 2026 gltexture
+ *  *
+ *  * This program is free software: you can redistribute it and/or modify
+ *  * it under the terms of the GNU General Public License as published by
+ *  * the Free Software Foundation, either version 3 of the License, or
+ *  * (at your option) any later version.
+ *  *
+ *  * This program is distributed in the hope that it will be useful,
+ *  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *  * GNU General Public License for more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License
+ *  * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ */
+
 package ru.gltexture.zpm3.modules.guns.processing.logic;
 
 import net.minecraft.client.Minecraft;
@@ -38,8 +58,31 @@ import ru.gltexture.zpm3.engine.client.rendering.crosshair.ZPClientCrosshairReco
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
+import ru.gltexture.zpm3.modules.player.events.client.ZPPlayerLyingClientCheckEvent;
+import ru.gltexture.zpm3.modules.player.mixins.ext.IZPPlayerMixinExt;
 
 public abstract class ZPDefaultGunLogicFunctions {
+    public static float inaccuracyReduction(@NotNull Player player) {
+        if ((player instanceof IZPPlayerMixinExt ext) && ext.zpm3forge$isLying()) {
+            return 0.8f;
+        }
+        if (player.isCrouching()) {
+            return 0.9f;
+        }
+        return 1.0f;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static float recoilReduction(@NotNull Player player) {
+        if (ZPPlayerLyingClientCheckEvent.isLocalPlayerInLyingAnimationNow) {
+            return 0.7f;
+        }
+        if (player.isCrouching()) {
+            return 0.85f;
+        }
+        return 1.0f;
+    }
+
     // CLIENT
     @OnlyIn(Dist.CLIENT) public static boolean CLIENT_SHUTTER_ANIMATED_GUN_SHOT(@NotNull IGunLogicProcessor gunLogicProcessor, @NotNull Level level, @NotNull Player player, @NotNull ZPBaseGun item, @NotNull ItemStack itemStack, boolean isRightHand) {
         final int shootCooldownNominal = item.getGunProperties().getShootCooldown();
@@ -66,7 +109,7 @@ public abstract class ZPDefaultGunLogicFunctions {
                     }
                     final float recoilStrength = ZPClientCrosshairRecoilManager.setVerticalRecoil(recoil);
                     item.setCurrentShootCooldown(player, itemStack, shootCooldownNominal);
-                    ZPClientCallbacksManager.INSTANCE.triggerGunShots(player, item, itemStack, new ZPClientCallbacks.ZPGunShotCallback.GunFXData(isRightHand, recoilStrength, 0.25f));
+                    ZPClientCallbacksManager.INSTANCE.triggerGunShots(player, item, itemStack, new ZPClientCallbacks.ZPGunShotCallback.GunFXData(isRightHand, ZPDefaultGunLogicFunctions.recoilReduction(player) * recoilStrength, 0.25f));
                     item.setCurrentAmmo(player, itemStack, item.getCurrentAmmo(player, itemStack) - 1);
                     item.setClientSyncCooldown(itemStack, item.getCurrentAmmo(player, itemStack) <= 0 ? 0 : ZPClientGunClientTickProcessing.TICK_SYNC_INTERVAL);
                     item.setCurrentTimeBeforeReload(player, itemStack, 10);
@@ -118,7 +161,7 @@ public abstract class ZPDefaultGunLogicFunctions {
                     }
                     final float recoilStrength = ZPClientCrosshairRecoilManager.setVerticalRecoil(recoil);
                     item.setCurrentShootCooldown(player, itemStack, shootCooldownNominal);
-                    ZPClientCallbacksManager.INSTANCE.triggerGunShots(player, item, itemStack, new ZPClientCallbacks.ZPGunShotCallback.GunFXData(isRightHand, recoilStrength, 0.25f));
+                    ZPClientCallbacksManager.INSTANCE.triggerGunShots(player, item, itemStack, new ZPClientCallbacks.ZPGunShotCallback.GunFXData(isRightHand, ZPDefaultGunLogicFunctions.recoilReduction(player) * recoilStrength, 0.25f));
                     item.setCurrentAmmo(player, itemStack, item.getCurrentAmmo(player, itemStack) - 1);
                     item.setClientSyncCooldown(itemStack, item.getCurrentAmmo(player, itemStack) <= 0 ? 0 : ZPClientGunClientTickProcessing.TICK_SYNC_INTERVAL);
                     item.setCurrentTimeBeforeReload(player, itemStack, 10);
@@ -348,7 +391,7 @@ public abstract class ZPDefaultGunLogicFunctions {
                     inaccuracy *= 2.0f;
                 }
             }
-            VirtualBullet virtualBullet = new VirtualBullet(player, startPos, inaccuracy, item.getGunProperties().getDamage(), 256.0f);
+            VirtualBullet virtualBullet = new VirtualBullet(player, startPos, ZPDefaultGunLogicFunctions.inaccuracyReduction(player) * inaccuracy, item.getGunProperties().getDamage(), 256.0f);
             virtualBullet.simulate();
             VirtualBullet.VirtualBulletHitResult virtualBulletHitResult = virtualBullet.getVirtualBulletHitResult();
             if (virtualBulletHitResult != null) {
@@ -394,7 +437,7 @@ public abstract class ZPDefaultGunLogicFunctions {
         if (!item.isUnloadingOrReloading(player, itemStack) && item.getCurrentShootCooldown(player, itemStack) <= 0 && !item.isJammed(player, itemStack)) {
             Vector3f startPos = new Vector3f(player.position().toVector3f().add(0.0f, player.getEyeHeight(), 0.0f));
             for (int i = 0; i < bullets; i++) {
-                VirtualBullet virtualBullet = new VirtualBullet(player, startPos, item.getGunProperties().getInaccuracy(), item.getGunProperties().getDamage(), bullets > 1 ? 32.0f : 256.0f);
+                VirtualBullet virtualBullet = new VirtualBullet(player, startPos, ZPDefaultGunLogicFunctions.inaccuracyReduction(player) * item.getGunProperties().getInaccuracy(), item.getGunProperties().getDamage(), bullets > 1 ? 32.0f : 256.0f);
                 virtualBullet.simulate();
                 VirtualBullet.VirtualBulletHitResult virtualBulletHitResult = virtualBullet.getVirtualBulletHitResult();
                 if (virtualBulletHitResult != null) {

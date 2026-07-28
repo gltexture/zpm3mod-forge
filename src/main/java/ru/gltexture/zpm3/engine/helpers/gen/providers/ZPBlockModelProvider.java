@@ -52,6 +52,7 @@ public class ZPBlockModelProvider extends BlockStateProvider {
         ZPBlockModelProvider.classExecutors.put(ZPStairsBlock.class, DefaultBlockModelExecutors.STAIR_BLOCK_EXEC_PAIR);
         ZPBlockModelProvider.classExecutors.put(ZPTorchBlock.class, DefaultBlockModelExecutors.TORCH_BLOCK_EXEC_PAIR);
         ZPBlockModelProvider.classExecutors.put(ZPIronBarsBlock.class, DefaultBlockModelExecutors.IRON_BARS_BLOCK_EXEC_PAIR);
+        ZPBlockModelProvider.classExecutors.put(ZPGlassPaneBlock.class, DefaultBlockModelExecutors.GLASS_PANE_BLOCK_EXEC_PAIR);
         ZPBlockModelProvider.classExecutors.put(ZPWallTorchBlock.class, DefaultBlockModelExecutors.TORCH_WALL_BLOCK_EXEC_PAIR);
         ZPBlockModelProvider.classExecutors.put(ZPBarbaredWireBlock.class, DefaultBlockModelExecutors.DEFAULT_FLAT_ITEM_BLOCK_EXEC_PAIR);
     }

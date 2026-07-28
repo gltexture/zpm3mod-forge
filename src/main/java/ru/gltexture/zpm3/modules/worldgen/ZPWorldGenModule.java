@@ -67,7 +67,7 @@ public class ZPWorldGenModule extends ZPModule {
     @Override
     public void preInitialize() {
         ZPUtility.sides().onlyClient(() -> {
-            ZPMapArchivedRegistry.registerZpArchivedMap(ZombiePlague3.MOD_ID(), new ZPPath(ZPMapArchivedRegistry.MAPS_DIR, "zombie_city").getFullPath());
+           // ZPMapArchivedRegistry.registerZpArchivedMap(ZombiePlague3.MOD_ID(), new ZPPath(ZPMapArchivedRegistry.MAPS_DIR, "zombie_city").getFullPath());
         });
       //  ZPUtility.sides().onlyClient(() -> {
       //      ZombiePlague3.registerKeyBindings(new ZPPickUpKeyBindings());

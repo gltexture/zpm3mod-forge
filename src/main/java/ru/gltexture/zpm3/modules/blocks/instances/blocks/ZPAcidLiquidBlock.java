@@ -155,12 +155,12 @@ public class ZPAcidLiquidBlock extends ZPLiquidBlock implements EntityBlock, IHo
         float fluidHeight = fluidState.getOwnHeight();
 
         if (!adjacentState.isSolidRender(level, offsetPos)) {
-            if (random.nextFloat() < 0.05f) {
+            if (random.nextFloat() < 0.01f) {
                 Vector3f spawnPos = ZPCommonClientUtils.getParticleSpawnPositionBlockDir(pos, Direction.UP, random, new Vector3f(1.0f, fluidHeight, 1.0f));
                 Vector3f motion = ZPRandom.instance.randomVector3f(0.05f, new Vector3f(0.1f));
                 ZPCommonClientUtils.emmitAcidParticle(0.85f, spawnPos, motion);
             }
-            if (random.nextFloat() < 0.005f) {
+            if (random.nextFloat() < 0.001f) {
                 level.playLocalSound(pos, SoundEvents.FIRE_EXTINGUISH, SoundSource.MASTER, 0.5f, 1.0f + ZPRandom.getRandom().nextFloat(0.15f), false);
             }
         }

@@ -32,6 +32,7 @@ import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 import ru.gltexture.zpm3.modules.blocks.init.ZPLanternBlocks;
 import ru.gltexture.zpm3.modules.blocks.instances.blocks.lantern.ZPFadingLanternBlock;
+import ru.gltexture.zpm3.modules.common.init.ZPTags;
 
 public abstract class ZPRegLanternBlocks {
     public static void init(ZPLanternBlocks lanternBLocks, @NotNull ZPRegistry.ZPRegSupplier<Block> regSupplier) {
@@ -40,6 +41,7 @@ public abstract class ZPRegLanternBlocks {
         ZPLanternBlocks.lantern2 = regSupplier.register("lantern2", () -> new ZPFadingLanternBlock(BlockBehaviour.Properties.of().lightLevel((p_50755_) -> 12).mapColor(MapColor.METAL).forceSolidOn().requiresCorrectToolForDrops().strength(3.5F).sound(SoundType.LANTERN), () -> ZPLanternBlocks.lantern3.get())
         ).afterCreated((e, utils) -> {
             utils.loot().addSelfDropLootTable(e);
+            utils.blocks().addTagToBlock(e, ZPTags.B_CRASH_BY_BULLET);
             ZPUtility.sides().onlyClient(() -> {
                 utils.blocks().setBlockItemModelExecutor(e, DefaultBlockModelExecutors.getDefaultLantern(), DefaultBlockItemModelExecutors.getDefaultItemAs2DTexture("item/blocks/lantern2"));
                 utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_LANTERN, "lantern", ZPDataGenHelper.LANTERN_BLOCKS_DIRECTORY);
@@ -50,6 +52,7 @@ public abstract class ZPRegLanternBlocks {
         ZPLanternBlocks.lantern3 = regSupplier.register("lantern3", () -> new ZPFadingLanternBlock(BlockBehaviour.Properties.of().lightLevel((p_50755_) -> 9).mapColor(MapColor.METAL).forceSolidOn().requiresCorrectToolForDrops().strength(3.5F).sound(SoundType.LANTERN), () -> ZPLanternBlocks.lantern4.get())
         ).afterCreated((e, utils) -> {
             utils.loot().addSelfDropLootTable(e);
+            utils.blocks().addTagToBlock(e, ZPTags.B_CRASH_BY_BULLET);
             ZPUtility.sides().onlyClient(() -> {
                 utils.blocks().setBlockItemModelExecutor(e, DefaultBlockModelExecutors.getDefaultLantern(), DefaultBlockItemModelExecutors.getDefaultItemAs2DTexture("item/blocks/lantern3"));
                 utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_LANTERN, "lantern", ZPDataGenHelper.LANTERN_BLOCKS_DIRECTORY);
@@ -60,6 +63,7 @@ public abstract class ZPRegLanternBlocks {
         ZPLanternBlocks.lantern4 = regSupplier.register("lantern4", () -> new ZPFadingLanternBlock(BlockBehaviour.Properties.of().lightLevel((p_50755_) -> 5).mapColor(MapColor.METAL).forceSolidOn().requiresCorrectToolForDrops().strength(3.5F).sound(SoundType.LANTERN), () -> ZPLanternBlocks.lantern5.get())
         ).afterCreated((e, utils) -> {
             utils.loot().addSelfDropLootTable(e);
+            utils.blocks().addTagToBlock(e, ZPTags.B_CRASH_BY_BULLET);
             ZPUtility.sides().onlyClient(() -> {
                 utils.blocks().setBlockItemModelExecutor(e, DefaultBlockModelExecutors.getDefaultLantern(), DefaultBlockItemModelExecutors.getDefaultItemAs2DTexture("item/blocks/lantern4"));
                 utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_LANTERN, "lantern", ZPDataGenHelper.LANTERN_BLOCKS_DIRECTORY);
@@ -70,6 +74,7 @@ public abstract class ZPRegLanternBlocks {
         ZPLanternBlocks.lantern5 = regSupplier.register("lantern5", () -> new ZPFadingLanternBlock(BlockBehaviour.Properties.of().lightLevel((p_50755_) -> 0).mapColor(MapColor.METAL).forceSolidOn().requiresCorrectToolForDrops().strength(3.5F).sound(SoundType.LANTERN), null)
         ).afterCreated((e, utils) -> {
             utils.loot().addSelfDropLootTable(e);
+            utils.blocks().addTagToBlock(e, ZPTags.B_CRASH_BY_BULLET);
             ZPUtility.sides().onlyClient(() -> {
                 utils.blocks().setBlockItemModelExecutor(e, DefaultBlockModelExecutors.getDefaultLantern(), DefaultBlockItemModelExecutors.getDefaultItemAs2DTexture("item/blocks/lantern5"));
                 utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_LANTERN, "lantern", ZPDataGenHelper.LANTERN_BLOCKS_DIRECTORY);

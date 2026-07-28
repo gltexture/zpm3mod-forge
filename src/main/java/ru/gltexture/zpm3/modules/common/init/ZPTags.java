@@ -40,6 +40,11 @@ public abstract class ZPTags {
 
     public static final TagKey<Block> B_BOOST_ZOMBIE_MINE_SPEED = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "b_boost_zombie_mine_speed"));
 
+    public static final TagKey<Block> B_IGNORE_BY_ZOMBIE = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "b_ignore_by_zombie"));
+    public static final TagKey<Block> B_IGNORE_BULLET = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "b_ignore_bullet"));
+    public static final TagKey<Block> B_BULLET_50PRC_IGNORE = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "b_bullet_50prc_ignore"));
+    public static final TagKey<Block> B_CRASH_BY_BULLET = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "b_crash_by_bullet"));
+
     public static final TagKey<Fluid> F_ACID_COSTUME_BREATHABLE = TagKey.create(Registries.FLUID, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "f_acid_costume_breathable"));
     public static final TagKey<Fluid> F_AQUALUNG_COSTUME_BREATHABLE = TagKey.create(Registries.FLUID, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "f_aqualung_breathable"));
 

@@ -92,7 +92,10 @@ public class ZPZombieMiningGoal extends Goal {
             ZPZombieMiningGoal.blockBlackListToBreak = Arrays.stream(ZPZombieConfig.ZOMBIE_BLOCK_MINING_BLACKLIST.getVar().split(";")).toList();
         }
         return state -> {
-            ResourceLocation id = BuiltInRegistries.BLOCK.getKey(state.getBlock());
+            if (state.is(ZPTags.B_IGNORE_BY_ZOMBIE)) {
+                return false;
+            }
+            final ResourceLocation id = BuiltInRegistries.BLOCK.getKey(state.getBlock());
             if (ZPZombieMiningGoal.blockBlackListToBreak.stream().anyMatch(e -> e.equals(id.toString()))) {
                 return false;
             }

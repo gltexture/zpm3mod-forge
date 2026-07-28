@@ -104,8 +104,10 @@ public class ZPBlocks extends ZPRegistry<Block> implements IZPCollectRegistryObj
 
 
     public static RegistryObject<ZPIronBarsBlock> chain_link;
+    public static RegistryObject<ZPIronBarsBlock> scrap_bars;
 
     public static RegistryObject<ZPBlock> armored_glass;
+    public static RegistryObject<ZPGlassPaneBlock> armored_glasspane;
 
     public static RegistryObject<ZPFallingBlock> sandbag;
     public static RegistryObject<ZPBlock> scrap_block;

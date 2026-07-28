@@ -105,7 +105,7 @@ public abstract class ZPRegGuns {
             ZPGunItems.handmade_pistol = regSupplier.register("handmade_pistol",
                     () -> new ZPGunPistol(new Item.Properties(), new ZPBaseGun.GunProperties(ZPGunItems._handmade_pistol.get(), ZPBaseGun.GunProperties.HeldType.PISTOL)
                             .setCustomShotParticlesEmitter(IZPGunParticlesFX.DEFAULT_PARTICLES_EMITTER_SUPER_SMOKY_NO_SHELL)
-                            .setDamage(8)
+                            .setDamage(7)
                             .setDurability(90)
                             .setInaccuracy(2.0f)
                             .setMaxAmmo(1)
@@ -137,7 +137,7 @@ public abstract class ZPRegGuns {
             ZPGunItems.colt = regSupplier.register("colt",
                     () -> new ZPGunPistol(new Item.Properties(), new ZPBaseGun.GunProperties(ZPGunItems._colt.get(), ZPBaseGun.GunProperties.HeldType.PISTOL)
                             .setCustomShotParticlesEmitter(IZPGunParticlesFX.DEFAULT_PARTICLES_EMITTER_NO_SHELL)
-                            .setDamage(7)
+                            .setDamage(6)
                             .setDurability(360)
                             .setInaccuracy(0.5f)
                             .setMaxAmmo(6)

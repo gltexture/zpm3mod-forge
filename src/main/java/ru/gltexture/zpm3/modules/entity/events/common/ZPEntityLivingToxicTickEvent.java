@@ -52,7 +52,7 @@ public class ZPEntityLivingToxicTickEvent implements ZPEventClass {
                     }
                 }
                 if (entity.tickCount % 20 == 0 && izpLivingEntityExt.zpm3forge$getIntoxicationLevel() > 260) {
-                    entity.addEffect(new MobEffectInstance(MobEffects.HUNGER, 1200, 1, false, true));
+                    entity.addEffect(new MobEffectInstance(MobEffects.HUNGER, 1200, izpLivingEntityExt.zpm3forge$getIntoxicationLevel() > 360 ? 1 : 0, false, true));
                     entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 1200, 0, false, true));
                 }
             }

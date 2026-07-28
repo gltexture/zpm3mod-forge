@@ -33,6 +33,8 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditions;
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
@@ -126,6 +128,15 @@ public abstract class ZPRegCommonBlocks {
             utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
             ZPUtility.sides().onlyClient(() -> {
                 utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_BLOCK_CUBE, ZPGenTextureData.ALL_KEY, ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY);
+                utils.blocks().setBlockRenderType(e, ZPDataGenHelper.TRANSLUCENT_RENDER_TYPE);
+            });
+        }).end();
+
+        ZPBlocks.armored_glasspane = regSupplier.register("armored_glasspane", () -> new ZPGlassPaneBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLUE).instrument(NoteBlockInstrument.CHIME).strength(30.0f).sound(SoundType.GLASS).noOcclusion().lightLevel((e) -> 0))
+        ).afterCreated((e, utils) -> {
+            utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
+            ZPUtility.sides().onlyClient(() -> {
+                utils.blocks().addBlockModelKey_ValueArray(e, ZPDataGenHelper.NO_REFERENCE, Pair.of(ZPGenTextureData.ALL_KEY, () -> new ZPPath(ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY, "armored_glass")));
                 utils.blocks().setBlockRenderType(e, ZPDataGenHelper.TRANSLUCENT_RENDER_TYPE);
             });
         }).end();
@@ -339,7 +350,7 @@ public abstract class ZPRegCommonBlocks {
                     new ZPBlockRegFamily(b1)
                             .setSlab(b2)
                             .setStairs(b3),
-                    BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_GRAY).instrument(NoteBlockInstrument.COW_BELL).strength(12.0f, 8.0f).sound(SoundType.ANCIENT_DEBRIS),
+                    BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_GRAY).requiresCorrectToolForDrops().instrument(NoteBlockInstrument.COW_BELL).strength(12.0f, 8.0f).sound(SoundType.ANCIENT_DEBRIS),
                     (e, regUtils) -> {
                         regUtils.loot().addSelfDropLootTable(e);
                         regUtils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
@@ -357,7 +368,7 @@ public abstract class ZPRegCommonBlocks {
                     new ZPBlockRegFamily(b1)
                             .setSlab(b2)
                             .setStairs(b3),
-                    BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).instrument(NoteBlockInstrument.CHIME).strength(12.0f, 8.0f).sound(SoundType.STONE),
+                    BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).requiresCorrectToolForDrops().instrument(NoteBlockInstrument.CHIME).strength(12.0f, 8.0f).sound(SoundType.STONE),
                     (e, regUtils) -> {
                         regUtils.loot().addSelfDropLootTable(e);
                         regUtils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
@@ -375,7 +386,7 @@ public abstract class ZPRegCommonBlocks {
                     new ZPBlockRegFamily(b1)
                             .setSlab(b2)
                             .setStairs(b3),
-                    BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).instrument(NoteBlockInstrument.DIDGERIDOO).strength(12.0f, 8.0f).sound(SoundType.STONE),
+                    BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).requiresCorrectToolForDrops().instrument(NoteBlockInstrument.DIDGERIDOO).strength(12.0f, 8.0f).sound(SoundType.STONE),
                     (e, regUtils) -> {
                         regUtils.loot().addSelfDropLootTable(e);
                         regUtils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
@@ -393,7 +404,7 @@ public abstract class ZPRegCommonBlocks {
                     new ZPBlockRegFamily(b1)
                             .setSlab(b2)
                             .setStairs(b3),
-                    BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY).instrument(NoteBlockInstrument.COW_BELL).strength(12.0f, 8.0f).sound(SoundType.STONE),
+                    BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY).requiresCorrectToolForDrops().instrument(NoteBlockInstrument.COW_BELL).strength(12.0f, 8.0f).sound(SoundType.STONE),
                     (e, regUtils) -> {
                         regUtils.loot().addSelfDropLootTable(e);
                         regUtils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
@@ -413,7 +424,7 @@ public abstract class ZPRegCommonBlocks {
                     new ZPBlockRegFamily(b1)
                             .setSlab(b2)
                             .setStairs(b3),
-                    BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).instrument(NoteBlockInstrument.ZOMBIE).strength(2.0f, 6.0f).sound(SoundType.STONE),
+                    BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).requiresCorrectToolForDrops().instrument(NoteBlockInstrument.ZOMBIE).strength(2.0f, 6.0f).sound(SoundType.STONE),
                     (e, regUtils) -> {
                         regUtils.loot().addSelfDropLootTable(e);
                         regUtils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
@@ -431,7 +442,7 @@ public abstract class ZPRegCommonBlocks {
                     new ZPBlockRegFamily(b1)
                             .setSlab(b2)
                             .setStairs(b3),
-                    BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).instrument(NoteBlockInstrument.ZOMBIE).strength(2.0f, 6.0f).sound(SoundType.STONE),
+                    BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).requiresCorrectToolForDrops().instrument(NoteBlockInstrument.ZOMBIE).strength(2.0f, 6.0f).sound(SoundType.STONE),
                     (e, regUtils) -> {
                         regUtils.loot().addSelfDropLootTable(e);
                         regUtils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
@@ -511,10 +522,39 @@ public abstract class ZPRegCommonBlocks {
             });
         }).end();
 
-        ZPBlocks.uranium = regSupplier.register("uranium", () -> new ZPUraniumBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_GREEN).instrument(NoteBlockInstrument.BASEDRUM).strength(12.0F, 12.0F).sound(SoundType.METAL).lightLevel((e) -> 3))
+        ZPBlocks.scrap_bars = regSupplier.register("scrap_bars", () -> new ZPIronBarsBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).instrument(NoteBlockInstrument.BASEDRUM).strength(1.0F, 8.0F).sound(SoundType.METAL))
+        ).afterCreated((e, utils) -> {
+            utils.blocks().addTagToBlock(e, ZPTags.B_BULLET_50PRC_IGNORE);
+            utils.loot().addBlockLootTable(e, () -> new LootPool.Builder()
+                    .setRolls(UniformGenerator.between(0, 2))
+                    .add(LootItem.lootTableItem(ZPMiscItems.scrap_material.get()))
+                    .when(MatchTool.toolMatches(
+                            ItemPredicate.Builder.item().of(ZPTags.I_CAN_MINE_SCRAP)
+                    ))
+            );
+            utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
+            utils.blocks().addTagToBlock(e, ZPTags.B_MINEABLE_WITH_WRENCH);
+            utils.blocks().addTagToBlock(e, ZPTags.B_MINEABLE_WITH_CROWBAR);
+            utils.loot().addBlockLootTable(e, () -> new LootPool.Builder()
+                    .add(LootItem.lootTableItem(e.get()))
+                    .when(MatchTool.toolMatches(
+                            ItemPredicate.Builder.item().of(ZPTags.I_CAN_MINE_CHAIN_LINK)
+                    ))
+            );
+            ZPUtility.sides().onlyClient(() -> {
+                utils.blocks().addBlockModelKey_ValueArray(e, ZPDataGenHelper.NO_REFERENCE, Pair.of(ZPGenTextureData.ALL_KEY, () -> new ZPPath(ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY, "scrap_bars")));
+                utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
+            });
+        }).end();
+
+        ZPBlocks.uranium = regSupplier.register("uranium", () -> new ZPUraniumBlock(BlockBehaviour.Properties.of().requiresCorrectToolForDrops().mapColor(MapColor.COLOR_LIGHT_GREEN).instrument(NoteBlockInstrument.BASEDRUM).strength(12.0F, 12.0F).sound(SoundType.METAL).lightLevel((e) -> 3))
         ).afterCreated((e, utils) -> {
             //utils.addBlockLootTable(e, () -> new LootPool.Builder().setRolls(UniformGenerator.between(0, 2)).add(LootItem.lootTableItem(Items.IRON_NUGGET)));
             utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
+            utils.loot().addBlockLootTable(e, () -> new LootPool.Builder()
+                    .add(LootItem.lootTableItem(e.get()))
+                    .when(ExplosionCondition.survivesExplosion())
+            );
             ZPUtility.sides().onlyClient(() -> {
                 utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_BLOCK_CUBE, ZPGenTextureData.ALL_KEY, ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY);
             });
@@ -560,9 +600,13 @@ public abstract class ZPRegCommonBlocks {
             });
         }).end();
 
-        ZPBlocks.empty_bookshelf1 = regSupplier.register("empty_bookshelf1", () -> new ZPBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).instrument(NoteBlockInstrument.BASEDRUM).strength(1.5f).sound(SoundType.WOOD))
+        ZPBlocks.empty_bookshelf1 = regSupplier.register("empty_bookshelf1", () -> new ZPBlock(BlockBehaviour.Properties.of().requiresCorrectToolForDrops().mapColor(MapColor.COLOR_BROWN).instrument(NoteBlockInstrument.BASEDRUM).strength(1.5f).sound(SoundType.WOOD))
         ).afterCreated((e, utils) -> {
             utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_AXE);
+            utils.loot().addBlockLootTable(e, () -> new LootPool.Builder()
+                    .add(LootItem.lootTableItem(Items.PAPER))
+                    .setRolls(UniformGenerator.between(0, 2))
+            );
             ZPUtility.sides().onlyClient(() -> {
                 utils.blocks().setBlockModelExecutor(e, DefaultBlockModelExecutors.DEFAULT_BLOCK_EXEC_PAIR);
                 utils.blocks().addBlockModelKey_ValueArray(e, ZPDataGenHelper.DEFAULT_BLOCK_CUBE,
@@ -576,9 +620,13 @@ public abstract class ZPRegCommonBlocks {
             });
         }).end();
 
-        ZPBlocks.empty_bookshelf2 = regSupplier.register("empty_bookshelf2", () -> new ZPBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).instrument(NoteBlockInstrument.BASEDRUM).strength(1.5f).sound(SoundType.WOOD))
+        ZPBlocks.empty_bookshelf2 = regSupplier.register("empty_bookshelf2", () -> new ZPBlock(BlockBehaviour.Properties.of().requiresCorrectToolForDrops().mapColor(MapColor.COLOR_BROWN).instrument(NoteBlockInstrument.BASEDRUM).strength(1.5f).sound(SoundType.WOOD))
         ).afterCreated((e, utils) -> {
             utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_AXE);
+            utils.loot().addBlockLootTable(e, () -> new LootPool.Builder()
+                    .add(LootItem.lootTableItem(Items.PAPER))
+                    .setRolls(UniformGenerator.between(0, 2))
+            );
             ZPUtility.sides().onlyClient(() -> {
                 utils.blocks().setBlockModelExecutor(e, DefaultBlockModelExecutors.DEFAULT_BLOCK_EXEC_PAIR);
                 utils.blocks().addBlockModelKey_ValueArray(e, ZPDataGenHelper.DEFAULT_BLOCK_CUBE,
@@ -592,9 +640,13 @@ public abstract class ZPRegCommonBlocks {
             });
         }).end();
 
-        ZPBlocks.empty_bookshelf3 = regSupplier.register("empty_bookshelf3", () -> new ZPBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).instrument(NoteBlockInstrument.BASEDRUM).strength(1.5f).sound(SoundType.WOOD))
+        ZPBlocks.empty_bookshelf3 = regSupplier.register("empty_bookshelf3", () -> new ZPBlock(BlockBehaviour.Properties.of().requiresCorrectToolForDrops().mapColor(MapColor.COLOR_BROWN).instrument(NoteBlockInstrument.BASEDRUM).strength(1.5f).sound(SoundType.WOOD))
         ).afterCreated((e, utils) -> {
             utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_AXE);
+            utils.loot().addBlockLootTable(e, () -> new LootPool.Builder()
+                    .add(LootItem.lootTableItem(Items.PAPER))
+                    .setRolls(UniformGenerator.between(0, 2))
+            );
             ZPUtility.sides().onlyClient(() -> {
                 utils.blocks().setBlockModelExecutor(e, DefaultBlockModelExecutors.DEFAULT_BLOCK_EXEC_PAIR);
                 utils.blocks().addBlockModelKey_ValueArray(e, ZPDataGenHelper.DEFAULT_BLOCK_CUBE,
@@ -608,9 +660,10 @@ public abstract class ZPRegCommonBlocks {
             });
         }).end();
 
-        ZPBlocks.concrete_fence = regSupplier.register("concrete_fence", () -> new ZPPillarBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY).instrument(NoteBlockInstrument.BIT).strength(300.0F, 300.0F).sound(SoundType.STONE))
+        ZPBlocks.concrete_fence = regSupplier.register("concrete_fence", () -> new ZPPillarBlock(BlockBehaviour.Properties.of().requiresCorrectToolForDrops().mapColor(MapColor.COLOR_GRAY).instrument(NoteBlockInstrument.BIT).strength(300.0F, 300.0F).sound(SoundType.STONE))
         ).afterCreated((e, utils) -> {
             utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
+            utils.loot().addSelfDropLootTable(e);
             ZPUtility.sides().onlyClient(() -> {
                 utils.blocks().setBlockModelExecutor(e, DefaultBlockModelExecutors.DEFAULT_PILLAR_BLOCK_EXEC_PAIR);
                 utils.blocks().addBlockModelKey_ValueArray(e, ZPDataGenHelper.DEFAULT_BLOCK_PILLAR,

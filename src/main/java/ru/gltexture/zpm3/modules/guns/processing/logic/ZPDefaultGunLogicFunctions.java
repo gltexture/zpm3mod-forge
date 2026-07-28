@@ -104,7 +104,7 @@ public abstract class ZPDefaultGunLogicFunctions {
                     float recoil = item.getGunProperties().getClientVerticalRecoil();
                     if (item.getGunProperties().getHeldType().equals(ZPBaseGun.GunProperties.HeldType.RIFLE)) {
                         if (!isRightHand || !player.getOffhandItem().isEmpty()) {
-                            recoil *= 1.5f;
+                            recoil *= 2.0f;
                         }
                     }
                     final float recoilStrength = ZPClientCrosshairRecoilManager.setVerticalRecoil(recoil);
@@ -156,7 +156,7 @@ public abstract class ZPDefaultGunLogicFunctions {
                     float recoil = item.getGunProperties().getClientVerticalRecoil();
                     if (item.getGunProperties().getHeldType().equals(ZPBaseGun.GunProperties.HeldType.RIFLE)) {
                         if (!isRightHand || !player.getOffhandItem().isEmpty()) {
-                            recoil *= 1.5f;
+                            recoil *= 2.0f;
                         }
                     }
                     final float recoilStrength = ZPClientCrosshairRecoilManager.setVerticalRecoil(recoil);

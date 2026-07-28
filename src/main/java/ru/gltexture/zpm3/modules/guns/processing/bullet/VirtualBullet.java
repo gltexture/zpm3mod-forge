@@ -27,6 +27,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -53,6 +54,7 @@ import ru.gltexture.zpm3.engine.zones.ZPZoneChecks;
 import ru.gltexture.zpm3.modules.common.damage.ZPDamageSources;
 
 import ru.gltexture.zpm3.modules.blocks.init.ZPTorchBlocks;
+import ru.gltexture.zpm3.modules.common.init.ZPTags;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPCommonZombie;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPMinerZombie;
@@ -93,6 +95,9 @@ public class VirtualBullet {
 
     @SuppressWarnings("all")
     private boolean isBlockFragile(@NotNull ServerLevel serverLevel, @NotNull BlockPos blockPos) {
+        if (serverLevel.getBlockState(blockPos).is((ZPTags.B_CRASH_BY_BULLET))) {
+            return true;
+        }
         if (!ZPCombatConfig.CAN_BULLET_BREAK_BLOCK.getVar()) {
             return false;
         }
@@ -107,13 +112,13 @@ public class VirtualBullet {
             if (VirtualBullet.blockBlackListToBreak == null) {
                 VirtualBullet.blockBlackListToBreak = Arrays.stream(ZPCombatConfig.BULLET_BLOCK_BREAKING_BLACKLIST.getVar().split(";")).toList();
             }
-            ResourceLocation id = BuiltInRegistries.BLOCK.getKey(blockState.getBlock());
+            final ResourceLocation id = BuiltInRegistries.BLOCK.getKey(blockState.getBlock());
             if (VirtualBullet.blockBlackListToBreak.stream().anyMatch(e -> e.equals(id.toString()))) {
                 return false;
             }
         }
         if (blockState.getBlock().soundType.equals(SoundType.GLASS)) {
-            float hardness = blockState.getDestroySpeed(serverLevel, blockPos);
+            final float hardness = blockState.getDestroySpeed(serverLevel, blockPos);
             if (hardness >= 0 && hardness <= ZPCombatConfig.MAX_BULLET_HIT_BLOCK_HARDNESS.getVar()) {
                 return true;
             }
@@ -167,6 +172,7 @@ public class VirtualBullet {
                     localStart = new Vector3f(blockHitResult.getLocation().toVector3f());
                 } else {
                     hitResult = new VirtualBulletHitResult(false, new Vector3i(blockHitResult.getBlockPos().getX(), blockHitResult.getBlockPos().getY(), blockHitResult.getBlockPos().getZ()), blockHitResult.getLocation().toVector3f(), null, 1.0f, VirtualBulletHitType.BLOCK);
+                    break;
                 }
             }
         }
@@ -248,10 +254,10 @@ public class VirtualBullet {
         if (!(entity instanceof Player) && !(entity instanceof Villager) && !(entity instanceof ZPCommonZombie) && !(entity instanceof ZPMinerZombie)) {
             return false;
         }
-        AABB box = entity.getBoundingBox();
-        double baseY = box.minY;
-        double height = box.getYsize();
-        double headThreshold = baseY + height * 0.75;
+        final AABB box = entity.getBoundingBox();
+        final double baseY = box.minY;
+        final double height = box.getYsize();
+        final double headThreshold = baseY + height * 0.75;
         return hitPoint.y >= headThreshold;
     }
 
@@ -280,7 +286,7 @@ public class VirtualBullet {
             for (EquipmentSlot slot : new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET}) {
                 ItemStack stack = livingEntity.getItemBySlot(slot);
                 if (!stack.isEmpty() && stack.getItem() instanceof ArmorItem armor) {
-                    int materialReduction = armor.getDefense();
+                    final int materialReduction = armor.getDefense();
                     reduction += materialReduction;
                 }
             }
@@ -296,7 +302,7 @@ public class VirtualBullet {
             Vec3 vec3 = p_151359_.getFrom();
             Vec3 vec31 = p_151359_.getTo();
             VoxelShape voxelshape = p_151359_.getBlockShape(blockstate, level, p_151360_);
-            if (blockstate.getBlock() == ZPTorchBlocks.wall_lamp.get() || blockstate.getBlock() == ZPTorchBlocks.wall_lamp_wall.get() || blockstate.getBlock() == ZPTorchBlocks.wall_lamp_off.get() || blockstate.getBlock() == ZPTorchBlocks.wall_lamp_off_wall.get()) {
+            if (voxelshape.isEmpty() && blockstate.is(ZPTags.B_CRASH_BY_BULLET)) {
                 voxelshape = blockstate.getOcclusionShape(level, p_151360_);
             }
             BlockHitResult blockhitresult = level.clipWithInteractionOverride(vec3, vec31, p_151360_, voxelshape, blockstate);
@@ -308,11 +314,11 @@ public class VirtualBullet {
             BlockHitResult blockHitResult = d0 <= d1 ? blockhitresult : blockhitresult1;
 
             if (blockHitResult != null) {
-                if (level.getBlockState(blockHitResult.getBlockPos()).getBlock() instanceof LeavesBlock) {
+                if (blockstate.is(ZPTags.B_IGNORE_BULLET) && blockstate.is(BlockTags.LEAVES)) {
                     return null;
                 }
 
-                if (level.getBlockState(blockHitResult.getBlockPos()).getBlock() == Blocks.IRON_BARS) {
+                if (blockstate.is(ZPTags.B_BULLET_50PRC_IGNORE)) {
                     if (ZPRandom.getRandom().nextBoolean()) {
                         return null;
                     }

@@ -21,6 +21,7 @@
 package ru.gltexture.zpm3.modules.blocks.init.helper;
 
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -132,37 +133,41 @@ public abstract class ZPRegTorchBlocks {
 
         ZPTorchBlocks.wall_lamp = regSupplier.register("wall_lamp", () -> new ZPTorchBlock(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 15).sound(SoundType.GLASS).pushReaction(PushReaction.DESTROY), null, 0.0f) //ParticleTypes.FLAME
         ).afterCreated((e, utils) -> {
+            utils.blocks().addTagToBlock(e, ZPTags.B_CRASH_BY_BULLET);
             ZPUtility.sides().onlyClient(() -> {
-            utils.blocks().setBlockItemModelExecutor(e, DefaultBlockModelExecutors.getDefaultTorch(), DefaultBlockItemModelExecutors.getDefaultItemAsItem());
-            utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_TORCH, "torch", ZPDataGenHelper.TORCH_BLOCKS_DIRECTORY);
-            utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
+                utils.blocks().setBlockItemModelExecutor(e, DefaultBlockModelExecutors.getDefaultTorch(), DefaultBlockItemModelExecutors.getDefaultItemAsItem());
+                utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_TORCH, "torch", ZPDataGenHelper.TORCH_BLOCKS_DIRECTORY);
+                utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
             });
         }).end();
 
         ZPTorchBlocks.wall_lamp_wall = regSupplier.register("wall_lamp_wall", () -> new ZPWallTorchBlock(BlockBehaviour.Properties.of().noCollission().instabreak().lightLevel((p_50755_) -> 15).sound(SoundType.GLASS).pushReaction(PushReaction.DESTROY), null, 0.0f) //ParticleTypes.FLAME
         ).afterCreated((e, utils) -> {
+            utils.blocks().addTagToBlock(e, ZPTags.B_CRASH_BY_BULLET);
             ZPUtility.sides().onlyClient(() -> {
-            utils.blocks().setBlockModelExecutor(e, DefaultBlockModelExecutors.getDefaultWallTorch());
-            utils.blocks().addBlockModelWithCopiedTexture(e, ZPDataGenHelper.DEFAULT_TORCH_WALL, ZPTorchBlocks.wall_lamp);
-            utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
+                utils.blocks().setBlockModelExecutor(e, DefaultBlockModelExecutors.getDefaultWallTorch());
+                utils.blocks().addBlockModelWithCopiedTexture(e, ZPDataGenHelper.DEFAULT_TORCH_WALL, ZPTorchBlocks.wall_lamp);
+                utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
             });
         }).end();
 
         ZPTorchBlocks.wall_lamp_off = regSupplier.register("wall_lamp_off", () -> new ZPTorchBlock(BlockBehaviour.Properties.of().noCollission().instabreak().sound(SoundType.GLASS).pushReaction(PushReaction.DESTROY), null, 0.0f) //ParticleTypes.FLAME
         ).afterCreated((e, utils) -> {
+            utils.blocks().addTagToBlock(e, ZPTags.B_CRASH_BY_BULLET);
             ZPUtility.sides().onlyClient(() -> {
-            utils.blocks().setBlockItemModelExecutor(e, DefaultBlockModelExecutors.getDefaultTorch(), DefaultBlockItemModelExecutors.getDefaultItemAsItem());
-            utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_TORCH, "torch", ZPDataGenHelper.TORCH_BLOCKS_DIRECTORY);
-            utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
+                utils.blocks().setBlockItemModelExecutor(e, DefaultBlockModelExecutors.getDefaultTorch(), DefaultBlockItemModelExecutors.getDefaultItemAsItem());
+                utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_TORCH, "torch", ZPDataGenHelper.TORCH_BLOCKS_DIRECTORY);
+                utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
             });
         }).end();
 
         ZPTorchBlocks.wall_lamp_off_wall = regSupplier.register("wall_lamp_off_wall", () -> new ZPWallTorchBlock(BlockBehaviour.Properties.of().noCollission().instabreak().sound(SoundType.GLASS).pushReaction(PushReaction.DESTROY), null, 0.0f) //ParticleTypes.FLAME
         ).afterCreated((e, utils) -> {
+            utils.blocks().addTagToBlock(e, ZPTags.B_CRASH_BY_BULLET);
             ZPUtility.sides().onlyClient(() -> {
-            utils.blocks().setBlockModelExecutor(e, DefaultBlockModelExecutors.getDefaultWallTorch());
-            utils.blocks().addBlockModelWithCopiedTexture(e, ZPDataGenHelper.DEFAULT_TORCH_WALL, ZPTorchBlocks.wall_lamp_off);
-            utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
+                utils.blocks().setBlockModelExecutor(e, DefaultBlockModelExecutors.getDefaultWallTorch());
+                utils.blocks().addBlockModelWithCopiedTexture(e, ZPDataGenHelper.DEFAULT_TORCH_WALL, ZPTorchBlocks.wall_lamp_off);
+                utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
             });
         }).end();
     }

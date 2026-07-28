@@ -504,7 +504,7 @@ public abstract class ZPAbstractZombie extends Monster {
 
         double multiplier = 1.0;
         switch (pDifficulty.getDifficulty()) {
-            case EASY -> multiplier = 0.65;
+            case EASY -> multiplier = 0.8;
             case NORMAL -> multiplier = 1.0;
             case HARD -> multiplier = 1.2;
         }

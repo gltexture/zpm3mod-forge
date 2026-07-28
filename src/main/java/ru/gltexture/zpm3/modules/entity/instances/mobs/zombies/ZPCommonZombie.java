@@ -97,7 +97,7 @@ public class ZPCommonZombie extends ZPAbstractZombie {
                 .add(Attributes.ATTACK_DAMAGE, 2.5f * ZPZombieConfig.ZOMBIE_ATTACK_DAMAGE_MULTIPLIER.getVar())
                 .add(Attributes.ARMOR, 0.5f)
                 .add(ZPEntityAttributes.zm_attack_range_multiplier.get(), 0.65f / ZPZombieConfig.ZOMBIE_ATTACK_RANGE_MULTIPLIER.getVar())
-                .add(ZPEntityAttributes.zm_mining_speed.get(), 0.0035f * ZPZombieConfig.ZOMBIE_MINING_SPEED_MULTIPLIER.getVar())
+                .add(ZPEntityAttributes.zm_mining_speed.get(), 0.00275f * ZPZombieConfig.ZOMBIE_MINING_SPEED_MULTIPLIER.getVar())
                 .add(ZPEntityAttributes.zm_random_effect_chance.get(), 0.015f * ZPZombieConfig.ZOMBIE_APPLY_NEGATIVE_EFFECT_ON_ENTITY_CHANCE_MULTIPLIER.getVar())
                 .add(ZPEntityAttributes.zm_throw_a_gift_chance.get(), 0.0075f * ZPZombieConfig.ZOMBIE_THROW_A_GIFT_CHANCE_MULTIPLIER.getVar());
     }

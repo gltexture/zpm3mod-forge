@@ -51,6 +51,7 @@ public abstract class DefaultBlockModelExecutors {
     public static final @NotNull ZPBlockModelProvider.BlockModelExecutor TORCH_WALL_BLOCK_EXEC_PAIR = () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(DefaultBlockModelExecutors.getDefaultWallTorch(), DefaultBlockItemModelExecutors.getDefaultItemAsItem());
 
     public static final @NotNull ZPBlockModelProvider.BlockModelExecutor IRON_BARS_BLOCK_EXEC_PAIR = () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(DefaultBlockModelExecutors.getDefaultIronBars(), DefaultBlockItemModelExecutors.getDefaultItemAsItem());
+    public static final @NotNull ZPBlockModelProvider.BlockModelExecutor GLASS_PANE_BLOCK_EXEC_PAIR = () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(DefaultBlockModelExecutors.getDefaultGlassPane(), DefaultBlockItemModelExecutors.getDefaultItemAsItem());
 
 
     public static @NotNull ZPBlockModelProvider.BlockModelExecutor.EBlock<SnowLayerBlock> getDefaultLayerBlock() {
@@ -126,6 +127,76 @@ public abstract class DefaultBlockModelExecutors {
             VariantBlockStateBuilder builder = blockStateProvider.getVariantBuilder(block);
             builder.partialState().with(LanternBlock.HANGING, false).addModels(new ConfiguredModel(standingModel));
             builder.partialState().with(LanternBlock.HANGING, true).addModels(new ConfiguredModel(hangingModel));
+        };
+    }
+
+    public static @NotNull ZPBlockModelProvider.BlockModelExecutor.EBlock<? extends Block> getDefaultGlassPane() {
+        return (blockStateProvider, block, renderType, name, textureData) -> {
+            String texture = Objects.requireNonNull(textureData.getTextureByKey("all")).get().getFullPath();
+            ResourceLocation textureLoc = ZPDataGenHelper.locate(blockStateProvider, texture);
+
+            final BlockModelBuilder post = blockStateProvider.models()
+                    .withExistingParent(name + "_post", "minecraft:block/glass_pane_post")
+                    .texture("particle", textureLoc)
+                    .texture("pane", textureLoc)
+                    .texture("edge", textureLoc)
+                    .renderType(renderType);
+
+            final BlockModelBuilder side = blockStateProvider.models()
+                    .withExistingParent(name + "_side", "minecraft:block/glass_pane_side")
+                    .texture("particle", textureLoc)
+                    .texture("pane", textureLoc)
+                    .texture("edge", textureLoc)
+                    .renderType(renderType);
+
+            final BlockModelBuilder sideAlt = blockStateProvider.models()
+                    .withExistingParent(name + "_side_alt", "minecraft:block/glass_pane_side_alt")
+                    .texture("particle", textureLoc)
+                    .texture("pane", textureLoc)
+                    .texture("edge", textureLoc)
+                    .renderType(renderType);
+
+            final BlockModelBuilder noSide = blockStateProvider.models()
+                    .withExistingParent(name + "_noside", "minecraft:block/glass_pane_noside")
+                    .texture("particle", textureLoc)
+                    .texture("pane", textureLoc)
+                    .texture("edge", textureLoc)
+                    .renderType(renderType);
+
+            final BlockModelBuilder noSideAlt = blockStateProvider.models()
+                    .withExistingParent(name + "_noside_alt", "minecraft:block/glass_pane_noside_alt")
+                    .texture("particle", textureLoc)
+                    .texture("pane", textureLoc)
+                    .texture("edge", textureLoc)
+                    .renderType(renderType);
+
+            final MultiPartBlockStateBuilder builder = blockStateProvider.getMultipartBuilder(block);
+
+            builder.part().modelFile(post).addModel();
+
+            builder.part().modelFile(side).addModel()
+                    .condition(IronBarsBlock.NORTH, true);
+
+            builder.part().modelFile(side).rotationY(90).addModel()
+                    .condition(IronBarsBlock.EAST, true);
+
+            builder.part().modelFile(sideAlt).addModel()
+                    .condition(IronBarsBlock.SOUTH, true);
+
+            builder.part().modelFile(sideAlt).rotationY(90).addModel()
+                    .condition(IronBarsBlock.WEST, true);
+
+            builder.part().modelFile(noSide).addModel()
+                    .condition(IronBarsBlock.NORTH, false);
+
+            builder.part().modelFile(noSideAlt).addModel()
+                    .condition(IronBarsBlock.EAST, false);
+
+            builder.part().modelFile(noSideAlt).rotationY(90).addModel()
+                    .condition(IronBarsBlock.SOUTH, false);
+
+            builder.part().modelFile(noSide).rotationY(270).addModel()
+                    .condition(IronBarsBlock.WEST, false);
         };
     }
 

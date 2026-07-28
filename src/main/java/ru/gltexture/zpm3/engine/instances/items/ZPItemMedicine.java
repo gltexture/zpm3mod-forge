@@ -86,7 +86,7 @@ public class ZPItemMedicine extends ZPItem {
     public ItemStack consume(Level pLevel, ItemStack pFood, LivingEntity entityToAffect, LivingEntity entityWhoUsed) {
         if (pFood.isEdible()) {
             if (this.getZpMedicineProperties().getSoundToPlayOnConsume() != null) {
-                pLevel.playSound(null, entityToAffect.getX(), entityToAffect.getY(), entityToAffect.getZ(), this.getZpMedicineProperties().getSoundToPlayOnConsume().get(), SoundSource.NEUTRAL, 1.0F, 1.0F + (pLevel.random.nextFloat() - pLevel.random.nextFloat()) * 0.4F);
+                pLevel.playSound(null, entityToAffect.getX(), entityToAffect.getY(), entityToAffect.getZ(), this.getZpMedicineProperties().getSoundToPlayOnConsume().get(), SoundSource.NEUTRAL, 1.0F, 1.2F + (pLevel.random.nextFloat() - pLevel.random.nextFloat()) * 0.2F);
             }
             this.addEatEffect(pFood, pLevel, entityToAffect);
             if (this.getZpMedicineProperties().getIntoxication() > 0) {

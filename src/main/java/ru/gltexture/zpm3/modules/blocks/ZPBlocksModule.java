@@ -58,6 +58,7 @@ import ru.gltexture.zpm3.engine.recipes.ZPRecipesController;
 import ru.gltexture.zpm3.engine.recipes.ZPRecipesRegistry;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 import ru.gltexture.zpm3.modules.blocks.init.*;
+import ru.gltexture.zpm3.modules.common.init.ZPTags;
 import ru.gltexture.zpm3.modules.melee_throwables_tools.init.ZPMeleeThrowableToolsItems;
 import ru.gltexture.zpm3.modules.misc_items.init.ZPMiscItems;
 import ru.gltexture.zpm3.modules.blocks.instances.block_entities.ZPFadingBlockEntity;
@@ -249,6 +250,9 @@ public class ZPBlocksModule extends ZPModule {
         moduleEntry.addMinecraftRegistryClass(ZPBlockEntities.class);
         ZPUtility.sides().onlyClient(() -> {
         });
+
+        ZPDataGenHelper.addTagToBlock(() -> Blocks.LANTERN, ZPTags.B_CRASH_BY_BULLET);
+        ZPDataGenHelper.addTagToBlock(() -> Blocks.IRON_BARS, ZPTags.B_BULLET_50PRC_IGNORE);
     }
 
     @Override

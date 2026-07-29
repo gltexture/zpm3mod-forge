@@ -78,22 +78,24 @@ public class ZPPlayerModule extends ZPModule {
     @Override
     public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
         ZPUtility.sides().onlyClient(() -> {
-            moduleEntry.addMinecraftEventClass(ZPRenderWorldEventWithPickUpCheck.class);
-            moduleEntry.addMinecraftEventClass(ZPPlayerItemToolTipsEvent.class);
-            moduleEntry.addMinecraftEventClass(ZPRenderGuiEvent.class);
-            moduleEntry.addMinecraftEventClass(ZPResourcePackEvent.class);
-            moduleEntry.addMinecraftEventClass(ZPPlayerLyingClientCheckEvent.class);
-            moduleEntry.addMinecraftEventClass(ZPPlayerClientTickGeigerSoundEvent.class);
+            moduleEntry.registerEventHandlerClass(ZPRenderWorldEventWithPickUpCheck.class);
+            moduleEntry.registerEventHandlerClass(ZPPlayerItemToolTipsEvent.class);
+            moduleEntry.registerEventHandlerClass(ZPRenderGuiEvent.class);
+            moduleEntry.registerEventHandlerClass(ZPResourcePackEvent.class);
+            moduleEntry.registerEventHandlerClass(ZPPlayerLyingClientCheckEvent.class);
+            moduleEntry.registerEventHandlerClass(ZPPlayerClientTickGeigerSoundEvent.class);
         });
 
-        moduleEntry.addMinecraftEventClass(ZPPlayerGunCancelInterEvent.class);
-        moduleEntry.addMinecraftEventClass(ZPPlayerEntityItemEvent.class);
-        moduleEntry.addMinecraftEventClass(ZPPlayerTickEvent.class);
-        moduleEntry.addMinecraftEventClass(ZPPlayerFillBucketEvent.class);
-        moduleEntry.addMinecraftEventClass(ZPPlaceLiquidEvent.class);
-        moduleEntry.addMinecraftEventClass(ZPPlayerEatFoodEvent.class);
-        moduleEntry.addMinecraftEventClass(ZPPlayerJoinOrSpawnEvent.class);
-        moduleEntry.addMinecraftEventClass(ZPPlayerTickedBreakEquipmentEvent.class);
+        //moduleEntry.registerEventHandlerClass(ZPPlaceBlocksEvent.class);
+        moduleEntry.registerEventHandlerClass(ZPPlayerGunCancelInterEvent.class);
+        moduleEntry.registerEventHandlerClass(ZPPlayerEntityItemEvent.class);
+        moduleEntry.registerEventHandlerClass(ZPPlayerTickEvent.class);
+        moduleEntry.registerEventHandlerClass(ZPPlayerFillBucketEvent.class);
+        moduleEntry.registerEventHandlerClass(ZPPlaceLiquidEvent.class);
+        moduleEntry.registerEventHandlerClass(ZPPlayerEatFoodEvent.class);
+        moduleEntry.registerEventHandlerClass(ZPPlayerJoinOrSpawnEvent.class);
+        moduleEntry.registerEventHandlerClass(ZPPlayerTickedBreakEquipmentEvent.class);
+        moduleEntry.registerEventHandlerClass(ZPPlayerSeasicknessTickEvent.class);
     }
 
     @Override

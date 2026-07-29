@@ -23,11 +23,11 @@ package ru.gltexture.zpm3.modules.common.init;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.modules.common.init.helper.ZPRegSounds;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 
-public class ZPSounds extends ZPRegistry<SoundEvent> {
+public class ZPSounds extends ZPCommonRegistry<SoundEvent> {
     public static RegistryObject<SoundEvent> nv_goggles;
     public static RegistryObject<SoundEvent> breath;
     public static RegistryObject<SoundEvent> breath_water;

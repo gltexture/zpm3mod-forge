@@ -23,7 +23,6 @@ package ru.gltexture.zpm3.modules.entity.events.common;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -38,9 +37,9 @@ import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.modules.armor.utils.ZPArmorUtil;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.engine.core.ZPSide;
-import ru.gltexture.zpm3.engine.events.ZPEventClass;
+import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 
-public class ZPEntityLivingMiscEvents implements ZPEventClass {
+public class ZPEntityLivingMiscEvents implements ZPForgeEventHandlerClass {
     @SubscribeEvent
     public static void exec(@NotNull LivingKnockBackEvent event) {
         event.setStrength(0.25f);

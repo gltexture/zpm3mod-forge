@@ -30,19 +30,20 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.core.ZPNetworkHandler;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPCombatConfig;
 
 import ru.gltexture.zpm3.modules.net_pack.data.ZPClientZonesHelper;
 import ru.gltexture.zpm3.modules.net_pack.packets.ZPSyncConfigSettingsPacket;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.events.ZPEventClass;
+import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 import ru.gltexture.zpm3.modules.net_pack.packets.ZPValidateModePacket;
 
 import java.util.Objects;
 
-public class ZPPlayerJoinOrSpawnEvent implements ZPEventClass {
+public class ZPPlayerJoinOrSpawnEvent implements ZPForgeEventHandlerClass {
     public ZPPlayerJoinOrSpawnEvent() {
     }
 
@@ -66,7 +67,7 @@ public class ZPPlayerJoinOrSpawnEvent implements ZPEventClass {
     public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
         if (event.getEntity() instanceof ServerPlayer sp) {
             ZombiePlague3.net().sendToPlayer(new ZPValidateModePacket(false, false), sp);
-            ZombiePlague3.net().sendToPlayer(new ZPSyncConfigSettingsPacket(ZombiePlague3.net().createdNetSyncDataPack_StoC()), sp);
+            ZombiePlague3.net().sendToPlayer(new ZPSyncConfigSettingsPacket(ZPNetworkHandler.getNetDataPack_FromServer()), sp);
         }
     }
 

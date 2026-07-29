@@ -54,6 +54,12 @@ public abstract class DefaultBlockItemModelExecutors {
         };
     }
 
+    public static @NotNull ZPBlockModelProvider.BlockModelExecutor.EItem<? extends Block> getDefaultItemAsBlock(String postfix) {
+        return (blockStateProvider, block, name, textureData) -> {
+            blockStateProvider.itemModels().withExistingParent(name, blockStateProvider.modLoc("block/" + name + postfix));
+        };
+    }
+
     public static @NotNull ZPBlockModelProvider.BlockModelExecutor.EItem<? extends Block> getDefaultItemAsItem() {
         return (blockStateProvider, block, name, textureData) -> {
             String texturePath = textureData.getTextures().values().stream().findFirst().orElseThrow(() -> new ZPRuntimeException("Couldn't create texture for item")).get().getFullPath();

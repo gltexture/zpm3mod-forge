@@ -28,10 +28,10 @@ import ru.gltexture.zpm3.modules.blocks.instances.blocks.torch.ZPFadingTorchBloc
 import ru.gltexture.zpm3.modules.blocks.instances.blocks.torch.ZPFadingTorchBlockWall;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.engine.instances.blocks.*;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.engine.registry.collection.IZPCollectRegistryObjects;
 
-public class ZPTorchBlocks extends ZPRegistry<Block> implements IZPCollectRegistryObjects {
+public class ZPTorchBlocks extends ZPCommonRegistry<Block> implements IZPCollectRegistryObjects {
     public static RegistryObject<ZPTorchBlock> wall_lamp;
     public static RegistryObject<ZPWallTorchBlock> wall_lamp_wall;
 
@@ -47,8 +47,8 @@ public class ZPTorchBlocks extends ZPRegistry<Block> implements IZPCollectRegist
     public static RegistryObject<ZPFadingTorchBlock> torch4;
     public static RegistryObject<ZPFadingTorchBlockWall> torch4_wall;
 
-    public static RegistryObject<ZPFadingTorchBlock> torch5;
-    public static RegistryObject<ZPFadingTorchBlockWall> torch5_wall;
+    public static RegistryObject<ZPTorchBlock> torch5;
+    public static RegistryObject<ZPWallTorchBlock> torch5_wall;
 
     public ZPTorchBlocks() {
         super(ZPRegistryConveyor.Target.BLOCK);

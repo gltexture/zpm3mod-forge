@@ -25,11 +25,11 @@ import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.engine.registry.collection.IZPCollectRegistryObjects;
 import ru.gltexture.zpm3.modules.entity.init.helper.ZPRegSpawns;
 
-public class ZPSpawnItems extends ZPRegistry<Item> implements IZPCollectRegistryObjects {
+public class ZPSpawnItems extends ZPCommonRegistry<Item> implements IZPCollectRegistryObjects {
     // SPAWNS
     public static RegistryObject<ForgeSpawnEggItem> common_zm_spawn;
     public static RegistryObject<ForgeSpawnEggItem> miner_zm_spawn;

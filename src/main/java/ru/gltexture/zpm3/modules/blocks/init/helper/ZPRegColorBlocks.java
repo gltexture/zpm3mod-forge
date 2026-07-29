@@ -20,7 +20,6 @@
 
 package ru.gltexture.zpm3.modules.blocks.init.helper;
 
-import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -30,7 +29,6 @@ import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
@@ -38,10 +36,10 @@ import ru.gltexture.zpm3.engine.helpers.gen.data.ZPGenTextureData;
 import ru.gltexture.zpm3.engine.instances.blocks.ZPBlock;
 import ru.gltexture.zpm3.engine.instances.blocks.ZPSlabBlock;
 import ru.gltexture.zpm3.engine.instances.blocks.ZPStairsBlock;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
+import ru.gltexture.zpm3.engine.instances.blocks.ZPStoneWallBlock;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 import ru.gltexture.zpm3.modules.blocks.init.ZPBlocks;
-import ru.gltexture.zpm3.modules.common.init.ZPTags;
 
 public abstract class ZPRegColorBlocks {
     private static final String[] colorQueue = new String[] {
@@ -142,7 +140,27 @@ public abstract class ZPRegColorBlocks {
             ZPBlocks.stone_slab_yellow
     };
 
-    public static void init(@NotNull ZPRegistry.ZPRegSupplier<Block> regSupplier) {
+    @SuppressWarnings("all")
+    private static final RegistryObject<ZPStoneWallBlock>[] coloredStoneWall = new RegistryObject[] {
+            ZPBlocks.stone_wall_white,
+            ZPBlocks.stone_wall_black,
+            ZPBlocks.stone_wall_blue,
+            ZPBlocks.stone_wall_brown,
+            ZPBlocks.stone_wall_cyan,
+            ZPBlocks.stone_wall_gray,
+            ZPBlocks.stone_wall_green,
+            ZPBlocks.stone_wall_light_blue,
+            ZPBlocks.stone_wall_light_gray,
+            ZPBlocks.stone_wall_lime,
+            ZPBlocks.stone_wall_magenta,
+            ZPBlocks.stone_wall_orange,
+            ZPBlocks.stone_wall_pink,
+            ZPBlocks.stone_wall_purple,
+            ZPBlocks.stone_wall_red,
+            ZPBlocks.stone_wall_yellow
+    };
+
+    public static void init(@NotNull ZPCommonRegistry.ZPRegSupplier<Block> regSupplier) {
         for (int i = 0; i < ZPRegColorBlocks.colorQueue.length; i++) {
             final int finalI = i;
             ZPRegColorBlocks.coloredStones[i] = regSupplier.register("stone_" + ZPRegColorBlocks.colorQueue[i], () -> new ZPBlock(BlockBehaviour.Properties.of()
@@ -157,8 +175,7 @@ public abstract class ZPRegColorBlocks {
                 });
             }).end();
 
-            ZPRegColorBlocks.coloredStoneSlabs[i] = regSupplier.register("stone_slab_" + ZPRegColorBlocks.colorQueue[i], () -> new ZPSlabBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MAP_COLORS[finalI]).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(1.8F, 6.0F).instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.STONE))
+            ZPRegColorBlocks.coloredStoneSlabs[i] = regSupplier.register("stone_slab_" + ZPRegColorBlocks.colorQueue[i], () -> new ZPSlabBlock(BlockBehaviour.Properties.copy(ZPRegColorBlocks.coloredStones[finalI].get()))
             ).afterCreated((e, utils) -> {
                 utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
                 utils.loot().addBlockLootTable(e, () -> new LootPool.Builder()
@@ -170,12 +187,24 @@ public abstract class ZPRegColorBlocks {
             }).end();
 
 
-            ZPRegColorBlocks.coloredStoneStairs[i] = regSupplier.register("stone_stairs_" + ZPRegColorBlocks.colorQueue[i], () -> new ZPStairsBlock(() -> ZPRegColorBlocks.coloredStones[finalI].get().defaultBlockState(), BlockBehaviour.Properties.of()
-                    .mapColor(MAP_COLORS[finalI]).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(1.8F, 6.0F).instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.STONE))
+            ZPRegColorBlocks.coloredStoneStairs[i] = regSupplier.register("stone_stairs_" + ZPRegColorBlocks.colorQueue[i], () -> new ZPStairsBlock(() -> ZPRegColorBlocks.coloredStones[finalI].get().defaultBlockState(), BlockBehaviour.Properties.copy(ZPRegColorBlocks.coloredStones[finalI].get()))
             ).afterCreated((e, utils) -> {
                 utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
                 utils.loot().addBlockLootTable(e, () -> new LootPool.Builder()
                         .add(LootItem.lootTableItem(Blocks.COBBLESTONE_STAIRS))
+                );
+                ZPUtility.sides().onlyClient(() -> {
+                    utils.blocks().addBlockModelWithCopiedTexture(e, ZPDataGenHelper.NO_REFERENCE, ZPRegColorBlocks.coloredStones[finalI]);
+                });
+            }).end();
+
+
+            ZPRegColorBlocks.coloredStoneWall[i] = regSupplier.register("stone_wall_" + ZPRegColorBlocks.colorQueue[i], () -> new ZPStoneWallBlock(BlockBehaviour.Properties.copy(ZPRegColorBlocks.coloredStones[finalI].get()).forceSolidOn())
+            ).afterCreated((e, utils) -> {
+                utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
+                utils.blocks().addTagToBlock(e, BlockTags.WALLS);
+                utils.loot().addBlockLootTable(e, () -> new LootPool.Builder()
+                        .add(LootItem.lootTableItem(Blocks.COBBLESTONE_WALL))
                 );
                 ZPUtility.sides().onlyClient(() -> {
                     utils.blocks().addBlockModelWithCopiedTexture(e, ZPDataGenHelper.NO_REFERENCE, ZPRegColorBlocks.coloredStones[finalI]);

@@ -77,23 +77,23 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public abstract class ZPRegistry<T> {
+public abstract class ZPCommonRegistry<T> {
     private final DeferredRegister<T> deferredRegister;
     private final ZPRegistryConveyor.Target target;
     private @Nullable ZPRegistryObjectsCollector<T> zpRegistryObjectsCollector;
 
     @SuppressWarnings("all")
-    public ZPRegistry(@NotNull ZPRegistryConveyor.Target target) {
+    public ZPCommonRegistry(@NotNull ZPRegistryConveyor.Target target) {
         this.deferredRegister = this.createDeferredRegister((ResourceKey<? extends Registry<T>>) target.getRegistryKey());
         this.target = target;
     }
 
-    public ZPRegistry(@NotNull ResourceKey<? extends Registry<T>> registry, @NotNull ZPRegistryConveyor.Target target) {
+    public ZPCommonRegistry(@NotNull ResourceKey<? extends Registry<T>> registry, @NotNull ZPRegistryConveyor.Target target) {
         this.deferredRegister = this.createDeferredRegister(registry);
         this.target = target;
     }
 
-    protected abstract void runRegister(@NotNull ZPRegistry.ZPRegSupplier<T> regSupplier);
+    protected abstract void runRegister(@NotNull ZPCommonRegistry.ZPRegSupplier<T> regSupplier);
 
     public final void runRegister() {
         this.checkIfCollector();
@@ -104,7 +104,7 @@ public abstract class ZPRegistry<T> {
     private void checkIfCollector() {
         if (this instanceof IZPCollectRegistryObjects) {
             this.zpRegistryObjectsCollector = new ZPRegistryObjectsCollector<>();
-            ZPRegistryCollections.addNewEntry((Class<? extends ZPRegistry<?>>) this.getClass(), Objects.requireNonNull(this.getObjectsCollector()));
+            ZPRegistryCollections.addNewEntry((Class<? extends ZPCommonRegistry<?>>) this.getClass(), Objects.requireNonNull(this.getObjectsCollector()));
         }
     }
 
@@ -178,12 +178,12 @@ public abstract class ZPRegistry<T> {
         return new ZPRegSupplier<>() {
             @Override
             public <E extends I> ZPRegistryObject<E> register(@NotNull String name, @NotNull Supplier<E> supplier) {
-                ZPRegistry.this.preRegister(name);
-                RegistryObject<E> object = ZPRegistry.this.getDeferredRegister().register(name, supplier);
+                ZPCommonRegistry.this.preRegister(name);
+                RegistryObject<E> object = ZPCommonRegistry.this.getDeferredRegister().register(name, supplier);
                 RegistryObject<T> objectT = (RegistryObject<T>) object;
-                ZPRegistry.this.postRegister(name, objectT);
-                if (ZPRegistry.this.hasCollector()) {
-                    Objects.requireNonNull(ZPRegistry.this.getObjectsCollector()).add(objectT);
+                ZPCommonRegistry.this.postRegister(name, objectT);
+                if (ZPCommonRegistry.this.hasCollector()) {
+                    Objects.requireNonNull(ZPCommonRegistry.this.getObjectsCollector()).add(objectT);
                 }
                 return new ZPRegistryObject<>(object);
             }
@@ -201,13 +201,13 @@ public abstract class ZPRegistry<T> {
     }
 
     public static void execLaterConsumers() {
-        for (Map.Entry<Dist, List<Consumer<Void>>> entrySet : ZPRegistry.ZPRegUtils.execLater.entrySet()) {
+        for (Map.Entry<Dist, List<Consumer<Void>>> entrySet : ZPCommonRegistry.ZPRegUtils.execLater.entrySet()) {
             switch (entrySet.getKey()) {
                 case CLIENT -> ZPUtility.sides().onlyClient(() -> entrySet.getValue().forEach(e -> e.accept(null)));
                 case DEDICATED_SERVER -> ZPUtility.sides().onlyDedicatedServer(() -> entrySet.getValue().forEach(e -> e.accept(null)));
             }
         }
-        ZPRegistry.ZPRegUtils.execLater.clear();
+        ZPCommonRegistry.ZPRegUtils.execLater.clear();
     }
 
     public record ZPRegistryObject<S>(RegistryObject<S> end) {

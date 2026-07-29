@@ -30,9 +30,9 @@ import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.engine.helpers.gen.providers.ZPDamageTypesProvider;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 
-public class ZPDamageTypes extends ZPRegistry<DamageType> {
+public class ZPDamageTypes extends ZPCommonRegistry<DamageType> {
     public static ResourceKey<DamageType> zp_bullet;
     public static ResourceKey<DamageType> zp_bleeding;
 

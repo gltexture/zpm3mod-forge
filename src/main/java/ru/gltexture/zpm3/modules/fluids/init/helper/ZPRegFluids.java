@@ -30,8 +30,7 @@ import ru.gltexture.zpm3.modules.common.init.ZPTags;
 import ru.gltexture.zpm3.modules.fluids.init.ZPFluidTypes;
 import ru.gltexture.zpm3.modules.fluids.init.ZPFluids;
 import ru.gltexture.zpm3.modules.melee_throwables_tools.init.ZPMeleeThrowableToolsItems;
-import ru.gltexture.zpm3.modules.misc_items.init.ZPMiscItems;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public abstract class ZPRegFluids {
@@ -41,7 +40,7 @@ public abstract class ZPRegFluids {
     public static final ForgeFlowingFluid.Properties TOXIC_PROPERTIES = new ForgeFlowingFluid.Properties(() -> ZPFluidTypes.toxic_fluid_type.get(), () -> ZPFluids.toxic_fluid.get(), () -> ZPFluids.toxic_flowing_fluid.get())
             .bucket(() -> ZPMeleeThrowableToolsItems.toxicwater_bucket.get()).block(() -> ZPBlocks.toxic_block.get());
 
-    public static void init(@NotNull ZPRegistry.ZPRegSupplier<Fluid> regSupplier) {
+    public static void init(@NotNull ZPCommonRegistry.ZPRegSupplier<Fluid> regSupplier) {
         ZPFluids.acid_fluid = regSupplier.register("acid_fluid", () -> new ForgeFlowingFluid.Source(ZPRegFluids.ACID_PROPERTIES))
                 .afterCreated((e, utils) -> {
                     ZPUtility.sides().onlyClient(() -> {

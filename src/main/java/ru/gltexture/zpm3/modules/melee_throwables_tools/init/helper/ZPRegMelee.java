@@ -33,12 +33,12 @@ import ru.gltexture.zpm3.modules.melee_throwables_tools.instances.melee.ZPBroomS
 import ru.gltexture.zpm3.modules.melee_throwables_tools.tiers.ZPCommonToolMeleeTiers;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
 import ru.gltexture.zpm3.engine.helpers.ZPItemTabAddHelper;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 import ru.gltexture.zpm3.modules.melee_throwables_tools.init.ZPMeleeThrowableToolsItems;
 
 public abstract class ZPRegMelee {
-    public static void init(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
+    public static void init(@NotNull ZPCommonRegistry.ZPRegSupplier<Item> regSupplier) {
         ZPMeleeThrowableToolsItems.bat = regSupplier.register("bat", () -> new ZPItemSword(ZPCommonToolMeleeTiers.ZP_WOOD, 6, -3.2F, new Item.Properties())
         ).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {

@@ -25,14 +25,14 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.engine.instances.items.*;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.engine.registry.collection.IZPCollectRegistryObjects;
 import ru.gltexture.zpm3.modules.guns.init.helper.ZPRegGuns;
 import ru.gltexture.zpm3.modules.guns.item.ZPGunClassicRifle;
 import ru.gltexture.zpm3.modules.guns.item.ZPGunPistol;
 import ru.gltexture.zpm3.modules.guns.item.ZPGunShotgun;
 
-public class ZPGunItems extends ZPRegistry<Item> implements IZPCollectRegistryObjects {
+public class ZPGunItems extends ZPCommonRegistry<Item> implements IZPCollectRegistryObjects {
     //GUNS
     public static RegistryObject<ZPGunPistol> handmade_pistol;
     public static RegistryObject<ZPItem> _handmade_pistol;

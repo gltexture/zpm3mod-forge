@@ -23,15 +23,15 @@ package ru.gltexture.zpm3.modules.blocks.init.helper;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockModelExecutors;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.modules.blocks.init.ZPBlocks;
 import ru.gltexture.zpm3.modules.blocks.instances.blocks.ZPAntiZombie;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
 import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockItemModelExecutors;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public abstract class ZPRegAdminBlocks {
-    public static void init(@NotNull ZPRegistry.ZPRegSupplier<Block> regSupplier) {
+    public static void init(@NotNull ZPCommonRegistry.ZPRegSupplier<Block> regSupplier) {
         ZPBlocks.anti_zombie = regSupplier.register("anti_zombie", ZPAntiZombie::new
         ).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {

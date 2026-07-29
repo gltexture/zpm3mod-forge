@@ -20,21 +20,18 @@
 
 package ru.gltexture.zpm3.modules.player.events.common;
 
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPSide;
-import ru.gltexture.zpm3.engine.events.ZPEventClass;
-import ru.gltexture.zpm3.engine.events.common.ZPCommonForge;
+import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
 
-public class ZPPlayerGunCancelInterEvent implements ZPEventClass {
+public class ZPPlayerGunCancelInterEvent implements ZPForgeEventHandlerClass {
     @SubscribeEvent
     public static void onBreakBlock(PlayerInteractEvent.LeftClickBlock event) {
         if (ZPPlayerGunCancelInterEvent.shouldCancelInteraction(event.getEntity())) {

@@ -49,6 +49,7 @@ public abstract class DefaultBlockModelExecutors {
     public static final @NotNull ZPBlockModelProvider.BlockModelExecutor STAIR_BLOCK_EXEC_PAIR = () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(DefaultBlockModelExecutors.getStairs(), DefaultBlockItemModelExecutors.getDefaultItemAsBlock());
     public static final @NotNull ZPBlockModelProvider.BlockModelExecutor TORCH_BLOCK_EXEC_PAIR = () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(DefaultBlockModelExecutors.getDefaultTorch(), DefaultBlockItemModelExecutors.getDefaultItemAsItem());
     public static final @NotNull ZPBlockModelProvider.BlockModelExecutor TORCH_WALL_BLOCK_EXEC_PAIR = () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(DefaultBlockModelExecutors.getDefaultWallTorch(), DefaultBlockItemModelExecutors.getDefaultItemAsItem());
+    public static final @NotNull ZPBlockModelProvider.BlockModelExecutor WALL_BLOCK_EXEC_PAIR = () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(DefaultBlockModelExecutors.getDefaultWall(), DefaultBlockItemModelExecutors.getDefaultItemAsBlock("_inventory"));
 
     public static final @NotNull ZPBlockModelProvider.BlockModelExecutor IRON_BARS_BLOCK_EXEC_PAIR = () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(DefaultBlockModelExecutors.getDefaultIronBars(), DefaultBlockItemModelExecutors.getDefaultItemAsItem());
     public static final @NotNull ZPBlockModelProvider.BlockModelExecutor GLASS_PANE_BLOCK_EXEC_PAIR = () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(DefaultBlockModelExecutors.getDefaultGlassPane(), DefaultBlockItemModelExecutors.getDefaultItemAsItem());
@@ -368,6 +369,23 @@ public abstract class DefaultBlockModelExecutors {
         return (blockStateProvider, block, renderType, name, textureData) -> {
             final String texture = Objects.requireNonNull(textureData.getTextureByKey(ZPGenTextureData.ALL_KEY)).get().getFullPath();
             blockStateProvider.trapdoorBlockWithRenderType(block, ZPDataGenHelper.locate(blockStateProvider, texture), true, renderType);
+        };
+    }
+
+    public static @NotNull ZPBlockModelProvider.BlockModelExecutor.EBlock<WallBlock> getDefaultWall() {
+        return (blockStateProvider, block, renderType, name, textureData) -> {
+            final String texture = Objects.requireNonNull(textureData.getTextureByKey(ZPGenTextureData.ALL_KEY)).get().getFullPath();
+            final ModelFile post = blockStateProvider.models()
+                    .wallPost(name + "_post", ZPDataGenHelper.locate(blockStateProvider, texture))
+                    .renderType(renderType);
+            final ModelFile side = blockStateProvider.models()
+                    .wallSide(name + "_side", ZPDataGenHelper.locate(blockStateProvider, texture))
+                    .renderType(renderType);
+            final ModelFile sideTall = blockStateProvider.models()
+                    .wallSideTall(name + "_side_tall", ZPDataGenHelper.locate(blockStateProvider, texture))
+                    .renderType(renderType);
+            blockStateProvider.models().wallInventory(name + "_inventory", ZPDataGenHelper.locate(blockStateProvider, texture)).renderType(renderType);
+            blockStateProvider.wallBlock(block, post, side, sideTall);
         };
     }
 

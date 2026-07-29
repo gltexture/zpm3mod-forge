@@ -26,10 +26,10 @@ import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.modules.fluids.data.AcidFluidType;
 import ru.gltexture.zpm3.modules.fluids.data.ToxicFluidType;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.engine.registry.collection.IZPCollectRegistryObjects;
 
-public class ZPFluidTypes extends ZPRegistry<FluidType> implements IZPCollectRegistryObjects {
+public class ZPFluidTypes extends ZPCommonRegistry<FluidType> implements IZPCollectRegistryObjects {
     public static RegistryObject<AcidFluidType> acid_fluid_type;
     public static RegistryObject<ToxicFluidType> toxic_fluid_type;
 

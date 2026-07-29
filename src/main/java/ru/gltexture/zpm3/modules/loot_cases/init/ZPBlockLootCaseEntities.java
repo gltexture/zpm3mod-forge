@@ -29,13 +29,13 @@ import ru.gltexture.zpm3.modules.loot_cases.instances.block_entities.ZPLootCaseB
 import ru.gltexture.zpm3.modules.loot_cases.instances.blocks.ZPDefaultBlockLootCase;
 import ru.gltexture.zpm3.modules.loot_cases.rendering.ZPLootCaseRenderer;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.engine.registry.ZPRegistryCollections;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 import java.util.Arrays;
 
-public class ZPBlockLootCaseEntities extends ZPRegistry<BlockEntityType<?>> {
+public class ZPBlockLootCaseEntities extends ZPCommonRegistry<BlockEntityType<?>> {
     public static RegistryObject<BlockEntityType<ZPLootCaseBlockEntity>> loot_case_block_entity;
 
     public ZPBlockLootCaseEntities() {

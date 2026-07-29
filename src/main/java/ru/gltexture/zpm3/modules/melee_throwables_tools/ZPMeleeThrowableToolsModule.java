@@ -31,8 +31,6 @@ import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Matrix4f;
-import org.joml.Vector3f;
 import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooksManager;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.module.ZPModule;
@@ -44,9 +42,7 @@ import ru.gltexture.zpm3.engine.service.ZPUtility;
 import ru.gltexture.zpm3.modules.debug.events.ZPRenderStuffEvent;
 import ru.gltexture.zpm3.modules.melee_throwables_tools.events.client.ZPPlayerClientTickBroomEvent;
 import ru.gltexture.zpm3.modules.melee_throwables_tools.init.ZPMeleeThrowableToolsItems;
-import ru.gltexture.zpm3.modules.melee_throwables_tools.instances.melee.ZPBroomSword;
 import ru.gltexture.zpm3.modules.melee_throwables_tools.tiers.ZPCommonToolMeleeTiers;
-import ru.gltexture.zpm3.modules.player.events.client.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -81,7 +77,7 @@ public class ZPMeleeThrowableToolsModule extends ZPModule {
     @Override
     public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
         ZPUtility.sides().onlyClient(() -> {
-            moduleEntry.addMinecraftEventClass(ZPPlayerClientTickBroomEvent.class);
+            moduleEntry.registerEventHandlerClass(ZPPlayerClientTickBroomEvent.class);
         });
         moduleEntry.addRecipesRegistry(new ZPMeleeThrowableToolsModule.ZPMeleeThrowablesToolsRecipeRegistry());
         moduleEntry.addTier(ZPCommonToolMeleeTiers.values());

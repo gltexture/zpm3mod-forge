@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockModelExecutors;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.modules.loot_cases.instances.blocks.ZPDefaultBlockLootCase;
 import ru.gltexture.zpm3.modules.loot_cases.loot_tables.ZPLootTable;
 import ru.gltexture.zpm3.modules.loot_cases.registry.ZPLootTablesCollection;
@@ -32,7 +33,6 @@ import ru.gltexture.zpm3.modules.loot_cases.registry.ZPLootTablesReader;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
 import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockItemModelExecutors;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.registry.collection.IZPCollectRegistryObjects;
 import ru.gltexture.zpm3.engine.service.Pair;
 import ru.gltexture.zpm3.engine.service.ZPPath;
@@ -40,7 +40,7 @@ import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 import java.util.*;
 
-public class ZPLootCases extends ZPRegistry<ZPDefaultBlockLootCase> implements IZPCollectRegistryObjects {
+public class ZPLootCases extends ZPCommonRegistry<ZPDefaultBlockLootCase> implements IZPCollectRegistryObjects {
     public static Map<String, RegistryObject<ZPDefaultBlockLootCase>> generatedLootCases = new HashMap<>();
 
     public ZPLootCases() {

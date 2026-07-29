@@ -27,14 +27,14 @@ import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import ru.gltexture.zpm3.engine.core.ZPSide;
-import ru.gltexture.zpm3.engine.events.ZPEventClass;
+import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 import ru.gltexture.zpm3.engine.zones.ZPZoneManager;
 import ru.gltexture.zpm3.modules.commands.imgui.ZPCreativeUtilityUI;
 import ru.gltexture.zpm3.modules.debug.render.ZPRenderLines;
 
 import java.util.Collection;
 
-public class ZPRenderZones implements ZPEventClass {
+public class ZPRenderZones implements ZPForgeEventHandlerClass {
     public ZPRenderZones() {
     }
 

@@ -32,10 +32,10 @@ import ru.gltexture.zpm3.modules.guns.rendering.fx.ZPDefaultGunMuzzleflashFX;
 import ru.gltexture.zpm3.modules.guns.rendering.tracer.ZPBulletTracerManager;
 import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
 import ru.gltexture.zpm3.engine.core.ZPSide;
-import ru.gltexture.zpm3.engine.events.ZPEventClass;
+import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 
 @OnlyIn(Dist.CLIENT)
-public class ZPGunPostRender implements ZPEventClass {
+public class ZPGunPostRender implements ZPForgeEventHandlerClass {
     @SubscribeEvent
     public static void exec(@NotNull RenderLevelStageEvent renderLevelStageEvent) {
         if (renderLevelStageEvent.getStage() == RenderLevelStageEvent.Stage.AFTER_LEVEL) {

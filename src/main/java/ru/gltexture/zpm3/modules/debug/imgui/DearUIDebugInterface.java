@@ -32,12 +32,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL46;
+import ru.gltexture.zpm3.engine.core.ZPNetworkHandler;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
+import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.modules.guns.rendering.fx.ZPDefaultGunMuzzleflashFX;
 import ru.gltexture.zpm3.engine.client.rendering.ui.imgui.interfaces.DearUIInterface;
 import ru.gltexture.zpm3.modules.player.mixins.ext.IZPPlayerMixinExt;
-
-import java.nio.file.Path;
 
 public class DearUIDebugInterface implements DearUIInterface {
     public DearUIDebugInterface() {
@@ -222,10 +222,10 @@ public class DearUIDebugInterface implements DearUIInterface {
             DearUIDebugInterface.debugDarknessValue = v[0];
         }
         if (ImGui.collapsingHeader("Debug Client Data")) {
-            if (ZombiePlague3.getClient_netSyncDataPack().dataPack().isEmpty()) {
+            if (ZPNetworkHandler.getNetDataPack_FromServer().orElseThrow(ZPRuntimeException::new).dataPack().isEmpty()) {
                 ImGui.text("Empty");
             } else {
-                ZombiePlague3.getClient_netSyncDataPack().dataPack().forEach((k, v) -> {
+                ZPNetworkHandler.getNetDataPack_FromServer().orElseThrow(ZPRuntimeException::new).dataPack().forEach((k, v) -> {
                     ImGui.text(k + " = " + v);
                 });
             }

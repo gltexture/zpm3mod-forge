@@ -39,10 +39,10 @@ import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
 import ru.gltexture.zpm3.modules.guns.processing.input.ZPClientGunClientTickProcessing;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.events.ZPEventClass;
+import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 
 @OnlyIn(Dist.CLIENT)
-public class ZPGunsUI implements ZPEventClass {
+public class ZPGunsUI implements ZPForgeEventHandlerClass {
     private static final ResourceLocation mouse_left = ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "textures/ui/mouse_left.png");
     private static final ResourceLocation mouse_right = ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "textures/ui/mouse_right.png");
     private static final ResourceLocation pistol_ind = ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "textures/ui/pistol_ind.png");

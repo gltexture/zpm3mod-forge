@@ -26,15 +26,15 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.modules.blocks.init.ZPBlocks;
 import ru.gltexture.zpm3.modules.fluids.init.ZPFluids;
 import ru.gltexture.zpm3.modules.blocks.instances.blocks.ZPAcidLiquidBlock;
 import ru.gltexture.zpm3.modules.blocks.instances.blocks.ZPToxicLiquidBlock;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 
 public abstract class ZPRegFluidBlocks {
 
-    public static void init(ZPRegistry<Block> zpRegistry, @NotNull ZPRegistry.ZPRegSupplier<Block> regSupplier) {
+    public static void init(ZPCommonRegistry<Block> zpRegistry, @NotNull ZPCommonRegistry.ZPRegSupplier<Block> regSupplier) {
         zpRegistry.initInstanceCollecting("fadingLiquids");
         ZPBlocks.acid_block = regSupplier.register("acid_block", () -> new ZPAcidLiquidBlock(() -> ZPFluids.acid_fluid.get(), BlockBehaviour.Properties.of()
                 .mapColor(MapColor.COLOR_LIGHT_GREEN).replaceable().noCollission().strength(100.0F).pushReaction(PushReaction.DESTROY).noLootTable().liquid().sound(SoundType.EMPTY))

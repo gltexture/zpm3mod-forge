@@ -24,12 +24,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.engine.registry.collection.IZPCollectRegistryObjects;
 import ru.gltexture.zpm3.modules.blocks.init.helper.ZPRegLanternBlocks;
 import ru.gltexture.zpm3.modules.blocks.instances.blocks.lantern.ZPFadingLanternBlock;
 
-public class ZPLanternBlocks extends ZPRegistry<Block> implements IZPCollectRegistryObjects {
+public class ZPLanternBlocks extends ZPCommonRegistry<Block> implements IZPCollectRegistryObjects {
     public static RegistryObject<ZPFadingLanternBlock> lantern2;
     public static RegistryObject<ZPFadingLanternBlock> lantern3;
     public static RegistryObject<ZPFadingLanternBlock> lantern4;

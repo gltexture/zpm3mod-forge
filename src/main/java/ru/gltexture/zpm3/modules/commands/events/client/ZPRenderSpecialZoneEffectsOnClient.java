@@ -34,7 +34,7 @@ import org.joml.Vector2i;
 import org.joml.Vector3f;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
-import ru.gltexture.zpm3.engine.events.ZPEventClass;
+import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 import ru.gltexture.zpm3.engine.service.Pair;
 import ru.gltexture.zpm3.engine.zones.ZPZoneChecks;
 import ru.gltexture.zpm3.engine.zones.ZPZoneFlag;
@@ -45,8 +45,8 @@ import java.util.*;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class ZPRenderSpecialZoneEffectsOnClient implements ZPEventClass {
-    private static Map<ZPZoneFlag, RenderZoneEffect> zoneEffectMap = new HashMap<>();
+public class ZPRenderSpecialZoneEffectsOnClient implements ZPForgeEventHandlerClass {
+    private static final Map<ZPZoneFlag, RenderZoneEffect> zoneEffectMap = new HashMap<>();
 
     public ZPRenderSpecialZoneEffectsOnClient() {
     }

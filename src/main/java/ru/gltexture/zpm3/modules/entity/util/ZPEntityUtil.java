@@ -41,6 +41,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPCombatConfig;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPEntityConfig;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
 import ru.gltexture.zpm3.engine.zones.ZPZoneChecks;
 import ru.gltexture.zpm3.modules.armor.utils.ZPArmorUtil;
 import ru.gltexture.zpm3.modules.blocks.init.ZPBlocks;
@@ -156,6 +157,10 @@ public class ZPEntityUtil {
             entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 1200, 1, true, true));
         }
 
+        if (!entity.hasEffect(ZPMobEffects.zombie_plague.get()) && rad >= 50) {
+            entity.addEffect(new MobEffectInstance(ZPMobEffects.zombie_plague.get(), ZPZombieConfig.ZOMBIE_PLAGUE_VIRUS_EFFECT_TIME_TICKS.getVar(), 0, false, false));
+        }
+
         if (rad >= 60) {
             entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 1200, 1, true, true));
         }
@@ -175,13 +180,28 @@ public class ZPEntityUtil {
         }
     }
 
+    public static void applySeasicknessEffectsOnPlayer(Player entity, int level) {
+        if (level >= 240) {
+            entity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 600, 0, true, true));
+        }
+
+        if (level >= 300) {
+            entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 600, 0, true, true));
+            entity.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 600, 0, true, true));
+        }
+
+        if (level >= 340) {
+            entity.addEffect(new MobEffectInstance(MobEffects.HUNGER, 600, 0, true, true));
+        }
+    }
+
     public static void damageEntityAndPossiblyEquipment(Entity entity) {
         if (entity.tickCount % ZPCombatConfig.ACID_DAMAGE_TICK_RATE.getVar() != 0) {
             return;
         }
 
         if (entity instanceof LivingEntity livingEntity) {
-            livingEntity.hurt(livingEntity.damageSources().generic(), livingEntity instanceof ZPAbstractZombie ? 6.0f : 1.25f);
+            livingEntity.hurt(livingEntity.damageSources().generic(), livingEntity instanceof ZPAbstractZombie ? 6.0f : 1.0f);
 
             if (livingEntity instanceof Player player) {
                 for (ItemStack stack : player.getInventory().items) {

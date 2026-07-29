@@ -20,7 +20,6 @@
 
 package ru.gltexture.zpm3.modules.entity.events.common;
 
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
@@ -29,11 +28,11 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPSide;
-import ru.gltexture.zpm3.engine.events.ZPEventClass;
+import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 import ru.gltexture.zpm3.modules.entity.mixins.ext.IZPLivingEntityExt;
 import ru.gltexture.zpm3.modules.mob_effects.init.ZPMobEffects;
 
-public class ZPLivingApplyEffectEvent implements ZPEventClass {
+public class ZPLivingApplyEffectEvent implements ZPForgeEventHandlerClass {
     @SubscribeEvent
     public static void onEffectApplicable(MobEffectEvent.Applicable event) {
         LivingEntity entity = event.getEntity();

@@ -22,10 +22,10 @@ package ru.gltexture.zpm3.modules.common.init.test;
 
 import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 
 public abstract class ZPRegTest {
-    public static void init(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
+    public static void init(@NotNull ZPCommonRegistry.ZPRegSupplier<Item> regSupplier) {
 
     }
 }

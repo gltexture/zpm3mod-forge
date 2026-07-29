@@ -24,11 +24,11 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.modules.mob_effects.instances.*;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 
-public class ZPMobEffects extends ZPRegistry<MobEffect> {
+public class ZPMobEffects extends ZPCommonRegistry<MobEffect> {
     public static RegistryObject<ZPBleedingEffect> bleeding;
     public static RegistryObject<ZPZombiePlagueEffect> zombie_plague;
     public static RegistryObject<ZPFractureEffect> fracture;

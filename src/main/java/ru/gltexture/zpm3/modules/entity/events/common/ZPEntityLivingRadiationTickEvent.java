@@ -27,15 +27,13 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPSide;
-import ru.gltexture.zpm3.engine.core.config.builtin.ZPEntityConfig;
-import ru.gltexture.zpm3.engine.events.ZPEventClass;
+import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 import ru.gltexture.zpm3.engine.nbt.ZPTagID;
 import ru.gltexture.zpm3.engine.nbt.entity.ZPEntityNBT;
-import ru.gltexture.zpm3.modules.armor.utils.ZPArmorUtil;
 import ru.gltexture.zpm3.modules.entity.mixins.ext.IZPLivingEntityExt;
 import ru.gltexture.zpm3.modules.entity.util.ZPEntityUtil;
 
-public class ZPEntityLivingRadiationTickEvent implements ZPEventClass {
+public class ZPEntityLivingRadiationTickEvent implements ZPForgeEventHandlerClass {
     public ZPEntityLivingRadiationTickEvent() {
     }
 

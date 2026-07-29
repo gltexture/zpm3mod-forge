@@ -22,7 +22,6 @@ package ru.gltexture.zpm3.engine.registry;
 
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.engine.core.ZPLogger;
 import ru.gltexture.zpm3.engine.exceptions.ZPNullException;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
@@ -32,9 +31,9 @@ import ru.gltexture.zpm3.engine.service.Pair;
 import java.util.*;
 
 public abstract class ZPRegistryCollections {
-    private static final Map<Class<? extends ZPRegistry<?>>, IZPRegistryObjectsCollector<?>> zpRegistryObjectsCollectorMap = new HashMap<>();
+    private static final Map<Class<? extends ZPCommonRegistry<?>>, IZPRegistryObjectsCollector<?>> zpRegistryObjectsCollectorMap = new HashMap<>();
 
-    static void addNewEntry(@NotNull Class<? extends ZPRegistry<?>> clazz, @NotNull IZPRegistryObjectsCollector<?> collector) {
+    static void addNewEntry(@NotNull Class<? extends ZPCommonRegistry<?>> clazz, @NotNull IZPRegistryObjectsCollector<?> collector) {
         ZPRegistryCollections.zpRegistryObjectsCollectorMap.put(clazz, collector);
     }
 
@@ -44,7 +43,7 @@ public abstract class ZPRegistryCollections {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> IZPRegistryObjectsCollector<T> getCollector(@NotNull Class<? extends ZPRegistry<T>> clazz) {
+    public static <T> IZPRegistryObjectsCollector<T> getCollector(@NotNull Class<? extends ZPCommonRegistry<T>> clazz) {
         try {
             if (!ZPRegistryCollections.zpRegistryObjectsCollectorMap.containsKey(clazz)) {
                 throw new ZPNullException("Couldn't find collection for: " + clazz);
@@ -55,7 +54,7 @@ public abstract class ZPRegistryCollections {
         }
     }
 
-    public static <T> LinkedHashSet<RegistryObject<T>> getCollectionById(@NotNull Class<? extends ZPRegistry<T>> clazz, @NotNull String id) {
+    public static <T> LinkedHashSet<RegistryObject<T>> getCollectionById(@NotNull Class<? extends ZPCommonRegistry<T>> clazz, @NotNull String id) {
         try {
             return ZPRegistryCollections.getCollector(clazz).getCollection(id);
         } catch (ZPNullException | ClassCastException e) {
@@ -63,7 +62,7 @@ public abstract class ZPRegistryCollections {
         }
     }
 
-    public static <T> LinkedHashSet<RegistryObject<T>> getCollectionById(Pair<@NotNull Class<? extends ZPRegistry<T>>, @NotNull String>... stringPair) {
+    public static <T> LinkedHashSet<RegistryObject<T>> getCollectionById(Pair<@NotNull Class<? extends ZPCommonRegistry<T>>, @NotNull String>... stringPair) {
         try {
             final LinkedHashSet<RegistryObject<T>> registryObjects = new LinkedHashSet<>();
             Arrays.stream(stringPair).forEach(e -> {

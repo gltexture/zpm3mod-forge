@@ -20,11 +20,20 @@
 
 package ru.gltexture.zpm3.modules.player.mixins.impl.common;
 
+import com.mojang.authlib.GameProfile;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -42,6 +51,8 @@ import ru.gltexture.zpm3.modules.player.mixins.ext.IZPPlayerMixinExt;
 
 @Mixin(Player.class)
 public abstract class ZPPlayerMixin implements IZPPlayerMixinExt {
+    @Unique private static final EntityDataAccessor<Integer> SEASICKNESS_LEVEL = SynchedEntityData.defineId(Player.class, EntityDataSerializers.INT);
+
     @Shadow(remap = false)
     public abstract void setForcedPose(@Nullable Pose pose);
 
@@ -69,6 +80,17 @@ public abstract class ZPPlayerMixin implements IZPPlayerMixinExt {
             this.zpm3forge$zpNetDataPack_fromClient = ZombiePlague3.net().createdNetSyncDataPack_CtoS();
         }
         return this.zpm3forge$zpNetDataPack_fromClient;
+    }
+
+    @Inject(method = "<init>", at = @At("TAIL"))
+    private void onConstructed(Level pLevel, BlockPos pPos, float pYRot, GameProfile pGameProfile, CallbackInfo ci) {
+        this.zpm3forge$defineZPSyncData();
+    }
+
+    @Override
+    public void zpm3forge$defineZPSyncData() {
+        Entity self = (Entity) (Object) this;
+        self.getEntityData().define(SEASICKNESS_LEVEL, 0);
     }
 
     //@Inject(method = "jumpFromGround", at = @At("HEAD"), cancellable = true)
@@ -100,6 +122,16 @@ public abstract class ZPPlayerMixin implements IZPPlayerMixinExt {
                 this.zpm3forge$pingTickTime = 0;
             }
         }
+    }
+
+    @Override
+    public int zpm3forge$getSeasicknessLevel() {
+        return ((LivingEntity) (Object) this).getEntityData().get(SEASICKNESS_LEVEL);
+    }
+
+    @Override
+    public void zpm3forge$setSeasicknessLevel(int level) {
+        ((LivingEntity) (Object) this).getEntityData().set(SEASICKNESS_LEVEL, Math.min(level, 512));
     }
 
     @Inject(method = "updatePlayerPose", at = @At("TAIL"), cancellable = true)

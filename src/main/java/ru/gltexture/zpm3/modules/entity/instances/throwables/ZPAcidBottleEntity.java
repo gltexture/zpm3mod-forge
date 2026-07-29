@@ -172,9 +172,12 @@ public class ZPAcidBottleEntity extends ZPThrowableEntity {
                     if (hit.getType() == HitResult.Type.BLOCK) {
                         continue;
                     }
-                    double k = 1.0 - Math.pow((dist / radius), Math.E);
+                    final double k = 1.0 - Math.pow((dist / radius), Math.E);
                     int affectTime = (int) Math.max(minTime, Math.round(k * maxTime));
                     if (target instanceof IZPEntityExt ext) {
+                        if (target instanceof ItemEntity) {
+                            affectTime *= 3;
+                        }
                         ext.addAcidLevel(affectTime);
                     }
                 }

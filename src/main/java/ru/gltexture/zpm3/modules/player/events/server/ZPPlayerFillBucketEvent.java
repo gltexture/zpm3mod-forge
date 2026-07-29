@@ -41,10 +41,10 @@ import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
-import ru.gltexture.zpm3.engine.events.ZPEventClass;
+import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 import ru.gltexture.zpm3.engine.instances.blocks.IHotLiquid;
 
-public class ZPPlayerFillBucketEvent implements ZPEventClass {
+public class ZPPlayerFillBucketEvent implements ZPForgeEventHandlerClass {
     @SubscribeEvent
     public static void exec(@NotNull FillBucketEvent event) {
         if (event.getEmptyBucket().getItem().equals(Items.BUCKET)) {

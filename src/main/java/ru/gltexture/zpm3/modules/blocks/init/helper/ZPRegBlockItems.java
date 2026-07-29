@@ -26,6 +26,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.modules.blocks.init.ZPBlocks;
 import ru.gltexture.zpm3.modules.blocks.init.ZPCampfireBlocks;
 import ru.gltexture.zpm3.modules.blocks.init.ZPLanternBlocks;
@@ -35,12 +36,11 @@ import ru.gltexture.zpm3.engine.core.ZPLogger;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.engine.helpers.ZPItemBlockHelper;
 import ru.gltexture.zpm3.engine.instances.ZPBlockItemsRegistry;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.registry.ZPRegistryCollections;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public abstract class ZPRegBlockItems {
-    public static void init(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
+    public static void init(@NotNull ZPCommonRegistry.ZPRegSupplier<Item> regSupplier) {
         ZPRegBlockItems.commonBlocks(regSupplier);
         ZPRegBlockItems.regTorchBlocks(regSupplier);
         ZPRegBlockItems.regLanternBlocks(regSupplier);
@@ -50,7 +50,7 @@ public abstract class ZPRegBlockItems {
         }
     }
 
-    private static void regTorchBlocks(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
+    private static void regTorchBlocks(@NotNull ZPCommonRegistry.ZPRegSupplier<Item> regSupplier) {
         ZPRegBlockItems.regTorchBlock(regSupplier, ZPTorchBlocks.torch2, ZPTorchBlocks.torch2_wall);
         ZPRegBlockItems.regTorchBlock(regSupplier, ZPTorchBlocks.torch3, ZPTorchBlocks.torch3_wall);
         ZPRegBlockItems.regTorchBlock(regSupplier, ZPTorchBlocks.torch4, ZPTorchBlocks.torch4_wall);
@@ -59,14 +59,14 @@ public abstract class ZPRegBlockItems {
         ZPRegBlockItems.regTorchBlock(regSupplier, ZPTorchBlocks.wall_lamp_off, ZPTorchBlocks.wall_lamp_off_wall);
     }
 
-    private static void regLanternBlocks(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
+    private static void regLanternBlocks(@NotNull ZPCommonRegistry.ZPRegSupplier<Item> regSupplier) {
         ZPRegBlockItems.regLanternOrCampfireBlock(regSupplier, ZPLanternBlocks.lantern2);
         ZPRegBlockItems.regLanternOrCampfireBlock(regSupplier, ZPLanternBlocks.lantern3);
         ZPRegBlockItems.regLanternOrCampfireBlock(regSupplier, ZPLanternBlocks.lantern4);
         ZPRegBlockItems.regLanternOrCampfireBlock(regSupplier, ZPLanternBlocks.lantern5);
     }
 
-    private static void commonBlocks(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
+    private static void commonBlocks(@NotNull ZPCommonRegistry.ZPRegSupplier<Item> regSupplier) {
         final RegistryObject<CreativeModeTab> tabToAdd = ZPTabs.zp_blocks_tab;
 
         try {
@@ -84,7 +84,7 @@ public abstract class ZPRegBlockItems {
         }
     }
 
-    private static void regTorchBlock(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier, @NotNull RegistryObject<? extends Block> block, @NotNull RegistryObject<? extends Block> wallBlock) {
+    private static void regTorchBlock(@NotNull ZPCommonRegistry.ZPRegSupplier<Item> regSupplier, @NotNull RegistryObject<? extends Block> block, @NotNull RegistryObject<? extends Block> wallBlock) {
         final RegistryObject<CreativeModeTab> tabToAdd = ZPTabs.zp_blocks_tab;
 
         RegistryObject<BlockItem> blockItemRegistryObject = ZPItemBlockHelper.createWallBlockItem(regSupplier, block, wallBlock
@@ -97,7 +97,7 @@ public abstract class ZPRegBlockItems {
         ZPBlockItemsRegistry.putNewEntry(block, blockItemRegistryObject);
     }
 
-    private static void regLanternOrCampfireBlock(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier, @NotNull RegistryObject<? extends Block> block) {
+    private static void regLanternOrCampfireBlock(@NotNull ZPCommonRegistry.ZPRegSupplier<Item> regSupplier, @NotNull RegistryObject<? extends Block> block) {
         final RegistryObject<CreativeModeTab> tabToAdd = ZPTabs.zp_blocks_tab;
 
         RegistryObject<BlockItem> blockItemRegistryObject = ZPItemBlockHelper.createBlockItem(regSupplier, block

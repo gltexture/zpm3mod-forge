@@ -24,12 +24,12 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.modules.fluids.init.helper.ZPRegFluids;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.registry.collection.IZPCollectRegistryObjects;
 
-public class ZPFluids extends ZPRegistry<Fluid> implements IZPCollectRegistryObjects {
+public class ZPFluids extends ZPCommonRegistry<Fluid> implements IZPCollectRegistryObjects {
     public static RegistryObject<ForgeFlowingFluid.Source> acid_fluid;
     public static RegistryObject<ForgeFlowingFluid.Flowing> acid_flowing_fluid;
 

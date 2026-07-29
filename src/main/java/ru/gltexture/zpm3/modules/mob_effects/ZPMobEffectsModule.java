@@ -63,7 +63,7 @@ public class ZPMobEffectsModule extends ZPModule {
     @Override
     public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
         moduleEntry.addMinecraftRegistryClass(ZPMobEffects.class);
-        moduleEntry.addMinecraftEventClass(ZPEntityEffectActionsEvent.class);
+        moduleEntry.registerEventHandlerClass(ZPEntityEffectActionsEvent.class);
     }
 
     @Override

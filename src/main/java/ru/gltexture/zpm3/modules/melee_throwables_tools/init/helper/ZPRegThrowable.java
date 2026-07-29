@@ -31,12 +31,12 @@ import ru.gltexture.zpm3.engine.helpers.gen.data.ZPGenTextureData;
 import ru.gltexture.zpm3.engine.instances.items.ZPItemThrowable;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
 import ru.gltexture.zpm3.engine.helpers.ZPDispenseProjectileHelper;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 import ru.gltexture.zpm3.modules.melee_throwables_tools.init.ZPMeleeThrowableToolsItems;
 
 public abstract class ZPRegThrowable {
-    public static void init(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
+    public static void init(@NotNull ZPCommonRegistry.ZPRegSupplier<Item> regSupplier) {
         ZPMeleeThrowableToolsItems.acid_bottle = regSupplier.register("acid_bottle",
                 () -> new ZPItemThrowable(((inaccuracy, velocity, itemstack, pLevel, pPlayer, pHand) -> {
                     ZPAcidBottleEntity throwable = new ZPAcidBottleEntity(ZPEntities.acid_bottle_entity.get(), pPlayer, pLevel);

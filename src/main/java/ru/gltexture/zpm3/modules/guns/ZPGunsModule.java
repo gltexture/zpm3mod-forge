@@ -108,10 +108,10 @@ public class ZPGunsModule extends ZPModule {
         moduleEntry.addRecipesRegistry(new ZPGunsRecipeRegistry());
         moduleEntry.addMinecraftRegistryClass(ZPGunItems.class);
         ZPUtility.sides().onlyClient(() -> {
-            moduleEntry.addMinecraftEventClass(ZPGunsUI.class);
-            moduleEntry.addMinecraftEventClass(ZPGunPostRender.class);
+            moduleEntry.registerEventHandlerClass(ZPGunsUI.class);
+            moduleEntry.registerEventHandlerClass(ZPGunPostRender.class);
         });
-        moduleEntry.addMinecraftEventClass(ZPGunTossEvent.class);
+        moduleEntry.registerEventHandlerClass(ZPGunTossEvent.class);
     }
 
     @Override

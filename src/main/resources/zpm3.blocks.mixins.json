@@ -7,6 +7,7 @@
   "mixins": [
     "BlockInvoker",
     "common.ZPBlockBehaviourStateCandleMixin",
+    "common.ZPBlockStateRegAccessor",
     "common.ZPCakePieceMixin",
     "common.ZPCampfireEntityMixin",
     "common.ZPCampfireMixin",
@@ -15,7 +16,22 @@
     "common.ZPFadingPumpkinMixin",
     "common.ZPFadingTorchMixin",
     "common.ZPWallBlockMixin",
-    "common.ZPWallTorchMixin"
+    "common.ZPWallTorchMixin",
+    "common.waterlog.ZPAnvilWaterloggedMixin",
+    "common.waterlog.ZPBedWaterloggedMixin",
+    "common.waterlog.ZPBellBlockWaterloggedMixin",
+    "common.waterlog.ZPBrewingStandWaterloggedMixin",
+    "common.waterlog.ZPCauldronWaterloggedMixin",
+    "common.waterlog.ZPComposterWaterloggedMixin",
+    "common.waterlog.ZPDaylightDetectorWaterloggedMixin",
+    "common.waterlog.ZPDoorWaterloggedMixin",
+    "common.waterlog.ZPFenceWaterloggedMixin",
+    "common.waterlog.ZPGrindstoneWaterloggedMixin",
+    "common.waterlog.ZPHopperWaterloggedMixin",
+    "common.waterlog.ZPLecternWaterloggedMixin",
+    "common.waterlog.ZPPressurePlateWaterloggedMixin",
+    "common.waterlog.ZPStonecutterWaterloggedMixin",
+    "common.waterlog.ZPWeightPressurePlateWaterloggedMixin"
   ],
   "client": [
   ],

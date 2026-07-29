@@ -36,15 +36,14 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
-import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
-import ru.gltexture.zpm3.engine.events.ZPEventClass;
+import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 import ru.gltexture.zpm3.modules.common.utils.ZPCommonClientUtils;
 import ru.gltexture.zpm3.modules.melee_throwables_tools.instances.melee.ZPBroomSword;
 
 @OnlyIn(Dist.CLIENT)
-public class ZPPlayerClientTickBroomEvent implements ZPEventClass {
+public class ZPPlayerClientTickBroomEvent implements ZPForgeEventHandlerClass {
     public ZPPlayerClientTickBroomEvent() {
     }
 

@@ -31,9 +31,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.modules.melee_throwables_tools.misc.ZPDefaultItemsHandReach;
 import ru.gltexture.zpm3.engine.core.ZPSide;
-import ru.gltexture.zpm3.engine.events.ZPEventClass;
+import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 
-public class ZPPlayerItemToolTipsEvent implements ZPEventClass {
+public class ZPPlayerItemToolTipsEvent implements ZPForgeEventHandlerClass {
     public static @Nullable ItemEntity entityToPickUp = null;
 
     public ZPPlayerItemToolTipsEvent() {

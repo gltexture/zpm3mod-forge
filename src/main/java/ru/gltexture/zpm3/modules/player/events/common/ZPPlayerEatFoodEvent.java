@@ -34,11 +34,11 @@ import ru.gltexture.zpm3.engine.core.config.builtin.ZPEntityConfig;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
-import ru.gltexture.zpm3.engine.events.ZPEventClass;
+import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 
 import java.util.UUID;
 
-public class ZPPlayerEatFoodEvent implements ZPEventClass {
+public class ZPPlayerEatFoodEvent implements ZPForgeEventHandlerClass {
     public ZPPlayerEatFoodEvent() {
     }
 

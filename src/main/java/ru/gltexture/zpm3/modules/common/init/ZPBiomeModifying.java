@@ -24,9 +24,9 @@ import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 
-public class ZPBiomeModifying extends ZPRegistry<BiomeModifier> {
+public class ZPBiomeModifying extends ZPCommonRegistry<BiomeModifier> {
     public ZPBiomeModifying() {
         super(ZPRegistryConveyor.Target.BIOME_MODIFIER);
     }

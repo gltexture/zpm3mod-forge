@@ -23,15 +23,15 @@ package ru.gltexture.zpm3.modules.common.init.helper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.modules.common.init.ZPSounds;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.helpers.gen.providers.ZPSoundListProvider;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 
 import java.util.List;
 
 public abstract class ZPRegSounds {
-    public static void init(@NotNull ZPRegistry.ZPRegSupplier<SoundEvent> regSupplier) {
+    public static void init(@NotNull ZPCommonRegistry.ZPRegSupplier<SoundEvent> regSupplier) {
         ZPSounds.zm_miner_hurt = regSupplier.register("zm_miner_hurt", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "zm_miner_hurt")))
                 .afterCreated((e, utils) -> {
             utils.sounds().addNewSound(new ZPSoundListProvider.ZPSoundEvent("zm_miner_hurt", false, "sounds.zpm3.zm_miner_hurt", List.of(

@@ -34,7 +34,6 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemConditions;
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
@@ -42,6 +41,7 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockItemModelExecutors;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.modules.blocks.init.ZPBlocks;
 import ru.gltexture.zpm3.modules.blocks.instances.blocks.*;
 import ru.gltexture.zpm3.modules.misc_items.init.ZPMiscItems;
@@ -50,7 +50,6 @@ import ru.gltexture.zpm3.engine.instances.blocks.*;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
 import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockModelExecutors;
 import ru.gltexture.zpm3.engine.helpers.gen.data.ZPGenTextureData;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.service.Pair;
 import ru.gltexture.zpm3.engine.service.ZPPath;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
@@ -58,14 +57,13 @@ import ru.gltexture.zpm3.engine.service.ZPUtility;
 import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class ZPRegCommonBlocks {
-    public static void init(@NotNull ZPRegistry.ZPRegSupplier<Block> regSupplier) {
+    public static void init(@NotNull ZPCommonRegistry.ZPRegSupplier<Block> regSupplier) {
         ZPBlocks.sand_layer = regSupplier.register("sand_layer", () -> new ZPLayerBlock(BlockBehaviour.Properties.of()
                 .mapColor(MapColor.SAND)
                 .replaceable()
                 .forceSolidOff()
                 .randomTicks()
                 .strength(0.1F)
-                .requiresCorrectToolForDrops()
                 .sound(SoundType.SAND)
                 .isViewBlocking((p_187417_, p_187418_, p_187419_) -> p_187417_.getValue(SnowLayerBlock.LAYERS) >= 8).pushReaction(PushReaction.DESTROY))
         ).afterCreated((e, utils) -> {
@@ -82,7 +80,6 @@ public abstract class ZPRegCommonBlocks {
                 .forceSolidOff()
                 .randomTicks()
                 .strength(0.1F)
-                .requiresCorrectToolForDrops()
                 .sound(SoundType.GRAVEL)
                 .isViewBlocking((p_187417_, p_187418_, p_187419_) -> p_187417_.getValue(SnowLayerBlock.LAYERS) >= 8).pushReaction(PushReaction.DESTROY))
         ).afterCreated((e, utils) -> {
@@ -99,7 +96,6 @@ public abstract class ZPRegCommonBlocks {
                 .forceSolidOff()
                 .randomTicks()
                 .strength(0.1F)
-                .requiresCorrectToolForDrops()
                 .sound(SoundType.SAND)
                 .isViewBlocking((p_187417_, p_187418_, p_187419_) -> p_187417_.getValue(SnowLayerBlock.LAYERS) >= 8).pushReaction(PushReaction.DESTROY))
         ).afterCreated((e, utils) -> {
@@ -346,10 +342,12 @@ public abstract class ZPRegCommonBlocks {
             final AtomicReference<RegistryObject<ZPBlock>> b1 = new AtomicReference<>();
             final AtomicReference<RegistryObject<ZPSlabBlock>> b2 = new AtomicReference<>();
             final AtomicReference<RegistryObject<ZPStairsBlock>> b3 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPStoneWallBlock>> b4 = new AtomicReference<>();
             ZPRegCommonBlocks.<RegistryObject<? extends Block>>registerFamily(regSupplier, "ancient_bricks",
                     new ZPBlockRegFamily(b1)
                             .setSlab(b2)
-                            .setStairs(b3),
+                            .setStairs(b3)
+                            .setWall(b4),
                     BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_GRAY).requiresCorrectToolForDrops().instrument(NoteBlockInstrument.COW_BELL).strength(12.0f, 8.0f).sound(SoundType.ANCIENT_DEBRIS),
                     (e, regUtils) -> {
                         regUtils.loot().addSelfDropLootTable(e);
@@ -358,16 +356,19 @@ public abstract class ZPRegCommonBlocks {
             ZPBlocks.ancient_bricks = b1.get();
             ZPBlocks.ancient_slab_bricks = b2.get();
             ZPBlocks.ancient_stairs_bricks = b3.get();
+            ZPBlocks.ancient_wall_bricks = b4.get();
         }
 
         {
             final AtomicReference<RegistryObject<ZPBlock>> b1 = new AtomicReference<>();
             final AtomicReference<RegistryObject<ZPSlabBlock>> b2 = new AtomicReference<>();
             final AtomicReference<RegistryObject<ZPStairsBlock>> b3 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPStoneWallBlock>> b4 = new AtomicReference<>();
             ZPRegCommonBlocks.<RegistryObject<? extends Block>>registerFamily(regSupplier, "black_bricks",
                     new ZPBlockRegFamily(b1)
                             .setSlab(b2)
-                            .setStairs(b3),
+                            .setStairs(b3)
+                            .setWall(b4),
                     BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).requiresCorrectToolForDrops().instrument(NoteBlockInstrument.CHIME).strength(12.0f, 8.0f).sound(SoundType.STONE),
                     (e, regUtils) -> {
                         regUtils.loot().addSelfDropLootTable(e);
@@ -376,16 +377,19 @@ public abstract class ZPRegCommonBlocks {
             ZPBlocks.black_bricks = b1.get();
             ZPBlocks.black_slab_bricks = b2.get();
             ZPBlocks.black_stairs_bricks = b3.get();
+            ZPBlocks.black_wall_bricks = b4.get();
         }
 
         {
             final AtomicReference<RegistryObject<ZPBlock>> b1 = new AtomicReference<>();
             final AtomicReference<RegistryObject<ZPSlabBlock>> b2 = new AtomicReference<>();
             final AtomicReference<RegistryObject<ZPStairsBlock>> b3 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPStoneWallBlock>> b4 = new AtomicReference<>();
             ZPRegCommonBlocks.<RegistryObject<? extends Block>>registerFamily(regSupplier, "green_bricks",
                     new ZPBlockRegFamily(b1)
                             .setSlab(b2)
-                            .setStairs(b3),
+                            .setStairs(b3)
+                            .setWall(b4),
                     BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).requiresCorrectToolForDrops().instrument(NoteBlockInstrument.DIDGERIDOO).strength(12.0f, 8.0f).sound(SoundType.STONE),
                     (e, regUtils) -> {
                         regUtils.loot().addSelfDropLootTable(e);
@@ -394,16 +398,19 @@ public abstract class ZPRegCommonBlocks {
             ZPBlocks.green_bricks = b1.get();
             ZPBlocks.green_slab_bricks = b2.get();
             ZPBlocks.green_stairs_bricks = b3.get();
+            ZPBlocks.green_wall_bricks = b4.get();
         }
 
         {
             final AtomicReference<RegistryObject<ZPBlock>> b1 = new AtomicReference<>();
             final AtomicReference<RegistryObject<ZPSlabBlock>> b2 = new AtomicReference<>();
             final AtomicReference<RegistryObject<ZPStairsBlock>> b3 = new AtomicReference<>();
+            final AtomicReference<RegistryObject<ZPStoneWallBlock>> b4 = new AtomicReference<>();
             ZPRegCommonBlocks.<RegistryObject<? extends Block>>registerFamily(regSupplier, "gray_bricks",
                     new ZPBlockRegFamily(b1)
                             .setSlab(b2)
-                            .setStairs(b3),
+                            .setStairs(b3)
+                            .setWall(b4),
                     BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY).requiresCorrectToolForDrops().instrument(NoteBlockInstrument.COW_BELL).strength(12.0f, 8.0f).sound(SoundType.STONE),
                     (e, regUtils) -> {
                         regUtils.loot().addSelfDropLootTable(e);
@@ -412,6 +419,7 @@ public abstract class ZPRegCommonBlocks {
             ZPBlocks.gray_bricks = b1.get();
             ZPBlocks.gray_slab_bricks = b2.get();
             ZPBlocks.gray_stairs_bricks = b3.get();
+            ZPBlocks.gray_wall_bricks = b4.get();
         }
 
         //      utils.loot().addSelfDropLootTable(e);
@@ -518,7 +526,7 @@ public abstract class ZPRegCommonBlocks {
             ZPUtility.sides().onlyClient(() -> {
                 utils.blocks().setBlockItemModelExecutor(e, DefaultBlockModelExecutors.getDefaultTrapDoor(), DefaultBlockItemModelExecutors.getDefaultItemAsModBlock("scrap_trapdoor_bottom"));
                 utils.blocks().addBlockModelKey_ValueArray(e, ZPDataGenHelper.NO_REFERENCE, Pair.of(ZPGenTextureData.ALL_KEY, () -> new ZPPath(ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY, "scrap_trapdoor")));
-                utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
+                utils.blocks().setBlockRenderType(e, ZPDataGenHelper.TRANSLUCENT_RENDER_TYPE);
             });
         }).end();
 
@@ -674,7 +682,7 @@ public abstract class ZPRegCommonBlocks {
     }
 
     @SuppressWarnings("unchecked")
-    private static <T> void registerFamily(ZPRegistry.@NotNull ZPRegSupplier<Block> regSupplier, @NotNull String name, @NotNull ZPBlockRegFamily family, @NotNull BlockBehaviour.Properties properties, @Nullable ZPRegistry.ZPRegistryObject.Consumer<T> consumer) {
+    private static <T> void registerFamily(ZPCommonRegistry.@NotNull ZPRegSupplier<Block> regSupplier, @NotNull String name, @NotNull ZPBlockRegFamily family, @NotNull BlockBehaviour.Properties properties, @Nullable ZPCommonRegistry.ZPRegistryObject.Consumer<T> consumer) {
         family.block.set(regSupplier.register(name, () -> new ZPBlock(properties)).afterCreated((e, utils) -> {
             if (consumer != null) {
                 consumer.accept((T) e, utils);
@@ -704,12 +712,25 @@ public abstract class ZPRegCommonBlocks {
                 });
             }).end());
         }
+        if (family.wall != null) {
+            family.wall.set(regSupplier.register(name + "_wall", () -> new ZPStoneWallBlock(properties)
+            ).afterCreated((e, utils) -> {
+                utils.blocks().addTagToBlock(e, BlockTags.WALLS);
+                if (consumer != null) {
+                    consumer.accept((T) e, utils);
+                }
+                ZPUtility.sides().onlyClient(() -> {
+                    utils.blocks().addBlockModelWithCopiedTexture(e, ZPDataGenHelper.NO_REFERENCE, family.block.get());
+                });
+            }).end());
+        }
     }
 
     public static class ZPBlockRegFamily {
         private @NotNull AtomicReference<RegistryObject<ZPBlock>> block;
         private @Nullable AtomicReference<RegistryObject<ZPSlabBlock>> slab;
         private @Nullable AtomicReference<RegistryObject<ZPStairsBlock>> stairs;
+        private @Nullable AtomicReference<RegistryObject<ZPStoneWallBlock>> wall;
 
         public ZPBlockRegFamily(@NotNull AtomicReference<RegistryObject<ZPBlock>> block) {
             this.block = block;
@@ -739,6 +760,15 @@ public abstract class ZPRegCommonBlocks {
 
         public ZPBlockRegFamily setStairs(@Nullable AtomicReference<RegistryObject<ZPStairsBlock>> stairs) {
             this.stairs = stairs;
+            return this;
+        }
+
+        public @Nullable AtomicReference<RegistryObject<ZPStoneWallBlock>> getWall() {
+            return this.wall;
+        }
+
+        public ZPBlockRegFamily setWall(@Nullable AtomicReference<RegistryObject<ZPStoneWallBlock>> wall) {
+            this.wall = wall;
             return this;
         }
     }

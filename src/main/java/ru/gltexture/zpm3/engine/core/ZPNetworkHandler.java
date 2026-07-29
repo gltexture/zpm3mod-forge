@@ -29,11 +29,15 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.engine.network.ZPNetwork;
 import ru.gltexture.zpm3.modules.net_pack.data.ZPNetSyncDataPack;
+import ru.gltexture.zpm3.modules.player.mixins.ext.IZPPlayerMixinExt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +54,7 @@ public final class ZPNetworkHandler {
     ZPNetworkHandler() {
         this.network = null;
     }
-
+    
     public void registerSyncedData__Client_to_Server(@NotNull NetSyncDataFabric.Builder zpNetSyncDataPackBuilder) {
         ZPNetworkHandler.CtoS_DataPackConstructor.addBuilder(zpNetSyncDataPackBuilder);
     }
@@ -67,6 +71,18 @@ public final class ZPNetworkHandler {
         return ZPNetworkHandler.StoC_DataPackConstructor.construct();
     }
 
+    public static Optional<ZPNetSyncDataPack> getNetDataPack_FromClient(@NotNull ServerPlayer player) {
+        if (player instanceof IZPPlayerMixinExt playerMixinExt) {
+            return Optional.of(playerMixinExt.zpm3forge$zpNetDataPack_fromClient());
+        }
+        return Optional.empty();
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static Optional<ZPNetSyncDataPack> getNetDataPack_FromServer() {
+        return Optional.of(ZombiePlague3.getServerToClient_netSyncDataPack());
+    }
+    
     public void setNetwork(@NotNull ZPNetwork zpNetwork) {
         this.network = zpNetwork;
     }
@@ -147,7 +163,7 @@ public final class ZPNetworkHandler {
             this.builders = new ArrayList<>();
         }
 
-        public ZPNetSyncDataPack construct() {
+        ZPNetSyncDataPack construct() {
             ZPNetSyncDataPack zpNetSyncDataPack = new ZPNetSyncDataPack();
             this.builders.forEach(builder -> {
                 builder.supplierMap.forEach((k, v) -> {

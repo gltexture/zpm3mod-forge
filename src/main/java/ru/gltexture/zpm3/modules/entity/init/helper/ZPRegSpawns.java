@@ -23,15 +23,15 @@ package ru.gltexture.zpm3.modules.entity.init.helper;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.modules.entity.init.ZPEntities;
 import ru.gltexture.zpm3.modules.common.init.ZPTabs;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 import ru.gltexture.zpm3.modules.entity.init.ZPSpawnItems;
 
 public abstract class ZPRegSpawns {
-    public static void init(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
+    public static void init(@NotNull ZPCommonRegistry.ZPRegSupplier<Item> regSupplier) {
         ZPSpawnItems.common_zm_spawn = regSupplier.register("common_zm_spawn", () -> new ForgeSpawnEggItem((() -> ZPEntities.zp_common_zombie_entity.get()), 0x3E3B36, 0x799C65, new Item.Properties())
         ).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {

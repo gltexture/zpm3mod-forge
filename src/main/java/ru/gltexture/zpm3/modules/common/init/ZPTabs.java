@@ -27,15 +27,14 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.engine.instances.ZPBlockItemsRegistry;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.modules.armor.init.ZPArmorItems;
 import ru.gltexture.zpm3.modules.blocks.init.ZPBlocks;
-import ru.gltexture.zpm3.modules.blocks.init.ZPTorchBlocks;
 import ru.gltexture.zpm3.modules.food_medicine.init.ZPFoodMedicineItems;
 import ru.gltexture.zpm3.modules.guns.init.ZPGunItems;
 import ru.gltexture.zpm3.modules.melee_throwables_tools.init.ZPMeleeThrowableToolsItems;
 
-public class ZPTabs extends ZPRegistry<CreativeModeTab> {
+public class ZPTabs extends ZPCommonRegistry<CreativeModeTab> {
     public static RegistryObject<CreativeModeTab> zp_guns_tab;
     public static RegistryObject<CreativeModeTab> zp_items_tab;
    // public static RegistryObject<CreativeModeTab> zp_misc_tab;

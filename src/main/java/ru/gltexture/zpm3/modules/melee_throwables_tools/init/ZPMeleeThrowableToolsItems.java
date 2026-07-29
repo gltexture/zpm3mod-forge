@@ -20,32 +20,13 @@
 
 package ru.gltexture.zpm3.modules.melee_throwables_tools.init;
 
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
-import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
-import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.instances.items.*;
-import ru.gltexture.zpm3.engine.recipes.IZPRecipeSpec;
-import ru.gltexture.zpm3.engine.recipes.ZPRecipesController;
-import ru.gltexture.zpm3.engine.recipes.ZPRecipesRegistry;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.engine.registry.collection.IZPCollectRegistryObjects;
-import ru.gltexture.zpm3.modules.blocks.init.ZPBlocks;
-import ru.gltexture.zpm3.modules.common.ZPCommonModule;
-import ru.gltexture.zpm3.modules.food_medicine.init.ZPFoodMedicineItems;
-import ru.gltexture.zpm3.modules.guns.init.ZPGunItems;
 import ru.gltexture.zpm3.modules.melee_throwables_tools.init.helper.ZPRegToolItems;
 import ru.gltexture.zpm3.modules.melee_throwables_tools.init.helper.ZPRegMelee;
 import ru.gltexture.zpm3.modules.melee_throwables_tools.init.helper.ZPRegThrowable;
@@ -55,11 +36,8 @@ import ru.gltexture.zpm3.modules.melee_throwables_tools.instances.items.ZPMetalC
 import ru.gltexture.zpm3.modules.melee_throwables_tools.instances.items.ZPWrenchTool;
 import ru.gltexture.zpm3.modules.melee_throwables_tools.instances.items.admin.ZPAdminWrenchFadingBlocks;
 import ru.gltexture.zpm3.modules.melee_throwables_tools.instances.melee.ZPBroomSword;
-import ru.gltexture.zpm3.modules.misc_items.init.ZPMiscItems;
 
-import java.util.*;
-
-public class ZPMeleeThrowableToolsItems extends ZPRegistry<Item> implements IZPCollectRegistryObjects {
+public class ZPMeleeThrowableToolsItems extends ZPCommonRegistry<Item> implements IZPCollectRegistryObjects {
     // ITEMS
     public static RegistryObject<ZPItemThrowable> acid_bottle;
     public static RegistryObject<ZPItemThrowable> plate;

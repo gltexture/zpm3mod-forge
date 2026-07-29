@@ -25,12 +25,11 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.engine.instances.armor.ZPArmorItem;
-import ru.gltexture.zpm3.engine.instances.items.ZPItem;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.engine.registry.collection.IZPCollectRegistryObjects;
 import ru.gltexture.zpm3.modules.armor.init.helper.ZPRegArmorItemsHelper;
 
-public class ZPArmorItems extends ZPRegistry<Item> implements IZPCollectRegistryObjects {
+public class ZPArmorItems extends ZPCommonRegistry<Item> implements IZPCollectRegistryObjects {
     public static RegistryObject<ZPArmorItem> forest_helmet;
     public static RegistryObject<ZPArmorItem> forest_chestplate;
     public static RegistryObject<ZPArmorItem> forest_leggings;

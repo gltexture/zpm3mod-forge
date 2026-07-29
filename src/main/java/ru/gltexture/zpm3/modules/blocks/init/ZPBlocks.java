@@ -23,6 +23,7 @@ package ru.gltexture.zpm3.modules.blocks.init;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.modules.blocks.init.helper.ZPRegAdminBlocks;
 import ru.gltexture.zpm3.modules.blocks.init.helper.ZPRegColorBlocks;
 import ru.gltexture.zpm3.modules.blocks.init.helper.ZPRegCommonBlocks;
@@ -30,10 +31,9 @@ import ru.gltexture.zpm3.modules.blocks.instances.blocks.*;
 import ru.gltexture.zpm3.modules.fluids.init.helper.ZPRegFluidBlocks;
 import ru.gltexture.zpm3.engine.instances.blocks.*;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.registry.collection.IZPCollectRegistryObjects;
 
-public class ZPBlocks extends ZPRegistry<Block> implements IZPCollectRegistryObjects {
+public class ZPBlocks extends ZPCommonRegistry<Block> implements IZPCollectRegistryObjects {
     public static RegistryObject<ZPAntiZombie> anti_zombie;
 
     public static RegistryObject<ZPBlock> block_lamp;
@@ -86,6 +86,11 @@ public class ZPBlocks extends ZPRegistry<Block> implements IZPCollectRegistryObj
     public static RegistryObject<ZPStairsBlock> gray_stairs_bricks;
     public static RegistryObject<ZPStairsBlock> green_stairs_bricks;
     public static RegistryObject<ZPStairsBlock> ancient_stairs_bricks;
+
+    public static RegistryObject<ZPStoneWallBlock> black_wall_bricks;
+    public static RegistryObject<ZPStoneWallBlock> gray_wall_bricks;
+    public static RegistryObject<ZPStoneWallBlock> green_wall_bricks;
+    public static RegistryObject<ZPStoneWallBlock> ancient_wall_bricks;
 
     public static RegistryObject<ZPBlock> lab_block;
     public static RegistryObject<ZPBlock> reactor_block;
@@ -184,6 +189,23 @@ public class ZPBlocks extends ZPRegistry<Block> implements IZPCollectRegistryObj
     public static RegistryObject<ZPSlabBlock> stone_slab_purple;
     public static RegistryObject<ZPSlabBlock> stone_slab_red;
     public static RegistryObject<ZPSlabBlock> stone_slab_yellow;
+
+    public static RegistryObject<ZPStoneWallBlock> stone_wall_white;
+    public static RegistryObject<ZPStoneWallBlock> stone_wall_black;
+    public static RegistryObject<ZPStoneWallBlock> stone_wall_blue;
+    public static RegistryObject<ZPStoneWallBlock> stone_wall_brown;
+    public static RegistryObject<ZPStoneWallBlock> stone_wall_cyan;
+    public static RegistryObject<ZPStoneWallBlock> stone_wall_gray;
+    public static RegistryObject<ZPStoneWallBlock> stone_wall_green;
+    public static RegistryObject<ZPStoneWallBlock> stone_wall_light_blue;
+    public static RegistryObject<ZPStoneWallBlock> stone_wall_light_gray;
+    public static RegistryObject<ZPStoneWallBlock> stone_wall_lime;
+    public static RegistryObject<ZPStoneWallBlock> stone_wall_magenta;
+    public static RegistryObject<ZPStoneWallBlock> stone_wall_orange;
+    public static RegistryObject<ZPStoneWallBlock> stone_wall_pink;
+    public static RegistryObject<ZPStoneWallBlock> stone_wall_purple;
+    public static RegistryObject<ZPStoneWallBlock> stone_wall_red;
+    public static RegistryObject<ZPStoneWallBlock> stone_wall_yellow;
 
     /*
        public static final Block SNOW = register("snow", new SnowLayerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.SNOW).replaceable().forceSolidOff().randomTicks().strength(0.1F).requiresCorrectToolForDrops().sound(SoundType.SNOW).isViewBlocking((p_187417_, p_187418_, p_187419_) -> {

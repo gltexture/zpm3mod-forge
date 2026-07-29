@@ -43,7 +43,7 @@ import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.module.ZPModule;
 import ru.gltexture.zpm3.engine.core.module.ZPModuleData;
-import ru.gltexture.zpm3.engine.events.ZPEventClass;
+import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 import ru.gltexture.zpm3.modules.commands.events.client.ZPCreativeUtilityMenuEvent;
 import ru.gltexture.zpm3.modules.commands.events.client.ZPRenderZones;
 import ru.gltexture.zpm3.modules.commands.imgui.ZPCreativeUtilityUI;
@@ -89,13 +89,13 @@ public class ZPCommandsModule extends ZPModule {
 
     @Override
     public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
-        moduleEntry.addMinecraftEventClass(ZPCommandsEvent.class);
+        moduleEntry.registerEventHandlerClass(ZPCommandsEvent.class);
         ZPUtility.sides().onlyClient(() -> {
             if (ZPRenderHelper.INSTANCE.getDearUIRenderer() != null) {
-                moduleEntry.addMinecraftEventClass(ZPRenderZones.class);
-                moduleEntry.addMinecraftEventClass(ZPCreativeUtilityMenuEvent.class);
+                moduleEntry.registerEventHandlerClass(ZPRenderZones.class);
+                moduleEntry.registerEventHandlerClass(ZPCreativeUtilityMenuEvent.class);
             }
-            moduleEntry.addMinecraftEventClass(ZPRenderSpecialZoneEffectsOnClient.class);
+            moduleEntry.registerEventHandlerClass(ZPRenderSpecialZoneEffectsOnClient.class);
 
             ZPRenderSpecialZoneEffectsOnClient.registerZoneEffect(ZPZonesRegistry.toxicCloud, (zone, chunkX, chunkZ) -> {
                 ZPRenderSpecialZoneEffectsOnClient.renderCloudDefaultFun(zone, chunkX, chunkZ, false);
@@ -117,7 +117,7 @@ public class ZPCommandsModule extends ZPModule {
 
     }
 
-    public static class ZPCommandsEvent implements ZPEventClass {
+    public static class ZPCommandsEvent implements ZPForgeEventHandlerClass {
 
         public ZPCommandsEvent() {
         }

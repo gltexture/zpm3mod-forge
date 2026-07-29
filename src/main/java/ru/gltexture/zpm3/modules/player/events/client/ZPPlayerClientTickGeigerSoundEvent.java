@@ -32,12 +32,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
-import ru.gltexture.zpm3.engine.events.ZPEventClass;
+import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 import ru.gltexture.zpm3.modules.common.init.ZPSounds;
 import ru.gltexture.zpm3.modules.entity.util.ZPEntityUtil;
 
 @OnlyIn(Dist.CLIENT)
-public class ZPPlayerClientTickGeigerSoundEvent implements ZPEventClass {
+public class ZPPlayerClientTickGeigerSoundEvent implements ZPForgeEventHandlerClass {
     public static @Nullable ItemEntity entityToPickUp = null;
 
     public ZPPlayerClientTickGeigerSoundEvent() {

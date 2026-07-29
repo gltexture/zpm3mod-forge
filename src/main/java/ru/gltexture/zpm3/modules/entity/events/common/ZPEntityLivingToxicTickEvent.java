@@ -29,11 +29,11 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPSide;
-import ru.gltexture.zpm3.engine.events.ZPEventClass;
+import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 import ru.gltexture.zpm3.modules.entity.mixins.ext.IZPLivingEntityExt;
 import ru.gltexture.zpm3.modules.entity.util.ZPEntityUtil;
 
-public class ZPEntityLivingToxicTickEvent implements ZPEventClass {
+public class ZPEntityLivingToxicTickEvent implements ZPForgeEventHandlerClass {
     @SubscribeEvent
     public static void entityTick(LivingEvent.LivingTickEvent event) {
         LivingEntity entity = event.getEntity();

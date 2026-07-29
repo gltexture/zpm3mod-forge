@@ -22,7 +22,6 @@ package ru.gltexture.zpm3.modules.armor;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
@@ -68,8 +67,8 @@ public class ZPArmorModule extends ZPModule {
 
     @Override
     public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
-        moduleEntry.addZP3EventClass(ZPAdjustNightVisionGogglesLightMap.class);
-        moduleEntry.addMinecraftEventClass(ZPPlayerArmorSoundOnClientEvent.class);
+        moduleEntry.registerZP3EventHandlerClass(ZPAdjustNightVisionGogglesLightMap.class);
+        moduleEntry.registerEventHandlerClass(ZPPlayerArmorSoundOnClientEvent.class);
         moduleEntry.addMinecraftRegistryClass(ZPArmorItems.class);
         ZPUtility.sides().onlyClient(() -> {
             ZPPlayerArmorSoundOnClientEvent.registerArmorSound(new ZPPlayerArmorSoundOnClientEvent.TrackedSoundLauncher() {

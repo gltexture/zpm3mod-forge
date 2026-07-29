@@ -28,6 +28,7 @@ import net.minecraft.world.item.Item;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.modules.common.init.ZPTabs;
 import ru.gltexture.zpm3.modules.loot_cases.init.ZPLootCases;
 import ru.gltexture.zpm3.modules.loot_cases.instances.blocks.ZPDefaultBlockLootCase;
@@ -36,16 +37,15 @@ import ru.gltexture.zpm3.engine.core.ZPLogger;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.engine.helpers.ZPItemBlockHelper;
 import ru.gltexture.zpm3.engine.instances.ZPBlockItemsRegistry;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.registry.ZPRegistryCollections;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public abstract class ZPRegLootCaseItems {
-    public static void init(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
+    public static void init(@NotNull ZPCommonRegistry.ZPRegSupplier<Item> regSupplier) {
         ZPRegLootCaseItems.lootCases(regSupplier);
     }
 
-    private static void lootCases(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
+    private static void lootCases(@NotNull ZPCommonRegistry.ZPRegSupplier<Item> regSupplier) {
         if (ZPTabs.zp_blocks_tab != null) {
             final RegistryObject<CreativeModeTab> tabToAdd = ZPTabs.zp_blocks_tab;
             try {

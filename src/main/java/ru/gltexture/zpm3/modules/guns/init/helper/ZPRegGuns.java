@@ -22,7 +22,6 @@ package ru.gltexture.zpm3.modules.guns.init.helper;
 
 import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.modules.misc_items.init.ZPMiscItems;
 import ru.gltexture.zpm3.modules.common.init.ZPSounds;
 import ru.gltexture.zpm3.modules.common.init.ZPTabs;
 import ru.gltexture.zpm3.modules.guns.init.ZPGunItems;
@@ -35,11 +34,11 @@ import ru.gltexture.zpm3.engine.helpers.gen.data.ZPGenTextureData;
 import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
 import ru.gltexture.zpm3.modules.guns.item.ZPGunPistol;
 import ru.gltexture.zpm3.engine.instances.items.ZPItem;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public abstract class ZPRegGuns {
-    public static void init(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
+    public static void init(@NotNull ZPCommonRegistry.ZPRegSupplier<Item> regSupplier) {
         {
             ZPGunItems.admin_pistol = regSupplier.register("admin_pistol",
                     () -> new ZPGunPistol(new Item.Properties(), new ZPBaseGun.GunProperties(null, ZPBaseGun.GunProperties.HeldType.PISTOL)

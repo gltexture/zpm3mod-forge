@@ -31,26 +31,26 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 
 import java.util.function.Consumer;
 
 public abstract class ZPItemBlockHelper {
-    public static ZPRegistry.ZPRegistryObject<BlockItem> createBlockItem(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier, @NotNull RegistryObject<? extends Block> block) {
+    public static ZPCommonRegistry.ZPRegistryObject<BlockItem> createBlockItem(@NotNull ZPCommonRegistry.ZPRegSupplier<Item> regSupplier, @NotNull RegistryObject<? extends Block> block) {
         if (block.getId() == null) {
             throw new ZPRuntimeException("Block has NULL ResourceId");
         }
         return regSupplier.register(block.getId().getPath(), () -> new BlockItem(block.get(), new Item.Properties()));
     }
 
-    public static ZPRegistry.ZPRegistryObject<BlockItem> createWallBlockItem(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier, @NotNull RegistryObject<? extends Block> block, @NotNull RegistryObject<? extends Block> wallBlock) {
+    public static ZPCommonRegistry.ZPRegistryObject<BlockItem> createWallBlockItem(@NotNull ZPCommonRegistry.ZPRegSupplier<Item> regSupplier, @NotNull RegistryObject<? extends Block> block, @NotNull RegistryObject<? extends Block> wallBlock) {
         if (block.getId() == null) {
             throw new ZPRuntimeException("Block has NULL ResourceId");
         }
         return regSupplier.register(block.getId().getPath(), () -> new StandingAndWallBlockItem(block.get(), wallBlock.get(), new Item.Properties(), Direction.DOWN));
     }
 
-    public static ZPRegistry.ZPRegistryObject<BlockItem> createBlockItemWithClientCustomInit(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier, @NotNull RegistryObject<? extends Block> block, @NotNull Consumer<Consumer<IClientItemExtensions>> customConsumer) {
+    public static ZPCommonRegistry.ZPRegistryObject<BlockItem> createBlockItemWithClientCustomInit(@NotNull ZPCommonRegistry.ZPRegSupplier<Item> regSupplier, @NotNull RegistryObject<? extends Block> block, @NotNull Consumer<Consumer<IClientItemExtensions>> customConsumer) {
         if (block.getId() == null) {
             throw new ZPRuntimeException("Block has NULL ResourceId");
         }

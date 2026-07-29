@@ -24,12 +24,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import ru.gltexture.zpm3.engine.client.rendering.lightmap.ZPLightMapModifier;
+import ru.gltexture.zpm3.engine.core.api.events.ZP3EventHandlerClass;
 import ru.gltexture.zpm3.engine.core.api.events.ZombiePlagueEvent;
 import ru.gltexture.zpm3.engine.core.api.events.ZPModEventBus;
 import ru.gltexture.zpm3.modules.armor.utils.ZPArmorUtil;
 
 @OnlyIn(Dist.CLIENT)
-public class ZPAdjustNightVisionGogglesLightMap {
+public class ZPAdjustNightVisionGogglesLightMap implements ZP3EventHandlerClass {
     public static final float NV_GAMM = 2.5f;
 
     @ZombiePlagueEvent

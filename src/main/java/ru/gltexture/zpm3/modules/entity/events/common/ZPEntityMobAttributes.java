@@ -29,14 +29,14 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPSide;
-import ru.gltexture.zpm3.engine.events.ZPEventClass;
+import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 import ru.gltexture.zpm3.engine.service.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class ZPEntityMobAttributes implements ZPEventClass {
+public class ZPEntityMobAttributes implements ZPForgeEventHandlerClass {
     public static final List<Pair<RegistryObject<EntityType<? extends LivingEntity>>, Supplier<AttributeSupplier.Builder>>> pairsToAttachAttributeCreation = new ArrayList<>();
 
     @SuppressWarnings("all")

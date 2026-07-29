@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
 import ru.gltexture.zpm3.engine.helpers.gen.data.ZPGenTextureData;
 import ru.gltexture.zpm3.engine.instances.armor.ZPArmorItem;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 import ru.gltexture.zpm3.modules.armor.init.ZPArmorItems;
 import ru.gltexture.zpm3.modules.armor.instances.armor.ZPArmorMaterialsList;
@@ -34,7 +34,7 @@ import ru.gltexture.zpm3.modules.common.init.ZPTabs;
 import ru.gltexture.zpm3.modules.common.init.ZPTags;
 
 public abstract class ZPRegArmorItemsHelper {
-    public static void init(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
+    public static void init(@NotNull ZPCommonRegistry.ZPRegSupplier<Item> regSupplier) {
         //ZPMiscItems.wrench = regSupplier.register("wrench",
         //        () -> new ZPWrenchTool(ZPCommonToolMeleeTiers.ZP_WRENCH, 1, 0.0f, new Item.Properties())
         //).afterCreated((e, utils) -> {

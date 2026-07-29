@@ -33,7 +33,7 @@ import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPClientConfig;
-import ru.gltexture.zpm3.engine.events.ZPEventClass;
+import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 import ru.gltexture.zpm3.engine.sound.ZPLoopedSound;
 
 import java.util.*;
@@ -42,7 +42,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 @OnlyIn(Dist.CLIENT)
-public class ZPPlayerArmorSoundOnClientEvent implements ZPEventClass {
+public class ZPPlayerArmorSoundOnClientEvent implements ZPForgeEventHandlerClass {
     private static final Set<TrackedSoundLauncher> trackedSoundLaunchers = new HashSet<>();
 
     public static void registerArmorSound(@NotNull TrackedSoundLauncher trackedSoundLauncher) {

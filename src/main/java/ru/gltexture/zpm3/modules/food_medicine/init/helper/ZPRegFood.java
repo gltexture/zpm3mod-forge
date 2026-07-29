@@ -26,13 +26,12 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.modules.food_medicine.init.ZPFoodMedicineItems;
-import ru.gltexture.zpm3.modules.misc_items.init.ZPMiscItems;
 import ru.gltexture.zpm3.modules.common.init.ZPTabs;
 import ru.gltexture.zpm3.engine.helpers.gen.data.ZPGenTextureData;
 import ru.gltexture.zpm3.engine.instances.items.ZPItemFood;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
 import ru.gltexture.zpm3.engine.helpers.ZPItemTabAddHelper;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public abstract class ZPRegFood {
@@ -57,7 +56,7 @@ public abstract class ZPRegFood {
     public static final ZPItemFood.ZPFoodProperties DRINK_FAST = new ZPItemFood.ZPFoodProperties().setDrinkable(true).setEatTime(16);
     public static final ZPItemFood.ZPFoodProperties FAST_EAT = new ZPItemFood.ZPFoodProperties().setEatTime(16);
 
-    public static void init(@NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
+    public static void init(@NotNull ZPCommonRegistry.ZPRegSupplier<Item> regSupplier) {
         ZPFoodMedicineItems.bean = regSupplier.register("bean", () -> new ZPItemFood(new Item.Properties().stacksTo(16), ZPRegFood.BEAN, ZPRegFood.DEFAULT))
                 .afterCreated((e, utils) -> {
                     ZPUtility.sides().onlyClient(() -> {

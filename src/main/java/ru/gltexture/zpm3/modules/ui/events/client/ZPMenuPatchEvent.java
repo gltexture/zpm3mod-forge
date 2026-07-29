@@ -35,12 +35,11 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPSide;
-import ru.gltexture.zpm3.engine.events.ZPEventClass;
-import ru.gltexture.zpm3.modules.guns.mixins.client.ZPHumanoidArmTransformations;
+import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 import ru.gltexture.zpm3.modules.ui.screen.maps.ZPArchivedMapsMenuScreen;
 
 @OnlyIn(Dist.CLIENT)
-public class ZPMenuPatchEvent implements ZPEventClass {
+public class ZPMenuPatchEvent implements ZPForgeEventHandlerClass {
     public ZPMenuPatchEvent() {
     }
 

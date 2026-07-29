@@ -37,12 +37,12 @@ import net.minecraftforge.resource.PathPackResources;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.events.ZPEventClass;
+import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 
 import java.nio.file.Path;
 
 @OnlyIn(Dist.CLIENT)
-public class ZPResourcePackEvent implements ZPEventClass {
+public class ZPResourcePackEvent implements ZPForgeEventHandlerClass {
     public ZPResourcePackEvent() {
     }
 

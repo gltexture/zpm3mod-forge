@@ -24,12 +24,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.engine.registry.collection.IZPCollectRegistryObjects;
 import ru.gltexture.zpm3.modules.blocks.init.helper.ZPRegCampfireBlocks;
 import ru.gltexture.zpm3.modules.blocks.instances.blocks.campfire.ZPCampfireBlock;
 
-public class ZPCampfireBlocks extends ZPRegistry<Block> implements IZPCollectRegistryObjects {
+public class ZPCampfireBlocks extends ZPCommonRegistry<Block> implements IZPCollectRegistryObjects {
     public static RegistryObject<ZPCampfireBlock> campfire2;
 
 

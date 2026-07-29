@@ -23,14 +23,13 @@ package ru.gltexture.zpm3.modules.misc_items.init;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.modules.melee_throwables_tools.init.helper.ZPRegToolItems;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.engine.instances.items.*;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.registry.collection.IZPCollectRegistryObjects;
 import ru.gltexture.zpm3.modules.misc_items.init.helper.ZPRegMiscItems;
 
-public class ZPMiscItems extends ZPRegistry<Item> implements IZPCollectRegistryObjects {
+public class ZPMiscItems extends ZPCommonRegistry<Item> implements IZPCollectRegistryObjects {
     // MISC
     public static RegistryObject<ZPItem> cement_material;
     public static RegistryObject<ZPItem> chisel_material;

@@ -43,13 +43,13 @@ import ru.gltexture.zpm3.modules.entity.rendering.entities.zombies.ZPDogZombieRe
 import ru.gltexture.zpm3.modules.entity.rendering.entities.zombies.ZPMinerZombieRender;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 import java.util.List;
 import java.util.Objects;
 
-public class ZPEntities extends ZPRegistry<EntityType<?>> {
+public class ZPEntities extends ZPCommonRegistry<EntityType<?>> {
     public static RegistryObject<EntityType<ZPAcidBottleEntity>> acid_bottle_entity;
     public static RegistryObject<EntityType<ZPPlateEntity>> plate_entity;
     public static RegistryObject<EntityType<ZPRockEntity>> rock_entity;

@@ -27,7 +27,7 @@ import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.NotNull;
 
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
-import ru.gltexture.zpm3.modules.entity.mixins.ext.IZPLivingEntityExt;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.modules.common.init.ZPSounds;
 import ru.gltexture.zpm3.modules.common.init.ZPTabs;
 import ru.gltexture.zpm3.modules.food_medicine.init.ZPFoodMedicineItems;
@@ -35,7 +35,6 @@ import ru.gltexture.zpm3.modules.mob_effects.init.ZPMobEffects;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
 import ru.gltexture.zpm3.engine.helpers.gen.data.ZPGenTextureData;
 import ru.gltexture.zpm3.engine.instances.items.ZPItemMedicine;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 public abstract class ZPRegMedicine {
@@ -62,7 +61,7 @@ public abstract class ZPRegMedicine {
                 .setMedicineAnim(ZPItemMedicine.MedicineAnim.EAT);
 
     public static final ZPItemMedicine.ZPMedicineProperties ADRENALINE = new ZPItemMedicine.ZPMedicineProperties(ZPRegMedicine.DEFAULT_MEDICINE()
-            .effect(() -> new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 2400, 1), 1.0F)
+            .effect(() -> new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 1200, 0), 1.0F)
             .effect(() -> new MobEffectInstance(ZPMobEffects.adrenaline.get(), 6000), 1.0F).build())
                 .setMedicineAnim(ZPItemMedicine.MedicineAnim.BLOCK)
                 .setCanBeAffectedOnOther(true)
@@ -174,7 +173,7 @@ public abstract class ZPRegMedicine {
         return (new FoodProperties.Builder()).nutrition(0).saturationMod(0.0F);
     }
 
-    public static void init(ZPFoodMedicineItems zpItems, @NotNull ZPRegistry.ZPRegSupplier<Item> regSupplier) {
+    public static void init(ZPFoodMedicineItems zpItems, @NotNull ZPCommonRegistry.ZPRegSupplier<Item> regSupplier) {
         zpItems.initInstanceCollecting("medicine");
 
         ZPFoodMedicineItems.adrenaline_syringe = regSupplier.register("adrenaline_syringe", () -> new ZPItemMedicine(new Item.Properties().stacksTo(4), ZPRegMedicine.ADRENALINE

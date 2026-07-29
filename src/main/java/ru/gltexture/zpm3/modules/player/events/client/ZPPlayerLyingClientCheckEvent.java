@@ -33,12 +33,12 @@ import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.events.ZPEventClass;
+import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 import ru.gltexture.zpm3.modules.net_pack.packets.ZPLyingStatePacket;
 import ru.gltexture.zpm3.modules.player.mixins.ext.IZPPlayerMixinExt;
 
 @OnlyIn(Dist.CLIENT)
-public class ZPPlayerLyingClientCheckEvent implements ZPEventClass {
+public class ZPPlayerLyingClientCheckEvent implements ZPForgeEventHandlerClass {
     @OnlyIn(Dist.CLIENT) public static boolean isLocalPlayerInLyingAnimationNow;
     @OnlyIn(Dist.CLIENT) public static boolean liePrevTick;
     @OnlyIn(Dist.CLIENT) public static int lieCooldown;

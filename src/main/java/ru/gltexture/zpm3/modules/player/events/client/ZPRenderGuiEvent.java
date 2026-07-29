@@ -33,11 +33,11 @@ import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.engine.core.ZPSide;
-import ru.gltexture.zpm3.engine.events.ZPEventClass;
+import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 import ru.gltexture.zpm3.modules.player.mixins.ext.IZPPlayerMixinExt;
 
 @OnlyIn(Dist.CLIENT)
-public class ZPRenderGuiEvent implements ZPEventClass {
+public class ZPRenderGuiEvent implements ZPForgeEventHandlerClass {
     public ZPRenderGuiEvent() {
     }
 

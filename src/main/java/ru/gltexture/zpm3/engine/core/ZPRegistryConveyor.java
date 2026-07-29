@@ -26,23 +26,23 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public final class ZPRegistryConveyor {
-    private final List<ZPRegistry<?>> laterRun;
+    private final List<ZPCommonRegistry<?>> laterRun;
 
     public ZPRegistryConveyor() {
         this.laterRun = new ArrayList<>();
     }
 
-    void launch(Set<Class<? extends ZPRegistry<?>>> registryClasses) {
-        List<ZPRegistry<?>> registries = new ArrayList<>();
+    void launch(Set<Class<? extends ZPCommonRegistry<?>>> registryClasses) {
+        List<ZPCommonRegistry<?>> registries = new ArrayList<>();
         try {
-            for (Class<? extends ZPRegistry<?>> zpRegistryProcessorClass : registryClasses) {
-                ZPRegistry<?> zpRegistry = zpRegistryProcessorClass.getConstructor().newInstance();
+            for (Class<? extends ZPCommonRegistry<?>> zpRegistryProcessorClass : registryClasses) {
+                ZPCommonRegistry<?> zpRegistry = zpRegistryProcessorClass.getConstructor().newInstance();
                 if (zpRegistry.registerLater()) {
                     this.laterRun.add(zpRegistry);
                 } else {
@@ -52,7 +52,7 @@ public final class ZPRegistryConveyor {
         } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
             throw new ZPRuntimeException(e);
         }
-        registries.sort(Comparator.comparing((ZPRegistry<?> p) -> p.getTarget().getOrder()).thenComparing(ZPRegistry::priority));
+        registries.sort(Comparator.comparing((ZPCommonRegistry<?> p) -> p.getTarget().getOrder()).thenComparing(ZPCommonRegistry::priority));
 
         this.runSet(registries);
     }
@@ -62,8 +62,8 @@ public final class ZPRegistryConveyor {
         this.laterRun.clear();
     }
 
-    private void runSet(List<ZPRegistry<?>> registries) {
-        for (ZPRegistry<?> zpRegistry : registries) {
+    private void runSet(List<ZPCommonRegistry<?>> registries) {
+        for (ZPCommonRegistry<?> zpRegistry : registries) {
             ZPLogger.info("Initializing ZP registry: " + zpRegistry);
             ZombiePlague3.registerDeferred(zpRegistry.getDeferredRegister());
             zpRegistry.preProcessing();

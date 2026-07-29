@@ -28,6 +28,11 @@ import ru.gltexture.zpm3.modules.net_pack.data.ZPNetSyncDataPack;
 public interface IZPPlayerMixinExt {
     ZPNetSyncDataPack zpm3forge$zpNetDataPack_fromClient();
 
+    int zpm3forge$getSeasicknessLevel();
+    void zpm3forge$setSeasicknessLevel(int level);
+
+    void zpm3forge$defineZPSyncData();
+
     void zpm3forge$getResponseNetCheckFromServer();
     void zpm3forge$getResponseNetCheckFromClient();
     int zpm3forge$getPing();

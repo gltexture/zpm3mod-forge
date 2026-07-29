@@ -60,24 +60,25 @@ public class ZPNetPackModule extends ZPModule {
 
     @Override
     public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
-        moduleEntry.addNetworkPacket(new ZPNetwork.PacketData<>(0, ZPAcidSpreadPacket.class, ZPAcidSpreadPacket.encoder(), ZPAcidSpreadPacket.decoder()));
-        moduleEntry.addNetworkPacket(new ZPNetwork.PacketData<>(1, ZPGunActionPacket.class, ZPGunActionPacket.encoder(), ZPGunActionPacket.decoder()));
-        moduleEntry.addNetworkPacket(new ZPNetwork.PacketData<>(2, ZPBulletHitPacket.class, ZPBulletHitPacket.encoder(), ZPBulletHitPacket.decoder()));
-        moduleEntry.addNetworkPacket(new ZPNetwork.PacketData<>(3, ZPBulletTracePacket.class, ZPBulletTracePacket.encoder(), ZPBulletTracePacket.decoder()));
-        moduleEntry.addNetworkPacket(new ZPNetwork.PacketData<>(4, ZPNetCheckPacket.class, ZPNetCheckPacket.encoder(), ZPNetCheckPacket.decoder()));
-        moduleEntry.addNetworkPacket(new ZPNetwork.PacketData<>(5, ZPBlockCrackPacket.class, ZPBlockCrackPacket.encoder(), ZPBlockCrackPacket.decoder()));
+        moduleEntry.registerNetworkPacket(new ZPNetwork.PacketData<>(0, ZPAcidSpreadPacket.class, ZPAcidSpreadPacket.encoder(), ZPAcidSpreadPacket.decoder()));
+        moduleEntry.registerNetworkPacket(new ZPNetwork.PacketData<>(1, ZPGunActionPacket.class, ZPGunActionPacket.encoder(), ZPGunActionPacket.decoder()));
+        moduleEntry.registerNetworkPacket(new ZPNetwork.PacketData<>(2, ZPBulletHitPacket.class, ZPBulletHitPacket.encoder(), ZPBulletHitPacket.decoder()));
+        moduleEntry.registerNetworkPacket(new ZPNetwork.PacketData<>(3, ZPBulletTracePacket.class, ZPBulletTracePacket.encoder(), ZPBulletTracePacket.decoder()));
+        moduleEntry.registerNetworkPacket(new ZPNetwork.PacketData<>(4, ZPNetCheckPacket.class, ZPNetCheckPacket.encoder(), ZPNetCheckPacket.decoder()));
+        moduleEntry.registerNetworkPacket(new ZPNetwork.PacketData<>(5, ZPBlockCrackPacket.class, ZPBlockCrackPacket.encoder(), ZPBlockCrackPacket.decoder()));
         //moduleEntry.addNetworkPacket(new ZPNetwork.PacketData<>(6, ZPSendGlobalSettings_StoC.class, ZPSendGlobalSettings_StoC.encoder(), ZPSendGlobalSettings_StoC.decoder()));
-        moduleEntry.addNetworkPacket(new ZPNetwork.PacketData<>(7, ZPBloodPainFXPacket.class, ZPBloodPainFXPacket.encoder(), ZPBloodPainFXPacket.decoder()));
-        moduleEntry.addNetworkPacket(new ZPNetwork.PacketData<>(8, ZPSyncConfigSettingsPacket.class, ZPSyncConfigSettingsPacket.encoder(), ZPSyncConfigSettingsPacket.decoder()));
-        moduleEntry.addNetworkPacket(new ZPNetwork.PacketData<>(9, ZPPlayerWantToPickUpItemPacket.class, ZPPlayerWantToPickUpItemPacket.encoder(), ZPPlayerWantToPickUpItemPacket.decoder()));
-        moduleEntry.addNetworkPacket(new ZPNetwork.PacketData<>(10, ZPBulletBloodFXPacket.class, ZPBulletBloodFXPacket.encoder(), ZPBulletBloodFXPacket.decoder()));
-        moduleEntry.addNetworkPacket(new ZPNetwork.PacketData<>(11, ZPValidateModePacket.class, ZPValidateModePacket.encoder(), ZPValidateModePacket.decoder()));
-        moduleEntry.addNetworkPacket(new ZPNetwork.PacketData<>(12, ZPLyingStatePacket.class, ZPLyingStatePacket.encoder(), ZPLyingStatePacket.decoder()));
-        moduleEntry.addNetworkPacket(new ZPNetwork.PacketData<>(13, ZPSendTheOnlyZone_StoC_Packet.class, ZPSendTheOnlyZone_StoC_Packet.encoder(), ZPSendTheOnlyZone_StoC_Packet.decoder()));
-        moduleEntry.addNetworkPacket(new ZPNetwork.PacketData<>(14, ZPSendAllZones_StoC_Packet.class, ZPSendAllZones_StoC_Packet.encoder(), ZPSendAllZones_StoC_Packet.decoder()));
+        moduleEntry.registerNetworkPacket(new ZPNetwork.PacketData<>(7, ZPBloodPainFXPacket.class, ZPBloodPainFXPacket.encoder(), ZPBloodPainFXPacket.decoder()));
+        moduleEntry.registerNetworkPacket(new ZPNetwork.PacketData<>(8, ZPSyncConfigSettingsPacket.class, ZPSyncConfigSettingsPacket.encoder(), ZPSyncConfigSettingsPacket.decoder()));
+        moduleEntry.registerNetworkPacket(new ZPNetwork.PacketData<>(9, ZPPlayerWantToPickUpItemPacket.class, ZPPlayerWantToPickUpItemPacket.encoder(), ZPPlayerWantToPickUpItemPacket.decoder()));
+        moduleEntry.registerNetworkPacket(new ZPNetwork.PacketData<>(10, ZPBulletBloodFXPacket.class, ZPBulletBloodFXPacket.encoder(), ZPBulletBloodFXPacket.decoder()));
+        moduleEntry.registerNetworkPacket(new ZPNetwork.PacketData<>(11, ZPValidateModePacket.class, ZPValidateModePacket.encoder(), ZPValidateModePacket.decoder()));
+        moduleEntry.registerNetworkPacket(new ZPNetwork.PacketData<>(12, ZPLyingStatePacket.class, ZPLyingStatePacket.encoder(), ZPLyingStatePacket.decoder()));
+        moduleEntry.registerNetworkPacket(new ZPNetwork.PacketData<>(13, ZPSendTheOnlyZone_StoC_Packet.class, ZPSendTheOnlyZone_StoC_Packet.encoder(), ZPSendTheOnlyZone_StoC_Packet.decoder()));
+        moduleEntry.registerNetworkPacket(new ZPNetwork.PacketData<>(14, ZPSendAllZones_StoC_Packet.class, ZPSendAllZones_StoC_Packet.encoder(), ZPSendAllZones_StoC_Packet.decoder()));
 
-        ZPUtility.sides().onlyClient(() -> moduleEntry.registerNetSyncedConfigData_ClientToServer(
-                new ZPNetworkHandler.NetSyncDataFabric.Builder()
+        ZPUtility.sides().onlyClient(() ->
+                moduleEntry.registerNetSyncedConfigData_ClientToServer(
+                        new ZPNetworkHandler.NetSyncDataFabric.Builder()
                         .addBoolean(ZPDefaultDataKeys.CtoS__PICK_UP_ON_KEY, ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY::getVar)
         ));
 

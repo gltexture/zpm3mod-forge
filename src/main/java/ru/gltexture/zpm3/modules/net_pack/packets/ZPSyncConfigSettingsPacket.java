@@ -95,7 +95,7 @@ public class ZPSyncConfigSettingsPacket implements ZPNetwork.ZPPacket {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void onClient(@NotNull Player localPlayer) {
-        ZombiePlague3.getClient_netSyncDataPack().replace(this.zpNetSyncDataPack);
+        ZPNetworkHandler.getNetDataPack_FromServer().replace(this.zpNetSyncDataPack);
         ZPLogger.info("ZPSyncConfigSettingsPacket onClient : " + this.zpNetSyncDataPack);
     }
 }

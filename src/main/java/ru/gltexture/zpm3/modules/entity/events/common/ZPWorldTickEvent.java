@@ -43,12 +43,12 @@ import ru.gltexture.zpm3.modules.net_pack.packets.ZPBlockCrackPacket;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
-import ru.gltexture.zpm3.engine.events.ZPEventClass;
+import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 import ru.gltexture.zpm3.engine.service.Pair;
 
 import java.util.*;
 
-public class ZPWorldTickEvent implements ZPEventClass {
+public class ZPWorldTickEvent implements ZPForgeEventHandlerClass {
     public static int MAX_ZOMBIES_IN_CHUNK = ZPZombieConfig.MAX_ZOMBIES_SPAWN_IN_CHUNK.getVar();
     private static Map<ResourceKey<Level>, Integer> ticks = new HashMap<>();
 

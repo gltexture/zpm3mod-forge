@@ -25,9 +25,9 @@ import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 
-public class ZPEntityAttributes extends ZPRegistry<Attribute> {
+public class ZPEntityAttributes extends ZPCommonRegistry<Attribute> {
     public static RegistryObject<RangedAttribute> zm_attack_range_multiplier;
     public static RegistryObject<RangedAttribute> zm_mining_speed;
     public static RegistryObject<RangedAttribute> zm_random_effect_chance;

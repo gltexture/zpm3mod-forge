@@ -31,10 +31,10 @@ import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.events.ZPEventClass;
+import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 
 // ONLY DEBUG!!!!!!
-public class ZPFreeCameraEvents implements ZPEventClass {
+public class ZPFreeCameraEvents implements ZPForgeEventHandlerClass {
     public static boolean enabled = false;
     public static Vec3 freecamPos = new Vec3(0, 70, 0);
     public static float yaw = 0f;

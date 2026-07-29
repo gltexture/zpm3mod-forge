@@ -35,13 +35,13 @@ import org.joml.Vector3f;
 import ru.gltexture.zpm3.modules.debug.render.ZPRenderLines;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.engine.core.ZPSide;
-import ru.gltexture.zpm3.engine.events.ZPEventClass;
+import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class ZPRenderStuffEvent implements ZPEventClass {
+public class ZPRenderStuffEvent implements ZPForgeEventHandlerClass {
     private static List<LineRequest> lineRequestList = new ArrayList<>();
 
     public ZPRenderStuffEvent() {

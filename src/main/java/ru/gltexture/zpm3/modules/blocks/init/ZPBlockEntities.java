@@ -27,12 +27,12 @@ import net.minecraft.world.level.block.entity.BlockEntityType.Builder;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.helpers.ZPBlockEntityRenderMatchHelper;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 import ru.gltexture.zpm3.modules.blocks.instances.block_entities.ZPBarbaredWireBlockEntity;
 import ru.gltexture.zpm3.modules.blocks.instances.block_entities.ZPCampfireBlockEntity;
 import ru.gltexture.zpm3.modules.blocks.instances.block_entities.ZPFadingBlockEntity;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.registry.ZPRegistryCollections;
 import ru.gltexture.zpm3.engine.service.Pair;
 import ru.gltexture.zpm3.modules.blocks.rendering.ZPCampfireRenderer;
@@ -40,7 +40,7 @@ import ru.gltexture.zpm3.modules.blocks.rendering.ZPCampfireRenderer;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-public class ZPBlockEntities extends ZPRegistry<BlockEntityType<?>> {
+public class ZPBlockEntities extends ZPCommonRegistry<BlockEntityType<?>> {
     public static RegistryObject<BlockEntityType<ZPCampfireBlockEntity>> campfire_block_entity;
     public static RegistryObject<BlockEntityType<ZPFadingBlockEntity>> fading_block_entity;
     public static RegistryObject<BlockEntityType<ZPBarbaredWireBlockEntity>> barbared_wire_block_entity;

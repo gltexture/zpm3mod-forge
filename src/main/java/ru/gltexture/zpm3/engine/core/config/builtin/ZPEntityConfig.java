@@ -48,4 +48,8 @@ public class ZPEntityConfig implements ZPConfigConstantsClass {
     @ZPVarDefinition(description = "Toxic point-factor will be added on entity each N tick.")
     public static final ZPConfig_INT ADD_TOXIC_FACTOR_PER_TICK =
             new ZPConfig_INT(4);
+
+    @ZPVarDefinition(description = "Seasickness inc each N tick, if PLAYER underwater. (ONLY PLAYER). 0 = disable")
+    public static final ZPConfig_INT ADD_SEASICKNESS_FACTOR_PER_TICK =
+            new ZPConfig_INT(5);
 }

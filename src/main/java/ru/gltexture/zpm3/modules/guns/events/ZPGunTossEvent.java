@@ -28,9 +28,9 @@ import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
 import ru.gltexture.zpm3.engine.core.ZPSide;
-import ru.gltexture.zpm3.engine.events.ZPEventClass;
+import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 
-public class ZPGunTossEvent implements ZPEventClass {
+public class ZPGunTossEvent implements ZPForgeEventHandlerClass {
     @SubscribeEvent
     public static void exec(@NotNull ItemTossEvent itemTossEvent) {
         ItemEntity entity = itemTossEvent.getEntity();

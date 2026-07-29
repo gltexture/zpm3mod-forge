@@ -25,9 +25,9 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.modules.blocks.init.helper.ZPRegBlockItems;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 
-public class ZPBlockItems extends ZPRegistry<Item> {
+public class ZPBlockItems extends ZPCommonRegistry<Item> {
     public ZPBlockItems() {
         super(ZPRegistryConveyor.Target.ITEM);
     }

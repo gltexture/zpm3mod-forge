@@ -20,6 +20,7 @@
 
 package ru.gltexture.zpm3.modules.player.events.common;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
@@ -30,17 +31,19 @@ import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import ru.gltexture.zpm3.engine.core.ZPNetworkHandler;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
-import ru.gltexture.zpm3.engine.events.ZPEventClass;
+import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
+import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.modules.player.mixins.ext.IZPPlayerMixinExt;
 import ru.gltexture.zpm3.modules.net_pack.data.ZPDefaultDataKeys;
 
-public class ZPPlayerEntityItemEvent implements ZPEventClass {
+public class ZPPlayerEntityItemEvent implements ZPForgeEventHandlerClass {
     @SubscribeEvent
     public static void exec(@NotNull EntityItemPickupEvent event) {
-        if (event.getEntity() instanceof IZPPlayerMixinExt ext) {
-            if (ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY.getVar() && ext.zpm3forge$zpNetDataPack_fromClient().getBoolean(ZPDefaultDataKeys.StoC__SERVER_PICK_UP_ON_KEY, ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY.getVar())) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            if (ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY.getVar() && ZPNetworkHandler.getNetDataPack_FromClient(player).orElseThrow(ZPRuntimeException::new).getBoolean(ZPDefaultDataKeys.CtoS__PICK_UP_ON_KEY, ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY.getVar())) {
                 event.setCanceled(true);
             }
         }

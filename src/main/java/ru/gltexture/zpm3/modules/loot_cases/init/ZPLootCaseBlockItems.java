@@ -23,11 +23,11 @@ package ru.gltexture.zpm3.modules.loot_cases.init;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.modules.loot_cases.init.helper.ZPRegLootCaseItems;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 
-public class ZPLootCaseBlockItems extends ZPRegistry<Item> {
+public class ZPLootCaseBlockItems extends ZPCommonRegistry<Item> {
     public ZPLootCaseBlockItems() {
         super(ZPRegistryConveyor.Target.ITEM);
     }

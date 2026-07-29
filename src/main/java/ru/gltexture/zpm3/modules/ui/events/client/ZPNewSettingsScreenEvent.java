@@ -28,16 +28,11 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPSide;
-import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.events.ZPEventClass;
-import ru.gltexture.zpm3.engine.service.ZPPath;
-import ru.gltexture.zpm3.engine.service.ZPUtility;
+import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 import ru.gltexture.zpm3.modules.ui.screen.configs.ZPSettingsMenuScreen;
-import ru.gltexture.zpm3.modules.ui.screen.maps.ZPArchivedMapsMenuScreen;
-import ru.gltexture.zpm3.modules.worldgen.archiver.ZPMapArchivedRegistry;
 
 @OnlyIn(Dist.CLIENT)
-public class ZPNewSettingsScreenEvent implements ZPEventClass {
+public class ZPNewSettingsScreenEvent implements ZPForgeEventHandlerClass {
     public ZPNewSettingsScreenEvent() {
     }
 

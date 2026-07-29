@@ -44,11 +44,11 @@ import ru.gltexture.zpm3.modules.net_pack.packets.ZPBloodPainFXPacket;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
-import ru.gltexture.zpm3.engine.events.ZPEventClass;
+import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 
 import java.util.Objects;
 
-public class ZPEntityEffectActionsEvent implements ZPEventClass {
+public class ZPEntityEffectActionsEvent implements ZPForgeEventHandlerClass {
     @SubscribeEvent
     public static void exec(@NotNull LivingEvent.LivingTickEvent event) {
         if (event.getEntity().level().isClientSide()) {

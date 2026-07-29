@@ -24,15 +24,15 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.modules.fx.particles.ZPDefaultColoredParticle;
 import ru.gltexture.zpm3.modules.fx.particles.ParticleGunShell;
 import ru.gltexture.zpm3.modules.fx.particles.types.ColoredDefaultParticleType;
 import ru.gltexture.zpm3.modules.fx.particles.types.GunShellType;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
-public class ZPParticles extends ZPRegistry<ParticleType<?>> {
+public class ZPParticles extends ZPCommonRegistry<ParticleType<?>> {
     public static RegistryObject<ColoredDefaultParticleType> colored_cloud;
     public static RegistryObject<ColoredDefaultParticleType> blood_fx;
     public static RegistryObject<GunShellType> gun_shell;

@@ -28,14 +28,14 @@ import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
 import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockItemModelExecutors;
 import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockModelExecutors;
-import ru.gltexture.zpm3.engine.registry.ZPRegistry;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 import ru.gltexture.zpm3.modules.blocks.init.ZPLanternBlocks;
 import ru.gltexture.zpm3.modules.blocks.instances.blocks.lantern.ZPFadingLanternBlock;
 import ru.gltexture.zpm3.modules.common.init.ZPTags;
 
 public abstract class ZPRegLanternBlocks {
-    public static void init(ZPLanternBlocks lanternBLocks, @NotNull ZPRegistry.ZPRegSupplier<Block> regSupplier) {
+    public static void init(ZPLanternBlocks lanternBLocks, @NotNull ZPCommonRegistry.ZPRegSupplier<Block> regSupplier) {
         lanternBLocks.initInstanceCollecting("lanterns");
         
         ZPLanternBlocks.lantern2 = regSupplier.register("lantern2", () -> new ZPFadingLanternBlock(BlockBehaviour.Properties.of().lightLevel((p_50755_) -> 12).mapColor(MapColor.METAL).forceSolidOn().requiresCorrectToolForDrops().strength(3.5F).sound(SoundType.LANTERN), () -> ZPLanternBlocks.lantern3.get())

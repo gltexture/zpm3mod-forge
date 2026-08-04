@@ -32,12 +32,16 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL46;
-import ru.gltexture.zpm3.engine.core.ZPNetworkHandler;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.modules.guns.rendering.fx.ZPDefaultGunMuzzleflashFX;
 import ru.gltexture.zpm3.engine.client.rendering.ui.imgui.interfaces.DearUIInterface;
+import ru.gltexture.zpm3.modules.net_pack.data.data_ent.IZPNetEntDataSyncer;
+import ru.gltexture.zpm3.modules.net_pack.data.accessors.ZPNetDataAccessor;
+import ru.gltexture.zpm3.modules.net_pack.data.data_ent.ZPNetDataVar;
+import ru.gltexture.zpm3.modules.net_pack.data.data_static.ZPNetStaticDataPack;
 import ru.gltexture.zpm3.modules.player.mixins.ext.IZPPlayerMixinExt;
+
+import java.util.*;
 
 public class DearUIDebugInterface implements DearUIInterface {
     public DearUIDebugInterface() {
@@ -201,15 +205,17 @@ public class DearUIDebugInterface implements DearUIInterface {
             }
 
             if (ImGui.treeNode("FBO buffers")) {
-                GL46.glScissor(0, 0, 1, 1);
-                ImGui.text("1 Person");
-                ImGui.image(ZPDefaultGunMuzzleflashFX.muzzleflashFBO.getTextureByIndex(0).getTextureId(), 300, 200, 0.0f, 1.0f, 1.0f, 0.0f);
-                ImGui.image(ZPDefaultGunMuzzleflashFX.muzzleflashFBO.getTextureByIndex(1).getTextureId(), 300, 200, 0.0f, 1.0f, 1.0f, 0.0f);
-                ImGui.image(ZPDefaultGunMuzzleflashFX.muzzleflashFBO.getTextureByIndex(2).getTextureId(), 300, 200, 0.0f, 1.0f, 1.0f, 0.0f);
-                ImGui.separator();
-                ImGui.text("Bloom");
-                ImGui.image(ZPDefaultGunMuzzleflashFX.muzzleflashBlurFBO.getTextureByIndex(0).getTextureId(), 300, 200, 0.0f, 1.0f, 1.0f, 0.0f);
-                ImGui.treePop();
+                if (ZPDefaultGunMuzzleflashFX.muzzleflashFBO != null) {
+                    GL46.glScissor(0, 0, 1, 1);
+                    ImGui.text("1 Person");
+                    ImGui.image(ZPDefaultGunMuzzleflashFX.muzzleflashFBO.getTextureByIndex(0).getTextureId(), 300, 200, 0.0f, 1.0f, 1.0f, 0.0f);
+                    ImGui.image(ZPDefaultGunMuzzleflashFX.muzzleflashFBO.getTextureByIndex(1).getTextureId(), 300, 200, 0.0f, 1.0f, 1.0f, 0.0f);
+                    ImGui.image(ZPDefaultGunMuzzleflashFX.muzzleflashFBO.getTextureByIndex(2).getTextureId(), 300, 200, 0.0f, 1.0f, 1.0f, 0.0f);
+                    ImGui.separator();
+                    ImGui.text("Bloom");
+                    ImGui.image(ZPDefaultGunMuzzleflashFX.muzzleflashBlurFBO.getTextureByIndex(0).getTextureId(), 300, 200, 0.0f, 1.0f, 1.0f, 0.0f);
+                    ImGui.treePop();
+                }
             }
             ImGui.treePop();
         }
@@ -222,13 +228,29 @@ public class DearUIDebugInterface implements DearUIInterface {
             DearUIDebugInterface.debugDarknessValue = v[0];
         }
         if (ImGui.collapsingHeader("Debug Client Data")) {
-            if (ZPNetworkHandler.getNetDataPack_FromServer().orElseThrow(ZPRuntimeException::new).dataPack().isEmpty()) {
+            if (player != null) {
+                final IZPNetEntDataSyncer.ZPNetEntityData vars = ZombiePlague3.netClient().getNetEntDataSyncer().getEntityDataVars(player);
+                if (vars != null) {
+                    ImGui.text("ZPNetSynced (struct) Size: " + ZombiePlague3.netClient().getNetEntDataSyncer().structSize());
+                    new ArrayList<>(vars.vars().int2ObjectEntrySet()).forEach((k) -> {
+                        ImGui.bullet();
+                        ImGui.textWrapped(k.getIntKey() + " : " + ZombiePlague3.netClient().getNetEntDataSyncer().getAccessorUnsafe(k.getIntKey()).getResourceId() + " - " + k.getValue().getValue());
+                    });
+                }
+            }
+            ImGui.separator();
+
+            final ZPNetStaticDataPack pack = ZombiePlague3.netClient().getNetStaticDataSyncer().getPackServerData();
+            final Map<ZPNetDataAccessor<?>, ZPNetDataVar<?>> data = pack.getVars();
+            if (data.isEmpty()) {
                 ImGui.text("Empty");
             } else {
-                ZPNetworkHandler.getNetDataPack_FromServer().orElseThrow(ZPRuntimeException::new).dataPack().forEach((k, v) -> {
-                    ImGui.text(k + " = " + v);
+                data.forEach((key, value) -> {
+                    ImGui.bullet();
+                    ImGui.text(key.getGlobalId() + " : " + key.getResourceId() + " = " + value.getValue());
                 });
             }
+            ImGui.separator();
             if (player != null && player.getEntityData().getNonDefaultValues() != null) {
                 player.getEntityData().getNonDefaultValues().forEach(e -> {
                     ImGui.bullet();

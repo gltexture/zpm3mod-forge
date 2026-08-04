@@ -23,7 +23,6 @@ package ru.gltexture.zpm3.engine.zones;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.engine.zones.vars.ZPZoneIntVar;
-import ru.gltexture.zpm3.modules.guns.mixins.client.ZPHumanoidArmTransformations;
 
 import java.util.Collection;
 import java.util.Collections;

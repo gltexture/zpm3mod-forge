@@ -28,7 +28,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientMobEffectExtensions;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.modules.common.damage.ZPDamageSources;
-import ru.gltexture.zpm3.modules.net_pack.packets.ZPBloodPainFXPacket;
+import ru.gltexture.zpm3.modules.net_pack.packets.S2C.ZPBloodPainFXPacket;
 
 import java.util.function.Consumer;
 

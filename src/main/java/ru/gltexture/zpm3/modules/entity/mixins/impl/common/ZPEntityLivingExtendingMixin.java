@@ -21,30 +21,30 @@
 package ru.gltexture.zpm3.modules.entity.mixins.impl.common;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.modules.entity.mixins.ext.IZPLivingEntityExt;
 import ru.gltexture.zpm3.modules.mob_effects.init.ZPMobEffects;
+import ru.gltexture.zpm3.modules.net_pack.ZPNetPackModule;
+import ru.gltexture.zpm3.modules.net_pack.data.vars.ZPNetDataInt;
 
 @Mixin(LivingEntity.class)
 public abstract class ZPEntityLivingExtendingMixin implements IZPLivingEntityExt {
-    @Unique private static final EntityDataAccessor<Integer> ZP_RADIATION = SynchedEntityData.defineId(LivingEntity.class, EntityDataSerializers.INT);
-    @Unique private static final EntityDataAccessor<Integer> INTOXICATION_LEVEL = SynchedEntityData.defineId(LivingEntity.class, EntityDataSerializers.INT);
+   //@Unique private static final EntityDataAccessor<Integer> ZP_RADIATION = SynchedEntityData.defineId(LivingEntity.class, EntityDataSerializers.INT);
+   //@Unique private static final EntityDataAccessor<Integer> INTOXICATION_LEVEL = SynchedEntityData.defineId(LivingEntity.class, EntityDataSerializers.INT);
     
 
-    @Inject(method = "defineSynchedData", at = @At("TAIL"))
-    private void zp$defineSynchedData(CallbackInfo ci) {
-        LivingEntity self = (LivingEntity)(Object)this;
-        self.getEntityData().define(ZP_RADIATION, 0);
-        self.getEntityData().define(INTOXICATION_LEVEL, 0);
-    }
+ //  @Inject(method = "defineSynchedData", at = @At("TAIL"))
+ //  private void zp$defineSynchedData(CallbackInfo ci) {
+ //      LivingEntity self = (LivingEntity)(Object)this;
+ //      self.getEntityData().define(ZP_RADIATION, 0);
+ //      self.getEntityData().define(INTOXICATION_LEVEL, 0);
+ //  }
 
     @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
     private void zp$addAdditionalSaveData(CompoundTag tag, CallbackInfo ci) {
@@ -69,12 +69,14 @@ public abstract class ZPEntityLivingExtendingMixin implements IZPLivingEntityExt
 
     @Override
     public int zpm3forge$getIntoxicationLevel() {
-        return ((LivingEntity) (Object) this).getEntityData().get(INTOXICATION_LEVEL);
+        final Entity entity = (Entity) (Object) this;
+        return ZombiePlague3.net(!entity.level().isClientSide()).getNetEntDataSyncer().getVarOfDefault(((Entity) (Object) this), ZPNetPackModule.INTOXICATION).getValue();
     }
 
     @Override
     public void zpm3forge$setIntoxicationLevelForce(int intoxicationLevel) {
-        ((LivingEntity) (Object) this).getEntityData().set(INTOXICATION_LEVEL, Math.min(intoxicationLevel, 1024));
+        final Entity entity = (Entity) (Object) this;
+        ZombiePlague3.net(!entity.level().isClientSide()).getNetEntDataSyncer().setVar(((Entity) (Object) this), ZPNetPackModule.INTOXICATION, new ZPNetDataInt(Math.min(intoxicationLevel, 1024)));
     }
 
     @Override
@@ -82,16 +84,19 @@ public abstract class ZPEntityLivingExtendingMixin implements IZPLivingEntityExt
         if (((LivingEntity) (Object) this).hasEffect(ZPMobEffects.immune.get())) {
             return;
         }
-        ((LivingEntity) (Object) this).getEntityData().set(INTOXICATION_LEVEL, Math.min(intoxicationLevel, 1024));
+        final Entity entity = (Entity) (Object) this;
+        ZombiePlague3.net(!entity.level().isClientSide()).getNetEntDataSyncer().setVar(((LivingEntity) (Object) this), ZPNetPackModule.INTOXICATION, new ZPNetDataInt(Math.min(intoxicationLevel, 1024)));
     }
 
     @Override
     public int zpm3forge$getRadiationLevel() {
-        return ((LivingEntity) (Object) this).getEntityData().get(ZP_RADIATION);
+        final Entity entity = (Entity) (Object) this;
+        return ZombiePlague3.net(!entity.level().isClientSide()).getNetEntDataSyncer().getVarOfDefault(((Entity) (Object) this), ZPNetPackModule.RADIATION).getValue();
     }
 
     @Override
     public void zpm3forge$setRadiationLevel(int value) {
-        ((LivingEntity) (Object) this).getEntityData().set(ZP_RADIATION, value);
+        final Entity entity = (Entity) (Object) this;
+        ZombiePlague3.net(!entity.level().isClientSide()).getNetEntDataSyncer().setVar(((Entity) (Object) this), ZPNetPackModule.RADIATION, new ZPNetDataInt(Math.min(value, 512)));
     }
 }

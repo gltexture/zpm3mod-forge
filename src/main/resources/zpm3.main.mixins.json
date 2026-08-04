@@ -21,7 +21,6 @@
     "client.ZPMouseHandlerMixin",
     "client.fix.ZPItemModelFixMixin",
     "client.fix.ZPTextureAtlasFixMixin",
-    "client.fix.ZPTranslatableContentsFixMixin",
     "client.render.ZPArmorLayerMixin",
     "client.render.ZPGameLightMapMixin",
     "client.render.ZPGameRendererFovAccessor",

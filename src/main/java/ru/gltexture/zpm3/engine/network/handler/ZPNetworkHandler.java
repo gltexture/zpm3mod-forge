@@ -1,0 +1,82 @@
+/*
+ *
+ *  * zpm3forge
+ *  * Copyright (C) 2026 gltexture
+ *  *
+ *  * This program is free software: you can redistribute it and/or modify
+ *  * it under the terms of the GNU General Public License as published by
+ *  * the Free Software Foundation, either version 3 of the License, or
+ *  * (at your option) any later version.
+ *  *
+ *  * This program is distributed in the hope that it will be useful,
+ *  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *  * GNU General Public License for more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License
+ *  * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ */
+
+package ru.gltexture.zpm3.engine.network.handler;
+
+import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.network.ZPNetwork;
+import ru.gltexture.zpm3.modules.net_pack.data.data_ent.IZPNetEntDataSyncer;
+import ru.gltexture.zpm3.modules.net_pack.data.data_ent.ZPNetEntDataSyncer;
+import ru.gltexture.zpm3.modules.net_pack.data.data_static.IZPNetStaticDataSyncer;
+
+import java.util.*;
+import java.util.function.Supplier;
+
+public abstract class ZPNetworkHandler {
+    private ZPNetwork network;
+    private final IZPNetEntDataSyncer zpNetEntDataSyncer;
+    private final IZPNetStaticDataSyncer zpNetStaticDataSyncer;
+
+    public enum Side {
+        CLIENT,
+        SERVER
+    }
+
+    private final Side side;
+
+    ZPNetworkHandler(@NotNull IZPNetStaticDataSyncer zpNetStaticDataSyncer, @NotNull IZPNetEntDataSyncer zpNetEntDataSyncer, @NotNull Side side) {
+        this.network = null;
+        this.side = side;
+        this.zpNetEntDataSyncer = zpNetEntDataSyncer;
+        this.zpNetStaticDataSyncer = zpNetStaticDataSyncer;
+    }
+
+    public static ZPNetworkHandlerServer server() {
+        return ZPNetworkHandlerServer.instance;
+    }
+
+    public static ZPNetworkHandlerClient client() {
+        return ZPNetworkHandlerClient.instance;
+    }
+
+    public IZPNetStaticDataSyncer getNetStaticDataSyncer() {
+        return this.zpNetStaticDataSyncer;
+    }
+
+    public IZPNetEntDataSyncer getNetEntDataSyncer() {
+        return this.zpNetEntDataSyncer;
+    }
+
+    public ZPNetwork getNetwork() {
+        return this.network;
+    }
+
+    public void setNetwork(@NotNull ZPNetwork zpNetwork) {
+        this.network = zpNetwork;
+    }
+
+    public boolean isServer() {
+        return this.side == Side.SERVER;
+    }
+
+    public boolean isValid() {
+        return this.network != null;
+    }
+}

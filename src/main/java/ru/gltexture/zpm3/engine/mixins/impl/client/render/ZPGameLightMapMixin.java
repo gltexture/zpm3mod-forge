@@ -41,17 +41,18 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import ru.gltexture.zpm3.engine.client.rendering.lightmap.ZPLightMapModifier;
-import ru.gltexture.zpm3.engine.core.ZPNetworkHandler;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
+import ru.gltexture.zpm3.engine.network.handler.ZPNetworkHandlerClient;
 
 import ru.gltexture.zpm3.engine.core.Zp_SYS_EventsManager;
 import ru.gltexture.zpm3.engine.core.api.events.ZPModEventBus;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
-import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.modules.debug.imgui.DearUIDebugInterface;
 import ru.gltexture.zpm3.modules.mob_effects.init.ZPMobEffects;
-import ru.gltexture.zpm3.modules.net_pack.data.ZPDefaultDataKeys;
+import ru.gltexture.zpm3.modules.net_pack.ZPNetPackModule;
+import ru.gltexture.zpm3.modules.net_pack.data.vars.ZPNetDataBoolean;
+import ru.gltexture.zpm3.modules.net_pack.data.vars.ZPNetDataFloat;
 
 @Mixin(LightTexture.class)
 public abstract class ZPGameLightMapMixin {
@@ -166,9 +167,9 @@ public abstract class ZPGameLightMapMixin {
 
                         float f14 = this.minecraft.options.gamma().get().floatValue();
                         if (this.minecraft.player != null && (!this.minecraft.player.isCreative() || this.minecraft.options.hideGui)) {
-                            final boolean serverDarkness = ZPNetworkHandler.getNetDataPack_FromServer().orElseThrow(ZPRuntimeException::new).getBoolean(ZPDefaultDataKeys.StoC__DARKNESS_ENABLED, ZPWorldConfig.ENABLE_HARDCORE_DARKNESS_SERVER_SIDE.getVar());
+                            final boolean serverDarkness = ZombiePlague3.netClient().getNetStaticDataSyncer().getVar(ZPNetPackModule.StoC__DARKNESS_ENABLED).orElse(new ZPNetDataBoolean(ZPWorldConfig.ENABLE_HARDCORE_DARKNESS_SERVER_SIDE.getVar())).getValue();
                             if (serverDarkness) {
-                                f14 = ZPNetworkHandler.getNetDataPack_FromServer().orElseThrow(ZPRuntimeException::new).getFloat(ZPDefaultDataKeys.StoC__DARKNESS_FACTOR, ZPWorldConfig.DARKNESS_GAMMA_STATIC_FACTOR_SERVER_SIDE.getVar());
+                                f14 = ZombiePlague3.netClient().getNetStaticDataSyncer().getVar(ZPNetPackModule.StoC__DARKNESS_FACTOR).orElse(new ZPNetDataFloat(ZPWorldConfig.DARKNESS_GAMMA_STATIC_FACTOR_SERVER_SIDE.getVar())).getValue();
                                 if (DearUIDebugInterface.debugDarknessValueEnable) {
                                     f14 = DearUIDebugInterface.debugDarknessValue;
                                 }

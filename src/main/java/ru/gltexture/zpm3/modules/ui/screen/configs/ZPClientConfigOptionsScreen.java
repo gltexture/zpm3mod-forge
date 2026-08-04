@@ -167,6 +167,9 @@ public class ZPClientConfigOptionsScreen extends ZPScreen {
 
     private void save() {
         ZombiePlague3.getZpConfigManager().rewriteConfigClass(this.configClass);
+        if (this.minecraft != null && this.minecraft.player != null) {
+            ZombiePlague3.netClient().getNetStaticDataSyncer().broadcastAll();
+        }
     }
 
     public void removed() {

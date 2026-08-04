@@ -62,6 +62,9 @@ import ru.gltexture.zpm3.engine.core.api.events.ZPModEventBus;
 import ru.gltexture.zpm3.engine.core.config.ZPConfigConstantsClass;
 import ru.gltexture.zpm3.engine.core.config.ZPConfigManager;
 import ru.gltexture.zpm3.engine.core.config.builtin.*;
+import ru.gltexture.zpm3.engine.network.handler.ZPNetworkHandler;
+import ru.gltexture.zpm3.engine.network.handler.ZPNetworkHandlerClient;
+import ru.gltexture.zpm3.engine.network.handler.ZPNetworkHandlerServer;
 import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.engine.zones.ZPZoneManager;
 import ru.gltexture.zpm3.engine.zones.ZPZonesRegistry;
@@ -94,7 +97,6 @@ import ru.gltexture.zpm3.engine.recipes.ZPRecipesRegistry;
 import ru.gltexture.zpm3.engine.registry.ZPRegistryCollections;
 import ru.gltexture.zpm3.engine.service.ZPPath;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
-import ru.gltexture.zpm3.modules.net_pack.data.ZPNetSyncDataPack;
 import ru.gltexture.zpm3.modules.worldgen.archiver.ZPMapArchivedRegistry;
 
 import java.io.IOException;
@@ -118,8 +120,6 @@ public final class ZombiePlague3 {
     private static ZPRecipesController recipesController;
     private static ZPConfigManager zpConfigManager;
     static Zp_SYS_EventsManager ZP_EVENTS;
-
-    @OnlyIn(Dist.CLIENT) private static ZPNetSyncDataPack ServerToClient_netSyncDataPack;
 
     static {
         ZombiePlague3.populationController = new ZPPopulationController();
@@ -157,7 +157,16 @@ public final class ZombiePlague3 {
     private void createNet() {
         ZPLogger.info(this + " INIT-NETWORK");
         this.zpNetwork = new ZPNetwork(ZombiePlague3.NETWORK_CHANNEL(), ZombiePlague3.NETWORK_PROTO_VER());
-        ZombiePlague3.net().setNetwork(this.zpNetwork);
+        {
+            ZPNetworkHandlerServer.init();
+            ZPNetworkHandler.server().setNetwork(this.zpNetwork);
+        }
+        {
+            ZPUtility.sides().onlyClient(() -> {
+                ZPNetworkHandlerClient.init();
+                ZPNetworkHandler.client().setNetwork(this.zpNetwork);
+            });
+        }
     }
 
     private void init() {
@@ -440,14 +449,6 @@ public final class ZombiePlague3 {
         }
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public static ZPNetSyncDataPack getServerToClient_netSyncDataPack() {
-        if (ZombiePlague3.ServerToClient_netSyncDataPack == null) {
-            ZombiePlague3.ServerToClient_netSyncDataPack = ZombiePlague3.net().createdNetSyncDataPack_StoC();
-        }
-        return ZombiePlague3.ServerToClient_netSyncDataPack;
-    }
-
     public static boolean isCommonInitEnded() {
         return !ZombiePlague3.commonInitSwitch;
     }
@@ -500,8 +501,34 @@ public final class ZombiePlague3 {
         return ZombiePlague3.recipesController;
     }
 
-    public static ZPNetworkHandler net() {
-        return ZPNetworkHandler.instance;
+   // public static ZPNetworkHandlerServer net() {
+   //     return ZPNetworkHandlerServer.instance;
+   // }
+
+    public static <E extends ZPNetworkHandler> E net(boolean isServer) {
+        return net(isServer ? ZPNetworkHandler.Side.SERVER : ZPNetworkHandler.Side.CLIENT);
+    }
+
+    @SuppressWarnings("all")
+    public static <E extends ZPNetworkHandler> E net(@NotNull ZPNetworkHandler.Side side) {
+        switch (side) {
+            case CLIENT -> {
+                return (E) ZPNetworkHandler.client();
+            }
+            case SERVER -> {
+                return (E) ZPNetworkHandler.server();
+            }
+        }
+        throw new ZPRuntimeException("Invalid side " + side);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static ZPNetworkHandlerClient netClient() {
+        return ZPNetworkHandlerClient.instance;
+    }
+
+    public static ZPNetworkHandlerServer netServer() {
+        return ZPNetworkHandlerServer.instance;
     }
 
     public ZPNetwork getZpNetwork() {
@@ -558,8 +585,6 @@ public final class ZombiePlague3 {
         void registerZP3EventHandlerClass(@NotNull Class<? extends ZP3EventHandlerClass> clazz);
         void registerEventHandlerInstance(@NotNull ZPForgeEventHandlerClass object);
         void registerNetworkPacket(@NotNull ZPNetwork.PacketData<?> packetData);
-        void registerNetSyncedConfigData_ClientToServer(@NotNull ZPNetworkHandler.NetSyncDataFabric.Builder zpNetSyncDataPackBuilder);
-        void registerNetSyncedConfigData_ServerToClient(@NotNull ZPNetworkHandler.NetSyncDataFabric.Builder zpNetSyncDataPackBuilder);
         void setLootTablesRegistry(@NotNull ZPLootTablesRegistry object);
         void addRecipesRegistry(@NotNull ZPRecipesRegistry... recipesRegistries);
         void setPopulationSetup(@NotNull ZPSetupPopulation setup);
@@ -614,16 +639,6 @@ public final class ZombiePlague3 {
         @Override
         public void registerNetworkPacket(ZPNetwork.@NotNull PacketData<?> packetData) {
             this.getPacketDataSet().add(packetData);
-        }
-
-        @Override
-        public void registerNetSyncedConfigData_ClientToServer(@NotNull ZPNetworkHandler.NetSyncDataFabric.Builder zpNetSyncDataPackBuilder) {
-            ZPNetworkHandler.instance.registerSyncedData__Client_to_Server(zpNetSyncDataPackBuilder);
-        }
-
-        @Override
-        public void registerNetSyncedConfigData_ServerToClient(@NotNull ZPNetworkHandler.NetSyncDataFabric.Builder zpNetSyncDataPackBuilder) {
-            ZPNetworkHandler.instance.registerSyncedData__Server_to_Client(zpNetSyncDataPackBuilder);
         }
 
         @Override

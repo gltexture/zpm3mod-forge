@@ -36,10 +36,10 @@ import org.joml.Vector2i;
 import org.joml.Vector3f;
 import org.joml.Vector3i;
 import ru.gltexture.zpm3.engine.core.ZPLogger;
+import ru.gltexture.zpm3.engine.network.handler.ZPNetworkHandlerServer;
 import ru.gltexture.zpm3.engine.exceptions.ZPIOException;
 import ru.gltexture.zpm3.engine.service.Pair;
 import ru.gltexture.zpm3.engine.zones.vars.ZPZoneIntVar;
-import ru.gltexture.zpm3.modules.net_pack.data.ZPClientZonesHelper;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -143,7 +143,7 @@ public final class ZPZoneManager {
         zone.start().set(start);
         zone.end().set(end);
         this.zonesPerLevelMap.get(level).buildFastPerChunkAccessMap(this.zonesPerLevelMap.get(level).getIdAccessMap().values());
-        ZPClientZonesHelper.sendZoneToAll(zone, level, false);
+        ZPNetworkHandlerServer.sendZoneToAll(zone, level, false);
         this.writeToJSON(level);
     }
 
@@ -151,7 +151,7 @@ public final class ZPZoneManager {
         this.zonesPerLevelMap.computeIfAbsent(level, k -> new ZonesContainer());
         this.zonesPerLevelMap.get(level).getIdAccessMap().put(zone.uniqueId(), zone);
         this.zonesPerLevelMap.get(level).buildFastPerChunkAccessMap(this.zonesPerLevelMap.get(level).getIdAccessMap().values());
-        ZPClientZonesHelper.sendZoneToAll(zone, level, false);
+        ZPNetworkHandlerServer.sendZoneToAll(zone, level, false);
         this.writeToJSON(level);
     }
 
@@ -168,7 +168,7 @@ public final class ZPZoneManager {
         if (this.zonesPerLevelMap.containsKey(level) && flagsMap.containsKey(uniqueId)) {
             final Zone zone = flagsMap.remove(uniqueId);
             this.zonesPerLevelMap.get(level).buildFastPerChunkAccessMap(flagsMap.values());
-            ZPClientZonesHelper.sendZoneToAll(zone, level, true);
+            ZPNetworkHandlerServer.sendZoneToAll(zone, level, true);
             this.writeToJSON(level);
             return true;
         }
@@ -180,7 +180,7 @@ public final class ZPZoneManager {
         if (zone != null) {
             zone.flags().clear();
             zone.flags().addAll(flags);
-            ZPClientZonesHelper.sendZoneToAll(zone, level, false);
+            ZPNetworkHandlerServer.sendZoneToAll(zone, level, false);
             this.writeToJSON(level);
             return true;
         }
@@ -193,7 +193,7 @@ public final class ZPZoneManager {
             if (!zone.flags().add(flag)) {
                 return false;
             }
-            ZPClientZonesHelper.sendZoneToAll(zone, level, false);
+            ZPNetworkHandlerServer.sendZoneToAll(zone, level, false);
             this.writeToJSON(level);
             return true;
         }
@@ -206,7 +206,7 @@ public final class ZPZoneManager {
             if (!zone.flags().remove(flag)) {
                 return false;
             }
-            ZPClientZonesHelper.sendZoneToAll(zone, level, false);
+            ZPNetworkHandlerServer.sendZoneToAll(zone, level, false);
             this.writeToJSON(level);
             return true;
         }
@@ -265,7 +265,7 @@ public final class ZPZoneManager {
             if (zone.int_vars().put(variable.getVariableId(), variable) == null) {
                 return false;
             }
-            ZPClientZonesHelper.sendZoneToAll(zone, level, false);
+            ZPNetworkHandlerServer.sendZoneToAll(zone, level, false);
             this.writeToJSON(level);
             return true;
         }

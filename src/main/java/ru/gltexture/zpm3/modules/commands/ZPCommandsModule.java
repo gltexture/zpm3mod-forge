@@ -34,6 +34,7 @@ import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3i;
 import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
+import ru.gltexture.zpm3.engine.core.ZPLogger;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 import ru.gltexture.zpm3.engine.zones.vars.ZPZoneIntVar;
 import ru.gltexture.zpm3.modules.commands.events.client.ZPRenderSpecialZoneEffectsOnClient;
@@ -48,6 +49,7 @@ import ru.gltexture.zpm3.modules.commands.events.client.ZPCreativeUtilityMenuEve
 import ru.gltexture.zpm3.modules.commands.events.client.ZPRenderZones;
 import ru.gltexture.zpm3.modules.commands.imgui.ZPCreativeUtilityUI;
 import ru.gltexture.zpm3.engine.zones.ZPZonesRegistry;
+import ru.gltexture.zpm3.modules.net_pack.data.data_ent.ZPNetEntDataSyncer;
 
 import java.util.*;
 
@@ -141,7 +143,7 @@ public class ZPCommandsModule extends ZPModule {
                             //            ServerPlayer player = ctx.getSource().getPlayerOrException();
                             //            if (player.hasPermissions(4)) {
                             //                ZombiePlague3.processConfigurations();
-                            //                ZombiePlague3.net().sendToAll(ZPSendGlobalSettings_StoC.create());
+                            //                ZombiePlague3.netServer().sendToAll(ZPSendGlobalSettings_StoC.create());
                             //                ctx.getSource().sendSuccess(() -> Component.literal("Success!"), false);
                             //                return 1;
                             //            }
@@ -489,6 +491,28 @@ public class ZPCommandsModule extends ZPModule {
                                                 return 1;
                                             })
                                     )
+                            )
+                            .then(Commands.literal("debugSnapshotData")
+                                    .executes(ctx -> {
+                                        if (!ctx.getSource().hasPermission(3)) {
+                                            ctx.getSource().sendFailure(Component.literal("No permission."));
+                                            return 0;
+                                        }
+                                        ZPNetEntDataSyncer syncer = ZombiePlague3.netServer().getNetEntDataSyncer();
+                                        StringBuilder sb = new StringBuilder();
+                                        sb.append("===== ZP3 Debug Data Snapshot =====\n");
+                                        sb.append("NetData Sync Struct size: ").append(syncer.structSize()).append("\n");
+                                        sb.append("=================================");
+                                        {
+                                            String output = sb.toString();
+                                            ZPLogger.info("\n" + output);
+                                            ServerPlayer player = ctx.getSource().getPlayerOrException();
+                                            for (String line : output.split("\n")) {
+                                                player.sendSystemMessage(Component.literal(line));
+                                            }
+                                        }
+                                        return 1;
+                                    })
                             )
             );
         }

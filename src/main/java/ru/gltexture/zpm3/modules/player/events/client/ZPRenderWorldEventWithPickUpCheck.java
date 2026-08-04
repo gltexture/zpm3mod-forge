@@ -35,12 +35,12 @@ import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import ru.gltexture.zpm3.engine.core.ZPNetworkHandler;
+import ru.gltexture.zpm3.engine.network.handler.ZPNetworkHandlerClient;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
-import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
-import ru.gltexture.zpm3.modules.net_pack.data.ZPDefaultDataKeys;
+import ru.gltexture.zpm3.modules.net_pack.ZPNetPackModule;
+import ru.gltexture.zpm3.modules.net_pack.data.vars.ZPNetDataBoolean;
 import ru.gltexture.zpm3.modules.player.keybind.ZPPickUpKeyBindings;
-import ru.gltexture.zpm3.modules.net_pack.packets.ZPPlayerWantToPickUpItemPacket;
+import ru.gltexture.zpm3.modules.net_pack.packets.C2S.ZPPlayerWantToPickUpItemPacket;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
@@ -75,8 +75,7 @@ public class ZPRenderWorldEventWithPickUpCheck implements ZPForgeEventHandlerCla
 
     @SubscribeEvent
     public static void onRenderWorld(RenderLevelStageEvent event) {
-        final boolean pickUpOnKey = ZPNetworkHandler.getNetDataPack_FromServer().orElseThrow(ZPRuntimeException::new).getBoolean(ZPDefaultDataKeys.StoC__SERVER_PICK_UP_ON_KEY, ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY.getVar());
-        if (pickUpOnKey && event.getStage() == RenderLevelStageEvent.Stage.AFTER_SOLID_BLOCKS) {
+        final boolean pickUpOnKey = ZombiePlague3.netClient().getNetStaticDataSyncer().getVar(ZPNetPackModule.StoC__SERVER_PICK_UP_ON_KEY).orElse(new ZPNetDataBoolean(ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY.getVar())).getValue();        if (pickUpOnKey && event.getStage() == RenderLevelStageEvent.Stage.AFTER_SOLID_BLOCKS) {
             Minecraft mc = Minecraft.getInstance();
             if (mc.level == null || mc.player == null) {
                 return;
@@ -94,7 +93,7 @@ public class ZPRenderWorldEventWithPickUpCheck implements ZPForgeEventHandlerCla
             }
             if (ZPRenderWorldEventWithPickUpCheck.entityToPickUp != null && ZPPickUpKeyBindings.pickItem.isDown()) {
                 if (ZPRenderWorldEventWithPickUpCheck.pickUpCooldown < 0 && ZPRenderWorldEventWithPickUpCheck.canBePickedUp(ZPRenderWorldEventWithPickUpCheck.entityToPickUp)) {
-                    ZombiePlague3.net().sendToServer(new ZPPlayerWantToPickUpItemPacket(ZPRenderWorldEventWithPickUpCheck.entityToPickUp.getId()));
+                    ZombiePlague3.netClient().sendToServer(new ZPPlayerWantToPickUpItemPacket(ZPRenderWorldEventWithPickUpCheck.entityToPickUp.getId()));
                     ZPRenderWorldEventWithPickUpCheck.pickUpCooldown = 5;
                 }
             }

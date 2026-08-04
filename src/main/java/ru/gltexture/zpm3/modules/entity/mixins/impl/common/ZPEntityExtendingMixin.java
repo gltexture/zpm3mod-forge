@@ -24,8 +24,6 @@ import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
 import net.minecraft.ReportedException;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -45,18 +43,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
+import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPEntityConfig;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
-import ru.gltexture.zpm3.modules.armor.utils.ZPArmorUtil;
 import ru.gltexture.zpm3.modules.entity.mixins.ext.IZPEntityExt;
 import ru.gltexture.zpm3.modules.entity.util.ZPEntityUtil;
+import ru.gltexture.zpm3.modules.net_pack.ZPNetPackModule;
+import ru.gltexture.zpm3.modules.net_pack.data.vars.ZPNetDataInt;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
 
 @Mixin(Entity.class)
 public abstract class ZPEntityExtendingMixin implements IZPEntityExt {
-    @Unique private static final EntityDataAccessor<Integer> ACID_LEVEL = SynchedEntityData.defineId(Entity.class, EntityDataSerializers.INT);
+    //@Unique private static final EntityDataAccessor<Integer> ACID_LEVEL = SynchedEntityData.defineId(Entity.class, EntityDataSerializers.INT);
 
     @Shadow public abstract void fillCrashReportCategory(CrashReportCategory pCategory);
     @Shadow public abstract Level level();
@@ -68,14 +68,13 @@ public abstract class ZPEntityExtendingMixin implements IZPEntityExt {
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void onConstructed(EntityType<?> type, Level world, CallbackInfo ci) {
-        this.zpm3forge$defineZPSyncData();
     }
 
-    @Override
-    public void zpm3forge$defineZPSyncData() {
-        Entity self = (Entity) (Object) this;
-        self.getEntityData().define(ACID_LEVEL, 0);
-    }
+ //   @Override
+ //   public void zpm3forge$defineZPSyncData() {
+ //       Entity self = (Entity) (Object) this;
+ //       self.getEntityData().define(ACID_LEVEL, 0);
+ //   }
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void tickPre(CallbackInfo ci) {
@@ -151,11 +150,13 @@ public abstract class ZPEntityExtendingMixin implements IZPEntityExt {
 
     @Override
     public int zpm3forge$getAcidLevel() {
-        return this.getEntityData().get(ACID_LEVEL);
+        final Entity entity = (Entity) (Object) this;
+        return ZombiePlague3.net(!entity.level().isClientSide()).getNetEntDataSyncer().getVarOfDefault(((Entity) (Object) this), ZPNetPackModule.ACID).getValue();
     }
 
     @Override
     public void zpm3forge$setAcidLevel(int level) {
-        this.getEntityData().set(ACID_LEVEL, level);
+        final Entity entity = (Entity) (Object) this;
+        ZombiePlague3.net(!entity.level().isClientSide()).getNetEntDataSyncer().setVar(((Entity) (Object) this), ZPNetPackModule.ACID, new ZPNetDataInt(Math.min(level, 512)));
     }
 }

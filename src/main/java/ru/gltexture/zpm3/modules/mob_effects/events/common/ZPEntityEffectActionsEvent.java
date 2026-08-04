@@ -35,12 +35,14 @@ import org.jetbrains.annotations.NotNull;
 
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPCombatConfig;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPEntityConfig;
+import ru.gltexture.zpm3.engine.network.handler.ZPNetworkHandler;
+import ru.gltexture.zpm3.engine.network.handler.ZPNetworkHandlerServer;
 import ru.gltexture.zpm3.modules.common.init.ZPDamageTypes;
 import ru.gltexture.zpm3.modules.common.init.ZPSounds;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.modules.mob_effects.init.ZPMobEffects;
 import ru.gltexture.zpm3.modules.mob_effects.utils.ZPEffectUtils;
-import ru.gltexture.zpm3.modules.net_pack.packets.ZPBloodPainFXPacket;
+import ru.gltexture.zpm3.modules.net_pack.packets.S2C.ZPBloodPainFXPacket;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
@@ -54,7 +56,7 @@ public class ZPEntityEffectActionsEvent implements ZPForgeEventHandlerClass {
         if (event.getEntity().level().isClientSide()) {
             if (ZPBloodPainFXPacket.hasBlood(event.getEntity()) && ZPEffectUtils.isBleeding(event.getEntity())) {
                 if (event.getEntity().tickCount % 10 == 0) {
-                    ZombiePlague3.net().sendToDimensionRadius(new ZPBloodPainFXPacket(event.getEntity().getId(), true), event.getEntity().getCommandSenderWorld().dimension(), event.getEntity().position(), 64.0f);
+                    ZombiePlague3.netServer().sendToDimensionRadius(new ZPBloodPainFXPacket(event.getEntity().getId(), true), event.getEntity().getCommandSenderWorld().dimension(), event.getEntity().position(), 64.0f);
                 }
             }
         }
@@ -64,7 +66,7 @@ public class ZPEntityEffectActionsEvent implements ZPForgeEventHandlerClass {
     public static void exec(@NotNull LivingDamageEvent event) {
         if (event.getEntity().level() instanceof ServerLevel serverLevel) {
             if (ZPBloodPainFXPacket.hasBlood(event.getEntity())) {
-                ZombiePlague3.net().sendToDimensionRadius(new ZPBloodPainFXPacket(event.getEntity().getId(), false), event.getEntity().getCommandSenderWorld().dimension(), event.getEntity().position(), 64.0f);
+                ZombiePlague3.netServer().sendToDimensionRadius(new ZPBloodPainFXPacket(event.getEntity().getId(), false), event.getEntity().getCommandSenderWorld().dimension(), event.getEntity().position(), 64.0f);
             }
 
             LivingEntity entity = event.getEntity();

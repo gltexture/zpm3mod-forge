@@ -45,10 +45,10 @@ public class ZPNetwork {
         String protoFullVer = version;
         {
             if (ZombiePlague3.DEV_MODE()) {
-                protoFullVer += "DEV ";
+                protoFullVer += " DEV ";
             }
             if (ZombiePlague3.WIP_MODE()) {
-                protoFullVer += "WIP ";
+                protoFullVer += " WIP ";
             }
         }
         final String finalProtoFullVer = protoFullVer;
@@ -77,12 +77,17 @@ public class ZPNetwork {
 
     public interface ZPPacket {
         default void handle(Supplier<NetworkEvent.Context> contextSupplier) {
-            NetworkEvent.Context context = contextSupplier.get();
+            final NetworkEvent.Context context = contextSupplier.get();
             if (context.getDirection() == NetworkDirection.PLAY_TO_SERVER && context.getSender() != null) {
                 context.enqueueWork(() -> this.onServer(context.getSender(), (ServerLevel) context.getSender().level()));
             } else if (context.getDirection() == NetworkDirection.PLAY_TO_CLIENT) {
                 ZPUtility.sides().onlyClient(() -> {
-                    context.enqueueWork(() -> this.onClient(Objects.requireNonNull(Minecraft.getInstance().player)));
+                    context.enqueueWork(() -> {
+                        final Player player = Minecraft.getInstance().player;
+                        if (player != null) {
+                            this.onClient(player);
+                        }
+                    });
                 });
             }
         }

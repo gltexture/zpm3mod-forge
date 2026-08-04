@@ -43,15 +43,18 @@ import org.joml.Vector3f;
 import org.joml.Vector3i;
 
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPNetworkConfig;
+import ru.gltexture.zpm3.engine.network.handler.ZPNetworkHandler;
+import ru.gltexture.zpm3.engine.network.handler.ZPNetworkHandlerClient;
+import ru.gltexture.zpm3.engine.network.handler.ZPNetworkHandlerServer;
 import ru.gltexture.zpm3.modules.common.init.ZPSounds;
 import ru.gltexture.zpm3.modules.entity.util.ZPEntityUtil;
 import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
 import ru.gltexture.zpm3.modules.guns.processing.bullet.VirtualBullet;
 import ru.gltexture.zpm3.modules.guns.processing.input.ZPClientGunClientTickProcessing;
-import ru.gltexture.zpm3.modules.net_pack.packets.ZPBulletBloodFXPacket;
-import ru.gltexture.zpm3.modules.net_pack.packets.ZPBulletHitPacket;
-import ru.gltexture.zpm3.modules.net_pack.packets.ZPBulletTracePacket;
-import ru.gltexture.zpm3.modules.net_pack.packets.ZPGunActionPacket;
+import ru.gltexture.zpm3.modules.net_pack.packets.S2C.ZPBulletBloodFXPacket;
+import ru.gltexture.zpm3.modules.net_pack.packets.S2C.ZPBulletHitPacket;
+import ru.gltexture.zpm3.modules.net_pack.packets.S2C.ZPBulletTracePacket;
+import ru.gltexture.zpm3.modules.net_pack.packets.MIXED.ZPGunActionPacket;
 import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
 import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacksManager;
 import ru.gltexture.zpm3.engine.client.rendering.crosshair.ZPClientCrosshairRecoilManager;
@@ -96,7 +99,7 @@ public abstract class ZPDefaultGunLogicFunctions {
                 return false;
             }
             if (!item.isUnloadingOrReloading(player, itemStack) && item.getCurrentShootCooldown(player, itemStack) <= 0) {
-                ZombiePlague3.net().sendToServer(new ZPGunActionPacket(player.getId(), ZPGunActionPacket.SHOT, isRightHand));
+                ZombiePlague3.netClient().sendToServer(new ZPGunActionPacket(player.getId(), ZPGunActionPacket.SHOT, isRightHand));
                 if (currentAmmo > 0 && !item.isJammed(player, itemStack)) {
                     if (item.getGunProperties().getFireSound() != null) {
                         ZPDefaultGunLogicFunctions.localSound(item.getGunProperties().getFireSound().get(), item);
@@ -148,7 +151,7 @@ public abstract class ZPDefaultGunLogicFunctions {
                 return false;
             }
             if (!item.isUnloadingOrReloading(player, itemStack) && item.getCurrentShootCooldown(player, itemStack) <= 0) {
-                ZombiePlague3.net().sendToServer(new ZPGunActionPacket(player.getId(), ZPGunActionPacket.SHOT, isRightHand));
+                ZombiePlague3.netClient().sendToServer(new ZPGunActionPacket(player.getId(), ZPGunActionPacket.SHOT, isRightHand));
                 if (currentAmmo > 0 && !item.isJammed(player, itemStack)) {
                     if (item.getGunProperties().getFireSound() != null) {
                         ZPDefaultGunLogicFunctions.localSound(item.getGunProperties().getFireSound().get(), item);
@@ -211,7 +214,7 @@ public abstract class ZPDefaultGunLogicFunctions {
                 } else if (unload) {
                     return false;
                 }
-                ZombiePlague3.net().sendToServer(new ZPGunActionPacket(player.getId(), unload ? ZPGunActionPacket.UNLOAD : ZPGunActionPacket.RELOAD, isRightHand));
+                ZombiePlague3.netClient().sendToServer(new ZPGunActionPacket(player.getId(), unload ? ZPGunActionPacket.UNLOAD : ZPGunActionPacket.RELOAD, isRightHand));
                 if (item.getGunProperties().getReloadSound() != null) {
                     ZPDefaultGunLogicFunctions.localSound(item.getGunProperties().getReloadSound().get(), item);
                 }
@@ -227,7 +230,7 @@ public abstract class ZPDefaultGunLogicFunctions {
                 return true;
             } else if (currentAmmo != ammoBeforeLoad) {
                 item.setCurrentTimeBeforeReload(player, itemStack, 10);
-                ZombiePlague3.net().sendToServer(new ZPGunActionPacket(player.getId(), ZPGunActionPacket.RELOAD_STOP, isRightHand));
+                ZombiePlague3.netClient().sendToServer(new ZPGunActionPacket(player.getId(), ZPGunActionPacket.RELOAD_STOP, isRightHand));
                 return true;
             }
         } else {
@@ -280,7 +283,7 @@ public abstract class ZPDefaultGunLogicFunctions {
                 } else if (unload) {
                     return false;
                 }
-                ZombiePlague3.net().sendToServer(new ZPGunActionPacket(player.getId(), unload ? ZPGunActionPacket.UNLOAD : ZPGunActionPacket.RELOAD, isRightHand));
+                ZombiePlague3.netClient().sendToServer(new ZPGunActionPacket(player.getId(), unload ? ZPGunActionPacket.UNLOAD : ZPGunActionPacket.RELOAD, isRightHand));
                 if (item.getGunProperties().getReloadSound() != null) {
                     ZPDefaultGunLogicFunctions.localSound(item.getGunProperties().getReloadSound().get(), item);
                 }
@@ -399,12 +402,12 @@ public abstract class ZPDefaultGunLogicFunctions {
                 Vector3i blockPos = virtualBulletHitResult.blockPos() == null ? new Vector3i(0) : new Vector3i(virtualBulletHitResult.blockPos().x, virtualBulletHitResult.blockPos().y, virtualBulletHitResult.blockPos().z);
                 ServerLevel serverLevel = (ServerLevel) player.level();
                 final Vector3f motion = new Vector3f(startPos.x, startPos.y, startPos.z).sub(new Vector3f(pos.x, pos.y, pos.z)).normalize();
-                ZombiePlague3.net().sendToDimensionRadius(new ZPBulletHitPacket(blockPos.x, blockPos.y, blockPos.z, motion.x, motion.y, motion.z, pos.x, pos.y, pos.z, virtualBulletHitResult.bulletHitType().getFlag()), serverLevel.dimension(), new Vec3(pos), ZPNetworkConfig.BULLET_HIT_PACKET_RANGE.getVar());
-                ZombiePlague3.net().sendToPlayer(new ZPBulletTracePacket(pos.x, pos.y, pos.z, isRightHand), (ServerPlayer) player);
+                ZombiePlague3.netServer().sendToDimensionRadius(new ZPBulletHitPacket(blockPos.x, blockPos.y, blockPos.z, motion.x, motion.y, motion.z, pos.x, pos.y, pos.z, virtualBulletHitResult.bulletHitType().getFlag()), serverLevel.dimension(), new Vec3(pos), ZPNetworkConfig.BULLET_HIT_PACKET_RANGE.getVar());
+                ZombiePlague3.netServer().sendToPlayer(new ZPBulletTracePacket(pos.x, pos.y, pos.z, isRightHand), (ServerPlayer) player);
                 if (ZPNetworkConfig.SEND_PACKET_ABOUT_BULLET_ENTITY_HIT.getVar() && virtualBulletHitResult.bulletHitType().equals(VirtualBullet.VirtualBulletHitType.ENTITY)) {
                     if (virtualBulletHitResult.damagedEntity() instanceof LivingEntity && virtualBulletHitResult.damagedEntity().isAlive()) {
                         if (!(virtualBulletHitResult.damagedEntity() instanceof ArmorStand)) {
-                            ZombiePlague3.net().sendToDimensionRadius(new ZPBulletBloodFXPacket(
+                            ZombiePlague3.netServer().sendToDimensionRadius(new ZPBulletBloodFXPacket(
                                     virtualBulletHitResult.hitPoint().x, virtualBulletHitResult.hitPoint().y, virtualBulletHitResult.hitPoint().z,
                                     -motion.x, -motion.y, -motion.z, virtualBulletHitResult.wasHeadshot()), serverLevel.dimension(), new Vec3(pos), 32.0f);
                         }
@@ -445,12 +448,12 @@ public abstract class ZPDefaultGunLogicFunctions {
                     Vector3i blockPos = virtualBulletHitResult.blockPos() == null ? new Vector3i(0) : new Vector3i(virtualBulletHitResult.blockPos().x, virtualBulletHitResult.blockPos().y, virtualBulletHitResult.blockPos().z);
                     ServerLevel serverLevel = (ServerLevel) player.level();
                     final Vector3f motion = new Vector3f(startPos.x, startPos.y, startPos.z).sub(new Vector3f(pos.x, pos.y, pos.z)).normalize();
-                    ZombiePlague3.net().sendToDimensionRadius(new ZPBulletHitPacket(blockPos.x, blockPos.y, blockPos.z, motion.x, motion.y, motion.z, pos.x, pos.y, pos.z, virtualBulletHitResult.bulletHitType().getFlag()), serverLevel.dimension(), new Vec3(pos), ZPNetworkConfig.BULLET_HIT_PACKET_RANGE.getVar());
-                    ZombiePlague3.net().sendToPlayer(new ZPBulletTracePacket(pos.x, pos.y, pos.z, isRightHand), (ServerPlayer) player);
+                    ZombiePlague3.netServer().sendToDimensionRadius(new ZPBulletHitPacket(blockPos.x, blockPos.y, blockPos.z, motion.x, motion.y, motion.z, pos.x, pos.y, pos.z, virtualBulletHitResult.bulletHitType().getFlag()), serverLevel.dimension(), new Vec3(pos), ZPNetworkConfig.BULLET_HIT_PACKET_RANGE.getVar());
+                    ZombiePlague3.netServer().sendToPlayer(new ZPBulletTracePacket(pos.x, pos.y, pos.z, isRightHand), (ServerPlayer) player);
                     if (ZPNetworkConfig.SEND_PACKET_ABOUT_BULLET_ENTITY_HIT.getVar() && virtualBulletHitResult.bulletHitType().equals(VirtualBullet.VirtualBulletHitType.ENTITY)) {
                         if (virtualBulletHitResult.damagedEntity() instanceof LivingEntity && virtualBulletHitResult.damagedEntity().isAlive()) {
                             if (!(virtualBulletHitResult.damagedEntity() instanceof ArmorStand)) {
-                                ZombiePlague3.net().sendToDimensionRadius(new ZPBulletBloodFXPacket(
+                                ZombiePlague3.netServer().sendToDimensionRadius(new ZPBulletBloodFXPacket(
                                         virtualBulletHitResult.hitPoint().x, virtualBulletHitResult.hitPoint().y, virtualBulletHitResult.hitPoint().z,
                                         -motion.x, -motion.y, -motion.z, virtualBulletHitResult.wasHeadshot()), serverLevel.dimension(), new Vec3(pos), 32.0f);
                             }

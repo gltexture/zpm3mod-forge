@@ -1,0 +1,104 @@
+/*
+ *
+ *  * zpm3forge
+ *  * Copyright (C) 2026 gltexture
+ *  *
+ *  * This program is free software: you can redistribute it and/or modify
+ *  * it under the terms of the GNU General Public License as published by
+ *  * the Free Software Foundation, either version 3 of the License, or
+ *  * (at your option) any later version.
+ *  *
+ *  * This program is distributed in the hope that it will be useful,
+ *  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *  * GNU General Public License for more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License
+ *  * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ */
+
+package ru.gltexture.zpm3.modules.net_pack.packets.S2C;
+
+import com.mojang.math.Axis;
+import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
+import ru.gltexture.zpm3.modules.guns.rendering.tracer.ZPBulletTracerManager;
+import ru.gltexture.zpm3.engine.network.ZPNetwork;
+
+import java.util.Objects;
+
+public class ZPBulletTracePacket implements ZPNetwork.ZPPacket {
+    private final float hitX;
+    private final float hitY;
+    private final float hitZ;
+    private final boolean rightHand;
+
+    public ZPBulletTracePacket(float hitX, float hitY, float hitZ, boolean rightHand) {
+        this.hitX = hitX;
+        this.hitY = hitY;
+        this.hitZ = hitZ;
+        this.rightHand = rightHand;
+    }
+
+    public ZPBulletTracePacket(FriendlyByteBuf buf) {
+        this.hitX = buf.readFloat();
+        this.hitY = buf.readFloat();
+        this.hitZ = buf.readFloat();
+        this.rightHand = buf.readBoolean();
+    }
+
+    public static Encoder<ZPBulletTracePacket> encoder() {
+        return (packet, buf) -> {
+            buf.writeFloat(packet.hitX);
+            buf.writeFloat(packet.hitY);
+            buf.writeFloat(packet.hitZ);
+            buf.writeBoolean(packet.rightHand);
+        };
+    }
+
+    public static Decoder<ZPBulletTracePacket> decoder() {
+        return ZPBulletTracePacket::new;
+    }
+
+    @Override
+    public void onServer(@NotNull Player sender, @NotNull ServerLevel serverLevel) {
+
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void onClient(@NotNull Player localPlayer) {
+        ClientLevel clientLevel = Objects.requireNonNull(Minecraft.getInstance().level);
+        Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
+        Vec3 camPos = camera.getPosition();
+        Vector3f pos = camPos.toVector3f();
+
+        Vector4f pointInSpace = new Vector4f(localPlayer.position().toVector3f().add(0.0f, localPlayer.getEyeHeight() * 0.75f, 0.0f), 1.0f);
+
+        if (Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
+            float yaw = -localPlayer.getYRot() * ((float) Math.PI / 180F);
+            float pitch = localPlayer.getXRot() * ((float) Math.PI / 180F);
+            final Matrix4f space = new Matrix4f().identity();
+            space.translate(pos);
+            space.rotate(Axis.YP.rotation(yaw));
+            space.rotate(Axis.XP.rotation(pitch));
+            float interval = 1.0f;
+            pointInSpace = new Vector4f(this.rightHand ? -interval : interval, -1.25f, 8.0f, 1.0f);
+            space.transform(pointInSpace);
+        }
+
+        ZPBulletTracerManager.INSTANCE.addNew(new Vector3f(pointInSpace.x, pointInSpace.y, pointInSpace.z), new Vector3f(this.hitX, this.hitY, this.hitZ));
+    }
+}

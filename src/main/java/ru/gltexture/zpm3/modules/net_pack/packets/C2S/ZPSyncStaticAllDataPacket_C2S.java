@@ -1,0 +1,68 @@
+/*
+ *
+ *  * zpm3forge
+ *  * Copyright (C) 2026 gltexture
+ *  *
+ *  * This program is free software: you can redistribute it and/or modify
+ *  * it under the terms of the GNU General Public License as published by
+ *  * the Free Software Foundation, either version 3 of the License, or
+ *  * (at your option) any later version.
+ *  *
+ *  * This program is distributed in the hope that it will be useful,
+ *  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *  * GNU General Public License for more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License
+ *  * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ */
+
+package ru.gltexture.zpm3.modules.net_pack.packets.C2S;
+
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.core.ZombiePlague3;
+import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
+import ru.gltexture.zpm3.engine.network.ZPNetwork;
+import ru.gltexture.zpm3.modules.net_pack.data.accessors.ZPNetDataAccessor;
+import ru.gltexture.zpm3.modules.net_pack.data.data_ent.ZPNetDataVar;
+import java.util.*;
+
+public class ZPSyncStaticAllDataPacket_C2S implements ZPNetwork.ZPPacket {
+    private final Map<ZPNetDataAccessor<?>, ZPNetDataVar<?>> values;
+
+    public ZPSyncStaticAllDataPacket_C2S() {
+        this.values = ZombiePlague3.netClient().getNetStaticDataSyncer().getPackClientLocalData().getVars();
+    }
+
+    public ZPSyncStaticAllDataPacket_C2S(@NotNull FriendlyByteBuf buf) {
+        this.values = ZombiePlague3.netServer().getNetStaticDataSyncer().DECODE_ALL(buf);
+    }
+
+    public static Encoder<ZPSyncStaticAllDataPacket_C2S> encoder() {
+        return (packet, buf) -> {
+            ZombiePlague3.netClient().getNetStaticDataSyncer().ENCODE_ALL(packet.values, buf);
+        };
+    }
+
+    public static Decoder<ZPSyncStaticAllDataPacket_C2S> decoder() {
+        return ZPSyncStaticAllDataPacket_C2S::new;
+    }
+
+    @Override
+    public void onServer(@NotNull Player sender, @NotNull ServerLevel level) {
+        ZombiePlague3.netServer().getNetStaticDataSyncer().applyDecodedData((ServerPlayer) sender, this.values);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void onClient(@NotNull Player localPlayer) {
+        throw new ZPRuntimeException("ZPSyncStaticAllDataPacket_C2S cannot be received on client");
+    }
+}

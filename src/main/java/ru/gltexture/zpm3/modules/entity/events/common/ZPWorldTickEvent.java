@@ -36,10 +36,12 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
+import ru.gltexture.zpm3.engine.network.handler.ZPNetworkHandler;
+import ru.gltexture.zpm3.engine.network.handler.ZPNetworkHandlerServer;
 import ru.gltexture.zpm3.engine.zones.ZPZoneChecks;
 
 import ru.gltexture.zpm3.modules.entity.instances.mobs.ai.ZPZombieMiningGoal;
-import ru.gltexture.zpm3.modules.net_pack.packets.ZPBlockCrackPacket;
+import ru.gltexture.zpm3.modules.net_pack.packets.S2C.ZPBlockCrackPacket;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
@@ -98,6 +100,9 @@ public class ZPWorldTickEvent implements ZPForgeEventHandlerClass {
         if (event.level.isClientSide() || event.phase != TickEvent.Phase.END) {
             return;
         }
+      //  if (event.level.getGameTime() % 20 == 0) {
+      //      System.out.println(ZombiePlague3.netServer().getNetDataSyncer().structSize());
+      //  }
         if (event.level.getDifficulty() == Difficulty.HARD) {
             ZPWorldTickEvent.MAX_ZOMBIES_IN_CHUNK = ZPZombieConfig.MAX_ZOMBIES_SPAWN_IN_CHUNK.getVar();
         } else if (event.level.getDifficulty() == Difficulty.NORMAL) {
@@ -120,7 +125,7 @@ public class ZPWorldTickEvent implements ZPForgeEventHandlerClass {
                     BlockPos pos = e.getKey();
                     int strength = data.first();
                     event.level.playSound(null, pos, event.level.getBlockState(pos).getSoundType().getBreakSound(), SoundSource.BLOCKS, Mth.clamp(0.5f + strength * 0.05f, 0.25f, 1.0f), 0.65f + ZPRandom.getRandom().nextFloat(0.25f));
-                    ZombiePlague3.net().sendToDimensionRadius(new ZPBlockCrackPacket(strength / updTicks, pos.getX(), pos.getY(), pos.getZ()), dim, pos.getCenter(), 64.0f);
+                    ZombiePlague3.netServer().sendToDimensionRadius(new ZPBlockCrackPacket(strength / updTicks, pos.getX(), pos.getY(), pos.getZ()), dim, pos.getCenter(), 64.0f);
                     it.remove();
                 }
             }

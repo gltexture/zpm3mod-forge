@@ -21,15 +21,14 @@
 package ru.gltexture.zpm3.modules.player.mixins.impl.common;
 
 import com.mojang.authlib.GameProfile;
+import net.minecraft.CrashReport;
+import net.minecraft.CrashReportCategory;
+import net.minecraft.ReportedException;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
@@ -44,15 +43,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPNetworkConfig;
 import ru.gltexture.zpm3.modules.common.init.ZPDamageTypes;
-import ru.gltexture.zpm3.modules.net_pack.data.ZPNetSyncDataPack;
-import ru.gltexture.zpm3.modules.net_pack.packets.ZPNetCheckPacket;
+import ru.gltexture.zpm3.modules.net_pack.ZPNetPackModule;
+import ru.gltexture.zpm3.modules.net_pack.data.vars.ZPNetDataInt;
+import ru.gltexture.zpm3.modules.net_pack.packets.MIXED.ZPNetCheckPacket;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.modules.player.mixins.ext.IZPPlayerMixinExt;
 
 @Mixin(Player.class)
 public abstract class ZPPlayerMixin implements IZPPlayerMixinExt {
-    @Unique private static final EntityDataAccessor<Integer> SEASICKNESS_LEVEL = SynchedEntityData.defineId(Player.class, EntityDataSerializers.INT);
-
     @Shadow(remap = false)
     public abstract void setForcedPose(@Nullable Pose pose);
 
@@ -71,26 +69,8 @@ public abstract class ZPPlayerMixin implements IZPPlayerMixinExt {
     @Unique
     private boolean zpm3forge$playerLying = false;
 
-    @Unique
-    private ZPNetSyncDataPack zpm3forge$zpNetDataPack_fromClient;
-
-    @Override
-    public ZPNetSyncDataPack zpm3forge$zpNetDataPack_fromClient() {
-        if (this.zpm3forge$zpNetDataPack_fromClient == null) {
-            this.zpm3forge$zpNetDataPack_fromClient = ZombiePlague3.net().createdNetSyncDataPack_CtoS();
-        }
-        return this.zpm3forge$zpNetDataPack_fromClient;
-    }
-
     @Inject(method = "<init>", at = @At("TAIL"))
     private void onConstructed(Level pLevel, BlockPos pPos, float pYRot, GameProfile pGameProfile, CallbackInfo ci) {
-        this.zpm3forge$defineZPSyncData();
-    }
-
-    @Override
-    public void zpm3forge$defineZPSyncData() {
-        Entity self = (Entity) (Object) this;
-        self.getEntityData().define(SEASICKNESS_LEVEL, 0);
     }
 
     //@Inject(method = "jumpFromGround", at = @At("HEAD"), cancellable = true)
@@ -116,7 +96,7 @@ public abstract class ZPPlayerMixin implements IZPPlayerMixinExt {
         }
         if (!this.zpm3forge$waitingResponse) {
             if (this.zpm3forge$pingTickTime++ >= ZPNetworkConfig.PLAYER_PING_PACKET_FREQ.getVar()) {
-                ZombiePlague3.net().sendToServer(new ZPNetCheckPacket(((Player) (Object) this).getId()));
+                ZombiePlague3.netClient().sendToServer(new ZPNetCheckPacket(((Player) (Object) this).getId()));
                 this.zpm3forge$lastSentTime = System.currentTimeMillis();
                 this.zpm3forge$waitingResponse = true;
                 this.zpm3forge$pingTickTime = 0;
@@ -126,12 +106,44 @@ public abstract class ZPPlayerMixin implements IZPPlayerMixinExt {
 
     @Override
     public int zpm3forge$getSeasicknessLevel() {
-        return ((LivingEntity) (Object) this).getEntityData().get(SEASICKNESS_LEVEL);
+        final boolean serv = !((Player) (Object) this).level().isClientSide();
+        return ZombiePlague3.net(serv).getNetEntDataSyncer().getVarOfDefault(((LivingEntity) (Object) this), ZPNetPackModule.SEASICKNESS).getValue();
     }
 
     @Override
     public void zpm3forge$setSeasicknessLevel(int level) {
-        ((LivingEntity) (Object) this).getEntityData().set(SEASICKNESS_LEVEL, Math.min(level, 512));
+        final boolean serv = !((Player) (Object) this).level().isClientSide();
+        ZombiePlague3.net(serv).getNetEntDataSyncer().setVar(((LivingEntity) (Object) this), ZPNetPackModule.SEASICKNESS, new ZPNetDataInt(Math.min(level, 512)));
+    }
+
+
+    @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
+    private void zpSaveData(CompoundTag tag, CallbackInfo ci) {
+        Player player = (Player) (Object) this;
+        try {
+            tag.putInt("zp_seasicknessLevel", this.zpm3forge$getSeasicknessLevel());
+        } catch (Throwable throwable) {
+            CrashReport crashreport = CrashReport.forThrowable(throwable, "Saving ZP player data");
+            CrashReportCategory category = crashreport.addCategory("ZP Player");
+            player.fillCrashReportCategory(category);
+            throw new ReportedException(crashreport);
+        }
+    }
+
+
+    @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
+    private void zpLoadData(CompoundTag tag, CallbackInfo ci) {
+        Player player = (Player) (Object) this;
+        try {
+            if (tag.contains("zp_seasicknessLevel")) {
+                this.zpm3forge$setSeasicknessLevel(tag.getInt("zp_seasicknessLevel"));
+            }
+        } catch (Throwable throwable) {
+            CrashReport crashreport = CrashReport.forThrowable(throwable, "Loading ZP player data");
+            CrashReportCategory category = crashreport.addCategory("ZP Player");
+            player.fillCrashReportCategory(category);
+            throw new ReportedException(crashreport);
+        }
     }
 
     @Inject(method = "updatePlayerPose", at = @At("TAIL"), cancellable = true)
@@ -184,7 +196,7 @@ public abstract class ZPPlayerMixin implements IZPPlayerMixinExt {
             long now = System.currentTimeMillis();
             this.zpm3forge$ping = (int) (now - this.zpm3forge$lastSentTime);
             this.zpm3forge$ping -= (ZPNetworkConfig.PLAYER_PING_PACKET_FREQ.getVar() / 20) * 1000;
-            ZombiePlague3.net().sendToPlayer(new ZPNetCheckPacket(((Player) (Object) this).getId()), serverPlayer);
+            ZombiePlague3.netServer().sendToPlayer(new ZPNetCheckPacket(((Player) (Object) this).getId()), serverPlayer);
             this.zpm3forge$lastSentTime = now;
            // this.gotPackets++;
             //this.ping += (int) (now - this.lastSentTime);

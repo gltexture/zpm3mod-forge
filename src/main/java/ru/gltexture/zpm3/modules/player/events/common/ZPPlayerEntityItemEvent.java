@@ -31,19 +31,21 @@ import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
-import ru.gltexture.zpm3.engine.core.ZPNetworkHandler;
+import ru.gltexture.zpm3.engine.core.ZombiePlague3;
+import ru.gltexture.zpm3.engine.network.handler.ZPNetworkHandlerServer;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
-import ru.gltexture.zpm3.modules.player.mixins.ext.IZPPlayerMixinExt;
-import ru.gltexture.zpm3.modules.net_pack.data.ZPDefaultDataKeys;
+import ru.gltexture.zpm3.modules.net_pack.ZPNetPackModule;
+import ru.gltexture.zpm3.modules.net_pack.data.vars.ZPNetDataBoolean;
 
 public class ZPPlayerEntityItemEvent implements ZPForgeEventHandlerClass {
     @SubscribeEvent
     public static void exec(@NotNull EntityItemPickupEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
-            if (ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY.getVar() && ZPNetworkHandler.getNetDataPack_FromClient(player).orElseThrow(ZPRuntimeException::new).getBoolean(ZPDefaultDataKeys.CtoS__PICK_UP_ON_KEY, ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY.getVar())) {
+            final boolean pickUpOnKey = ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY.getVar() && ZombiePlague3.netServer().getNetStaticDataSyncer().getPack(player).flatMap(pack -> pack.getVar(ZPNetPackModule.CtoS__PICK_UP_ON_KEY)).orElse(new ZPNetDataBoolean(ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY.getVar())).getValue();
+            if (ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY.getVar() && pickUpOnKey) {
                 event.setCanceled(true);
             }
         }

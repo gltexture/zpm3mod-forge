@@ -33,7 +33,7 @@ public interface IZPEntityExt {
     int zpm3forge$getAcidLevel();
     void zpm3forge$setAcidLevel(int acidLevel);
 
-    void zpm3forge$defineZPSyncData();
+ //   void zpm3forge$defineZPSyncData();
 
     Deque<Snapshot> zpm3forge$getAabbDeque();
 

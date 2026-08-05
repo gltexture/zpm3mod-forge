@@ -21,6 +21,8 @@
 package ru.gltexture.zpm3.modules.mob_effects.instances;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -34,9 +36,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientMobEffectExtensions;
 import org.jetbrains.annotations.NotNull;
 
+import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPCommonZombie;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
+import ru.gltexture.zpm3.modules.entity.util.ZPEntityUtil;
 
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -54,19 +58,18 @@ public class ZPZombiePlagueEffect extends ZPDefaultMobEffect {
     @Override
     public void applyEffectTick(@NotNull LivingEntity entity, int amplifier) {
         if (entity.getEffect(this) != null) {
-            int duration = Objects.requireNonNull(entity.getEffect(this)).getDuration();
-            float percentLeft = duration / (float) ZPZombieConfig.ZOMBIE_PLAGUE_VIRUS_EFFECT_TIME_TICKS.getVar();
-            float progress = 1.0f - percentLeft;
+            final int duration = Objects.requireNonNull(entity.getEffect(this)).getDuration();
+            final float progress = ZPEntityUtil.getEntityPlaguePercentage(entity);
 
-            if (entity instanceof Player player && !entity.level().isClientSide()) {
-                if (progress >= 0.5f) {
+            if (entity instanceof ServerPlayer player) {
+                if (progress >= 0.3f) {
                     SoundEvent soundevent = SoundEvents.ZOMBIE_AMBIENT;
                     if (player.tickCount % 40 == 0 && ZPRandom.getRandom().nextFloat() <= 0.25f) {
                         player.playSound(soundevent, 1.0f, (ZPRandom.getRandom().nextFloat() - ZPRandom.getRandom().nextFloat()) * 0.2F + 1.0F);
                     }
                 }
                 if (progress >= 0.75f) {
-                    player.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 300, 0, false, false));
+                    player.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 300, 0, false, false));
                 }
                 if (progress >= 0.50f) {
                     player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 300, 0, false, false));
@@ -86,13 +89,13 @@ public class ZPZombiePlagueEffect extends ZPDefaultMobEffect {
         BlockPos pos = player.blockPosition();
         player.kill();
         ZPCommonZombie zombie = new ZPCommonZombie(level);
-        zombie.moveTo(pos.getX(), pos.getY(), pos.getZ(), 0, 0);
+        zombie.moveTo(pos.getX(), pos.getY(), pos.getZ(), player.getYRot(), player.getXRot());
         level.addFreshEntity(zombie);
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
     public void initializeClient(@NotNull Consumer<IClientMobEffectExtensions> consumer) {
-        consumer.accept(new DefaultZPEffectClientExtension(true, "zombie_plague.png"));
+        consumer.accept(new DefaultZPEffectClientExtension(true, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "textures/mob_effects/zombie_plague.png")));
     }
 }

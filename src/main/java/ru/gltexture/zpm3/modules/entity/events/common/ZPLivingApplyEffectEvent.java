@@ -30,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 import ru.gltexture.zpm3.modules.entity.mixins.ext.IZPLivingEntityExt;
+import ru.gltexture.zpm3.modules.entity.util.ZPLivingStat;
 import ru.gltexture.zpm3.modules.mob_effects.init.ZPMobEffects;
 
 public class ZPLivingApplyEffectEvent implements ZPForgeEventHandlerClass {
@@ -37,8 +38,8 @@ public class ZPLivingApplyEffectEvent implements ZPForgeEventHandlerClass {
     public static void onEffectApplicable(MobEffectEvent.Applicable event) {
         LivingEntity entity = event.getEntity();
 
-        if (entity instanceof IZPLivingEntityExt livingEntityExt) {
-            if (event.getEffectInstance().getEffect() == ZPMobEffects.immune.get() && livingEntityExt.zpm3forge$getRadiationLevel() >= 10) {
+        {
+            if (event.getEffectInstance().getEffect() == ZPMobEffects.immune.get() && ZPLivingStat.RADIATION.get(entity) >= 10) {
                 event.setResult(Event.Result.DENY);
             }
             final boolean badEffect = event.getEffectInstance().getEffect() == MobEffects.POISON || event.getEffectInstance().getEffect() == MobEffects.HUNGER || event.getEffectInstance().getEffect() == MobEffects.WEAKNESS;

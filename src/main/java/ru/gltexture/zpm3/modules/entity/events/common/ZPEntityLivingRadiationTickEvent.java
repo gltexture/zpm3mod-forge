@@ -20,6 +20,7 @@
 
 package ru.gltexture.zpm3.modules.entity.events.common;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -32,6 +33,9 @@ import ru.gltexture.zpm3.engine.nbt.ZPTagID;
 import ru.gltexture.zpm3.engine.nbt.entity.ZPEntityNBT;
 import ru.gltexture.zpm3.modules.entity.mixins.ext.IZPLivingEntityExt;
 import ru.gltexture.zpm3.modules.entity.util.ZPEntityUtil;
+import ru.gltexture.zpm3.modules.entity.util.ZPLivingStat;
+
+import java.util.Objects;
 
 public class ZPEntityLivingRadiationTickEvent implements ZPForgeEventHandlerClass {
     public ZPEntityLivingRadiationTickEvent() {
@@ -43,24 +47,22 @@ public class ZPEntityLivingRadiationTickEvent implements ZPForgeEventHandlerClas
         Level level = entity.level();
 
         if (!level.isClientSide()) {
-            if (entity instanceof IZPLivingEntityExt izpLivingEntityExt) {
-                if (entity.tickCount % 20 == 0) {
-                    ZPEntityUtil.applyRadiationEffects(entity, izpLivingEntityExt.zpm3forge$getRadiationLevel());
-                }
-                final int radTickRate = ZPEntityUtil.getEntityRadAffectionTickRate(entity);
-                if (radTickRate > 0) {
-                    if (izpLivingEntityExt.zpm3forge$getRadiationLevel() < 100) {
-                        if (entity.tickCount % radTickRate == 0) {
-                            izpLivingEntityExt.zpm3forge$addRadiationLevel(1);
-                            //System.out.println(izpLivingEntityExt.zpm3forge$getRadiationLevel());
-                        }
+            if (entity.tickCount % 20 == 0) {
+                ZPEntityUtil.applyRadiationEffects(entity, ZPLivingStat.RADIATION.get(entity));
+            }
+            final int radTickRate = ZPEntityUtil.getEntityRadAffectionTickRate(entity);
+            if (radTickRate > 0) {
+                if (ZPLivingStat.RADIATION.get(entity) < 100) {
+                    if (entity.tickCount % radTickRate == 0) {
+                        ZPLivingStat.RADIATION.add(entity, 1);
+                        //System.out.println(izpLivingEntityExt.zpm3forge$getRadiationLevel());
                     }
-                } else {
-                    if (izpLivingEntityExt.zpm3forge$getRadiationLevel() > 0) {
-                        if (entity.tickCount % 10 == 0) {
-                            izpLivingEntityExt.zpm3forge$decreaseRadiationLevel(1);
-                            //System.out.println(izpLivingEntityExt.zpm3forge$getRadiationLevel());
-                        }
+                }
+            } else {
+                if (ZPLivingStat.RADIATION.get(entity) > 0) {
+                    if (entity.tickCount % 10 == 0) {
+                        ZPLivingStat.RADIATION.decrease(entity, 1);
+                        //System.out.println(izpLivingEntityExt.zpm3forge$getRadiationLevel());
                     }
                 }
             }

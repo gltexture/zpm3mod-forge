@@ -59,12 +59,10 @@ public abstract class ZPDefaultMobEffect extends MobEffect {
         private final ResourceLocation ICON;
         private final boolean renderInUi;
 
-        public DefaultZPEffectClientExtension(boolean renderInUi, String iconId) {
+        public DefaultZPEffectClientExtension(boolean renderInUi, ResourceLocation iconId) {
             this.renderInUi = renderInUi;
-            this.ICON = ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "textures/mob_effects/" + iconId);
+            this.ICON = iconId;
         }
-
-
 
         @Override
         public boolean renderInventoryIcon(MobEffectInstance instance, EffectRenderingInventoryScreen<?> screen, GuiGraphics guiGraphics, int x, int y, int blitOffset) {

@@ -18,37 +18,45 @@
  *
  */
 
-package ru.gltexture.zpm3.modules.mob_effects.instances;
+package ru.gltexture.zpm3.modules.mob_effects.client;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.effect.MobEffectCategory;
+import com.google.common.collect.ComparisonChain;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.extensions.common.IClientMobEffectExtensions;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 
-import java.util.function.Consumer;
+import java.util.Comparator;
 
-public class ZPImmuneEffect extends ZPDefaultMobEffect {
+@OnlyIn(Dist.CLIENT)
+public class ZPFakeClientEffectInstance extends MobEffectInstance {
+    private int amplifier;
+    private final ZPFakeClientEffect effect;
 
-    public ZPImmuneEffect(MobEffectCategory pCategory, int pColor) {
-        super(pCategory, pColor);
+    public ZPFakeClientEffectInstance(ZPFakeClientEffect effect, int pAmplifier) {
+        super(effect, Integer.MAX_VALUE, 0, false, true, true);
+        this.amplifier = pAmplifier;
+        this.effect = effect;
     }
 
     @Override
-    public boolean isDurationEffectTick(int pDuration, int pAmplifier) {
+    public @NotNull MobEffect getEffect() {
+        return this.effect;
+    }
+
+    @Override
+    public boolean tick(@NotNull LivingEntity pEntity, @NotNull Runnable pOnExpirationRunnable) {
         return false;
     }
 
-    @Override
-    public void applyEffectTick(@NotNull LivingEntity pLivingEntity, int pAmplifier) {
+    public void setAmplifier(int amplifier) {
+        this.amplifier = amplifier;
     }
 
-    @OnlyIn(Dist.CLIENT)
     @Override
-    public void initializeClient(@NotNull Consumer<IClientMobEffectExtensions> consumer) {
-        consumer.accept(new DefaultZPEffectClientExtension(true, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "textures/mob_effects/immune.png")));
+    public int getAmplifier() {
+        return this.amplifier;
     }
 }

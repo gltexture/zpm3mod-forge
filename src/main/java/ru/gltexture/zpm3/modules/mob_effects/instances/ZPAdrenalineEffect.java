@@ -20,6 +20,7 @@
 
 package ru.gltexture.zpm3.modules.mob_effects.instances;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -29,6 +30,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientMobEffectExtensions;
 import net.minecraftforge.common.ForgeMod;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -55,6 +57,6 @@ public class ZPAdrenalineEffect extends ZPDefaultMobEffect {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void initializeClient(@NotNull Consumer<IClientMobEffectExtensions> consumer) {
-        consumer.accept(new DefaultZPEffectClientExtension(true, "adrenaline.png"));
+        consumer.accept(new DefaultZPEffectClientExtension(true, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "textures/mob_effects/adrenaline.png")));
     }
 }

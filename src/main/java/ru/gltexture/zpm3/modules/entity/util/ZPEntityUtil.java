@@ -50,6 +50,8 @@ import ru.gltexture.zpm3.modules.common.utils.ZPCommonServerUtils;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.modules.mob_effects.init.ZPMobEffects;
 
+import java.util.Objects;
+
 public class ZPEntityUtil {
     public static boolean isUsingShield(@NotNull LivingEntity entity) {
         return entity.isUsingItem() && entity.getUseItem().getItem() instanceof ShieldItem;
@@ -60,6 +62,15 @@ public class ZPEntityUtil {
 
     public static boolean hasOxygenInHands(LivingEntity entity) {
         return entity.getMainHandItem().is(ZPTags.I_AQUALUNG_O2_ITEM) || entity.getOffhandItem().is(ZPTags.I_AQUALUNG_O2_ITEM);
+    }
+
+    public static float getEntityPlaguePercentage(@NotNull LivingEntity entity) {
+        if (!entity.hasEffect(ZPMobEffects.zombie_plague.get())) {
+            return -1.0f;
+        }
+        final int duration = Objects.requireNonNull(entity.getEffect(ZPMobEffects.zombie_plague.get())).getDuration();
+        final float percentLeft = duration / (float) ZPZombieConfig.ZOMBIE_PLAGUE_VIRUS_EFFECT_TIME_TICKS.getVar();
+        return  1.0f - percentLeft;
     }
 
     // < 0 = NO

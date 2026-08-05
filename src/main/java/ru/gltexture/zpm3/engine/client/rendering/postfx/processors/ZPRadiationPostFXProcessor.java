@@ -31,6 +31,7 @@ import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPShaderLoader;
 import ru.gltexture.zpm3.modules.armor.utils.ZPArmorUtil;
 import ru.gltexture.zpm3.modules.debug.imgui.DearUIDebugInterface;
 import ru.gltexture.zpm3.modules.entity.mixins.ext.IZPLivingEntityExt;
+import ru.gltexture.zpm3.modules.entity.util.ZPLivingStat;
 
 import java.util.Objects;
 
@@ -46,7 +47,7 @@ public class ZPRadiationPostFXProcessor extends ZPPostFXProcessor{
         Window window = Minecraft.getInstance().getWindow();
         GL46.glViewport(0, 0, window.getWidth(), window.getHeight());
         {
-            final float radLevel = ((IZPLivingEntityExt) Objects.requireNonNull(Minecraft.getInstance().player)).zpm3forge$getRadiationLevel();
+            final float radLevel = ZPLivingStat.RADIATION.get(Objects.requireNonNull(Minecraft.getInstance().player));
             GL46.glActiveTexture(GL46.GL_TEXTURE0);
             GL46.glBindTexture(GL46.GL_TEXTURE_2D, screenTexture_GL_ID);
             shader.safeGetUniform("texture_map").set(0);
@@ -65,7 +66,7 @@ public class ZPRadiationPostFXProcessor extends ZPPostFXProcessor{
     @Override
     public boolean bypass() {
         if (Minecraft.getInstance().player != null) {
-            if (((IZPLivingEntityExt) Objects.requireNonNull(Minecraft.getInstance().player)).zpm3forge$getRadiationLevel() > 0) {
+            if (ZPLivingStat.RADIATION.get(Objects.requireNonNull(Minecraft.getInstance().player)) > 0) {
                 return false;
             }
         }

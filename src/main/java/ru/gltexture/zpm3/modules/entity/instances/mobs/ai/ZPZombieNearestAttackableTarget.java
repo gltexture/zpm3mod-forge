@@ -35,6 +35,7 @@ import ru.gltexture.zpm3.modules.armor.utils.ZPArmorUtil;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.modules.entity.mixins.ext.IPlayerZmTargetsExt;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
+import ru.gltexture.zpm3.modules.entity.util.ZPEntityUtil;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -298,6 +299,15 @@ public class ZPZombieNearestAttackableTarget extends Goal {
             return true;
         }
 
+        protected double followDistanceMultiplier(LivingEntity target) {
+            final float plagueProgress = ZPEntityUtil.getEntityPlaguePercentage(target);
+            float plagueMultiplier = 1.0f;
+            if (plagueProgress > 0.0f) {
+                plagueMultiplier = 1.0f - (float) Math.sqrt(Math.sqrt(plagueProgress));
+            }
+            return plagueMultiplier;
+        }
+
         protected double followDistanceBonus(LivingEntity target) {
             return ZPArmorUtil.getReductionForArmorPeaceOnEntity(target);
         }
@@ -319,7 +329,7 @@ public class ZPZombieNearestAttackableTarget extends Goal {
                     if (this.isCombat && (!pAttacker.canAttack(pTarget) || !pAttacker.canAttackType(pTarget.getType()) || pAttacker.isAlliedTo(pTarget))) {
                         return false;
                     }
-                    final double range = this.range - this.followDistanceBonus(pTarget);
+                    final double range = (this.range - this.followDistanceBonus(pTarget)) * this.followDistanceMultiplier(pTarget);
                     if (range > (double) 0.0F) {
                         double $$2 = this.testInvisible ? pTarget.getVisibilityPercent(pAttacker) : (double) 1.0F;
                         double $$3 = Math.max(range * $$2, 2.0F);

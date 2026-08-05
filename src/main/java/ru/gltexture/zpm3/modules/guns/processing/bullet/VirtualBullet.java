@@ -314,7 +314,7 @@ public class VirtualBullet {
             BlockHitResult blockHitResult = d0 <= d1 ? blockhitresult : blockhitresult1;
 
             if (blockHitResult != null) {
-                if (blockstate.is(ZPTags.B_IGNORE_BULLET) && blockstate.is(BlockTags.LEAVES)) {
+                if (blockstate.is(ZPTags.B_IGNORE_BULLET) || blockstate.is(BlockTags.LEAVES)) {
                     return null;
                 }
 

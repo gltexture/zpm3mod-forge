@@ -59,7 +59,7 @@ public class ZPZombieAngryGoal extends Goal {
 
     public void start() {
         super.start();
-        this.angryTicks = 120;
+        this.angryTicks = 160;
     }
 
     @Override

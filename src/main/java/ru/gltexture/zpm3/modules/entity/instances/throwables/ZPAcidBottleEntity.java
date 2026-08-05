@@ -40,6 +40,7 @@ import org.joml.Vector3f;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPCombatConfig;
 import ru.gltexture.zpm3.engine.zones.ZPZoneChecks;
 
+import ru.gltexture.zpm3.modules.entity.util.ZPEntityStat;
 import ru.gltexture.zpm3.modules.melee_throwables_tools.init.ZPMeleeThrowableToolsItems;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.modules.common.utils.ZPCommonClientUtils;
@@ -114,9 +115,7 @@ public class ZPAcidBottleEntity extends ZPThrowableEntity {
         super.onHitEntity(pResult);
         Entity entity = pResult.getEntity();
         if (!entity.level().isClientSide()) {
-            if (entity instanceof IZPEntityExt izpEntityExt) {
-                izpEntityExt.addAcidLevel(ZPCombatConfig.ACID_BOTTLE_DIRECT_HIT_AFFECT_TIME.getVar());
-            }
+            ZPEntityStat.ACID.add(entity, ZPCombatConfig.ACID_BOTTLE_DIRECT_HIT_AFFECT_TIME.getVar());
             entity.hurt(this.damageSources().thrown(this, this.getOwner()), ZPCombatConfig.ACID_BOTTLE_DAMAGE.getVar());
             this.affectSplash(entity);
         }
@@ -174,12 +173,10 @@ public class ZPAcidBottleEntity extends ZPThrowableEntity {
                     }
                     final double k = 1.0 - Math.pow((dist / radius), Math.E);
                     int affectTime = (int) Math.max(minTime, Math.round(k * maxTime));
-                    if (target instanceof IZPEntityExt ext) {
-                        if (target instanceof ItemEntity) {
-                            affectTime *= 3;
-                        }
-                        ext.addAcidLevel(affectTime);
+                    if (target instanceof ItemEntity) {
+                        affectTime *= 4;
                     }
+                    ZPEntityStat.ACID.add(target, affectTime);
                 }
             }
         }

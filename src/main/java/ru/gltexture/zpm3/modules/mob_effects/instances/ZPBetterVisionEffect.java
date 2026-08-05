@@ -20,12 +20,14 @@
 
 package ru.gltexture.zpm3.modules.mob_effects.instances;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientMobEffectExtensions;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 
 import java.util.function.Consumer;
 
@@ -47,6 +49,6 @@ public class ZPBetterVisionEffect extends ZPDefaultMobEffect {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void initializeClient(@NotNull Consumer<IClientMobEffectExtensions> consumer) {
-        consumer.accept(new DefaultZPEffectClientExtension(true, "better_vision.png"));
+        consumer.accept(new DefaultZPEffectClientExtension(true, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "textures/mob_effects/better_vision.png")));
     }
 }

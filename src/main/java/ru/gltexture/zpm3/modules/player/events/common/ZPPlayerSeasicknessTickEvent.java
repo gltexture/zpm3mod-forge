@@ -33,7 +33,9 @@ import ru.gltexture.zpm3.engine.core.config.builtin.ZPEntityConfig;
 import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 import ru.gltexture.zpm3.modules.armor.utils.ZPArmorUtil;
 import ru.gltexture.zpm3.modules.entity.util.ZPEntityUtil;
+import ru.gltexture.zpm3.modules.entity.util.ZPLivingStat;
 import ru.gltexture.zpm3.modules.player.mixins.ext.IZPPlayerMixinExt;
+import ru.gltexture.zpm3.modules.player.util.ZPPlayerStat;
 
 public class ZPPlayerSeasicknessTickEvent implements ZPForgeEventHandlerClass {
     public ZPPlayerSeasicknessTickEvent() {
@@ -47,14 +49,23 @@ public class ZPPlayerSeasicknessTickEvent implements ZPForgeEventHandlerClass {
             if (!event.player.level().isClientSide() && !event.player.isCreative()) {
                 {
                     final FluidState fluidState = player.level().getFluidState(BlockPos.containing(player.getEyePosition()));
-                    if (event.player instanceof IZPPlayerMixinExt playerMixinExt) {
-                        ZPEntityUtil.applySeasicknessEffectsOnPlayer(player, playerMixinExt.zpm3forge$getSeasicknessLevel());
+                    {
+                        ZPEntityUtil.applySeasicknessEffectsOnPlayer(player, ZPPlayerStat.SEASICKNESS.get(event.player));
                         if (fluidState.is(FluidTags.WATER)) {
                             if (ZPEntityConfig.ADD_SEASICKNESS_FACTOR_PER_TICK.getVar() > 0) {
                                 if (!ZPArmorUtil.isFullAqualungBreathingRightNow(player) && event.player.tickCount % ZPEntityConfig.ADD_SEASICKNESS_FACTOR_PER_TICK.getVar() == 0) {
-                                    playerMixinExt.zpm3forge$setSeasicknessLevel(playerMixinExt.zpm3forge$getSeasicknessLevel() + 1);
+                                    ZPPlayerStat.SEASICKNESS.add(event.player, 1);
+                                    return;
                                 }
                             }
+                        }
+                    }
+                }
+                 {
+                    if (ZPPlayerStat.SEASICKNESS.get(event.player) > 0) {
+                        if (event.player.tickCount % 10 == 0) {
+                            ZPPlayerStat.SEASICKNESS.decrease(event.player, 1);
+                            //System.out.println(izpLivingEntityExt.zpm3forge$getRadiationLevel());
                         }
                     }
                 }

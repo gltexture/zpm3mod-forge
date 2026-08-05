@@ -31,7 +31,9 @@ import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 import ru.gltexture.zpm3.modules.entity.mixins.ext.IZPLivingEntityExt;
+import ru.gltexture.zpm3.modules.entity.util.ZPEntityStat;
 import ru.gltexture.zpm3.modules.entity.util.ZPEntityUtil;
+import ru.gltexture.zpm3.modules.entity.util.ZPLivingStat;
 
 public class ZPEntityLivingToxicTickEvent implements ZPForgeEventHandlerClass {
     @SubscribeEvent
@@ -40,21 +42,19 @@ public class ZPEntityLivingToxicTickEvent implements ZPForgeEventHandlerClass {
         Level level = entity.level();
 
         if (!level.isClientSide()) {
-            if (entity instanceof IZPLivingEntityExt izpLivingEntityExt) {
-                final int toxicTickRate = ZPEntityUtil.getEntityToxicAffectionTickRate(entity);
-                if (toxicTickRate > 0) {
-                    if (entity.tickCount % toxicTickRate == 0) {
-                        izpLivingEntityExt.zpm3forge$addIntoxicationLevel(1);
-                    }
-                } else {
-                    if (entity.tickCount % 10 == 0 && izpLivingEntityExt.zpm3forge$getIntoxicationLevel() > 0) {
-                        izpLivingEntityExt.zpm3forge$addIntoxicationLevel(-1);
-                    }
+            final int toxicTickRate = ZPEntityUtil.getEntityToxicAffectionTickRate(entity);
+            if (toxicTickRate > 0) {
+                if (entity.tickCount % toxicTickRate == 0) {
+                    ZPLivingStat.INTOXICATION.add(entity, 1);
                 }
-                if (entity.tickCount % 20 == 0 && izpLivingEntityExt.zpm3forge$getIntoxicationLevel() > 260) {
-                    entity.addEffect(new MobEffectInstance(MobEffects.HUNGER, 1200, izpLivingEntityExt.zpm3forge$getIntoxicationLevel() > 360 ? 1 : 0, false, true));
-                    entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 1200, 0, false, true));
+            } else {
+                if (entity.tickCount % 10 == 0 && ZPLivingStat.INTOXICATION.get(entity) > 0) {
+                    ZPLivingStat.INTOXICATION.add(entity, -1);
                 }
+            }
+            if (entity.tickCount % 20 == 0 && ZPLivingStat.INTOXICATION.get(entity) > 260) {
+                entity.addEffect(new MobEffectInstance(MobEffects.HUNGER, 1200, ZPLivingStat.INTOXICATION.get(entity) > 360 ? 1 : 0, false, true));
+                entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 1200, 0, false, true));
             }
         }
     }

@@ -18,23 +18,31 @@
  *
  */
 
-package ru.gltexture.zpm3.modules.ui.events.client;
+package ru.gltexture.zpm3.modules.mob_effects.events.client;
 
-import net.minecraft.client.gui.screens.OptionsScreen;
-import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
+import net.minecraft.Util;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.ConfirmLinkScreen;
+import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ScreenEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
-import ru.gltexture.zpm3.modules.ui.screen.configs.ZPSettingsMenuScreen;
+import ru.gltexture.zpm3.modules.mob_effects.client.ZPLocalPlayerFakeEffectsManager;
+import ru.gltexture.zpm3.modules.ui.screen.maps.ZPArchivedMapsMenuScreen;
 
 @OnlyIn(Dist.CLIENT)
-public class ZPNewSettingsScreenEvent implements ZPForgeEventHandlerClass {
-    public ZPNewSettingsScreenEvent() {
+public class ZPFakeEffectsTickEvent implements ZPForgeEventHandlerClass {
+    public ZPFakeEffectsTickEvent() {
     }
 
     @Override
@@ -48,10 +56,10 @@ public class ZPNewSettingsScreenEvent implements ZPForgeEventHandlerClass {
     }
 
     @SubscribeEvent
-    public static void onInit(ScreenEvent.Opening event) {
-        if (event.getNewScreen() instanceof OptionsScreen optionsScreen) {
-            if (!(optionsScreen.lastScreen instanceof ZPSettingsMenuScreen)) {
-                event.setNewScreen(new ZPSettingsMenuScreen(event.getCurrentScreen()));
+    public static void onTick(TickEvent.ClientTickEvent event) {
+        if (event.phase == TickEvent.Phase.START) {
+            if (Minecraft.getInstance().player != null) {
+                ZPLocalPlayerFakeEffectsManager.INSTANCE.tick(Minecraft.getInstance().player);
             }
         }
     }

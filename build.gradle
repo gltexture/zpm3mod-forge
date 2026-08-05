@@ -113,6 +113,7 @@ mixin {
     config "zpm3.player.mixins.json"
     config "zpm3.debug.mixins.json"
     config "zpm3.net_pack.mixins.json"
+    config "zpm3.ui.mixins.json"
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }

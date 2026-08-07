@@ -67,7 +67,7 @@ public abstract class ZPDefaultMobEffect extends MobEffect {
         @Override
         public boolean renderInventoryIcon(MobEffectInstance instance, EffectRenderingInventoryScreen<?> screen, GuiGraphics guiGraphics, int x, int y, int blitOffset) {
             if (this.renderInUi) {
-                guiGraphics.blit(this.ICON, x + 2, y + 6, blitOffset, 0, 0, 18, 18, 18, 18);
+                guiGraphics.blit(this.ICON, x, y, blitOffset, 0, 0, 18, 18, 18, 18);
                 return true;
             }
             return false;

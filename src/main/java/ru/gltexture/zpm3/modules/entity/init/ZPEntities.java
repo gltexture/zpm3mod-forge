@@ -24,6 +24,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.RegistryObject;
@@ -117,6 +122,10 @@ public class ZPEntities extends ZPCommonRegistry<EntityType<?>> {
                         .clientTrackingRange(8)
                         .build(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "zp_common_zombie_entity").toString()))
                 .afterCreated((e, utils) -> {
+                    utils.loot().addEntityLootTable(e, () -> new LootPool.Builder()
+                            .setRolls(UniformGenerator.between(0, 2))
+                            .add(LootItem.lootTableItem(Items.ROTTEN_FLESH))
+                    );
                     ZPUtility.sides().onlyClient(() -> ZPEntities.registerZombieRenderer(e, utils));
                     ZPEntityMobAttributes.addNewAttributeCreationUnsafe(e, ZPCommonZombie::createAttributes);
                 }).end();
@@ -126,6 +135,10 @@ public class ZPEntities extends ZPCommonRegistry<EntityType<?>> {
                         .clientTrackingRange(8)
                         .build(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "zp_miner_zombie_entity").toString()))
                 .afterCreated((e, utils) -> {
+                    utils.loot().addEntityLootTable(e, () -> new LootPool.Builder()
+                            .setRolls(UniformGenerator.between(0, 2))
+                            .add(LootItem.lootTableItem(Items.ROTTEN_FLESH))
+                    );
                     ZPUtility.sides().onlyClient(() -> ZPEntities.registerMinerZombieRenderer(e, utils));
                     ZPEntityMobAttributes.addNewAttributeCreationUnsafe(e, ZPCommonZombie::createAttributes);
                 }).end();
@@ -135,6 +148,10 @@ public class ZPEntities extends ZPCommonRegistry<EntityType<?>> {
                         .clientTrackingRange(8)
                         .build(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "zp_dog_zombie_entity").toString()))
                 .afterCreated((e, utils) -> {
+                    utils.loot().addEntityLootTable(e, () -> new LootPool.Builder()
+                            .setRolls(UniformGenerator.between(0, 2))
+                            .add(LootItem.lootTableItem(Items.ROTTEN_FLESH))
+                    );
                     ZPUtility.sides().onlyClient(() -> ZPEntities.registerDogZombieRenderer(e, utils));
                     ZPEntityMobAttributes.addNewAttributeCreationUnsafe(e, ZPDogZombie::createAttributes);
                 }).end();

@@ -6,6 +6,7 @@
   "refmap": "zpm3.refmap.json",
   "mixins": [
     "common.ZPPlayerAngryZombiesTrackerMixin",
+    "common.ZPPlayerFoodTickMixin",
     "common.ZPPlayerMixin",
     "common.ZPPlayerSoundsThenPlaguedMixin",
     "common.ZPServerPlayerBlockDestroyMemFixMixin",

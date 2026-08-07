@@ -108,11 +108,6 @@ public class ZPCommonZombie extends ZPAbstractZombie {
     }
 
     @Override
-    protected @NotNull LootTable getZmLootTable() {
-        return new LootTable.Builder().withPool(new LootPool.Builder().setRolls(UniformGenerator.between(0, 2)).add(LootItem.lootTableItem(Items.ROTTEN_FLESH))).build();
-    }
-
-    @Override
     protected void randomizeAttributes() {
         this.addRandomAttributeValue(ForgeMod.SWIM_SPEED.get(), ZPAbstractZombie.getRandomSalt(0.0f, 0.25f));
         this.addRandomAttributeValue(Attributes.MAX_HEALTH, ZPAbstractZombie.getRandomSalt(0.0f, 12.0f));

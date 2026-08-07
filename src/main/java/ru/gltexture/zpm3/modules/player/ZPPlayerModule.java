@@ -109,10 +109,10 @@ public class ZPPlayerModule extends ZPModule {
     @Override
     public void postInitialize() {
         ZPPlayerTickedBreakEquipmentEvent.registerArmorBreakPerTickCondition(ZPArmorItems.night_vision_goggles::get, (entity, armorItem, slot, tick) -> {
-            if (ZPCombatConfig.ZP_BREAK_NV_GOGGLES_PER_TICK.getVar() < 0) {
+            if (ZPCombatConfig.BREAK_NV_GOGGLES_PER_TICK.getVar() < 0) {
                 return false;
             }
-            final int tickRate = entity.isUnderWater() ? ZPCombatConfig.ZP_BREAK_NV_GOGGLES_PER_TICK.getVar() / 8 : ZPCombatConfig.ZP_BREAK_NV_GOGGLES_PER_TICK.getVar();
+            final int tickRate = entity.isUnderWater() ? ZPCombatConfig.BREAK_NV_GOGGLES_PER_TICK.getVar() / 8 : ZPCombatConfig.BREAK_NV_GOGGLES_PER_TICK.getVar();
             return entity.tickCount % tickRate == 0;
         });
         Arrays.stream(new Supplier[]{ZPArmorItems.radiation_costume_helmet, ZPArmorItems.radiation_costume_chestplate, ZPArmorItems.radiation_costume_leggings, ZPArmorItems.radiation_costume_boots}).forEach(e -> {
@@ -121,10 +121,10 @@ public class ZPPlayerModule extends ZPModule {
                 if (radReductionTick <= 0) {
                     return false;
                 }
-                if (ZPCombatConfig.ZP_BREAK_RADIATION_COSTUME_PER_TICK.getVar() < 0) {
+                if (ZPCombatConfig.BREAK_RADIATION_COSTUME_PER_TICK.getVar() < 0) {
                     return false;
                 }
-                return entity.tickCount % (ZPCombatConfig.ZP_BREAK_RADIATION_COSTUME_PER_TICK.getVar() / radReductionTick) == 0;
+                return entity.tickCount % (ZPCombatConfig.BREAK_RADIATION_COSTUME_PER_TICK.getVar() / radReductionTick) == 0;
             });
         });
         Arrays.stream(new Supplier[]{ZPArmorItems.acid_costume_helmet, ZPArmorItems.acid_costume_chestplate, ZPArmorItems.acid_costume_leggings, ZPArmorItems.acid_costume_boots}).forEach(e -> {
@@ -133,10 +133,10 @@ public class ZPPlayerModule extends ZPModule {
                 if (acidReductionTick <= 0) {
                     return false;
                 }
-                if (ZPCombatConfig.ZP_BREAK_ACID_COSTUME_PER_TICK.getVar() < 0) {
+                if (ZPCombatConfig.BREAK_ACID_COSTUME_PER_TICK.getVar() < 0) {
                     return false;
                 }
-                return entity.tickCount % (ZPCombatConfig.ZP_BREAK_ACID_COSTUME_PER_TICK.getVar() / acidReductionTick) == 0;
+                return entity.tickCount % (ZPCombatConfig.BREAK_ACID_COSTUME_PER_TICK.getVar() / acidReductionTick) == 0;
             });
         });
         Arrays.stream(new Supplier[]{ZPArmorItems.aqualung_costume_helmet, ZPArmorItems.aqualung_costume_chestplate, ZPArmorItems.aqualung_costume_leggings, ZPArmorItems.aqualung_costume_boots}).forEach(e -> {
@@ -144,7 +144,7 @@ public class ZPPlayerModule extends ZPModule {
                         if (!ZPArmorUtil.isFullAqualungBreathingRightNow((LivingEntity) entity)) {
                             return false;
                         }
-                        int base = ZPCombatConfig.ZP_BREAK_ACID_COSTUME_PER_TICK.getVar();
+                        int base = ZPCombatConfig.BREAK_AQUALUNG_COSTUME_PER_TICK.getVar();
                         if (base <= 0) {
                             return false;
                         }
@@ -161,7 +161,7 @@ public class ZPPlayerModule extends ZPModule {
                     if (!ZPArmorUtil.isFullAqualungBreathingRightNow((LivingEntity) entity)) {
                         return false;
                     }
-                    int base = ZPCombatConfig.ZP_BREAK_OXYGEN_ITEM_PER_TICK.getVar();
+                    int base = ZPCombatConfig.BREAK_OXYGEN_ITEM_PER_TICK.getVar();
                     if (base <= 0) {
                         return false;
                     }

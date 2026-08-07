@@ -46,12 +46,12 @@ public class ZPPlayerSeasicknessTickEvent implements ZPForgeEventHandlerClass {
     public static void exec(TickEvent.@NotNull PlayerTickEvent event) {
         Player player = event.player;
         if (event.phase == TickEvent.Phase.START) {
-            if (!event.player.level().isClientSide() && !event.player.isCreative()) {
+            if (!event.player.level().isClientSide()) {
                 {
                     final FluidState fluidState = player.level().getFluidState(BlockPos.containing(player.getEyePosition()));
                     {
                         ZPEntityUtil.applySeasicknessEffectsOnPlayer(player, ZPPlayerStat.SEASICKNESS.get(event.player));
-                        if (fluidState.is(FluidTags.WATER)) {
+                        if (!event.player.isCreative() && fluidState.is(FluidTags.WATER)) {
                             if (ZPEntityConfig.ADD_SEASICKNESS_FACTOR_PER_TICK.getVar() > 0) {
                                 if (!ZPArmorUtil.isFullAqualungBreathingRightNow(player) && event.player.tickCount % ZPEntityConfig.ADD_SEASICKNESS_FACTOR_PER_TICK.getVar() == 0) {
                                     ZPPlayerStat.SEASICKNESS.add(event.player, 1);

@@ -23,6 +23,7 @@ package ru.gltexture.zpm3.engine.helpers.gen;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
@@ -107,6 +108,10 @@ public abstract class ZPDataGenHelper {
 
     public static void addBlockDefaultModel(@NotNull RegistryObject<? extends Block> block, @NotNull Supplier<ZPGenTextureData> blockTextureData) {
         ZPBlockModelProvider.addNewObject(block, blockTextureData);
+    }
+
+    public static void addEntityLootTable(@NotNull Supplier<EntityType<?>> entSupplier, @NotNull Supplier<LootPool.Builder> lootPool) {
+        ZPLootTableHelper.addEntityLootTable(entSupplier, lootPool);
     }
 
     public static void addBlockLootTable(@NotNull Supplier<Block> blockSupplier, @NotNull Supplier<LootPool.Builder> lootPool) {

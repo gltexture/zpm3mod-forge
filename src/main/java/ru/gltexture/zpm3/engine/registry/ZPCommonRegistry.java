@@ -464,6 +464,10 @@ public abstract class ZPCommonRegistry<T> {
             private Loot() {
             }
 
+            public void addEntityLootTable(@NotNull RegistryObject<? extends EntityType<?>> entSupplier, @NotNull Supplier<LootPool.Builder> lootPool) {
+                ZPDataGenHelper.addEntityLootTable(entSupplier::get, lootPool);
+            }
+
             public void addBlockLootTable(@NotNull RegistryObject<? extends Block> blockSupplier, @NotNull Supplier<LootPool.Builder> lootPool) {
                 ZPDataGenHelper.addBlockLootTable(blockSupplier::get, lootPool);
             }

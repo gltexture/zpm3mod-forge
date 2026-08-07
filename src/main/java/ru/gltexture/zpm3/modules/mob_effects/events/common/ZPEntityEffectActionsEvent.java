@@ -24,6 +24,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -76,19 +77,22 @@ public class ZPEntityEffectActionsEvent implements ZPForgeEventHandlerClass {
                                 event.getSource().type().equals(ZPDamageTypes.getDamageType(serverLevel, ZPDamageTypes.zp_bleeding).get());
                 if (!flag) {
                     if (!(entity instanceof ZPAbstractZombie)) {
-                        float bleedingChance = event.getEntity().level().getDifficulty().equals(Difficulty.HARD) ? 0.375f : event.getEntity().level().getDifficulty().equals(Difficulty.NORMAL) ? 0.25f : 0.125f;
-                        float damage = event.getAmount() / 20.0f;
-                        float armorMultiplier = 1.0f - (event.getEntity().getArmorValue() / 80.0f);
+                        float bleedingChance = event.getEntity().level().getDifficulty().equals(Difficulty.HARD) ? 0.75f : event.getEntity().level().getDifficulty().equals(Difficulty.NORMAL) ? 0.5f : 0.25f;
+                        float damage = Math.min(event.getAmount() / 10.0f, 1.5f);
+                        float armorMultiplier = 1.0f - (event.getEntity().getArmorValue() / 40.0f);
                         damage *= armorMultiplier;
                         bleedingChance *= damage;
                         bleedingChance *= ZPCombatConfig.BLEEDING_CHANCE_MULTIPLIER.getVar();
-                        int duration = (int) (600 + (600 * damage * armorMultiplier));
+                        if (ZPEffectUtils.isBleeding(entity)) {
+                            bleedingChance += 0.15f * Objects.requireNonNull(entity.getEffect(ZPMobEffects.bleeding.get())).getAmplifier();
+                        }
+                        int duration = (int) (1000 + ((2600 * damage) * armorMultiplier));
                         if (ZPRandom.getRandom().nextFloat() <= bleedingChance) {
                             if (ZPEffectUtils.isBleeding(entity)) {
                                 int durationO = Objects.requireNonNull(entity.getEffect(ZPMobEffects.bleeding.get())).getDuration();
                                 int ampO = Objects.requireNonNull(entity.getEffect(ZPMobEffects.bleeding.get())).getAmplifier();
                                 entity.removeEffect(ZPMobEffects.bleeding.get());
-                                entity.addEffect(new MobEffectInstance(ZPMobEffects.bleeding.get(), (int) (durationO * 0.25f + duration), ampO + 1));
+                                entity.addEffect(new MobEffectInstance(ZPMobEffects.bleeding.get(), (int) ((durationO * 0.75f) + duration), Math.min(ampO + 1, 3)));
                             } else {
                                 entity.addEffect(new MobEffectInstance(ZPMobEffects.bleeding.get(), duration));
                             }
@@ -107,7 +111,7 @@ public class ZPEntityEffectActionsEvent implements ZPForgeEventHandlerClass {
                             } else {
                                 player.setSprinting(false);
                                 float timeMultiplier = event.getAmount() / 3.0f;
-                                entity.addEffect(new MobEffectInstance(ZPMobEffects.fracture.get(), (int) (6000 * timeMultiplier)));
+                                entity.addEffect(new MobEffectInstance(ZPMobEffects.fracture.get(), (int) (7200 * timeMultiplier)));
                                 player.level().playSound(null, player.getOnPos(), ZPSounds.fracture.get(), SoundSource.MASTER, 1.0f, 1.0f);
                             }
                         }

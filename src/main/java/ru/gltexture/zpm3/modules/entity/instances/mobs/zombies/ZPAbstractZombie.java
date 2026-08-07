@@ -464,19 +464,6 @@ public abstract class ZPAbstractZombie extends Monster {
         return this.getRandom().nextFloat() < this.getEquipmentDropChance(equipmentSlot);
     }
 
-    protected abstract @NotNull LootTable getZmLootTable();
-
-    protected void dropFromLootTable(@NotNull DamageSource pDamageSource, boolean pHitByPlayer) {
-        LootTable loottable = this.getZmLootTable();
-        LootParams.Builder lootparams$builder = (new LootParams.Builder((ServerLevel) this.level())).withParameter(LootContextParams.THIS_ENTITY, this).withParameter(LootContextParams.ORIGIN, this.position()).withParameter(LootContextParams.DAMAGE_SOURCE, pDamageSource).withOptionalParameter(LootContextParams.KILLER_ENTITY, pDamageSource.getEntity()).withOptionalParameter(LootContextParams.DIRECT_KILLER_ENTITY, pDamageSource.getDirectEntity());
-        if (pHitByPlayer && this.lastHurtByPlayer != null) {
-            lootparams$builder = lootparams$builder.withParameter(LootContextParams.LAST_DAMAGE_PLAYER, this.lastHurtByPlayer).withLuck(this.lastHurtByPlayer.getLuck());
-        }
-
-        LootParams lootparams = lootparams$builder.create(LootContextParamSets.ENTITY);
-        loottable.getRandomItems(lootparams, this.getLootTableSeed(), this::spawnAtLocation);
-    }
-
     public boolean hasImportantLoot() {
         ItemStack main = this.getMainHandItem();
         ItemStack off = this.getOffhandItem();

@@ -128,11 +128,17 @@ public class ZPItemMedicine extends ZPItem {
                 if (!pLevel.isClientSide && pair.getFirst() != null && pLevel.random.nextFloat() < pair.getSecond()) {
                     MobEffectInstance mobEffectInstance = new MobEffectInstance(pair.getFirst());
                     if (mobEffectInstance.getDuration() < 0) {
-                        int currentAmp = mobEffectInstance.getAmplifier();
-                        int ampTo = currentAmp - (-mobEffectInstance.getDuration());
-                        pLivingEntity.removeEffect(mobEffectInstance.getEffect());
-                        if (ampTo >= 0) {
-                            pLivingEntity.addEffect(new MobEffectInstance(mobEffectInstance.getEffect(), mobEffectInstance.getDuration(), ampTo));
+                        if (mobEffectInstance.getAmplifier() < 0) {
+                            MobEffectInstance current = pLivingEntity.getEffect(mobEffectInstance.getEffect());
+                            if (current != null) {
+                                pLivingEntity.removeEffect(mobEffectInstance.getEffect());
+                                int newAmplifier = current.getAmplifier() - 1;
+                                if (newAmplifier >= 0) {
+                                    pLivingEntity.addEffect(new MobEffectInstance(current.getEffect(), current.getDuration(), newAmplifier, current.isAmbient(), current.isVisible(), current.showIcon()));
+                                }
+                            }
+                        } else {
+                            pLivingEntity.removeEffect(mobEffectInstance.getEffect());
                         }
                     } else {
                         pLivingEntity.addEffect(mobEffectInstance);

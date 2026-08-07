@@ -119,7 +119,7 @@ public abstract class ZPEffectRenderingInventoryScreenMixin {
                     }
                 }
                 {
-                    if (renderer.renderInventoryIcon(mobeffectinstance, effectRenderingInventoryScreen, pGuiGraphics, pRenderX + (pIsSmall ? 6 : 7), i, 0)) {
+                    if (renderer.renderInventoryIcon(mobeffectinstance, effectRenderingInventoryScreen, pGuiGraphics, pRenderX + (pIsSmall ? 6 : 7), i + 7, 0)) {
                         i += pYOffset;
                         pGuiGraphics.pose().popPose();
                         continue;

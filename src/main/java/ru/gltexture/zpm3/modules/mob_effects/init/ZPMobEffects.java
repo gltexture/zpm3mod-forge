@@ -53,19 +53,19 @@ public class ZPMobEffects extends ZPCommonRegistry<MobEffect> {
             MobEffectCategory.HARMFUL,
             ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "fake_acid"),
             () -> ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "textures/mob_effects/fake/acid.png"),
-            0xffc965);
+            0x8cff8c);
 
     public static @OnlyIn(Dist.CLIENT) ZPFakeClientEffect fakeIntoxication = new ZPFakeClientEffect(
             MobEffectCategory.HARMFUL,
             ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "fake_intoxicaton"),
             () -> ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "textures/mob_effects/fake/intoxication.png"),
-            0xffc965);
+            0x90cc41);
 
     public static @OnlyIn(Dist.CLIENT) ZPFakeClientEffect fakeSeasickness = new ZPFakeClientEffect(
             MobEffectCategory.HARMFUL,
             ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "fake_seasickness"),
             () -> ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "textures/mob_effects/fake/seasickness.png"),
-            0xffc965);
+            0x8c8cff);
 
     public static RegistryObject<ZPBleedingEffect> bleeding;
     public static RegistryObject<ZPZombiePlagueEffect> zombie_plague;
@@ -126,12 +126,15 @@ public class ZPMobEffects extends ZPCommonRegistry<MobEffect> {
                     ZPMobEffects.fakeIntoxication,
                     localPlayer -> {
                         final int level = ZPLivingStat.INTOXICATION.get(localPlayer);
-                        if (level < 260) {
+                        if (level <= 0) {
                             return Optional.empty();
                         }
                         int amplifier = 0;
-                        if (level >= 360) {
+                        if (level >= 260) {
                             amplifier = 1;
+                        }
+                        if (level >= 360) {
+                            amplifier = 2;
                         }
                         return Optional.of(new ZPLocalPlayerFakeEffectsManager.ZPFakeEffectSetOnPlayerCondition.Data(amplifier));
                     });
@@ -140,10 +143,13 @@ public class ZPMobEffects extends ZPCommonRegistry<MobEffect> {
                     ZPMobEffects.fakeSeasickness,
                     localPlayer -> {
                         final int level = ZPPlayerStat.SEASICKNESS.get(localPlayer);
-                        if (level < 240) {
+                        if (level < 10) {
                             return Optional.empty();
                         }
                         int amplifier = 0;
+                        if (level >= 240) {
+                            amplifier = 1;
+                        }
                         if (level >= 300) {
                             amplifier = 2;
                         }

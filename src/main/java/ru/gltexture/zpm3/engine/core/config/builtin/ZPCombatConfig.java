@@ -126,22 +126,26 @@ public class ZPCombatConfig implements ZPConfigConstantsClass {
             new ZPConfig_BOOL(true);
 
     @ZPVarDefinition(description = "Every N ticks this peace of armor will receive 1 damage on player. < 0 = disable")
-    public static final ZPConfig_INT ZP_BREAK_NV_GOGGLES_PER_TICK =
+    public static final ZPConfig_INT BREAK_NV_GOGGLES_PER_TICK =
             new ZPConfig_INT(120);
 
     @ZPVarDefinition(description = "Every N ticks this peace of armor will receive 1 damage by radiation on player. < 0 = disable")
-    public static final ZPConfig_INT ZP_BREAK_RADIATION_COSTUME_PER_TICK =
+    public static final ZPConfig_INT BREAK_RADIATION_COSTUME_PER_TICK =
             new ZPConfig_INT(120);
 
     @ZPVarDefinition(description = "Every N ticks this peace of armor will receive 1 damage by acid on player. < 0 = disable")
-    public static final ZPConfig_INT ZP_BREAK_ACID_COSTUME_PER_TICK =
+    public static final ZPConfig_INT BREAK_ACID_COSTUME_PER_TICK =
             new ZPConfig_INT(120);
 
     @ZPVarDefinition(description = "Every N ticks oxygen will receive 1 damage by water-breath on player. < 0 = disable")
-    public static final ZPConfig_INT ZP_BREAK_OXYGEN_ITEM_PER_TICK =
+    public static final ZPConfig_INT BREAK_OXYGEN_ITEM_PER_TICK =
             new ZPConfig_INT(100);
 
     @ZPVarDefinition(description = "Every N ticks this peace of armor will receive 1 damage by water(breath??? idk) on player. < 0 = disable")
-    public static final ZPConfig_INT ZP_BREAK_AQUALUNG_COSTUME_PER_TICK =
+    public static final ZPConfig_INT BREAK_AQUALUNG_COSTUME_PER_TICK =
             new ZPConfig_INT(180);
+
+    @ZPVarDefinition(description = "Every N ticks entity will be damaged by blood effect, if amplifier >= 1. < 0 = disable")
+    public static final ZPConfig_INT BLEED_ENTITY_DAMAGE_PER_TICK
+            = new ZPConfig_INT(10 * 20);
 }

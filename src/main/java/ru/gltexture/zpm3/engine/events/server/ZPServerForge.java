@@ -51,14 +51,14 @@ public final class ZPServerForge {
     }
 
     private static void clearLootTableMaps() {
-        ZPLootTableHelper.clearPoolMapToCreate();
-        ZPLootTableHelper.clearExistingPoolMap();
+        ZPLootTableHelper.clearGeneratedLootTables();
+        ZPLootTableHelper.clearExistingLootTableChanges();
     }
 
     @SubscribeEvent
     public void onLootTableLoad(LootTableLoadEvent event) {
         ResourceLocation id = event.getName();
-        Set<Supplier<LootPool>> lootPools = ZPLootTableHelper.getExistingLootPoolsToChange(id);
+        Set<Supplier<LootPool>> lootPools = ZPLootTableHelper.getExistingLootPools(id);
         if (lootPools != null) {
             LootTable table = LootTable.lootTable().build();
             lootPools.forEach(e -> table.addPool(e.get()));

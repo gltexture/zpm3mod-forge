@@ -191,18 +191,30 @@ public class ZPEntityUtil {
         }
     }
 
+    public static void applyIntoxicationEffects(LivingEntity entity, int level) {
+        if (level > 260) {
+            entity.addEffect(new MobEffectInstance(MobEffects.HUNGER, 1200, 0, false, true));
+            entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 1200, 0, false, true));
+        }
+
+        if (level > 360) {
+            entity.addEffect(new MobEffectInstance(MobEffects.HUNGER, 1200, 1, false, true));
+        }
+    }
+
     public static void applySeasicknessEffectsOnPlayer(Player entity, int level) {
         if (level >= 240) {
             entity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 600, 0, true, true));
+            entity.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 600, 0, true, true));
         }
 
         if (level >= 300) {
             entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 600, 0, true, true));
-            entity.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 600, 0, true, true));
+            entity.addEffect(new MobEffectInstance(MobEffects.HUNGER, 600, 0, true, true));
         }
 
         if (level >= 340) {
-            entity.addEffect(new MobEffectInstance(MobEffects.HUNGER, 600, 0, true, true));
+            entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 600, 0, true, true));
         }
     }
 

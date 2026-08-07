@@ -21,9 +21,9 @@
 package ru.gltexture.zpm3.engine.helpers;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootPool;
-import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,36 +31,41 @@ import java.util.*;
 import java.util.function.Supplier;
 
 public abstract class ZPLootTableHelper {
-    private static final Map<ResourceLocation, Set<Supplier<LootPool>>> existingLootPools = new HashMap<>();
-    private static final Map<Supplier<Block>, Set<Supplier<LootPool.Builder>>> lootPoolsToCreate = new HashMap<>();
+    private static final Map<ResourceLocation, Set<Supplier<LootPool>>> EXISTING_POOLS = new HashMap<>();
 
-    public static void changeBlockExistingLootTable(@NotNull ResourceLocation registryObject, @NotNull Supplier<LootPool> lootPool) {
-        if (!ZPLootTableHelper.existingLootPools.containsKey(registryObject)) {
-            ZPLootTableHelper.existingLootPools.put(registryObject, new HashSet<>());
-        }
-        ZPLootTableHelper.existingLootPools.get(registryObject).add(lootPool);
+    private static final Map<Supplier<Block>, Set<Supplier<LootPool.Builder>>> BLOCK_POOLS = new HashMap<>();
+    private static final Map<Supplier<EntityType<?>>, Set<Supplier<LootPool.Builder>>> ENTITY_POOLS = new HashMap<>();
+
+    public static void changeExistingLootTable(@NotNull ResourceLocation lootTable, @NotNull Supplier<LootPool> pool) {
+        ZPLootTableHelper.EXISTING_POOLS.computeIfAbsent(lootTable, k -> new HashSet<>()).add(pool);
     }
 
-    public static void addBlockLootTable(@NotNull Supplier<Block> blockSupplier, @NotNull Supplier<LootPool.Builder> lootPool) {
-        if (!ZPLootTableHelper.lootPoolsToCreate.containsKey(blockSupplier)) {
-            ZPLootTableHelper.lootPoolsToCreate.put(blockSupplier, new HashSet<>());
-        }
-        ZPLootTableHelper.lootPoolsToCreate.get(blockSupplier).add(lootPool);
+    public static void addBlockLootTable(@NotNull Supplier<Block> block, @NotNull Supplier<LootPool.Builder> pool) {
+        ZPLootTableHelper.BLOCK_POOLS.computeIfAbsent(block, k -> new HashSet<>()).add(pool);
     }
 
-    public static @Nullable Set<Supplier<LootPool>> getExistingLootPoolsToChange(@NotNull ResourceLocation registryObject) {
-        return ZPLootTableHelper.existingLootPools.get(registryObject);
+    public static void addEntityLootTable(@NotNull Supplier<EntityType<?>> entity, @NotNull Supplier<LootPool.Builder> pool) {
+        ZPLootTableHelper.ENTITY_POOLS.computeIfAbsent(entity, k -> new HashSet<>()).add(pool);
     }
 
-    public static @NotNull Map<Supplier<Block>, Set<Supplier<LootPool.Builder>>> getLootPoolsToCreate() {
-        return ZPLootTableHelper.lootPoolsToCreate;
+    public static @Nullable Set<Supplier<LootPool>> getExistingLootPools(@NotNull ResourceLocation lootTable) {
+        return ZPLootTableHelper.EXISTING_POOLS.get(lootTable);
     }
 
-    public static void clearPoolMapToCreate() {
-        ZPLootTableHelper.lootPoolsToCreate.clear();
+    public static @NotNull Map<Supplier<Block>, Set<Supplier<LootPool.Builder>>> getBlockLootTables() {
+        return ZPLootTableHelper.BLOCK_POOLS;
     }
 
-    public static void clearExistingPoolMap() {
-        ZPLootTableHelper.existingLootPools.clear();
+    public static @NotNull Map<Supplier<EntityType<?>>, Set<Supplier<LootPool.Builder>>> getEntityLootTables() {
+        return ZPLootTableHelper.ENTITY_POOLS;
+    }
+
+    public static void clearGeneratedLootTables() {
+        ZPLootTableHelper.BLOCK_POOLS.clear();
+        ZPLootTableHelper.ENTITY_POOLS.clear();
+    }
+
+    public static void clearExistingLootTableChanges() {
+        ZPLootTableHelper.EXISTING_POOLS.clear();
     }
 }

@@ -20,8 +20,6 @@
 
 package ru.gltexture.zpm3.modules.entity.events.common;
 
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -30,8 +28,6 @@ import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
-import ru.gltexture.zpm3.modules.entity.mixins.ext.IZPLivingEntityExt;
-import ru.gltexture.zpm3.modules.entity.util.ZPEntityStat;
 import ru.gltexture.zpm3.modules.entity.util.ZPEntityUtil;
 import ru.gltexture.zpm3.modules.entity.util.ZPLivingStat;
 
@@ -52,10 +48,7 @@ public class ZPEntityLivingToxicTickEvent implements ZPForgeEventHandlerClass {
                     ZPLivingStat.INTOXICATION.add(entity, -1);
                 }
             }
-            if (entity.tickCount % 20 == 0 && ZPLivingStat.INTOXICATION.get(entity) > 260) {
-                entity.addEffect(new MobEffectInstance(MobEffects.HUNGER, 1200, ZPLivingStat.INTOXICATION.get(entity) > 360 ? 1 : 0, false, true));
-                entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 1200, 0, false, true));
-            }
+            ZPEntityUtil.applyIntoxicationEffects(entity, ZPLivingStat.INTOXICATION.get(entity));
         }
     }
 

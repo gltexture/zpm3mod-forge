@@ -29,6 +29,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientMobEffectExtensions;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPCombatConfig;
 import ru.gltexture.zpm3.modules.common.damage.ZPDamageSources;
 import ru.gltexture.zpm3.modules.net_pack.packets.S2C.ZPBloodPainFXPacket;
 
@@ -42,7 +43,11 @@ public class ZPBleedingEffect extends ZPDefaultMobEffect {
 
     @Override
     public boolean isDurationEffectTick(int pDuration, int pAmplifier) {
-        return pDuration % Math.max((22 - pAmplifier * 6), 1) == 0;
+        if (ZPCombatConfig.BLEED_ENTITY_DAMAGE_PER_TICK.getVar() < 0) {
+            return false;
+        }
+        final int tick = Math.max((ZPCombatConfig.BLEED_ENTITY_DAMAGE_PER_TICK.getVar() - (pAmplifier * 60)), 1);
+        return pDuration % tick == 0;
     }
 
     @Override

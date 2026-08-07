@@ -135,7 +135,7 @@ public abstract class ZPRegMedicine {
                 .setSoundToPlayOnConsume(() -> ZPSounds.syringe.get());
 
     public static final ZPItemMedicine.ZPMedicineProperties BANDAGE = new ZPItemMedicine.ZPMedicineProperties(ZPRegMedicine.DEFAULT_MEDICINE()
-            .effect(() -> new MobEffectInstance(ZPMobEffects.bleeding.get(), -1), 1.0F)
+            .effect(() -> new MobEffectInstance(ZPMobEffects.bleeding.get(), -1, -1), 1.0F)
             .build())
                 .setMedicineAnim(ZPItemMedicine.MedicineAnim.BLOCK)
                 .setSoundToPlayOnConsume(() -> ZPSounds.bandage.get());

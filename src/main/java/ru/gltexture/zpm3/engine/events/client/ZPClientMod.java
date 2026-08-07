@@ -43,6 +43,7 @@ import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.helpers.*;
 import ru.gltexture.zpm3.engine.helpers.gen.providers.*;
 import ru.gltexture.zpm3.engine.helpers.gen.sub_providers.ZPBlocksSubProvider;
+import ru.gltexture.zpm3.engine.helpers.gen.sub_providers.ZPEntitiesSubProvider;
 
 import java.util.Collections;
 import java.util.List;
@@ -103,12 +104,11 @@ public final class ZPClientMod {
 
     @SubscribeEvent
     public void gatherData(GatherDataEvent event) {
-        DataGenerator generator = event.getGenerator();
-        PackOutput output = generator.getPackOutput();
-        ExistingFileHelper helper = event.getExistingFileHelper();
-        CompletableFuture<HolderLookup.Provider> lookup = event.getLookupProvider();
-
-        ZPBlockTagsProvider blockTagsProvider = new ZPBlockTagsProvider(output, lookup, ZombiePlague3.MOD_ID, helper);
+        final DataGenerator generator = event.getGenerator();
+        final PackOutput output = generator.getPackOutput();
+        final ExistingFileHelper helper = event.getExistingFileHelper();
+        final CompletableFuture<HolderLookup.Provider> lookup = event.getLookupProvider();
+        final ZPBlockTagsProvider blockTagsProvider = new ZPBlockTagsProvider(output, lookup, ZombiePlague3.MOD_ID, helper);
 
         generator.addProvider(event.includeClient(), new ZPItemModelProvider(output, helper));
         generator.addProvider(event.includeClient(), new ZPBlockModelProvider(output, helper));
@@ -124,8 +124,13 @@ public final class ZPClientMod {
         generator.addProvider(event.includeServer(), new ZPBiomeModifyingProvider(generator, ZombiePlague3.MOD_ID));
 
         {
-            ZPBlocksSubProvider subProvider1 = new ZPBlocksSubProvider(Collections.emptySet(), FeatureFlags.REGISTRY.allFlags(), ZPLootTableHelper.getLootPoolsToCreate());
-            generator.addProvider(event.includeServer(), new ZPLootTableProvider(output, Collections.emptySet(), List.of(new LootTableProvider.SubProviderEntry(() -> subProvider1, LootContextParamSets.BLOCK))));
+            final ZPBlocksSubProvider subProvider1 = new ZPBlocksSubProvider(Collections.emptySet(), FeatureFlags.REGISTRY.allFlags(), ZPLootTableHelper.getBlockLootTables());
+            final ZPEntitiesSubProvider subProvider2 = new ZPEntitiesSubProvider(FeatureFlags.REGISTRY.allFlags(), ZPLootTableHelper.getEntityLootTables());
+
+            generator.addProvider(event.includeServer(), new ZPLootTableProvider(output, Collections.emptySet(), List.of(
+                    new LootTableProvider.SubProviderEntry(() -> subProvider1, LootContextParamSets.BLOCK),
+                    new LootTableProvider.SubProviderEntry(() -> subProvider2, LootContextParamSets.ENTITY)
+            )));
         }
     }
 

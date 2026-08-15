@@ -25,12 +25,13 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.modules.debug.events.ZPFreeCameraEvents;
 import ru.gltexture.zpm3.modules.debug.events.ZPRenderStuffEvent;
-import ru.gltexture.zpm3.modules.debug.imgui.DearUIDebugInterface;
-import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
+import ru.gltexture.zpm3.modules.debug.imgui.ZPImGuiDebugInterface;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.module.ZPModule;
 import ru.gltexture.zpm3.engine.core.module.ZPModuleData;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
+
+import java.util.Objects;
 
 public class ZPDebugModule extends ZPModule {
     public ZPDebugModule(@NotNull ZPModuleData zpModuleData) {
@@ -47,8 +48,8 @@ public class ZPDebugModule extends ZPModule {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void fml_clientSetupEvent() {
-        if (ZPRenderHelper.INSTANCE.getDearUIRenderer() != null) {
-            ZPRenderHelper.INSTANCE.getDearUIRenderer().getInterfacesManager().addInterface(new DearUIDebugInterface());
+        if (ZombiePlague3.getClientManager().isImGuiValid()) {
+            Objects.requireNonNull(ZombiePlague3.getClientManager().getImGuiInterfacesManager()).addRenderableInterface(new ZPImGuiDebugInterface());
         }
     }
 
@@ -72,8 +73,8 @@ public class ZPDebugModule extends ZPModule {
     @Override
     public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
         ZPUtility.sides().onlyClient(() -> {
-            moduleEntry.registerEventHandlerClass(ZPFreeCameraEvents.class);
-            moduleEntry.registerEventHandlerClass(ZPRenderStuffEvent.class);
+            moduleEntry.registerForgeEventHandlerClass(ZPFreeCameraEvents.class);
+            moduleEntry.registerForgeEventHandlerClass(ZPRenderStuffEvent.class);
         });
     }
 

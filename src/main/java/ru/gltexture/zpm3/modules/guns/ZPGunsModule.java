@@ -30,20 +30,19 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.client.rendering.callbacks.ZPClientCallbacksManager;
 import ru.gltexture.zpm3.engine.recipes.IZPRecipeSpec;
 import ru.gltexture.zpm3.engine.recipes.ZPRecipesController;
 import ru.gltexture.zpm3.engine.recipes.ZPRecipesRegistry;
-import ru.gltexture.zpm3.modules.guns.events.ZPGunPostRender;
-import ru.gltexture.zpm3.modules.guns.events.ZPGunTossEvent;
-import ru.gltexture.zpm3.modules.guns.events.ZPGunsUI;
+import ru.gltexture.zpm3.modules.guns.events.client.ZPGunPostRenderEvent;
+import ru.gltexture.zpm3.modules.guns.events.client.ZPGunTossEvent;
+import ru.gltexture.zpm3.modules.guns.events.client.ZPGunsUIEvent;
 import ru.gltexture.zpm3.modules.guns.init.ZPGunItems;
 import ru.gltexture.zpm3.modules.guns.keybind.ZPGunKeyBindings;
 import ru.gltexture.zpm3.modules.guns.processing.input.ZPClientGunClientTickProcessing;
 import ru.gltexture.zpm3.modules.guns.rendering.ZPAbstractGunRenderer;
 import ru.gltexture.zpm3.modules.guns.rendering.ZPDefaultGunRenderers;
 import ru.gltexture.zpm3.modules.guns.rendering.fx.ZPDefaultGunMuzzleflashFX;
-import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacksManager;
-import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
 import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooks;
 import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooksManager;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
@@ -72,15 +71,15 @@ public class ZPGunsModule extends ZPModule {
         ZPDefaultGunRenderers.init();
         ZPRenderHooksManager.INSTANCE.addItemSceneRendering1PersonHooks((ZPRenderHooks.ZPItemSceneRendering1PersonHooks) ZPDefaultGunRenderers.defaultMuzzleflashFXUniversal);
         ZPRenderHooksManager.INSTANCE.addItemSceneRendering3PersonHooks((ZPRenderHooks.ZPItemSceneRendering3PersonHooks) ZPDefaultGunRenderers.defaultMuzzleflashFXUniversal);
-        ZPClientCallbacksManager.INSTANCE.addReloadGameResourcesCallback(((ZPDefaultGunMuzzleflashFX) ZPDefaultGunRenderers.defaultMuzzleflashFXUniversal).reloadGameResourcesCallback());
-        ZPClientCallbacksManager.INSTANCE.addClientTickCallback(e -> {
+        ZombiePlague3.getClientManager().getCallbacksManager().addReloadResourcesCallback(((ZPDefaultGunMuzzleflashFX) ZPDefaultGunRenderers.defaultMuzzleflashFXUniversal).onReloadResources());
+        ZombiePlague3.getClientManager().getCallbacksManager().addClientTickCallback(e -> {
             ZPClientGunClientTickProcessing.INSTANCE.tick(Minecraft.getInstance(), e);
         });
         ZPRenderHooksManager.INSTANCE.addItemSceneRendering1PersonHookPre(((deltaTicks, pPartialTicks, pPoseStack, pBuffer, pPlayerEntity, pCombinedLight) -> {
             ZPAbstractGunRenderer.breathEffect(pPartialTicks, pPoseStack);
         }));
         ZPRenderHooksManager.INSTANCE.addSceneRenderingHook(((renderStage, partialTicks, deltaTime, pNanoTime, pRenderLevel) -> {
-            if (renderStage == ZPRenderHelper.RenderStage.PRE) {
+            if (renderStage == ZPRenderHooks.RenderStage.PRE) {
                 ZPClientGunClientTickProcessing.INSTANCE.process(Minecraft.getInstance());
             }
         }));
@@ -108,10 +107,10 @@ public class ZPGunsModule extends ZPModule {
         moduleEntry.addRecipesRegistry(new ZPGunsRecipeRegistry());
         moduleEntry.addMinecraftRegistryClass(ZPGunItems.class);
         ZPUtility.sides().onlyClient(() -> {
-            moduleEntry.registerEventHandlerClass(ZPGunsUI.class);
-            moduleEntry.registerEventHandlerClass(ZPGunPostRender.class);
+            moduleEntry.registerForgeEventHandlerClass(ZPGunsUIEvent.class);
+            moduleEntry.registerForgeEventHandlerClass(ZPGunPostRenderEvent.class);
         });
-        moduleEntry.registerEventHandlerClass(ZPGunTossEvent.class);
+        moduleEntry.registerForgeEventHandlerClass(ZPGunTossEvent.class);
     }
 
     @Override

@@ -24,6 +24,7 @@ import com.mojang.blaze3d.platform.Window;
 import net.minecraft.world.item.Item;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.client.rendering.IZPClientManager;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 
 import java.util.ArrayList;
@@ -32,7 +33,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public final class ZPRenderHooksManager implements IZPRenderHooksManager {
+//@Deprecated(forRemoval = true)
+public final class ZPRenderHooksManager implements IZPRenderHooksManager, IZPClientManager.ResourceLifecycleListener {
     public static final ZPRenderHooksManager INSTANCE = new ZPRenderHooksManager();
 
     private Map<Supplier<Item>, ZPRenderHooks.@NonNull ZPItemRendering1PersonHook> itemRenderingHooks1PersonTemp;
@@ -73,12 +75,7 @@ public final class ZPRenderHooksManager implements IZPRenderHooksManager {
     }
 
     @Override
-    public void setupResources(@NotNull Window window) {
-        this.onPostZPInit();
-    }
-
-    @Override
-    public void destroyResources(@NotNull Window window) {
+    public void onDestroyResources(@NotNull Window window) {
         this.sceneRenderingHooks.clear();
 
         this.itemRenderingHooks1PersonTemp.clear();
@@ -93,43 +90,42 @@ public final class ZPRenderHooksManager implements IZPRenderHooksManager {
     }
 
     @Override
-    public void onWindowResizeAction(long descriptor, int width, int height) {
+    public void onSetupResources(@NotNull Window window) {
+        this.onPostZPInit();
+    }
+
+    @Override
+    public void onWindowResized(long descriptor, int width, int height) {
 
     }
 
     @Override
     public void addSceneRenderingHook(@NotNull ZPRenderHooks.ZPSceneRenderingHook zpSceneRenderingHook) {
-        ZombiePlague3.clientInitValidation();
         this.getSceneRenderingHooks().add(zpSceneRenderingHook);
     }
 
     @Override
     public void addItemRendering1PersonHook(@NotNull Supplier<Item> itemSupplier, @NotNull ZPRenderHooks.ZPItemRendering1PersonHook zpItemRendering1PersonHook) {
-        ZombiePlague3.clientInitValidation();
         this.itemRenderingHooks1PersonTemp.put(itemSupplier, zpItemRendering1PersonHook);
     }
 
     @Override
     public void addItemRendering3PersonHook(@NotNull Supplier<Item> itemSupplier, @NotNull ZPRenderHooks.ZPItemRendering3PersonHook zpItemRendering3PersonHook) {
-        ZombiePlague3.clientInitValidation();
         this.itemRenderingHooks3PersonTemp.put(itemSupplier, zpItemRendering3PersonHook);
     }
 
     @Override
     public void addItemSceneRendering1PersonHookPre(@NotNull ZPRenderHooks.ZPItemSceneRendering1PersonHookPre zpItemSceneRendering1PersonHookPre) {
-        ZombiePlague3.clientInitValidation();
         this.itemSceneRendering1PersonHooksPre.add(zpItemSceneRendering1PersonHookPre);
     }
 
     @Override
     public void addItemSceneRendering1PersonHookPost(@NotNull ZPRenderHooks.ZPItemSceneRendering1PersonHookPost zpItemSceneRendering1PersonHookPost) {
-        ZombiePlague3.clientInitValidation();
         this.itemSceneRendering1PersonHooksPost.add(zpItemSceneRendering1PersonHookPost);
     }
 
     @Override
     public void addItemSceneRendering1PersonHooks(@NotNull ZPRenderHooks.ZPItemSceneRendering1PersonHooks zpItemSceneRendering1PersonHooks) {
-        ZombiePlague3.clientInitValidation();
         this.itemSceneRendering1PersonHooksPre.add(zpItemSceneRendering1PersonHooks);
         this.itemSceneRendering1PersonHooksPost.add(zpItemSceneRendering1PersonHooks);
     }
@@ -137,19 +133,16 @@ public final class ZPRenderHooksManager implements IZPRenderHooksManager {
 
     @Override
     public void addItemSceneRendering3PersonHookPre(@NotNull ZPRenderHooks.ZPItemSceneRendering3PersonHookPre zpItemSceneRendering3PersonHookPre) {
-        ZombiePlague3.clientInitValidation();
         this.itemSceneRendering3PersonHooksPre.add(zpItemSceneRendering3PersonHookPre);
     }
 
     @Override
     public void addItemSceneRendering3PersonHookPost(@NotNull ZPRenderHooks.ZPItemSceneRendering3PersonHookPost zpItemSceneRendering3PersonHookPost) {
-        ZombiePlague3.clientInitValidation();
         this.itemSceneRendering3PersonHooksPost.add(zpItemSceneRendering3PersonHookPost);
     }
 
     @Override
     public void addItemSceneRendering3PersonHooks(@NotNull ZPRenderHooks.ZPItemSceneRendering3PersonHooks zpItemSceneRendering3PersonHooks) {
-        ZombiePlague3.clientInitValidation();
         this.itemSceneRendering3PersonHooksPre.add(zpItemSceneRendering3PersonHooks);
         this.itemSceneRendering3PersonHooksPost.add(zpItemSceneRendering3PersonHooks);
     }

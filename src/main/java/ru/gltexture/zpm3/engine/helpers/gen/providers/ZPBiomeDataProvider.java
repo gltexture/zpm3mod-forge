@@ -32,7 +32,7 @@ import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
-@Deprecated
+//@Deprecated
 public class ZPBiomeDataProvider extends DatapackBuiltinEntriesProvider {
     private static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
             .add(Registries.CONFIGURED_CARVER, Carvers::bootstrap)

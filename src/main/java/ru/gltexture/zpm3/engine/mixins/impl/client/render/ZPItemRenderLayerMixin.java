@@ -35,16 +35,19 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.lwjgl.opengl.GL46;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
+import ru.gltexture.zpm3.engine.client.rendering.IZPClientManager;
 import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooks;
 import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooksManager;
+import ru.gltexture.zpm3.engine.client.rendering.lightmap.ZPLightMapModifier;
+import ru.gltexture.zpm3.engine.core.ZP_EventsManager;
+import ru.gltexture.zpm3.engine.core.api.events.ZPEventDef;
+import ru.gltexture.zpm3.engine.core.api.events.client.ZPEventBus_ClientRendering;
 
 @Mixin(ItemInHandLayer.class)
 @OnlyIn(Dist.CLIENT)
@@ -55,23 +58,35 @@ public abstract class ZPItemRenderLayerMixin<T extends LivingEntity, M extends E
         super(pRenderer);
     }
 
+    //@Deprecated(forRemoval = true)
     @Inject(method = "render", at = @At("HEAD"))
     public void render1(PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, T pLivingEntity, float pLimbSwing, float pLimbSwingAmount, float pPartialTicks, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch, CallbackInfo ci) {
-        ZPRenderHooksManager.INSTANCE.getItemSceneRendering3PersonHooksPre().forEach(e -> e.onPreRender3Person(ZPRenderHelper.DELTA_TIME(), pPoseStack, pBuffer, pPackedLight, pLivingEntity, pLimbSwing, pLimbSwingAmount, pPartialTicks, pAgeInTicks, pNetHeadYaw, pHeadPitch));
+        ZPRenderHooksManager.INSTANCE.getItemSceneRendering3PersonHooksPre().forEach(e -> e.onPreRender3Person(IZPClientManager.DELTA_TIME(), pPoseStack, pBuffer, pPackedLight, pLivingEntity, pLimbSwing, pLimbSwingAmount, pPartialTicks, pAgeInTicks, pNetHeadYaw, pHeadPitch));
+        ZP_EventsManager.pushEvent(new ZPEventBus_ClientRendering.ItemSceneRenderThirdPersonEvent(ZPEventDef.Run.PRE, IZPClientManager.DELTA_TIME(), pPoseStack, pBuffer, pPackedLight, pLivingEntity, pLimbSwing, pLimbSwingAmount, pPartialTicks, pAgeInTicks, pNetHeadYaw, pHeadPitch));
     }
 
+    //@Deprecated(forRemoval = true)
     @Inject(method = "render", at = @At("TAIL"))
     public void render2(PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, T pLivingEntity, float pLimbSwing, float pLimbSwingAmount, float pPartialTicks, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch, CallbackInfo ci) {
-        ZPRenderHooksManager.INSTANCE.getItemSceneRendering3PersonHooksPost().forEach(e -> e.onPostRender3Person(ZPRenderHelper.DELTA_TIME(), pPoseStack, pBuffer, pPackedLight, pLivingEntity, pLimbSwing, pLimbSwingAmount, pPartialTicks, pAgeInTicks, pNetHeadYaw, pHeadPitch));
+        ZPRenderHooksManager.INSTANCE.getItemSceneRendering3PersonHooksPost().forEach(e -> e.onPostRender3Person(IZPClientManager.DELTA_TIME(), pPoseStack, pBuffer, pPackedLight, pLivingEntity, pLimbSwing, pLimbSwingAmount, pPartialTicks, pAgeInTicks, pNetHeadYaw, pHeadPitch));
+        ZP_EventsManager.pushEvent(new ZPEventBus_ClientRendering.ItemSceneRenderThirdPersonEvent(ZPEventDef.Run.POST, IZPClientManager.DELTA_TIME(), pPoseStack, pBuffer, pPackedLight, pLivingEntity, pLimbSwing, pLimbSwingAmount, pPartialTicks, pAgeInTicks, pNetHeadYaw, pHeadPitch));
     }
 
+    //@Deprecated(forRemoval = true)
     @Inject(method = "renderArmWithItem", at = @At("HEAD"), cancellable = true)
     public void renderArmWithItem(LivingEntity pLivingEntity, ItemStack pItemStack, ItemDisplayContext pDisplayContext, HumanoidArm pArm, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, CallbackInfo ci) {
         if (!pItemStack.isEmpty()) {
             Item itemToRender = pItemStack.getItem();
-            ZPRenderHooks.ZPItemRendering3PersonHook itemRenderingHook = ZPRenderHooksManager.INSTANCE.getItemRendering3PersonHooks().get(itemToRender);
-            if (itemRenderingHook != null) {
-                itemRenderingHook.onRenderItem3Person(this.itemInHandRenderer, ZPRenderHelper.DELTA_TIME(), this.getParentModel(), pLivingEntity, pItemStack, pDisplayContext, pArm, pPoseStack, pBuffer, pPackedLight);
+            {
+                ZPRenderHooks.ZPItemRendering3PersonHook itemRenderingHook = ZPRenderHooksManager.INSTANCE.getItemRendering3PersonHooks().get(itemToRender);
+                if (itemRenderingHook != null) {
+                    itemRenderingHook.onRenderItem3Person(this.itemInHandRenderer, IZPClientManager.DELTA_TIME(), this.getParentModel(), pLivingEntity, pItemStack, pDisplayContext, pArm, pPoseStack, pBuffer, pPackedLight);
+                    ci.cancel();
+                }
+            }
+            ZPEventBus_ClientRendering.ItemRenderThirdPersonEvent event = new ZPEventBus_ClientRendering.ItemRenderThirdPersonEvent(this.itemInHandRenderer, IZPClientManager.DELTA_TIME(), this.getParentModel(), pLivingEntity, pItemStack, pDisplayContext, pArm, pPoseStack, pBuffer, pPackedLight);
+            ZP_EventsManager.pushEvent(event);
+            if (event.isCancelled()) {
                 ci.cancel();
             }
         }

@@ -37,20 +37,20 @@ import net.minecraftforge.event.TickEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.*;
-import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
-import ru.gltexture.zpm3.modules.debug.imgui.DearUIDebugInterface;
+import ru.gltexture.zpm3.engine.client.rendering.util.ZPRenderingUtil;
+import ru.gltexture.zpm3.modules.debug.imgui.ZPImGuiDebugInterface;
 import ru.gltexture.zpm3.modules.fx.init.ZPParticles;
 import ru.gltexture.zpm3.modules.fx.particles.options.ColoredDefaultParticleOptions;
 import ru.gltexture.zpm3.modules.fx.particles.options.GunShellOptions;
-import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
+import ru.gltexture.zpm3.modules.guns.processing.logic.ZPDefaultGunLogicFunctions;
 
 import java.lang.Math;
 import java.util.Objects;
 
 @SuppressWarnings("removal")
-@Deprecated(forRemoval = true)
+//@Deprecated(forRemoval = true)
 public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
     private final float[] shotTicksAccumulator;
 
@@ -63,7 +63,7 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
     }
 
     @Override
-    public void onShot(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, ZPClientCallbacks.ZPGunShotCallback.@NotNull GunFXData gunFXData) {
+    public void onShot(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, ZPDefaultGunLogicFunctions.GunFXData_Shot gunFXData) {
         if (gunFXData.recoilStrength() > 0.0f) {
             if (player.getItemInHand(gunFXData.isRightHand() ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND).equals(itemStack)) {
                 this.onEmmitSmoke(player, baseGun, itemStack, gunFXData.isRightHand());
@@ -154,8 +154,8 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
             }
         }
 
-        motion.mul(smoky ? 0.2f : 1.0f);
-        motion.add(ZPRandom.instance.randomVector3f(smoky ? 0.02f : 0.05f, new Vector3f(smoky ? 0.04f : 0.1f)));
+        motion.mul(smoky ? 0.3f : 1.0f);
+        motion.add(ZPRandom.instance.randomVector3f(smoky ? 0.02f : 0.05f, new Vector3f(smoky ? 0.05f : 0.1f)));
 
         if (hotBarrel) {
             motion.mul(0.0f).add(0.0f, 0.05f, 0.0f);
@@ -274,7 +274,7 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
 
     //TODO REMAKE
     private static void translateToHandFix(ModelPart modelpart, HumanoidArm pSide, PoseStack pPoseStack) {
-        if (ZPRenderHelper.isPlayerModelSlim()) {
+        if (ZPRenderingUtil.isPlayerModelSlim()) {
             float f = 0.5F * (float)(pSide == HumanoidArm.RIGHT ? 1 : -1);
             modelpart.x += f;
             translateAndRotate(modelpart, pPoseStack);
@@ -312,10 +312,10 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
                             ZPDefaultGunParticlesFX.emitParticleSmoke(true, player, false, true, baseGun);
                         }
                     }
-                    if (DearUIDebugInterface.emmitShells) {
+                    if (ZPImGuiDebugInterface.emmitShells) {
                         ZPDefaultGunParticlesFX.emmitParticleShell(true, Minecraft.getInstance().player, baseGun);
                     }
-                    if (DearUIDebugInterface.emmitSmoke) {
+                    if (ZPImGuiDebugInterface.emmitSmoke) {
                         ZPDefaultGunParticlesFX.emitParticleSmoke(true, Minecraft.getInstance().player, false, baseGun);
                     }
                 } else {
@@ -330,10 +330,10 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
                             ZPDefaultGunParticlesFX.emitParticleSmoke(false, player, false, true, baseGun);
                         }
                     }
-                    if (DearUIDebugInterface.emmitShells) {
+                    if (ZPImGuiDebugInterface.emmitShells) {
                         ZPDefaultGunParticlesFX.emmitParticleShell(false, Minecraft.getInstance().player, baseGun);
                     }
-                    if (DearUIDebugInterface.emmitSmoke) {
+                    if (ZPImGuiDebugInterface.emmitSmoke) {
                         ZPDefaultGunParticlesFX.emitParticleSmoke(false, Minecraft.getInstance().player, false, baseGun);
                     }
                 } else {

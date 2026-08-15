@@ -66,7 +66,7 @@ public class ZPLootCasesModule extends ZPModule {
     @Override
     public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
         //assetEntry.addEventClass(ZPFreeCameraEvents.class);
-        moduleEntry.registerEventHandlerClass(ZPLootTablesGatherDataEvent.class);
+        moduleEntry.registerForgeEventHandlerClass(ZPLootTablesGatherDataEvent.class);
 
         moduleEntry.setLootTablesRegistry(new ZPDefaultLootTables());
 

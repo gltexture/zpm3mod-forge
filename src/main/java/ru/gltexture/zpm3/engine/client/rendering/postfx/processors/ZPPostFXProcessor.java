@@ -32,7 +32,7 @@ public abstract class ZPPostFXProcessor {
         this.chainOrder = chainOrder;
     }
 
-    public abstract void renderTextureInFBO(int screenTexture_GL_ID);
+    public abstract void renderTextureInFBO(float deltaTime, float partialTicks, int screenTexture_GL_ID);
 
     protected abstract ZPShaderLoader.ZPShaderInstance getPostFXShader();
 
@@ -40,5 +40,11 @@ public abstract class ZPPostFXProcessor {
 
     public int getChainOrder() {
         return this.chainOrder;
+    }
+
+    public void clientPostTick() {
+    }
+
+    public void clientPreTick() {
     }
 }

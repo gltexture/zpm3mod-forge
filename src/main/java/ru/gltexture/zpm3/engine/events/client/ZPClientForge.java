@@ -20,12 +20,17 @@
 
 package ru.gltexture.zpm3.engine.events.client;
 
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.lwjgl.glfw.GLFW;
-import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacksManager;
+import ru.gltexture.zpm3.engine.client.rendering.ZPClientManager;
+import ru.gltexture.zpm3.engine.client.rendering.callbacks.ZPClientCallbacksManager;
+import ru.gltexture.zpm3.engine.client.rendering.crosshair.ZPClientCrosshairRecoilManager;
+import ru.gltexture.zpm3.engine.client.rendering.postfx.ZPPostFXChain;
+import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 
 public final class ZPClientForge {
     private static float LAST_RENDER_DELTA_TIME;
@@ -45,7 +50,14 @@ public final class ZPClientForge {
 
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
-        ZPClientCallbacksManager.INSTANCE.tickClientCallbacks(event.phase);
+        ((ZPClientCallbacksManager) ZombiePlague3.getClientManager().getCallbacksManager()).tickClientCallbacks(event.phase);
+        if (event.phase == TickEvent.Phase.START) {
+            ZPClientCrosshairRecoilManager.onClientTick(Minecraft.getInstance());
+            ((ZPPostFXChain) ZombiePlague3.getClientManager().getPostFXChain()).clientPreTick();
+        }
+        if (event.phase == TickEvent.Phase.END) {
+            ((ZPPostFXChain) ZombiePlague3.getClientManager().getPostFXChain()).clientPostTick();
+        }
     }
 
     @SubscribeEvent

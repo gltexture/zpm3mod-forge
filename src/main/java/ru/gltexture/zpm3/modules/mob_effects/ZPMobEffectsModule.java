@@ -25,13 +25,12 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.module.ZPModule;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
+import ru.gltexture.zpm3.modules.mob_effects.events.client.ZPBetterVisionLightMap;
 import ru.gltexture.zpm3.modules.mob_effects.events.client.ZPFakeEffectsTickEvent;
 import ru.gltexture.zpm3.modules.mob_effects.events.common.ZPEntityEffectActionsEvent;
 import ru.gltexture.zpm3.modules.mob_effects.init.ZPMobEffects;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.module.ZPModuleData;
-import ru.gltexture.zpm3.modules.ui.events.client.ZPMenuPatchEvent;
-import ru.gltexture.zpm3.modules.ui.events.client.ZPNewSettingsScreenEvent;
 
 public class ZPMobEffectsModule extends ZPModule {
     public ZPMobEffectsModule(@NotNull ZPModuleData zpModuleData) {
@@ -67,10 +66,11 @@ public class ZPMobEffectsModule extends ZPModule {
     @Override
     public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
         ZPUtility.sides().onlyClient(() -> {
-            moduleEntry.registerEventHandlerClass(ZPFakeEffectsTickEvent.class);
+            moduleEntry.registerForgeEventHandlerClass(ZPFakeEffectsTickEvent.class);
+            moduleEntry.registerZP3EventHandlerClass(ZPBetterVisionLightMap.class);
         });
         moduleEntry.addMinecraftRegistryClass(ZPMobEffects.class);
-        moduleEntry.registerEventHandlerClass(ZPEntityEffectActionsEvent.class);
+        moduleEntry.registerForgeEventHandlerClass(ZPEntityEffectActionsEvent.class);
     }
 
     @Override

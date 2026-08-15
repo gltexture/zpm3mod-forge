@@ -26,13 +26,11 @@ import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import org.lwjgl.opengl.GL46;
-import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
-import ru.gltexture.zpm3.engine.client.rendering.postfx.ZPPostFXChain;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPDefaultShaders;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPShaderLoader;
+import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
-import ru.gltexture.zpm3.modules.debug.imgui.DearUIDebugInterface;
-import ru.gltexture.zpm3.modules.entity.mixins.ext.IZPLivingEntityExt;
+import ru.gltexture.zpm3.modules.debug.imgui.ZPImGuiDebugInterface;
 import ru.gltexture.zpm3.modules.mob_effects.init.ZPMobEffects;
 
 import java.util.Objects;
@@ -55,7 +53,7 @@ public class ZPInfectionPostFXProcessor extends ZPPostFXProcessor{
         return 1.0f - Mth.clamp((float) duration / (float) maxDuration, 0f, 1f);
     }
     @Override
-    public void renderTextureInFBO(int screenTexture_GL_ID) {
+    public void renderTextureInFBO(float deltaTime, float partialTicks, int screenTexture_GL_ID) {
         ShaderInstance shader = this.getPostFXShader().getShaderInstance();
         Objects.requireNonNull(shader).apply();
         Window window = Minecraft.getInstance().getWindow();
@@ -64,8 +62,8 @@ public class ZPInfectionPostFXProcessor extends ZPPostFXProcessor{
             GL46.glActiveTexture(GL46.GL_TEXTURE0);
             GL46.glBindTexture(GL46.GL_TEXTURE_2D, screenTexture_GL_ID);
             shader.safeGetUniform("texture_map").set(0);
-            shader.safeGetUniform("value").set((DearUIDebugInterface.FORCE_ENABLE_INFECTION_POST_FX_SHADER ? (DearUIDebugInterface.PARAM_INF_POSTFX[0] / 100.0f) : ZPInfectionPostFXProcessor.getPlagueProgressPercent()));
-            ZPRenderHelper.INSTANCE.renderZpScreenMesh();
+            shader.safeGetUniform("value").set((ZPImGuiDebugInterface.FORCE_ENABLE_INFECTION_POST_FX_SHADER ? (ZPImGuiDebugInterface.PARAM_INF_POSTFX[0] / 100.0f) : ZPInfectionPostFXProcessor.getPlagueProgressPercent()));
+            ZombiePlague3.getClientManager().renderScreenMesh();
         }
         Objects.requireNonNull(shader).clear();
     }
@@ -82,6 +80,6 @@ public class ZPInfectionPostFXProcessor extends ZPPostFXProcessor{
                 return false;
             }
         }
-        return !DearUIDebugInterface.FORCE_ENABLE_INFECTION_POST_FX_SHADER;
+        return !ZPImGuiDebugInterface.FORCE_ENABLE_INFECTION_POST_FX_SHADER;
     }
 }

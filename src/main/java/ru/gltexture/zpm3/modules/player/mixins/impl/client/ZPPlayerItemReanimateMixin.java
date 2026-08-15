@@ -32,7 +32,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
+import ru.gltexture.zpm3.engine.client.rendering.util.ZPRenderingUtil;
 
 @OnlyIn(Dist.CLIENT)
 @Mixin(ItemInHandRenderer.class)
@@ -40,7 +40,7 @@ public class ZPPlayerItemReanimateMixin {
     @Inject(method = "renderArmWithItem", at = @At("HEAD"))
     private void renderArmWithItem(AbstractClientPlayer pPlayer, float pPartialTicks, float pPitch, InteractionHand pHand, float pSwingProgress, ItemStack pStack, float pEquippedProgress, PoseStack pPoseStack, MultiBufferSource pBuffer, int pCombinedLight, CallbackInfo ci) {
         pPoseStack.pushPose();
-        ZPRenderHelper.blockAnimation(pPlayer, pPartialTicks, pHand, pStack, pPoseStack);
+        ZPRenderingUtil.blockAnimation(pPlayer, pPartialTicks, pHand, pStack, pPoseStack);
     }
 
     @Inject(method = "renderArmWithItem", at = @At("TAIL"))

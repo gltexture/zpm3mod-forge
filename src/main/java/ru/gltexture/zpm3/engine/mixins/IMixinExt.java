@@ -38,7 +38,7 @@ public class IMixinExt implements IExtension {
     @Override
     public void preApply(ITargetClassContext context) {
         if (INIT.compareAndSet(false, true)) {
-            ZPMixinPlugin.initLibs();
+            //ZPMixinPlugin.initLibs();
         }
     }
 

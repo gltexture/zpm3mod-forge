@@ -42,7 +42,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
+import ru.gltexture.zpm3.engine.client.rendering.util.ZPRenderingUtil;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPEntityConfig;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
@@ -81,7 +81,7 @@ public abstract class ZPEntityExtendingMixin implements IZPEntityExt {
         final Entity entity = (Entity) (Object) this;
         if (this.level().isClientSide()) {
             if (this.zpm3forge$getAcidLevel() > 0) {
-                ZPRenderHelper.addAcidParticles(this.zpm3forge$getAcidLevel(), entity);
+                ZPRenderingUtil.addAcidParticles(this.zpm3forge$getAcidLevel(), entity);
                 if (entity.tickCount % 3 == 0) {
                     entity.level().playLocalSound(entity.getOnPos(), SoundEvents.FIRE_EXTINGUISH, SoundSource.MASTER, 0.375f, 1.0f + ZPRandom.getRandom().nextFloat() * 0.2f, false);
                 }

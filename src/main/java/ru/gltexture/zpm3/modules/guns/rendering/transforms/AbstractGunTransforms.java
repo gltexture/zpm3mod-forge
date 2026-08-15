@@ -23,7 +23,7 @@ package ru.gltexture.zpm3.modules.guns.rendering.transforms;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
-@Deprecated(forRemoval = true)
+//@Deprecated(forRemoval = true)
 public abstract class AbstractGunTransforms {
     @Nullable
     public Vector3f scalingGun1P() {

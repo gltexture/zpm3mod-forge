@@ -21,7 +21,6 @@
 package ru.gltexture.zpm3.engine.mixins.impl.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.ItemInHandRenderer;
@@ -32,41 +31,55 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
+import ru.gltexture.zpm3.engine.client.rendering.IZPClientManager;
 import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooks;
 import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooksManager;
+import ru.gltexture.zpm3.engine.core.ZP_EventsManager;
+import ru.gltexture.zpm3.engine.core.api.events.ZPEventDef;
+import ru.gltexture.zpm3.engine.core.api.events.client.ZPEventBus_ClientRendering;
 
 @OnlyIn(Dist.CLIENT)
 @Mixin(ItemInHandRenderer.class)
 public class ZPItemMixin {
     @Shadow @Final private ItemRenderer itemRenderer;
 
+    //@Deprecated(forRemoval = true)
     @Inject(method = "renderArmWithItem", at = @At("HEAD"), cancellable = true)
     private void renderArmWithItem(AbstractClientPlayer pPlayer, float pPartialTicks, float pPitch, InteractionHand pHand, float pSwingProgress, ItemStack pStack, float pEquippedProgress, PoseStack pPoseStack, MultiBufferSource pBuffer, int pCombinedLight, CallbackInfo ci) {
         Item itemToRender = pStack.getItem();
         ZPRenderHooks.ZPItemRendering1PersonHook itemRenderingHook = ZPRenderHooksManager.INSTANCE.getItemRendering1PersonHooks().get(itemToRender);
 
-        if (itemRenderingHook != null) {
-            itemRenderingHook.onRenderItem1Person(pPlayer, ZPRenderHelper.DELTA_TIME(), pPartialTicks, pPitch, pHand, pSwingProgress, pStack, pEquippedProgress, pPoseStack, pBuffer, pCombinedLight);
+        {
+            if (itemRenderingHook != null) {
+                itemRenderingHook.onRenderItem1Person(pPlayer, IZPClientManager.DELTA_TIME(), pPartialTicks, pPitch, pHand, pSwingProgress, pStack, pEquippedProgress, pPoseStack, pBuffer, pCombinedLight);
+                ci.cancel();
+            }
+        }
+
+        ZPEventBus_ClientRendering.ItemRenderFirstPersonEvent event = new ZPEventBus_ClientRendering.ItemRenderFirstPersonEvent(pPlayer, IZPClientManager.DELTA_TIME(), pPartialTicks, pPitch, pHand, pSwingProgress, pStack, pEquippedProgress, pPoseStack, pBuffer, pCombinedLight);
+        ZP_EventsManager.pushEvent(event);
+        if (event.isCancelled()) {
             ci.cancel();
         }
     }
 
+    //@Deprecated(forRemoval = true)
     @Inject(method = "renderHandsWithItems", at = @At("HEAD"))
     private void renderHandsWithItems1(float pPartialTicks, PoseStack pPoseStack, MultiBufferSource.BufferSource pBuffer, LocalPlayer pPlayerEntity, int pCombinedLight, CallbackInfo ci) {
-        ZPRenderHooksManager.INSTANCE.getItemSceneRendering1PersonHooksPre().forEach(e -> e.onPreRender1Person((float) ZPRenderHelper.DELTA_TIME(), pPartialTicks, pPoseStack, pBuffer, pPlayerEntity, pCombinedLight));
+        ZPRenderHooksManager.INSTANCE.getItemSceneRendering1PersonHooksPre().forEach(e -> e.onPreRender1Person(IZPClientManager.DELTA_TIME(), pPartialTicks, pPoseStack, pBuffer, pPlayerEntity, pCombinedLight));
+        ZP_EventsManager.pushEvent(new ZPEventBus_ClientRendering.ItemSceneRenderFirstPersonEvent(ZPEventDef.Run.PRE, IZPClientManager.DELTA_TIME(), pPartialTicks, pPoseStack, pBuffer, pPlayerEntity, pCombinedLight));
     }
 
+    //@Deprecated(forRemoval = true)
     @Inject(method = "renderHandsWithItems", at = @At("TAIL"))
     private void renderHandsWithItems2(float pPartialTicks, PoseStack pPoseStack, MultiBufferSource.BufferSource pBuffer, LocalPlayer pPlayerEntity, int pCombinedLight, CallbackInfo ci) {
-        ZPRenderHooksManager.INSTANCE.getItemSceneRendering1PersonHooksPost().forEach(e -> e.onPostRender1Person((float) ZPRenderHelper.DELTA_TIME(), pPartialTicks, pPoseStack, pBuffer, pPlayerEntity, pCombinedLight));
+        ZPRenderHooksManager.INSTANCE.getItemSceneRendering1PersonHooksPost().forEach(e -> e.onPostRender1Person(IZPClientManager.DELTA_TIME(), pPartialTicks, pPoseStack, pBuffer, pPlayerEntity, pCombinedLight));
+        ZP_EventsManager.pushEvent(new ZPEventBus_ClientRendering.ItemSceneRenderFirstPersonEvent(ZPEventDef.Run.POST, IZPClientManager.DELTA_TIME(), pPartialTicks, pPoseStack, pBuffer, pPlayerEntity, pCombinedLight));
     }
 }

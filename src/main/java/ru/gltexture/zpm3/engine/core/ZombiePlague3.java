@@ -31,7 +31,6 @@ import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.food.FoodData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -56,13 +55,19 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
+import ru.gltexture.zpm3.engine.client.rendering.IZPClientManager;
+import ru.gltexture.zpm3.engine.client.rendering.ZPClientManager;
 import ru.gltexture.zpm3.engine.core.api.addons.ZPAddon;
 import ru.gltexture.zpm3.engine.core.api.events.ZP3EventHandlerClass;
-import ru.gltexture.zpm3.engine.core.api.events.ZPModEventBus;
+import ru.gltexture.zpm3.engine.core.api.events.client.ZPEventBus_ClientInput;
+import ru.gltexture.zpm3.engine.core.api.events.client.ZPEventBus_ClientRendering;
+import ru.gltexture.zpm3.engine.core.api.events.client.ZPEventBus_ClientResources;
+import ru.gltexture.zpm3.engine.core.api.events.common.ZPEventBus_Gameplay;
 import ru.gltexture.zpm3.engine.core.config.ZPConfigConstantsClass;
 import ru.gltexture.zpm3.engine.core.config.ZPConfigManager;
 import ru.gltexture.zpm3.engine.core.config.builtin.*;
+import ru.gltexture.zpm3.engine.events.client.ZPClientZp3;
+import ru.gltexture.zpm3.engine.events.common.ZPCommonZp3;
 import ru.gltexture.zpm3.engine.network.handler.ZPNetworkHandler;
 import ru.gltexture.zpm3.engine.network.handler.ZPNetworkHandlerClient;
 import ru.gltexture.zpm3.engine.network.handler.ZPNetworkHandlerServer;
@@ -77,7 +82,7 @@ import ru.gltexture.zpm3.engine.core.module.ZPModuleData;
 import ru.gltexture.zpm3.engine.helpers.ZPTiersRegistryHelper;
 import ru.gltexture.zpm3.engine.instances.items.tier.ZPTier;
 import ru.gltexture.zpm3.engine.population.ZPPopulationController;
-import ru.gltexture.zpm3.engine.core.init.ZPSystemInit;
+import ru.gltexture.zpm3.engine.client.init.ZPSystemInit;
 import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 import ru.gltexture.zpm3.engine.events.common.ZPCommonForge;
 import ru.gltexture.zpm3.engine.events.common.ZPCommonMod;
@@ -120,19 +125,24 @@ public final class ZombiePlague3 {
     private static ZPPopulationController populationController;
     private static ZPRecipesController recipesController;
     private static ZPConfigManager zpConfigManager;
-    static Zp_SYS_EventsManager ZP_EVENTS;
+    static ZP_EventsManager ZP_EVENTS;
+
+    @OnlyIn(Dist.CLIENT) private static IZPClientManager clientManager;
 
     static {
         ZombiePlague3.populationController = new ZPPopulationController();
         ZombiePlague3.recipesController = new ZPRecipesController();
         ZombiePlague3.zpConfigManager = new ZPConfigManager();
-        ZombiePlague3.ZP_EVENTS = new Zp_SYS_EventsManager();
+        ZombiePlague3.ZP_EVENTS = new ZP_EventsManager();
     }
 
     private static boolean commonInitSwitch = true;
     private static boolean clientInitSwitch = true;
 
     public ZombiePlague3() {
+        ZPUtility.sides().onlyClient(() -> {
+            ZombiePlague3.clientManager = new ZPClientManager();
+        });
         this.assets = new ArrayList<>();
         this.zpRegistryConveyor = new ZPRegistryConveyor();
         this.init();
@@ -199,7 +209,7 @@ public final class ZombiePlague3 {
 
 
     public static void RegisterMeAsAddon(@NotNull final ZPAddon zpAddon) {
-        Zp_SYS_AddonsManager.INSTANCE.register(zpAddon);
+        ZP_AddonsManager.INSTANCE.register(zpAddon);
     }
 
 
@@ -274,17 +284,20 @@ public final class ZombiePlague3 {
             zpModule.preInitialize();
         }
 
-        Set<Class<?>> classesWithEvents = new HashSet<>();
+        {
+            ZPUtility.sides().onlyClient(() -> {
+                ZombiePlague3.ZP_EVENTS.initEventBus(ZPEventBus_ClientRendering.class, ZPEventBus_ClientResources.class, ZPEventBus_ClientInput.class);
+            });
+            ZombiePlague3.ZP_EVENTS.initEventBus(ZPEventBus_Gameplay.class);
+        }
+
+        final Set<Class<?>> classesWithZp3Events = new HashSet<>();
         for (ZPModule zpModule : this.assets) {
             ZPLogger.info("Init module: " + zpModule);
             ModuleEntry moduleEntry = new ModuleEntry();
             zpModule.initialize(moduleEntry);
             this.getZpNetwork().register(moduleEntry.getPacketDataSet());
             this.getZpRegistryConveyor().launch(moduleEntry.getRegistrySet());
-
-            ZPUtility.sides().onlyClient(() -> {
-                ZPRenderHelper.INSTANCE.registerEvents();
-            });
 
             moduleEntry.getEventClasses().forEach(e -> {
                 try {
@@ -293,21 +306,23 @@ public final class ZombiePlague3 {
                     ZPForgeEventHandlerClass instance = e.getDeclaredConstructor().newInstance();
                     ZPSide result = (ZPSide) getDistMethod.invoke(instance);
                     Mod.EventBusSubscriber.Bus result2 = (Mod.EventBusSubscriber.Bus) getBusMethod.invoke(instance);
-                    this.registerSomeEvents(e, result2, result);
+                    this.registerForgeEvents(e, result2, result);
                 } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException ex) {
                     throw new ZPRuntimeException(ex);
                 }
             });
 
-            classesWithEvents.addAll(moduleEntry.getZpEventClasses());
+            classesWithZp3Events.addAll(moduleEntry.getZpEventClasses());
             moduleEntry.getEventClassObjects().forEach(e -> {
-                this.registerSomeEvents(e, e.getBus(), e.getSide());
+                this.registerForgeEvents(e, e.getBus(), e.getSide());
             });
 
             if (moduleEntry.getZpLootTablesRegistry() != null) {
                 ZPLootTablesRegistry.REG(moduleEntry.getZpLootTablesRegistry());
             }
         }
+
+        this.registerZp3Events(classesWithZp3Events);
 
         ZPUtility.sides().onlyClient(() -> {
             ZombiePlague3.getModEventBus().register(new ZPClientMod());
@@ -327,11 +342,21 @@ public final class ZombiePlague3 {
         for (ZPModule zpModule : this.assets) {
             zpModule.postInitialize();
         }
-
-        ZombiePlague3.ZP_EVENTS.initEvents(ZPModEventBus.class, classesWithEvents);
     }
 
-    private void registerSomeEvents(Object eventClass, Mod.EventBusSubscriber.Bus bus, ZPSide side) {
+    private void registerZp3Events(Set<Class<?>> classesWithZp3Events) {
+        ZPUtility.sides().onlyClient(() -> {
+            ZombiePlague3.ZP_EVENTS.initEvents(ZPClientZp3.class);
+        });
+
+        {
+            ZombiePlague3.ZP_EVENTS.initEvents(ZPCommonZp3.class);
+        }
+
+        ZombiePlague3.ZP_EVENTS.initEvents(classesWithZp3Events);
+    }
+
+    private void registerForgeEvents(Object eventClass, Mod.EventBusSubscriber.Bus bus, ZPSide side) {
         switch (side) {
             case CLIENT -> {
                 ZPUtility.sides().onlyClient(() -> {
@@ -524,6 +549,11 @@ public final class ZombiePlague3 {
     }
 
     @OnlyIn(Dist.CLIENT)
+    public static IZPClientManager getClientManager() {
+        return ZombiePlague3.clientManager;
+    }
+
+    @OnlyIn(Dist.CLIENT)
     public static ZPNetworkHandlerClient netClient() {
         return ZPNetworkHandlerClient.instance;
     }
@@ -582,7 +612,7 @@ public final class ZombiePlague3 {
 
     public interface IModuleEntry {
         void addMinecraftRegistryClass(@NotNull Class<? extends ZPCommonRegistry<?>> zpRegistryProcessorClass);
-        void registerEventHandlerClass(@NotNull Class<? extends ZPForgeEventHandlerClass> clazz);
+        void registerForgeEventHandlerClass(@NotNull Class<? extends ZPForgeEventHandlerClass> clazz);
         void registerZP3EventHandlerClass(@NotNull Class<? extends ZP3EventHandlerClass> clazz);
         void registerEventHandlerInstance(@NotNull ZPForgeEventHandlerClass object);
         void registerNetworkPacket(@NotNull ZPNetwork.PacketData<?> packetData);
@@ -623,7 +653,7 @@ public final class ZombiePlague3 {
         }
 
         @Override
-        public final void registerEventHandlerClass(@NotNull Class<? extends ZPForgeEventHandlerClass> clazz) {
+        public final void registerForgeEventHandlerClass(@NotNull Class<? extends ZPForgeEventHandlerClass> clazz) {
             this.getEventClasses().add(clazz);
         }
 

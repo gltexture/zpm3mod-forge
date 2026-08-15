@@ -156,18 +156,16 @@ public class ZPAcidBottleEntity extends ZPThrowableEntity {
                 final double radius = ZPCombatConfig.ACID_BOTTLE_SPLASH_RADIUS.getVar();
                 final int maxTime = ZPCombatConfig.ACID_BOTTLE_SPLASH_HIT_MAX_AFFECT_TIME.getVar();
                 final int minTime = 20;
-                final float dY = hitEntity == null ? 0.0f : (float) (hitEntity.getBoundingBox().maxY - hitEntity.getBoundingBox().minY);
-                Vec3 center = hitEntity != null ? new Vec3(hitEntity.position().toVector3f().add(0.0f, dY, 0.0f)) : this.position();
+                Vec3 center = hitEntity != null ? hitEntity.getBoundingBox().getCenter() : this.getBoundingBox().getCenter();
                 Level level = this.level();
                 AABB area = new AABB(center, center).inflate(radius);
-                for (Entity target : level.getEntitiesOfClass(Entity.class, area, e -> (e != hitEntity && (e instanceof LivingEntity || e instanceof ItemEntity)))) {
-                    double dist = target.distanceTo(hitEntity != null ? hitEntity : this);
+                for (Entity target : level.getEntitiesOfClass(Entity.class, area, e -> e != hitEntity && (e instanceof LivingEntity || e instanceof ItemEntity))) {
+                    Vec3 targetCenter = target.getBoundingBox().getCenter();
+                    final double dist = center.distanceTo(targetCenter);
                     if (dist > radius) {
                         continue;
                     }
-                    Vec3 from = center;
-                    Vec3 to = target.getBoundingBox().getCenter();
-                    BlockHitResult hit = level.clip(new ClipContext(from, to, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+                    BlockHitResult hit = level.clip(new ClipContext(center, targetCenter, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
                     if (hit.getType() == HitResult.Type.BLOCK) {
                         continue;
                     }

@@ -27,7 +27,8 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacksManager;
+import ru.gltexture.zpm3.engine.client.rendering.ZPClientManager;
+import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.modules.armor.events.client.ZPPlayerArmorSoundOnClientEvent;
 
 import java.util.concurrent.CompletableFuture;
@@ -41,7 +42,7 @@ public class ZPResourcesReloader implements PreparableReloadListener {
             // ....
         }, pBackgroundExecutor);
         return prepare.thenCompose(pPreparationBarrier::wait).thenRunAsync(() -> {
-            ZPClientCallbacksManager.reloadResources(Minecraft.getInstance().getWindow());
+            ((ZPClientManager) ZombiePlague3.getClientManager()).forceReloadAllCallbacks();
             ZPPlayerArmorSoundOnClientEvent.clear();
         }, pGameExecutor);
     }

@@ -38,19 +38,19 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
+import ru.gltexture.zpm3.engine.client.rendering.util.ZPRenderingUtil;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPClientConfig;
-import ru.gltexture.zpm3.modules.debug.imgui.DearUIDebugInterface;
+import ru.gltexture.zpm3.modules.debug.imgui.ZPImGuiDebugInterface;
 import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
+import ru.gltexture.zpm3.modules.guns.processing.logic.ZPDefaultGunLogicFunctions;
 import ru.gltexture.zpm3.modules.guns.rendering.fx.ZPGunFXGlobalData;
 import ru.gltexture.zpm3.modules.guns.rendering.transforms.AbstractGunTransforms;
-import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
-import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
 import ru.gltexture.zpm3.engine.exceptions.ZPNullException;
 import ru.gltexture.zpm3.engine.service.Pair;
 
 import java.util.Objects;
 
-@Deprecated(forRemoval = true)
+//@Deprecated(forRemoval = true)
 public class ZPDefaultRifleRenderer extends ZPAbstractGunRenderer {
     public static final float armScaling1 = 0.5f; // EMPTY
     public static final float armScaling2 = 1.25f; // NOT EMPTY
@@ -243,15 +243,15 @@ public class ZPDefaultRifleRenderer extends ZPAbstractGunRenderer {
                 final float equippedConst = -0.6F + pEquippedProgress * -0.6F;
                 final Matrix4f transformation = new Matrix4f().identity();
                 if (ZPClientConfig.FIRST_PERSON_RENDER_SPACE_SCALE_BY_FOV.getVar()) {
-                    double f1 = ZPRenderHelper.fovItemOffset(Minecraft.getInstance().gameRenderer.getMainCamera(), pPartialTicks, pPoseStack);
+                    double f1 = ZPRenderingUtil.fovItemOffset(Minecraft.getInstance().gameRenderer.getMainCamera(), pPartialTicks, pPoseStack);
                     transformation.translate(0.0f, (float) (f1 * -0.0625f), (float) (f1 * 0.25f));
                 }
                 final Vector3f startTranslation = Objects.requireNonNull(isRightHanded ? abstractGunRenderer.gunTransforms().translationGunRight() : abstractGunRenderer.gunTransforms().translationGunLeft());
                 startTranslation.add(0.0f, equippedConst, 0.0f);
-                startTranslation.add(DearUIDebugInterface.trsGun.position);
+                startTranslation.add(ZPImGuiDebugInterface.trsGun.position);
 
                 final Vector3f startRotation = Objects.requireNonNull(isRightHanded ? abstractGunRenderer.gunTransforms().rotationGunRight() : abstractGunRenderer.gunTransforms().rotationGunLeft());
-                startRotation.add(DearUIDebugInterface.trsGun.rotation);
+                startRotation.add(ZPImGuiDebugInterface.trsGun.rotation);
 
                 abstractGunRenderer.translateStack(pPoseStack, pPartialTicks);
                 transformation
@@ -321,14 +321,14 @@ public class ZPDefaultRifleRenderer extends ZPAbstractGunRenderer {
 
                 {
                     final Vector3f mflashTranslation = Objects.requireNonNull(isRightHanded ? abstractGunRenderer.gunTransforms().translationMuzzleflash1PRight() : abstractGunRenderer.gunTransforms().translationMuzzleflash1PLeft());
-                    mflashTranslation.add(DearUIDebugInterface.trsMFlash.position);
+                    mflashTranslation.add(ZPImGuiDebugInterface.trsMFlash.position);
 
                     final Vector3f mflashRotation = new Vector3f(0.0f);
                     mflashRotation.add(0.0f, 180.0f, 0.0f);
-                    mflashRotation.add(DearUIDebugInterface.trsMFlash.rotation);
+                    mflashRotation.add(ZPImGuiDebugInterface.trsMFlash.rotation);
 
                     final Vector3f mflashScale = new Vector3f(Objects.requireNonNull(abstractGunRenderer.gunTransforms().muzzleflashScale()), Objects.requireNonNull(abstractGunRenderer.gunTransforms().muzzleflashScale()), 1.0f);
-                    mflashScale.add(new Vector3f(DearUIDebugInterface.trsMFlash.scale).sub(new Vector3f(1.0f)));
+                    mflashScale.add(new Vector3f(ZPImGuiDebugInterface.trsMFlash.scale).sub(new Vector3f(1.0f)));
 
                     if (muzzleflashTransformationTarget != null) {
                         muzzleflashTransformationTarget
@@ -340,16 +340,16 @@ public class ZPDefaultRifleRenderer extends ZPAbstractGunRenderer {
                     }
 
                     final Vector3f reloadingGunTranslation = Objects.requireNonNull(isRightHanded ? abstractGunRenderer.gunTransforms().translationGunReloadingRight() : abstractGunRenderer.gunTransforms().translationGunReloadingLeft());
-                    reloadingGunTranslation.add(DearUIDebugInterface.trsReloadingGun.position);
+                    reloadingGunTranslation.add(ZPImGuiDebugInterface.trsReloadingGun.position);
                     final Vector3f reloadingGunRotation = new Vector3f(0.0f);
                     reloadingGunRotation.add(isRightHanded ? abstractGunRenderer.gunTransforms().rotationGunReloadingRight() : abstractGunRenderer.gunTransforms().rotationGunReloadingLeft());
-                    reloadingGunRotation.add(DearUIDebugInterface.trsReloadingGun.rotation);
+                    reloadingGunRotation.add(ZPImGuiDebugInterface.trsReloadingGun.rotation);
 
                     final Vector3f reloadingArmTranslation = Objects.requireNonNull(isRightHanded ? abstractGunRenderer.gunTransforms().translationArmReloadingRight() : abstractGunRenderer.gunTransforms().translationArmReloadingLeft());
-                    reloadingArmTranslation.add(DearUIDebugInterface.trsReloadingArm.position);
+                    reloadingArmTranslation.add(ZPImGuiDebugInterface.trsReloadingArm.position);
                     final Vector3f reloadingArmRotation = new Vector3f(0.0f);
                     reloadingArmRotation.add(isRightHanded ? abstractGunRenderer.gunTransforms().rotationArmReloadingRight() : abstractGunRenderer.gunTransforms().rotationArmReloadingLeft());
-                    reloadingArmRotation.add(DearUIDebugInterface.trsReloadingArm.rotation);
+                    reloadingArmRotation.add(ZPImGuiDebugInterface.trsReloadingArm.rotation);
 
                     reloadingGunTarget
                             .translate(reloadingGunTranslation)
@@ -380,11 +380,11 @@ public class ZPDefaultRifleRenderer extends ZPAbstractGunRenderer {
     }
 
     @Override
-    public void onReloadStart(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, ZPClientCallbacks.ZPGunReloadStartCallback.@NotNull GunFXData gunFXData) {
+    public void onReloadStart(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, ZPDefaultGunLogicFunctions.@NotNull GunFXData_Reload gunFXData) {
 
     }
 
     @Override
-    public void onShot(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, ZPClientCallbacks.ZPGunShotCallback.@NotNull GunFXData gunFXData) {
+    public void onShot(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, ZPDefaultGunLogicFunctions.@NotNull GunFXData_Shot gunFXData) {
     }
 }

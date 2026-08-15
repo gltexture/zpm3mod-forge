@@ -46,6 +46,7 @@ import java.util.Set;
 
 public class ZPMixinPlugin implements IMixinConfigPlugin {
     public static final String pathToMixinsCfg = "zpm3/mixins/";
+    /*
 
     private static final List<String> mixins = new ArrayList<>();
 
@@ -63,7 +64,7 @@ public class ZPMixinPlugin implements IMixinConfigPlugin {
             JsonObject asset = jsonElements.get(i).getAsJsonObject();
             try {
                 final String pathToClass = asset.get("class").getAsString();
-                Class<?> zpAssetClass = Class.forName(pathToClass);
+                final Class<?> zpAssetClass = Class.forName(pathToClass);
                 try {
                     @SuppressWarnings("unchecked")
                     Constructor<ZPModule> constructor = (Constructor<ZPModule>) zpAssetClass.getDeclaredConstructor();
@@ -112,7 +113,13 @@ public class ZPMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public void onLoad(String mixinPackage) {
-        ZPMixinPlugin.initLibs();
+        //ZPMixinPlugin.initLibs();
+    }
+    */
+
+    @Override
+    public void onLoad(String mixinPackage) {
+
     }
 
     @Override

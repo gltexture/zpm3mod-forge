@@ -86,7 +86,7 @@ public class ZPNetPackModule extends ZPModule {
 
     @Override
     public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
-        moduleEntry.registerEventHandlerClass(ZPNetSyncEvents.class);
+        moduleEntry.registerForgeEventHandlerClass(ZPNetSyncEvents.class);
         int i = 0;
         moduleEntry.registerNetworkPacket(new ZPNetwork.PacketData<>(i++, ZPAcidSpreadPacket.class, ZPAcidSpreadPacket.encoder(), ZPAcidSpreadPacket.decoder()));
         moduleEntry.registerNetworkPacket(new ZPNetwork.PacketData<>(i++, ZPGunActionPacket.class, ZPGunActionPacket.encoder(), ZPGunActionPacket.decoder()));

@@ -55,7 +55,7 @@ public class ZPCombatConfig implements ZPConfigConstantsClass {
 
     @ZPVarDefinition(description = "Acid bottle splash radius.")
     public static final ZPConfig_FLOAT ACID_BOTTLE_SPLASH_RADIUS =
-            new ZPConfig_FLOAT(1.5f);
+            new ZPConfig_FLOAT(1.6f);
 
     @ZPVarDefinition(description = "Duration in ticks for acid bottle splash debuff (inventory breaking + damage). Set to 0 to disable splash effect.")
     public static final ZPConfig_INT ACID_BOTTLE_SPLASH_HIT_MAX_AFFECT_TIME =

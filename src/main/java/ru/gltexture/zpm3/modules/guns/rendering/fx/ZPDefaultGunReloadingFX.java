@@ -29,11 +29,11 @@ import net.minecraftforge.event.TickEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
-import ru.gltexture.zpm3.modules.debug.imgui.DearUIDebugInterface;
-import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
+import ru.gltexture.zpm3.modules.debug.imgui.ZPImGuiDebugInterface;
 import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
+import ru.gltexture.zpm3.modules.guns.processing.logic.ZPDefaultGunLogicFunctions;
 
-@Deprecated(forRemoval = true)
+//@Deprecated(forRemoval = true)
 public class ZPDefaultGunReloadingFX implements IZPGunReloadingFX {
     private final float[] reloadPrev;
     private final float[] reload;
@@ -51,7 +51,7 @@ public class ZPDefaultGunReloadingFX implements IZPGunReloadingFX {
     }
 
     @Override
-    public void onReloadStart(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, @NotNull ZPClientCallbacks.ZPGunReloadStartCallback.GunFXData gunFXData) {
+    public void onReloadStart(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, @NotNull ZPDefaultGunLogicFunctions.GunFXData_Reload gunFXData) {
         if (!player.equals(Minecraft.getInstance().player)) {
             return;
         }
@@ -65,7 +65,7 @@ public class ZPDefaultGunReloadingFX implements IZPGunReloadingFX {
     public @Nullable Matrix4f getCurrentGunReloadingTransformation(boolean rightHand, float partialTicks) {
         final int id = rightHand ? 1 : 0;
         float reloadingStage = Mth.lerp(partialTicks, this.reloadPrev[id], this.reload[id]);
-        reloadingStage = Math.max(reloadingStage, DearUIDebugInterface.reloadProgression);
+        reloadingStage = Math.max(reloadingStage, ZPImGuiDebugInterface.reloadProgression);
 
         Matrix4f matrix4f = ZPGunFXGlobalData.getGunData(rightHand).getGunReloadingTransformationTarget();
         return ZPDefaultGunReloadingFX.IDENT_MAT.lerp(matrix4f, reloadingStage, new Matrix4f());
@@ -75,7 +75,7 @@ public class ZPDefaultGunReloadingFX implements IZPGunReloadingFX {
     public @Nullable Matrix4f getCurrentArmReloadingTransformation(boolean rightHand, float partialTicks) {
         final int id = rightHand ? 1 : 0;
         float reloadingStage = Mth.lerp(partialTicks, this.reloadPrev[id], this.reload[id]);
-        reloadingStage = Math.max(reloadingStage, DearUIDebugInterface.reloadProgression);
+        reloadingStage = Math.max(reloadingStage, ZPImGuiDebugInterface.reloadProgression);
 
         Matrix4f matrix4f = ZPGunFXGlobalData.getGunData(rightHand).getArmReloadingTransformationTarget();
         return ZPDefaultGunReloadingFX.IDENT_MAT.lerp(matrix4f, reloadingStage, new Matrix4f());

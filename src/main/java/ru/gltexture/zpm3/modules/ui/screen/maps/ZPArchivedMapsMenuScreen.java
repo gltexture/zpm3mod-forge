@@ -20,43 +20,19 @@
 
 package ru.gltexture.zpm3.modules.ui.screen.maps;
 
-import com.mojang.serialization.Lifecycle;
-import net.minecraft.CrashReport;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.AlertScreen;
-import net.minecraft.client.gui.screens.BackupConfirmScreen;
-import net.minecraft.client.gui.screens.DatapackLoadFailureScreen;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.worldselection.CreateWorldScreen;
-import net.minecraft.client.gui.screens.worldselection.EditWorldScreen;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.WorldStem;
-import net.minecraft.server.packs.repository.PackRepository;
-import net.minecraft.server.packs.repository.ServerPacksSource;
-import net.minecraft.util.FormattedCharSequence;
-import net.minecraft.world.level.storage.LevelStorageSource;
-import net.minecraft.world.level.storage.PrimaryLevelData;
-import net.minecraft.world.level.storage.WorldData;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.gui.ModListScreen;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.engine.core.ZPLogger;
-import ru.gltexture.zpm3.modules.commands.imgui.ZPCreativeUtilityUI;
-import ru.gltexture.zpm3.modules.debug.imgui.DearUIDebugInterface;
 import ru.gltexture.zpm3.modules.ui.screen.ZPScreen;
-import ru.gltexture.zpm3.modules.ui.screen.maps.meta.ZPMapMetaData;
 import ru.gltexture.zpm3.modules.worldgen.archiver.ZPMapArchivedRegistry;
 import ru.gltexture.zpm3.modules.worldgen.archiver.ZPMapInstaller;
 
-import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 

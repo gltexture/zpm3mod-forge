@@ -27,19 +27,27 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
+import ru.gltexture.zpm3.engine.client.rendering.IZPClientManager;
+import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooks;
 import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooksManager;
+import ru.gltexture.zpm3.engine.core.ZP_EventsManager;
+import ru.gltexture.zpm3.engine.core.api.events.ZPEventDef;
+import ru.gltexture.zpm3.engine.core.api.events.client.ZPEventBus_ClientRendering;
 
 @Mixin(GameRenderer.class)
 @OnlyIn(Dist.CLIENT)
 public class ZPRenderMixin {
+    //@Deprecated(forRemoval = true)
     @Inject(method = "render", at = @At("HEAD"))
     private void onRenderTail2(float pPartialTicks, long pNanoTime, boolean pRenderLevel, CallbackInfo ci) {
-        ZPRenderHooksManager.INSTANCE.getSceneRenderingHooks().forEach((e) -> e.onRender(ZPRenderHelper.RenderStage.PRE, pPartialTicks, ZPRenderHelper.DELTA_TIME(), pNanoTime, pRenderLevel));
+        ZPRenderHooksManager.INSTANCE.getSceneRenderingHooks().forEach((e) -> e.onRender(ZPRenderHooks.RenderStage.PRE, pPartialTicks, IZPClientManager.DELTA_TIME(), pNanoTime, pRenderLevel));
+        ZP_EventsManager.pushEvent(new ZPEventBus_ClientRendering.SceneRenderEvent(ZPEventDef.Run.PRE, pPartialTicks, IZPClientManager.DELTA_TIME(), pNanoTime, pRenderLevel));
     }
 
+    //@Deprecated(forRemoval = true)
     @Inject(method = "render", at = @At("TAIL"))
     private void onRenderTail1(float pPartialTicks, long pNanoTime, boolean pRenderLevel, CallbackInfo ci) {
-        ZPRenderHooksManager.INSTANCE.getSceneRenderingHooks().forEach((e) -> e.onRender(ZPRenderHelper.RenderStage.POST, pPartialTicks, ZPRenderHelper.DELTA_TIME(), pNanoTime, pRenderLevel));
+        ZPRenderHooksManager.INSTANCE.getSceneRenderingHooks().forEach((e) -> e.onRender(ZPRenderHooks.RenderStage.POST, pPartialTicks, IZPClientManager.DELTA_TIME(), pNanoTime, pRenderLevel));
+        ZP_EventsManager.pushEvent(new ZPEventBus_ClientRendering.SceneRenderEvent(ZPEventDef.Run.POST, pPartialTicks, IZPClientManager.DELTA_TIME(), pNanoTime, pRenderLevel));
     }
 }

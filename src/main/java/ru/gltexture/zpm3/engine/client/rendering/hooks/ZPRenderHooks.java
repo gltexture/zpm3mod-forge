@@ -32,12 +32,17 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
 
+//@Deprecated(forRemoval = true)
 public abstract class ZPRenderHooks {
+    public enum RenderStage {
+        PRE,
+        POST
+    }
+
     @FunctionalInterface
     public interface ZPSceneRenderingHook {
-        void onRender(@NotNull ZPRenderHelper.RenderStage renderStage, float partialTicks, float deltaTime, long pNanoTime, boolean pRenderLevel);
+        void onRender(@NotNull ZPRenderHooks.RenderStage renderStage, float partialTicks, float deltaTime, long pNanoTime, boolean pRenderLevel);
     }
 
     @FunctionalInterface

@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
+@Deprecated
 public class ZPMixinConfigsProvider implements DataProvider {
     public static final Set<Pair<ZombiePlague3.IMixinEntry.MixinConfig, ZombiePlague3.IMixinEntry.MixinClass[]>> mixinClasses = new HashSet<>();
     private final DataGenerator generator;

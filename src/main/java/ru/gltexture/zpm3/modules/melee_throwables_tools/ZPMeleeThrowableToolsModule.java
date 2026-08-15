@@ -77,7 +77,7 @@ public class ZPMeleeThrowableToolsModule extends ZPModule {
     @Override
     public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
         ZPUtility.sides().onlyClient(() -> {
-            moduleEntry.registerEventHandlerClass(ZPPlayerClientTickBroomEvent.class);
+            moduleEntry.registerForgeEventHandlerClass(ZPPlayerClientTickBroomEvent.class);
         });
         moduleEntry.addRecipesRegistry(new ZPMeleeThrowableToolsModule.ZPMeleeThrowablesToolsRecipeRegistry());
         moduleEntry.addTier(ZPCommonToolMeleeTiers.values());

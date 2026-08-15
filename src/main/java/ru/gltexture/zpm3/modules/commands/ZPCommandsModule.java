@@ -33,7 +33,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3i;
-import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
 import ru.gltexture.zpm3.engine.core.ZPLogger;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 import ru.gltexture.zpm3.engine.zones.vars.ZPZoneIntVar;
@@ -47,7 +46,7 @@ import ru.gltexture.zpm3.engine.core.module.ZPModuleData;
 import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 import ru.gltexture.zpm3.modules.commands.events.client.ZPCreativeUtilityMenuEvent;
 import ru.gltexture.zpm3.modules.commands.events.client.ZPRenderZones;
-import ru.gltexture.zpm3.modules.commands.imgui.ZPCreativeUtilityUI;
+import ru.gltexture.zpm3.modules.commands.imgui.ZPImGuiCreativeUtilityUI;
 import ru.gltexture.zpm3.engine.zones.ZPZonesRegistry;
 import ru.gltexture.zpm3.modules.net_pack.data.data_ent.ZPNetEntDataSyncer;
 
@@ -68,8 +67,8 @@ public class ZPCommandsModule extends ZPModule {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void fml_clientSetupEvent() {
-        if (ZPRenderHelper.INSTANCE.getDearUIRenderer() != null) {
-            ZPRenderHelper.INSTANCE.getDearUIRenderer().getInterfacesManager().addInterface(new ZPCreativeUtilityUI());
+        if (ZombiePlague3.getClientManager().isImGuiValid()) {
+            Objects.requireNonNull(ZombiePlague3.getClientManager().getImGuiInterfacesManager()).addRenderableInterface(new ZPImGuiCreativeUtilityUI());
         }
     }
 
@@ -91,13 +90,13 @@ public class ZPCommandsModule extends ZPModule {
 
     @Override
     public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
-        moduleEntry.registerEventHandlerClass(ZPCommandsEvent.class);
+        moduleEntry.registerForgeEventHandlerClass(ZPCommandsEvent.class);
         ZPUtility.sides().onlyClient(() -> {
-            if (ZPRenderHelper.INSTANCE.getDearUIRenderer() != null) {
-                moduleEntry.registerEventHandlerClass(ZPRenderZones.class);
-                moduleEntry.registerEventHandlerClass(ZPCreativeUtilityMenuEvent.class);
+            if (ZombiePlague3.getClientManager().isImGuiValid()) {
+                moduleEntry.registerForgeEventHandlerClass(ZPRenderZones.class);
+                moduleEntry.registerForgeEventHandlerClass(ZPCreativeUtilityMenuEvent.class);
             }
-            moduleEntry.registerEventHandlerClass(ZPRenderSpecialZoneEffectsOnClient.class);
+            moduleEntry.registerForgeEventHandlerClass(ZPRenderSpecialZoneEffectsOnClient.class);
 
             ZPRenderSpecialZoneEffectsOnClient.registerZoneEffect(ZPZonesRegistry.toxicCloud, (zone, chunkX, chunkZ) -> {
                 ZPRenderSpecialZoneEffectsOnClient.renderCloudDefaultFun(zone, chunkX, chunkZ, false);

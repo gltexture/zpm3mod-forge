@@ -1,0 +1,18 @@
+{
+  "vertex": "zpm3:post_fx_adrenaline/vertex",
+  "fragment": "zpm3:post_fx_adrenaline/fragment",
+  "samplers": [
+  ],
+  "attributes": [
+    "position",
+    "texture"
+  ],
+  "uniforms": [
+    {
+      "name": "texture_map",
+      "type": "int",
+      "count": 1,
+      "values": [0]
+    }
+  ]
+}

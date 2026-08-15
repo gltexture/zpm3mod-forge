@@ -43,7 +43,7 @@ import ru.gltexture.zpm3.engine.mixins.util.ZPHumanoidArmorLayerOnArm;
 import ru.gltexture.zpm3.modules.entity.util.ZPEntityUtil;
 import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
 
-@Deprecated(forRemoval = true)
+//@Deprecated(forRemoval = true)
 public abstract class ZPHumanoidArmTransformations {
     public static final float X_CONSTR_DEG_P = -60.0f;
     public static final float X_CONSTR_RAD_M = (float) (Math.PI / 8.0f);

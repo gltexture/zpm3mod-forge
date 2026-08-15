@@ -1,0 +1,30 @@
+{
+  "vertex": "zpm3:post_fx_acid/vertex",
+  "fragment": "zpm3:post_fx_acid/fragment",
+  "samplers": [
+  ],
+  "attributes": [
+    "position",
+    "texture"
+  ],
+  "uniforms": [
+    {
+      "name": "texture_map",
+      "type": "int",
+      "count": 1,
+      "values": [0]
+    },
+    {
+      "name": "value",
+      "type": "float",
+      "count": 1,
+      "values": [ 0.0 ]
+    },
+    {
+      "name": "timer",
+      "type": "float",
+      "count": 1,
+      "values": [ 0.0 ]
+    }
+  ]
+}

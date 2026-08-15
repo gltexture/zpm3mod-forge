@@ -68,7 +68,7 @@ public class ZPArmorModule extends ZPModule {
     @Override
     public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
         moduleEntry.registerZP3EventHandlerClass(ZPAdjustNightVisionGogglesLightMap.class);
-        moduleEntry.registerEventHandlerClass(ZPPlayerArmorSoundOnClientEvent.class);
+        moduleEntry.registerForgeEventHandlerClass(ZPPlayerArmorSoundOnClientEvent.class);
         moduleEntry.addMinecraftRegistryClass(ZPArmorItems.class);
         ZPUtility.sides().onlyClient(() -> {
             ZPPlayerArmorSoundOnClientEvent.registerArmorSound(new ZPPlayerArmorSoundOnClientEvent.TrackedSoundLauncher() {

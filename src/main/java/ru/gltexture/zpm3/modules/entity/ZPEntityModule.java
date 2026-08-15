@@ -83,13 +83,13 @@ public class ZPEntityModule extends ZPModule {
         moduleEntry.addMinecraftRegistryClass(ZPSpawnItems.class);
 
         moduleEntry.setPopulationSetup(new ZPEntityModule.ZPCommonPopulationSetup());
-        moduleEntry.registerEventHandlerClass(ZPLivingApplyEffectEvent.class);
-        moduleEntry.registerEventHandlerClass(ZPEntitySpawnEvent.class);
-        moduleEntry.registerEventHandlerClass(ZPEntityLivingRadiationTickEvent.class);
-        moduleEntry.registerEventHandlerClass(ZPEntityLivingToxicTickEvent.class);
-        moduleEntry.registerEventHandlerClass(ZPEntityLivingMiscEvents.class);
-        moduleEntry.registerEventHandlerClass(ZPEntityMobAttributes.class);
-        moduleEntry.registerEventHandlerClass(ZPWorldTickEvent.class);
+        moduleEntry.registerForgeEventHandlerClass(ZPLivingApplyEffectEvent.class);
+        moduleEntry.registerForgeEventHandlerClass(ZPEntitySpawnEvent.class);
+        moduleEntry.registerForgeEventHandlerClass(ZPEntityLivingRadiationTickEvent.class);
+        moduleEntry.registerForgeEventHandlerClass(ZPEntityLivingToxicTickEvent.class);
+        moduleEntry.registerForgeEventHandlerClass(ZPEntityLivingMiscEvents.class);
+        moduleEntry.registerForgeEventHandlerClass(ZPEntityMobAttributes.class);
+        moduleEntry.registerForgeEventHandlerClass(ZPWorldTickEvent.class);
     }
 
     @Override

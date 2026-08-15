@@ -24,38 +24,56 @@ import com.mojang.blaze3d.platform.Window;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ShaderInstance;
 import org.lwjgl.opengl.GL46;
-import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
 import ru.gltexture.zpm3.engine.client.rendering.postfx.ZPPostFXChain;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPDefaultShaders;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPShaderLoader;
-import ru.gltexture.zpm3.modules.armor.utils.ZPArmorUtil;
-import ru.gltexture.zpm3.modules.debug.imgui.DearUIDebugInterface;
-import ru.gltexture.zpm3.modules.entity.mixins.ext.IZPLivingEntityExt;
+import ru.gltexture.zpm3.engine.core.ZombiePlague3;
+import ru.gltexture.zpm3.modules.debug.imgui.ZPImGuiDebugInterface;
 import ru.gltexture.zpm3.modules.entity.util.ZPLivingStat;
 
 import java.util.Objects;
 
-public class ZPRadiationPostFXProcessor extends ZPPostFXProcessor{
+public class ZPRadiationPostFXProcessor extends ZPPostFXProcessor {
+    private float value;
+
     public ZPRadiationPostFXProcessor(int chainOrder) {
         super(chainOrder);
     }
 
     @Override
-    public void renderTextureInFBO(int screenTexture_GL_ID) {
+    public void renderTextureInFBO(float deltaTime, float partialTicks, int screenTexture_GL_ID) {
         ShaderInstance shader = this.getPostFXShader().getShaderInstance();
         Objects.requireNonNull(shader).apply();
         Window window = Minecraft.getInstance().getWindow();
+        float radConst = Minecraft.getInstance().player == null ? 100.0f : ZPLivingStat.RADIATION.get(Objects.requireNonNull(Minecraft.getInstance().player));
+        radConst = Math.min(radConst, 100.0f);
+        final float a = 2.5f;
+        if (this.value < radConst) {
+            this.value = Math.min(this.value + (a * deltaTime), 100.0f);
+        } else if (this.value > radConst) {
+            this.value = Math.max(this.value - (a * deltaTime), 0.0f);
+        }
         GL46.glViewport(0, 0, window.getWidth(), window.getHeight());
         {
-            final float radLevel = ZPLivingStat.RADIATION.get(Objects.requireNonNull(Minecraft.getInstance().player));
             GL46.glActiveTexture(GL46.GL_TEXTURE0);
             GL46.glBindTexture(GL46.GL_TEXTURE_2D, screenTexture_GL_ID);
             shader.safeGetUniform("texture_map").set(0);
             shader.safeGetUniform("timer").set(ZPPostFXChain.TIMER);
-            shader.safeGetUniform("value").set((DearUIDebugInterface.FORCE_ENABLE_RADIATION_POST_FX_SHADER ? DearUIDebugInterface.PARAM_RAD_POSTFX[0] : radLevel) / 100.0f);
-            ZPRenderHelper.INSTANCE.renderZpScreenMesh();
+            shader.safeGetUniform("value").set((ZPImGuiDebugInterface.FORCE_ENABLE_RADIATION_POST_FX_SHADER ? ZPImGuiDebugInterface.PARAM_RAD_POSTFX[0] : this.value) / 100.0f);
+            ZombiePlague3.getClientManager().renderScreenMesh();
         }
         Objects.requireNonNull(shader).clear();
+    }
+
+    @Override
+    public void clientPreTick() {
+        if (this.bypass()) {
+            this.value = 0;
+        }
+    }
+
+    @Override
+    public void clientPostTick() {
     }
 
     @Override
@@ -66,10 +84,10 @@ public class ZPRadiationPostFXProcessor extends ZPPostFXProcessor{
     @Override
     public boolean bypass() {
         if (Minecraft.getInstance().player != null) {
-            if (ZPLivingStat.RADIATION.get(Objects.requireNonNull(Minecraft.getInstance().player)) > 0) {
+            if (this.value > 0 || ZPLivingStat.RADIATION.get(Objects.requireNonNull(Minecraft.getInstance().player)) > 0) {
                 return false;
             }
         }
-        return !DearUIDebugInterface.FORCE_ENABLE_RADIATION_POST_FX_SHADER;
+        return !ZPImGuiDebugInterface.FORCE_ENABLE_RADIATION_POST_FX_SHADER;
     }
 }

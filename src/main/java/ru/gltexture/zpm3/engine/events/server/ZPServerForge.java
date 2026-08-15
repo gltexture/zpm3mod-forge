@@ -40,29 +40,4 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
 public final class ZPServerForge {
-    @SubscribeEvent
-    public void onServerAboutToStart(ServerAboutToStartEvent event) {
-        MinecraftServer server = event.getServer();
-        long seed = server.getWorldData().worldGenOptions().seed();
-        ZPServerForge.clearLootTableMaps();
-        CompletableFuture.runAsync(() -> {
-            ZPRandom.instance.init(seed);
-        });
-    }
-
-    private static void clearLootTableMaps() {
-        ZPLootTableHelper.clearGeneratedLootTables();
-        ZPLootTableHelper.clearExistingLootTableChanges();
-    }
-
-    @SubscribeEvent
-    public void onLootTableLoad(LootTableLoadEvent event) {
-        ResourceLocation id = event.getName();
-        Set<Supplier<LootPool>> lootPools = ZPLootTableHelper.getExistingLootPools(id);
-        if (lootPools != null) {
-            LootTable table = LootTable.lootTable().build();
-            lootPools.forEach(e -> table.addPool(e.get()));
-            event.setTable(table);
-        }
-    }
 }

@@ -27,7 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
-import ru.gltexture.zpm3.modules.commands.imgui.ZPCreativeUtilityUI;
+import ru.gltexture.zpm3.modules.commands.imgui.ZPImGuiCreativeUtilityUI;
 
 public class ZPCreativeUtilityMenuEvent implements ZPForgeEventHandlerClass {
     public ZPCreativeUtilityMenuEvent() {
@@ -46,7 +46,7 @@ public class ZPCreativeUtilityMenuEvent implements ZPForgeEventHandlerClass {
     @SubscribeEvent
     public static void onKeyInput(InputEvent.Key event) {
         if (event.getKey() == GLFW.GLFW_KEY_F7 && event.getAction() == GLFW.GLFW_PRESS) {
-            ZPCreativeUtilityUI.ENABLE_UTILITY = !ZPCreativeUtilityUI.ENABLE_UTILITY;
+            ZPImGuiCreativeUtilityUI.ENABLE_UTILITY = !ZPImGuiCreativeUtilityUI.ENABLE_UTILITY;
         }
     }
 }

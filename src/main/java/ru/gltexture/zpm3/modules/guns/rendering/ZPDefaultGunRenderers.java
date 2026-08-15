@@ -21,12 +21,15 @@
 package ru.gltexture.zpm3.modules.guns.rendering;
 
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.client.rendering.IZPClientManager;
+import ru.gltexture.zpm3.engine.client.rendering.callbacks.ZPClientCallbacks;
+import ru.gltexture.zpm3.engine.client.rendering.callbacks.ZPClientCallbacksManager;
+import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.modules.guns.rendering.fx.*;
-import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
-import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacksManager;
 
-@Deprecated(forRemoval = true)
-public abstract class ZPDefaultGunRenderers {
+
+//@Deprecated(forRemoval = true)
+public abstract class  ZPDefaultGunRenderers {
     public static final @NotNull IZPGunRecoilFX defaultRecoilFXUniversal = ZPDefaultGunRecoilFX.create();
     public static final @NotNull IZPGunMuzzleflashFX defaultMuzzleflashFXUniversal = ZPDefaultGunMuzzleflashFX.create();
     public static final @NotNull IZPGunReloadingFX defaultReloadingFXUniversal = ZPDefaultGunReloadingFX.create();
@@ -47,27 +50,27 @@ public abstract class ZPDefaultGunRenderers {
         ZPDefaultGunRenderers.initFxCallbacks(ZPDefaultGunRenderers.defaultParticlesFXUniversal);
         ZPDefaultGunRenderers.initFxCallbacks(ZPDefaultGunRenderers.defaultShotgunShutterFXUniversal);
 
-        ZPClientCallbacksManager.INSTANCE.addGunShotCallback(ZPDefaultGunRenderers.defaultPistolRenderer);
-        ZPClientCallbacksManager.INSTANCE.addGunShotCallback(ZPDefaultGunRenderers.defaultShutterRifleRenderer);
-        ZPClientCallbacksManager.INSTANCE.addGunShotCallback(ZPDefaultGunRenderers.defaultRifleRenderer);
+        ((ZPClientCallbacksManager) ZombiePlague3.getClientManager().getCallbacksManager()).addGunShotCallback(ZPDefaultGunRenderers.defaultPistolRenderer);
+        ((ZPClientCallbacksManager) ZombiePlague3.getClientManager().getCallbacksManager()).addGunShotCallback(ZPDefaultGunRenderers.defaultShutterRifleRenderer);
+        ((ZPClientCallbacksManager) ZombiePlague3.getClientManager().getCallbacksManager()).addGunShotCallback(ZPDefaultGunRenderers.defaultRifleRenderer);
 
-        ZPClientCallbacksManager.INSTANCE.addGunReloadStartCallback(ZPDefaultGunRenderers.defaultPistolRenderer);
-        ZPClientCallbacksManager.INSTANCE.addGunReloadStartCallback(ZPDefaultGunRenderers.defaultShutterRifleRenderer);
-        ZPClientCallbacksManager.INSTANCE.addGunReloadStartCallback(ZPDefaultGunRenderers.defaultRifleRenderer);
+        ((ZPClientCallbacksManager) ZombiePlague3.getClientManager().getCallbacksManager()).addGunReloadStartCallback(ZPDefaultGunRenderers.defaultPistolRenderer);
+        ((ZPClientCallbacksManager) ZombiePlague3.getClientManager().getCallbacksManager()).addGunReloadStartCallback(ZPDefaultGunRenderers.defaultShutterRifleRenderer);
+        ZombiePlague3.getClientManager().getCallbacksManager().addGunReloadStartCallback(ZPDefaultGunRenderers.defaultRifleRenderer);
     }
 
     private static void initFxCallbacks(IZPGunFX gunFX) {
         if (gunFX instanceof ZPClientCallbacks.ZPGunReloadStartCallback callback) {
-            ZPClientCallbacksManager.INSTANCE.addGunReloadStartCallback(callback);
+            ((ZPClientCallbacksManager) ZombiePlague3.getClientManager().getCallbacksManager()).addGunReloadStartCallback(callback);
         }
         if (gunFX instanceof ZPClientCallbacks.ZPGunShotCallback callback) {
-            ZPClientCallbacksManager.INSTANCE.addGunShotCallback(callback);
+            ((ZPClientCallbacksManager) ZombiePlague3.getClientManager().getCallbacksManager()).addGunShotCallback(callback);
         }
-        if (gunFX instanceof ZPClientCallbacks.ZPClientResourceDependentObject callback) {
-            ZPClientCallbacksManager.INSTANCE.addResourceDependentObjectCallback(callback);
+        if (gunFX instanceof IZPClientManager.ResourceLifecycleListener callback) {
+            ZombiePlague3.getClientManager().registerResourceLifecycleListener(callback);
         }
         if (gunFX instanceof ZPClientCallbacks.ZPClientTickCallback callback) {
-            ZPClientCallbacksManager.INSTANCE.addClientTickCallback(callback);
+            ((ZPClientCallbacksManager) ZombiePlague3.getClientManager().getCallbacksManager()).addClientTickCallback(callback);
         }
     }
 }

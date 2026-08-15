@@ -26,33 +26,31 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RenderGuiEvent;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.client.event.RenderHandEvent;
-import net.minecraftforge.client.event.RenderLevelStageEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL46;
-import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
-import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
-import ru.gltexture.zpm3.engine.client.rendering.gl.programs.fbo.FBOTexture2DProgram;
-import ru.gltexture.zpm3.engine.client.rendering.gl.programs.fbo.attachments.T2DAttachmentContainer;
+import ru.gltexture.zpm3.engine.client.rendering.gl.fbo.FBOTexture2DProgram;
+import ru.gltexture.zpm3.engine.client.rendering.gl.fbo.attachments.T2DAttachmentContainer;
 import ru.gltexture.zpm3.engine.client.rendering.postfx.processors.*;
 import ru.gltexture.zpm3.engine.service.Pair;
 
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.Set;
 import java.util.TreeSet;
 
 @OnlyIn(Dist.CLIENT)
-public class ZPPostFXChain implements ZPClientCallbacks.ZPClientResourceDependentObject {
-    public static ZPPostFXProcessor SAMPLE = new ZPSamplePostFXProcessor(100);
-    public static ZPPostFXProcessor INFECTION = new ZPInfectionPostFXProcessor(200);
-    public static ZPPostFXProcessor NIGHTVIS = new ZPNightVisPostFXProcessor(300);
-    public static ZPPostFXProcessor MASK = new ZPMaskVignettePostFXProcessor(400);
-    public static ZPPostFXProcessor RADIATION = new ZPRadiationPostFXProcessor(500);
+public class ZPPostFXChain implements IZPPostFXChain {
+    public static ZPPostFXProcessor SAMPLE = new ZPSamplePostFXProcessor(1000);
+    public static ZPPostFXProcessor INFECTION = new ZPInfectionPostFXProcessor(2000);
+    public static ZPPostFXProcessor ADRENALINE = new ZPAdrenalinePostFXProcessor(3000);
+    public static ZPPostFXProcessor BETTERVIS = new ZPBetterVisionPostFXProcessor(4000);
+    public static ZPPostFXProcessor NIGHTVIS = new ZPNightVisPostFXProcessor(5000);
+    public static ZPPostFXProcessor MASK = new ZPMaskVignettePostFXProcessor(6000);
+    public static ZPPostFXProcessor RADIATION = new ZPRadiationPostFXProcessor(7000);
+    public static ZPPostFXProcessor ACID = new ZPAcidPostFXProcessor(8000);
 
     public static @Nullable FBOTexture2DProgram screenFBO;
     private final TreeSet<ZPPostFXProcessor> processors;
@@ -72,6 +70,9 @@ public class ZPPostFXChain implements ZPClientCallbacks.ZPClientResourceDependen
         this.processors.add(ZPPostFXChain.NIGHTVIS);
         this.processors.add(ZPPostFXChain.MASK);
         this.processors.add(ZPPostFXChain.INFECTION);
+        this.processors.add(ZPPostFXChain.BETTERVIS);
+        this.processors.add(ZPPostFXChain.ADRENALINE);
+        this.processors.add(ZPPostFXChain.ACID);
     }
 
     public void setupOverlayRenderState(boolean blend, boolean depthTest) {
@@ -93,17 +94,17 @@ public class ZPPostFXChain implements ZPClientCallbacks.ZPClientResourceDependen
     }
 
     @SuppressWarnings("unchecked")
-    public void render() {
+    public void render(float deltaTime, float partialTicks) {
         if (ZPPostFXChain.screenFBO != null && Minecraft.getInstance().getMainRenderTarget().width > 0 && Minecraft.getInstance().getMainRenderTarget().height > 0) {
             if (GLFW.glfwGetWindowAttrib(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_ICONIFIED) == GLFW.GLFW_FALSE) {
-                ZPPostFXChain.TIMER += ZPRenderHelper.DELTA_TIME();
+                ZPPostFXChain.TIMER += deltaTime;
                 this.getProcessors().forEach(e -> {
                     if (!e.bypass()) {
                         // GL46.glDisable(GL46.GL_DEPTH_TEST);
                         {
                             ZPPostFXChain.screenFBO.bindFBO();
                             GL46.glClear(GL46.GL_COLOR_BUFFER_BIT | GL46.GL_DEPTH_BUFFER_BIT);
-                            e.renderTextureInFBO(Minecraft.getInstance().getMainRenderTarget().getColorTextureId());
+                            e.renderTextureInFBO(deltaTime, partialTicks, Minecraft.getInstance().getMainRenderTarget().getColorTextureId());
                             ZPPostFXChain.screenFBO.unBindFBO();
 
                             ZPPostFXChain.screenFBO.copyFBOtoFBOColor(Minecraft.getInstance().getMainRenderTarget().frameBufferId, new Pair[]{Pair.of(GL46.GL_COLOR_ATTACHMENT0, GL46.GL_COLOR_ATTACHMENT0)}
@@ -117,23 +118,24 @@ public class ZPPostFXChain implements ZPClientCallbacks.ZPClientResourceDependen
         }
     }
 
-    public void addProcessor(ZPPostFXProcessor processor) {
+    public void clientPostTick() {
+        this.getProcessors().forEach(ZPPostFXProcessor::clientPostTick);
+    }
+
+    public void clientPreTick() {
+        this.getProcessors().forEach(ZPPostFXProcessor::clientPreTick);
+    }
+
+    public void addProcessor(@NotNull ZPPostFXProcessor processor) {
         this.getProcessors().add(processor);
     }
 
-    public void removeProcessor(ZPPostFXProcessor processor) {
+    public void removeProcessor(@NotNull ZPPostFXProcessor processor) {
         this.getProcessors().remove(processor);
     }
 
-    public TreeSet<ZPPostFXProcessor> getProcessors() {
-        return this.processors;
-    }
-
-    public ZPClientCallbacks.ZPReloadGameResourcesCallback reloadGameResourcesCallback() {
-        return (window) -> {
-            this.destroyFBOs();
-            this.createFBOs(window.getWidth(), window.getHeight());
-        };
+    public @NotNull Set<ZPPostFXProcessor> getProcessors() {
+        return Collections.unmodifiableSet(this.processors);
     }
 
     private void destroyFBOs() {
@@ -153,22 +155,28 @@ public class ZPPostFXChain implements ZPClientCallbacks.ZPClientResourceDependen
     }
 
     @Override
-    public void destroyResources(@NotNull Window window) {
+    public void onDestroyResources(@NotNull Window window) {
         this.destroyFBOs();
     }
 
     @Override
-    public void setupResources(@NotNull Window window) {
+    public void onSetupResources(@NotNull Window window) {
         this.createFBOs(window.getWidth(), window.getHeight());
     }
 
     @Override
-    public void onWindowResizeAction(long descriptor, int width, int height) {
+    public void onWindowResized(long descriptor, int width, int height) {
         this.destroyFBOs();
         this.createFBOs(width, height);
     }
 
-   // @ZombiePlagueEvent
+    @Override
+    public void onReloadResources(@NotNull Window window) {
+        this.destroyFBOs();
+        this.createFBOs(window.getWidth(), window.getHeight());
+    }
+
+    // @ZombiePlagueEvent
    // public void exec(@NotNull RenderGuiEvent.Pre renderLevelStageEvent) {
    //     this.render();
    // }

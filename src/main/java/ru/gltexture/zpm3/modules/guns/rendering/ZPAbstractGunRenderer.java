@@ -49,18 +49,19 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL46;
-import ru.gltexture.zpm3.modules.debug.imgui.DearUIDebugInterface;
+import ru.gltexture.zpm3.engine.client.rendering.IZPClientManager;
+import ru.gltexture.zpm3.engine.client.rendering.callbacks.ZPClientCallbacks;
+import ru.gltexture.zpm3.modules.debug.imgui.ZPImGuiDebugInterface;
 import ru.gltexture.zpm3.modules.guns.rendering.fx.ZPDefaultGunMuzzleflashFX;
 import ru.gltexture.zpm3.modules.guns.rendering.fx.ZPGunFXGlobalData;
 import ru.gltexture.zpm3.modules.guns.rendering.transforms.AbstractGunTransforms;
-import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
 import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooks;
 import ru.gltexture.zpm3.engine.exceptions.ZPNullException;
 
 import java.util.Objects;
 
-@Deprecated(forRemoval = true)
-public abstract class ZPAbstractGunRenderer implements ZPRenderHooks.ZPItemRendering1PersonHook, ZPRenderHooks.ZPItemRendering3PersonHook, ZPClientCallbacks.ZPClientTickCallback, ZPClientCallbacks.ZPGunShotCallback, ZPClientCallbacks.ZPGunReloadStartCallback, ZPClientCallbacks.ZPClientResourceDependentObject {
+//@Deprecated(forRemoval = true)
+public abstract class ZPAbstractGunRenderer implements ZPRenderHooks.ZPItemRendering1PersonHook, ZPRenderHooks.ZPItemRendering3PersonHook, ZPClientCallbacks.ZPClientTickCallback, ZPClientCallbacks.ZPGunShotCallback, ZPClientCallbacks.ZPGunReloadStartCallback, IZPClientManager.ResourceLifecycleListener {
     protected ZPAbstractGunRenderer() {
     }
 
@@ -86,12 +87,12 @@ public abstract class ZPAbstractGunRenderer implements ZPRenderHooks.ZPItemRende
             final Matrix4f transformation = new Matrix4f().identity();
 
             final Vector3f startTranslation = new Vector3f(!flag ? (0.12f * Objects.requireNonNull(this.gunTransforms().scalingGun3P()).x) : 0.0f, -0.13f, 0.09f);
-            startTranslation.add(DearUIDebugInterface.trsGun3d.position);
+            startTranslation.add(ZPImGuiDebugInterface.trsGun3d.position);
 
             final Vector3f startRotation = new Vector3f(0.0f, -90.0f, 45.0f);
-            startRotation.add(DearUIDebugInterface.trsGun3d.rotation);
+            startRotation.add(ZPImGuiDebugInterface.trsGun3d.rotation);
 
-            final Vector3f startScale = Objects.requireNonNull(this.gunTransforms().scalingGun3P()).add(new Vector3f(DearUIDebugInterface.trsGun3d.scale).sub(new Vector3f(1.0f)));
+            final Vector3f startScale = Objects.requireNonNull(this.gunTransforms().scalingGun3P()).add(new Vector3f(ZPImGuiDebugInterface.trsGun3d.scale).sub(new Vector3f(1.0f)));
 
             transformation
                     .translate(startTranslation)
@@ -162,13 +163,13 @@ public abstract class ZPAbstractGunRenderer implements ZPRenderHooks.ZPItemRende
             final Matrix4f transformation = new Matrix4f().identity();
 
             final Vector3f startTranslation = new Vector3f(Objects.requireNonNull(isRightHanded ? this.gunTransforms().translationArmRight() : this.gunTransforms().translationArmLeft()));
-            startTranslation.add(DearUIDebugInterface.trsArm.position);
+            startTranslation.add(ZPImGuiDebugInterface.trsArm.position);
 
             final Vector3f startRotation = new Vector3f(Objects.requireNonNull(isRightHanded ? this.gunTransforms().rotationArmRight() : this.gunTransforms().rotationArmLeft()));
-            startRotation.add(DearUIDebugInterface.trsArm.rotation);
+            startRotation.add(ZPImGuiDebugInterface.trsArm.rotation);
 
             final Vector3f startScale = new Vector3f(Objects.requireNonNull(isRightHanded ? this.gunTransforms().scaleArmRight() : this.gunTransforms().scaleArmLeft()));
-            startScale.add(new Vector3f(DearUIDebugInterface.trsArm.scale).sub(new Vector3f(1.0f)));
+            startScale.add(new Vector3f(ZPImGuiDebugInterface.trsArm.scale).sub(new Vector3f(1.0f)));
 
             transformation
                     .translate(startTranslation)
@@ -234,17 +235,17 @@ public abstract class ZPAbstractGunRenderer implements ZPRenderHooks.ZPItemRende
     }
 
     @Override
-    public void setupResources(@NotNull Window window) {
+    public void onSetupResources(@NotNull Window window) {
 
     }
 
     @Override
-    public void onWindowResizeAction(long descriptor, int width, int height) {
+    public void onWindowResized(long descriptor, int width, int height) {
 
     }
 
     @Override
-    public void destroyResources(@NotNull Window window) {
+    public void onDestroyResources(@NotNull Window window) {
 
     }
 }

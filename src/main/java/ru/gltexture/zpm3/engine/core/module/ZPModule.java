@@ -44,8 +44,9 @@ public abstract class ZPModule {
     @OnlyIn(Dist.CLIENT)
     public abstract void clientShutDown();
 
-    @Deprecated
-    public void setupMixins(@NotNull ZombiePlague3.IMixinEntry mixinEntry) { }
+    //@Deprecated
+    //public void setupMixins(@NotNull ZombiePlague3.IMixinEntry mixinEntry) { }
+
     public abstract void initialize(@NotNull ZombiePlague3.IModuleEntry moduleEntry);
     public abstract void preInitialize();
     public abstract void postInitialize();
@@ -55,7 +56,7 @@ public abstract class ZPModule {
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return "Module: " + this.getModuleData();
     }
 }

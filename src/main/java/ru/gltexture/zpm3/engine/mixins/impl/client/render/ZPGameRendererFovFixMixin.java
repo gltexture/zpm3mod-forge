@@ -37,8 +37,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
 import ru.gltexture.zpm3.engine.client.rendering.crosshair.ZPClientCrosshairRecoilManager;
+import ru.gltexture.zpm3.engine.client.rendering.util.ZPRenderingUtil;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPClientConfig;
 
 @Mixin(GameRenderer.class)
@@ -57,7 +57,7 @@ public class ZPGameRendererFovFixMixin {
 
     @Inject(method = "bobHurt", at = @At("HEAD"))
     private void bobHurt(PoseStack pPoseStack, float pPartialTicks, CallbackInfo ci) {
-        final Vector3f cameraTransform = new Vector3f(ZPClientCrosshairRecoilManager.getCameraTransformPrev()).lerp(ZPClientCrosshairRecoilManager.getCameraTransform(), pPartialTicks);
+        final Vector3f cameraTransform = new Vector3f(ZPClientCrosshairRecoilManager.getCameraTranslatePrev()).lerp(ZPClientCrosshairRecoilManager.getCameraTranslate(), pPartialTicks);
 
         pPoseStack.mulPose(Axis.XP.rotationDegrees(cameraTransform.x * 0.25f));
         pPoseStack.mulPose(Axis.YP.rotationDegrees(cameraTransform.y));
@@ -67,7 +67,7 @@ public class ZPGameRendererFovFixMixin {
     @Inject(method = "renderItemInHand", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;pushPose()V", shift = At.Shift.AFTER))
     private void renderItemInHand(PoseStack pPoseStack, Camera pActiveRenderInfo, float pPartialTicks, CallbackInfo ci) {
         if (ZPClientConfig.FIRST_PERSON_RENDER_SPACE_SCALE_BY_FOV.getVar()) {
-            double f1 = ZPRenderHelper.fovItemOffset(Minecraft.getInstance().gameRenderer.getMainCamera(), pPartialTicks, pPoseStack) * 0.5f;
+            double f1 = ZPRenderingUtil.fovItemOffset(Minecraft.getInstance().gameRenderer.getMainCamera(), pPartialTicks, pPoseStack) * 0.5f;
             pPoseStack.translate(0.0f, f1 * -0.0625f, f1 * 0.25f);
         }
     }

@@ -94,7 +94,7 @@ public final class ZPPopulationController {
         this.REPLACE_SpawnRulesMap.clear();
     }
 
-    @Deprecated
+    //@Deprecated
     public ZPVanillaBiomePopulationManager getVanillaBiomePopulationManager() {
         return this.vanillaBiomePopulationManager;
     }

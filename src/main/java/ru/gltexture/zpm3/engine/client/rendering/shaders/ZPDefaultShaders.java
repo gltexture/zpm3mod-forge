@@ -40,6 +40,9 @@ public abstract class ZPDefaultShaders {
     public static final ZPShaderLoader.ZPShaderInstance post_fx_nightvis = new ZPShaderLoader.ZPShaderInstance();
     public static final ZPShaderLoader.ZPShaderInstance post_fx_radiation = new ZPShaderLoader.ZPShaderInstance();
     public static final ZPShaderLoader.ZPShaderInstance post_fx_mask = new ZPShaderLoader.ZPShaderInstance();
+    public static final ZPShaderLoader.ZPShaderInstance post_fx_adrenaline = new ZPShaderLoader.ZPShaderInstance();
+    public static final ZPShaderLoader.ZPShaderInstance post_fx_bettervis = new ZPShaderLoader.ZPShaderInstance();
+    public static final ZPShaderLoader.ZPShaderInstance post_fx_acid = new ZPShaderLoader.ZPShaderInstance();
 
     public static void init() {
         ZPLogger.info("ZP init default shaders");
@@ -54,5 +57,8 @@ public abstract class ZPDefaultShaders {
         ZPShaderLoader.createNewShader(new ZPShaderLoader.ShaderData(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "post_fx_radiation"), DefaultVertexFormat.POSITION_TEX), ZPDefaultShaders.post_fx_radiation);
         ZPShaderLoader.createNewShader(new ZPShaderLoader.ShaderData(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "post_fx_infection"), DefaultVertexFormat.POSITION_TEX), ZPDefaultShaders.post_fx_infection);
         ZPShaderLoader.createNewShader(new ZPShaderLoader.ShaderData(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "post_fx_mask"), DefaultVertexFormat.POSITION_TEX), ZPDefaultShaders.post_fx_mask);
+        ZPShaderLoader.createNewShader(new ZPShaderLoader.ShaderData(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "post_fx_adrenaline"), DefaultVertexFormat.POSITION_TEX), ZPDefaultShaders.post_fx_adrenaline);
+        ZPShaderLoader.createNewShader(new ZPShaderLoader.ShaderData(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "post_fx_bettervis"), DefaultVertexFormat.POSITION_TEX), ZPDefaultShaders.post_fx_bettervis);
+        ZPShaderLoader.createNewShader(new ZPShaderLoader.ShaderData(ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID, "post_fx_acid"), DefaultVertexFormat.POSITION_TEX), ZPDefaultShaders.post_fx_acid);
     }
 }

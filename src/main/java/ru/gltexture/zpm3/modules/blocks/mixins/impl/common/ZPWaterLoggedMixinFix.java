@@ -31,7 +31,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Deprecated
+//@Deprecated
 @Mixin(SimpleWaterloggedBlock.class)
 public class ZPWaterLoggedMixinFix {
     @Inject(method = "canPlaceLiquid", at = @At("HEAD"), cancellable = true)

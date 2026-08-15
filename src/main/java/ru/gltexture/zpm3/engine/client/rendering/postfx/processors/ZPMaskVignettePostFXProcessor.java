@@ -24,12 +24,11 @@ import com.mojang.blaze3d.platform.Window;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ShaderInstance;
 import org.lwjgl.opengl.GL46;
-import ru.gltexture.zpm3.engine.client.rendering.ZPRenderHelper;
-import ru.gltexture.zpm3.engine.client.rendering.postfx.ZPPostFXChain;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPDefaultShaders;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPShaderLoader;
+import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.modules.armor.utils.ZPArmorUtil;
-import ru.gltexture.zpm3.modules.debug.imgui.DearUIDebugInterface;
+import ru.gltexture.zpm3.modules.debug.imgui.ZPImGuiDebugInterface;
 
 import java.util.Objects;
 
@@ -39,7 +38,7 @@ public class ZPMaskVignettePostFXProcessor extends ZPPostFXProcessor {
     }
 
     @Override
-    public void renderTextureInFBO(int screenTexture_GL_ID) {
+    public void renderTextureInFBO(float deltaTime, float partialTicks, int screenTexture_GL_ID) {
         ShaderInstance shader = this.getPostFXShader().getShaderInstance();
         Objects.requireNonNull(shader).apply();
         Window window = Minecraft.getInstance().getWindow();
@@ -48,7 +47,7 @@ public class ZPMaskVignettePostFXProcessor extends ZPPostFXProcessor {
             GL46.glActiveTexture(GL46.GL_TEXTURE0);
             GL46.glBindTexture(GL46.GL_TEXTURE_2D, screenTexture_GL_ID);
             shader.safeGetUniform("texture_map").set(0);
-            ZPRenderHelper.INSTANCE.renderZpScreenMesh();
+            ZombiePlague3.getClientManager().renderScreenMesh();
         }
         Objects.requireNonNull(shader).clear();
     }
@@ -65,6 +64,6 @@ public class ZPMaskVignettePostFXProcessor extends ZPPostFXProcessor {
                 return false;
             }
         }
-        return !DearUIDebugInterface.FORCE_ENABLE_MASK_POST_FX_SHADER;
+        return !ZPImGuiDebugInterface.FORCE_ENABLE_MASK_POST_FX_SHADER;
     }
 }

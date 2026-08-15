@@ -20,14 +20,27 @@
 
 package ru.gltexture.zpm3.engine.events.common;
 
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.level.LevelEvent;
+import net.minecraftforge.event.server.ServerAboutToStartEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
+import ru.gltexture.zpm3.engine.core.random.ZPRandom;
+import ru.gltexture.zpm3.engine.events.server.ZPServerForge;
+import ru.gltexture.zpm3.engine.helpers.ZPLootTableHelper;
 import ru.gltexture.zpm3.engine.mixins.ext.IZPRecipesManagerExt;
 import ru.gltexture.zpm3.engine.zones.ZPZoneManager;
+
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 public class ZPCommonForge {
     @SubscribeEvent
@@ -51,6 +64,32 @@ public class ZPCommonForge {
     public void onWorldSave(LevelEvent.Save event) {
         if (event.getLevel() instanceof ServerLevel level) {
             ZPZoneManager.INSTANCE.writeToJSON(level);
+        }
+    }
+
+    @SubscribeEvent
+    public void onServerAboutToStart(ServerAboutToStartEvent event) {
+        MinecraftServer server = event.getServer();
+        long seed = server.getWorldData().worldGenOptions().seed();
+        ZPCommonForge.clearLootTableMaps();
+        CompletableFuture.runAsync(() -> {
+            ZPRandom.instance.init(seed);
+        });
+    }
+
+    private static void clearLootTableMaps() {
+        ZPLootTableHelper.clearGeneratedLootTables();
+        ZPLootTableHelper.clearExistingLootTableChanges();
+    }
+
+    @SubscribeEvent
+    public void onLootTableLoad(LootTableLoadEvent event) {
+        ResourceLocation id = event.getName();
+        Set<Supplier<LootPool>> lootPools = ZPLootTableHelper.getExistingLootPools(id);
+        if (lootPools != null) {
+            LootTable table = LootTable.lootTable().build();
+            lootPools.forEach(e -> table.addPool(e.get()));
+            event.setTable(table);
         }
     }
 }

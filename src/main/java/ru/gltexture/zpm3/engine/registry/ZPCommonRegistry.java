@@ -49,9 +49,9 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.gltexture.zpm3.modules.melee_throwables_tools.misc.ZPDefaultItemsHandReach;
 import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooks;
 import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooksManager;
+import ru.gltexture.zpm3.modules.melee_throwables_tools.misc.ZPDefaultItemsHandReach;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
@@ -302,17 +302,20 @@ public abstract class ZPCommonRegistry<T> {
             private Items() {
             }
 
+            //@Deprecated(forRemoval = true)
             @OnlyIn(Dist.CLIENT)
             public void setItemRenderer(@NotNull RegistryObject<? extends Item> item, @NotNull ZPRenderHooks.ZPItemRendering1PersonHook itemRenderingProcessor1, @NotNull ZPRenderHooks.ZPItemRendering3PersonHook itemRenderingProcessor3) {
                 ZPRenderHooksManager.INSTANCE.addItemRendering1PersonHook(item::get, itemRenderingProcessor1);
                 ZPRenderHooksManager.INSTANCE.addItemRendering3PersonHook(item::get, itemRenderingProcessor3);
             }
 
+            //@Deprecated(forRemoval = true)
             @OnlyIn(Dist.CLIENT)
             public void setItemRenderer1Person(@NotNull RegistryObject<? extends Item> item, @NotNull ZPRenderHooks.ZPItemRendering1PersonHook itemRenderingProcessor) {
                 ZPRenderHooksManager.INSTANCE.addItemRendering1PersonHook(item::get, itemRenderingProcessor);
             }
 
+            //@Deprecated(forRemoval = true)
             @OnlyIn(Dist.CLIENT)
             public void setItemRenderer3Person(@NotNull RegistryObject<? extends Item> item, @NotNull ZPRenderHooks.ZPItemRendering3PersonHook itemRenderingProcessor) {
                 ZPRenderHooksManager.INSTANCE.addItemRendering3PersonHook(item::get, itemRenderingProcessor);
@@ -363,7 +366,7 @@ public abstract class ZPCommonRegistry<T> {
             }
 
             @OnlyIn(Dist.CLIENT)
-            @Deprecated
+            //@Deprecated
             public void setBlockRenderLayer(@NotNull Supplier<Block> block, @NotNull RenderType renderType) {
                 ZPBlocksRenderLayerHelper.addBlockRenderLayerData(new ZPBlocksRenderLayerHelper.BlockPair(block, renderType));
             }

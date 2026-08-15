@@ -22,11 +22,11 @@ package ru.gltexture.zpm3.engine.client.rendering.hooks;
 
 import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
 
 import java.util.function.Supplier;
 
-public interface IZPRenderHooksManager extends ZPClientCallbacks.ZPClientResourceDependentObject {
+//@Deprecated(forRemoval = true)
+public interface IZPRenderHooksManager {
     void addSceneRenderingHook(@NotNull ZPRenderHooks.ZPSceneRenderingHook zpSceneRenderingHook);
 
     void addItemRendering1PersonHook(@NotNull Supplier<Item> itemSupplier, @NotNull ZPRenderHooks.ZPItemRendering1PersonHook zpItemRendering1PersonHook);

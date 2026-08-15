@@ -29,10 +29,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import ru.gltexture.zpm3.engine.client.callbacking.ZPClientCallbacks;
+import ru.gltexture.zpm3.engine.client.rendering.callbacks.ZPClientCallbacks;
 import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
+import ru.gltexture.zpm3.modules.guns.processing.logic.ZPDefaultGunLogicFunctions;
 
-@Deprecated(forRemoval = true)
+//@Deprecated(forRemoval = true)
 public class ZPDefaultGunRecoilFX implements IZPGunRecoilFX {
     private final float[] recoilPrev;
     private final float[] recoil;
@@ -51,7 +52,7 @@ public class ZPDefaultGunRecoilFX implements IZPGunRecoilFX {
     }
 
     @Override
-    public void onShot(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, ZPClientCallbacks.ZPGunShotCallback.@NotNull GunFXData gunFXData) {
+    public void onShot(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, ZPDefaultGunLogicFunctions.GunFXData_Shot gunFXData) {
         if (!player.equals(Minecraft.getInstance().player)) {
             return;
         }

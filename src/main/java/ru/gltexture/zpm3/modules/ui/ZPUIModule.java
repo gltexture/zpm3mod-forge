@@ -55,8 +55,8 @@ public class ZPUIModule extends ZPModule {
     @Override
     public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
         ZPUtility.sides().onlyClient(() -> {
-            moduleEntry.registerEventHandlerClass(ZPMenuPatchEvent.class);
-            moduleEntry.registerEventHandlerClass(ZPNewSettingsScreenEvent.class);
+            moduleEntry.registerForgeEventHandlerClass(ZPMenuPatchEvent.class);
+            moduleEntry.registerForgeEventHandlerClass(ZPNewSettingsScreenEvent.class);
         });
     }
 

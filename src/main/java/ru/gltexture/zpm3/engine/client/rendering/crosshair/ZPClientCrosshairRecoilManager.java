@@ -34,14 +34,14 @@ import java.util.Objects;
 public class ZPClientCrosshairRecoilManager {
     private static final float DAMPING_MAX = 0.25f;
 
-    private static Vector3f cameraTransform;
-    private static Vector3f cameraTransformPrev;
+    private static Vector3f cameraTranslate;
+    private static Vector3f cameraTranslatePrev;
     private static float recoilDamping;
     private static int dampCooldown;
 
     static {
-        ZPClientCrosshairRecoilManager.cameraTransform = new Vector3f(0.0f);
-        ZPClientCrosshairRecoilManager.cameraTransformPrev = new Vector3f(0.0f);
+        ZPClientCrosshairRecoilManager.cameraTranslate = new Vector3f(0.0f);
+        ZPClientCrosshairRecoilManager.cameraTranslatePrev = new Vector3f(0.0f);
         ZPClientCrosshairRecoilManager.recoilDamping = 0.0f;
     }
 
@@ -52,8 +52,9 @@ public class ZPClientCrosshairRecoilManager {
             return;
         }
 
-        ZPClientCrosshairRecoilManager.cameraTransformPrev.set(ZPClientCrosshairRecoilManager.cameraTransform);
-        ZPClientCrosshairRecoilManager.cameraTransform.mul(ZPClientCrosshairRecoilManager.recoilDecaySpeed);
+        ZPClientCrosshairRecoilManager.cameraTranslatePrev.set(ZPClientCrosshairRecoilManager.cameraTranslate);
+        ZPClientCrosshairRecoilManager.cameraTranslate.mul(ZPClientCrosshairRecoilManager.recoilDecaySpeed);
+
         if (ZPClientCrosshairRecoilManager.dampCooldown-- <= 0) {
             ZPClientCrosshairRecoilManager.recoilDamping = Math.max(ZPClientCrosshairRecoilManager.recoilDamping - 0.1f, 0.0f);
         }
@@ -62,19 +63,19 @@ public class ZPClientCrosshairRecoilManager {
     public static void onRenderTick(double deltaTicks, @NotNull Minecraft minecraft) {
     }
 
-    public static Vector3f getCameraTransform() {
-        return ZPClientCrosshairRecoilManager.cameraTransform;
+    public static Vector3f getCameraTranslate() {
+        return ZPClientCrosshairRecoilManager.cameraTranslate;
     }
 
-    public static Vector3f getCameraTransformPrev() {
-        return ZPClientCrosshairRecoilManager.cameraTransformPrev;
+    public static Vector3f getCameraTranslatePrev() {
+        return ZPClientCrosshairRecoilManager.cameraTranslatePrev;
     }
 
     public static float getRecoilDecaySpeed() {
         return ZPClientCrosshairRecoilManager.recoilDecaySpeed;
     }
 
-    public static float setVerticalRecoil(float recoilPitch) {
+    public static float applyVerticalRecoil(float recoilPitch) {
         if (ZPFreeCameraEvents.enabled) {
             return 0.0f;
         }
@@ -95,7 +96,7 @@ public class ZPClientCrosshairRecoilManager {
 
         Objects.requireNonNull(Minecraft.getInstance().player).bob = Math.min(recoilPitch * 0.01f, 0.2f);
 
-        ZPClientCrosshairRecoilManager.cameraTransform.set(nPitch * 2.0f, nYaw * 0.5f, nRoll * -i);
+        ZPClientCrosshairRecoilManager.cameraTranslate.set(nPitch * 2.0f, nYaw * 0.5f, nRoll * -i);
         ZPClientCrosshairRecoilManager.recoilDamping = Math.min(ZPClientCrosshairRecoilManager.recoilDamping + (ZPClientCrosshairRecoilManager.DAMPING_MAX * 0.05f), ZPClientCrosshairRecoilManager.DAMPING_MAX);
         ZPClientCrosshairRecoilManager.dampCooldown = 3;
         return nPitch;

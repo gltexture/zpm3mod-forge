@@ -23,9 +23,12 @@ package ru.gltexture.zpm3.modules.ui;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.core.module.ZPModule;
-import ru.gltexture.zpm3.engine.core.module.ZPModuleData;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModuleClientSetupContext;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModuleInitContext;
+import ru.gltexture.zpm3.engine.core.api.modules.ZPModule;
+import ru.gltexture.zpm3.engine.core.api.modules.ZPModuleData;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePostInitContext;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePreInitContext;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 import ru.gltexture.zpm3.modules.ui.events.client.ZPMenuPatchEvent;
 import ru.gltexture.zpm3.modules.ui.events.client.ZPNewSettingsScreenEvent;
@@ -39,12 +42,17 @@ public class ZPUIModule extends ZPModule {
     }
 
     @Override
-    public void fml_commonSetupEvent() {
+    public void commonSetup() {
+    }
+
+    @Override
+    public void commonShutdown() {
+        
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void fml_clientSetupEvent() {
+    public void clientSetup(@NotNull IModuleClientSetupContext context) {
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -53,19 +61,19 @@ public class ZPUIModule extends ZPModule {
     }
 
     @Override
-    public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
+    public void initialize(@NotNull IModuleInitContext context) {
         ZPUtility.sides().onlyClient(() -> {
-            moduleEntry.registerForgeEventHandlerClass(ZPMenuPatchEvent.class);
-            moduleEntry.registerForgeEventHandlerClass(ZPNewSettingsScreenEvent.class);
+            context.registerForgeEventHandlerClass(ZPMenuPatchEvent.class);
+            context.registerForgeEventHandlerClass(ZPNewSettingsScreenEvent.class);
         });
     }
 
     @Override
-    public void preInitialize() {
+    public void preInitialize(@NotNull IModulePreInitContext context) {
     }
 
     @Override
-    public void postInitialize() {
+    public void postInitialize(@NotNull IModulePostInitContext context) {
 
     }
 }

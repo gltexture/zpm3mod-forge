@@ -34,15 +34,20 @@ import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3i;
 import ru.gltexture.zpm3.engine.core.ZPLogger;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModuleClientSetupContext;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModuleInitContext;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePostInitContext;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePreInitContext;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
+import ru.gltexture.zpm3.engine.zones.ZPDefaultZones;
 import ru.gltexture.zpm3.engine.zones.vars.ZPZoneIntVar;
 import ru.gltexture.zpm3.modules.commands.events.client.ZPRenderSpecialZoneEffectsOnClient;
 import ru.gltexture.zpm3.engine.zones.ZPZoneFlag;
 import ru.gltexture.zpm3.engine.zones.ZPZoneManager;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.core.module.ZPModule;
-import ru.gltexture.zpm3.engine.core.module.ZPModuleData;
+import ru.gltexture.zpm3.engine.core.api.modules.ZPModule;
+import ru.gltexture.zpm3.engine.core.api.modules.ZPModuleData;
 import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 import ru.gltexture.zpm3.modules.commands.events.client.ZPCreativeUtilityMenuEvent;
 import ru.gltexture.zpm3.modules.commands.events.client.ZPRenderZones;
@@ -61,15 +66,24 @@ public class ZPCommandsModule extends ZPModule {
     }
 
     @Override
-    public void fml_commonSetupEvent() {
+    public void commonSetup() {
+    }
+
+    @Override
+    public void commonShutdown() {
+        
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void fml_clientSetupEvent() {
-        if (ZombiePlague3.getClientManager().isImGuiValid()) {
-            Objects.requireNonNull(ZombiePlague3.getClientManager().getImGuiInterfacesManager()).addRenderableInterface(new ZPImGuiCreativeUtilityUI());
-        }
+    public void clientSetup(@NotNull IModuleClientSetupContext context) {
+        context.registerImGuiInterface(new ZPImGuiCreativeUtilityUI());
+        context.registerZoneEffect(ZPDefaultZones.toxicCloud, (zone, chunkX, chunkZ) -> {
+            ZPRenderSpecialZoneEffectsOnClient.renderCloudDefaultFun(zone, chunkX, chunkZ, false);
+        });
+        context.registerZoneEffect(ZPDefaultZones.acidCloud, (zone, chunkX, chunkZ) -> {
+            ZPRenderSpecialZoneEffectsOnClient.renderCloudDefaultFun(zone, chunkX, chunkZ, true);
+        });
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -89,32 +103,24 @@ public class ZPCommandsModule extends ZPModule {
    // }
 
     @Override
-    public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
-        moduleEntry.registerForgeEventHandlerClass(ZPCommandsEvent.class);
+    public void initialize(@NotNull IModuleInitContext context) {
+        context.registerForgeEventHandlerClass(ZPCommandsEvent.class);
         ZPUtility.sides().onlyClient(() -> {
             if (ZombiePlague3.getClientManager().isImGuiValid()) {
-                moduleEntry.registerForgeEventHandlerClass(ZPRenderZones.class);
-                moduleEntry.registerForgeEventHandlerClass(ZPCreativeUtilityMenuEvent.class);
+                context.registerForgeEventHandlerClass(ZPRenderZones.class);
+                context.registerForgeEventHandlerClass(ZPCreativeUtilityMenuEvent.class);
             }
-            moduleEntry.registerForgeEventHandlerClass(ZPRenderSpecialZoneEffectsOnClient.class);
-
-            ZPRenderSpecialZoneEffectsOnClient.registerZoneEffect(ZPZonesRegistry.toxicCloud, (zone, chunkX, chunkZ) -> {
-                ZPRenderSpecialZoneEffectsOnClient.renderCloudDefaultFun(zone, chunkX, chunkZ, false);
-            });
-
-            ZPRenderSpecialZoneEffectsOnClient.registerZoneEffect(ZPZonesRegistry.acidCloud, (zone, chunkX, chunkZ) -> {
-                ZPRenderSpecialZoneEffectsOnClient.renderCloudDefaultFun(zone, chunkX, chunkZ, true);
-            });
+            context.registerForgeEventHandlerClass(ZPRenderSpecialZoneEffectsOnClient.class);
         });
     }
 
     @Override
-    public void preInitialize() {
+    public void preInitialize(@NotNull IModulePreInitContext context) {
 
     }
 
     @Override
-    public void postInitialize() {
+    public void postInitialize(@NotNull IModulePostInitContext context) {
 
     }
 

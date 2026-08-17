@@ -111,20 +111,22 @@ public class ZPPlayerArmorSoundOnClientEvent implements ZPForgeEventHandlerClass
         }
     }
 
-    public static abstract class TrackedSoundLauncher {
+    public static abstract class TrackedSoundLauncher implements ITrackedSoundLauncher {
         private final Map<UUID, ZPLoopedSound> soundMap;
 
         public TrackedSoundLauncher() {
             this.soundMap = new ConcurrentHashMap<>();
         }
 
-        Map<UUID, ZPLoopedSound> getSoundMap() {
+        final Map<UUID, ZPLoopedSound> getSoundMap() {
             return this.soundMap;
         }
+    }
 
-        public abstract float pitch();
-        public abstract float volume();
-        public abstract @NotNull Supplier<SoundEvent> getSoundEvent();
-        public abstract @NotNull Predicate<LivingEntity> getEntityPredicate();
+    public interface ITrackedSoundLauncher {
+        float pitch();
+        float volume();
+        @NotNull Supplier<SoundEvent> getSoundEvent();
+        @NotNull Predicate<LivingEntity> getEntityPredicate();
     }
 }

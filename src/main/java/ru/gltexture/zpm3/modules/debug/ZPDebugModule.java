@@ -23,12 +23,16 @@ package ru.gltexture.zpm3.modules.debug;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModuleClientSetupContext;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModuleInitContext;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePostInitContext;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePreInitContext;
 import ru.gltexture.zpm3.modules.debug.events.ZPFreeCameraEvents;
 import ru.gltexture.zpm3.modules.debug.events.ZPRenderStuffEvent;
 import ru.gltexture.zpm3.modules.debug.imgui.ZPImGuiDebugInterface;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.core.module.ZPModule;
-import ru.gltexture.zpm3.engine.core.module.ZPModuleData;
+import ru.gltexture.zpm3.engine.core.api.modules.ZPModule;
+import ru.gltexture.zpm3.engine.core.api.modules.ZPModuleData;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 import java.util.Objects;
@@ -42,15 +46,18 @@ public class ZPDebugModule extends ZPModule {
     }
 
     @Override
-    public void fml_commonSetupEvent() {
+    public void commonSetup() {
+    }
+
+    @Override
+    public void commonShutdown() {
+        
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void fml_clientSetupEvent() {
-        if (ZombiePlague3.getClientManager().isImGuiValid()) {
-            Objects.requireNonNull(ZombiePlague3.getClientManager().getImGuiInterfacesManager()).addRenderableInterface(new ZPImGuiDebugInterface());
-        }
+    public void clientSetup(@NotNull IModuleClientSetupContext context) {
+        context.registerImGuiInterface(new ZPImGuiDebugInterface());
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -71,20 +78,20 @@ public class ZPDebugModule extends ZPModule {
     }
 
     @Override
-    public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
+    public void initialize(@NotNull IModuleInitContext context) {
         ZPUtility.sides().onlyClient(() -> {
-            moduleEntry.registerForgeEventHandlerClass(ZPFreeCameraEvents.class);
-            moduleEntry.registerForgeEventHandlerClass(ZPRenderStuffEvent.class);
+            context.registerForgeEventHandlerClass(ZPFreeCameraEvents.class);
+            context.registerForgeEventHandlerClass(ZPRenderStuffEvent.class);
         });
     }
 
     @Override
-    public void preInitialize() {
+    public void preInitialize(@NotNull IModulePreInitContext context) {
 
     }
 
     @Override
-    public void postInitialize() {
+    public void postInitialize(@NotNull IModulePostInitContext context) {
 
     }
 }

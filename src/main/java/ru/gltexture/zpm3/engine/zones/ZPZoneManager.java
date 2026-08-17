@@ -63,12 +63,11 @@ public final class ZPZoneManager {
     }
 
     private static List<Vector2i> forEachChunkAABB(@NotNull Vector3f min, @NotNull Vector3f max) {
-        List<Vector2i> vector2is = new ArrayList<>();
-        int minChunkX = Mth.floor(min.x) >> 4;
-        int maxChunkX = Mth.floor(max.x) >> 4;
-
-        int minChunkZ = Mth.floor(min.z) >> 4;
-        int maxChunkZ = Mth.floor(max.z) >> 4;
+        final List<Vector2i> vector2is = new ArrayList<>();
+        final int minChunkX = Mth.floor(min.x) >> 4;
+        final int maxChunkX = Mth.floor(max.x) >> 4;
+        final int minChunkZ = Mth.floor(min.z) >> 4;
+        final int maxChunkZ = Mth.floor(max.z) >> 4;
 
         for (int cx = minChunkX; cx <= maxChunkX; cx++) {
             for (int cz = minChunkZ; cz <= maxChunkZ; cz++) {
@@ -336,7 +335,7 @@ public final class ZPZoneManager {
         }
     }
 
-    public static class ZonesContainer {
+    public final static class ZonesContainer {
         private Map<String, Zone> idAccessMap;
         private final Map<Vector2i, List<Zone>> fast_ChunkLookupTable;
 

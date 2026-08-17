@@ -18,7 +18,13 @@
  *
  */
 
-package ru.gltexture.zpm3.engine.core.api.events;
+package ru.gltexture.zpm3.engine.core.config;
 
-public interface ZP3EventHandlerClass {
+import ru.gltexture.zpm3.engine.service.ZPPath;
+
+import java.io.IOException;
+
+public interface IZPConfigClass {
+    void processConfigConstants(ZPPath zpmFiles, String configName, Class<? extends ZPConfigConstantsClass> clazz) throws IllegalAccessException, IOException;
+    void rewriteConfigClass(Class<? extends ZPConfigConstantsClass> clazz);
 }

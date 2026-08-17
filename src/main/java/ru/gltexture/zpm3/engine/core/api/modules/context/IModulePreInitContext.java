@@ -18,33 +18,23 @@
  *
  */
 
-package ru.gltexture.zpm3.engine.keybind;
+package ru.gltexture.zpm3.engine.core.api.modules.context;
 
-import net.minecraft.client.KeyMapping;
+import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
+import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.core.api.context.IZPPreInitContext;
+import ru.gltexture.zpm3.engine.keybind.ZPKeyBindingsManager;
+import ru.gltexture.zpm3.engine.zones.ZPZoneFlag;
+import ru.gltexture.zpm3.engine.zones.vars.ZPZoneIntVar;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.function.Supplier;
 
-@OnlyIn(Dist.CLIENT)
-public abstract class ZPKeyBindingsManager {
-    private final List<KeyMapping> keyMappingList;
+public interface IModulePreInitContext extends IZPPreInitContext {
+    void registerDispenserBehaviour(@NotNull Supplier<ItemLike> itemLikeSupplier, @NotNull DefaultDispenseItemBehavior dispenseItemBehavior);
 
-    public ZPKeyBindingsManager() {
-        this.keyMappingList = new ArrayList<>();
-    }
-
-    public abstract void init();
-
-    public List<KeyMapping> getKeyMappingList() {
-        return Collections.unmodifiableList(this.keyMappingList);
-    }
-
-    protected final KeyMapping addKeyBinding(@NotNull KeyMapping keyMapping) {
-        this.keyMappingList.add(keyMapping);
-        return keyMapping;
-    }
+    @OnlyIn(Dist.CLIENT)
+    void registerKeyBindings(@NotNull ZPKeyBindingsManager keyBindingsManager);
 }

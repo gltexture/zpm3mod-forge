@@ -18,7 +18,7 @@
  *
  */
 
-package ru.gltexture.zpm3.engine.core.api.events;
+package ru.gltexture.zpm3.engine.core.api.modules;
 
-public interface ZP3EventHandlerClass {
+public record ZPModuleData(String name) {
 }

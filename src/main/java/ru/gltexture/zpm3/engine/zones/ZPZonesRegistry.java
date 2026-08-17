@@ -34,39 +34,18 @@ public final class ZPZonesRegistry {
     private static final Map<String, ZPZoneFlag> ZONE_FLAGS = new LinkedHashMap<>();
     private static final Map<String, ZPZoneIntVar> ZONE_INT_VARIABLES = new LinkedHashMap<>();
 
-    // DEFAULT
-    public static final ZPZoneFlag noPlayersPvp = ZPZonesRegistry.RegisterFlag("noPlayersPvp");
-    public static final ZPZoneFlag noPlayersDamage = ZPZonesRegistry.RegisterFlag("noPlayersDamage");
-    public static final ZPZoneFlag noBlocksDestruction = ZPZonesRegistry.RegisterFlag("noBlocksDestruction");
-    public static final ZPZoneFlag disableBarbaredWires = ZPZonesRegistry.RegisterFlag("disableBarbaredWires");
-    public static final ZPZoneFlag noAcidAffection = ZPZonesRegistry.RegisterFlag("noAcidAffection");
-    public static final ZPZoneFlag noToxicAffection = ZPZonesRegistry.RegisterFlag("noToxicAffection");
-    public static final ZPZoneFlag noRadiationAffection = ZPZonesRegistry.RegisterFlag("noRadiationAffection");
-    public static final ZPZoneFlag noAcidBlockDestruction = ZPZonesRegistry.RegisterFlag("noAcidBlockDestruction");
-    public static final ZPZoneFlag noZombieMining = ZPZonesRegistry.RegisterFlag("noZombieMining");
-    public static final ZPZoneFlag noThrowableBlockDamage = ZPZonesRegistry.RegisterFlag("noThrowableBlockDamage");
-    public static final ZPZoneFlag noBulletBlockDmg = ZPZonesRegistry.RegisterFlag("noBulletBlockDmg");
-    public static final ZPZoneFlag zombieErasing = ZPZonesRegistry.RegisterFlag("zombieErasing");
-    public static final ZPZoneFlag zombieSpawnBlocking = ZPZonesRegistry.RegisterFlag("zombieSpawnBlocking");
-    public static final ZPZoneFlag radiationLevel1 = ZPZonesRegistry.RegisterFlag("radiationLevel1");
-    public static final ZPZoneFlag radiationLevel2 = ZPZonesRegistry.RegisterFlag("radiationLevel2");
-    public static final ZPZoneFlag acidCloud = ZPZonesRegistry.RegisterFlag("acidCloud");
-    public static final ZPZoneFlag toxicCloud = ZPZonesRegistry.RegisterFlag("toxicCloud");
-
-    public static final ZPZoneIntVar zombiesSpawnPercentageReduction = ZPZonesRegistry.RegisterIntVar(new ZPZoneIntVar("zombiesSpawnPercentageReduction", 0, 0, 100));
-
     ZPZonesRegistry() {
     }
 
-    private static ZPZoneIntVar RegisterIntVar(@NotNull ZPZoneIntVar variable) {
-        return ZPZoneManager.ZP_ZONES_REGISTRY.registerIntVar(variable);
+    public static ZPZoneIntVar RegisterIntVar(@NotNull String variableId, @NotNull Integer t, @NotNull Integer min, @NotNull Integer max) {
+        return ZPZoneManager.ZP_ZONES_REGISTRY.registerIntVar(new ZPZoneIntVar(variableId, t, min, max));
     }
 
-    private static ZPZoneFlag RegisterFlag(@NotNull String id) {
+    public static ZPZoneFlag RegisterFlag(@NotNull String id) {
         return ZPZoneManager.ZP_ZONES_REGISTRY.registerFlag(id);
     }
     
-    public ZPZoneIntVar registerIntVar(@NotNull ZPZoneIntVar variable) {
+    ZPZoneIntVar registerIntVar(@NotNull ZPZoneIntVar variable) {
         String id = variable.getVariableId();
         if (ZPZonesRegistry.ZONE_INT_VARIABLES.containsKey(id)) {
             throw new IllegalArgumentException("Duplicate zone variable: " + id);
@@ -75,7 +54,7 @@ public final class ZPZonesRegistry {
         return variable;
     }
 
-    public ZPZoneFlag registerFlag(@NotNull String id) {
+    ZPZoneFlag registerFlag(@NotNull String id) {
         if (ZPZonesRegistry.ZONE_FLAGS.containsKey(id)) {
             throw new IllegalArgumentException("Duplicate zone flag: " + id);
         }

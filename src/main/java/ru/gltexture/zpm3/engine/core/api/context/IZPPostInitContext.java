@@ -18,7 +18,7 @@
  *
  */
 
-package ru.gltexture.zpm3.engine.core.api.events;
+package ru.gltexture.zpm3.engine.core.api.context;
 
-public interface ZP3EventHandlerClass {
+public interface IZPPostInitContext {
 }

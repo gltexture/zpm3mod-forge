@@ -20,5 +20,9 @@
 
 package ru.gltexture.zpm3.engine.core.api.addons;
 
-public interface ZPAddon {
+import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.core.api.addons.impl.IZPAddonImpl;
+
+public interface IZPAddonEntry {
+    @NotNull IZPAddonImpl ZP3AddonImpl();
 }

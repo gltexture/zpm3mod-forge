@@ -18,33 +18,13 @@
  *
  */
 
-package ru.gltexture.zpm3.engine.keybind;
+package ru.gltexture.zpm3.engine.core.api.context;
 
-import net.minecraft.client.KeyMapping;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.zones.ZPZoneFlag;
+import ru.gltexture.zpm3.engine.zones.vars.ZPZoneIntVar;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-@OnlyIn(Dist.CLIENT)
-public abstract class ZPKeyBindingsManager {
-    private final List<KeyMapping> keyMappingList;
-
-    public ZPKeyBindingsManager() {
-        this.keyMappingList = new ArrayList<>();
-    }
-
-    public abstract void init();
-
-    public List<KeyMapping> getKeyMappingList() {
-        return Collections.unmodifiableList(this.keyMappingList);
-    }
-
-    protected final KeyMapping addKeyBinding(@NotNull KeyMapping keyMapping) {
-        this.keyMappingList.add(keyMapping);
-        return keyMapping;
-    }
+public interface IZPPreInitContext {
+    @NotNull ZPZoneFlag registerZoneFlag(@NotNull String flag);
+    @NotNull ZPZoneIntVar registerZoneIntVar(@NotNull String variableId, @NotNull Integer t, @NotNull Integer min, @NotNull Integer max);
 }

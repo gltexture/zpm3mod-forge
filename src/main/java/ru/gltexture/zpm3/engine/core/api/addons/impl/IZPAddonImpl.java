@@ -18,33 +18,24 @@
  *
  */
 
-package ru.gltexture.zpm3.engine.keybind;
+package ru.gltexture.zpm3.engine.core.api.addons.impl;
 
-import net.minecraft.client.KeyMapping;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.core.api.addons.context.IAddonClientSetupContext;
+import ru.gltexture.zpm3.engine.core.api.addons.context.IAddonInitContext;
+import ru.gltexture.zpm3.engine.core.api.addons.context.IAddonPostInitContext;
+import ru.gltexture.zpm3.engine.core.api.addons.context.IAddonPreInitContext;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+public interface IZPAddonImpl {
+    @OnlyIn(Dist.CLIENT)
+    void clientSetup(@NotNull IAddonClientSetupContext context);
 
-@OnlyIn(Dist.CLIENT)
-public abstract class ZPKeyBindingsManager {
-    private final List<KeyMapping> keyMappingList;
+    @OnlyIn(Dist.CLIENT)
+    void clientShutDown();
 
-    public ZPKeyBindingsManager() {
-        this.keyMappingList = new ArrayList<>();
-    }
-
-    public abstract void init();
-
-    public List<KeyMapping> getKeyMappingList() {
-        return Collections.unmodifiableList(this.keyMappingList);
-    }
-
-    protected final KeyMapping addKeyBinding(@NotNull KeyMapping keyMapping) {
-        this.keyMappingList.add(keyMapping);
-        return keyMapping;
-    }
+    void preInitialize(@NotNull IAddonPreInitContext context);
+    void initialize(@NotNull IAddonInitContext context);
+    void postInitialize(@NotNull IAddonPostInitContext context);
 }

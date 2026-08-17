@@ -18,28 +18,35 @@
  *
  */
 
-package ru.gltexture.zpm3.engine.core.module;
+package ru.gltexture.zpm3.engine.core.api.modules;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.engine.core.ZombiePlague3;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModuleClientSetupContext;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModuleInitContext;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePostInitContext;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePreInitContext;
 
 public abstract class ZPModule {
     private final ZPModuleData zpModuleData;
 
-    public ZPModule(@NotNull ZPModuleData zpModuleData) {
+    public ZPModule(@NotNull final ZPModuleData zpModuleData) {
         this.zpModuleData = zpModuleData;
     }
+
 
     protected ZPModule() {
         this.zpModuleData = null;
     }
 
-    public abstract void fml_commonSetupEvent();
+
+    public abstract void commonSetup();
+
+    public abstract void commonShutdown();
 
     @OnlyIn(Dist.CLIENT)
-    public abstract void fml_clientSetupEvent();
+    public abstract void clientSetup(@NotNull IModuleClientSetupContext context);
 
     @OnlyIn(Dist.CLIENT)
     public abstract void clientShutDown();
@@ -47,11 +54,11 @@ public abstract class ZPModule {
     //@Deprecated
     //public void setupMixins(@NotNull ZombiePlague3.IMixinEntry mixinEntry) { }
 
-    public abstract void initialize(@NotNull ZombiePlague3.IModuleEntry moduleEntry);
-    public abstract void preInitialize();
-    public abstract void postInitialize();
+    public abstract void preInitialize(@NotNull IModulePreInitContext context);
+    public abstract void initialize(@NotNull IModuleInitContext context);
+    public abstract void postInitialize(@NotNull IModulePostInitContext context);
 
-    public ZPModuleData getModuleData() {
+    public final ZPModuleData getModuleData() {
         return this.zpModuleData;
     }
 

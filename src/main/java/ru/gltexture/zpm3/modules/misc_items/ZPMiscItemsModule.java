@@ -20,24 +20,52 @@
 
 package ru.gltexture.zpm3.modules.misc_items;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.BlockSource;
+import net.minecraft.core.Position;
+import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
+import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.DispensibleContainerItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BucketPickup;
+import net.minecraft.world.level.block.DispenserBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.DispenserBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.core.module.ZPModule;
-import ru.gltexture.zpm3.engine.core.module.ZPModuleData;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModuleClientSetupContext;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModuleInitContext;
+import ru.gltexture.zpm3.engine.core.api.modules.ZPModule;
+import ru.gltexture.zpm3.engine.core.api.modules.ZPModuleData;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePostInitContext;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePreInitContext;
+import ru.gltexture.zpm3.engine.instances.blocks.IHotLiquid;
 import ru.gltexture.zpm3.engine.recipes.IZPRecipeSpec;
 import ru.gltexture.zpm3.engine.recipes.ZPRecipesController;
 import ru.gltexture.zpm3.engine.recipes.ZPRecipesRegistry;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
+import ru.gltexture.zpm3.modules.blocks.instances.block_entities.ZPFadingBlockEntity;
 import ru.gltexture.zpm3.modules.debug.events.ZPRenderStuffEvent;
+import ru.gltexture.zpm3.modules.entity.init.ZPEntities;
+import ru.gltexture.zpm3.modules.entity.instances.throwables.ZPRottenFleshEntity;
+import ru.gltexture.zpm3.modules.melee_throwables_tools.init.ZPMeleeThrowableToolsItems;
 import ru.gltexture.zpm3.modules.misc_items.init.ZPMiscItems;
 
 import java.util.*;
@@ -51,12 +79,17 @@ public class ZPMiscItemsModule extends ZPModule {
     }
 
     @Override
-    public void fml_commonSetupEvent() {
+    public void commonSetup() {
+    }
+
+    @Override
+    public void commonShutdown() {
+        
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void fml_clientSetupEvent() {
+    public void clientSetup(@NotNull IModuleClientSetupContext context) {
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -69,20 +102,94 @@ public class ZPMiscItemsModule extends ZPModule {
     }
 
     @Override
-    public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
-        moduleEntry.addRecipesRegistry(new ZPMiscItemsModule.ZPMiscItemsRecipeRegistry());
-        moduleEntry.addMinecraftRegistryClass(ZPMiscItems.class);
+    public void initialize(@NotNull IModuleInitContext context) {
+        context.addRecipesRegistry(new ZPMiscItemsModule.ZPMiscItemsRecipeRegistry());
+        context.addCommonZp3RegistryClass(ZPMiscItems.class);
         ZPUtility.sides().onlyClient(() -> {
         });
     }
 
     @Override
-    public void preInitialize() {
+    public void preInitialize(@NotNull IModulePreInitContext context) {
+        final DefaultDispenseItemBehavior defaultLiqDispense = new DefaultDispenseItemBehavior() {
+            private final DefaultDispenseItemBehavior defaultDispenseItemBehavior = new DefaultDispenseItemBehavior();
 
+            public @NotNull ItemStack execute(@NotNull BlockSource p_123561_, @NotNull ItemStack p_123562_) {
+                DispensibleContainerItem dispensiblecontaineritem = (DispensibleContainerItem) p_123562_.getItem();
+                BlockPos blockpos = p_123561_.getPos().relative(p_123561_.getBlockState().getValue(DispenserBlock.FACING));
+                Level level = p_123561_.getLevel();
+                if (dispensiblecontaineritem.emptyContents(null, level, blockpos, null, p_123562_)) {
+                    dispensiblecontaineritem.checkExtraContent(null, level, p_123562_, blockpos);
+                    if (level instanceof ServerLevel) {
+                        BlockEntity be = level.getBlockEntity(blockpos);
+                        if (be != null) {
+                            if (be instanceof ZPFadingBlockEntity zpFadingBlock) {
+                                zpFadingBlock.setActive(true);
+                            }
+                        }
+                    }
+                    return new ItemStack(Items.BUCKET);
+                } else {
+                    return this.defaultDispenseItemBehavior.dispense(p_123561_, p_123562_);
+                }
+            }
+        };
+        context.registerDispenserBehaviour(() -> Items.ROTTEN_FLESH, new AbstractProjectileDispenseBehavior() {
+            @Override
+            protected @NotNull Projectile getProjectile(@NotNull Level level, @NotNull Position position, @NotNull ItemStack itemStack) {
+                return new ZPRottenFleshEntity(ZPEntities.rotten_flesh_entity.get(), position.x(), position.y(), position.z(), level);
+            }
+
+            @Override
+            protected float getUncertainty() {
+                return 6.0f;
+            }
+
+            @Override
+            protected float getPower() {
+                return 1.0f;
+            }
+        });
+        context.registerDispenserBehaviour(() -> ZPMeleeThrowableToolsItems.toxicwater_bucket.get(), defaultLiqDispense);
+        context.registerDispenserBehaviour(() -> ZPMeleeThrowableToolsItems.acid_bucket.get(), defaultLiqDispense);
+        context.registerDispenserBehaviour(() -> Items.LAVA_BUCKET, defaultLiqDispense);
+        context.registerDispenserBehaviour(() -> Items.BUCKET, new DefaultDispenseItemBehavior() {
+            private final DefaultDispenseItemBehavior defaultDispenseItemBehavior = new DefaultDispenseItemBehavior();
+
+            public @NotNull ItemStack execute(@NotNull BlockSource pSource, @NotNull ItemStack pStack) {
+                LevelAccessor levelaccessor = pSource.getLevel();
+                BlockPos blockpos = pSource.getPos().relative(pSource.getBlockState().getValue(DispenserBlock.FACING));
+                BlockState blockstate = levelaccessor.getBlockState(blockpos);
+                Block block = blockstate.getBlock();
+                if (block instanceof IHotLiquid iHotLiquid && iHotLiquid.bucketFillingChance() < 1.0f) {
+                    return super.execute(pSource, pStack);
+                }
+                if (block instanceof BucketPickup) {
+                    ItemStack itemstack = ((BucketPickup) block).pickupBlock(levelaccessor, blockpos, blockstate);
+                    if (itemstack.isEmpty()) {
+                        return super.execute(pSource, pStack);
+                    } else {
+                        levelaccessor.gameEvent(null, GameEvent.FLUID_PICKUP, blockpos);
+                        Item item = itemstack.getItem();
+                        pStack.shrink(1);
+                        if (pStack.isEmpty()) {
+                            return new ItemStack(item);
+                        } else {
+                            if (pSource.<DispenserBlockEntity>getEntity().addItem(new ItemStack(item)) < 0) {
+                                this.defaultDispenseItemBehavior.dispense(pSource, new ItemStack(item));
+                            }
+                            return pStack;
+                        }
+                    }
+                } else {
+                    return super.execute(pSource, pStack);
+                }
+            }
+        });
     }
 
     @Override
-    public void postInitialize() {
+    public void postInitialize(@NotNull IModulePostInitContext context) {
 
     }
 

@@ -29,6 +29,10 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModuleClientSetupContext;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModuleInitContext;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePostInitContext;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePreInitContext;
 import ru.gltexture.zpm3.modules.entity.init.ZPEntities;
 import ru.gltexture.zpm3.modules.entity.events.common.*;
 import ru.gltexture.zpm3.modules.entity.init.ZPEntityAttributes;
@@ -36,9 +40,8 @@ import ru.gltexture.zpm3.modules.entity.init.ZPSpawnItems;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.modules.entity.rendering.entities.misc.ZPRenderEntityItem;
 import ru.gltexture.zpm3.modules.entity.population.ZPSetupPopulation;
-import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.core.module.ZPModule;
-import ru.gltexture.zpm3.engine.core.module.ZPModuleData;
+import ru.gltexture.zpm3.engine.core.api.modules.ZPModule;
+import ru.gltexture.zpm3.engine.core.api.modules.ZPModuleData;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.helpers.ZPEntityRenderMatchHelper;
 import ru.gltexture.zpm3.engine.population.ZPPopulationController;
@@ -53,13 +56,18 @@ public class ZPEntityModule extends ZPModule {
     }
 
     @Override
-    public void fml_commonSetupEvent() {
+    public void commonSetup() {
+
+    }
+
+    @Override
+    public void commonShutdown() {
 
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void fml_clientSetupEvent() {
+    public void clientSetup(@NotNull IModuleClientSetupContext context) {
 
     }
 
@@ -77,30 +85,30 @@ public class ZPEntityModule extends ZPModule {
     //}
 
     @Override
-    public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
-        moduleEntry.addMinecraftRegistryClass(ZPEntityAttributes.class);
-        moduleEntry.addMinecraftRegistryClass(ZPEntities.class);
-        moduleEntry.addMinecraftRegistryClass(ZPSpawnItems.class);
+    public void initialize(@NotNull IModuleInitContext context) {
+        context.addCommonZp3RegistryClass(ZPEntityAttributes.class);
+        context.addCommonZp3RegistryClass(ZPEntities.class);
+        context.addCommonZp3RegistryClass(ZPSpawnItems.class);
 
-        moduleEntry.setPopulationSetup(new ZPEntityModule.ZPCommonPopulationSetup());
-        moduleEntry.registerForgeEventHandlerClass(ZPLivingApplyEffectEvent.class);
-        moduleEntry.registerForgeEventHandlerClass(ZPEntitySpawnEvent.class);
-        moduleEntry.registerForgeEventHandlerClass(ZPEntityLivingRadiationTickEvent.class);
-        moduleEntry.registerForgeEventHandlerClass(ZPEntityLivingToxicTickEvent.class);
-        moduleEntry.registerForgeEventHandlerClass(ZPEntityLivingMiscEvents.class);
-        moduleEntry.registerForgeEventHandlerClass(ZPEntityMobAttributes.class);
-        moduleEntry.registerForgeEventHandlerClass(ZPWorldTickEvent.class);
+        context.runPopulationSetup(new ZPEntityModule.ZPCommonPopulationSetup());
+        context.registerForgeEventHandlerClass(ZPLivingApplyEffectEvent.class);
+        context.registerForgeEventHandlerClass(ZPEntitySpawnEvent.class);
+        context.registerForgeEventHandlerClass(ZPEntityLivingRadiationTickEvent.class);
+        context.registerForgeEventHandlerClass(ZPEntityLivingToxicTickEvent.class);
+        context.registerForgeEventHandlerClass(ZPEntityLivingMiscEvents.class);
+        context.registerForgeEventHandlerClass(ZPEntityMobAttributes.class);
+        context.registerForgeEventHandlerClass(ZPWorldTickEvent.class);
     }
 
     @Override
-    public void preInitialize() {
+    public void preInitialize(@NotNull IModulePreInitContext context) {
         ZPUtility.sides().onlyClient(() -> {
             ZPEntityRenderMatchHelper.matchEntityRendering(() -> EntityType.ITEM, ZPRenderEntityItem::new);
         });
     }
 
     @Override
-    public void postInitialize() {
+    public void postInitialize(@NotNull IModulePostInitContext context) {
 
     }
 

@@ -38,7 +38,7 @@ import java.util.function.Supplier;
 
 public enum ZPCommonToolMeleeTiers implements ZPTier {
     ZP_WOOD_FUN("zp_wood_fun", 1, 32, 4.0F, 0.0F, 1, BlockTags.NEEDS_STONE_TOOL, () -> Ingredient.of(ItemTags.PLANKS), null, Tiers.WOOD),
-    ZP_WOOD("zp_wood", 1, 72, 2.0F, 0.0F, 15, BlockTags.NEEDS_STONE_TOOL, () -> Ingredient.of(ItemTags.PLANKS), null, Tiers.WOOD),
+    ZP_WOOD("zp_wood", 1, 72, 2.0F, 0.0F, 15, BlockTags.NEEDS_STONE_TOOL, () -> Ingredient.of(ItemTags.PLANKS), ZP_WOOD_FUN, Tiers.WOOD),
     ZP_WRENCH_CUTTERS("zp_wrench", 4, 48, 8.0F, 0.0F, 15, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(Items.IRON_INGOT), ZP_WOOD, Tiers.WOOD),
     ZP_IRON_1("zp_iron_1", 2, 131, 4.0F, 1.0F, 15, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(Items.IRON_INGOT), ZP_WRENCH_CUTTERS, Tiers.WOOD),
     ZP_IRON_2("zp_iron_2", 2, 342, 4.5F, 1.5F, 15, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(Items.IRON_INGOT), ZP_IRON_1, Tiers.WOOD),

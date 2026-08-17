@@ -18,7 +18,21 @@
  *
  */
 
-package ru.gltexture.zpm3.engine.core.api.events;
+package ru.gltexture.zpm3.engine.exceptions;
 
-public interface ZP3EventHandlerClass {
+public class ZPAPIException extends ZPException {
+    public ZPAPIException() {
+    }
+
+    public ZPAPIException(String ex) {
+        super(ex);
+    }
+
+    public ZPAPIException(String ex, Exception e) {
+        super(ex, e);
+    }
+
+    public ZPAPIException(Exception ex) {
+        super(ex);
+    }
 }

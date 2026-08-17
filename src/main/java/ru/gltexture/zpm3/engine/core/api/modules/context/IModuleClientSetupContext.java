@@ -18,7 +18,12 @@
  *
  */
 
-package ru.gltexture.zpm3.engine.core.module;
+package ru.gltexture.zpm3.engine.core.api.modules.context;
 
-public record ZPModuleData(String name) {
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import ru.gltexture.zpm3.engine.core.api.context.IZPClientSetupContext;
+
+@OnlyIn(Dist.CLIENT)
+public interface IModuleClientSetupContext extends IZPClientSetupContext {
 }

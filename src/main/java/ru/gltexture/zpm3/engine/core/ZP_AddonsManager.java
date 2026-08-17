@@ -20,25 +20,56 @@
 
 package ru.gltexture.zpm3.engine.core;
 
+import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.engine.core.api.addons.ZPAddon;
+import ru.gltexture.zpm3.engine.core.api.addons.IZPAddonEntry;
+import ru.gltexture.zpm3.engine.exceptions.ZPAPIException;
+import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class ZP_AddonsManager {
     static final ZP_AddonsManager INSTANCE = new ZP_AddonsManager();
-    private final List<ZPAddon> registeredAddons;
+    private final TreeSet<ZPAddonInfo> registeredAddons;
 
     public ZP_AddonsManager() {
-        this.registeredAddons = new ArrayList<>();
+        this.registeredAddons = new TreeSet<>(Comparator.comparing(e -> e.modId));
     }
 
-    public void register(@NotNull final ZPAddon zpAddon) {
-        this.registeredAddons.add(zpAddon);
+    void register(@NotNull final IZPAddonEntry zpAddon) throws ZPAPIException {
+        final Mod modAnnotation = zpAddon.getClass().getAnnotation(Mod.class);
+        if (modAnnotation == null) {
+            throw new ZPRuntimeException("Addon entry " + zpAddon.getClass().getName() + " must be annotated with @Mod");
+        }
+        final String modId = modAnnotation.value();
+        this.registeredAddons.add(new ZPAddonInfo(zpAddon, modId));
     }
 
-    public List<ZPAddon> getRegisteredAddons() {
-        return List.copyOf(this.registeredAddons);
+    /*
+    public void processIMC(InterModProcessEvent event) {
+        event.getIMCStream().filter(message -> message.method().equals(ZPAddonsUtil.REG))
+                .forEach(message -> {
+                    Object value = message.messageSupplier().get();
+                    if (value instanceof IZPAddonEntry addon) {
+                        this.register(addon, message.senderModId());
+                    }
+                });
+    }
+*/
+
+
+    public String getAddonId(@NotNull IZPAddonEntry addonEntry) {
+        return this.registeredAddons.stream().filter(info -> info.zpAddon() == addonEntry).map(ZPAddonInfo::modId).findFirst().orElseThrow(ZPAPIException::new);
+    }
+
+    public Set<ZPAddonInfo> getRegisteredAddons() {
+        return Collections.unmodifiableSet(this.registeredAddons);
+    }
+
+    public record ZPAddonInfo(@NotNull IZPAddonEntry zpAddon, @NotNull String modId) {
+        @Override
+        public @NotNull String toString() {
+            return this.modId;
+        }
     }
 }

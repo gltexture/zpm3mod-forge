@@ -33,8 +33,12 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooksManager;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.core.module.ZPModule;
-import ru.gltexture.zpm3.engine.core.module.ZPModuleData;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModuleClientSetupContext;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModuleInitContext;
+import ru.gltexture.zpm3.engine.core.api.modules.ZPModule;
+import ru.gltexture.zpm3.engine.core.api.modules.ZPModuleData;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePostInitContext;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePreInitContext;
 import ru.gltexture.zpm3.engine.recipes.IZPRecipeSpec;
 import ru.gltexture.zpm3.engine.recipes.ZPRecipesController;
 import ru.gltexture.zpm3.engine.recipes.ZPRecipesRegistry;
@@ -57,12 +61,31 @@ public class ZPMeleeThrowableToolsModule extends ZPModule {
     }
 
     @Override
-    public void fml_commonSetupEvent() {
+    public void commonSetup() {
+    }
+
+    @Override
+    public void commonShutdown() {
+        
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void fml_clientSetupEvent() {
+    public void clientSetup(@NotNull IModuleClientSetupContext context) {
+        context.getClientRenderHooksManager().addItemRendering3PersonHook(() -> ZPMeleeThrowableToolsItems.broom.get(), ((itemInHandRenderer, deltaTicks, entityModel, pLivingEntity, pItemStack, pDisplayContext, pArm, pPoseStack, pBuffer, pPackedLight) -> {
+                    final float t = pLivingEntity.getTicksUsingItem() + deltaTicks;
+                    final float swing = Mth.sin(t * 0.5F) * 0.58F;
+                    pPoseStack.pushPose();
+                    ((ArmedModel) entityModel).translateToHand(pArm, pPoseStack);
+                    pPoseStack.mulPose(Axis.XP.rotationDegrees(-90.0F));
+                    pPoseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
+                    pPoseStack.mulPose(Axis.ZP.rotation(swing));
+                    boolean flag = pArm == HumanoidArm.LEFT;
+                    pPoseStack.translate((float) (flag ? -1 : 1) / 16.0F, 0.125F, -0.625F);
+                    itemInHandRenderer.renderItem(pLivingEntity, pItemStack, pDisplayContext, flag, pPoseStack, pBuffer, pPackedLight);
+                    pPoseStack.popPose();
+                })
+        );
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -75,38 +98,22 @@ public class ZPMeleeThrowableToolsModule extends ZPModule {
     }
 
     @Override
-    public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
+    public void initialize(@NotNull IModuleInitContext context) {
         ZPUtility.sides().onlyClient(() -> {
-            moduleEntry.registerForgeEventHandlerClass(ZPPlayerClientTickBroomEvent.class);
+            context.registerForgeEventHandlerClass(ZPPlayerClientTickBroomEvent.class);
         });
-        moduleEntry.addRecipesRegistry(new ZPMeleeThrowableToolsModule.ZPMeleeThrowablesToolsRecipeRegistry());
-        moduleEntry.addTier(ZPCommonToolMeleeTiers.values());
-        moduleEntry.addMinecraftRegistryClass(ZPMeleeThrowableToolsItems.class);
+        context.addRecipesRegistry(new ZPMeleeThrowableToolsModule.ZPMeleeThrowablesToolsRecipeRegistry());
+        context.addTier(ZPCommonToolMeleeTiers.values());
+        context.addCommonZp3RegistryClass(ZPMeleeThrowableToolsItems.class);
     }
 
     @Override
-    public void preInitialize() {
+    public void preInitialize(@NotNull IModulePreInitContext context) {
 
     }
 
     @Override
-    public void postInitialize() {
-        ZPUtility.sides().onlyClient(() -> {
-            ZPRenderHooksManager.INSTANCE.addItemRendering3PersonHook(() -> ZPMeleeThrowableToolsItems.broom.get(), ((itemInHandRenderer, deltaTicks, entityModel, pLivingEntity, pItemStack, pDisplayContext, pArm, pPoseStack, pBuffer, pPackedLight) -> {
-                        final float t = pLivingEntity.getTicksUsingItem() + deltaTicks;
-                        final float swing = Mth.sin(t * 0.5F) * 0.58F;
-                        pPoseStack.pushPose();
-                        ((ArmedModel) entityModel).translateToHand(pArm, pPoseStack);
-                        pPoseStack.mulPose(Axis.XP.rotationDegrees(-90.0F));
-                        pPoseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
-                        pPoseStack.mulPose(Axis.ZP.rotation(swing));
-                        boolean flag = pArm == HumanoidArm.LEFT;
-                        pPoseStack.translate((float) (flag ? -1 : 1) / 16.0F, 0.125F, -0.625F);
-                        itemInHandRenderer.renderItem(pLivingEntity, pItemStack, pDisplayContext, flag, pPoseStack, pBuffer, pPackedLight);
-                        pPoseStack.popPose();
-                    })
-            );
-        });
+    public void postInitialize(@NotNull IModulePostInitContext context) {
     }
 
     private static class ZPMeleeThrowablesToolsRecipeRegistry extends ZPRecipesRegistry {

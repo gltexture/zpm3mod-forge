@@ -20,27 +20,26 @@
 
 package ru.gltexture.zpm3.engine.helpers;
 
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
+import net.minecraft.world.level.ItemLike;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.engine.keybind.ZPKeyBindingsManager;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
 
-@OnlyIn(Dist.CLIENT)
-public abstract class ZPKeyBindingsRegistryHelper {
-    private static Set<ZPKeyBindingsManager> keyBindings = new HashSet<>();
+public abstract class ZPDispenseRegHelper {
+    private static final Map<Supplier<ItemLike>, DefaultDispenseItemBehavior> dispenserMap = new HashMap<>();
+
+    public static void addDispenserData(@NotNull Supplier<ItemLike> itemLikeSupplier, @NotNull DefaultDispenseItemBehavior dispenseItemBehavior) {
+        ZPDispenseRegHelper.dispenserMap.put(itemLikeSupplier, dispenseItemBehavior);
+    }
+
+    public static Map<Supplier<ItemLike>, DefaultDispenseItemBehavior> getDispenserMap() {
+        return ZPDispenseRegHelper.dispenserMap;
+    }
 
     public static void clear() {
-        ZPKeyBindingsRegistryHelper.keyBindings = null;
-    }
-
-    public static void addNewKeybinding(@NotNull ZPKeyBindingsManager zpBaseKeyBindings) {
-        ZPKeyBindingsRegistryHelper.keyBindings.add(zpBaseKeyBindings);
-    }
-
-    public static Set<ZPKeyBindingsManager> getAllKeyBindings() {
-        return ZPKeyBindingsRegistryHelper.keyBindings;
+        ZPDispenseRegHelper.dispenserMap.clear();
     }
 }

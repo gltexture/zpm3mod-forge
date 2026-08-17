@@ -20,27 +20,10 @@
 
 package ru.gltexture.zpm3.engine.mixins;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import net.minecraft.util.GsonHelper;
 import org.objectweb.asm.tree.ClassNode;
-import org.spongepowered.asm.mixin.Mixins;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
-import ru.gltexture.zpm3.engine.core.ZPLogger;
-import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.core.module.ZPModule;
-import ru.gltexture.zpm3.engine.exceptions.ZPIOException;
-import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
-import ru.gltexture.zpm3.engine.helpers.gen.providers.ZPMixinConfigsProvider;
-import ru.gltexture.zpm3.engine.service.ZPPath;
-import ru.gltexture.zpm3.engine.service.ZPUtility;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 

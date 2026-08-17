@@ -23,6 +23,7 @@ package ru.gltexture.zpm3.modules.net_pack.data.accessors;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.gltexture.zpm3.engine.core.ZPLogger;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 
 import java.util.*;
@@ -43,11 +44,12 @@ public final class ZPGlobalAccessorsRegistry {
     }
 
     public @NotNull List<ZPNetDataAccessor<?>> buildIdAssignations() {
-        ArrayList<ZPNetDataAccessor<?>> result = new ArrayList<>(this.accessors.values());
+        final ArrayList<ZPNetDataAccessor<?>> result = new ArrayList<>(this.accessors.values());
         result.sort(Comparator.comparing(accessor -> accessor.getResourceId().toString()));
         for (int i = 0; i < result.size(); i++) {
             result.get(i).setGlobalId(i);
         }
+        ZPLogger.info("Built ZP3 Net-Id Assignations: " + result.size());
         return result;
     }
 

@@ -23,15 +23,18 @@ package ru.gltexture.zpm3.modules.loot_cases;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModuleClientSetupContext;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModuleInitContext;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePostInitContext;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePreInitContext;
 import ru.gltexture.zpm3.modules.loot_cases.events.ZPLootTablesGatherDataEvent;
 import ru.gltexture.zpm3.modules.loot_cases.init.ZPBlockLootCaseEntities;
 import ru.gltexture.zpm3.modules.loot_cases.init.ZPLootCaseBlockItems;
 import ru.gltexture.zpm3.modules.loot_cases.init.ZPLootCases;
 import ru.gltexture.zpm3.modules.loot_cases.loot_tables.ZPLootTable;
 import ru.gltexture.zpm3.modules.loot_cases.registry.ZPLootTablesRegistry;
-import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.core.module.ZPModule;
-import ru.gltexture.zpm3.engine.core.module.ZPModuleData;
+import ru.gltexture.zpm3.engine.core.api.modules.ZPModule;
+import ru.gltexture.zpm3.engine.core.api.modules.ZPModuleData;
 
 public class ZPLootCasesModule extends ZPModule {
     public ZPLootCasesModule(@NotNull ZPModuleData zpModuleData) {
@@ -42,12 +45,17 @@ public class ZPLootCasesModule extends ZPModule {
     }
 
     @Override
-    public void fml_commonSetupEvent() {
+    public void commonSetup() {
+    }
+
+    @Override
+    public void commonShutdown() {
+        
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void fml_clientSetupEvent() {
+    public void clientSetup(@NotNull IModuleClientSetupContext context) {
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -64,24 +72,24 @@ public class ZPLootCasesModule extends ZPModule {
     //}
 
     @Override
-    public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
+    public void initialize(@NotNull IModuleInitContext context) {
         //assetEntry.addEventClass(ZPFreeCameraEvents.class);
-        moduleEntry.registerForgeEventHandlerClass(ZPLootTablesGatherDataEvent.class);
+        context.registerForgeEventHandlerClass(ZPLootTablesGatherDataEvent.class);
 
-        moduleEntry.setLootTablesRegistry(new ZPDefaultLootTables());
+        context.addLootTablesRegistry(new ZPDefaultLootTables());
 
-        moduleEntry.addMinecraftRegistryClass(ZPLootCases.class);
-        moduleEntry.addMinecraftRegistryClass(ZPBlockLootCaseEntities.class);
-        moduleEntry.addMinecraftRegistryClass(ZPLootCaseBlockItems.class);
+        context.addCommonZp3RegistryClass(ZPLootCases.class);
+        context.addCommonZp3RegistryClass(ZPBlockLootCaseEntities.class);
+        context.addCommonZp3RegistryClass(ZPLootCaseBlockItems.class);
     }
 
     @Override
-    public void preInitialize() {
+    public void preInitialize(@NotNull IModulePreInitContext context) {
 
     }
 
     @Override
-    public void postInitialize() {
+    public void postInitialize(@NotNull IModulePostInitContext context) {
 
     }
 

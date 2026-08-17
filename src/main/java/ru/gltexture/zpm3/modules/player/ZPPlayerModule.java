@@ -25,8 +25,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModuleClientSetupContext;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModuleInitContext;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePostInitContext;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePreInitContext;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPCombatConfig;
-import ru.gltexture.zpm3.engine.core.module.ZPModule;
+import ru.gltexture.zpm3.engine.core.api.modules.ZPModule;
 import ru.gltexture.zpm3.modules.armor.init.ZPArmorItems;
 import ru.gltexture.zpm3.modules.armor.utils.ZPArmorUtil;
 import ru.gltexture.zpm3.modules.entity.util.ZPEntityUtil;
@@ -36,7 +40,7 @@ import ru.gltexture.zpm3.modules.player.events.common.*;
 import ru.gltexture.zpm3.modules.player.keybind.ZPPickUpKeyBindings;
 import ru.gltexture.zpm3.modules.player.events.server.ZPPlayerFillBucketEvent;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.core.module.ZPModuleData;
+import ru.gltexture.zpm3.engine.core.api.modules.ZPModuleData;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 import java.util.Arrays;
@@ -51,13 +55,18 @@ public class ZPPlayerModule extends ZPModule {
     }
 
     @Override
-    public void fml_commonSetupEvent() {
+    public void commonSetup() {
+
+    }
+
+    @Override
+    public void commonShutdown() {
 
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void fml_clientSetupEvent() {
+    public void clientSetup(@NotNull IModuleClientSetupContext context) {
 
     }
 
@@ -76,38 +85,38 @@ public class ZPPlayerModule extends ZPModule {
     //}
 
     @Override
-    public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
+    public void initialize(@NotNull IModuleInitContext context) {
         ZPUtility.sides().onlyClient(() -> {
-            moduleEntry.registerForgeEventHandlerClass(ZPRenderWorldEventWithPickUpCheck.class);
-            moduleEntry.registerForgeEventHandlerClass(ZPPlayerItemToolTipsEvent.class);
-            moduleEntry.registerForgeEventHandlerClass(ZPRenderGuiEvent.class);
-            moduleEntry.registerForgeEventHandlerClass(ZPResourcePackEvent.class);
-            moduleEntry.registerForgeEventHandlerClass(ZPPlayerLyingClientCheckEvent.class);
-            moduleEntry.registerForgeEventHandlerClass(ZPPlayerClientTickGeigerSoundEvent.class);
+            context.registerForgeEventHandlerClass(ZPRenderWorldEventWithPickUpCheck.class);
+            context.registerForgeEventHandlerClass(ZPPlayerItemToolTipsEvent.class);
+            context.registerForgeEventHandlerClass(ZPRenderGuiEvent.class);
+            context.registerForgeEventHandlerClass(ZPResourcePackEvent.class);
+            context.registerForgeEventHandlerClass(ZPPlayerLyingClientCheckEvent.class);
+            context.registerForgeEventHandlerClass(ZPPlayerClientTickGeigerSoundEvent.class);
         });
 
         //moduleEntry.registerEventHandlerClass(ZPPlaceBlocksEvent.class);
-        moduleEntry.registerForgeEventHandlerClass(ZPPlayerGunCancelInterEvent.class);
-        moduleEntry.registerForgeEventHandlerClass(ZPPlayerEntityItemEvent.class);
-        moduleEntry.registerForgeEventHandlerClass(ZPPlayerTickEvent.class);
-        moduleEntry.registerForgeEventHandlerClass(ZPPlayerFillBucketEvent.class);
-        moduleEntry.registerForgeEventHandlerClass(ZPPlaceLiquidEvent.class);
-        moduleEntry.registerForgeEventHandlerClass(ZPPlayerEatFoodEvent.class);
-        moduleEntry.registerForgeEventHandlerClass(ZPPlayerJoinOrSpawnEvent.class);
-        moduleEntry.registerForgeEventHandlerClass(ZPPlayerTickedBreakEquipmentEvent.class);
-        moduleEntry.registerForgeEventHandlerClass(ZPPlayerSeasicknessTickEvent.class);
+        context.registerForgeEventHandlerClass(ZPPlayerGunCancelInterEvent.class);
+        context.registerForgeEventHandlerClass(ZPPlayerEntityItemEvent.class);
+        context.registerForgeEventHandlerClass(ZPPlayerTickEvent.class);
+        context.registerForgeEventHandlerClass(ZPPlayerFillBucketEvent.class);
+        context.registerForgeEventHandlerClass(ZPPlaceLiquidEvent.class);
+        context.registerForgeEventHandlerClass(ZPPlayerEatFoodEvent.class);
+        context.registerForgeEventHandlerClass(ZPPlayerJoinOrSpawnEvent.class);
+        context.registerForgeEventHandlerClass(ZPPlayerTickedBreakEquipmentEvent.class);
+        context.registerForgeEventHandlerClass(ZPPlayerSeasicknessTickEvent.class);
     }
 
     @Override
-    public void preInitialize() {
+    public void preInitialize(@NotNull IModulePreInitContext context) {
         ZPUtility.sides().onlyClient(() -> {
-            ZombiePlague3.registerKeyBindings(new ZPPickUpKeyBindings());
+            context.registerKeyBindings(new ZPPickUpKeyBindings());
         });
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public void postInitialize() {
+    public void postInitialize(@NotNull IModulePostInitContext context) {
         ZPPlayerTickedBreakEquipmentEvent.registerArmorBreakPerTickCondition(ZPArmorItems.night_vision_goggles::get, (entity, armorItem, slot, tick) -> {
             if (ZPCombatConfig.BREAK_NV_GOGGLES_PER_TICK.getVar() < 0) {
                 return false;

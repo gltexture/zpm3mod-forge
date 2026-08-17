@@ -43,7 +43,6 @@ public class ZPResourcesReloader implements PreparableReloadListener {
         }, pBackgroundExecutor);
         return prepare.thenCompose(pPreparationBarrier::wait).thenRunAsync(() -> {
             ((ZPClientManager) ZombiePlague3.getClientManager()).forceReloadAllCallbacks();
-            ZPPlayerArmorSoundOnClientEvent.clear();
         }, pGameExecutor);
     }
 }

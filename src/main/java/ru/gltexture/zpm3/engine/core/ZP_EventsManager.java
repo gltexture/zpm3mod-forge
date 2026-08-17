@@ -23,9 +23,10 @@ package ru.gltexture.zpm3.engine.core;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.api.events.ZPEventDef;
 import ru.gltexture.zpm3.engine.core.api.events.ZombiePlagueEvent;
-import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
+import ru.gltexture.zpm3.engine.exceptions.ZPAPIException;
 
-import java.lang.reflect.InvocationTargetException;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
@@ -47,16 +48,8 @@ public class ZP_EventsManager {
             return;
         }
         for (PriorityMethod priorityMethod : this.eventMap.get(event.getClass())) {
-            Method method = priorityMethod.method();
-            if (method == null) {
-                ZombiePlague3.LOGGER.warn("Couldn't find event " + event.getClass().getName() + " in API Container");
-                return;
-            }
-            try {
-                method.invoke(ZPEventDef.IEvent.class, event);
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                throw new ZPRuntimeException(e);
-            }
+            ZPEventInvoker method = priorityMethod.method();
+            method.invoke(event);
         }
     }
 
@@ -87,39 +80,56 @@ public class ZP_EventsManager {
     }
 
     @SuppressWarnings("all")
-    void initEvents(Class<?>... classes) {
-        this.initEvents(Arrays.stream(classes).collect(Collectors.toSet()));
+    void registerEvents(Class<?>... classes) throws ZPAPIException {
+        this.registerEvents(Arrays.stream(classes).collect(Collectors.toSet()));
     }
 
     @SuppressWarnings("all")
-    void initEvents(Set<Class<?>> classSet) {
+    void registerEvents(Set<Class<?>> classSet) throws ZPAPIException {
         {
-            for (Class<?> clazz : classSet) {
-                final Method[] methods = clazz.getDeclaredMethods();
-                for (Method method : methods) {
-                    if (method.isAnnotationPresent(ZombiePlagueEvent.class)) {
-                        final Class<?>[] parameters = method.getParameterTypes();
-                        if (parameters.length != 1) {
-                            ZombiePlague3.LOGGER.error("Method has more(or less) than 1 argument(? -> IEvent): " + method.getName() + " - Skip");
-                            continue;
+            try {
+                for (Class<?> clazz : classSet) {
+                    final Method[] methods = clazz.getDeclaredMethods();
+                    for (Method method : methods) {
+                        if (method.isAnnotationPresent(ZombiePlagueEvent.class)) {
+                            final Class<?>[] parameters = method.getParameterTypes();
+                            if (parameters.length != 1) {
+                                ZombiePlague3.LOGGER.error("Method has more(or less) than 1 argument(? -> IEvent): " + method.getName() + " - Skip");
+                                continue;
+                            }
+                            if (parameters.length != 1 || !ZPEventDef.IEvent.class.isAssignableFrom(parameters[0])) {
+                                ZombiePlague3.LOGGER.error("Method has wrong argument(? -> IEvent): " + method.getName());
+                                continue;
+                            }
+                            final TreeSet<PriorityMethod> priorityMethods = this.eventMap.get(parameters[0]);
+                            if (priorityMethods == null) {
+                                ZombiePlague3.LOGGER.error("Couldn't find event in class: " + clazz.getName());
+                                continue;
+                            }
+                            final ZombiePlagueEvent subscribeEvent = method.getAnnotation(ZombiePlagueEvent.class);
+                            final MethodHandle methodHandle = MethodHandles.lookup().unreflect(method);
+                            final ZPEventInvoker invoker = event -> {
+                                try {
+                                    methodHandle.invoke(event);
+                                } catch (Throwable e) {
+                                    throw new RuntimeException(e);
+                                }
+                            };
+                            priorityMethods.add(new PriorityMethod(invoker, subscribeEvent.priority()));
+                            ZPLogger.info("Registered ZP3-Event Method " + method.getName());
                         }
-                        if (parameters.length != 1 || !ZPEventDef.IEvent.class.isAssignableFrom(parameters[0])) {
-                            ZombiePlague3.LOGGER.error("Method has wrong argument(? -> IEvent): " + method.getName());
-                            continue;
-                        }
-                        final TreeSet<PriorityMethod> priorityMethods = this.eventMap.get(parameters[0]);
-                        if (priorityMethods == null) {
-                            ZombiePlague3.LOGGER.error("Couldn't find event in class: " + clazz.getName());
-                            continue;
-                        }
-                        final ZombiePlagueEvent subscribeEvent = method.getAnnotation(ZombiePlagueEvent.class);
-                        priorityMethods.add(new PriorityMethod(method, subscribeEvent.priority()));
-                        ZPLogger.info("Registered ZP3-Event Method " + method.getName());
                     }
                 }
+            } catch (IllegalAccessException | RuntimeException e) {
+                throw new ZPAPIException(e);
             }
         }
     }
 
-    private record PriorityMethod(Method method, int priority) { ; }
+    private record PriorityMethod(ZPEventInvoker method, int priority) { ; }
+
+    @FunctionalInterface
+    public interface ZPEventInvoker {
+        void invoke(ZPEventDef.IEvent event);
+    }
 }

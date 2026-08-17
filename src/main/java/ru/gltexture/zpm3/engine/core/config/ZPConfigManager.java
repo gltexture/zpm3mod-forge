@@ -35,7 +35,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.*;
 
-public class ZPConfigManager {
+public class ZPConfigManager implements IZPConfigClass {
+    private static final String REGEX = "[a-zA-Z0-9._-]+";
     private final Map<Class<? extends ZPConfigConstantsClass>, ZPPath> configPathMap;
     private final Map<Class<? extends ZPConfigConstantsClass>, List<ConfigVarObjectForUI>> classConfigVarObjectForUIMap;
     private final Gson gson;
@@ -46,14 +47,26 @@ public class ZPConfigManager {
         this.configPathMap = new HashMap<>();
     }
 
+    private static boolean isValidConfigName(String name) {
+        return name != null && name.matches(ZPConfigManager.REGEX);
+    }
+
+    @Override
     public void processConfigConstants(ZPPath zpmFiles, String configName, Class<? extends ZPConfigConstantsClass> clazz) throws IllegalAccessException, IOException {
+        if (!ZPConfigManager.isValidConfigName(configName)) {
+            throw new ZPRuntimeException("Invalid config name: " + configName + " / " + ZPConfigManager.REGEX);
+        }
         final ZPPath pathToJson = new ZPPath(zpmFiles, configName + "_zp3_config.json");
+        if (this.configPathMap.containsKey(clazz)) {
+            throw new ZPRuntimeException("Already processed configuration-class: " + clazz.getSimpleName());
+        }
         final Map<String, OldConfValue> existingConfigVars = this.readConfigExistingVars(pathToJson);
         List<ConfigVarObjectForUI> configVarObjectForUIList = new ArrayList<>();
         this.save(configVarObjectForUIList, existingConfigVars, pathToJson, clazz);
         this.configPathMap.put(clazz, pathToJson);
     }
 
+    @Override
     public void rewriteConfigClass(Class<? extends ZPConfigConstantsClass> clazz) {
         if (!this.configPathMap.containsKey(clazz)) {
             throw new ZPIOException("Class " + clazz.getSimpleName() + " does not exist");

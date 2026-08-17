@@ -18,7 +18,9 @@
  *
  */
 
-package ru.gltexture.zpm3.engine.core.api.events;
+package ru.gltexture.zpm3.engine.core.api.addons.context;
 
-public interface ZP3EventHandlerClass {
+import ru.gltexture.zpm3.engine.core.api.context.IZPPreInitContext;
+
+public interface IAddonPreInitContext extends IZPPreInitContext {
 }

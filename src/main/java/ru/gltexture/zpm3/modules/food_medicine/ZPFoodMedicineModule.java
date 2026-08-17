@@ -29,8 +29,12 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.core.module.ZPModule;
-import ru.gltexture.zpm3.engine.core.module.ZPModuleData;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModuleClientSetupContext;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModuleInitContext;
+import ru.gltexture.zpm3.engine.core.api.modules.ZPModule;
+import ru.gltexture.zpm3.engine.core.api.modules.ZPModuleData;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePostInitContext;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePreInitContext;
 import ru.gltexture.zpm3.engine.recipes.IZPRecipeSpec;
 import ru.gltexture.zpm3.engine.recipes.ZPRecipesController;
 import ru.gltexture.zpm3.engine.recipes.ZPRecipesRegistry;
@@ -49,12 +53,17 @@ public class ZPFoodMedicineModule extends ZPModule {
     }
 
     @Override
-    public void fml_commonSetupEvent() {
+    public void commonSetup() {
+    }
+
+    @Override
+    public void commonShutdown() {
+        
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void fml_clientSetupEvent() {
+    public void clientSetup(@NotNull IModuleClientSetupContext context) {
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -67,20 +76,20 @@ public class ZPFoodMedicineModule extends ZPModule {
     }
 
     @Override
-    public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
-        moduleEntry.addRecipesRegistry(new ZPFoodMedicineRecipeRegistry());
-        moduleEntry.addMinecraftRegistryClass(ZPFoodMedicineItems.class);
+    public void initialize(@NotNull IModuleInitContext context) {
+        context.addRecipesRegistry(new ZPFoodMedicineRecipeRegistry());
+        context.addCommonZp3RegistryClass(ZPFoodMedicineItems.class);
         ZPUtility.sides().onlyClient(() -> {
         });
     }
 
     @Override
-    public void preInitialize() {
+    public void preInitialize(@NotNull IModulePreInitContext context) {
 
     }
 
     @Override
-    public void postInitialize() {
+    public void postInitialize(@NotNull IModulePostInitContext context) {
 
     }
 

@@ -37,6 +37,7 @@ import ru.gltexture.zpm3.engine.core.ZPLogger;
 import ru.gltexture.zpm3.engine.core.ZP_EventsManager;
 import ru.gltexture.zpm3.engine.core.api.events.client.ZPEventBus_ClientInput;
 import ru.gltexture.zpm3.engine.core.api.events.client.ZPEventBus_ClientResources;
+import ru.gltexture.zpm3.modules.armor.events.client.ZPPlayerArmorSoundOnClientEvent;
 
 import java.util.Objects;
 
@@ -86,6 +87,11 @@ public class ZPClientManager implements IZPClientManager, IZPClientManager.Resou
     public void onSetupResources(@NotNull Window window) {
         {
             ZPRenderHooksManager.INSTANCE.onSetupResources(window);
+        }
+        {
+            this.getCallbacksManager().addReloadResourcesCallback((w) -> {
+                ZPPlayerArmorSoundOnClientEvent.clear();
+            });
         }
         this.getPostFXChain().onSetupResources(window);
         if (this.isImGuiValid()) {

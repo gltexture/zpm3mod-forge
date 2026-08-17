@@ -30,7 +30,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.engine.client.rendering.callbacks.ZPClientCallbacksManager;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModuleClientSetupContext;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModuleInitContext;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePostInitContext;
+import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePreInitContext;
 import ru.gltexture.zpm3.engine.recipes.IZPRecipeSpec;
 import ru.gltexture.zpm3.engine.recipes.ZPRecipesController;
 import ru.gltexture.zpm3.engine.recipes.ZPRecipesRegistry;
@@ -46,8 +49,8 @@ import ru.gltexture.zpm3.modules.guns.rendering.fx.ZPDefaultGunMuzzleflashFX;
 import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooks;
 import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooksManager;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.core.module.ZPModule;
-import ru.gltexture.zpm3.engine.core.module.ZPModuleData;
+import ru.gltexture.zpm3.engine.core.api.modules.ZPModule;
+import ru.gltexture.zpm3.engine.core.api.modules.ZPModuleData;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 import java.util.*;
@@ -61,24 +64,29 @@ public class ZPGunsModule extends ZPModule {
     }
 
     @Override
-    public void fml_commonSetupEvent() {
+    public void commonSetup() {
+
+    }
+
+    @Override
+    public void commonShutdown() {
 
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void fml_clientSetupEvent() {
+    public void clientSetup(@NotNull IModuleClientSetupContext context) {
         ZPDefaultGunRenderers.init();
-        ZPRenderHooksManager.INSTANCE.addItemSceneRendering1PersonHooks((ZPRenderHooks.ZPItemSceneRendering1PersonHooks) ZPDefaultGunRenderers.defaultMuzzleflashFXUniversal);
-        ZPRenderHooksManager.INSTANCE.addItemSceneRendering3PersonHooks((ZPRenderHooks.ZPItemSceneRendering3PersonHooks) ZPDefaultGunRenderers.defaultMuzzleflashFXUniversal);
-        ZombiePlague3.getClientManager().getCallbacksManager().addReloadResourcesCallback(((ZPDefaultGunMuzzleflashFX) ZPDefaultGunRenderers.defaultMuzzleflashFXUniversal).onReloadResources());
-        ZombiePlague3.getClientManager().getCallbacksManager().addClientTickCallback(e -> {
+        context.getClientRenderHooksManager().addItemSceneRendering1PersonHooks((ZPRenderHooks.ZPItemSceneRendering1PersonHooks) ZPDefaultGunRenderers.defaultMuzzleflashFXUniversal);
+        context.getClientRenderHooksManager().addItemSceneRendering3PersonHooks((ZPRenderHooks.ZPItemSceneRendering3PersonHooks) ZPDefaultGunRenderers.defaultMuzzleflashFXUniversal);
+        context.getClientCallbacksManager().addReloadResourcesCallback(((ZPDefaultGunMuzzleflashFX) ZPDefaultGunRenderers.defaultMuzzleflashFXUniversal).onReloadResources());
+        context.getClientCallbacksManager().addClientTickCallback(e -> {
             ZPClientGunClientTickProcessing.INSTANCE.tick(Minecraft.getInstance(), e);
         });
-        ZPRenderHooksManager.INSTANCE.addItemSceneRendering1PersonHookPre(((deltaTicks, pPartialTicks, pPoseStack, pBuffer, pPlayerEntity, pCombinedLight) -> {
+        context.getClientRenderHooksManager().addItemSceneRendering1PersonHookPre(((deltaTicks, pPartialTicks, pPoseStack, pBuffer, pPlayerEntity, pCombinedLight) -> {
             ZPAbstractGunRenderer.breathEffect(pPartialTicks, pPoseStack);
         }));
-        ZPRenderHooksManager.INSTANCE.addSceneRenderingHook(((renderStage, partialTicks, deltaTime, pNanoTime, pRenderLevel) -> {
+        context.getClientRenderHooksManager().addSceneRenderingHook(((renderStage, partialTicks, deltaTime, pNanoTime, pRenderLevel) -> {
             if (renderStage == ZPRenderHooks.RenderStage.PRE) {
                 ZPClientGunClientTickProcessing.INSTANCE.process(Minecraft.getInstance());
             }
@@ -103,25 +111,25 @@ public class ZPGunsModule extends ZPModule {
     //}
 
     @Override
-    public void initialize(ZombiePlague3.@NotNull IModuleEntry moduleEntry) {
-        moduleEntry.addRecipesRegistry(new ZPGunsRecipeRegistry());
-        moduleEntry.addMinecraftRegistryClass(ZPGunItems.class);
+    public void initialize(@NotNull IModuleInitContext context) {
+        context.addRecipesRegistry(new ZPGunsRecipeRegistry());
+        context.addCommonZp3RegistryClass(ZPGunItems.class);
         ZPUtility.sides().onlyClient(() -> {
-            moduleEntry.registerForgeEventHandlerClass(ZPGunsUIEvent.class);
-            moduleEntry.registerForgeEventHandlerClass(ZPGunPostRenderEvent.class);
+            context.registerForgeEventHandlerClass(ZPGunsUIEvent.class);
+            context.registerForgeEventHandlerClass(ZPGunPostRenderEvent.class);
         });
-        moduleEntry.registerForgeEventHandlerClass(ZPGunTossEvent.class);
+        context.registerForgeEventHandlerClass(ZPGunTossEvent.class);
     }
 
     @Override
-    public void preInitialize() {
+    public void preInitialize(@NotNull IModulePreInitContext context) {
         ZPUtility.sides().onlyClient(() -> {
             ZombiePlague3.registerKeyBindings(new ZPGunKeyBindings());
         });
     }
 
     @Override
-    public void postInitialize() {
+    public void postInitialize(@NotNull IModulePostInitContext context) {
 
     }
 

@@ -18,9 +18,13 @@
  *
  */
 
-package ru.gltexture.zpm3.engine.core.api.modules.context;
+package ru.gltexture.zpm3.modules.loot_cases.loot_tables.items;
 
-import ru.gltexture.zpm3.engine.core.api.context.IZPPostInitContext;
+import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
-public interface IModulePostInitContext extends IZPPostInitContext {
+public interface ILootItem {
+    @Nullable ItemStack buildItemStack();
+
+    int getWeight();
 }

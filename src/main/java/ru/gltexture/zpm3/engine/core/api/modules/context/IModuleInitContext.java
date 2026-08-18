@@ -20,21 +20,18 @@
 
 package ru.gltexture.zpm3.engine.core.api.modules.context;
 
-import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.engine.core.ZombiePlague3;
+import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.engine.core.api.context.IZPInitContext;
-import ru.gltexture.zpm3.engine.core.api.events.ZP3EventHandlerClass;
 import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 import ru.gltexture.zpm3.engine.instances.items.tier.ZPTier;
 import ru.gltexture.zpm3.engine.instances.items.tier.ZPTierData;
 import ru.gltexture.zpm3.engine.network.ZPNetwork;
 import ru.gltexture.zpm3.engine.recipes.ZPRecipesRegistry;
 import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
-import ru.gltexture.zpm3.modules.entity.population.ZPSetupPopulation;
-import ru.gltexture.zpm3.modules.loot_cases.registry.ZPLootTablesRegistry;
-import ru.gltexture.zpm3.modules.net_pack.data.accessors.ZPNetDataAccessor;
-import ru.gltexture.zpm3.modules.net_pack.data.data_ent.ZPNetDataVar;
+import ru.gltexture.zpm3.modules.loot_cases.events.provider.ZPSyntheticLootCasesDataGenRegistry;
+import ru.gltexture.zpm3.modules.loot_cases.loot_tables.ZPLootTable;
+import ru.gltexture.zpm3.modules.loot_cases.loot_tables.synthetic.ZPSyntheticLootCaseDescription;
 
 public interface IModuleInitContext extends IZPInitContext {
     void registerForgeEventHandlerClass(@NotNull Class<? extends ZPForgeEventHandlerClass> clazz);
@@ -43,7 +40,8 @@ public interface IModuleInitContext extends IZPInitContext {
     void registerNetworkPacket(@NotNull ZPNetwork.PacketData<?> packetData);
 
     void addCommonZp3RegistryClass(@NotNull Class<? extends ZPCommonRegistry<?>> zpRegistryProcessorClass);
-    void addLootTablesRegistry(@NotNull ZPLootTablesRegistry object);
+    void registerSyntheticLootCase(@NotNull ZPSyntheticLootCaseDescription lootCase);
+    void registerSyntheticLootTable(@NotNull ZPLootTable lootTable);
     void addRecipesRegistry(@NotNull ZPRecipesRegistry... recipesRegistries);
     void addTier(@NotNull ZPTier[] tier);
 }

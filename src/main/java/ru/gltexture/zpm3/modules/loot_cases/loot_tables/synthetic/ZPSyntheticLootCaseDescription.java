@@ -18,9 +18,10 @@
  *
  */
 
-package ru.gltexture.zpm3.engine.core.api.modules.context;
+package ru.gltexture.zpm3.modules.loot_cases.loot_tables.synthetic;
 
-import ru.gltexture.zpm3.engine.core.api.context.IZPPostInitContext;
+import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
-public interface IModulePostInitContext extends IZPPostInitContext {
+public record ZPSyntheticLootCaseDescription(@NotNull ResourceLocation lootId, @NotNull String blockId, @NotNull String textureId, float hardness, int lootRespawnTime) {
 }

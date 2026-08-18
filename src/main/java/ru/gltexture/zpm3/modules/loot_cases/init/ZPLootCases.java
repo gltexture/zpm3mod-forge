@@ -26,10 +26,10 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockModelExecutors;
 import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
+import ru.gltexture.zpm3.modules.loot_cases.events.provider.ZPSyntheticLootCasesDataGenRegistry;
 import ru.gltexture.zpm3.modules.loot_cases.instances.blocks.ZPDefaultBlockLootCase;
-import ru.gltexture.zpm3.modules.loot_cases.loot_tables.ZPLootTable;
-import ru.gltexture.zpm3.modules.loot_cases.registry.ZPLootTablesCollection;
-import ru.gltexture.zpm3.modules.loot_cases.registry.ZPLootTablesReader;
+import ru.gltexture.zpm3.modules.loot_cases.loot_tables.synthetic.ZPSyntheticLootCaseDescription;
+import ru.gltexture.zpm3.modules.loot_cases.registry.ZPLootCasesReader;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
 import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockItemModelExecutors;
@@ -38,10 +38,8 @@ import ru.gltexture.zpm3.engine.service.Pair;
 import ru.gltexture.zpm3.engine.service.ZPPath;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
-import java.util.*;
-
 public class ZPLootCases extends ZPCommonRegistry<ZPDefaultBlockLootCase> implements IZPCollectRegistryObjects {
-    public static Map<String, RegistryObject<ZPDefaultBlockLootCase>> generatedLootCases = new HashMap<>();
+   // public static Map<String, RegistryObject<ZPDefaultBlockLootCase>> generatedLootCases = new HashMap<>();
 
     public ZPLootCases() {
         super(ZPRegistryConveyor.Target.BLOCK);
@@ -50,25 +48,25 @@ public class ZPLootCases extends ZPCommonRegistry<ZPDefaultBlockLootCase> implem
     @Override
     protected void runRegister(@NotNull ZPRegSupplier<ZPDefaultBlockLootCase> regSupplier) {
         this.initInstanceCollecting("lootCases");
-        for (ZPLootTable lootTable : ZPLootTablesCollection.INSTANCE.getAllLootTables().stream().filter(e -> e.getLootCaseData() != null).toList()) {
-            final String lootCaseName = Objects.requireNonNull(lootTable.getLootCaseData()).name().toLowerCase();
-            final boolean isUnbreakable = lootTable.getLootCaseData().isUnbreakable();
-            final int lootRespawnTime = lootTable.getLootCaseData().respawnTime();
-            RegistryObject<ZPDefaultBlockLootCase> syntheticLootCase = regSupplier.register(lootCaseName, () -> new ZPDefaultBlockLootCase(BlockBehaviour.Properties.of().strength(isUnbreakable ? -1.0f : 5.0f, isUnbreakable ? Float.MAX_VALUE : 5.0f).sound(SoundType.WOOD), lootTable.getLootCaseData().textureId(), lootTable, lootRespawnTime)
+        for (ZPSyntheticLootCaseDescription lootCase : ZPSyntheticLootCasesDataGenRegistry.getDataToGenRuntime_LootCases()) {
+            final String lootCaseName = lootCase.blockId().toLowerCase();
+            final float hardness = lootCase.hardness();
+            final int lootRespawnTime = lootCase.lootRespawnTime();
+            final RegistryObject<ZPDefaultBlockLootCase> syntheticLootCase = regSupplier.register(lootCaseName, () -> new ZPDefaultBlockLootCase(BlockBehaviour.Properties.of().strength(hardness, hardness).sound(SoundType.WOOD), lootCase.textureId(), lootCase.lootId(), lootRespawnTime)
             ).afterCreated((e, utils) -> {
                 ZPUtility.sides().onlyClient(() -> {
                     utils.blocks().addBlockModelKey_ValueArray(e, ZPDataGenHelper.DEFAULT_CHEST_BLOCK, Pair.of("particle", () -> new ZPPath(ZPDataGenHelper.MINECRAFT_VANILLA_ROOT, "oak_planks")));
                     utils.blocks().setBlockItemModelExecutor(e, DefaultBlockModelExecutors.getDefault(), DefaultBlockItemModelExecutors.getDefaultItemAsVanillaParent(ZPDataGenHelper.DEFAULT_CHEST_ITEM));
                 });
             }).end();
-            ZPLootCases.generatedLootCases.put(lootCaseName, syntheticLootCase);
+            //ZPLootCases.generatedLootCases.put(lootCaseName, syntheticLootCase);
         }
         this.stopInstanceCollecting();
     }
 
     @Override
     public void preProcessing() {
-        ZPLootTablesReader.READ_FILES();
+        ZPLootCasesReader.readFiles();
     }
 
     @Override

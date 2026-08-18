@@ -22,6 +22,7 @@ package ru.gltexture.zpm3.modules.loot_cases.instances.block_entities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -33,6 +34,7 @@ import ru.gltexture.zpm3.modules.blocks.instances.block_entities.ZPFadingBlockEn
 import ru.gltexture.zpm3.modules.loot_cases.init.ZPBlockLootCaseEntities;
 import ru.gltexture.zpm3.modules.loot_cases.instances.blocks.ZPDefaultBlockLootCase;
 import ru.gltexture.zpm3.modules.loot_cases.loot_tables.ZPLootTable;
+import ru.gltexture.zpm3.modules.loot_cases.loot_tables.items.ILootItem;
 import ru.gltexture.zpm3.modules.loot_cases.registry.ZPLootTablesCollection;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.service.Pair;
@@ -59,8 +61,8 @@ public class ZPLootCaseBlockEntity extends ChestBlockEntity {
     public void startOpen(@NotNull Player pPlayer) {
         super.startOpen(pPlayer);
         if (this.getLevel() != null && this.isServer()) {
-            BlockEntity block = this.getLevel().getBlockEntity(this.getBlockPos());
-            BlockState blockState = this.getLevel().getBlockState(this.getBlockPos());
+            final BlockEntity block = this.getLevel().getBlockEntity(this.getBlockPos());
+            final BlockState blockState = this.getLevel().getBlockState(this.getBlockPos());
             if (blockState.getBlock() instanceof ZPDefaultBlockLootCase defaultBlockLootCase) {
                 boolean flag = false;
                 if (this.timeLock <= 0L) {
@@ -70,9 +72,9 @@ public class ZPLootCaseBlockEntity extends ChestBlockEntity {
                 }
                 if (flag) {
                     this.clearContent();
-                    ZPLootTable rootLootTable = defaultBlockLootCase.getConnectedLootTable();
+                    final ZPLootTable rootLootTable = ZPLootTablesCollection.INSTANCE.getLootTableById(defaultBlockLootCase.getConnectedLootTable());
                     rootLootTable.getExtendBy().forEach(e -> {
-                        ZPLootTable table = ZPLootTablesCollection.INSTANCE.get(e);
+                        ZPLootTable table = ZPLootTablesCollection.INSTANCE.getLootTableById(e);
                         if (table != null) {
                             this.spawnLoot(table);
                         }
@@ -85,10 +87,10 @@ public class ZPLootCaseBlockEntity extends ChestBlockEntity {
     }
 
     protected void spawnLoot(@NotNull ZPLootTable lootTable) {
-        ZPLootTable.LootGroupsDataSet dataSet = lootTable.getLootGroupsSpawnDataSet();
-        int maxRolls = dataSet.maxRolls();
-        int minRolls = dataSet.minRolls();
-        float nextRollMultiplier = dataSet.nextRollChanceMultiplier();
+        final ZPLootTable.LootGroupsDataSet dataSet = lootTable.getLootGroupsSpawnDataSet();
+        final int maxRolls = dataSet.maxRolls();
+        final int minRolls = dataSet.minRolls();
+        final float nextRollMultiplier = dataSet.nextRollChanceMultiplier();
 
         List<Integer> freeSlots = new ArrayList<>();
         for (int i = 0; i < this.getContainerSize(); i++) {
@@ -156,7 +158,7 @@ public class ZPLootCaseBlockEntity extends ChestBlockEntity {
             return;
         }
 
-        List<ZPLootTable.ILootItem> pool = new ArrayList<>();
+        List<ILootItem> pool = new ArrayList<>();
 
         if (group.nonBreakable() != null) {
             pool.addAll(group.nonBreakable());
@@ -170,7 +172,7 @@ public class ZPLootCaseBlockEntity extends ChestBlockEntity {
             return;
         }
 
-        ZPLootTable.ILootItem selected = this.pickWeightedItem(pool);
+        ILootItem selected = this.pickWeightedItem(pool);
         if (selected == null) {
             return;
         }
@@ -209,9 +211,9 @@ public class ZPLootCaseBlockEntity extends ChestBlockEntity {
         return null;
     }
 
-    private ZPLootTable.ILootItem pickWeightedItem(List<ZPLootTable.ILootItem> list) {
+    private ILootItem pickWeightedItem(List<ILootItem> list) {
         int totalWeight = 0;
-        for (ZPLootTable.ILootItem item : list) {
+        for (ILootItem item : list) {
             totalWeight += item.getWeight();
         }
 
@@ -222,7 +224,7 @@ public class ZPLootCaseBlockEntity extends ChestBlockEntity {
         int r = ZPRandom.getRandom().nextInt(totalWeight);
         int current = 0;
 
-        for (ZPLootTable.ILootItem item : list) {
+        for (ILootItem item : list) {
             current += item.getWeight();
             if (r < current) {
                 return item;

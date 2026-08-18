@@ -24,6 +24,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
@@ -38,7 +39,7 @@ public final class ZPRegistryConveyor {
         this.laterRun = new ArrayList<>();
     }
 
-    void launch(Set<Class<? extends ZPCommonRegistry<?>>> registryClasses) {
+    void launch(@NotNull Collection<Class<? extends ZPCommonRegistry<?>>> registryClasses) {
         List<ZPCommonRegistry<?>> registries = new ArrayList<>();
         try {
             for (Class<? extends ZPCommonRegistry<?>> zpRegistryProcessorClass : registryClasses) {
@@ -62,7 +63,7 @@ public final class ZPRegistryConveyor {
         this.laterRun.clear();
     }
 
-    private void runSet(List<ZPCommonRegistry<?>> registries) {
+    private void runSet(@NotNull List<ZPCommonRegistry<?>> registries) {
         for (ZPCommonRegistry<?> zpRegistry : registries) {
             ZPLogger.info("Initializing ZP registry: " + zpRegistry);
             ZombiePlague3.registerDeferred(zpRegistry.getDeferredRegister());

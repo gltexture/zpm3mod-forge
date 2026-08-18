@@ -20,29 +20,38 @@
 
 package ru.gltexture.zpm3.modules.loot_cases.registry;
 
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
 import ru.gltexture.zpm3.modules.loot_cases.loot_tables.ZPLootTable;
 import java.util.*;
 
-public class ZPLootTablesCollection {
+public final class ZPLootTablesCollection {
     public static ZPLootTablesCollection INSTANCE = new ZPLootTablesCollection();
 
-    private final Map<String, ZPLootTable> lootTableMap;
+    private final Map<ResourceLocation, ZPLootTable> lootTableMap;
 
     private ZPLootTablesCollection() {
         this.lootTableMap = new HashMap<>();
     }
 
-    public ZPLootTable get(String id) {
+    public ZPLootTable getLootTableById(ResourceLocation id) {
         return this.lootTableMap.get(id);
     }
 
-    public Collection<ZPLootTable> getAllLootTables() {
-        return this.lootTableMap.values();
+    public void clear() {
+        this.lootTableMap.clear();
     }
 
-    public void putInMap(@NotNull ZPLootTable lootTable) {
-        this.lootTableMap.remove(lootTable.getUniqueId());
-        this.lootTableMap.put(lootTable.getUniqueId(), lootTable);
+    public @Unmodifiable Set<Map.Entry<ResourceLocation, ZPLootTable>> getAllLootTableEntries() {
+        return Collections.unmodifiableSet(this.lootTableMap.entrySet());
+    }
+
+    public @Unmodifiable Collection<ZPLootTable> getAllLootTables() {
+        return Collections.unmodifiableCollection(this.lootTableMap.values());
+    }
+
+    public void putInMap(@NotNull ResourceLocation resourceLocation, @NotNull ZPLootTable lootTable) {
+        this.lootTableMap.put(resourceLocation, lootTable);
     }
 }

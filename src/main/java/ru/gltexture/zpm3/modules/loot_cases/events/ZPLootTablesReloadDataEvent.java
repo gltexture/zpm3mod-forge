@@ -20,40 +20,32 @@
 
 package ru.gltexture.zpm3.modules.loot_cases.events;
 
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.PackOutput;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.modules.loot_cases.events.provider.ZPLootTableProvider;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 import ru.gltexture.zpm3.modules.loot_cases.reload.ZPLootTableExtensionsReloadListener;
 import ru.gltexture.zpm3.modules.loot_cases.reload.ZPLootTablesReloadListener;
 
-@OnlyIn(Dist.CLIENT)
-public class ZPLootTablesGatherDataEvent implements ZPForgeEventHandlerClass {
-    public ZPLootTablesGatherDataEvent() {
+public class ZPLootTablesReloadDataEvent implements ZPForgeEventHandlerClass {
+    public ZPLootTablesReloadDataEvent() {
     }
 
     @Override
     public @NotNull ZPSide getSide() {
-        return ZPSide.CLIENT;
+        return ZPSide.COMMON;
     }
 
     @Override
     public @NotNull Mod.EventBusSubscriber.Bus getBus() {
-        return Mod.EventBusSubscriber.Bus.MOD;
+        return Mod.EventBusSubscriber.Bus.FORGE;
     }
 
     @SubscribeEvent
-    public static void gatherData(GatherDataEvent event) {
-        DataGenerator generator = event.getGenerator();
-        PackOutput output = generator.getPackOutput();
-        generator.addProvider(event.includeClient(), new ZPLootTableProvider(output));
+    public static void onAddReloadListener(AddReloadListenerEvent event) {
+        event.addListener(new ZPLootTablesReloadListener());
+        event.addListener(new ZPLootTableExtensionsReloadListener());
     }
 }

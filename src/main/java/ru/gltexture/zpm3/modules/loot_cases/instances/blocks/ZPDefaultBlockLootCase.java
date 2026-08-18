@@ -22,6 +22,7 @@ package ru.gltexture.zpm3.modules.loot_cases.instances.blocks;
 
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -41,10 +42,10 @@ public class ZPDefaultBlockLootCase extends ZPChestBlock {
     @OnlyIn(Dist.CLIENT)
     private LootCaseTextureMaterials lootCaseTextureMaterials;
     private final String blockTexture;
-    private final ZPLootTable connectedLootTable;
+    private final ResourceLocation connectedLootTable;
     private final int lootRespawnTime;
 
-    public ZPDefaultBlockLootCase(@NotNull Properties pProperties, @NotNull String blockTexture, @NotNull ZPLootTable connectedLootTable, int lootRespawnTime) {
+    public ZPDefaultBlockLootCase(@NotNull Properties pProperties, @NotNull String blockTexture, @NotNull ResourceLocation connectedLootTable, int lootRespawnTime) {
         super(pProperties, () -> ZPBlockLootCaseEntities.loot_case_block_entity.get());
         this.blockTexture = blockTexture;
         this.connectedLootTable = connectedLootTable;
@@ -79,7 +80,7 @@ public class ZPDefaultBlockLootCase extends ZPChestBlock {
         return this.lootRespawnTime;
     }
 
-    public ZPLootTable getConnectedLootTable() {
+    public ResourceLocation getConnectedLootTable() {
         return this.connectedLootTable;
     }
 

@@ -18,9 +18,26 @@
  *
  */
 
-package ru.gltexture.zpm3.engine.core.api.modules.context;
+package ru.gltexture.zpm3.modules.loot_cases.loot_tables.nbt.values;
 
-import ru.gltexture.zpm3.engine.core.api.context.IZPPostInitContext;
+import net.minecraft.nbt.CompoundTag;
+import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.modules.loot_cases.loot_tables.nbt.ZPLootNbtValue;
 
-public interface IModulePostInitContext extends IZPPostInitContext {
+public final class ZPLootNbtInt extends ZPLootNbtValue {
+    private final int value;
+
+    public ZPLootNbtInt(int value) {
+        super(ZPLootNbtValue.TYPE_INT);
+        this.value = value;
+    }
+
+    @Override
+    public void writeValue(@NotNull CompoundTag nbt, @NotNull String key) {
+        nbt.putInt(key, this.value);
+    }
+
+    public int value() {
+        return this.value;
+    }
 }

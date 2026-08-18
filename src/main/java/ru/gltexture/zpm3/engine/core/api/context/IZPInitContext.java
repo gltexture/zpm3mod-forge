@@ -23,14 +23,7 @@ package ru.gltexture.zpm3.engine.core.api.context;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.api.events.ZP3EventHandlerClass;
-import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
-import ru.gltexture.zpm3.engine.instances.items.tier.ZPTier;
-import ru.gltexture.zpm3.engine.instances.items.tier.ZPTierData;
-import ru.gltexture.zpm3.engine.network.ZPNetwork;
-import ru.gltexture.zpm3.engine.recipes.ZPRecipesRegistry;
-import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.modules.entity.population.ZPSetupPopulation;
-import ru.gltexture.zpm3.modules.loot_cases.registry.ZPLootTablesRegistry;
 import ru.gltexture.zpm3.modules.net_pack.data.accessors.ZPNetDataAccessor;
 import ru.gltexture.zpm3.modules.net_pack.data.data_ent.ZPNetDataVar;
 
@@ -41,6 +34,6 @@ public interface IZPInitContext {
     <E> void defineStaticNetAccessor_ForServer(@NotNull ZPNetDataAccessor<E> accessor, @NotNull ZPNetDataVar<E> defaultValue);
     <E> void defineStaticNetAccessor_ForClient(@NotNull ZPNetDataAccessor<E> accessor, @NotNull ZPNetDataVar<E> defaultValue);
 
-    //void addLootTablesRegistry(@NotNull ZPLootTablesRegistry object);
+    //void addLootTablesRegistry(@NotNull ZPSyntheticLootCasesDataGenRegistry object);
     void runPopulationSetup(@NotNull ZPSetupPopulation setup);
 }

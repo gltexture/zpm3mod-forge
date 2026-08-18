@@ -29,6 +29,7 @@ import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPShaderLoader;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.modules.debug.imgui.ZPImGuiDebugInterface;
 import ru.gltexture.zpm3.modules.mob_effects.init.ZPMobEffects;
+import ru.gltexture.zpm3.modules.mob_effects.utils.ZPEffectUtils;
 
 import java.util.Objects;
 
@@ -60,7 +61,7 @@ public class ZPAdrenalinePostFXProcessor extends ZPPostFXProcessor{
     @Override
     public boolean bypass() {
         if (Minecraft.getInstance().player != null) {
-            return !Minecraft.getInstance().player.hasEffect(ZPMobEffects.adrenaline.get());
+            return !ZPEffectUtils.isAdrenalined(Minecraft.getInstance().player);
         }
         return !ZPImGuiDebugInterface.FORCE_ENABLE_ADRENALINE_POST_FX_SHADER;
     }

@@ -115,7 +115,7 @@ public class ZPRottenFleshEntity extends ZPThrowableEntity {
                 if (!this.level().isEmptyBlock(pos)) {
                     if (this.level() instanceof IZPLevelExt ext) {
                         if (ZPFakePlayer.canBreakBlock((ServerLevel) this.level(), pos) && !ZPZoneChecks.INSTANCE.isNoThrowableBlockDamage((ServerLevel) this.level(), pos)) {
-                            ext.zpm3forge$getGlobalBlocksDestroyMemory().addNewEntryLongMem(this.level(), pos, (0.3f + ZPRandom.getRandom().nextFloat(1.5f)) * ZPCombatConfig.THROWABLES_BLOCK_BREAK_MULTIPLIER.getVar());
+                            ext.zpm3forge$getGlobalBlocksDestroyMemory().addNewEntryLongMem(this, this.level(), pos, (0.3f + ZPRandom.getRandom().nextFloat(1.5f)) * ZPCombatConfig.THROWABLES_BLOCK_BREAK_MULTIPLIER.getVar());
                             ZPGlobalBlocksDestroyMemory.spawnBlockCrackParticles((ServerLevel) this.level(), pos);
                         }
                     }

@@ -308,11 +308,11 @@ public class ZPDefaultPistolRenderer extends ZPAbstractGunRenderer {
     }
 
     @Override
-    public void onReloadStart(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, ZPDefaultGunLogicFunctions.@NotNull GunFXData_Reload gunFXData) {
+    public void onReloadStart(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, ZPDefaultGunLogicFunctions.@NotNull GunActionData_Reload gunFXData) {
 
     }
 
     @Override
-    public void onShot(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, ZPDefaultGunLogicFunctions.@NotNull GunFXData_Shot gunFXData) {
+    public void onShot(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, ZPDefaultGunLogicFunctions.@NotNull GunClientData_Shot gunFXData) {
     }
 }

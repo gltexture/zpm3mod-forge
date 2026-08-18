@@ -63,7 +63,7 @@ public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
     }
 
     @Override
-    public void onShot(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, ZPDefaultGunLogicFunctions.GunFXData_Shot gunFXData) {
+    public void onShot(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, ZPDefaultGunLogicFunctions.GunClientData_Shot gunFXData) {
         if (gunFXData.recoilStrength() > 0.0f) {
             if (player.getItemInHand(gunFXData.isRightHand() ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND).equals(itemStack)) {
                 this.onEmmitSmoke(player, baseGun, itemStack, gunFXData.isRightHand());

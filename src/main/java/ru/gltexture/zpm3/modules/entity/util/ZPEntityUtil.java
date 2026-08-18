@@ -49,6 +49,7 @@ import ru.gltexture.zpm3.modules.common.init.ZPTags;
 import ru.gltexture.zpm3.modules.common.utils.ZPCommonServerUtils;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.modules.mob_effects.init.ZPMobEffects;
+import ru.gltexture.zpm3.modules.mob_effects.utils.ZPEffectUtils;
 
 import java.util.Objects;
 
@@ -65,7 +66,7 @@ public class ZPEntityUtil {
     }
 
     public static float getEntityPlaguePercentage(@NotNull LivingEntity entity) {
-        if (!entity.hasEffect(ZPMobEffects.zombie_plague.get())) {
+        if (!ZPEffectUtils.isZombiePlagued(entity)) {
             return -1.0f;
         }
         final int duration = Objects.requireNonNull(entity.getEffect(ZPMobEffects.zombie_plague.get())).getDuration();
@@ -85,7 +86,7 @@ public class ZPEntityUtil {
 
     // < 0 = NO
     public static int getEntityToxicAffectionTickRate(@NotNull final Entity entity) {
-        if (entity instanceof LivingEntity livingEntity && livingEntity.hasEffect(ZPMobEffects.immune.get())) {
+        if (entity instanceof LivingEntity livingEntity && ZPEffectUtils.isImmune(livingEntity)) {
             return -1;
         }
         final int getEntityToxicIncMultiplier = ZPEntityUtil.getEntityToxicIncMultiplier(entity);
@@ -139,7 +140,7 @@ public class ZPEntityUtil {
 
     // 0 = NO; 1 = LVL1; 2 = LVL2
     public static int getLivingEntityRadiationIncMultiplier(@NotNull LivingEntity livingEntity) {
-        if (livingEntity.hasEffect(ZPMobEffects.radiation_protection.get())) {
+        if (ZPEffectUtils.isRadiationProtected(livingEntity)) {
             return 0;
         }
         if (ZPZoneChecks.INSTANCE.isNoRadiationAffection(livingEntity.level(), livingEntity.blockPosition())) {
@@ -168,7 +169,7 @@ public class ZPEntityUtil {
             entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 1200, 1, true, true));
         }
 
-        if (!entity.hasEffect(ZPMobEffects.zombie_plague.get()) && rad >= 50) {
+        if (!ZPEffectUtils.isZombiePlagued(entity) && rad >= 50) {
             entity.addEffect(new MobEffectInstance(ZPMobEffects.zombie_plague.get(), ZPZombieConfig.ZOMBIE_PLAGUE_VIRUS_EFFECT_TIME_TICKS.getVar(), 0, false, false));
         }
 

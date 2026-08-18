@@ -28,12 +28,17 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3i;
 
+import ru.gltexture.zpm3.engine.core.ZP_EventsManager;
+import ru.gltexture.zpm3.engine.core.api.events.ZPEventDef;
+import ru.gltexture.zpm3.engine.core.api.events.common.ZPEventBus_World;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
@@ -48,7 +53,7 @@ public class ZPGlobalBlocksDestroyMemory {
         this.memory = new HashMap<>();
     }
 
-    public static void spawnBlockCrackParticles(ServerLevel serverLevel, BlockPos origin) {
+    public static void spawnBlockCrackParticles(@NotNull ServerLevel serverLevel, @NotNull BlockPos origin) {
         BlockState blockState = serverLevel.getBlockState(origin);
 
         for (Direction dir : Direction.values()) {
@@ -73,12 +78,23 @@ public class ZPGlobalBlocksDestroyMemory {
             }
         }
     }
-    public void addNewEntryShortMem(@NotNull Level level, @NotNull BlockPos blockPos, float progressInc) {
-        this.addNewEntry(level, blockPos, progressInc, ZPZombieConfig.TIME_TO_CLEAR_SHARED_ZOMBIE_MINING_SHORT_MEM.getVar());
+
+    public void addNewEntryShortMem(@Nullable Entity reason, @NotNull Level level, @NotNull BlockPos blockPos, float progressInc) {
+        final ZPEventBus_World.ZombieMiningShortMemAddEntryEvent cancellable = new ZPEventBus_World.ZombieMiningShortMemAddEntryEvent(reason, level, blockPos, progressInc);
+        ZP_EventsManager.pushEvent(cancellable);
+        if (cancellable.isCancelled()) {
+            return;
+        }
+        this.addNewEntry(level, blockPos, cancellable.getProgressInc(), ZPZombieConfig.TIME_TO_CLEAR_SHARED_ZOMBIE_MINING_SHORT_MEM.getVar());
     }
 
-    public void addNewEntryLongMem(@NotNull Level level, @NotNull BlockPos blockPos, float progressInc) {
-        this.addNewEntry(level, blockPos, progressInc, ZPZombieConfig.TIME_TO_CLEAR_SHARED_ZOMBIE_MINING_LONG_MEM.getVar());
+    public void addNewEntryLongMem(@Nullable Entity reason, @NotNull Level level, @NotNull BlockPos blockPos, float progressInc) {
+        final ZPEventBus_World.ZombieMiningLongMemAddEntryEvent cancellable = new ZPEventBus_World.ZombieMiningLongMemAddEntryEvent(reason, level, blockPos, progressInc);
+        ZP_EventsManager.pushEvent(cancellable);
+        if (cancellable.isCancelled()) {
+            return;
+        }
+        this.addNewEntry(level, blockPos, cancellable.getProgressInc(), ZPZombieConfig.TIME_TO_CLEAR_SHARED_ZOMBIE_MINING_LONG_MEM.getVar());
     }
 
     private void addNewEntry(@NotNull Level level, @NotNull BlockPos blockPos, float progressInc, int memTicks) {
@@ -141,7 +157,7 @@ public class ZPGlobalBlocksDestroyMemory {
                 continue;
             }
             final BlockState blockState = level.getBlockState(blockPos);
-            final float blockHardness = blockState.getDestroySpeed(level, blockPos) * ZPZombieConfig.ZOMBIE_MINING_BLOCK_HARDNESS_MULTIPLIER.getVar();
+            final float blockHardness = blockState.getDestroySpeed(level, blockPos); //* ZPZombieConfig.ZOMBIE_MINING_BLOCK_HARDNESS_MULTIPLIER.getVar();
             final int visualProgress = this.getVisualProgress(entry.getValue().progress, blockHardness);
             {
                 if (level.getGameTime() % 60 == 0 || entry.getValue().getPrevVisualProgress() != visualProgress) {

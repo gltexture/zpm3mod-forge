@@ -52,7 +52,6 @@ import java.util.*;
 public class ZPImGuiCreativeUtilityUI implements IZPImGuiInterface {
     public static @Nullable String currentSelectedZoneID;
     private static final Map<String, ImInt> INT_VAR_CACHE = new HashMap<>();
-
     private static final ImString inputId = new ImString(64);
     public static int[] inputStart = new int[]{0, 0, 0};
     public static int[] inputEnd = new int[]{0, 0, 0};
@@ -113,35 +112,24 @@ public class ZPImGuiCreativeUtilityUI implements IZPImGuiInterface {
         ImGui.treePop();
     }
 
-    @Override
-    public void drawGui(@NotNull Window window, @NotNull Input input) {
-        if (!ZPImGuiCreativeUtilityUI.ALLOW_IN_SURVIVAL() || Minecraft.getInstance().player == null) {
-            return;
-        }
-
-        if (ZPImGuiCreativeUtilityUI.ENABLE_UTILITY) {
-            ImGui.setNextWindowPos(0, 0, ImGuiCond.Once);
-            ImGui.setNextWindowSize(400, 600, ImGuiCond.Once);
-            ImGui.begin("Creative Utility");
-
-            if (Minecraft.getInstance().getSingleplayerServer() != null && ImGui.collapsingHeader("Archive Map")) {
-                final Path zpMaps = Paths.get("zp_maps");
-                if (ImGui.button("Run")) {
+    private void archiveMapWindow() {
+        final Path zpMaps = Paths.get("zp_maps");
+        if (ImGui.button("Run")) {
+            try {
+                MinecraftServer server = Minecraft.getInstance().getSingleplayerServer();
+                Files.createDirectories(zpMaps);
+                final Path inner = zpMaps.resolve(server.getWorldData().getLevelName().toLowerCase().replaceAll(" ", "_"));
+                Files.createDirectories(inner);
+                final Path zip = inner.resolve(server.getWorldData().getLevelName().toLowerCase().replaceAll(" ", "_") + ".zip");
+                ZPMapArchiver.archive(server, zip, a -> {
+                    a.file("level.dat");
+                    a.folder("region");
+                    a.folder("entities");
+                    a.folder("overworld");
+                });
+                {
                     try {
-                        MinecraftServer server = Minecraft.getInstance().getSingleplayerServer();
-                        Files.createDirectories(zpMaps);
-                        final Path inner = zpMaps.resolve(server.getWorldData().getLevelName().toLowerCase().replaceAll(" ", "_"));
-                        Files.createDirectories(inner);
-                        final Path zip = inner.resolve(server.getWorldData().getLevelName().toLowerCase().replaceAll(" ", "_") + ".zip");
-                        ZPMapArchiver.archive(server, zip, a -> {
-                            a.file("level.dat");
-                            a.folder("region");
-                            a.folder("entities");
-                            a.folder("overworld");
-                        });
-                        {
-                            try {
-                                String template = """
+                        String template = """
                                         {
                                           "archive": "%s",
                                           "preview": "",
@@ -155,155 +143,174 @@ public class ZPImGuiCreativeUtilityUI implements IZPImGuiInterface {
                                           "modVersion": "0.0a"
                                         }
                                         """.formatted(
-                                        zip.getFileName(),
-                                        server.getWorldData().getLevelName()
-                                );
+                                zip.getFileName(),
+                                server.getWorldData().getLevelName()
+                        );
 
-                                Files.writeString(inner.resolve("map.json"), template, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
-                            } catch (IOException e) {
-                                throw new RuntimeException("Failed to create map metadata", e);
-                            }
-                        }
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
+                        Files.writeString(inner.resolve("map.json"), template, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+                    } catch (IOException e) {
+                        throw new RuntimeException("Failed to create map metadata", e);
                     }
                 }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
 
-                ImGui.pushStyleColor(ImGuiCol.Text, 0xff00ff00);
-                if (ImGui.button("Open Save Folder")) {
-                    Util.getPlatform().openFile(zpMaps.toFile());
+        ImGui.pushStyleColor(ImGuiCol.Text, 0xff00ff00);
+        if (ImGui.button("Open Save Folder")) {
+            Util.getPlatform().openFile(zpMaps.toFile());
+        }
+        ImGui.popStyleColor();
+    }
+
+    private void zonesWindow() {
+        ImGui.indent();
+        if (ImGui.collapsingHeader("+ Create")) {
+            ImGui.pushID("CreateUtilxyz");
+            ImGui.inputText("ID", ZPImGuiCreativeUtilityUI.inputId);
+
+            ImGui.inputInt3("Start XYZ", ZPImGuiCreativeUtilityUI.inputStart);
+            ImGui.inputInt3("End XYZ", ZPImGuiCreativeUtilityUI.inputEnd);
+
+            {
+                ZPImGuiCreativeUtilityUI.drawXYZUtil(inputStart, inputEnd);
+            }
+
+            ImGui.separator();
+            ImGui.text("Flags");
+
+            for (ZPZoneFlag f : ZPZonesRegistry.flagValues()) {
+                final boolean flag = ZPImGuiCreativeUtilityUI.inputFlags.contains(f);
+                if (ImGui.checkbox(f.id(), flag)) {
+                    if (flag) {
+                        ZPImGuiCreativeUtilityUI.inputFlags.remove(f);
+                    } else {
+                        ZPImGuiCreativeUtilityUI.inputFlags.add(f);
+                    }
                 }
-                ImGui.popStyleColor();
+            }
+
+            if (ImGui.button("Create")) {
+                if (!ZPImGuiCreativeUtilityUI.inputId.isEmpty()) {
+                    Minecraft.getInstance().player.connection.sendCommand(String.format("zp3 zoneCreate %s %d %d %d %d %d %d",
+                            ZPImGuiCreativeUtilityUI.inputId.get(),
+                            ZPImGuiCreativeUtilityUI.inputStart[0],
+                            ZPImGuiCreativeUtilityUI.inputStart[1],
+                            ZPImGuiCreativeUtilityUI.inputStart[2],
+                            ZPImGuiCreativeUtilityUI.inputEnd[0],
+                            ZPImGuiCreativeUtilityUI.inputEnd[1],
+                            ZPImGuiCreativeUtilityUI.inputEnd[2]
+                    ));
+
+                    for (ZPZoneFlag flag : ZPImGuiCreativeUtilityUI.inputFlags) {
+                        Minecraft.getInstance().player.connection.sendCommand(
+                                "zp3 zoneAddFlags " + ZPImGuiCreativeUtilityUI.inputId.get() + " " + flag.id()
+                        );
+                    }
+
+                    ZPImGuiCreativeUtilityUI.clearInput();
+                }
+            }
+            ImGui.popID();
+        } else {
+            ZPImGuiCreativeUtilityUI.clearInput();
+        }
+        if (ImGui.collapsingHeader("List")) {
+            ImGui.pushID("EditUtilXYZ");
+            String preview = ZPImGuiCreativeUtilityUI.currentSelectedZoneID == null ? "<None>" : ZPImGuiCreativeUtilityUI.currentSelectedZoneID;
+            if (ImGui.beginCombo("Selected Zone", preview)) {
+                if (ImGui.selectable("<None>", ZPImGuiCreativeUtilityUI.currentSelectedZoneID == null)) {
+                    ZPImGuiCreativeUtilityUI.currentSelectedZoneID = null;
+                }
+                final Collection<ZPZoneManager.Zone> zones = ZPZoneManager.INSTANCE.getAllZonesOnLevel(Minecraft.getInstance().player.level());
+                if (zones != null) {
+                    for (ZPZoneManager.Zone zone : zones) {
+                        boolean selected = zone.uniqueId().equals(ZPImGuiCreativeUtilityUI.currentSelectedZoneID);
+                        if (ImGui.selectable(zone.uniqueId(), selected)) {
+                            ZPImGuiCreativeUtilityUI.currentSelectedZoneID = zone.uniqueId();
+                        }
+                        if (selected) {
+                            ImGui.setItemDefaultFocus();
+                        }
+                    }
+                }
+                ImGui.endCombo();
+            }
+
+            boolean zoneSelected = ZPImGuiCreativeUtilityUI.currentSelectedZoneID != null;
+            ImGui.beginDisabled(!zoneSelected);
+            @Nullable ZPZoneManager.Zone zone = ZPZoneManager.INSTANCE.getZoneById(Minecraft.getInstance().player.level(), ZPImGuiCreativeUtilityUI.currentSelectedZoneID);
+            final int[] selZoneStartXYZ = zone != null ? new int[]{zone.start().x, zone.start().y, zone.start().z} : new int[]{0, 0, 0};
+            final int[] selZoneEndXYZ = zone != null ? new int[]{zone.end().x, zone.end().y, zone.end().z} : new int[]{0, 0, 0};
+
+            final int[] copyArrS = Arrays.copyOf(selZoneStartXYZ, 3);
+            final int[] copyArrE = Arrays.copyOf(selZoneEndXYZ, 3);
+
+            ImGui.separator();
+            ImGui.text("Coordinates");
+            ImGui.inputInt3("Start XYZ", copyArrS);
+            ImGui.inputInt3("End XYZ", copyArrE);
+            ZPImGuiCreativeUtilityUI.drawXYZUtil(copyArrS, copyArrE);
+            if (Arrays.compare(selZoneStartXYZ, copyArrS) != 0 || Arrays.compare(selZoneEndXYZ, copyArrE) != 0) {
+                Minecraft.getInstance().player.connection.sendCommand(String.format("zp3 zoneSetBounds %s %d %d %d %d %d %d",
+                        ZPImGuiCreativeUtilityUI.currentSelectedZoneID, copyArrS[0], copyArrS[1], copyArrS[2], copyArrE[0], copyArrE[1], copyArrE[2]));
+            }
+            ImGui.separator();
+            ImGui.text("Flags");
+
+            for (ZPZoneFlag flag : ZPZonesRegistry.flagValues()) {
+                boolean enabled = zone != null && zone.flags().contains(flag);
+                if (ImGui.checkbox(flag.id(), enabled)) {
+                    if (enabled) {
+                        Minecraft.getInstance().player.connection.sendCommand("zp3 zoneRemoveFlags " + ZPImGuiCreativeUtilityUI.currentSelectedZoneID + " " + flag.id());
+                    } else {
+                        Minecraft.getInstance().player.connection.sendCommand("zp3 zoneAddFlags " + ZPImGuiCreativeUtilityUI.currentSelectedZoneID + " " + flag.id());
+                    }
+                }
+            }
+            if (zone != null && zone.int_vars() != null) {
+                ImGui.text("Vars");
+                for (ZPZoneIntVar zoneVar : zone.int_vars().values()) {
+                    ImInt value = INT_VAR_CACHE.computeIfAbsent(zoneVar.getVariableId(), k -> new ImInt(zoneVar.getValue()));
+                    ImGui.pushItemWidth(120);
+                    if (ImGui.sliderInt(zoneVar.getVariableId(), value.getData(), zoneVar.getMin(), zoneVar.getMax())) {
+                    }
+                    if (ImGui.isItemDeactivatedAfterEdit()) {
+                        Minecraft.getInstance().player.connection.sendCommand("zp3 zoneSetIntVar " + ZPImGuiCreativeUtilityUI.currentSelectedZoneID + " " + zoneVar.getVariableId() + " " + value.get());
+                    }
+                    ImGui.popItemWidth();
+                }
+            }
+
+            ImGui.separator();
+            if (ImGui.button("DELETE ZONE")) {
+                Minecraft.getInstance().player.connection.sendCommand("zp3 zoneRemove " + ZPImGuiCreativeUtilityUI.currentSelectedZoneID);
+                ZPImGuiCreativeUtilityUI.currentSelectedZoneID = null;
+            }
+            ImGui.endDisabled();
+            ImGui.popID();
+        }
+        ImGui.unindent();
+    }
+
+    @Override
+    public void drawGui(@NotNull Window window, @NotNull Input input) {
+        if (!ZPImGuiCreativeUtilityUI.ALLOW_IN_SURVIVAL() || Minecraft.getInstance().player == null) {
+            return;
+        }
+
+        if (ZPImGuiCreativeUtilityUI.ENABLE_UTILITY) {
+            ImGui.setNextWindowPos(0, 0, ImGuiCond.Once);
+            ImGui.setNextWindowSize(400, 600, ImGuiCond.Once);
+            ImGui.begin("Creative Utility");
+
+            if (Minecraft.getInstance().getSingleplayerServer() != null && ImGui.collapsingHeader("Archive Map")) {
+                this.archiveMapWindow();
             }
 
             if (ImGui.collapsingHeader("Zones")) {
-                ImGui.indent();
-                if (ImGui.collapsingHeader("+ Create")) {
-                    ImGui.pushID("CreateUtilxyz");
-                    ImGui.inputText("ID", ZPImGuiCreativeUtilityUI.inputId);
-
-                    ImGui.inputInt3("Start XYZ", ZPImGuiCreativeUtilityUI.inputStart);
-                    ImGui.inputInt3("End XYZ", ZPImGuiCreativeUtilityUI.inputEnd);
-
-                    {
-                        ZPImGuiCreativeUtilityUI.drawXYZUtil(inputStart, inputEnd);
-                    }
-
-                    ImGui.separator();
-                    ImGui.text("Flags");
-
-                    for (ZPZoneFlag f : ZPZonesRegistry.flagValues()) {
-                        final boolean flag = ZPImGuiCreativeUtilityUI.inputFlags.contains(f);
-                        if (ImGui.checkbox(f.id(), flag)) {
-                            if (flag) {
-                                ZPImGuiCreativeUtilityUI.inputFlags.remove(f);
-                            } else {
-                                ZPImGuiCreativeUtilityUI.inputFlags.add(f);
-                            }
-                        }
-                    }
-
-                    if (ImGui.button("Create")) {
-                        if (!ZPImGuiCreativeUtilityUI.inputId.isEmpty()) {
-                            Minecraft.getInstance().player.connection.sendCommand(String.format("zp3 zoneCreate %s %d %d %d %d %d %d",
-                                    ZPImGuiCreativeUtilityUI.inputId.get(),
-                                    ZPImGuiCreativeUtilityUI.inputStart[0],
-                                    ZPImGuiCreativeUtilityUI.inputStart[1],
-                                    ZPImGuiCreativeUtilityUI.inputStart[2],
-                                    ZPImGuiCreativeUtilityUI.inputEnd[0],
-                                    ZPImGuiCreativeUtilityUI.inputEnd[1],
-                                    ZPImGuiCreativeUtilityUI.inputEnd[2]
-                            ));
-
-                            for (ZPZoneFlag flag : ZPImGuiCreativeUtilityUI.inputFlags) {
-                                Minecraft.getInstance().player.connection.sendCommand(
-                                        "zp3 zoneAddFlags " + ZPImGuiCreativeUtilityUI.inputId.get() + " " + flag.id()
-                                );
-                            }
-
-                            ZPImGuiCreativeUtilityUI.clearInput();
-                        }
-                    }
-                    ImGui.popID();
-                } else {
-                    ZPImGuiCreativeUtilityUI.clearInput();
-                }
-                if (ImGui.collapsingHeader("List")) {
-                    ImGui.pushID("EditUtilXYZ");
-                    String preview = ZPImGuiCreativeUtilityUI.currentSelectedZoneID == null ? "<None>" : ZPImGuiCreativeUtilityUI.currentSelectedZoneID;
-                    if (ImGui.beginCombo("Selected Zone", preview)) {
-                        if (ImGui.selectable("<None>", ZPImGuiCreativeUtilityUI.currentSelectedZoneID == null)) {
-                            ZPImGuiCreativeUtilityUI.currentSelectedZoneID = null;
-                        }
-                        final Collection<ZPZoneManager.Zone> zones = ZPZoneManager.INSTANCE.getAllZonesOnLevel(Minecraft.getInstance().player.level());
-                        if (zones != null) {
-                            for (ZPZoneManager.Zone zone : zones) {
-                                boolean selected = zone.uniqueId().equals(ZPImGuiCreativeUtilityUI.currentSelectedZoneID);
-                                if (ImGui.selectable(zone.uniqueId(), selected)) {
-                                    ZPImGuiCreativeUtilityUI.currentSelectedZoneID = zone.uniqueId();
-                                }
-                                if (selected) {
-                                    ImGui.setItemDefaultFocus();
-                                }
-                            }
-                        }
-                        ImGui.endCombo();
-                    }
-
-                    boolean zoneSelected = ZPImGuiCreativeUtilityUI.currentSelectedZoneID != null;
-                    ImGui.beginDisabled(!zoneSelected);
-                    @Nullable ZPZoneManager.Zone zone = ZPZoneManager.INSTANCE.getZoneById(Minecraft.getInstance().player.level(), ZPImGuiCreativeUtilityUI.currentSelectedZoneID);
-                    final int[] selZoneStartXYZ = zone != null ? new int[]{zone.start().x, zone.start().y, zone.start().z} : new int[]{0, 0, 0};
-                    final int[] selZoneEndXYZ = zone != null ? new int[]{zone.end().x, zone.end().y, zone.end().z} : new int[]{0, 0, 0};
-
-                    final int[] copyArrS = Arrays.copyOf(selZoneStartXYZ, 3);
-                    final int[] copyArrE = Arrays.copyOf(selZoneEndXYZ, 3);
-
-                    ImGui.separator();
-                    ImGui.text("Coordinates");
-                    ImGui.inputInt3("Start XYZ", copyArrS);
-                    ImGui.inputInt3("End XYZ", copyArrE);
-                    ZPImGuiCreativeUtilityUI.drawXYZUtil(copyArrS, copyArrE);
-                    if (Arrays.compare(selZoneStartXYZ, copyArrS) != 0 || Arrays.compare(selZoneEndXYZ, copyArrE) != 0) {
-                        Minecraft.getInstance().player.connection.sendCommand(String.format("zp3 zoneSetBounds %s %d %d %d %d %d %d",
-                                ZPImGuiCreativeUtilityUI.currentSelectedZoneID, copyArrS[0], copyArrS[1], copyArrS[2], copyArrE[0], copyArrE[1], copyArrE[2]));
-                    }
-                    ImGui.separator();
-                    ImGui.text("Flags");
-
-                    for (ZPZoneFlag flag : ZPZonesRegistry.flagValues()) {
-                        boolean enabled = zone != null && zone.flags().contains(flag);
-                        if (ImGui.checkbox(flag.id(), enabled)) {
-                            if (enabled) {
-                                Minecraft.getInstance().player.connection.sendCommand("zp3 zoneRemoveFlags " + ZPImGuiCreativeUtilityUI.currentSelectedZoneID + " " + flag.id());
-                            } else {
-                                Minecraft.getInstance().player.connection.sendCommand("zp3 zoneAddFlags " + ZPImGuiCreativeUtilityUI.currentSelectedZoneID + " " + flag.id());
-                            }
-                        }
-                    }
-                    if (zone != null && zone.int_vars() != null) {
-                        ImGui.text("Vars");
-                        for (ZPZoneIntVar zoneVar : zone.int_vars().values()) {
-                            ImInt value = INT_VAR_CACHE.computeIfAbsent(zoneVar.getVariableId(), k -> new ImInt(zoneVar.getValue()));
-                            ImGui.pushItemWidth(120);
-                            if (ImGui.sliderInt(zoneVar.getVariableId(), value.getData(), zoneVar.getMin(), zoneVar.getMax())) {
-                            }
-                            if (ImGui.isItemDeactivatedAfterEdit()) {
-                                Minecraft.getInstance().player.connection.sendCommand("zp3 zoneSetIntVar " + ZPImGuiCreativeUtilityUI.currentSelectedZoneID + " " + zoneVar.getVariableId() + " " + value.get());
-                            }
-                            ImGui.popItemWidth();
-                        }
-                    }
-
-                    ImGui.separator();
-                    if (ImGui.button("DELETE ZONE")) {
-                        Minecraft.getInstance().player.connection.sendCommand("zp3 zoneRemove " + ZPImGuiCreativeUtilityUI.currentSelectedZoneID);
-                        ZPImGuiCreativeUtilityUI.currentSelectedZoneID = null;
-                    }
-                    ImGui.endDisabled();
-                    ImGui.popID();
-                }
-                ImGui.unindent();
+               this.zonesWindow();
             }
             ImGui.end();
         }

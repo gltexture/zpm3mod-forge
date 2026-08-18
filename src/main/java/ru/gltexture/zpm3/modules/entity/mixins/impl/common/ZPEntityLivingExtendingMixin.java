@@ -30,6 +30,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.modules.entity.mixins.ext.IZPLivingEntityExt;
 import ru.gltexture.zpm3.modules.mob_effects.init.ZPMobEffects;
+import ru.gltexture.zpm3.modules.mob_effects.utils.ZPEffectUtils;
 import ru.gltexture.zpm3.modules.net_pack.ZPNetPackModule;
 import ru.gltexture.zpm3.modules.net_pack.data.vars.ZPNetDataInt;
 
@@ -81,7 +82,7 @@ public abstract class ZPEntityLivingExtendingMixin implements IZPLivingEntityExt
 
     @Override
     public void zpm3forge$setIntoxicationLevel(int intoxicationLevel) {
-        if (((LivingEntity) (Object) this).hasEffect(ZPMobEffects.immune.get())) {
+        if (ZPEffectUtils.isImmune((LivingEntity) (Object) this)) {
             return;
         }
         final Entity entity = (Entity) (Object) this;

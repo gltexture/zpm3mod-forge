@@ -55,7 +55,6 @@ import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.gltexture.zpm3.engine.client.rendering.IZPClientManager;
@@ -73,7 +72,9 @@ import ru.gltexture.zpm3.engine.core.api.events.ZP3EventHandlerClass;
 import ru.gltexture.zpm3.engine.core.api.events.client.ZPEventBus_ClientInput;
 import ru.gltexture.zpm3.engine.core.api.events.client.ZPEventBus_ClientRendering;
 import ru.gltexture.zpm3.engine.core.api.events.client.ZPEventBus_ClientResources;
-import ru.gltexture.zpm3.engine.core.api.events.common.ZPEventBus_Gameplay;
+import ru.gltexture.zpm3.engine.core.api.events.common.ZPEventBus_Blocks;
+import ru.gltexture.zpm3.engine.core.api.events.common.ZPEventBus_Guns;
+import ru.gltexture.zpm3.engine.core.api.events.common.ZPEventBus_World;
 import ru.gltexture.zpm3.engine.core.api.modules.context.IModuleClientSetupContext;
 import ru.gltexture.zpm3.engine.core.api.modules.context.IModuleInitContext;
 import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePostInitContext;
@@ -322,7 +323,7 @@ public final class ZombiePlague3 {
             ZPUtility.sides().onlyClient(() -> {
                 ZombiePlague3.ZP_EVENTS.initEventBus(ZPEventBus_ClientRendering.class, ZPEventBus_ClientResources.class, ZPEventBus_ClientInput.class);
             });
-            ZombiePlague3.ZP_EVENTS.initEventBus(ZPEventBus_Gameplay.class);
+            ZombiePlague3.ZP_EVENTS.initEventBus(ZPEventBus_Guns.class, ZPEventBus_World.class, ZPEventBus_Blocks.class);
             this.registerCommonZp3Events();
         }
 

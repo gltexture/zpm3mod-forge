@@ -182,12 +182,12 @@ public final class ZPClientCallbacksManager implements IZPClientCallbacksManager
     }
 
     //@Deprecated(forRemoval = true)
-    public void triggerGunShots(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, @NotNull ZPDefaultGunLogicFunctions.GunFXData_Shot gunFXData) {
+    public void triggerGunShots(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, @NotNull ZPDefaultGunLogicFunctions.GunClientData_Shot gunFXData) {
         this.onGunShotCallbacks.forEach(e -> e.onShot(player, baseGun, itemStack, gunFXData));
     }
 
     //@Deprecated(forRemoval = true)
-    public void triggerReloadingStart(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, @NotNull ZPDefaultGunLogicFunctions.GunFXData_Reload gunFXData) {
+    public void triggerReloadingStart(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, @NotNull ZPDefaultGunLogicFunctions.GunActionData_Reload gunFXData) {
         this.onGunReloadStartCallbacks.forEach(e -> e.onReloadStart(player, baseGun, itemStack, gunFXData));
     }
 

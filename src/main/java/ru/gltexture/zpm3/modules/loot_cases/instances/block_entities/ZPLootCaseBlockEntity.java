@@ -30,6 +30,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.core.ZP_EventsManager;
+import ru.gltexture.zpm3.engine.core.api.events.ZPEventDef;
+import ru.gltexture.zpm3.engine.core.api.events.common.ZPEventBus_Blocks;
 import ru.gltexture.zpm3.modules.blocks.instances.block_entities.ZPFadingBlockEntity;
 import ru.gltexture.zpm3.modules.loot_cases.init.ZPBlockLootCaseEntities;
 import ru.gltexture.zpm3.modules.loot_cases.instances.blocks.ZPDefaultBlockLootCase;
@@ -71,15 +74,19 @@ public class ZPLootCaseBlockEntity extends ChestBlockEntity {
                     flag = true;
                 }
                 if (flag) {
-                    this.clearContent();
                     final ZPLootTable rootLootTable = ZPLootTablesCollection.INSTANCE.getLootTableById(defaultBlockLootCase.getConnectedLootTable());
-                    rootLootTable.getExtendBy().forEach(e -> {
-                        ZPLootTable table = ZPLootTablesCollection.INSTANCE.getLootTableById(e);
-                        if (table != null) {
-                            this.spawnLoot(table);
-                        }
-                    });
-                    this.spawnLoot(rootLootTable);
+                    final ZPEventDef.Cancellable cancellable = new ZPEventBus_Blocks.LootCaseRespawnEvent(this.getLevel(), this.getBlockPos(), pPlayer, this, rootLootTable);
+                    ZP_EventsManager.pushEvent((ZPEventDef.IEvent) cancellable);
+                    if (!cancellable.isCancelled()) {
+                        this.clearContent();
+                        rootLootTable.getExtendBy().forEach(e -> {
+                            ZPLootTable table = ZPLootTablesCollection.INSTANCE.getLootTableById(e);
+                            if (table != null) {
+                                this.spawnLoot(table);
+                            }
+                        });
+                        this.spawnLoot(rootLootTable);
+                    }
                     this.setTime(this.getLevel(), defaultBlockLootCase.getLootRespawnTime(), defaultBlockLootCase.getLootRespawnTime() / 10);
                 }
             }

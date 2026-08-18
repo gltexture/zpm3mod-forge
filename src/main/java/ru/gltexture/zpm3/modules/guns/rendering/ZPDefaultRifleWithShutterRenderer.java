@@ -34,7 +34,6 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
-import ru.gltexture.zpm3.engine.client.rendering.callbacks.ZPClientCallbacks;
 import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
 import ru.gltexture.zpm3.modules.guns.processing.logic.ZPDefaultGunLogicFunctions;
 import ru.gltexture.zpm3.modules.guns.rendering.transforms.AbstractGunTransforms;
@@ -215,11 +214,11 @@ public class ZPDefaultRifleWithShutterRenderer extends ZPAbstractGunRenderer {
     }
 
     @Override
-    public void onReloadStart(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, ZPDefaultGunLogicFunctions.GunFXData_Reload gunFXData) {
+    public void onReloadStart(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, ZPDefaultGunLogicFunctions.GunActionData_Reload gunFXData) {
     }
 
     @Override
-    public void onShot(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, ZPDefaultGunLogicFunctions.GunFXData_Shot gunFXData) {
+    public void onShot(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, ZPDefaultGunLogicFunctions.GunClientData_Shot gunFXData) {
         if (baseGun.getCurrentShootCooldown(player, itemStack) > 4) {
             this.timerShutter[this.hand(gunFXData.isRightHand())] = 0.0f;
         }

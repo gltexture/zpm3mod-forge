@@ -45,6 +45,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import ru.gltexture.zpm3.engine.core.ZP_EventsManager;
+import ru.gltexture.zpm3.engine.core.api.events.common.ZPEventBus_Blocks;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
@@ -122,18 +124,24 @@ public abstract class ZPCampfireEntityMixin implements ICampfireExt {
                     }
                     fadingBlock.zpm3forge$incCooldown(1);
                     if (fadingBlock.zpm3forge$fadeCooldown() >= ZPWorldConfig.CAMPFIRE_FADING_TIME.getVar() || (level.getGameTime() >= fadingBlock.zpm3forge$getTimeLock())) {
+                        BlockState newState = turnInto.defaultBlockState();
                         if (!isFinalStage) {
-                            BlockState newState = turnInto.defaultBlockState();
                             newState = ZPUtility.blocks().copyProperties(state, newState);
-                            level.setBlock(pos, newState, Block.UPDATE_ALL);
-                        } else {
-                            Containers.dropContents(level, pos, blockEntity.getItems());
-                            level.setBlock(pos, turnInto.defaultBlockState(), Block.UPDATE_ALL);
+                        }
+                        final ZPEventBus_Blocks.FadingBlockExtinguishEvent event = new ZPEventBus_Blocks.FadingBlockExtinguishEvent(level, pos, state, newState);
+                        ZP_EventsManager.pushEvent(event);
+                        if (event.isCancelled()) {
+                            return;
+                        }
+                        if (!isFinalStage) {
                             if ((Object) level.getBlockEntity(pos) instanceof ZPCampfireEntityMixin fadingBlockEntity) {
                                 fadingBlockEntity.setActive(true);
                                 fadingBlockEntity.zpm3forge$setTimeLock(fadingBlock.zpm3forge$getTimeLock() + ZPWorldConfig.CAMPFIRE_FADING_TIME.getVar());
                             }
+                        } else {
+                            Containers.dropContents(level, pos, blockEntity.getItems());
                         }
+                        level.setBlock(pos, newState, Block.UPDATE_ALL);
                         level.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 1.0F, 1.0F);
                     }
                 //}

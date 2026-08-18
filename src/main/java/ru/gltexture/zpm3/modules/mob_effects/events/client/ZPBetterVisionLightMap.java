@@ -28,15 +28,16 @@ import ru.gltexture.zpm3.engine.core.api.events.ZP3EventHandlerClass;
 import ru.gltexture.zpm3.engine.core.api.events.client.ZPEventBus_ClientRendering;
 import ru.gltexture.zpm3.engine.core.api.events.ZombiePlagueEvent;
 import ru.gltexture.zpm3.modules.mob_effects.init.ZPMobEffects;
+import ru.gltexture.zpm3.modules.mob_effects.utils.ZPEffectUtils;
 
 @OnlyIn(Dist.CLIENT)
 public class ZPBetterVisionLightMap implements ZP3EventHandlerClass {
-    public static final float BV_GAMM = 0.375f;
+    public static final float BV_GAMM = 0.425f;
 
     @ZombiePlagueEvent
     public static void lightmapUpdate(ZPEventBus_ClientRendering.PostCalcMinecraftLightMapEvent event) {
         if (Minecraft.getInstance().player != null) {
-            if (Minecraft.getInstance().player.hasEffect(ZPMobEffects.better_vision.get())) {
+            if (ZPEffectUtils.isBetterVisioned(Minecraft.getInstance().player)) {
                 event.getLightMapModifier().add(new ZPLightMapModifier.LightMapModRequest(1.0f, event.getCurrentGAMMA() < ZPBetterVisionLightMap.BV_GAMM ? ZPBetterVisionLightMap.BV_GAMM - event.getCurrentGAMMA() : 0.0f));
             }
         }

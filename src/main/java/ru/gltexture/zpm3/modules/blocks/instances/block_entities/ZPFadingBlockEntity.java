@@ -30,6 +30,9 @@ import net.minecraft.world.level.block.TorchBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.core.ZP_EventsManager;
+import ru.gltexture.zpm3.engine.core.api.events.common.ZPEventBus_Blocks;
+import ru.gltexture.zpm3.engine.core.api.events.common.ZPEventBus_World;
 import ru.gltexture.zpm3.modules.blocks.init.ZPBlockEntities;
 import ru.gltexture.zpm3.modules.blocks.instances.blocks.IFadingBlock;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
@@ -91,6 +94,12 @@ public class ZPFadingBlockEntity extends ZPBlockEntity implements IFadingBlockEn
                     if (flag) {
                         BlockState newState = Objects.requireNonNull(fadingBlock.zpm3forge$getTurnInto()).get().defaultBlockState();
                         newState = ZPUtility.blocks().copyProperties(state, newState);
+                        final ZPEventBus_Blocks.FadingBlockExtinguishEvent event = new ZPEventBus_Blocks.FadingBlockExtinguishEvent(level, pos, state, newState);
+                        ZP_EventsManager.pushEvent(event);
+                        if (event.isCancelled()) {
+                            return;
+                        }
+                        newState = event.getNewState();
                         level.setBlock(pos, newState, Block.UPDATE_ALL);
                         if (level.getBlockEntity(pos) instanceof ZPFadingBlockEntity fadingBlockEntity) {
                             fadingBlockEntity.setActive(true);

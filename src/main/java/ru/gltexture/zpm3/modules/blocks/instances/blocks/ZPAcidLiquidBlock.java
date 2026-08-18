@@ -133,7 +133,7 @@ public class ZPAcidLiquidBlock extends ZPLiquidBlock implements EntityBlock, IHo
                 if (!flagIsGlass && !flagIsSand && !block.defaultBlockState().is(ZPTags.B_IGNORE_ACID)) {
                     if (pLevel instanceof IZPLevelExt ext) {
                         if (ZPFakePlayer.canBreakBlock(pLevel, blockPos) && !ZPZoneChecks.INSTANCE.isNoAcidAffection(pLevel, blockPos) && !ZPZoneChecks.INSTANCE.isNoAcidBlockDestruction(pLevel, blockPos)) {
-                            ext.zpm3forge$getGlobalBlocksDestroyMemory().addNewEntryLongMem(pLevel, blockPos, ZPWorldConfig.ACID_BLOCK_BASE_BLOCK_DAMAGE.getVar() + ZPRandom.getRandom().nextFloat() * 0.35f);
+                            ext.zpm3forge$getGlobalBlocksDestroyMemory().addNewEntryLongMem(null, pLevel, blockPos, ZPWorldConfig.ACID_BLOCK_BASE_BLOCK_DAMAGE.getVar() + ZPRandom.getRandom().nextFloat() * 0.35f);
                             ZPGlobalBlocksDestroyMemory.spawnBlockCrackParticles(pLevel, blockPos);
                         }
                     }

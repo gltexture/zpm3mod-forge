@@ -29,13 +29,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import ru.gltexture.zpm3.modules.mob_effects.init.ZPMobEffects;
+import ru.gltexture.zpm3.modules.mob_effects.utils.ZPEffectUtils;
 
 @Mixin(Entity.class)
 public abstract class ZPEntityFracturedSprintMixin {
     @Inject(method = "isSprinting", at = @At("HEAD"), cancellable = true)
     private void isSprinting(CallbackInfoReturnable<Boolean> cir) {
         if ((Object) this instanceof LivingEntity self) {
-            if (self.hasEffect(ZPMobEffects.fracture.get())) {
+            if (ZPEffectUtils.isFractured(self)) {
                 cir.setReturnValue(false);
             }
         }
@@ -44,7 +45,7 @@ public abstract class ZPEntityFracturedSprintMixin {
     @Inject(method = "setSprinting", at = @At("HEAD"), cancellable = true)
     private void setSprinting(boolean pSprinting, CallbackInfo ci) {
         if ((Object) this instanceof LivingEntity self) {
-            if (self.hasEffect(ZPMobEffects.fracture.get())) {
+            if (ZPEffectUtils.isFractured(self)) {
                 this.setSharedFlag(3, false);
                 ci.cancel();
             }

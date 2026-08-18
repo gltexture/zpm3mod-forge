@@ -43,7 +43,8 @@ import org.joml.Vector3f;
 import org.joml.Vector3i;
 
 import ru.gltexture.zpm3.engine.core.ZP_EventsManager;
-import ru.gltexture.zpm3.engine.core.api.events.common.ZPEventBus_Gameplay;
+import ru.gltexture.zpm3.engine.core.api.events.ZPEventDef;
+import ru.gltexture.zpm3.engine.core.api.events.common.ZPEventBus_Guns;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPNetworkConfig;
 import ru.gltexture.zpm3.modules.common.init.ZPSounds;
 import ru.gltexture.zpm3.modules.entity.util.ZPEntityUtil;
@@ -62,8 +63,11 @@ import ru.gltexture.zpm3.modules.player.events.client.ZPPlayerLyingClientCheckEv
 import ru.gltexture.zpm3.modules.player.mixins.ext.IZPPlayerMixinExt;
 
 public abstract class ZPDefaultGunLogicFunctions {
-    public record GunFXData_Shot(boolean isRightHand, float recoilStrength, float muzzleflashTime) {}
-    public record GunFXData_Reload(boolean isRightHand) {}
+    //@Deprecated(forRemoval = true)
+    public record GunClientData_Shot(boolean isRightHand, float recoilStrength, float muzzleflashTime) {}
+
+    //@Deprecated(forRemoval = true)
+    public record GunActionData_Reload(boolean isRightHand) {}
 
     public static float inaccuracyReduction(@NotNull Player player) {
         if ((player instanceof IZPPlayerMixinExt ext) && ext.zpm3forge$isLying()) {
@@ -101,9 +105,6 @@ public abstract class ZPDefaultGunLogicFunctions {
             if (!item.isUnloadingOrReloading(player, itemStack) && item.getCurrentShootCooldown(player, itemStack) <= 0) {
                 ZombiePlague3.netClient().sendToServer(new ZPGunActionPacket(player.getId(), ZPGunActionPacket.SHOT, isRightHand));
                 if (currentAmmo > 0 && !item.isJammed(player, itemStack)) {
-                    if (item.getGunProperties().getFireSound() != null) {
-                        ZPDefaultGunLogicFunctions.localSound(item.getGunProperties().getFireSound().get(), item);
-                    }
                     float recoil = item.getGunProperties().getClientVerticalRecoil();
                     if (item.getGunProperties().getHeldType().equals(ZPBaseGun.GunProperties.HeldType.RIFLE)) {
                         if (!isRightHand || !player.getOffhandItem().isEmpty()) {
@@ -111,11 +112,20 @@ public abstract class ZPDefaultGunLogicFunctions {
                         }
                     }
                     final float recoilStrength = ZPClientCrosshairRecoilManager.applyVerticalRecoil(recoil);
-                    item.setCurrentShootCooldown(player, itemStack, shootCooldownNominal);
-                    ZP_EventsManager.pushEvent(new ZPEventBus_Gameplay.GunShotEvent(player, item, itemStack, new GunFXData_Shot(isRightHand, ZPDefaultGunLogicFunctions.recoilReduction(player) * recoilStrength, 0.25f)));
-                    item.setCurrentAmmo(player, itemStack, item.getCurrentAmmo(player, itemStack) - 1);
-                    item.setClientSyncCooldown(itemStack, item.getCurrentAmmo(player, itemStack) <= 0 ? 0 : ZPClientGunClientTickProcessing.TICK_SYNC_INTERVAL);
-                    item.setCurrentTimeBeforeReload(player, itemStack, 10);
+                    final ZPEventDef.Cancellable cancellable = new ZPEventBus_Guns.ClientGunShotEvent(player, item, itemStack, new GunClientData_Shot(isRightHand, ZPDefaultGunLogicFunctions.recoilReduction(player) * recoilStrength, 0.25f));
+                    ZP_EventsManager.pushEvent((ZPEventDef.IEvent) cancellable);
+                    if (cancellable.isCancelled()) {
+                        return false;
+                    }
+                    {
+                        item.setCurrentShootCooldown(player, itemStack, shootCooldownNominal);
+                        item.setCurrentAmmo(player, itemStack, item.getCurrentAmmo(player, itemStack) - 1);
+                        item.setClientSyncCooldown(itemStack, item.getCurrentAmmo(player, itemStack) <= 0 ? 0 : ZPClientGunClientTickProcessing.TICK_SYNC_INTERVAL);
+                        item.setCurrentTimeBeforeReload(player, itemStack, 10);
+                        if (item.getGunProperties().getFireSound() != null) {
+                            ZPDefaultGunLogicFunctions.localSound(item.getGunProperties().getFireSound().get(), item);
+                        }
+                    }
                 } else {
                     if (!item.isJammed(player, itemStack)) {
                         if (item.getGunProperties().getAmmo() != null && player.getInventory().countItem(item.getGunProperties().getAmmo()) > 0) {
@@ -124,17 +134,27 @@ public abstract class ZPDefaultGunLogicFunctions {
                             }
                         }
                     }
-                    ZPDefaultGunLogicFunctions.localSound(item.emptyAmmoSound(), item);
-                    ZP_EventsManager.pushEvent(new ZPEventBus_Gameplay.GunShotEvent(player, item, itemStack, new GunFXData_Shot(isRightHand, -1.0f, -1.0f)));
-                    item.setCurrentShootCooldown(player, itemStack, 4);
+                    final ZPEventDef.Cancellable cancellable = new ZPEventBus_Guns.ClientGunEmptyShotEvent(player, item, itemStack, isRightHand);
+                    ZP_EventsManager.pushEvent((ZPEventDef.IEvent) cancellable);
+                    if (cancellable.isCancelled()) {
+                        return false;
+                    }
+                    {
+                        ZPDefaultGunLogicFunctions.localSound(item.emptyAmmoSound(), item);
+                        item.setCurrentShootCooldown(player, itemStack, 4);
+                    }
                 }
                 return true;
             }
         } else {
+            final ZPEventDef.Cancellable cancellable = new ZPEventBus_Guns.ClientGunEmptyShotEvent(player, item, itemStack, isRightHand);
+            ZP_EventsManager.pushEvent((ZPEventDef.IEvent) cancellable);
+            if (cancellable.isCancelled()) {
+                return false;
+            }
             if (item.getGunProperties().getFireSound() != null) {
                 ZPDefaultGunLogicFunctions.globalSound(item.getGunProperties().getFireSound().get(), item, player);
             }
-            ZP_EventsManager.pushEvent(new ZPEventBus_Gameplay.GunShotEvent(player, item, itemStack, new GunFXData_Shot(isRightHand, item.getGunProperties().getClientVerticalRecoil(), 0.25f)));
             return true;
         }
         return false;
@@ -153,9 +173,6 @@ public abstract class ZPDefaultGunLogicFunctions {
             if (!item.isUnloadingOrReloading(player, itemStack) && item.getCurrentShootCooldown(player, itemStack) <= 0) {
                 ZombiePlague3.netClient().sendToServer(new ZPGunActionPacket(player.getId(), ZPGunActionPacket.SHOT, isRightHand));
                 if (currentAmmo > 0 && !item.isJammed(player, itemStack)) {
-                    if (item.getGunProperties().getFireSound() != null) {
-                        ZPDefaultGunLogicFunctions.localSound(item.getGunProperties().getFireSound().get(), item);
-                    }
                     float recoil = item.getGunProperties().getClientVerticalRecoil();
                     if (item.getGunProperties().getHeldType().equals(ZPBaseGun.GunProperties.HeldType.RIFLE)) {
                         if (!isRightHand || !player.getOffhandItem().isEmpty()) {
@@ -163,11 +180,20 @@ public abstract class ZPDefaultGunLogicFunctions {
                         }
                     }
                     final float recoilStrength = ZPClientCrosshairRecoilManager.applyVerticalRecoil(recoil);
-                    item.setCurrentShootCooldown(player, itemStack, shootCooldownNominal);
-                    ZP_EventsManager.pushEvent(new ZPEventBus_Gameplay.GunShotEvent(player, item, itemStack, new GunFXData_Shot(isRightHand, ZPDefaultGunLogicFunctions.recoilReduction(player) * recoilStrength, 0.25f)));
-                    item.setCurrentAmmo(player, itemStack, item.getCurrentAmmo(player, itemStack) - 1);
-                    item.setClientSyncCooldown(itemStack, item.getCurrentAmmo(player, itemStack) <= 0 ? 0 : ZPClientGunClientTickProcessing.TICK_SYNC_INTERVAL);
-                    item.setCurrentTimeBeforeReload(player, itemStack, 10);
+                    final ZPEventDef.Cancellable cancellable = new ZPEventBus_Guns.ClientGunShotEvent(player, item, itemStack, new GunClientData_Shot(isRightHand, ZPDefaultGunLogicFunctions.recoilReduction(player) * recoilStrength, 0.25f));
+                    ZP_EventsManager.pushEvent((ZPEventDef.IEvent) cancellable);
+                    if (cancellable.isCancelled()) {
+                        return false;
+                    }
+                    {
+                        if (item.getGunProperties().getFireSound() != null) {
+                            ZPDefaultGunLogicFunctions.localSound(item.getGunProperties().getFireSound().get(), item);
+                        }
+                        item.setCurrentShootCooldown(player, itemStack, shootCooldownNominal);
+                        item.setCurrentAmmo(player, itemStack, item.getCurrentAmmo(player, itemStack) - 1);
+                        item.setClientSyncCooldown(itemStack, item.getCurrentAmmo(player, itemStack) <= 0 ? 0 : ZPClientGunClientTickProcessing.TICK_SYNC_INTERVAL);
+                        item.setCurrentTimeBeforeReload(player, itemStack, 10);
+                    }
                 } else {
                     if (!item.isJammed(player, itemStack)) {
                         if (item.getGunProperties().getAmmo() != null && player.getInventory().countItem(item.getGunProperties().getAmmo()) > 0) {
@@ -176,17 +202,27 @@ public abstract class ZPDefaultGunLogicFunctions {
                             }
                         }
                     }
-                    ZPDefaultGunLogicFunctions.localSound(item.emptyAmmoSound(), item);
-                    ZP_EventsManager.pushEvent(new ZPEventBus_Gameplay.GunShotEvent(player, item, itemStack, new GunFXData_Shot(isRightHand, -1.0f, -1.0f)));
-                    item.setCurrentShootCooldown(player, itemStack, 4);
+                    final ZPEventDef.Cancellable cancellable = new ZPEventBus_Guns.ClientGunEmptyShotEvent(player, item, itemStack, isRightHand);
+                    ZP_EventsManager.pushEvent((ZPEventDef.IEvent) cancellable);
+                    if (cancellable.isCancelled()) {
+                        return false;
+                    }
+                    {
+                        ZPDefaultGunLogicFunctions.localSound(item.emptyAmmoSound(), item);
+                        item.setCurrentShootCooldown(player, itemStack, 4);
+                    }
                 }
                 return true;
             }
         } else {
+            final ZPEventDef.Cancellable cancellable = new ZPEventBus_Guns.ClientGunEmptyShotEvent(player, item, itemStack, isRightHand);
+            ZP_EventsManager.pushEvent((ZPEventDef.IEvent) cancellable);
+            if (cancellable.isCancelled()) {
+                return false;
+            }
             if (item.getGunProperties().getFireSound() != null) {
                 ZPDefaultGunLogicFunctions.globalSound(item.getGunProperties().getFireSound().get(), item, player);
             }
-            ZP_EventsManager.pushEvent(new ZPEventBus_Gameplay.GunShotEvent(player, item, itemStack, new GunFXData_Shot(isRightHand, item.getGunProperties().getClientVerticalRecoil(), 0.25f)));
             return true;
         }
 
@@ -215,18 +251,24 @@ public abstract class ZPDefaultGunLogicFunctions {
                     return false;
                 }
                 ZombiePlague3.netClient().sendToServer(new ZPGunActionPacket(player.getId(), unload ? ZPGunActionPacket.UNLOAD : ZPGunActionPacket.RELOAD, isRightHand));
-                if (item.getGunProperties().getReloadSound() != null) {
-                    ZPDefaultGunLogicFunctions.localSound(item.getGunProperties().getReloadSound().get(), item);
+                final ZPEventDef.Cancellable cancellable = new ZPEventBus_Guns.GunReloadStartEvent(player, item, itemStack, new GunActionData_Reload(isRightHand));
+                ZP_EventsManager.pushEvent((ZPEventDef.IEvent) cancellable);
+                if (cancellable.isCancelled()) {
+                    return false;
                 }
-                ZP_EventsManager.pushEvent(new ZPEventBus_Gameplay.GunReloadStartEvent(player, item, itemStack, new GunFXData_Reload(isRightHand)));
-                if (unload) {
-                    item.setUnloading(player, itemStack, true);
-                } else {
-                    item.setReloading(player, itemStack, true);
+                {
+                    if (item.getGunProperties().getReloadSound() != null) {
+                        ZPDefaultGunLogicFunctions.localSound(item.getGunProperties().getReloadSound().get(), item);
+                    }
+                    if (unload) {
+                        item.setUnloading(player, itemStack, true);
+                    } else {
+                        item.setReloading(player, itemStack, true);
+                    }
+                    item.setAmmoBeforeReload(player, itemStack, currentAmmo);
+                    item.setClientSyncCooldown(itemStack, Math.max(ZPClientGunClientTickProcessing.TICK_SYNC_INTERVAL, item.getGunProperties().getReloadTime()));
+                    item.setCurrentReloadCooldown(player, itemStack, 1);
                 }
-                item.setAmmoBeforeReload(player, itemStack, currentAmmo);
-                item.setClientSyncCooldown(itemStack, Math.max(ZPClientGunClientTickProcessing.TICK_SYNC_INTERVAL, item.getGunProperties().getReloadTime()));
-                item.setCurrentReloadCooldown(player, itemStack, 1);
                 return true;
             } else if (currentAmmo != ammoBeforeLoad) {
                 item.setCurrentTimeBeforeReload(player, itemStack, 10);
@@ -237,7 +279,6 @@ public abstract class ZPDefaultGunLogicFunctions {
             if (item.getGunProperties().getReloadSound() != null) {
                 ZPDefaultGunLogicFunctions.globalSound(item.getGunProperties().getReloadSound().get(), item, player);
             }
-            ZP_EventsManager.pushEvent(new ZPEventBus_Gameplay.GunReloadStartEvent(player, item, itemStack, new GunFXData_Reload(isRightHand)));
             return true;
         }
 
@@ -266,6 +307,12 @@ public abstract class ZPDefaultGunLogicFunctions {
     @OnlyIn(Dist.CLIENT) public static boolean CLIENT_DEFAULT_RELOAD(@NotNull IGunLogicProcessor gunLogicProcessor, @NotNull Level level, @NotNull Player player, @NotNull ZPBaseGun item, @NotNull ItemStack itemStack, boolean unload, boolean isRightHand) {
         if (player.equals(Minecraft.getInstance().player)) {
             if (!ZPDefaultGunLogicFunctions.isAnythingReloading(player)) {
+                ZombiePlague3.netClient().sendToServer(new ZPGunActionPacket(player.getId(), unload ? ZPGunActionPacket.UNLOAD : ZPGunActionPacket.RELOAD, isRightHand));
+                final ZPEventDef.Cancellable cancellable = new ZPEventBus_Guns.GunReloadStartEvent(player, item, itemStack, new GunActionData_Reload(isRightHand));
+                ZP_EventsManager.pushEvent((ZPEventDef.IEvent) cancellable);
+                if (cancellable.isCancelled()) {
+                    return false;
+                }
                 if (item.getCurrentTimeBeforeReload(player, itemStack) > 0) {
                     return false;
                 }
@@ -283,24 +330,23 @@ public abstract class ZPDefaultGunLogicFunctions {
                 } else if (unload) {
                     return false;
                 }
-                ZombiePlague3.netClient().sendToServer(new ZPGunActionPacket(player.getId(), unload ? ZPGunActionPacket.UNLOAD : ZPGunActionPacket.RELOAD, isRightHand));
-                if (item.getGunProperties().getReloadSound() != null) {
-                    ZPDefaultGunLogicFunctions.localSound(item.getGunProperties().getReloadSound().get(), item);
+                {
+                    if (item.getGunProperties().getReloadSound() != null) {
+                        ZPDefaultGunLogicFunctions.localSound(item.getGunProperties().getReloadSound().get(), item);
+                    }
+                    if (unload) {
+                        item.setUnloading(player, itemStack, true);
+                    } else {
+                        item.setReloading(player, itemStack, true);
+                    }
+                    item.setClientSyncCooldown(itemStack, Math.max(ZPClientGunClientTickProcessing.TICK_SYNC_INTERVAL, item.getGunProperties().getReloadTime()));
                 }
-                ZP_EventsManager.pushEvent(new ZPEventBus_Gameplay.GunReloadStartEvent(player, item, itemStack, new GunFXData_Reload(isRightHand)));
-                if (unload) {
-                    item.setUnloading(player, itemStack, true);
-                } else {
-                    item.setReloading(player, itemStack, true);
-                }
-                item.setClientSyncCooldown(itemStack, Math.max(ZPClientGunClientTickProcessing.TICK_SYNC_INTERVAL, item.getGunProperties().getReloadTime()));
                 return true;
             }
         } else {
             if (item.getGunProperties().getReloadSound() != null) {
                 ZPDefaultGunLogicFunctions.globalSound(item.getGunProperties().getReloadSound().get(), item, player);
             }
-            ZP_EventsManager.pushEvent(new ZPEventBus_Gameplay.GunReloadStartEvent(player, item, itemStack, new GunFXData_Reload(isRightHand)));
             return true;
         }
 
@@ -387,6 +433,11 @@ public abstract class ZPDefaultGunLogicFunctions {
             return false;
         }
         if (!item.isUnloadingOrReloading(player, itemStack) && item.getCurrentShootCooldown(player, itemStack) <= 0 && !item.isJammed(player, itemStack)) {
+            final ZPEventDef.Cancellable cancellable = new ZPEventBus_Guns.GunShotEvent(player, item, itemStack, isRightHand);
+            ZP_EventsManager.pushEvent((ZPEventDef.IEvent) cancellable);
+            if (cancellable.isCancelled()) {
+                return false;
+            }
             Vector3f startPos = new Vector3f(player.position().toVector3f().add(0.0f, player.getEyeHeight(), 0.0f));
             float inaccuracy = item.getGunProperties().getInaccuracy();
             if (item.getGunProperties().getHeldType().equals(ZPBaseGun.GunProperties.HeldType.RIFLE)) {
@@ -438,6 +489,11 @@ public abstract class ZPDefaultGunLogicFunctions {
             return false;
         }
         if (!item.isUnloadingOrReloading(player, itemStack) && item.getCurrentShootCooldown(player, itemStack) <= 0 && !item.isJammed(player, itemStack)) {
+            final ZPEventDef.Cancellable cancellable = new ZPEventBus_Guns.GunShotEvent(player, item, itemStack, isRightHand);
+            ZP_EventsManager.pushEvent((ZPEventDef.IEvent) cancellable);
+            if (cancellable.isCancelled()) {
+                return false;
+            }
             Vector3f startPos = new Vector3f(player.position().toVector3f().add(0.0f, player.getEyeHeight(), 0.0f));
             for (int i = 0; i < bullets; i++) {
                 VirtualBullet virtualBullet = new VirtualBullet(player, startPos, ZPDefaultGunLogicFunctions.inaccuracyReduction(player) * item.getGunProperties().getInaccuracy(), item.getGunProperties().getDamage(), bullets > 1 ? 32.0f : 256.0f);
@@ -483,6 +539,11 @@ public abstract class ZPDefaultGunLogicFunctions {
         final int reloadTimeNominal = item.getGunProperties().getReloadTime();
 
         if (!ZPDefaultGunLogicFunctions.isAnythingReloading(player)) {
+            final ZPEventDef.Cancellable cancellable = new ZPEventBus_Guns.GunReloadStartEvent(player, item, itemStack, new GunActionData_Reload(isRightHand));
+            ZP_EventsManager.pushEvent((ZPEventDef.IEvent) cancellable);
+            if (cancellable.isCancelled()) {
+                return false;
+            }
             final int currentAmmo = item.getCurrentAmmo(player, itemStack);
             if (!item.isJammed(player, itemStack)) {
                 if (unload) {
@@ -497,6 +558,7 @@ public abstract class ZPDefaultGunLogicFunctions {
             } else if (unload) {
                 return false;
             }
+
             item.setCurrentReloadCooldown(player, itemStack, reloadTimeNominal);
             if (unload) {
                 item.setUnloading(player, itemStack, true);
@@ -514,6 +576,11 @@ public abstract class ZPDefaultGunLogicFunctions {
         final int ammoBeforeLoad = item.getAmmoBeforeReload(player, itemStack);
 
         if (!ZPDefaultGunLogicFunctions.isAnythingReloading(player)) {
+            final ZPEventDef.Cancellable cancellable = new ZPEventBus_Guns.GunReloadStartEvent(player, item, itemStack, new GunActionData_Reload(isRightHand));
+            ZP_EventsManager.pushEvent((ZPEventDef.IEvent) cancellable);
+            if (cancellable.isCancelled()) {
+                return false;
+            }
             if (!item.isJammed(player, itemStack)) {
                 if (unload) {
                     if (currentAmmo <= 0) {
@@ -622,20 +689,30 @@ public abstract class ZPDefaultGunLogicFunctions {
                 if (ammoCurrent >= maxAmmo || (ammoItem != null && player.getInventory().countItem(ammoItem) <= 0)) {
                     return false;
                 }
-                item.setCurrentAmmo(pEntity, pStack, ammoItem == null || player.isCreative() ? maxAmmo : (ammoCurrent + ZPEntityUtil.consumeItemFromInventory(player.getInventory(), ammoItem, 1)));
-                return true;
+                final ZPEventDef.Cancellable cancellable = new ZPEventBus_Guns.GunInsertAmmoEvent(player, item, pStack);
+                ZP_EventsManager.pushEvent((ZPEventDef.IEvent) cancellable);
+                if (!cancellable.isCancelled()) {
+                    item.setCurrentAmmo(pEntity, pStack, ammoItem == null || player.isCreative() ? maxAmmo : (ammoCurrent + ZPEntityUtil.consumeItemFromInventory(player.getInventory(), ammoItem, 1)));
+                    return true;
+                }
+                return false;
             } else if (item.isUnloading(pEntity, pStack)) {
                 if (ammoCurrent <= 0) {
                     return false;
                 }
-                if (ammoItem != null) {
-                    final ItemStack stack = new ItemStack(ammoItem, 1);
-                    if (!player.getInventory().add(stack)) {
-                        player.drop(stack, true);
+                final ZPEventDef.Cancellable cancellable = new ZPEventBus_Guns.GunExtractAmmoEvent(player, item, pStack);
+                ZP_EventsManager.pushEvent((ZPEventDef.IEvent) cancellable);
+                if (!cancellable.isCancelled()) {
+                    if (ammoItem != null) {
+                        final ItemStack stack = new ItemStack(ammoItem, 1);
+                        if (!player.getInventory().add(stack)) {
+                            player.drop(stack, true);
+                        }
                     }
+                    item.setCurrentAmmo(pEntity, pStack, ammoCurrent - 1);
+                    return true;
                 }
-                item.setCurrentAmmo(pEntity, pStack, ammoCurrent - 1);
-                return true;
+                return false;
             }
         }
         return false;
@@ -649,18 +726,26 @@ public abstract class ZPDefaultGunLogicFunctions {
                     item.setCurrentAmmo(pEntity, pStack, item.getGunProperties().getMaxAmmo());
                     return;
                 }
-                final int currentAmmo = item.getCurrentAmmo(pEntity, pStack);
-                final int ammoToInc = ZPEntityUtil.consumeItemFromInventory(player.getInventory(), item1, item.getGunProperties().getMaxAmmo() - currentAmmo);
-                item.setCurrentAmmo(pEntity, pStack, currentAmmo + ammoToInc);
+                final ZPEventDef.Cancellable cancellable = new ZPEventBus_Guns.GunInsertAmmoEvent(player, item, pStack);
+                ZP_EventsManager.pushEvent((ZPEventDef.IEvent) cancellable);
+                if (!cancellable.isCancelled()) {
+                    final int currentAmmo = item.getCurrentAmmo(pEntity, pStack);
+                    final int ammoToInc = ZPEntityUtil.consumeItemFromInventory(player.getInventory(), item1, item.getGunProperties().getMaxAmmo() - currentAmmo);
+                    item.setCurrentAmmo(pEntity, pStack, currentAmmo + ammoToInc);
+                }
             } else if (item.isUnloading(pEntity, pStack)) {
                 final int ammoCurrent = item.getCurrentAmmo(pEntity, pStack);
-                if (item1 != null) {
-                    final ItemStack stack = new ItemStack(item1, ammoCurrent);
-                    if (!player.getInventory().add(stack)) {
-                        player.drop(stack, true);
+                final ZPEventDef.Cancellable cancellable = new ZPEventBus_Guns.GunExtractAmmoEvent(player, item, pStack);
+                ZP_EventsManager.pushEvent((ZPEventDef.IEvent) cancellable);
+                if (!cancellable.isCancelled()) {
+                    if (item1 != null) {
+                        final ItemStack stack = new ItemStack(item1, ammoCurrent);
+                        if (!player.getInventory().add(stack)) {
+                            player.drop(stack, true);
+                        }
                     }
+                    item.setCurrentAmmo(pEntity, pStack, 0);
                 }
-                item.setCurrentAmmo(pEntity, pStack, 0);
             }
         }
     }

@@ -32,6 +32,7 @@ import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 import ru.gltexture.zpm3.modules.entity.mixins.ext.IZPLivingEntityExt;
 import ru.gltexture.zpm3.modules.entity.util.ZPLivingStat;
 import ru.gltexture.zpm3.modules.mob_effects.init.ZPMobEffects;
+import ru.gltexture.zpm3.modules.mob_effects.utils.ZPEffectUtils;
 
 public class ZPLivingApplyEffectEvent implements ZPForgeEventHandlerClass {
     @SubscribeEvent
@@ -43,7 +44,7 @@ public class ZPLivingApplyEffectEvent implements ZPForgeEventHandlerClass {
                 event.setResult(Event.Result.DENY);
             }
             final boolean badEffect = event.getEffectInstance().getEffect() == MobEffects.POISON || event.getEffectInstance().getEffect() == MobEffects.HUNGER || event.getEffectInstance().getEffect() == MobEffects.WEAKNESS;
-            if (badEffect && entity.hasEffect(ZPMobEffects.immune.get())) {
+            if (badEffect && ZPEffectUtils.isImmune(entity)) {
                 event.setResult(Event.Result.DENY);
             }
         }

@@ -20,26 +20,25 @@
 
 package ru.gltexture.zpm3.engine.events.common;
 
-import ru.gltexture.zpm3.engine.client.rendering.callbacks.ZPClientCallbacks;
 import ru.gltexture.zpm3.engine.client.rendering.callbacks.ZPClientCallbacksManager;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.api.events.ZombiePlagueEvent;
-import ru.gltexture.zpm3.engine.core.api.events.common.ZPEventBus_Gameplay;
+import ru.gltexture.zpm3.engine.core.api.events.common.ZPEventBus_Guns;
 import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
 import ru.gltexture.zpm3.modules.guns.processing.logic.ZPDefaultGunLogicFunctions;
 
 public class ZPCommonZp3 {
     //@Deprecated(forRemoval = true)
     @ZombiePlagueEvent
-    public static void gunShot(ZPEventBus_Gameplay.GunShotEvent event) {
-        ZPDefaultGunLogicFunctions.GunFXData_Shot data = event.getGunFXData();
+    public static void gunShot(ZPEventBus_Guns.ClientGunShotEvent event) {
+        ZPDefaultGunLogicFunctions.GunClientData_Shot data = event.getGunFXData();
         ((ZPClientCallbacksManager) ZombiePlague3.getClientManager().getCallbacksManager()).triggerGunShots(event.getPlayer(), (ZPBaseGun) event.getItem(), event.getItemStack(), data);
     }
 
     //@Deprecated(forRemoval = true)
     @ZombiePlagueEvent
-    public static void gunReloadStart(ZPEventBus_Gameplay.GunReloadStartEvent event) {
-        ZPDefaultGunLogicFunctions.GunFXData_Reload data = event.getGunFXData();
+    public static void gunReloadStart(ZPEventBus_Guns.GunReloadStartEvent event) {
+        ZPDefaultGunLogicFunctions.GunActionData_Reload data = event.getGunFXData();
         ((ZPClientCallbacksManager) ZombiePlague3.getClientManager().getCallbacksManager()).triggerReloadingStart(event.getPlayer(), (ZPBaseGun) event.getItem(), event.getItemStack(), data);
     }
 }

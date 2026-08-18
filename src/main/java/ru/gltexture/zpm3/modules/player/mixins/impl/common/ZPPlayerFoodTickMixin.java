@@ -30,6 +30,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import ru.gltexture.zpm3.modules.mob_effects.init.ZPMobEffects;
+import ru.gltexture.zpm3.modules.mob_effects.utils.ZPEffectUtils;
 
 @Mixin(FoodData.class)
 public abstract class ZPPlayerFoodTickMixin {
@@ -64,7 +65,7 @@ public abstract class ZPPlayerFoodTickMixin {
             }
         }
 
-        final boolean bleeding = pPlayer.hasEffect(ZPMobEffects.bleeding.get());
+        final boolean bleeding = ZPEffectUtils.isBleeding(pPlayer);
         final boolean flag = pPlayer.level().getGameRules().getBoolean(GameRules.RULE_NATURAL_REGENERATION);
         if (flag && this.saturationLevel > 0.0F && pPlayer.isHurt() && this.foodLevel >= 20) {
             ++this.tickTimer;

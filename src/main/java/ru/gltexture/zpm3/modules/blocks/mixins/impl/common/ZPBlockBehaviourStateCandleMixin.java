@@ -32,6 +32,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import ru.gltexture.zpm3.engine.core.ZP_EventsManager;
+import ru.gltexture.zpm3.engine.core.api.events.ZPEventDef;
+import ru.gltexture.zpm3.engine.core.api.events.common.ZPEventBus_Blocks;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 
@@ -44,10 +47,15 @@ public abstract class ZPBlockBehaviourStateCandleMixin {
     private void randomTick(ServerLevel pLevel, BlockPos pPos, RandomSource pRandom, CallbackInfo ci) {
         if (this.getBlock() instanceof AbstractCandleBlock abstractCandleBlock && pLevel.getBlockState(pPos).getValue(AbstractCandleBlock.LIT)) {
             float chance = ZPWorldConfig.CANDLE_EACH_TICK_RANDOM_EXTINGUISH_CONST.getVar();
-            if(pLevel.isRainingAt(pPos)) {
+            if (pLevel.isRainingAt(pPos)) {
                 chance *= 10.0f;
             }
             if (ZPRandom.getRandom().nextFloat() <= chance) {
+                final ZPEventDef.Cancellable cancellable = new ZPEventBus_Blocks.CandleExtinguishEvent(pLevel, pPos, pLevel.getBlockState(pPos));
+                ZP_EventsManager.pushEvent((ZPEventDef.IEvent) cancellable);
+                if (cancellable.isCancelled()) {
+                    return;
+                }
                 AbstractCandleBlock.extinguish(null, pLevel.getBlockState(pPos), pLevel, pPos);
             }
         }

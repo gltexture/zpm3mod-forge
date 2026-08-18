@@ -259,7 +259,7 @@ public class ZPZombieMiningGoal extends Goal {
 
             if (ZPZombieConfig.USE_ZOMBIE_MINING_SHARED_GLOBAL_MEM.getVar()) {
                 if (this.mob.level() instanceof IZPLevelExt ext) {
-                    ext.zpm3forge$getGlobalBlocksDestroyMemory().addNewEntryLongMem(this.mob.level(), blockToMine, this.getMiningSpeedWithBonus(state, blockToMine, this.mob));
+                    ext.zpm3forge$getGlobalBlocksDestroyMemory().addNewEntryLongMem(this.mob, this.mob.level(), blockToMine, this.getMiningSpeedWithBonus(state, blockToMine, this.mob));
                 }
             } else {
                 this.miningTicks += this.getMiningSpeedWithBonus(state, blockToMine, this.mob);

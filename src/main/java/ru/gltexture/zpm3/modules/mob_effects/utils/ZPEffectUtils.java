@@ -44,4 +44,12 @@ public abstract class ZPEffectUtils {
     public static boolean isAdrenalined(@NotNull LivingEntity livingEntity) {
         return livingEntity.hasEffect(ZPMobEffects.adrenaline.get());
     }
+
+    public static boolean isRadiationProtected(@NotNull LivingEntity livingEntity) {
+        return livingEntity.hasEffect(ZPMobEffects.radiation_protection.get());
+    }
+
+    public static boolean isImmune(@NotNull LivingEntity livingEntity) {
+        return livingEntity.hasEffect(ZPMobEffects.immune.get());
+    }
 }

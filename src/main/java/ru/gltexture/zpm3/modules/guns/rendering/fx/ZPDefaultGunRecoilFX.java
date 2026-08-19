@@ -32,7 +32,7 @@ import org.joml.Vector3f;
 import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
 import ru.gltexture.zpm3.modules.guns.processing.logic.ZPDefaultGunLogicFunctions;
 
-//@Deprecated(forRemoval = true)
+@Deprecated(forRemoval = true)
 public class ZPDefaultGunRecoilFX implements IZPGunRecoilFX {
     private final float[] recoilPrev;
     private final float[] recoil;

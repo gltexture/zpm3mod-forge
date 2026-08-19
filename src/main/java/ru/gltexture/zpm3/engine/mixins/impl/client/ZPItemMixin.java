@@ -49,7 +49,7 @@ import ru.gltexture.zpm3.engine.core.api.events.client.ZPEventBus_ClientRenderin
 public class ZPItemMixin {
     @Shadow @Final private ItemRenderer itemRenderer;
 
-    //@Deprecated(forRemoval = true)
+    @Deprecated(forRemoval = true)
     @Inject(method = "renderArmWithItem", at = @At("HEAD"), cancellable = true)
     private void renderArmWithItem(AbstractClientPlayer pPlayer, float pPartialTicks, float pPitch, InteractionHand pHand, float pSwingProgress, ItemStack pStack, float pEquippedProgress, PoseStack pPoseStack, MultiBufferSource pBuffer, int pCombinedLight, CallbackInfo ci) {
         Item itemToRender = pStack.getItem();
@@ -69,14 +69,14 @@ public class ZPItemMixin {
         }
     }
 
-    //@Deprecated(forRemoval = true)
+    @Deprecated(forRemoval = true)
     @Inject(method = "renderHandsWithItems", at = @At("HEAD"))
     private void renderHandsWithItems1(float pPartialTicks, PoseStack pPoseStack, MultiBufferSource.BufferSource pBuffer, LocalPlayer pPlayerEntity, int pCombinedLight, CallbackInfo ci) {
         ZPRenderHooksManager.INSTANCE.getItemSceneRendering1PersonHooksPre().forEach(e -> e.onPreRender1Person(IZPClientManager.DELTA_TIME(), pPartialTicks, pPoseStack, pBuffer, pPlayerEntity, pCombinedLight));
         ZP_EventsManager.pushEvent(new ZPEventBus_ClientRendering.ItemSceneRenderFirstPersonEvent(ZPEventDef.Run.PRE, IZPClientManager.DELTA_TIME(), pPartialTicks, pPoseStack, pBuffer, pPlayerEntity, pCombinedLight));
     }
 
-    //@Deprecated(forRemoval = true)
+    @Deprecated(forRemoval = true)
     @Inject(method = "renderHandsWithItems", at = @At("TAIL"))
     private void renderHandsWithItems2(float pPartialTicks, PoseStack pPoseStack, MultiBufferSource.BufferSource pBuffer, LocalPlayer pPlayerEntity, int pCombinedLight, CallbackInfo ci) {
         ZPRenderHooksManager.INSTANCE.getItemSceneRendering1PersonHooksPost().forEach(e -> e.onPostRender1Person(IZPClientManager.DELTA_TIME(), pPartialTicks, pPoseStack, pBuffer, pPlayerEntity, pCombinedLight));

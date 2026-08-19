@@ -121,7 +121,7 @@ public abstract class ZPRenderingUtil {
         }
     }
 
-    //@Deprecated(forRemoval = true)
+    @Deprecated(forRemoval = true)
     public static void renderTextureIDScreenOverlayFromFBO(@NotNull ShaderInstance shaderToRender, @NotNull Consumer<ShaderInstance> doUniforms, @NotNull List<Pair<String, ITexture2DProgram>> texturesWithUniforms) {
         shaderToRender.apply();
 

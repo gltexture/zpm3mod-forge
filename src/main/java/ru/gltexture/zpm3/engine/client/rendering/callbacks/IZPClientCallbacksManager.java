@@ -41,13 +41,13 @@ public interface IZPClientCallbacksManager {
     void addReloadResourcesCallback(@NotNull ZPClientCallbacks.ZPReloadResourcesCallback cb);
 
 
-    //@Deprecated(forRemoval = true)
+    @Deprecated(forRemoval = true)
     void addClientTickCallback(@NotNull ZPClientCallbacks.ZPClientTickCallback cb);
 
-    //@Deprecated(forRemoval = true)
+    @Deprecated(forRemoval = true)
     void addGunShotCallback(@NotNull ZPClientCallbacks.ZPGunShotCallback cb);
 
-    //@Deprecated(forRemoval = true)
+    @Deprecated(forRemoval = true)
     void addGunReloadStartCallback(@NotNull ZPClientCallbacks.ZPGunReloadStartCallback cb);
 
     void setup(@NotNull Window window);

@@ -28,17 +28,19 @@ import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
 import ru.gltexture.zpm3.modules.guns.processing.logic.ZPDefaultGunLogicFunctions;
 
 public class ZPCommonZp3 {
-    //@Deprecated(forRemoval = true)
+    /*
+    @Deprecated(forRemoval = true)
     @ZombiePlagueEvent
     public static void gunShot(ZPEventBus_Guns.ClientGunShotEvent event) {
         ZPDefaultGunLogicFunctions.GunClientData_Shot data = event.getGunFXData();
         ((ZPClientCallbacksManager) ZombiePlague3.getClientManager().getCallbacksManager()).triggerGunShots(event.getPlayer(), (ZPBaseGun) event.getItem(), event.getItemStack(), data);
     }
 
-    //@Deprecated(forRemoval = true)
+    @Deprecated(forRemoval = true)
     @ZombiePlagueEvent
     public static void gunReloadStart(ZPEventBus_Guns.GunReloadStartEvent event) {
         ZPDefaultGunLogicFunctions.GunActionData_Reload data = event.getGunFXData();
         ((ZPClientCallbacksManager) ZombiePlague3.getClientManager().getCallbacksManager()).triggerReloadingStart(event.getPlayer(), (ZPBaseGun) event.getItem(), event.getItemStack(), data);
     }
+     */
 }

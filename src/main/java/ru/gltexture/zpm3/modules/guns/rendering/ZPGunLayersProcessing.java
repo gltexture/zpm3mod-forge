@@ -40,7 +40,7 @@ import ru.gltexture.zpm3.engine.service.Pair;
 import java.util.List;
 import java.util.Objects;
 
-//@Deprecated(forRemoval = true)
+@Deprecated(forRemoval = true)
 @OnlyIn(Dist.CLIENT)
 public abstract class ZPGunLayersProcessing {
     @SuppressWarnings("unchecked")

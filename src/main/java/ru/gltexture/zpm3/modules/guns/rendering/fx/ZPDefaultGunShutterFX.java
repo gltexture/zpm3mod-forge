@@ -33,7 +33,7 @@ import ru.gltexture.zpm3.modules.guns.rendering.ZPDefaultGunRenderers;
 import ru.gltexture.zpm3.engine.service.Pair;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
-//@Deprecated(forRemoval = true)
+@Deprecated(forRemoval = true)
 public class ZPDefaultGunShutterFX implements IZPGunGunShutterFX {
     private final float[] shutterProgression;
     private final boolean[] playedAnimation;

@@ -28,7 +28,7 @@ import ru.gltexture.zpm3.engine.client.rendering.callbacks.ZPClientCallbacks;
 import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 
-//@Deprecated(forRemoval = true)
+@Deprecated(forRemoval = true)
 public interface IZPGunParticlesFX extends IZPGunFX, ZPClientCallbacks.ZPClientTickCallback, ZPClientCallbacks.ZPGunShotCallback {
     void onEmmitSmoke(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, boolean isRightHand);
     void onEmmitShell(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, boolean isRightHand);

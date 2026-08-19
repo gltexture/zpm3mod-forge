@@ -40,7 +40,7 @@ import ru.gltexture.zpm3.modules.guns.rendering.transforms.AbstractGunTransforms
 
 import java.util.Objects;
 
-//@Deprecated(forRemoval = true)
+@Deprecated(forRemoval = true)
 public class ZPDefaultRifleWithShutterRenderer extends ZPAbstractGunRenderer {
     private final float[] timerShutter;
 

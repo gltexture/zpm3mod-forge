@@ -33,7 +33,7 @@ import ru.gltexture.zpm3.modules.debug.imgui.ZPImGuiDebugInterface;
 import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
 import ru.gltexture.zpm3.modules.guns.processing.logic.ZPDefaultGunLogicFunctions;
 
-//@Deprecated(forRemoval = true)
+@Deprecated(forRemoval = true)
 public class ZPDefaultGunReloadingFX implements IZPGunReloadingFX {
     private final float[] reloadPrev;
     private final float[] reload;

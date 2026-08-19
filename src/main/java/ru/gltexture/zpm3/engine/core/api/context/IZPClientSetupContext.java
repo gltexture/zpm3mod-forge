@@ -31,17 +31,22 @@ import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.zones.ZPZoneFlag;
 import ru.gltexture.zpm3.modules.armor.events.client.ZPPlayerArmorSoundOnClientEvent;
 import ru.gltexture.zpm3.modules.commands.events.client.ZPRenderSpecialZoneEffectsOnClient;
+import ru.gltexture.zpm3.modules.mob_effects.client.ZPFakeClientEffect;
+import ru.gltexture.zpm3.modules.mob_effects.client.ZPLocalPlayerFakeEffectsManager;
+
+import java.util.function.Supplier;
 
 @OnlyIn(Dist.CLIENT)
 public interface IZPClientSetupContext {
-    void registerImGuiInterface(@NotNull IZPImGuiInterface imGuiInterface);
+    void registerImGuiInterface(@NotNull Supplier<IZPImGuiInterface> imGuiInterface);
     void registerArmorSound(@NotNull ZPPlayerArmorSoundOnClientEvent.TrackedSoundLauncher trackedSoundLauncher);
     void registerZoneEffect(@NotNull final ZPZoneFlag flag, @NotNull final ZPRenderSpecialZoneEffectsOnClient.RenderZoneEffect effect);
     void registerZpArchivedMap(@NotNull String modId, @NotNull String folder);
+    void createConditionToApplyFakeEffect(@NotNull ZPFakeClientEffect key, @NotNull ZPLocalPlayerFakeEffectsManager.ZPFakeEffectSetOnPlayerCondition condition);
 
     @NotNull IZPClientCallbacksManager getClientCallbacksManager();
 
-    //@Deprecated(forRemoval = true)
+    @Deprecated(forRemoval = true)
     @NotNull IZPRenderHooksManager getClientRenderHooksManager();
 
     @NotNull IZPClientManager getClientManager();

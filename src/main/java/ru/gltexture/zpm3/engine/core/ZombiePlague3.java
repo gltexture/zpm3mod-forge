@@ -22,6 +22,7 @@ package ru.gltexture.zpm3.engine.core;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -122,6 +123,8 @@ import ru.gltexture.zpm3.engine.service.ZPPath;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 import ru.gltexture.zpm3.modules.loot_cases.loot_tables.ZPLootTable;
 import ru.gltexture.zpm3.modules.loot_cases.loot_tables.synthetic.ZPSyntheticLootCaseDescription;
+import ru.gltexture.zpm3.modules.mob_effects.client.ZPFakeClientEffect;
+import ru.gltexture.zpm3.modules.mob_effects.client.ZPLocalPlayerFakeEffectsManager;
 import ru.gltexture.zpm3.modules.net_pack.data.accessors.ZPGlobalAccessorsRegistry;
 import ru.gltexture.zpm3.modules.net_pack.data.accessors.ZPNetDataAccessor;
 import ru.gltexture.zpm3.modules.net_pack.data.data_ent.ZPNetDataVar;
@@ -132,6 +135,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 @Mod(ZombiePlague3.MOD_ID)
@@ -316,10 +320,6 @@ public final class ZombiePlague3 {
         }
 
         {
-            ZPGlobalAccessorsRegistry.INSTANCE.buildIdAssignations();
-        }
-
-        {
             ZPUtility.sides().onlyClient(() -> {
                 ZombiePlague3.ZP_EVENTS.initEventBus(ZPEventBus_ClientRendering.class, ZPEventBus_ClientResources.class, ZPEventBus_ClientInput.class);
             });
@@ -438,7 +438,7 @@ public final class ZombiePlague3 {
             throw new ZPIOException(e);
         }
 
-        JsonObject jsonObject = GsonHelper.parse(jsonRaw);
+        JsonObject jsonObject = JsonParser.parseString(jsonRaw).getAsJsonObject();
         JsonArray jsonElements = jsonObject.getAsJsonArray("modules");
         for (int i = 0; i < jsonElements.size(); i++) {
             JsonObject asset = jsonElements.get(i).getAsJsonObject();
@@ -533,6 +533,14 @@ public final class ZombiePlague3 {
             this.initAddons();
         }
         this.initDispenserData();
+
+        {
+            ZPGlobalAccessorsRegistry.INSTANCE.buildIdAssignations();
+            AddonInitContext.laterSetupNetAccessors.forEach(e -> e.accept(null));
+            ModuleInitContext.laterSetupNetAccessors.forEach(e -> e.accept(null));
+            AddonInitContext.laterSetupNetAccessors= null;
+            ModuleInitContext.laterSetupNetAccessors= null;
+        }
 
         {
             ZombiePlague3.commonInitSwitch = false;
@@ -668,7 +676,7 @@ public final class ZombiePlague3 {
         return ZombiePlague3.MOD_VERSION();
     }
 
-    //@Deprecated(forRemoval = true)
+    @Deprecated(forRemoval = true)
     public interface IMixinEntry {
         void addMixinConfigData(@NotNull MixinConfig mixinConfig, @NotNull MixinClass... classes);
 
@@ -679,15 +687,20 @@ public final class ZombiePlague3 {
     @OnlyIn(Dist.CLIENT)
     public static final class ModuleClientSetupContext implements IModuleClientSetupContext {
         @Override
-        public void registerImGuiInterface(@NotNull IZPImGuiInterface imGuiInterface) {
+        public void registerImGuiInterface(@NotNull Supplier<IZPImGuiInterface> imGuiInterface) {
             if (this.isImGuiContextValid()) {
-                Objects.requireNonNull(this.getClientManager().getImGuiInterfacesManager()).addRenderableInterface(imGuiInterface);
+                Objects.requireNonNull(this.getClientManager().getImGuiInterfacesManager()).addRenderableInterface(imGuiInterface.get());
             }
         }
 
         @Override
         public void registerZpArchivedMap(@NotNull String modId, @NotNull String folder) {
             ZPMapArchivedRegistry.registerZpArchivedMap(modId, folder);
+        }
+
+        @Override
+        public void createConditionToApplyFakeEffect(@NotNull ZPFakeClientEffect key, ZPLocalPlayerFakeEffectsManager.@NotNull ZPFakeEffectSetOnPlayerCondition condition) {
+            ZPLocalPlayerFakeEffectsManager.INSTANCE.createConditionToApplyFakeEffect(key, condition);
         }
 
         @Override
@@ -744,6 +757,7 @@ public final class ZombiePlague3 {
     }
 
     public static final class ModuleInitContext implements IModuleInitContext {
+        static List<Consumer<Void>> laterSetupNetAccessors = new ArrayList<>();
         private final List<Class<? extends ZPCommonRegistry<?>>> registrySet;
         private final List<Class<? extends ZPForgeEventHandlerClass>> eventClasses;
         private final Set<ZPForgeEventHandlerClass> eventClassObjects;
@@ -783,20 +797,26 @@ public final class ZombiePlague3 {
 
         @Override
         public void defineNetAccessorOnEntity(@NotNull Class<? extends Entity> clazz, @NotNull ZPNetDataAccessor<?> dataAccessor) {
-            ZombiePlague3.netServer().getNetEntDataSyncer().defineAccessorOnEntity(clazz, dataAccessor);
-            ZombiePlague3.netClient().getNetEntDataSyncer().defineAccessorOnEntity(clazz, dataAccessor);
+            ModuleInitContext.laterSetupNetAccessors.add((ignore) -> {
+                ZombiePlague3.netServer().getNetEntDataSyncer().defineAccessorOnEntity(clazz, dataAccessor);
+                ZombiePlague3.netClient().getNetEntDataSyncer().defineAccessorOnEntity(clazz, dataAccessor);
+            });
         }
 
         @Override
         public <E> void defineStaticNetAccessor_ForServer(@NotNull ZPNetDataAccessor<E> accessor, @NotNull ZPNetDataVar<E> defaultValue) {
-            ZombiePlague3.netServer().getNetStaticDataSyncer().defineServerAccessor(accessor, defaultValue);
-            ZombiePlague3.netClient().getNetStaticDataSyncer().defineFromServerAccessor(accessor, defaultValue);
+            ModuleInitContext.laterSetupNetAccessors.add((ignore) -> {
+                ZombiePlague3.netServer().getNetStaticDataSyncer().defineServerAccessor(accessor, defaultValue);
+                ZombiePlague3.netClient().getNetStaticDataSyncer().defineFromServerAccessor(accessor, defaultValue);
+            });
         }
 
         @Override
         public <E> void defineStaticNetAccessor_ForClient(@NotNull ZPNetDataAccessor<E> accessor, @NotNull ZPNetDataVar<E> defaultValue) {
-            ZombiePlague3.netServer().getNetStaticDataSyncer().defineFromClientAccessor(accessor, defaultValue);
-            ZombiePlague3.netClient().getNetStaticDataSyncer().defineClientAccessor(accessor, defaultValue);
+            ModuleInitContext.laterSetupNetAccessors.add((ignore) -> {
+                ZombiePlague3.netServer().getNetStaticDataSyncer().defineFromClientAccessor(accessor, defaultValue);
+                ZombiePlague3.netClient().getNetStaticDataSyncer().defineClientAccessor(accessor, defaultValue);
+            });
         }
 
         @Override
@@ -849,10 +869,15 @@ public final class ZombiePlague3 {
     @OnlyIn(Dist.CLIENT)
     public static final class AddonClientSetupContext implements IAddonClientSetupContext {
         @Override
-        public void registerImGuiInterface(@NotNull IZPImGuiInterface imGuiInterface) {
+        public void registerImGuiInterface(@NotNull Supplier<IZPImGuiInterface> imGuiInterface) {
             if (this.isImGuiContextValid()) {
-                Objects.requireNonNull(this.getClientManager().getImGuiInterfacesManager()).addRenderableInterface(imGuiInterface);
+                Objects.requireNonNull(this.getClientManager().getImGuiInterfacesManager()).addRenderableInterface(imGuiInterface.get());
             }
+        }
+
+        @Override
+        public void createConditionToApplyFakeEffect(@NotNull ZPFakeClientEffect key, ZPLocalPlayerFakeEffectsManager.@NotNull ZPFakeEffectSetOnPlayerCondition condition) {
+            ZPLocalPlayerFakeEffectsManager.INSTANCE.createConditionToApplyFakeEffect(key, condition);
         }
 
         @Override
@@ -899,6 +924,8 @@ public final class ZombiePlague3 {
     }
 
     public static final class AddonInitContext implements IAddonInitContext {
+        static List<Consumer<Void>> laterSetupNetAccessors = new ArrayList<>();
+
         @Override
         public void registerZP3EventHandlerClass(@NotNull Class<? extends ZP3EventHandlerClass> clazz) {
             ZombiePlague3.ZP_EVENTS.registerEvents(clazz);
@@ -906,20 +933,26 @@ public final class ZombiePlague3 {
 
         @Override
         public void defineNetAccessorOnEntity(@NotNull Class<? extends Entity> clazz, @NotNull ZPNetDataAccessor<?> dataAccessor) {
-            ZombiePlague3.netServer().getNetEntDataSyncer().defineAccessorOnEntity(clazz, dataAccessor);
-            ZombiePlague3.netClient().getNetEntDataSyncer().defineAccessorOnEntity(clazz, dataAccessor);
+            AddonInitContext.laterSetupNetAccessors.add((ignore) -> {
+                ZombiePlague3.netServer().getNetEntDataSyncer().defineAccessorOnEntity(clazz, dataAccessor);
+                ZombiePlague3.netClient().getNetEntDataSyncer().defineAccessorOnEntity(clazz, dataAccessor);
+            });
         }
 
         @Override
         public <E> void defineStaticNetAccessor_ForServer(@NotNull ZPNetDataAccessor<E> accessor, @NotNull ZPNetDataVar<E> defaultValue) {
-            ZombiePlague3.netServer().getNetStaticDataSyncer().defineServerAccessor(accessor, defaultValue);
-            ZombiePlague3.netClient().getNetStaticDataSyncer().defineFromServerAccessor(accessor, defaultValue);
+            AddonInitContext.laterSetupNetAccessors.add((ignore) -> {
+                ZombiePlague3.netServer().getNetStaticDataSyncer().defineServerAccessor(accessor, defaultValue);
+                ZombiePlague3.netClient().getNetStaticDataSyncer().defineFromServerAccessor(accessor, defaultValue);
+            });
         }
 
         @Override
         public <E> void defineStaticNetAccessor_ForClient(@NotNull ZPNetDataAccessor<E> accessor, @NotNull ZPNetDataVar<E> defaultValue) {
-            ZombiePlague3.netServer().getNetStaticDataSyncer().defineFromClientAccessor(accessor, defaultValue);
-            ZombiePlague3.netClient().getNetStaticDataSyncer().defineClientAccessor(accessor, defaultValue);
+            AddonInitContext.laterSetupNetAccessors.add((ignore) -> {
+                ZombiePlague3.netServer().getNetStaticDataSyncer().defineFromClientAccessor(accessor, defaultValue);
+                ZombiePlague3.netClient().getNetStaticDataSyncer().defineClientAccessor(accessor, defaultValue);
+            });
         }
 
         @Override

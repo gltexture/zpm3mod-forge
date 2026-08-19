@@ -99,7 +99,7 @@ public class ZPGunsModule extends ZPModule {
 
     }
 
-    //@Override
+    @Override
     //public void initMixins(ZombiePlague3.@NotNull IMixinEntry mixinEntry) {
     //    mixinEntry.addMixinConfigData(new ZombiePlague3.IMixinEntry.MixinConfig("guns", "ru.gltexture.zpm3.modules.guns.mixins.impl"),
     //            new ZombiePlague3.IMixinEntry.MixinClass("client.ZPReanimateModelMixin", ZPSide.CLIENT),

@@ -35,7 +35,7 @@ public abstract class ZPBlocksRenderLayerHelper {
     public static final Set<BlockPair> blockPairSet = new HashSet<>();
     public static final Set<LiquidPair> liquidPairs = new HashSet<>();
 
-    //@Deprecated
+    @Deprecated
     public static void addBlockRenderLayerData(@NotNull BlockPair blockPair) {
         ZPBlocksRenderLayerHelper.blockPairSet.add(blockPair);
     }
@@ -49,7 +49,7 @@ public abstract class ZPBlocksRenderLayerHelper {
         ZPBlocksRenderLayerHelper.liquidPairs.clear();
     }
 
-    //@Deprecated
+    @Deprecated
     public record BlockPair(@NotNull Supplier<Block> fluid, @NotNull RenderType type) { ; }
     public record LiquidPair(@NotNull Supplier<Fluid> fluid, @NotNull RenderType type) { ; }
 }

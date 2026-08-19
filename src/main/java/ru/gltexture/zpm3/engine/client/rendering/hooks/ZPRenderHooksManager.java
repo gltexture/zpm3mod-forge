@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-//@Deprecated(forRemoval = true)
+@Deprecated(forRemoval = true)
 public final class ZPRenderHooksManager implements IZPRenderHooksManager, IZPClientManager.ResourceLifecycleListener {
     public static final ZPRenderHooksManager INSTANCE = new ZPRenderHooksManager();
 

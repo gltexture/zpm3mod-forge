@@ -28,7 +28,7 @@ import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.modules.guns.rendering.fx.*;
 
 
-//@Deprecated(forRemoval = true)
+@Deprecated(forRemoval = true)
 public abstract class  ZPDefaultGunRenderers {
     public static final @NotNull IZPGunRecoilFX defaultRecoilFXUniversal = ZPDefaultGunRecoilFX.create();
     public static final @NotNull IZPGunMuzzleflashFX defaultMuzzleflashFXUniversal = ZPDefaultGunMuzzleflashFX.create();

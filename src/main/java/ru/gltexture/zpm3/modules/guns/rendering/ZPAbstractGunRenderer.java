@@ -60,7 +60,7 @@ import ru.gltexture.zpm3.engine.exceptions.ZPNullException;
 
 import java.util.Objects;
 
-//@Deprecated(forRemoval = true)
+@Deprecated(forRemoval = true)
 public abstract class ZPAbstractGunRenderer implements ZPRenderHooks.ZPItemRendering1PersonHook, ZPRenderHooks.ZPItemRendering3PersonHook, ZPClientCallbacks.ZPClientTickCallback, ZPClientCallbacks.ZPGunShotCallback, ZPClientCallbacks.ZPGunReloadStartCallback, IZPClientManager.ResourceLifecycleListener {
     protected ZPAbstractGunRenderer() {
     }

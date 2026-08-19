@@ -72,19 +72,19 @@ public abstract class ZPClientCallbacks {
         void onReloadResources(@NotNull Window window);
     }
 
-    //@Deprecated(forRemoval = true)
+    @Deprecated(forRemoval = true)
     @FunctionalInterface
     public interface ZPClientTickCallback {
         void onTick(@NotNull TickEvent.Phase phase);
     }
 
-    //@Deprecated(forRemoval = true)
+    @Deprecated(forRemoval = true)
     @FunctionalInterface
     public interface ZPGunShotCallback {
         void onShot(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, @NotNull ZPDefaultGunLogicFunctions.GunClientData_Shot gunFXData);
     }
 
-    //@Deprecated(forRemoval = true)
+    @Deprecated(forRemoval = true)
     @FunctionalInterface
     public interface ZPGunReloadStartCallback {
         void onReloadStart(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, @NotNull ZPDefaultGunLogicFunctions.GunActionData_Reload gunFXData);

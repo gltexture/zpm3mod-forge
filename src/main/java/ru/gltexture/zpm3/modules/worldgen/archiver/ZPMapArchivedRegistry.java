@@ -46,7 +46,7 @@ import java.util.stream.Stream;
 
 @OnlyIn(Dist.CLIENT)
 public final class ZPMapArchivedRegistry {
-    public static final String MAPS_DIR = "zp_maps";
+    public static final String MAPS_DIR = "zpm3_maps";
     private static final List<ZPMapMetaData> registeredArchivedMaps = new ArrayList<>();
     private static final List<Pair<String, String>> toRegisterInJarsList = new ArrayList<>();
 
@@ -55,7 +55,7 @@ public final class ZPMapArchivedRegistry {
     }
 
     public static Path getMapsFolder() {
-        return FMLPaths.GAMEDIR.get().resolve(MAPS_DIR);
+        return FMLPaths.GAMEDIR.get().resolve(ZPMapArchivedRegistry.MAPS_DIR);
     }
 
     public static void createMapsFolder() {

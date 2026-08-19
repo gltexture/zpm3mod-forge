@@ -58,21 +58,21 @@ public abstract class ZPItemRenderLayerMixin<T extends LivingEntity, M extends E
         super(pRenderer);
     }
 
-    //@Deprecated(forRemoval = true)
+    @Deprecated(forRemoval = true)
     @Inject(method = "render", at = @At("HEAD"))
     public void render1(PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, T pLivingEntity, float pLimbSwing, float pLimbSwingAmount, float pPartialTicks, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch, CallbackInfo ci) {
         ZPRenderHooksManager.INSTANCE.getItemSceneRendering3PersonHooksPre().forEach(e -> e.onPreRender3Person(IZPClientManager.DELTA_TIME(), pPoseStack, pBuffer, pPackedLight, pLivingEntity, pLimbSwing, pLimbSwingAmount, pPartialTicks, pAgeInTicks, pNetHeadYaw, pHeadPitch));
         ZP_EventsManager.pushEvent(new ZPEventBus_ClientRendering.ItemSceneRenderThirdPersonEvent(ZPEventDef.Run.PRE, IZPClientManager.DELTA_TIME(), pPoseStack, pBuffer, pPackedLight, pLivingEntity, pLimbSwing, pLimbSwingAmount, pPartialTicks, pAgeInTicks, pNetHeadYaw, pHeadPitch));
     }
 
-    //@Deprecated(forRemoval = true)
+    @Deprecated(forRemoval = true)
     @Inject(method = "render", at = @At("TAIL"))
     public void render2(PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, T pLivingEntity, float pLimbSwing, float pLimbSwingAmount, float pPartialTicks, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch, CallbackInfo ci) {
         ZPRenderHooksManager.INSTANCE.getItemSceneRendering3PersonHooksPost().forEach(e -> e.onPostRender3Person(IZPClientManager.DELTA_TIME(), pPoseStack, pBuffer, pPackedLight, pLivingEntity, pLimbSwing, pLimbSwingAmount, pPartialTicks, pAgeInTicks, pNetHeadYaw, pHeadPitch));
         ZP_EventsManager.pushEvent(new ZPEventBus_ClientRendering.ItemSceneRenderThirdPersonEvent(ZPEventDef.Run.POST, IZPClientManager.DELTA_TIME(), pPoseStack, pBuffer, pPackedLight, pLivingEntity, pLimbSwing, pLimbSwingAmount, pPartialTicks, pAgeInTicks, pNetHeadYaw, pHeadPitch));
     }
 
-    //@Deprecated(forRemoval = true)
+    @Deprecated(forRemoval = true)
     @Inject(method = "renderArmWithItem", at = @At("HEAD"), cancellable = true)
     public void renderArmWithItem(LivingEntity pLivingEntity, ItemStack pItemStack, ItemDisplayContext pDisplayContext, HumanoidArm pArm, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, CallbackInfo ci) {
         if (!pItemStack.isEmpty()) {

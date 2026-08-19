@@ -53,7 +53,7 @@ import ru.gltexture.zpm3.modules.guns.processing.logic.ZPDefaultGunLogicFunction
 
 import java.util.Objects;
 
-//@Deprecated(forRemoval = true)
+@Deprecated(forRemoval = true)
 public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderHooks.ZPItemSceneRendering1PersonHooks, ZPRenderHooks.ZPItemSceneRendering3PersonHooks {
     public static final int DEFAULT_PINGPONG_FBO_OPERATIONS_1P = 8;
     //public static final float DEFAULT_BLURRING_1P = 3.0f;

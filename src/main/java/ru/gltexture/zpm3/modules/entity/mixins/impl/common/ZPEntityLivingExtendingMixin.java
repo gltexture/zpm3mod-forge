@@ -36,8 +36,8 @@ import ru.gltexture.zpm3.modules.net_pack.data.vars.ZPNetDataInt;
 
 @Mixin(LivingEntity.class)
 public abstract class ZPEntityLivingExtendingMixin implements IZPLivingEntityExt {
-   //@Unique private static final EntityDataAccessor<Integer> ZP_RADIATION = SynchedEntityData.defineId(LivingEntity.class, EntityDataSerializers.INT);
-   //@Unique private static final EntityDataAccessor<Integer> INTOXICATION_LEVEL = SynchedEntityData.defineId(LivingEntity.class, EntityDataSerializers.INT);
+   @Unique private static final EntityDataAccessor<Integer> ZP_RADIATION = SynchedEntityData.defineId(LivingEntity.class, EntityDataSerializers.INT);
+   @Unique private static final EntityDataAccessor<Integer> INTOXICATION_LEVEL = SynchedEntityData.defineId(LivingEntity.class, EntityDataSerializers.INT);
     
 
  //  @Inject(method = "defineSynchedData", at = @At("TAIL"))

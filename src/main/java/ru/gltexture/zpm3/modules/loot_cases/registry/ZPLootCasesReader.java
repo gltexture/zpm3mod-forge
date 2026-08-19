@@ -51,7 +51,7 @@ public abstract class ZPLootCasesReader {
         }
 
         try {
-            final JsonArray files = GsonHelper.parseArray(jsonRaw);
+            final JsonArray files = JsonParser.parseString(jsonRaw).getAsJsonArray();
             for (JsonElement element : files) {
                 final String fileName = element.getAsString();
                 final ZPSyntheticLootCaseDescription description = readDescription(fileName + ".json");
@@ -78,7 +78,7 @@ public abstract class ZPLootCasesReader {
             return null;
         }
         try {
-            return GSON.fromJson(GsonHelper.parse(jsonRaw), ZPSyntheticLootCaseDescription.class);
+            return GSON.fromJson(JsonParser.parseString(jsonRaw), ZPSyntheticLootCaseDescription.class);
         } catch (Exception e) {
             ZPLogger.error("Couldn't parse loot case: " + jsonPath);
             ZPLogger.exception(e);

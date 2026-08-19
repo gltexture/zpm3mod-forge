@@ -50,7 +50,7 @@ import java.lang.Math;
 import java.util.Objects;
 
 @SuppressWarnings("removal")
-//@Deprecated(forRemoval = true)
+@Deprecated(forRemoval = true)
 public class ZPDefaultGunParticlesFX implements IZPGunParticlesFX {
     private final float[] shotTicksAccumulator;
 

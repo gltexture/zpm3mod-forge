@@ -25,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
-//@Deprecated(forRemoval = true)
+@Deprecated(forRemoval = true)
 public interface IZPRenderHooksManager {
     void addSceneRenderingHook(@NotNull ZPRenderHooks.ZPSceneRenderingHook zpSceneRenderingHook);
 

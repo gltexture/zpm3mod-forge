@@ -62,7 +62,7 @@ public abstract class ZPEventBus_Guns {
     }
 
     @OnlyIn(Dist.CLIENT)
-    //@Deprecated(forRemoval = true)
+    @Deprecated(forRemoval = true)
     public static final class ClientGunShotEvent extends ZPEventDef.Cancellable implements ZPEventDef.IEvent {
         private final Player player;
         private final ZPBaseGun item;

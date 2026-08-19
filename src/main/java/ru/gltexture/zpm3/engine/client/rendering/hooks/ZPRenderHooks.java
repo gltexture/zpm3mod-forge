@@ -33,7 +33,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-//@Deprecated(forRemoval = true)
+@Deprecated(forRemoval = true)
 public abstract class ZPRenderHooks {
     public enum RenderStage {
         PRE,

@@ -77,7 +77,7 @@ public class ZPEntityModule extends ZPModule {
 
     }
 
-    //@Override
+    @Override
     //public void initMixins(ZombiePlague3.@NotNull IMixinEntry mixinEntry) {
     //    mixinEntry.addMixinConfigData(new ZombiePlague3.IMixinEntry.MixinConfig("entities", "ru.gltexture.zpm3.modules.entity.mixins.impl"),
     //            new ZombiePlague3.IMixinEntry.MixinClass("entity.ZPEntityItemLifespanMixin", ZPSide.COMMON)

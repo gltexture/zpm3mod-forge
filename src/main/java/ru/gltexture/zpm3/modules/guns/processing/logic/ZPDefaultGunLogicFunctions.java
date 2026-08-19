@@ -42,6 +42,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import org.joml.Vector3i;
 
+import ru.gltexture.zpm3.engine.client.rendering.callbacks.ZPClientCallbacksManager;
 import ru.gltexture.zpm3.engine.core.ZP_EventsManager;
 import ru.gltexture.zpm3.engine.core.api.events.ZPEventDef;
 import ru.gltexture.zpm3.engine.core.api.events.common.ZPEventBus_Guns;
@@ -63,10 +64,10 @@ import ru.gltexture.zpm3.modules.player.events.client.ZPPlayerLyingClientCheckEv
 import ru.gltexture.zpm3.modules.player.mixins.ext.IZPPlayerMixinExt;
 
 public abstract class ZPDefaultGunLogicFunctions {
-    //@Deprecated(forRemoval = true)
+    @Deprecated(forRemoval = true)
     public record GunClientData_Shot(boolean isRightHand, float recoilStrength, float muzzleflashTime) {}
 
-    //@Deprecated(forRemoval = true)
+    @Deprecated(forRemoval = true)
     public record GunActionData_Reload(boolean isRightHand) {}
 
     public static float inaccuracyReduction(@NotNull Player player) {
@@ -119,6 +120,7 @@ public abstract class ZPDefaultGunLogicFunctions {
                     }
                     {
                         item.setCurrentShootCooldown(player, itemStack, shootCooldownNominal);
+                        ((ZPClientCallbacksManager) ZombiePlague3.getClientManager().getCallbacksManager()).triggerGunShots(player, item, itemStack, new GunClientData_Shot(isRightHand, ZPDefaultGunLogicFunctions.recoilReduction(player) * recoilStrength, 0.25f));
                         item.setCurrentAmmo(player, itemStack, item.getCurrentAmmo(player, itemStack) - 1);
                         item.setClientSyncCooldown(itemStack, item.getCurrentAmmo(player, itemStack) <= 0 ? 0 : ZPClientGunClientTickProcessing.TICK_SYNC_INTERVAL);
                         item.setCurrentTimeBeforeReload(player, itemStack, 10);
@@ -142,12 +144,13 @@ public abstract class ZPDefaultGunLogicFunctions {
                     {
                         ZPDefaultGunLogicFunctions.localSound(item.emptyAmmoSound(), item);
                         item.setCurrentShootCooldown(player, itemStack, 4);
+                        ((ZPClientCallbacksManager) ZombiePlague3.getClientManager().getCallbacksManager()).triggerGunShots(player, item, itemStack, new GunClientData_Shot(isRightHand, -1f, -1f));
                     }
                 }
                 return true;
             }
         } else {
-            final ZPEventDef.Cancellable cancellable = new ZPEventBus_Guns.ClientGunEmptyShotEvent(player, item, itemStack, isRightHand);
+            final ZPEventDef.Cancellable cancellable = new ZPEventBus_Guns.ClientGunShotEvent(player, item, itemStack, new GunClientData_Shot(isRightHand, item.getGunProperties().getClientVerticalRecoil(), 0.25f));
             ZP_EventsManager.pushEvent((ZPEventDef.IEvent) cancellable);
             if (cancellable.isCancelled()) {
                 return false;
@@ -190,6 +193,7 @@ public abstract class ZPDefaultGunLogicFunctions {
                             ZPDefaultGunLogicFunctions.localSound(item.getGunProperties().getFireSound().get(), item);
                         }
                         item.setCurrentShootCooldown(player, itemStack, shootCooldownNominal);
+                        ((ZPClientCallbacksManager) ZombiePlague3.getClientManager().getCallbacksManager()).triggerGunShots(player, item, itemStack, new GunClientData_Shot(isRightHand, ZPDefaultGunLogicFunctions.recoilReduction(player) * recoilStrength, 0.25f));
                         item.setCurrentAmmo(player, itemStack, item.getCurrentAmmo(player, itemStack) - 1);
                         item.setClientSyncCooldown(itemStack, item.getCurrentAmmo(player, itemStack) <= 0 ? 0 : ZPClientGunClientTickProcessing.TICK_SYNC_INTERVAL);
                         item.setCurrentTimeBeforeReload(player, itemStack, 10);
@@ -202,7 +206,7 @@ public abstract class ZPDefaultGunLogicFunctions {
                             }
                         }
                     }
-                    final ZPEventDef.Cancellable cancellable = new ZPEventBus_Guns.ClientGunEmptyShotEvent(player, item, itemStack, isRightHand);
+                    final ZPEventDef.Cancellable cancellable = new ZPEventBus_Guns.ClientGunShotEvent(player, item, itemStack, new GunClientData_Shot(isRightHand, item.getGunProperties().getClientVerticalRecoil(), 0.25f));
                     ZP_EventsManager.pushEvent((ZPEventDef.IEvent) cancellable);
                     if (cancellable.isCancelled()) {
                         return false;
@@ -210,6 +214,7 @@ public abstract class ZPDefaultGunLogicFunctions {
                     {
                         ZPDefaultGunLogicFunctions.localSound(item.emptyAmmoSound(), item);
                         item.setCurrentShootCooldown(player, itemStack, 4);
+                        ((ZPClientCallbacksManager) ZombiePlague3.getClientManager().getCallbacksManager()).triggerGunShots(player, item, itemStack, new GunClientData_Shot(isRightHand, -1f, -1f));
                     }
                 }
                 return true;
@@ -260,6 +265,7 @@ public abstract class ZPDefaultGunLogicFunctions {
                     if (item.getGunProperties().getReloadSound() != null) {
                         ZPDefaultGunLogicFunctions.localSound(item.getGunProperties().getReloadSound().get(), item);
                     }
+                    ((ZPClientCallbacksManager) ZombiePlague3.getClientManager().getCallbacksManager()).triggerReloadingStart(player, item, itemStack, new GunActionData_Reload(isRightHand));
                     if (unload) {
                         item.setUnloading(player, itemStack, true);
                     } else {
@@ -279,6 +285,7 @@ public abstract class ZPDefaultGunLogicFunctions {
             if (item.getGunProperties().getReloadSound() != null) {
                 ZPDefaultGunLogicFunctions.globalSound(item.getGunProperties().getReloadSound().get(), item, player);
             }
+            ((ZPClientCallbacksManager) ZombiePlague3.getClientManager().getCallbacksManager()).triggerReloadingStart(player, item, itemStack, new GunActionData_Reload(isRightHand));
             return true;
         }
 
@@ -334,6 +341,7 @@ public abstract class ZPDefaultGunLogicFunctions {
                     if (item.getGunProperties().getReloadSound() != null) {
                         ZPDefaultGunLogicFunctions.localSound(item.getGunProperties().getReloadSound().get(), item);
                     }
+                    ((ZPClientCallbacksManager) ZombiePlague3.getClientManager().getCallbacksManager()).triggerReloadingStart(player, item, itemStack, new GunActionData_Reload(isRightHand));
                     if (unload) {
                         item.setUnloading(player, itemStack, true);
                     } else {
@@ -347,6 +355,7 @@ public abstract class ZPDefaultGunLogicFunctions {
             if (item.getGunProperties().getReloadSound() != null) {
                 ZPDefaultGunLogicFunctions.globalSound(item.getGunProperties().getReloadSound().get(), item, player);
             }
+            ((ZPClientCallbacksManager) ZombiePlague3.getClientManager().getCallbacksManager()).triggerReloadingStart(player, item, itemStack, new GunActionData_Reload(isRightHand));
             return true;
         }
 

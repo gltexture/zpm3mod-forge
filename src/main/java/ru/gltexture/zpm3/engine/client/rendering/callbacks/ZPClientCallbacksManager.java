@@ -48,13 +48,13 @@ public final class ZPClientCallbacksManager implements IZPClientCallbacksManager
     private final List<ZPClientCallbacks.@NotNull ZPDestroyResourcesCallback> onDestroyResourcesCallbacks;
     private final List<ZPClientCallbacks.@NotNull ZPReloadResourcesCallback> ononReloadResourcess;
 
-    //@Deprecated(forRemoval = true)
+    @Deprecated(forRemoval = true)
     private final List<ZPClientCallbacks.@NotNull ZPClientTickCallback> onClientTickCallbacks;
 
-    //@Deprecated(forRemoval = true)
+    @Deprecated(forRemoval = true)
     private final List<ZPClientCallbacks.@NotNull ZPGunShotCallback> onGunShotCallbacks;
 
-    //@Deprecated(forRemoval = true)
+    @Deprecated(forRemoval = true)
     private final List<ZPClientCallbacks.@NotNull ZPGunReloadStartCallback> onGunReloadStartCallbacks;
 
     private GLFWWindowSizeCallback windowCallback;
@@ -176,34 +176,34 @@ public final class ZPClientCallbacksManager implements IZPClientCallbacksManager
         this.ononReloadResourcess.forEach(e -> e.onReloadResources(w));
     }
 
-    //@Deprecated(forRemoval = true)
+    @Deprecated(forRemoval = true)
     public void tickClientCallbacks(@NotNull TickEvent.Phase phase) {
         this.onClientTickCallbacks.forEach(e -> e.onTick(phase));
     }
 
-    //@Deprecated(forRemoval = true)
+    @Deprecated(forRemoval = true)
     public void triggerGunShots(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, @NotNull ZPDefaultGunLogicFunctions.GunClientData_Shot gunFXData) {
         this.onGunShotCallbacks.forEach(e -> e.onShot(player, baseGun, itemStack, gunFXData));
     }
 
-    //@Deprecated(forRemoval = true)
+    @Deprecated(forRemoval = true)
     public void triggerReloadingStart(@NotNull Player player, @NotNull ZPBaseGun baseGun, @NotNull ItemStack itemStack, @NotNull ZPDefaultGunLogicFunctions.GunActionData_Reload gunFXData) {
         this.onGunReloadStartCallbacks.forEach(e -> e.onReloadStart(player, baseGun, itemStack, gunFXData));
     }
 
-    //@Deprecated(forRemoval = true)
+    @Deprecated(forRemoval = true)
     @Override
     public void addClientTickCallback(@NotNull ZPClientCallbacks.ZPClientTickCallback cb) {
         this.onClientTickCallbacks.add(cb);
     }
 
-    //@Deprecated(forRemoval = true)
+    @Deprecated(forRemoval = true)
     @Override
     public void addGunShotCallback(@NotNull ZPClientCallbacks.ZPGunShotCallback cb) {
         this.onGunShotCallbacks.add(cb);
     }
 
-    //@Deprecated(forRemoval = true)
+    @Deprecated(forRemoval = true)
     @Override
     public void addGunReloadStartCallback(@NotNull ZPClientCallbacks.ZPGunReloadStartCallback cb) {
         this.onGunReloadStartCallbacks.add(cb);

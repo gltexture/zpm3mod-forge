@@ -56,7 +56,7 @@ import java.util.Deque;
 
 @Mixin(Entity.class)
 public abstract class ZPEntityExtendingMixin implements IZPEntityExt {
-    //@Unique private static final EntityDataAccessor<Integer> ACID_LEVEL = SynchedEntityData.defineId(Entity.class, EntityDataSerializers.INT);
+    @Unique private static final EntityDataAccessor<Integer> ACID_LEVEL = SynchedEntityData.defineId(Entity.class, EntityDataSerializers.INT);
 
     @Shadow public abstract void fillCrashReportCategory(CrashReportCategory pCategory);
     @Shadow public abstract Level level();

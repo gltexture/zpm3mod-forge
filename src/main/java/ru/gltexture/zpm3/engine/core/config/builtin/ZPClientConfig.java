@@ -57,15 +57,15 @@ public class ZPClientConfig implements ZPConfigConstantsClass {
     public static final ZPConfig_INT FIRST_PERSON_RENDER_SCALE_TYPE =
             new ZPConfig_INT(0, 0, 1);
 
-   //@ZPVarDefinition(description = "(CLIENT) TEST2.")
+   @ZPVarDefinition(description = "(CLIENT) TEST2.")
    //public static final ZPConfig_BOOL TEST2 =
    //        new ZPConfig_BOOL(true);
 
-   //@ZPVarDefinition(description = "(CLIENT) TEST4.")
+   @ZPVarDefinition(description = "(CLIENT) TEST4.")
    //public static final ZPConfig_BOOL TEST4 =
    //        new ZPConfig_BOOL(true);
 
-   //@ZPVarDefinition(description = "(CLIENT) TEST23.")
+   @ZPVarDefinition(description = "(CLIENT) TEST23.")
    //public static final ZPConfig_BOOL TEST3 =
    //        new ZPConfig_BOOL(true);
 }

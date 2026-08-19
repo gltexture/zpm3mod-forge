@@ -50,7 +50,7 @@ import ru.gltexture.zpm3.engine.exceptions.ZPNullException;
 
 import java.util.Objects;
 
-//@Deprecated(forRemoval = true)
+@Deprecated(forRemoval = true)
 public class ZPDefaultPistolRenderer extends ZPAbstractGunRenderer {
     protected ZPDefaultPistolRenderer() {
         super();

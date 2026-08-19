@@ -37,14 +37,14 @@ import ru.gltexture.zpm3.engine.core.api.events.client.ZPEventBus_ClientRenderin
 @Mixin(GameRenderer.class)
 @OnlyIn(Dist.CLIENT)
 public class ZPRenderMixin {
-    //@Deprecated(forRemoval = true)
+    @Deprecated(forRemoval = true)
     @Inject(method = "render", at = @At("HEAD"))
     private void onRenderTail2(float pPartialTicks, long pNanoTime, boolean pRenderLevel, CallbackInfo ci) {
         ZPRenderHooksManager.INSTANCE.getSceneRenderingHooks().forEach((e) -> e.onRender(ZPRenderHooks.RenderStage.PRE, pPartialTicks, IZPClientManager.DELTA_TIME(), pNanoTime, pRenderLevel));
         ZP_EventsManager.pushEvent(new ZPEventBus_ClientRendering.SceneRenderEvent(ZPEventDef.Run.PRE, pPartialTicks, IZPClientManager.DELTA_TIME(), pNanoTime, pRenderLevel));
     }
 
-    //@Deprecated(forRemoval = true)
+    @Deprecated(forRemoval = true)
     @Inject(method = "render", at = @At("TAIL"))
     private void onRenderTail1(float pPartialTicks, long pNanoTime, boolean pRenderLevel, CallbackInfo ci) {
         ZPRenderHooksManager.INSTANCE.getSceneRenderingHooks().forEach((e) -> e.onRender(ZPRenderHooks.RenderStage.POST, pPartialTicks, IZPClientManager.DELTA_TIME(), pNanoTime, pRenderLevel));

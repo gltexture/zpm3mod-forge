@@ -23,29 +23,6 @@ plugins {
     id 'org.parchmentmc.librarian.forgegradle' version '1.2.0'
     id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
-tasks.register('zpShadow', ShadowJar) {
-    archiveClassifier.set('prod')
-    from sourceSets.main.output
-    from {
-        project.configurations.minecraftLibrary.findAll {
-            it.name.contains('imgui-java-binding') || it.name.contains('imgui-java-lwjgl3')
-        }.collect { it.isDirectory() ? it : zipTree(it) }
-    }
-    from {
-        project.configurations.minecraftLibrary.findAll {
-            it.name.contains('imgui-java-natives-')
-        }.collect { it.isDirectory() ? it : zipTree(it) }
-    }
-    manifest {
-        attributes(["Specification-Title"     : mod_id,
-                    "Specification-Vendor"    : mod_authors,
-                    "Specification-Version"   : "1",
-                    "Implementation-Title"    : project.name,
-                    "Implementation-Version"  : project.jar.archiveVersion,
-                    "Implementation-Vendor"   : mod_authors,
-                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")])
-    }
-}
 apply plugin: 'org.spongepowered.mixin'
 
 group = mod_group_id
@@ -177,11 +154,48 @@ tasks.named('jar', Jar).configure {
 
     finalizedBy 'reobfJar'
 }
-
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
 tasks.matching { it.name == "runData" }.configureEach {
     systemProperty "zpm3.datagen", "true"
+}
+
+tasks.register('zpShadow') {
+    dependsOn 'reobfJar'
+
+    doLast {
+        def sourceJar = file(tasks.jar.archiveFile)
+        def outputJar = file("${buildDir}/libs/${project.name}-${project.version}-imgui.jar")
+
+        copy {
+            from sourceJar
+            into temporaryDir
+            rename { 'base.jar' }
+        }
+
+        def baseJar = file("${temporaryDir}/base.jar")
+
+        ant.zip(destfile: outputJar, update: false) {
+            zipfileset(src: baseJar)
+
+            configurations.minecraftLibrary
+                    .findAll {
+                        it.name.contains('imgui-java-binding') ||
+                                it.name.contains('imgui-java-lwjgl3') ||
+                                it.name.contains('imgui-java-natives-')
+                    }
+                    .each { dependency ->
+                        zipfileset(src: dependency) {
+                            exclude(name: 'META-INF/**')
+                            exclude(name: 'LICENSE/**')
+                        }
+                    }
+        }
+    }
+}
+
+tasks.named('build') {
+    dependsOn 'zpShadow'
 }

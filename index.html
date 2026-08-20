@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="None">
+        
+        
+        <link rel="shortcut icon" href="img/favicon.ico">
+        <title>My Docs</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/fontawesome.min.css" rel="stylesheet">
+        <link href="css/brands.min.css" rel="stylesheet">
+        <link href="css/solid.min.css" rel="stylesheet">
+        <link href="css/v4-font-face.min.css" rel="stylesheet">
+        <link href="css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body class="homepage">
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href=".">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="." class="nav-link active" aria-current="page">ZombiePlague3</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="addon-development/" class="nav-link">Addon Development</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="addon-example/" class="nav-link">Addon Example</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="addon-lifecycle/" class="nav-link">Addon Lifecycle</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="getting-started/" class="nav-link">Getting Started</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="mod-architecture/" class="nav-link">Mod Architecture</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" class="nav-link disabled">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="addon-development/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#zombieplague3" class="nav-link">ZombiePlague3</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#overview" class="nav-link">📌 Overview</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#license-notice" class="nav-link">⚠️ License Notice</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#status" class="nav-link">⚠️ Status</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#documentation" class="nav-link">📚 Documentation</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#project" class="nav-link">🔗 Project</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="zombieplague3">ZombiePlague3</h1>
+<p>ZombiePlague3 is a Minecraft Forge mod for <strong>Minecraft 1.20.1</strong>.</p>
+<p><strong><a href="https://github.com/gltexture/zpm3mod-forge">GitHub</a></strong></p>
+<p>The mod is currently under active development, and its architecture and APIs may change over time.</p>
+<hr />
+<h2 id="overview">📌 Overview</h2>
+<p>This documentation provides a concise guide to the <strong>ZombiePlague3 0.2 Alpha API</strong> for developers who want to create addons and extend the mod.</p>
+<p>The documentation focuses on practical addon development rather than the internal implementation of ZombiePlague3.</p>
+<p>It covers addon initialization, registration systems, events, networking, client/server separation, and other APIs exposed by the mod.</p>
+<hr />
+<blockquote>
+<h2 id="license-notice">⚠️ License Notice</h2>
+<p><strong>ZombiePlague3 is distributed under the GNU General Public License v3.0 (GPLv3).</strong></p>
+<p>Please make sure that your addon and its distribution comply with the applicable terms of the GPLv3.</p>
+<p>In particular, when distributing an addon that constitutes a work covered by the GPLv3:</p>
+<ul>
+<li>The corresponding source code must be made available to users.</li>
+<li>The source code must be provided under the terms of the GPLv3 where the license requires it.</li>
+<li>Existing copyright and license notices must be preserved.</li>
+<li>Modified versions must be appropriately identified as modified versions.</li>
+<li>A copy of the GPLv3 license and the applicable license notices must be provided with the distributed work.</li>
+<li>If a compiled <code>.jar</code> is distributed, the corresponding source required by the GPLv3 must also be made available.</li>
+</ul>
+<p>The complete license is available here:
+<a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU General Public License v3.0</a></p>
+<p><strong>This documentation is not legal advice.</strong> If you are unsure whether your addon constitutes a derivative or otherwise covered work under the GPLv3, consult the license text and, where necessary, a qualified legal professional.
+</p>
+</blockquote>
+<hr />
+<h2 id="status">⚠️ Status</h2>
+<ul>
+<li>ZombiePlague3 is actively developed</li>
+<li>The addon API is still evolving</li>
+<li>Some APIs may change between versions</li>
+<li>Some systems are experimental</li>
+<li>Backward compatibility is not guaranteed during development</li>
+</ul>
+<hr />
+<h2 id="documentation">📚 Documentation</h2>
+<h3 id="getting-started">Getting Started</h3>
+<ul>
+<li><a href="getting-started/">Quick Start — Creating an Addon</a></li>
+</ul>
+<h3 id="architecture">Architecture</h3>
+<ul>
+<li><a href="architecture.md">Mod Architecture</a></li>
+<li><a href="addon-lifecycle/">Addon Lifecycle</a></li>
+<li><a href="contexts.md">Execution Contexts</a></li>
+</ul>
+<h3 id="lifecycle">Lifecycle</h3>
+<ul>
+<li><a href="lifecycle/pre-init.md">PreInit</a></li>
+<li><a href="lifecycle/init.md">Init</a></li>
+<li><a href="lifecycle/client-init.md">ClientInit</a></li>
+<li><a href="lifecycle/post-init.md">PostInit</a></li>
+</ul>
+<h3 id="api">API</h3>
+<ul>
+<li><a href="api/registries.md">Registration API</a></li>
+<li><a href="api/items.md">Items</a></li>
+<li><a href="api/blocks.md">Blocks</a></li>
+<li><a href="api/guns.md">Firearms</a></li>
+<li><a href="api/events.md">Events</a></li>
+<li><a href="api/networking.md">Networking</a></li>
+<li><a href="api/client.md">Client API</a></li>
+<li><a href="api/server.md">Server API</a></li>
+</ul>
+<h3 id="examples">Examples</h3>
+<ul>
+<li><a href="examples/basic-addon.md">Basic Addon</a></li>
+<li><a href="examples/custom-item.md">Custom Item</a></li>
+<li><a href="examples/custom-gun.md">Custom Firearm</a></li>
+<li><a href="examples/event-handler.md">Event Handler</a></li>
+</ul>
+<hr />
+<h2 id="project">🔗 Project</h2>
+<p>Repository: <a href="https://github.com/gltexture/zpm3mod-forge">https://github.com/gltexture/zpm3mod-forge</a></p>
+<p><strong>Minecraft:</strong> 1.20.1
+<strong>Mod Loader:</strong> Forge
+<strong>Project:</strong> ZombiePlague3
+<strong>API:</strong> ZombiePlague3 Addon API</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = ".",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="js/base.js"></script>
+        <script src="search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
+
+<!--
+MkDocs version : 1.6.1
+Build Date UTC : 2026-08-20 11:49:04.938775+00:00
+-->

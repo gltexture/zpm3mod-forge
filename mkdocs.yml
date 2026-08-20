@@ -2,8 +2,8 @@ nav:
   - Home: index.md
   - Getting Started: getting-started.md
   - Architecture:
-      - Mod Architecture: mod-architecture.md
       - Addon Lifecycle: addon-lifecycle.md
+      - Mod Architecture: mod-architecture.md
   - Addon Development: addon-development.md
   - Addon Example: addon-example.md
 

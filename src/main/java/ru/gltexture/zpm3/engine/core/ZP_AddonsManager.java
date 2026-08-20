@@ -22,6 +22,7 @@ package ru.gltexture.zpm3.engine.core;
 
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
 import ru.gltexture.zpm3.engine.core.api.addons.IZPAddonEntry;
 import ru.gltexture.zpm3.engine.exceptions.ZPAPIException;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
@@ -62,7 +63,7 @@ public class ZP_AddonsManager {
         return this.registeredAddons.stream().filter(info -> info.zpAddon() == addonEntry).map(ZPAddonInfo::modId).findFirst().orElseThrow(ZPAPIException::new);
     }
 
-    public Set<ZPAddonInfo> getRegisteredAddons() {
+    public @Unmodifiable Set<ZPAddonInfo> getRegisteredAddons() {
         return Collections.unmodifiableSet(this.registeredAddons);
     }
 

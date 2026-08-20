@@ -24,6 +24,7 @@ import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
 import net.minecraft.ReportedException;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -56,7 +57,7 @@ import java.util.Deque;
 
 @Mixin(Entity.class)
 public abstract class ZPEntityExtendingMixin implements IZPEntityExt {
-    @Unique private static final EntityDataAccessor<Integer> ACID_LEVEL = SynchedEntityData.defineId(Entity.class, EntityDataSerializers.INT);
+    //@Unique private static final EntityDataAccessor<Integer> ACID_LEVEL = SynchedEntityData.defineId(Entity.class, EntityDataSerializers.INT);
 
     @Shadow public abstract void fillCrashReportCategory(CrashReportCategory pCategory);
     @Shadow public abstract Level level();

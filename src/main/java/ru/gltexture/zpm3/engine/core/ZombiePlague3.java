@@ -274,7 +274,7 @@ public final class ZombiePlague3 {
         }
     }
 
-    public static void processModuleConfiguration(@NotNull ZPModule zpModule, @NotNull Class<ZPConfigConstantsClass> clazz) {
+    public static void processModuleConfiguration(@NotNull ZPModule zpModule, @NotNull Class<? extends ZPConfigConstantsClass> clazz) {
         try {
             ZombiePlague3.zpConfigManager.processConfigConstants(new ZPPath(FMLPaths.GAMEDIR.get().toString(), ZombiePlague3.ZP_MAIN_DIR), zpModule.getModuleData().name(), clazz);
         } catch (IllegalAccessException | IOException e) {
@@ -282,8 +282,14 @@ public final class ZombiePlague3 {
         }
     }
 
-    public static void processAddonConfiguration(@NotNull IZPAddonEntry zpAddon, @NotNull String confName, @NotNull Class<ZPConfigConstantsClass> clazz) {
+    public static void processAddonConfiguration(@NotNull IZPAddonEntry zpAddon, @NotNull String confName, @NotNull Class<? extends ZPConfigConstantsClass> clazz) {
         try {
+            final ZPPath path = new ZPPath(FMLPaths.GAMEDIR.get().toString(), ZombiePlague3.ZP_MAIN_DIR, ZP_AddonsManager.INSTANCE.getAddonId(zpAddon));
+            if (!path.toFile().exists()) {
+                if (!path.toFile().mkdirs()) {
+                    throw new ZPIOException(path.toFile().getAbsolutePath() + " could not be created");
+                }
+            }
             ZombiePlague3.zpConfigManager.processConfigConstants(new ZPPath(FMLPaths.GAMEDIR.get().toString(), ZombiePlague3.ZP_MAIN_DIR, ZP_AddonsManager.INSTANCE.getAddonId(zpAddon)), confName, clazz);
         } catch (IllegalAccessException | IOException e) {
             throw new ZPIOException(e);
@@ -513,6 +519,9 @@ public final class ZombiePlague3 {
         ZPLogger.info(this + " Common destroy");
         for (ZPModule zpModule : this.assets) {
             zpModule.commonShutdown();
+        }
+        for (ZP_AddonsManager.ZPAddonInfo zpAddonInfo : ZP_AddonsManager.INSTANCE.getRegisteredAddons()) {
+            zpAddonInfo.zpAddon().ZP3AddonImpl().clientShutDown();
         }
         ZPRegistryCollections.clearAll();
         ZPZonesRegistry.clear();

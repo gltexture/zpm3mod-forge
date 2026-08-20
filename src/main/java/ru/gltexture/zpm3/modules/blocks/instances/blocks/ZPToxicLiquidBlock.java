@@ -31,7 +31,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
-import ru.gltexture.zpm3.modules.common.utils.ZPCommonClientUtils;
+import ru.gltexture.zpm3.engine.client.rendering.util.ZPCommonClientUtils;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.instances.blocks.ZPLiquidBlock;
 

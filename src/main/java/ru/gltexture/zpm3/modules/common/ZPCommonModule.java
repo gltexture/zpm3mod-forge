@@ -61,7 +61,7 @@ public class ZPCommonModule extends ZPModule {
 
     }
 
-    @Override
+    //@Override
     //public void initMixins(ZombiePlague3.@NotNull IMixinEntry mixinEntry) {
     //    mixinEntry.addMixinConfigData(new ZombiePlague3.IMixinEntry.MixinConfig("common", "ru.gltexture.zpm3.modules.common.mixins.impl"),
     //            new ZombiePlague3.IMixinEntry.MixinClass("common.ZPFadingTorchMixin", ZPSide.COMMON),

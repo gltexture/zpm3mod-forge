@@ -120,7 +120,7 @@ public class ZPMobEffectsModule extends ZPModule {
 
         context.createConditionToApplyFakeEffect(ZPMobEffects.fakeSeasickness, localPlayer -> {
                     final int level = ZPPlayerStat.SEASICKNESS.get(localPlayer);
-                    if (level < 10) {
+                    if (level < 120) {
                         return Optional.empty();
                     }
                     int amplifier = 0;
@@ -142,7 +142,7 @@ public class ZPMobEffectsModule extends ZPModule {
     public void clientShutDown() {
     }
 
-    @Override
+   // @Override
     //public void initMixins(ZombiePlague3.@NotNull IMixinEntry mixinEntry) {
     //    mixinEntry.addMixinConfigData(new ZombiePlague3.IMixinEntry.MixinConfig("mob_effects", "ru.gltexture.zpm3.modules.mob_effects.mixins.impl"),
     //            new ZombiePlague3.IMixinEntry.MixinClass("common.ZPEntityFracturedSprintMixin", ZPSide.COMMON),

@@ -44,9 +44,7 @@ import ru.gltexture.zpm3.engine.core.config.builtin.ZPEntityConfig;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
 import ru.gltexture.zpm3.engine.zones.ZPZoneChecks;
 import ru.gltexture.zpm3.modules.armor.utils.ZPArmorUtil;
-import ru.gltexture.zpm3.modules.blocks.init.ZPBlocks;
 import ru.gltexture.zpm3.modules.common.init.ZPTags;
-import ru.gltexture.zpm3.modules.common.utils.ZPCommonServerUtils;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.modules.mob_effects.init.ZPMobEffects;
 import ru.gltexture.zpm3.modules.mob_effects.utils.ZPEffectUtils;
@@ -239,7 +237,7 @@ public class ZPEntityUtil {
                 for (int i = 0; i < player.getInventory().armor.size(); i++) {
                     ItemStack stack = player.getInventory().armor.get(i);
                     if (stack.isDamageableItem()) {
-                        EquipmentSlot finalSlot = ZPCommonServerUtils.getEquipmentSlot(i);
+                        EquipmentSlot finalSlot = getEquipmentSlot(i);
                         stack.hurtAndBreak(ZPCombatConfig.ACID_INVENTORY_DAMAGE.getVar(), player, e -> {
                             e.broadcastBreakEvent(finalSlot);
                         });
@@ -309,5 +307,24 @@ public class ZPEntityUtil {
         }
 
         return false;
+    }
+
+    public static @NotNull EquipmentSlot getEquipmentSlot(int i) {
+        EquipmentSlot slot = null;
+        switch (i) {
+            case 0 -> {
+                slot= EquipmentSlot.HEAD;
+            }
+            case 2 -> {
+                slot= EquipmentSlot.LEGS;
+            }
+            case 3 -> {
+                slot= EquipmentSlot.FEET;
+            }
+            default -> {
+                slot = EquipmentSlot.CHEST;
+            }
+        }
+        return slot;
     }
 }

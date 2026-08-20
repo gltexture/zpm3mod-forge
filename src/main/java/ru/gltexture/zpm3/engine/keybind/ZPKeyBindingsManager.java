@@ -24,6 +24,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,7 +40,7 @@ public abstract class ZPKeyBindingsManager {
 
     public abstract void init();
 
-    public List<KeyMapping> getKeyMappingList() {
+    public @Unmodifiable @NotNull List<KeyMapping> getKeyMappingList() {
         return Collections.unmodifiableList(this.keyMappingList);
     }
 

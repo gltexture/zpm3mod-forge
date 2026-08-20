@@ -21,6 +21,7 @@
 package ru.gltexture.zpm3.modules.loot_cases.loot_tables.nbt.container;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
 import ru.gltexture.zpm3.modules.loot_cases.loot_tables.nbt.ZPLootNbtValue;
 
 import java.util.Collections;
@@ -35,7 +36,7 @@ public final class ZPLootNbtContainer implements IZPLootNbtContainer {
     }
 
     @Override
-    public @NotNull Map<String, ZPLootNbtValue> getValues() {
+    public @Unmodifiable @NotNull Map<String, ZPLootNbtValue> getValues() {
         return Collections.unmodifiableMap(this.lootNbtList);
     }
 

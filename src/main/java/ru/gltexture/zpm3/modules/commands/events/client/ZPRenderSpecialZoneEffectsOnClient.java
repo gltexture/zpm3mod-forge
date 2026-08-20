@@ -39,7 +39,7 @@ import ru.gltexture.zpm3.engine.service.Pair;
 import ru.gltexture.zpm3.engine.zones.ZPZoneChecks;
 import ru.gltexture.zpm3.engine.zones.ZPZoneFlag;
 import ru.gltexture.zpm3.engine.zones.ZPZoneManager;
-import ru.gltexture.zpm3.modules.common.utils.ZPCommonClientUtils;
+import ru.gltexture.zpm3.engine.client.rendering.util.ZPCommonClientUtils;
 
 import java.util.*;
 import java.util.List;

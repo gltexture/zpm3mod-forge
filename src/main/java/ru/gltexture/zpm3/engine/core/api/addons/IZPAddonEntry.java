@@ -21,8 +21,14 @@
 package ru.gltexture.zpm3.engine.core.api.addons;
 
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.api.addons.impl.IZPAddonImpl;
+import ru.gltexture.zpm3.engine.core.config.ZPConfigConstantsClass;
 
 public interface IZPAddonEntry {
+    default void registerConfig(@NotNull String confName, @NotNull Class<? extends ZPConfigConstantsClass> clazz) {
+        ZombiePlague3.processAddonConfiguration(this, confName, clazz);
+    }
+
     @NotNull IZPAddonImpl ZP3AddonImpl();
 }

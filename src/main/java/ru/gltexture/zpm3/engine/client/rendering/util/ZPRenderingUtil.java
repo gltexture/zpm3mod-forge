@@ -40,7 +40,6 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2i;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL46;
-import ru.gltexture.zpm3.engine.client.rendering.ZPClientManager;
 import ru.gltexture.zpm3.engine.client.rendering.gl.base.ITexture2DProgram;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPClientConfig;
@@ -48,7 +47,6 @@ import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.instances.items.ZPItemMedicine;
 import ru.gltexture.zpm3.engine.mixins.impl.client.render.ZPGameRendererFovAccessor;
 import ru.gltexture.zpm3.engine.service.Pair;
-import ru.gltexture.zpm3.modules.common.utils.ZPCommonClientUtils;
 
 import java.util.List;
 import java.util.function.Consumer;

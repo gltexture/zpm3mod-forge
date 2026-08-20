@@ -27,6 +27,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.TickEvent;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
 import org.lwjgl.glfw.*;
 import ru.gltexture.zpm3.engine.core.ZP_EventsManager;
 import ru.gltexture.zpm3.engine.core.api.events.client.ZPEventBus_ClientInput;
@@ -279,35 +280,35 @@ public final class ZPClientCallbacksManager implements IZPClientCallbacksManager
         });
     }
 
-    public @NotNull List<ZPClientCallbacks.ZPCharCallback> getOnCharCallbacks() {
+    public @Unmodifiable @NotNull List<ZPClientCallbacks.ZPCharCallback> getOnCharCallbacks() {
         return Collections.unmodifiableList(this.onCharCallbacks);
     }
 
-    public @NotNull List<ZPClientCallbacks.ZPMouseButtonCallback> getOnMouseButtonCallbacks() {
+    public @Unmodifiable @NotNull List<ZPClientCallbacks.ZPMouseButtonCallback> getOnMouseButtonCallbacks() {
         return Collections.unmodifiableList(this.onMouseButtonCallbacks);
     }
 
-    public @NotNull List<ZPClientCallbacks.ZPMouseScrollCallback> getOnMouseScrollCallbacks() {
+    public @Unmodifiable @NotNull List<ZPClientCallbacks.ZPMouseScrollCallback> getOnMouseScrollCallbacks() {
         return Collections.unmodifiableList(this.onMouseScrollCallbacks);
     }
 
-    public @NotNull List<ZPClientCallbacks.ZPKeyboardCallback> getOnKeyboardCallbacks() {
+    public @Unmodifiable @NotNull List<ZPClientCallbacks.ZPKeyboardCallback> getOnKeyboardCallbacks() {
         return Collections.unmodifiableList(this.onKeyboardCallbacks);
     }
 
-    public @NotNull List<ZPClientCallbacks.ZPWindowResizeCallback> getOnWindowResizeCallbacks() {
+    public @Unmodifiable @NotNull List<ZPClientCallbacks.ZPWindowResizeCallback> getOnWindowResizeCallbacks() {
         return Collections.unmodifiableList(this.onWindowResizeCallbacks);
     }
 
-    public @NotNull List<ZPClientCallbacks.ZPSetupResourcesCallback> getOnSetupResourcesCallbacks() {
+    public @Unmodifiable @NotNull List<ZPClientCallbacks.ZPSetupResourcesCallback> getOnSetupResourcesCallbacks() {
         return Collections.unmodifiableList(this.onSetupResourcesCallbacks);
     }
 
-    public @NotNull List<ZPClientCallbacks.ZPDestroyResourcesCallback> getOnDestroyResourcesCallbacks() {
+    public @Unmodifiable @NotNull List<ZPClientCallbacks.ZPDestroyResourcesCallback> getOnDestroyResourcesCallbacks() {
         return Collections.unmodifiableList(this.onDestroyResourcesCallbacks);
     }
 
-    public @NotNull List<ZPClientCallbacks.ZPReloadResourcesCallback> getOnReloadResourcesCallbacks() {
+    public @Unmodifiable @NotNull List<ZPClientCallbacks.ZPReloadResourcesCallback> getOnReloadResourcesCallbacks() {
         return Collections.unmodifiableList(this.ononReloadResourcess);
     }
 }

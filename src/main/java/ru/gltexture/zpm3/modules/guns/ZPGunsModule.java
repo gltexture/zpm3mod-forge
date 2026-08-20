@@ -110,7 +110,7 @@ public class ZPGunsModule extends ZPModule {
     //    );
     //}
 
-    @Override
+   // @Override
     public void initialize(@NotNull IModuleInitContext context) {
         context.addRecipesRegistry(new ZPGunsRecipeRegistry());
         context.addCommonZp3RegistryClass(ZPGunItems.class);

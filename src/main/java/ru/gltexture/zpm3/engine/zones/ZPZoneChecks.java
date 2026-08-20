@@ -130,7 +130,7 @@ public final class ZPZoneChecks {
         return i;
     }
 
-    private boolean checkFlag(Level level, BlockPos blockPos, ZPZoneFlag flag) {
+    public boolean checkFlag(Level level, BlockPos blockPos, ZPZoneFlag flag) {
         Collection<ZPZoneManager.Zone> zones = ZPZoneManager.INSTANCE.getZonesInChunk(level, blockPos);
         if (zones == null) {
             return false;
@@ -145,11 +145,11 @@ public final class ZPZoneChecks {
         return false;
     }
 
-    private boolean checkFlag(Level level, int x, int y, int z, ZPZoneFlag flag) {
+    public boolean checkFlag(Level level, int x, int y, int z, ZPZoneFlag flag) {
         return this.checkFlag(level, new BlockPos(x, y, z), flag);
     }
 
-    private boolean isInside(ZPZoneManager.Zone zone, BlockPos blockPos) {
+    public boolean isInside(ZPZoneManager.Zone zone, BlockPos blockPos) {
         Pair<Vector3f, Vector3f> pair = ZPZoneManager.Zone.min_max(zone.start(), zone.end());
         final Vector3f min = pair.first();
         final Vector3f max = pair.second();

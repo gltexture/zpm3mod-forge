@@ -47,7 +47,7 @@ import ru.gltexture.zpm3.modules.blocks.init.ZPBlockEntities;
 import ru.gltexture.zpm3.modules.blocks.instances.block_entities.ZPFadingBlockEntity;
 import ru.gltexture.zpm3.modules.blocks.instances.blocks.torch.ZPFadingTorchBlock;
 import ru.gltexture.zpm3.modules.common.init.ZPTags;
-import ru.gltexture.zpm3.modules.common.utils.ZPCommonClientUtils;
+import ru.gltexture.zpm3.engine.client.rendering.util.ZPCommonClientUtils;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.fake.ZPFakePlayer;
 import ru.gltexture.zpm3.engine.instances.blocks.IHotLiquid;

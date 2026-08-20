@@ -18,7 +18,7 @@
  *
  */
 
-package ru.gltexture.zpm3.modules.common.utils;
+package ru.gltexture.zpm3.engine.client.rendering.util;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;

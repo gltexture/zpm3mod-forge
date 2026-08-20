@@ -39,7 +39,7 @@ import org.joml.Vector3f;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
-import ru.gltexture.zpm3.modules.common.utils.ZPCommonClientUtils;
+import ru.gltexture.zpm3.engine.client.rendering.util.ZPCommonClientUtils;
 import ru.gltexture.zpm3.modules.melee_throwables_tools.instances.melee.ZPBroomSword;
 
 @OnlyIn(Dist.CLIENT)

@@ -22,6 +22,7 @@ package ru.gltexture.zpm3.engine.zones;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Unmodifiable;
 import ru.gltexture.zpm3.engine.zones.vars.ZPZoneIntVar;
 
 import java.util.Collection;
@@ -72,7 +73,7 @@ public final class ZPZonesRegistry {
         return ZPZonesRegistry.ZONE_FLAGS.get(id);
     }
 
-    public static Collection<ZPZoneFlag> flagValues() {
+    public static @Unmodifiable Collection<ZPZoneFlag> flagValues() {
         return Collections.unmodifiableCollection(ZPZonesRegistry.ZONE_FLAGS.values());
     }
 
@@ -88,7 +89,7 @@ public final class ZPZonesRegistry {
         return ZPZonesRegistry.ZONE_INT_VARIABLES.get(id);
     }
 
-    public static Collection<ZPZoneIntVar> int_variableValues() {
+    public static @Unmodifiable Collection<ZPZoneIntVar> int_variableValues() {
         return Collections.unmodifiableCollection(ZPZonesRegistry.ZONE_INT_VARIABLES.values());
     }
 

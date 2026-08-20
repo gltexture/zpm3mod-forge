@@ -73,7 +73,7 @@ public abstract class ZPPlayerMixin implements IZPPlayerMixinExt {
     private void onConstructed(Level pLevel, BlockPos pPos, float pYRot, GameProfile pGameProfile, CallbackInfo ci) {
     }
 
-    @Inject(method = "jumpFromGround", at = @At("HEAD"), cancellable = true)
+   // @Inject(method = "jumpFromGround", at = @At("HEAD"), cancellable = true)
     //public void jumpFromGround(CallbackInfo ci) {
     //    if (this.zpm3forge$isLying()) {
     //        ci.cancel();

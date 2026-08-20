@@ -23,6 +23,7 @@ package ru.gltexture.zpm3.modules.net_pack.data.data_static;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.modules.net_pack.data.accessors.ZPNetDataAccessor;
 import ru.gltexture.zpm3.modules.net_pack.data.data_ent.ZPNetDataVar;
@@ -58,7 +59,7 @@ public class ZPNetStaticDataRegistry {
         return Optional.ofNullable(this.dataAccessors_idMap.get(id));
     }
 
-    public Map<ZPNetDataAccessor<?>, ZPNetDataVar<?>> getDefaultVarsRegistry() {
+    public @Unmodifiable Map<ZPNetDataAccessor<?>, ZPNetDataVar<?>> getDefaultVarsRegistry() {
         return Collections.unmodifiableMap(this.defaultVarsRegistry);
     }
 

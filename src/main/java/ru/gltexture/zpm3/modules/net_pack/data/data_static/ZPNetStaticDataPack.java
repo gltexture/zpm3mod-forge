@@ -22,6 +22,7 @@ package ru.gltexture.zpm3.modules.net_pack.data.data_static;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Unmodifiable;
 import ru.gltexture.zpm3.engine.core.ZPLogger;
 import ru.gltexture.zpm3.modules.net_pack.data.accessors.ZPNetDataAccessor;
 import ru.gltexture.zpm3.modules.net_pack.data.data_ent.ZPNetDataVar;
@@ -77,7 +78,7 @@ public final class ZPNetStaticDataPack implements IZPNetStaticDataPack {
         }
     }
 
-    public Map<ZPNetDataAccessor<?>, ZPNetDataVar<?>> getVars() {
+    public @Unmodifiable Map<ZPNetDataAccessor<?>, ZPNetDataVar<?>> getVars() {
         return Collections.unmodifiableMap(this.vars);
     }
 

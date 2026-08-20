@@ -28,6 +28,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Unmodifiable;
 import org.joml.Vector2i;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL46;
@@ -134,7 +135,7 @@ public class ZPPostFXChain implements IZPPostFXChain {
         this.getProcessors().remove(processor);
     }
 
-    public @NotNull Set<ZPPostFXProcessor> getProcessors() {
+    public @Unmodifiable @NotNull Set<ZPPostFXProcessor> getProcessors() {
         return Collections.unmodifiableSet(this.processors);
     }
 

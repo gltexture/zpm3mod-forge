@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="img/favicon.ico">
-        <title>My Docs</title>
+        <title>ZP3 API 0.2a</title>
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/fontawesome.min.css" rel="stylesheet">
         <link href="css/brands.min.css" rel="stylesheet">
@@ -24,7 +24,7 @@
     <body class="homepage">
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href=".">My Docs</a>
+                <a class="navbar-brand" href=".">ZP3 API 0.2a</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -35,22 +35,29 @@
                         <!-- Main navigation -->
                         <ul class="nav navbar-nav">
                             <li class="nav-item">
-                                <a href="." class="nav-link active" aria-current="page">ZombiePlague3</a>
+                                <a href="." class="nav-link active" aria-current="page">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="getting-started/" class="nav-link">Getting Started</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Architecture</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="mod-architecture/" class="dropdown-item">Mod Architecture</a>
+</li>
+                                    
+<li>
+    <a href="addon-lifecycle/" class="dropdown-item">Addon Lifecycle</a>
+</li>
+                                </ul>
                             </li>
                             <li class="nav-item">
                                 <a href="addon-development/" class="nav-link">Addon Development</a>
                             </li>
                             <li class="nav-item">
                                 <a href="addon-example/" class="nav-link">Addon Example</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="addon-lifecycle/" class="nav-link">Addon Lifecycle</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="getting-started/" class="nav-link">Getting Started</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="mod-architecture/" class="nav-link">Mod Architecture</a>
                             </li>
                         </ul>
 
@@ -66,7 +73,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" href="addon-development/" class="nav-link">
+                                <a rel="next" href="getting-started/" class="nav-link">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -158,38 +165,17 @@
 <h2 id="documentation">📚 Documentation</h2>
 <h3 id="getting-started">Getting Started</h3>
 <ul>
-<li><a href="getting-started/">Quick Start — Creating an Addon</a></li>
+<li><a href="getting-started/">Getting Started</a></li>
 </ul>
 <h3 id="architecture">Architecture</h3>
 <ul>
-<li><a href="architecture.md">Mod Architecture</a></li>
+<li><a href="mod-architecture/">Mod Architecture</a></li>
 <li><a href="addon-lifecycle/">Addon Lifecycle</a></li>
-<li><a href="contexts.md">Execution Contexts</a></li>
 </ul>
-<h3 id="lifecycle">Lifecycle</h3>
+<h3 id="addon-development">Addon Development</h3>
 <ul>
-<li><a href="lifecycle/pre-init.md">PreInit</a></li>
-<li><a href="lifecycle/init.md">Init</a></li>
-<li><a href="lifecycle/client-init.md">ClientInit</a></li>
-<li><a href="lifecycle/post-init.md">PostInit</a></li>
-</ul>
-<h3 id="api">API</h3>
-<ul>
-<li><a href="api/registries.md">Registration API</a></li>
-<li><a href="api/items.md">Items</a></li>
-<li><a href="api/blocks.md">Blocks</a></li>
-<li><a href="api/guns.md">Firearms</a></li>
-<li><a href="api/events.md">Events</a></li>
-<li><a href="api/networking.md">Networking</a></li>
-<li><a href="api/client.md">Client API</a></li>
-<li><a href="api/server.md">Server API</a></li>
-</ul>
-<h3 id="examples">Examples</h3>
-<ul>
-<li><a href="examples/basic-addon.md">Basic Addon</a></li>
-<li><a href="examples/custom-item.md">Custom Item</a></li>
-<li><a href="examples/custom-gun.md">Custom Firearm</a></li>
-<li><a href="examples/event-handler.md">Event Handler</a></li>
+<li><a href="addon-development/">Addon Development</a></li>
+<li><a href="addon-example/">Addon Example</a></li>
 </ul>
 <hr />
 <h2 id="project">🔗 Project</h2>
@@ -279,5 +265,5 @@
 
 <!--
 MkDocs version : 1.6.1
-Build Date UTC : 2026-08-20 11:50:45.356043+00:00
+Build Date UTC : 2026-08-20 11:55:03.008581+00:00
 -->

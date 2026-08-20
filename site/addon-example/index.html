@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Addon Example - ZP3 API 0.2a</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../css/brands.min.css" rel="stylesheet">
+        <link href="../css/solid.min.css" rel="stylesheet">
+        <link href="../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">ZP3 API 0.2a</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../getting-started/" class="nav-link">Getting Started</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Architecture</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../mod-architecture/" class="dropdown-item">Mod Architecture</a>
+</li>
+                                    
+<li>
+    <a href="../addon-lifecycle/" class="dropdown-item">Addon Lifecycle</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../addon-development/" class="nav-link">Addon Development</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="./" class="nav-link active" aria-current="page">Addon Example</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../addon-development/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" class="nav-link disabled">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#addon-example" class="nav-link">Addon Example</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#main-addon-class" class="nav-link">Main Addon Class</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#custom-firearm" class="nav-link">Custom Firearm</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#firearm-rendering" class="nav-link">⚠️ Firearm Rendering</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#custom-configuration" class="nav-link">Custom Configuration</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#zpm3-addon-implementation" class="nav-link">ZPM3 Addon Implementation</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#network-accessors" class="nav-link">Network Accessors</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#lifecycle-integration" class="nav-link">Lifecycle Integration</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#custom-imgui-interface" class="nav-link">Custom ImGui Interface</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#custom-zpm3-event" class="nav-link">Custom ZPM3 Event</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="addon-example">Addon Example</h1>
+<p>This section provides a small example of a ZPM3 addon. It intentionally combines several API features in one project so that you can see how the different parts of the addon API work.</p>
+<blockquote>
+<p><strong>Note:</strong> The ZPM3 dependency setup is omitted here. It is described in <a href="../addon-development/">Addon Development</a>.</p>
+</blockquote>
+<hr />
+<h2 id="main-addon-class">Main Addon Class</h2>
+<p>The addon starts as a completely normal Forge mod:</p>
+<pre><code class="language-java">@Mod(TestZP3addon.MODID)
+public class TestZP3addon implements IZPAddonEntry {
+    public static final String MODID = &quot;testzp3addon&quot;;
+
+    public static final DeferredRegister&lt;Item&gt; ITEMS =
+            DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
+
+    public static final DeferredRegister&lt;Block&gt; BLOCKS =
+            DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
+
+    public static final RegistryObject&lt;Item&gt; TEST_PISTOL = ITEMS.register(&quot;test_pistol&quot;, () -&gt;
+            new ZPGunPistol(
+                    new Item.Properties(),
+                    new ZPBaseGun.GunProperties(
+                            net.minecraft.world.item.Items.DIAMOND,
+                            ZPBaseGun.GunProperties.HeldType.PISTOL
+                    )
+                            .setDamage(4)
+                            .setDurability(280)
+                            .setInaccuracy(1.8f)
+                            .setMaxAmmo(100)
+                            .setReloadTime(40)
+                            .setShootCooldown(1)
+                            .setClientRecoil(1.0f)
+            )
+    );
+
+    public TestZP3addon() {
+        ZombiePlague3.RegisterMeAsAddon(this);
+
+        this.registerConfig(&quot;Test&quot;, CustomConfig.class);
+
+        final IEventBus modEventBus =
+                FMLJavaModLoadingContext.get().getModEventBus();
+
+        ITEMS.register(modEventBus);
+        BLOCKS.register(modEventBus);
+
+        modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::clientSetup);
+
+        MinecraftForge.EVENT_BUS.register(this);
+
+        ZPUtility.sides().onlyClient(() -&gt; {
+            ZPRenderHooksManager.INSTANCE.addItemRendering1PersonHook(
+                    TEST_PISTOL,
+                    ZPDefaultGunRenderers.defaultPistolRenderer
+            );
+        });
+    }
+
+    @Override
+    public @NotNull IZPAddonImpl ZP3AddonImpl() {
+        return new AddonZP3Impl();
+    }
+}
+</code></pre>
+<h3 id="what-happens-here">What happens here?</h3>
+<p>The important parts for ZPM3 are:</p>
+<pre><code class="language-java">public class TestZP3addon implements IZPAddonEntry
+</code></pre>
+<p>The Forge mod class implements <code>IZPAddonEntry</code>, allowing ZPM3 to treat it as an addon.</p>
+<p>The addon then registers itself manually:</p>
+<pre><code class="language-java">ZombiePlague3.RegisterMeAsAddon(this);
+</code></pre>
+<p>This is currently required because ZPM3 does not automatically discover addon mods.</p>
+<p>The custom configuration is registered as well:</p>
+<pre><code class="language-java">this.registerConfig(&quot;Test&quot;, CustomConfig.class);
+</code></pre>
+<p>The rest of the class uses standard Forge mechanisms such as <code>DeferredRegister</code> for registering items and blocks.</p>
+<hr />
+<h2 id="custom-firearm">Custom Firearm</h2>
+<p>The example registers a ZPM3 pistol using the normal Forge <code>DeferredRegister</code>:</p>
+<pre><code class="language-java">public static final RegistryObject&lt;Item&gt; TEST_PISTOL = ITEMS.register(&quot;test_pistol&quot;, () -&gt;
+        new ZPGunPistol(
+                new Item.Properties(),
+                new ZPBaseGun.GunProperties(
+                        Items.DIAMOND,
+                        ZPBaseGun.GunProperties.HeldType.PISTOL
+                )
+                        .setDamage(4)
+                        .setDurability(280)
+                        .setInaccuracy(1.8f)
+                        .setMaxAmmo(100)
+                        .setReloadTime(40)
+                        .setShootCooldown(1)
+                        .setClientRecoil(1.0f)
+        )
+);
+</code></pre>
+<p>For demonstration purposes, <strong>diamonds are used as ammunition</strong>.</p>
+<p>The <code>GunProperties</code> object defines the weapon's basic characteristics:</p>
+<ul>
+<li>damage;</li>
+<li>durability;</li>
+<li>inaccuracy;</li>
+<li>magazine capacity;</li>
+<li>reload time;</li>
+<li>shooting cooldown;</li>
+<li>client-side recoil.</li>
+</ul>
+<p>The important point is that the weapon itself is still registered using the <strong>standard Forge registry system</strong>.</p>
+<hr />
+<h2 id="firearm-rendering">⚠️ Firearm Rendering</h2>
+<p>There is currently one important ZPM3-specific requirement for custom firearms.</p>
+<p>After registering a firearm, its first-person renderer must be registered <strong>at an early initialization stage</strong>:</p>
+<pre><code class="language-java">ZPUtility.sides().onlyClient(() -&gt; {
+    ZPRenderHooksManager.INSTANCE.addItemRendering1PersonHook(
+            TEST_PISTOL,
+            ZPDefaultGunRenderers.defaultPistolRenderer
+    );
+});
+</code></pre>
+<p>This connects the item with the ZPM3 pistol renderer.</p>
+<p>The method may appear as <strong>deprecated</strong> in the IDE. This is currently expected.</p>
+<blockquote>
+<p>⚠️ <strong>Do not ignore this requirement when creating custom firearms.</strong></p>
+<p>The current renderer registration API is temporary. A cleaner public API for custom firearm rendering is planned for a future ZPM3 version.</p>
+</blockquote>
+<p>The renderer should be registered <strong>immediately after the item registration</strong>, rather than waiting until a later lifecycle stage.</p>
+<hr />
+<h2 id="custom-configuration">Custom Configuration</h2>
+<p>The addon can define its own configuration:</p>
+<pre><code class="language-java">public class CustomConfig implements ZPConfigConstantsClass {
+
+    @ZPVarDefinition(
+            description = &quot;TEST1&quot;
+    )
+    public static final ZPConfig_BOOL TEST1 =
+            new ZPConfig_BOOL(true);
+
+    @ZPVarDefinition(
+            description = &quot;TEST2&quot;
+    )
+    public static final ZPConfig_BOOL TEST2 =
+            new ZPConfig_BOOL(true);
+}
+</code></pre>
+<p>The configuration implements <code>ZPConfigConstantsClass</code> and contains statically defined configuration variables.</p>
+<p>In this example, two boolean variables are created.</p>
+<p>The configuration is then registered in the addon constructor:</p>
+<pre><code class="language-java">this.registerConfig(&quot;Test&quot;, CustomConfig.class);
+</code></pre>
+<p>ZPM3 will process the configuration and create its corresponding configuration data in the ZPM3 configuration directory.</p>
+<hr />
+<h1 id="zpm3-addon-implementation">ZPM3 Addon Implementation</h1>
+<p>The <code>IZPAddonEntry</code> implementation must return an <code>IZPAddonImpl</code>:</p>
+<pre><code class="language-java">@Override
+public @NotNull IZPAddonImpl ZP3AddonImpl() {
+    return new AddonZP3Impl();
+}
+</code></pre>
+<p>The actual ZPM3 integration is implemented in <code>AddonZP3Impl</code>:</p>
+<pre><code class="language-java">public class AddonZP3Impl implements IZPAddonImpl {
+    ...
+}
+</code></pre>
+<p>This class contains the addon lifecycle methods.</p>
+<hr />
+<h2 id="network-accessors">Network Accessors</h2>
+<p>The example defines two network accessors:</p>
+<pre><code class="language-java">public static final ZPNetDataIntAccessor CURSE =
+        new ZPNetDataIntAccessor(
+                ResourceLocation.fromNamespaceAndPath(
+                        TestZP3addon.MODID,
+                        &quot;curse&quot;
+                )
+        );
+
+public static final ZPNetDataIntAccessor TEST_SOMETHING =
+        new ZPNetDataIntAccessor(
+                ResourceLocation.fromNamespaceAndPath(
+                        TestZP3addon.MODID,
+                        &quot;test_static2&quot;
+                )
+        );
+</code></pre>
+<p>The first accessor is attached to entities:</p>
+<pre><code class="language-java">iAddonInitContext.defineNetAccessorOnEntity(
+        LivingEntity.class,
+        AddonZP3Impl.CURSE
+);
+</code></pre>
+<p>This creates a ZPM3-managed synchronized value associated with <code>LivingEntity</code> instances.</p>
+<p>The second accessor is registered as a server-side global value:</p>
+<pre><code class="language-java">iAddonInitContext.defineStaticNetAccessor_ForServer(
+        AddonZP3Impl.TEST_SOMETHING,
+        new ZPNetDataInt(888)
+);
+</code></pre>
+<hr />
+<h2 id="lifecycle-integration">Lifecycle Integration</h2>
+<p>The example uses several lifecycle features.</p>
+<h3 id="client-setup">Client Setup</h3>
+<pre><code class="language-java">@Override
+public void clientSetup(
+        @NotNull IAddonClientSetupContext context
+) {
+    context.registerImGuiInterface(TestImGUIInterface::new);
+}
+</code></pre>
+<p>A custom ImGui interface is registered with ZPM3.</p>
+<h3 id="preinit">PreInit</h3>
+<pre><code class="language-java">@Override
+public void preInitialize(
+        @NotNull IAddonPreInitContext context
+) {
+    context.registerZoneFlag(&quot;TESTADDONFLAG&quot;);
+    context.registerZoneIntVar(&quot;TESTINTVAR&quot;, 1, 0, 10);
+}
+</code></pre>
+<p>The addon registers:</p>
+<ul>
+<li>a custom zone flag;</li>
+<li>a custom integer zone variable.</li>
+</ul>
+<h3 id="init">Init</h3>
+<pre><code class="language-java">@Override
+public void initialize(
+        @NotNull IAddonInitContext context
+) {
+    context.defineNetAccessorOnEntity(
+            LivingEntity.class,
+            AddonZP3Impl.CURSE
+    );
+
+    context.defineStaticNetAccessor_ForServer(
+            AddonZP3Impl.TEST_SOMETHING,
+            new ZPNetDataInt(888)
+    );
+
+    context.registerZP3EventHandlerClass(
+            TestAddonZP3Events.class
+    );
+}
+</code></pre>
+<h3 id="postinit">PostInit</h3>
+<p>The example does not need any post-initialization logic:</p>
+<pre><code class="language-java">@Override
+public void postInitialize(
+        @NotNull IAddonPostInitContext context
+) {
+}
+</code></pre>
+<hr />
+<h1 id="custom-imgui-interface">Custom ImGui Interface</h1>
+<p>The example also demonstrates the optional ImGui integration:</p>
+<pre><code class="language-java">public class TestImGUIInterface implements IZPImGuiInterface {
+
+    @Override
+    public void drawGui(
+            @NotNull Window window,
+            @NotNull Input input
+    ) {
+        ImGui.showDemoWindow();
+    }
+}
+</code></pre>
+<p>The interface simply displays the standard ImGui demo window.</p>
+<p>It is registered during <code>clientSetup</code>:</p>
+<pre><code class="language-java">context.registerImGuiInterface(TestImGUIInterface::new);
+</code></pre>
+<p>This is only an example. A real addon can use the same mechanism to implement its own debugging tools, configuration interfaces, editors, or other custom UI.</p>
+<hr />
+<h1 id="custom-zpm3-event">Custom ZPM3 Event</h1>
+<p>Finally, the example registers an event handler:</p>
+<pre><code class="language-java">public class TestAddonZP3Events implements ZP3EventHandlerClass {
+
+    @ZombiePlagueEvent
+    public static void onSomething(
+            ZPEventBus_Guns.GunShotEvent event
+    ) {
+        System.out.println(&quot;SHOT!&quot;);
+    }
+}
+</code></pre>
+<p>The handler is registered during <code>initialize</code>:</p>
+<pre><code class="language-java">context.registerZP3EventHandlerClass(
+        TestAddonZP3Events.class
+);
+</code></pre>
+<p>Whenever a ZPM3 gun fires and the corresponding event is dispatched, the method will be called.</p>
+<p>The important architectural principle is that the addon itself remains a <strong>normal Forge mod</strong>, while <code>IZPAddonEntry</code> and <code>IZPAddonImpl</code> provide the bridge into ZPM3-specific functionality.</p>
+<hr />
+<p><img alt="{6850C625-2B25-4F08-9469-672B1A16C1F8}.png" src="../pictures/%7B6850C625-2B25-4F08-9469-672B1A16C1F8%7D.png" />
+<img alt="{5C5E49DC-9BA5-4E03-8DBC-6C31C5AB1A59}.png" src="../pictures/%7B5C5E49DC-9BA5-4E03-8DBC-6C31C5AB1A59%7D.png" />
+<img alt="{4726221D-6F57-43E0-8E0C-C992C6FF4296}.png" src="../pictures/%7B4726221D-6F57-43E0-8E0C-C992C6FF4296%7D.png" />
+<img alt="{C9E2E5CE-66EE-4C52-807B-36C97FA2DB5A}.png" src="../pictures/%7BC9E2E5CE-66EE-4C52-807B-36C97FA2DB5A%7D.png" />
+<img alt="{D9194B65-6A0E-4450-A2C6-76B42889C9DA}.png" src="../pictures/%7BD9194B65-6A0E-4450-A2C6-76B42889C9DA%7D.png" />
+<img alt="{5900A044-EBAB-43B1-942C-4E8F6204EB16}.png" src="../pictures/%7B5900A044-EBAB-43B1-942C-4E8F6204EB16%7D.png" /></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js"></script>
+        <script src="../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

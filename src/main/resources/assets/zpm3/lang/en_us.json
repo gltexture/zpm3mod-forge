@@ -126,5 +126,19 @@
   "ui.zpm3.config.RENDER_ARMOR_LAYERS_ON_HANDS": "Armor On Hands: %s",
   "ui.zpm3.config.FANCY_ITEM_ENTITIES": "Fancy Item-Entity: %s",
   "ui.zpm3.config.FIRST_PERSON_RENDER_SPACE_SCALE_BY_FOV": "FP FOV Scaling: %s",
-  "ui.zpm3.config.FIRST_PERSON_RENDER_SCALE_TYPE": "FP FOV Scaling Type"
+  "ui.zpm3.config.FIRST_PERSON_RENDER_SCALE_TYPE": "FP FOV Scaling Type",
+
+  "tab.zpm3.armor": "123",
+  "ui.zpm3.exit": "123",
+  "ui.zpm3.modSettings": "123",
+  "ui.zpm3.mcSettings": "123",
+  "ui.zpm3.settings": "123",
+  "tooltip.zpm3.weapon.trophy": "123",
+  "key.zpm3.pickItem": "123",
+  "key.categories.zpm": "123",
+  "key.zpm3.unloadKey": "123",
+  "key.zpm3.reload": "123",
+  "ui.zpm3.configSettings": "123",
+  "ui.zpm3.folder": "123",
+  "ui.zpm3.launch": "123"
 }

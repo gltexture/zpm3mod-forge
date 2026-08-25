@@ -21,7 +21,6 @@
 package ru.gltexture.zpm3.engine.core.api.modules.context;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.engine.core.api.context.IZPInitContext;
 import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 import ru.gltexture.zpm3.engine.instances.items.tier.ZPTier;
@@ -29,9 +28,10 @@ import ru.gltexture.zpm3.engine.instances.items.tier.ZPTierData;
 import ru.gltexture.zpm3.engine.network.ZPNetwork;
 import ru.gltexture.zpm3.engine.recipes.ZPRecipesRegistry;
 import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
-import ru.gltexture.zpm3.modules.loot_cases.events.provider.ZPSyntheticLootCasesDataGenRegistry;
 import ru.gltexture.zpm3.modules.loot_cases.loot_tables.ZPLootTable;
 import ru.gltexture.zpm3.modules.loot_cases.loot_tables.synthetic.ZPSyntheticLootCaseDescription;
+
+import java.util.List;
 
 public interface IModuleInitContext extends IZPInitContext {
     void registerForgeEventHandlerClass(@NotNull Class<? extends ZPForgeEventHandlerClass> clazz);
@@ -42,6 +42,7 @@ public interface IModuleInitContext extends IZPInitContext {
     void addCommonZp3RegistryClass(@NotNull Class<? extends ZPCommonRegistry<?>> zpRegistryProcessorClass);
     void registerSyntheticLootCase(@NotNull ZPSyntheticLootCaseDescription lootCase);
     void registerSyntheticLootTable(@NotNull ZPLootTable lootTable);
+    void registerSyntheticLootTableExtension(@NotNull String lootTableId, @NotNull List<ZPLootTable.TableExtension> extendByList);
     void addRecipesRegistry(@NotNull ZPRecipesRegistry... recipesRegistries);
     void addTier(@NotNull ZPTier[] tier);
 }

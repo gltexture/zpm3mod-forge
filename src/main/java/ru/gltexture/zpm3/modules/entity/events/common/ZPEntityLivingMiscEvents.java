@@ -24,6 +24,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.TickEvent;
@@ -34,10 +35,14 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
+import ru.gltexture.zpm3.engine.nbt.ZPTagID;
+import ru.gltexture.zpm3.engine.nbt.entity.ZPEntityNBT;
 import ru.gltexture.zpm3.modules.armor.utils.ZPArmorUtil;
 import ru.gltexture.zpm3.modules.entity.instances.mobs.zombies.ZPAbstractZombie;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
+import ru.gltexture.zpm3.modules.entity.util.ZPEntityUtil;
+import ru.gltexture.zpm3.modules.entity.util.ZPLivingStat;
 
 public class ZPEntityLivingMiscEvents implements ZPForgeEventHandlerClass {
     @SubscribeEvent
@@ -61,6 +66,15 @@ public class ZPEntityLivingMiscEvents implements ZPForgeEventHandlerClass {
         LivingEntity entity = event.getEntity();
         if (ZPArmorUtil.isFullAqualungBreathingRightNow(entity)) {
             event.getEntity().setAirSupply(entity.getMaxAirSupply());
+        }
+
+        if (!entity.level().isClientSide()) {
+            ZPEntityNBT NBT = new ZPEntityNBT(entity);
+            ZPTagID.ENTITY_TAGS_TO_DECREMENT_EACH_TICK.forEach(e -> {
+                if (NBT.has(e) && NBT.getTagInt(e) > 0) {
+                    NBT.decrementInt(null, e);
+                }
+            });
         }
     }
 

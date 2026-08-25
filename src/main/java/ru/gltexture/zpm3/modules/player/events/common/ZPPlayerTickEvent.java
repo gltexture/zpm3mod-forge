@@ -52,20 +52,20 @@ public class ZPPlayerTickEvent implements ZPForgeEventHandlerClass {
         if (event.phase == TickEvent.Phase.START) {
             if (!event.player.level().isClientSide()) {
                 {
-                    AttributeInstance attr = player.getAttribute(ForgeMod.ENTITY_REACH.get());
+                    final AttributeInstance attr = player.getAttribute(ForgeMod.ENTITY_REACH.get());
                     if (attr == null) {
                         return;
                     }
-                    ItemStack stack = player.getMainHandItem();
+                    final ItemStack stack = player.getMainHandItem();
                     float bonus = ZPDefaultItemsHandReach.get(stack.getItem());
-                    AttributeModifier old = attr.getModifier(ZPPlayerTickEvent.REACH_BONUS_UUID);
+                    final AttributeModifier old = attr.getModifier(ZPPlayerTickEvent.REACH_BONUS_UUID);
                     if (old != null) {
                         attr.removeModifier(old);
                     }
                     if (bonus == 0.0f) {
                         return;
                     }
-                    AttributeModifier mod = new AttributeModifier(ZPPlayerTickEvent.REACH_BONUS_UUID, "zp_reach_bonus", bonus, AttributeModifier.Operation.ADDITION);
+                    final AttributeModifier mod = new AttributeModifier(ZPPlayerTickEvent.REACH_BONUS_UUID, "zp_reach_bonus", bonus, AttributeModifier.Operation.ADDITION);
                     attr.addPermanentModifier(mod);
                 }
             }

@@ -18,15 +18,19 @@
  *
  */
 
-package ru.gltexture.zpm3.engine.zones;
+package ru.gltexture.zpm3.modules.commands.zones;
 
-import ru.gltexture.zpm3.engine.zones.vars.ZPZoneIntVar;
+import ru.gltexture.zpm3.modules.commands.zones.vars.ZPZoneIntVar;
 
 public abstract class ZPDefaultZones {
     // DEFAULT
     public static final ZPZoneFlag noPlayersPvp = ZPZonesRegistry.RegisterFlag("noPlayersPvp");
     public static final ZPZoneFlag noPlayersDamage = ZPZonesRegistry.RegisterFlag("noPlayersDamage");
-    public static final ZPZoneFlag noBlocksDestruction = ZPZonesRegistry.RegisterFlag("noBlocksDestruction");
+    public static final ZPZoneFlag blockPlaceProtection = ZPZonesRegistry.RegisterFlag("blockPlaceProtection");
+    public static final ZPZoneFlag blockDestructProtection = ZPZonesRegistry.RegisterFlag("blockDestructProtection");
+    public static final ZPZoneFlag blockPistons = ZPZonesRegistry.RegisterFlag("blockPistons");
+    public static final ZPZoneFlag blockFluidPlaceFluid = ZPZonesRegistry.RegisterFlag("blockFluidPlaceFluid");
+    public static final ZPZoneFlag blockUseProtection = ZPZonesRegistry.RegisterFlag("blockUseProtection");
     public static final ZPZoneFlag disableBarbaredWires = ZPZonesRegistry.RegisterFlag("disableBarbaredWires");
     public static final ZPZoneFlag noAcidAffection = ZPZonesRegistry.RegisterFlag("noAcidAffection");
     public static final ZPZoneFlag noToxicAffection = ZPZonesRegistry.RegisterFlag("noToxicAffection");

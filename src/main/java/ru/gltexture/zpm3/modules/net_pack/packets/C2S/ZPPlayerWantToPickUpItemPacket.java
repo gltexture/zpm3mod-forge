@@ -67,7 +67,7 @@ public class ZPPlayerWantToPickUpItemPacket implements ZPNetwork.ZPPacket {
             final ServerPlayer player = (ServerPlayer) sender;
             Entity entity = level.getEntity(this.itemId);
             final var syncer = ZombiePlague3.netServer().getNetStaticDataSyncer();
-            final boolean flagPick = !syncer.check(player) || syncer.getPack(player).flatMap(pack -> pack.getVar(ZPNetPackModule.CtoS__PICK_UP_ON_KEY)).orElse(new ZPNetDataBoolean(ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY.getVar())).getValue();            if (flagPick && entity instanceof ItemEntity entity1) {
+            final boolean flagPick = !syncer.check(player) || syncer.getPack(player).flatMap(pack -> pack.getVar(ZPNetPackModule.CtoS__PICK_UP_ON_KEY)).orElse(new ZPNetDataBoolean(ZPWorldConfig.ALLOW_ITEMS_PICKUP_ON_KEY.getVar())).getValue();            if (flagPick && entity instanceof ItemEntity entity1) {
                 if (entity1.isAlive() && !entity1.hasPickUpDelay() && sender.distanceTo(entity1) <= 2.25f) {
                     this.pickUpItem(sender, entity1);
                 }

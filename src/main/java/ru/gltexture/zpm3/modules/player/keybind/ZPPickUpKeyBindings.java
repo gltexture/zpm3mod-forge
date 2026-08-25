@@ -30,6 +30,6 @@ public final class ZPPickUpKeyBindings extends ZPKeyBindingsManager {
 
     @Override
     public void init() {
-        ZPPickUpKeyBindings.pickItem = this.addKeyBinding(new KeyMapping("zpm.key.pickItem", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_X, "key.categories.zpm"));
+        ZPPickUpKeyBindings.pickItem = this.addKeyBinding(new KeyMapping("key.zpm3.pickItem", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_X, "key.categories.zpm"));
     }
 }

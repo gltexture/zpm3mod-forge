@@ -57,11 +57,11 @@ public record ZPRandomization(@NotNull Type type, float parameter) {
     }
 
     public int random(int min, int max) {
-        return (int) Math.floor(min + (max - min + 1) * this.random());
+        return Math.round(min + ((max - min) * this.random()));
     }
 
     public long random(long min, long max) {
-        return (long) Math.floor(min + (max - min + 1L) * this.random());
+        return Math.round(min + ((max - min) * this.random()));
     }
 
     public double random(double min, double max) {

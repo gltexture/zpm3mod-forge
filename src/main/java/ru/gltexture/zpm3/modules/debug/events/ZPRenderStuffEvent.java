@@ -59,7 +59,7 @@ public class ZPRenderStuffEvent implements ZPForgeEventHandlerClass {
 
     @SubscribeEvent
     public static void onRenderWorld(RenderLevelStageEvent event) {
-        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS) {
+        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_ENTITIES) {
             ZPRenderStuffEvent.lineRequestList.forEach((e) -> {
                 ZPRenderLines.drawLine(event.getPoseStack(), e.start, e.end, 1.0f, 0.0f, 0.0f, 1.0f);
             });

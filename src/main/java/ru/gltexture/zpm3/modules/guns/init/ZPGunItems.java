@@ -52,7 +52,6 @@ public class ZPGunItems extends ZPCommonRegistry<Item> implements IZPCollectRegi
     public static RegistryObject<ZPItem> _colt;
 
     public static RegistryObject<ZPGunPistol> deagle;
-    public static RegistryObject<ZPGunPistol> golden_deagle;
     public static RegistryObject<ZPItem> _deagle;
 
     public static RegistryObject<ZPGunPistol> uzi;
@@ -75,6 +74,10 @@ public class ZPGunItems extends ZPCommonRegistry<Item> implements IZPCollectRegi
 
     public static RegistryObject<ZPGunPistol> machinegun;
     public static RegistryObject<ZPItem> _machinegun;
+
+    public static RegistryObject<ZPGunShotgun> ks23;
+    public static RegistryObject<ZPItem> _ks23;
+    public static RegistryObject<ZPGunPistol> golden_deagle;
 
     public ZPGunItems() {
         super(ZPRegistryConveyor.Target.ITEM);

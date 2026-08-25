@@ -27,11 +27,11 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Position;
 import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
@@ -91,9 +91,10 @@ import ru.gltexture.zpm3.engine.network.handler.ZPNetworkHandler;
 import ru.gltexture.zpm3.engine.network.handler.ZPNetworkHandlerClient;
 import ru.gltexture.zpm3.engine.network.handler.ZPNetworkHandlerServer;
 import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
-import ru.gltexture.zpm3.engine.zones.ZPZoneFlag;
-import ru.gltexture.zpm3.engine.zones.ZPZonesRegistry;
-import ru.gltexture.zpm3.engine.zones.vars.ZPZoneIntVar;
+import ru.gltexture.zpm3.modules.blocks.init.ZPBlocks;
+import ru.gltexture.zpm3.modules.commands.zones.ZPZoneFlag;
+import ru.gltexture.zpm3.modules.commands.zones.ZPZonesRegistry;
+import ru.gltexture.zpm3.modules.commands.zones.vars.ZPZoneIntVar;
 import ru.gltexture.zpm3.modules.armor.events.client.ZPPlayerArmorSoundOnClientEvent;
 import ru.gltexture.zpm3.modules.commands.events.client.ZPRenderSpecialZoneEffectsOnClient;
 import ru.gltexture.zpm3.modules.entity.population.ZPSetupPopulation;
@@ -123,6 +124,7 @@ import ru.gltexture.zpm3.engine.service.ZPPath;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 import ru.gltexture.zpm3.modules.loot_cases.loot_tables.ZPLootTable;
 import ru.gltexture.zpm3.modules.loot_cases.loot_tables.synthetic.ZPSyntheticLootCaseDescription;
+import ru.gltexture.zpm3.modules.melee_throwables_tools.misc.ZPDefaultItemsHandReach;
 import ru.gltexture.zpm3.modules.mob_effects.client.ZPFakeClientEffect;
 import ru.gltexture.zpm3.modules.mob_effects.client.ZPLocalPlayerFakeEffectsManager;
 import ru.gltexture.zpm3.modules.net_pack.data.accessors.ZPGlobalAccessorsRegistry;
@@ -495,7 +497,9 @@ public final class ZombiePlague3 {
             ItemBlockRenderTypes.setRenderLayer(e.fluid().get(), e.type());
         });
         ZPBlocksRenderLayerHelper.clearAll();
-
+        ZPUtility.sides().onlyClient(() -> {
+            ItemBlockRenderTypes.setRenderLayer(ZPBlocks.scrap_trapDoor.get(), RenderType.cutout());
+        });
         event.enqueueWork(() -> {
            try {
                ZPMapArchivedRegistry.registerAll();
@@ -525,10 +529,12 @@ public final class ZombiePlague3 {
         }
         ZPRegistryCollections.clearAll();
         ZPZonesRegistry.clear();
+        ZPItemFuelsHelper.clear();
     }
 
     private void fml_completeSetup(final FMLLoadCompleteEvent event) {
         this.getZpRegistryConveyor().launchLaterList();
+        ZPItemFuelsHelper.convert();
     }
 
     private void fml_commonSetupEvent(final FMLCommonSetupEvent event) {
@@ -547,8 +553,8 @@ public final class ZombiePlague3 {
             ZPGlobalAccessorsRegistry.INSTANCE.buildIdAssignations();
             AddonInitContext.laterSetupNetAccessors.forEach(e -> e.accept(null));
             ModuleInitContext.laterSetupNetAccessors.forEach(e -> e.accept(null));
-            AddonInitContext.laterSetupNetAccessors= null;
-            ModuleInitContext.laterSetupNetAccessors= null;
+            AddonInitContext.laterSetupNetAccessors = null;
+            ModuleInitContext.laterSetupNetAccessors = null;
         }
 
         {
@@ -739,7 +745,10 @@ public final class ZombiePlague3 {
     }
 
     public static final class ModulePostInitContext implements IModulePostInitContext {
-
+        @Override
+        public void setItemDistanceBonus(@NotNull ResourceLocation itemResLoc, float distanceBonus) {
+            ZPDefaultItemsHandReach.SET(itemResLoc, distanceBonus);
+        }
     }
 
     public static final class ModulePreInitContext implements IModulePreInitContext {
@@ -836,6 +845,11 @@ public final class ZombiePlague3 {
         @Override
         public void registerSyntheticLootTable(@NotNull ZPLootTable lootTable) {
             ZPSyntheticLootCasesDataGenRegistry.registerSyntheticLootTable(lootTable);
+        }
+
+        @Override
+        public void registerSyntheticLootTableExtension(@NotNull String lootTableId, @NotNull List<ZPLootTable.TableExtension> extendByList) {
+            ZPSyntheticLootCasesDataGenRegistry.registerSyntheticLootTableExtension(lootTableId, extendByList);
         }
 
         @Override
@@ -971,6 +985,10 @@ public final class ZombiePlague3 {
     }
 
     public static final class AddonPostInitContext implements IAddonPostInitContext {
+        @Override
+        public void setItemDistanceBonus(@NotNull ResourceLocation itemResLoc, float distanceBonus) {
+            ZPDefaultItemsHandReach.SET(itemResLoc, distanceBonus);
+        }
     }
 }
 

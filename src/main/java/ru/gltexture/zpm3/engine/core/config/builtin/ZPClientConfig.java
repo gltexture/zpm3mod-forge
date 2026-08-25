@@ -57,6 +57,10 @@ public class ZPClientConfig implements ZPConfigConstantsClass {
     public static final ZPConfig_INT FIRST_PERSON_RENDER_SCALE_TYPE =
             new ZPConfig_INT(0, 0, 1);
 
+    @ZPVarDefinition(description = "(CLIENT) Enable items pickup on key.")
+    public static final ZPConfig_BOOL PICK_UP_ON_KEY =
+            new ZPConfig_BOOL(true);
+
    //@ZPVarDefinition(description = "(CLIENT) TEST2.")
    //public static final ZPConfig_BOOL TEST2 =
    //        new ZPConfig_BOOL(true);

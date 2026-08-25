@@ -29,6 +29,9 @@ public abstract class ZPLootNbtValue {
     public static final String TYPE_FLOAT = "float";
     public static final String TYPE_DOUBLE = "double";
     public static final String TYPE_BOOLEAN = "boolean";
+    public static final String TYPE_STRING = "string";
+    public static final String TYPE_COMPOUNDTAG = "compound_tag";
+    public static final String TYPE_LISTTAG = "list_tag";
 
     public static final String TYPE_RANDOM_INT = "random_int";
     public static final String TYPE_RANDOM_LONG = "random_long";

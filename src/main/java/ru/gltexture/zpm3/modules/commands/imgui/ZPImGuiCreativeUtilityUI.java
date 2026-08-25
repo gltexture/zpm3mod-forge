@@ -36,10 +36,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.engine.client.rendering.imgui.interfaces.IZPImGuiInterface;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.zones.ZPZoneFlag;
-import ru.gltexture.zpm3.engine.zones.ZPZoneManager;
-import ru.gltexture.zpm3.engine.zones.ZPZonesRegistry;
-import ru.gltexture.zpm3.engine.zones.vars.ZPZoneIntVar;
+import ru.gltexture.zpm3.modules.commands.zones.ZPZoneFlag;
+import ru.gltexture.zpm3.modules.commands.zones.ZPZoneManager;
+import ru.gltexture.zpm3.modules.commands.zones.ZPZonesRegistry;
+import ru.gltexture.zpm3.modules.commands.zones.vars.ZPZoneIntVar;
 import ru.gltexture.zpm3.modules.worldgen.archiver.ZPMapArchiver;
 
 import java.io.IOException;
@@ -126,6 +126,7 @@ public class ZPImGuiCreativeUtilityUI implements IZPImGuiInterface {
                     a.folder("region");
                     a.folder("entities");
                     a.folder("overworld");
+                    a.folder("icon.png");
                 });
                 {
                     try {

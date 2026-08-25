@@ -18,13 +18,26 @@
  *
  */
 
-package ru.gltexture.zpm3.modules.loot_cases.loot_tables.items;
+package ru.gltexture.zpm3.modules.loot_cases.loot_tables.nbt.values;
 
-import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.nbt.CompoundTag;
+import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.modules.loot_cases.loot_tables.nbt.ZPLootNbtValue;
 
-public interface ILootItem {
-    @Nullable ItemStack buildItemStack();
+public final class ZPLootNbtString extends ZPLootNbtValue {
+    private final String value;
 
-    int getWeight();
+    public ZPLootNbtString(String value) {
+        super(ZPLootNbtValue.TYPE_STRING);
+        this.value = value;
+    }
+
+    @Override
+    public void writeValue(@NotNull CompoundTag nbt, @NotNull String key) {
+        nbt.putString(key, this.value);
+    }
+
+    public String value() {
+        return this.value;
+    }
 }

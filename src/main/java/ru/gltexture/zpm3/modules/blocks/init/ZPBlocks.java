@@ -21,9 +21,11 @@
 package ru.gltexture.zpm3.modules.blocks.init;
 
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
+import ru.gltexture.zpm3.engine.service.Ref;
 import ru.gltexture.zpm3.modules.blocks.init.helper.ZPRegAdminBlocks;
 import ru.gltexture.zpm3.modules.blocks.init.helper.ZPRegColorBlocks;
 import ru.gltexture.zpm3.modules.blocks.init.helper.ZPRegCommonBlocks;
@@ -33,12 +35,15 @@ import ru.gltexture.zpm3.engine.instances.blocks.*;
 import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.engine.registry.collection.IZPCollectRegistryObjects;
 
+import java.lang.ref.Reference;
+
 public class ZPBlocks extends ZPCommonRegistry<Block> implements IZPCollectRegistryObjects {
     public static RegistryObject<ZPAntiZombie> anti_zombie;
 
     public static RegistryObject<ZPBlock> block_lamp;
     public static RegistryObject<ZPBlock> block_lamp_off;
 
+    public static RegistryObject<ZPBlock> cracked_crafting_table;
 
     public static RegistryObject<ZPBlock> camo_forest;
     public static RegistryObject<ZPSlabBlock> camo_slab_forest;
@@ -111,7 +116,7 @@ public class ZPBlocks extends ZPCommonRegistry<Block> implements IZPCollectRegis
     public static RegistryObject<ZPIronBarsBlock> chain_link;
     public static RegistryObject<ZPIronBarsBlock> scrap_bars;
 
-    public static RegistryObject<ZPBlock> armored_glass;
+    public static RegistryObject<ZPGlassBlock> armored_glass;
     public static RegistryObject<ZPGlassPaneBlock> armored_glasspane;
 
     public static RegistryObject<ZPFallingBlock> sandbag;
@@ -139,73 +144,70 @@ public class ZPBlocks extends ZPCommonRegistry<Block> implements IZPCollectRegis
     public static RegistryObject<ZPLayerBlock> ash_layer;
     public static RegistryObject<ZPLayerBlock> gravel_layer;
 
-    public static RegistryObject<ZPBlock> stone_white;
-    public static RegistryObject<ZPBlock> stone_black;
-    public static RegistryObject<ZPBlock> stone_blue;
-    public static RegistryObject<ZPBlock> stone_brown;
-    public static RegistryObject<ZPBlock> stone_cyan;
-    public static RegistryObject<ZPBlock> stone_gray;
-    public static RegistryObject<ZPBlock> stone_green;
-    public static RegistryObject<ZPBlock> stone_light_blue;
-    public static RegistryObject<ZPBlock> stone_light_gray;
-    public static RegistryObject<ZPBlock> stone_lime;
-    public static RegistryObject<ZPBlock> stone_magenta;
-    public static RegistryObject<ZPBlock> stone_orange;
-    public static RegistryObject<ZPBlock> stone_pink;
-    public static RegistryObject<ZPBlock> stone_purple;
-    public static RegistryObject<ZPBlock> stone_red;
-    public static RegistryObject<ZPBlock> stone_yellow;
-
-    public static RegistryObject<ZPStairsBlock> stone_stairs_white;
-    public static RegistryObject<ZPStairsBlock> stone_stairs_black;
-    public static RegistryObject<ZPStairsBlock> stone_stairs_blue;
-    public static RegistryObject<ZPStairsBlock> stone_stairs_brown;
-    public static RegistryObject<ZPStairsBlock> stone_stairs_cyan;
-    public static RegistryObject<ZPStairsBlock> stone_stairs_gray;
-    public static RegistryObject<ZPStairsBlock> stone_stairs_green;
-    public static RegistryObject<ZPStairsBlock> stone_stairs_light_blue;
-    public static RegistryObject<ZPStairsBlock> stone_stairs_light_gray;
-    public static RegistryObject<ZPStairsBlock> stone_stairs_lime;
-    public static RegistryObject<ZPStairsBlock> stone_stairs_magenta;
-    public static RegistryObject<ZPStairsBlock> stone_stairs_orange;
-    public static RegistryObject<ZPStairsBlock> stone_stairs_pink;
-    public static RegistryObject<ZPStairsBlock> stone_stairs_purple;
-    public static RegistryObject<ZPStairsBlock> stone_stairs_red;
-    public static RegistryObject<ZPStairsBlock> stone_stairs_yellow;
-
-    public static RegistryObject<ZPSlabBlock> stone_slab_white;
-    public static RegistryObject<ZPSlabBlock> stone_slab_black;
-    public static RegistryObject<ZPSlabBlock> stone_slab_blue;
-    public static RegistryObject<ZPSlabBlock> stone_slab_brown;
-    public static RegistryObject<ZPSlabBlock> stone_slab_cyan;
-    public static RegistryObject<ZPSlabBlock> stone_slab_gray;
-    public static RegistryObject<ZPSlabBlock> stone_slab_green;
-    public static RegistryObject<ZPSlabBlock> stone_slab_light_blue;
-    public static RegistryObject<ZPSlabBlock> stone_slab_light_gray;
-    public static RegistryObject<ZPSlabBlock> stone_slab_lime;
-    public static RegistryObject<ZPSlabBlock> stone_slab_magenta;
-    public static RegistryObject<ZPSlabBlock> stone_slab_orange;
-    public static RegistryObject<ZPSlabBlock> stone_slab_pink;
-    public static RegistryObject<ZPSlabBlock> stone_slab_purple;
-    public static RegistryObject<ZPSlabBlock> stone_slab_red;
-    public static RegistryObject<ZPSlabBlock> stone_slab_yellow;
-
-    public static RegistryObject<ZPStoneWallBlock> stone_wall_white;
-    public static RegistryObject<ZPStoneWallBlock> stone_wall_black;
-    public static RegistryObject<ZPStoneWallBlock> stone_wall_blue;
-    public static RegistryObject<ZPStoneWallBlock> stone_wall_brown;
-    public static RegistryObject<ZPStoneWallBlock> stone_wall_cyan;
-    public static RegistryObject<ZPStoneWallBlock> stone_wall_gray;
-    public static RegistryObject<ZPStoneWallBlock> stone_wall_green;
-    public static RegistryObject<ZPStoneWallBlock> stone_wall_light_blue;
-    public static RegistryObject<ZPStoneWallBlock> stone_wall_light_gray;
-    public static RegistryObject<ZPStoneWallBlock> stone_wall_lime;
-    public static RegistryObject<ZPStoneWallBlock> stone_wall_magenta;
-    public static RegistryObject<ZPStoneWallBlock> stone_wall_orange;
-    public static RegistryObject<ZPStoneWallBlock> stone_wall_pink;
-    public static RegistryObject<ZPStoneWallBlock> stone_wall_purple;
-    public static RegistryObject<ZPStoneWallBlock> stone_wall_red;
-    public static RegistryObject<ZPStoneWallBlock> stone_wall_yellow;
+    public static Ref<RegistryObject<ZPBlock>> stone_white = new Ref<>();
+    public static Ref<RegistryObject<ZPBlock>> stone_black = new Ref<>();
+    public static Ref<RegistryObject<ZPBlock>> stone_blue = new Ref<>();
+    public static Ref<RegistryObject<ZPBlock>> stone_brown = new Ref<>();
+    public static Ref<RegistryObject<ZPBlock>> stone_cyan = new Ref<>();
+    public static Ref<RegistryObject<ZPBlock>> stone_gray = new Ref<>();
+    public static Ref<RegistryObject<ZPBlock>> stone_green = new Ref<>();
+    public static Ref<RegistryObject<ZPBlock>> stone_light_blue = new Ref<>();
+    public static Ref<RegistryObject<ZPBlock>> stone_light_gray = new Ref<>();
+    public static Ref<RegistryObject<ZPBlock>> stone_lime = new Ref<>();
+    public static Ref<RegistryObject<ZPBlock>> stone_magenta = new Ref<>();
+    public static Ref<RegistryObject<ZPBlock>> stone_orange = new Ref<>();
+    public static Ref<RegistryObject<ZPBlock>> stone_pink = new Ref<>();
+    public static Ref<RegistryObject<ZPBlock>> stone_purple = new Ref<>();
+    public static Ref<RegistryObject<ZPBlock>> stone_red = new Ref<>();
+    public static Ref<RegistryObject<ZPBlock>> stone_yellow = new Ref<>();
+    public static Ref<RegistryObject<ZPStairsBlock>> stone_stairs_white = new Ref<>();
+    public static Ref<RegistryObject<ZPStairsBlock>> stone_stairs_black = new Ref<>();
+    public static Ref<RegistryObject<ZPStairsBlock>> stone_stairs_blue = new Ref<>();
+    public static Ref<RegistryObject<ZPStairsBlock>> stone_stairs_brown = new Ref<>();
+    public static Ref<RegistryObject<ZPStairsBlock>> stone_stairs_cyan = new Ref<>();
+    public static Ref<RegistryObject<ZPStairsBlock>> stone_stairs_gray = new Ref<>();
+    public static Ref<RegistryObject<ZPStairsBlock>> stone_stairs_green = new Ref<>();
+    public static Ref<RegistryObject<ZPStairsBlock>> stone_stairs_light_blue = new Ref<>();
+    public static Ref<RegistryObject<ZPStairsBlock>> stone_stairs_light_gray = new Ref<>();
+    public static Ref<RegistryObject<ZPStairsBlock>> stone_stairs_lime = new Ref<>();
+    public static Ref<RegistryObject<ZPStairsBlock>> stone_stairs_magenta = new Ref<>();
+    public static Ref<RegistryObject<ZPStairsBlock>> stone_stairs_orange = new Ref<>();
+    public static Ref<RegistryObject<ZPStairsBlock>> stone_stairs_pink = new Ref<>();
+    public static Ref<RegistryObject<ZPStairsBlock>> stone_stairs_purple = new Ref<>();
+    public static Ref<RegistryObject<ZPStairsBlock>> stone_stairs_red = new Ref<>();
+    public static Ref<RegistryObject<ZPStairsBlock>> stone_stairs_yellow = new Ref<>();
+    public static Ref<RegistryObject<ZPSlabBlock>> stone_slab_white = new Ref<>();
+    public static Ref<RegistryObject<ZPSlabBlock>> stone_slab_black = new Ref<>();
+    public static Ref<RegistryObject<ZPSlabBlock>> stone_slab_blue = new Ref<>();
+    public static Ref<RegistryObject<ZPSlabBlock>> stone_slab_brown = new Ref<>();
+    public static Ref<RegistryObject<ZPSlabBlock>> stone_slab_cyan = new Ref<>();
+    public static Ref<RegistryObject<ZPSlabBlock>> stone_slab_gray = new Ref<>();
+    public static Ref<RegistryObject<ZPSlabBlock>> stone_slab_green = new Ref<>();
+    public static Ref<RegistryObject<ZPSlabBlock>> stone_slab_light_blue = new Ref<>();
+    public static Ref<RegistryObject<ZPSlabBlock>> stone_slab_light_gray = new Ref<>();
+    public static Ref<RegistryObject<ZPSlabBlock>> stone_slab_lime = new Ref<>();
+    public static Ref<RegistryObject<ZPSlabBlock>> stone_slab_magenta = new Ref<>();
+    public static Ref<RegistryObject<ZPSlabBlock>> stone_slab_orange = new Ref<>();
+    public static Ref<RegistryObject<ZPSlabBlock>> stone_slab_pink = new Ref<>();
+    public static Ref<RegistryObject<ZPSlabBlock>> stone_slab_purple = new Ref<>();
+    public static Ref<RegistryObject<ZPSlabBlock>> stone_slab_red = new Ref<>();
+    public static Ref<RegistryObject<ZPSlabBlock>> stone_slab_yellow = new Ref<>();
+    public static Ref<RegistryObject<ZPStoneWallBlock>> stone_wall_white = new Ref<>();
+    public static Ref<RegistryObject<ZPStoneWallBlock>> stone_wall_black = new Ref<>();
+    public static Ref<RegistryObject<ZPStoneWallBlock>> stone_wall_blue = new Ref<>();
+    public static Ref<RegistryObject<ZPStoneWallBlock>> stone_wall_brown = new Ref<>();
+    public static Ref<RegistryObject<ZPStoneWallBlock>> stone_wall_cyan = new Ref<>();
+    public static Ref<RegistryObject<ZPStoneWallBlock>> stone_wall_gray = new Ref<>();
+    public static Ref<RegistryObject<ZPStoneWallBlock>> stone_wall_green = new Ref<>();
+    public static Ref<RegistryObject<ZPStoneWallBlock>> stone_wall_light_blue = new Ref<>();
+    public static Ref<RegistryObject<ZPStoneWallBlock>> stone_wall_light_gray = new Ref<>();
+    public static Ref<RegistryObject<ZPStoneWallBlock>> stone_wall_lime = new Ref<>();
+    public static Ref<RegistryObject<ZPStoneWallBlock>> stone_wall_magenta = new Ref<>();
+    public static Ref<RegistryObject<ZPStoneWallBlock>> stone_wall_orange = new Ref<>();
+    public static Ref<RegistryObject<ZPStoneWallBlock>> stone_wall_pink = new Ref<>();
+    public static Ref<RegistryObject<ZPStoneWallBlock>> stone_wall_purple = new Ref<>();
+    public static Ref<RegistryObject<ZPStoneWallBlock>> stone_wall_red = new Ref<>();
+    public static Ref<RegistryObject<ZPStoneWallBlock>> stone_wall_yellow = new Ref<>();
 
     /*
        public static final Block SNOW = register("snow", new SnowLayerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.SNOW).replaceable().forceSolidOff().randomTicks().strength(0.1F).requiresCorrectToolForDrops().sound(SoundType.SNOW).isViewBlocking((p_187417_, p_187418_, p_187419_) -> {
@@ -234,6 +236,7 @@ public class ZPBlocks extends ZPCommonRegistry<Block> implements IZPCollectRegis
 
     @Override
     protected void postRegister(String name, RegistryObject<Block> object) {
+
     }
 
     @Override

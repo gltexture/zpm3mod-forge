@@ -31,28 +31,32 @@ import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.core.config.ZPConfigConstantsClass;
 import ru.gltexture.zpm3.engine.core.config.ZPConfigManager;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPClientConfig;
 import ru.gltexture.zpm3.engine.core.config.vars.*;
+import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.modules.ui.screen.ZPScreen;
 import ru.gltexture.zpm3.modules.ui.screen.instances.ZPConfigEditBox;
 import ru.gltexture.zpm3.modules.ui.screen.instances.ZPLabeledEditBox;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 @OnlyIn(Dist.CLIENT)
 
 public class ZPClientConfigOptionsScreen extends ZPScreen {
-    private final Class<? extends ZPConfigConstantsClass> configClass;
+    private final ConfigVarUIWithEditCallback[] configVarWrappedObjects;
 
-    public ZPClientConfigOptionsScreen(@NotNull Class<? extends ZPConfigConstantsClass> configClass, Screen parent) {
+    public ZPClientConfigOptionsScreen(Screen parent, ConfigVarUIWithEditCallback... c) {
         super(Component.translatable("ui.zpm3.configSettings"), parent);
-        this.configClass = configClass;
+        this.configVarWrappedObjects = c;
     }
 
     @Override
@@ -61,7 +65,7 @@ public class ZPClientConfigOptionsScreen extends ZPScreen {
         gridlayout.defaultCellSetting().paddingHorizontal(5).paddingBottom(4).alignHorizontallyCenter();
         GridLayout.RowHelper rowHelper = gridlayout.createRowHelper(2);
 
-        Objects.requireNonNull(ZombiePlague3.getZpConfigManager().configVarObjectsForUI(this.configClass)).forEach(zpConfigVar -> {
+        Objects.requireNonNull(Arrays.stream(this.configVarWrappedObjects)).forEach(zpConfigVar -> {
             this.drawUiElementFor(rowHelper, zpConfigVar);
         });
 
@@ -70,27 +74,26 @@ public class ZPClientConfigOptionsScreen extends ZPScreen {
         gridlayout.visitWidgets(this::addRenderableWidget);
 
         this.addRenderableWidget(
-                Button.builder(
-                        Component.translatable("ui.zpm3.exit"), button -> this.onClose()
-                ).bounds(this.width / 2 - 50, gridlayout.getY() + gridlayout.getHeight() + 20, 100, 20).build()
+                Button.builder(Component.translatable("ui.zpm3.exit"), button -> this.onClose()).bounds(this.width / 2 - 50, gridlayout.getY() + gridlayout.getHeight() + 20, 100, 20).build()
         );
     }
 
-    private static Component buttonMsg(ZPConfigManager.ConfigVarObjectForUI configVar) {
-        return Component.translatable("ui.zpm3.config." + configVar.varName(), ((ZPConfig_BOOL) configVar.var()).getVar());
+    private static Component buttonMsg(ZPConfigManager.ConfigVarWrappedObject configVar) {
+        return Component.translatable("ui.zpm3.config." + configVar.varName(), ((ZPConfig_BOOL) configVar.get()).getVar());
     }
 
-    protected void drawUiElementFor(GridLayout.RowHelper rowHelper, ZPConfigManager.ConfigVarObjectForUI configVar) {
-        final BiConsumer<EditBox, String> onUpdateText = ((editBox, string) -> {
-            editBox.setValue(configVar.toString());
-        });
-        if (configVar.var() instanceof ZPConfig_BOOL configBool) {
-            rowHelper.addChild(Button.builder(buttonMsg(configVar), b -> {
+    protected void drawUiElementFor(GridLayout.RowHelper rowHelper, ConfigVarUIWithEditCallback varObj) {
+        final BiConsumer<EditBox, String> onUpdateText = ((editBox, string) -> editBox.setValue(varObj.toString()));
+        if (varObj.configVar().get() instanceof ZPConfig_BOOL configBool) {
+            rowHelper.addChild(Button.builder(buttonMsg(varObj.configVar()), b -> {
                 configBool.setVar(!configBool.getVar());
-                b.setMessage(buttonMsg(configVar));
-            }).tooltip(Tooltip.create(Component.literal(configVar.varDescription()))).build());
-        } else if (configVar.var() instanceof ZPConfig_INT) {
-            ZPConfigEditBox box = this.getEditBoxFor(configVar,
+                b.setMessage(ZPClientConfigOptionsScreen.buttonMsg(varObj.configVar()));
+                if (varObj.callback() != null) {
+                    varObj.callback().accept(configBool);
+                }
+            }).tooltip(Tooltip.create(Component.literal(varObj.configVar().varDescription()))).build());
+        } else if (varObj.configVar().get() instanceof ZPConfig_INT) {
+            ZPConfigEditBox box = this.getEditBoxFor(varObj,
                     s -> {
                         if (s.isEmpty()) {
                             return true;
@@ -103,9 +106,9 @@ public class ZPClientConfigOptionsScreen extends ZPScreen {
                         }
                     },
                     Integer::parseInt).setOnUpdateText(onUpdateText);
-            this.createEditBoxWidget(rowHelper, box, Component.translatable("ui.zpm3.config." + configVar.varName()));
-        } else if (configVar.var() instanceof ZPConfig_DOUBLE) {
-            ZPConfigEditBox box = this.getEditBoxFor(configVar,
+            this.createEditBoxWidget(rowHelper, box, Component.translatable("ui.zpm3.config." + varObj.configVar().varName()));
+        } else if (varObj.configVar().get() instanceof ZPConfig_DOUBLE) {
+            ZPConfigEditBox box = this.getEditBoxFor(varObj,
                     s -> {
                         if (s.isEmpty()) {
                             return true;
@@ -118,9 +121,9 @@ public class ZPClientConfigOptionsScreen extends ZPScreen {
                         }
                     },
                     Double::parseDouble).setOnUpdateText(onUpdateText);
-            this.createEditBoxWidget(rowHelper, box, Component.translatable("ui.zpm3.config." + configVar.varName()));
-        } else if (configVar.var() instanceof ZPConfig_FLOAT) {
-            ZPConfigEditBox box = this.getEditBoxFor(configVar,
+            this.createEditBoxWidget(rowHelper, box, Component.translatable("ui.zpm3.config." + varObj.configVar().varName()));
+        } else if (varObj.configVar().get() instanceof ZPConfig_FLOAT) {
+            ZPConfigEditBox box = this.getEditBoxFor(varObj,
                     s -> {
                         if (s.isEmpty()) {
                             return true;
@@ -133,12 +136,12 @@ public class ZPClientConfigOptionsScreen extends ZPScreen {
                         }
                     },
                     Float::parseFloat).setOnUpdateText(onUpdateText);
-            this.createEditBoxWidget(rowHelper, box, Component.translatable("ui.zpm3.config." + configVar.varName()));
-        } else if (configVar.var() instanceof ZPConfig_STRING configString) {
-            ZPConfigEditBox box = this.getEditBoxFor(configVar,
+            this.createEditBoxWidget(rowHelper, box, Component.translatable("ui.zpm3.config." + varObj.configVar().varName()));
+        } else if (varObj.configVar().get() instanceof ZPConfig_STRING configString) {
+            ZPConfigEditBox box = this.getEditBoxFor(varObj,
                     s -> true,
                     (s) -> s).setOnUpdateText(onUpdateText);
-            this.createEditBoxWidget(rowHelper, box, Component.translatable("ui.zpm3.config." + configVar.varName()));
+            this.createEditBoxWidget(rowHelper, box, Component.translatable("ui.zpm3.config." + varObj.configVar().varName()));
         }
     }
 
@@ -150,23 +153,26 @@ public class ZPClientConfigOptionsScreen extends ZPScreen {
         return ZPLabeledEditBox;
     }
 
-    protected @NotNull <T extends Serializable> ZPConfigEditBox getEditBoxFor(ZPConfigManager.ConfigVarObjectForUI configVarUI, Predicate<String> filter, Function<String, T> converter) {
-        ZPConfigEditBox box = new ZPConfigEditBox(this.font, 0, 0, 100, 20, Component.literal(configVarUI.varName()));
-        box.setValue(String.valueOf(configVarUI.var()));
+    protected @NotNull <T extends Serializable> ZPConfigEditBox getEditBoxFor(ConfigVarUIWithEditCallback configVarUI, Predicate<String> filter, Function<String, T> converter) {
+        ZPConfigEditBox box = new ZPConfigEditBox(this.font, 0, 0, 100, 20, Component.literal(configVarUI.configVar().varName()));
+        box.setValue(String.valueOf(configVarUI.configVar().get()));
         box.setFilter(filter);
         box.setResponder(s -> {
             try {
                 if (!s.isEmpty()) {
-                    configVarUI.getVarUnsafe().setVar(converter.apply(s));
+                    configVarUI.configVar().getVarUnsafe().setVar(converter.apply(s));
+                    if (configVarUI.callback() != null) {
+                        configVarUI.callback().accept(configVarUI.configVar().get());
+                    }
                 }
             } catch (NumberFormatException ignored) {}
         });
-        box.setTooltip(Tooltip.create(Component.literal(configVarUI.varDescription())));
+        box.setTooltip(Tooltip.create(Component.literal(configVarUI.configVar().varDescription())));
         return box;
     }
 
     private void save() {
-        ZombiePlague3.getZpConfigManager().rewriteConfigClass(this.configClass);
+        ZombiePlague3.getZpConfigManager().rewriteConfigClass(ZPClientConfig.class);
         if (this.minecraft != null && this.minecraft.player != null) {
             ZombiePlague3.netClient().getNetStaticDataSyncer().broadcastAll();
         }
@@ -181,4 +187,6 @@ public class ZPClientConfigOptionsScreen extends ZPScreen {
         pGuiGraphics.drawCenteredString(this.font, this.title, this.width / 2, 15, 16777215);
         super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
     }
+
+    public record ConfigVarUIWithEditCallback(@NotNull ZPConfigManager.ConfigVarWrappedObject configVar, @Nullable Consumer<ZPConfigVar<?>> callback) {}
 }

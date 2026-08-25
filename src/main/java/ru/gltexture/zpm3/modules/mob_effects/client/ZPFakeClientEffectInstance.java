@@ -20,7 +20,6 @@
 
 package ru.gltexture.zpm3.modules.mob_effects.client;
 
-import com.google.common.collect.ComparisonChain;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -28,17 +27,20 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Comparator;
-
 @OnlyIn(Dist.CLIENT)
 public class ZPFakeClientEffectInstance extends MobEffectInstance {
-    private int amplifier;
-    private final ZPFakeClientEffect effect;
+    protected int amplifier;
+    protected final ZPFakeClientEffect effect;
 
     public ZPFakeClientEffectInstance(ZPFakeClientEffect effect, int pAmplifier) {
         super(effect, Integer.MAX_VALUE, 0, false, true, true);
         this.amplifier = pAmplifier;
         this.effect = effect;
+    }
+
+    @Override
+    public boolean isAmbient() {
+        return true;
     }
 
     @Override

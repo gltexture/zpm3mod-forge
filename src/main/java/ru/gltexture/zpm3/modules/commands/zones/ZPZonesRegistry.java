@@ -18,12 +18,12 @@
  *
  */
 
-package ru.gltexture.zpm3.engine.zones;
+package ru.gltexture.zpm3.modules.commands.zones;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
-import ru.gltexture.zpm3.engine.zones.vars.ZPZoneIntVar;
+import ru.gltexture.zpm3.modules.commands.zones.vars.ZPZoneIntVar;
 
 import java.util.Collection;
 import java.util.Collections;

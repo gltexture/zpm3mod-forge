@@ -34,64 +34,64 @@ public abstract class ZPAbstractNBTClass <T> {
         this.t = t;
     }
 
-    public abstract CompoundTag getTag();
+    public abstract CompoundTag getTagOrLazyCreateTag();
 
     public ZPAbstractNBTClass<T> putTagInt(@NotNull Pair<@NotNull ZPTagID, @NotNull Integer> value) {
-        this.getTag().putInt(value.first().id(), value.second());
+        this.getTagOrLazyCreateTag().putInt(value.first().id(), value.second());
         return this;
     }
 
     public ZPAbstractNBTClass<T> putTagBoolean(@NotNull Pair<@NotNull ZPTagID, @NotNull Boolean> value) {
-        this.getTag().putBoolean(value.first().id(), value.second());
+        this.getTagOrLazyCreateTag().putBoolean(value.first().id(), value.second());
         return this;
     }
 
     public ZPAbstractNBTClass<T> putTagString(@NotNull Pair<@NotNull ZPTagID, @NotNull String> value) {
-        this.getTag().putString(value.first().id(), value.second());
+        this.getTagOrLazyCreateTag().putString(value.first().id(), value.second());
         return this;
     }
 
     public ZPAbstractNBTClass<T> putTagDouble(@NotNull Pair<@NotNull ZPTagID, @NotNull Double> value) {
-        this.getTag().putDouble(value.first().id(), value.second());
+        this.getTagOrLazyCreateTag().putDouble(value.first().id(), value.second());
         return this;
     }
 
     public ZPAbstractNBTClass<T> putTagFloat(@NotNull Pair<@NotNull ZPTagID, @NotNull Float> value) {
-        this.getTag().putFloat(value.first().id(), value.second());
+        this.getTagOrLazyCreateTag().putFloat(value.first().id(), value.second());
         return this;
     }
 
     public ZPAbstractNBTClass<T> putTagLong(@NotNull Pair<@NotNull ZPTagID, @NotNull Long> value) {
-        this.getTag().putLong(value.first().id(), value.second());
+        this.getTagOrLazyCreateTag().putLong(value.first().id(), value.second());
         return this;
     }
 
     public int getTagInt(@NotNull ZPTagID key) {
-        return this.getTag().getInt(key.id());
+        return this.getTagOrLazyCreateTag().getInt(key.id());
     }
 
     public boolean getTagBoolean(@NotNull ZPTagID key) {
-        return this.getTag().getBoolean(key.id());
+        return this.getTagOrLazyCreateTag().getBoolean(key.id());
     }
 
     public String getTagString(@NotNull ZPTagID key) {
-        return this.getTag().getString(key.id());
+        return this.getTagOrLazyCreateTag().getString(key.id());
     }
 
     public double getTagDouble(@NotNull ZPTagID key) {
-        return this.getTag().getDouble(key.id());
+        return this.getTagOrLazyCreateTag().getDouble(key.id());
     }
 
     public float getTagFloat(@NotNull ZPTagID key) {
-        return this.getTag().getFloat(key.id());
+        return this.getTagOrLazyCreateTag().getFloat(key.id());
     }
 
     public long getTagLong(@NotNull ZPTagID key) {
-        return this.getTag().getLong(key.id());
+        return this.getTagOrLazyCreateTag().getLong(key.id());
     }
 
     public boolean has(@NotNull ZPTagID key) {
-        return this.getTag().contains(key.id());
+        return this.getTagOrLazyCreateTag().contains(key.id());
     }
 
     public ZPAbstractNBTClass<T> incrementInt(@NotNull ZPTagID key) {
@@ -100,7 +100,7 @@ public abstract class ZPAbstractNBTClass <T> {
 
     public ZPAbstractNBTClass<T> incrementInt(@NotNull ZPTagID key, int amount) {
         int current = this.getTagInt(key);
-        this.getTag().putInt(key.id(), current + amount);
+        this.getTagOrLazyCreateTag().putInt(key.id(), current + amount);
         return this;
     }
 
@@ -111,13 +111,13 @@ public abstract class ZPAbstractNBTClass <T> {
     public ZPAbstractNBTClass<T> decrementInt(@Nullable Predicate<Integer> decrementIf, @NotNull ZPTagID key, int amount) {
         if (decrementIf != null && decrementIf.test(this.getTagInt(key))) {
             int current = this.getTagInt(key);
-            this.getTag().putInt(key.id(), current - amount);
+            this.getTagOrLazyCreateTag().putInt(key.id(), current - amount);
         }
         return this;
     }
 
     public void remove(@NotNull ZPTagID key) {
-        this.getTag().remove(key.id());
+        this.getTagOrLazyCreateTag().remove(key.id());
     }
 
     public static class ZPSimpleNBTClass <E> extends ZPAbstractNBTClass <E> {
@@ -129,7 +129,7 @@ public abstract class ZPAbstractNBTClass <T> {
         }
 
         @Override
-        public CompoundTag getTag() {
+        public CompoundTag getTagOrLazyCreateTag() {
             return this.compoundTag;
         }
     }

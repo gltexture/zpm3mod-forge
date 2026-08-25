@@ -21,6 +21,7 @@
 package ru.gltexture.zpm3.modules.food_medicine;
 
 import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
@@ -41,6 +42,7 @@ import ru.gltexture.zpm3.engine.recipes.ZPRecipesRegistry;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 import ru.gltexture.zpm3.modules.debug.events.ZPRenderStuffEvent;
 import ru.gltexture.zpm3.modules.food_medicine.init.ZPFoodMedicineItems;
+import ru.gltexture.zpm3.modules.melee_throwables_tools.init.ZPMeleeThrowableToolsItems;
 
 import java.util.*;
 
@@ -102,6 +104,27 @@ public class ZPFoodMedicineModule extends ZPModule {
                 SimpleCookingRecipeBuilder.smelting(Ingredient.of(Items.EGG), RecipeCategory.FOOD, ZPFoodMedicineItems.fried_egg.get(), 0.25f, 300)
                         .unlockedBy("has_rf", IZPRecipeSpec.has(Items.EGG))
                         .save(writer, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "egg_smelting"));
+            }));
+
+            recipeToAdd.add((writer -> {
+                SimpleCookingRecipeBuilder.smoking(Ingredient.of(Items.EGG), RecipeCategory.FOOD, ZPFoodMedicineItems.fried_egg.get(), 0.25f, 100)
+                        .unlockedBy("has_rf", IZPRecipeSpec.has(Items.EGG))
+                        .save(writer, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "egg_smoking"));
+            }));
+
+            recipeToAdd.add((writer -> {
+                SimpleCookingRecipeBuilder.campfireCooking(Ingredient.of(Items.EGG), RecipeCategory.FOOD, ZPFoodMedicineItems.fried_egg.get(), 0.25f, 600)
+                        .unlockedBy("has_rf", IZPRecipeSpec.has(Items.EGG))
+                        .save(writer, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "egg_campfire"));
+            }));
+
+            recipeToAdd.add((writer -> {
+                ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ZPFoodMedicineItems.splint.get())
+                        .pattern(" I ").pattern("ICI").pattern(" I ")
+                        .define('I', Items.STICK)
+                        .define('C', ZPFoodMedicineItems.bandage.get())
+                        .unlockedBy("has_rf", IZPRecipeSpec.has(ZPFoodMedicineItems.bandage.get()))
+                        .save(writer, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "splint"));
             }));
         }
 

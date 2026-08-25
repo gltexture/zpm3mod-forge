@@ -20,6 +20,7 @@
 
 package ru.gltexture.zpm3.modules.commands.events.client;
 
+import com.mojang.math.Transformation;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -28,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
-import ru.gltexture.zpm3.engine.zones.ZPZoneManager;
+import ru.gltexture.zpm3.modules.commands.zones.ZPZoneManager;
 import ru.gltexture.zpm3.modules.commands.imgui.ZPImGuiCreativeUtilityUI;
 import ru.gltexture.zpm3.modules.debug.render.ZPRenderLines;
 
@@ -51,7 +52,7 @@ public class ZPRenderZones implements ZPForgeEventHandlerClass {
     @SubscribeEvent
     public static void onRenderWorld(RenderLevelStageEvent event) {
         if (Minecraft.getInstance().player != null) {
-            if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS && ZPImGuiCreativeUtilityUI.ENABLE_UTILITY) {
+            if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_ENTITIES && ZPImGuiCreativeUtilityUI.ENABLE_UTILITY) {
                 //GL46.glDisable(GL46.GL_DEPTH_TEST);
                 final Collection<ZPZoneManager.Zone> zones = ZPZoneManager.INSTANCE.getAllZonesOnLevel(Minecraft.getInstance().player.level());
                 {

@@ -20,6 +20,7 @@
 
 package ru.gltexture.zpm3.modules.loot_cases.loot_tables.items;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
@@ -29,15 +30,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.engine.core.ZPLogger;
 import ru.gltexture.zpm3.modules.loot_cases.loot_tables.nbt.ZPLootNbtValue;
-import ru.gltexture.zpm3.modules.loot_cases.loot_tables.nbt.container.IZPLootNbtContainer;
-import ru.gltexture.zpm3.modules.loot_cases.loot_tables.nbt.container.ZPLootNbtContainer;
 import ru.gltexture.zpm3.modules.loot_cases.loot_tables.random.ZPRandomization;
 
 import java.util.Map;
-import java.util.function.Function;
 
 @SuppressWarnings("all")
-public record LootItemNonBreakable(@NotNull String locationKey, int spawnWeight, int minQuantity, int maxQuantity, @NotNull ZPRandomization quantityRandomization, @NotNull Map<String, ZPLootNbtValue> nbtContainer) implements ILootItem {
+public record ZPLootItemNonBreakable(@NotNull String locationKey, int spawnWeight, int minQuantity, int maxQuantity, @NotNull ZPRandomization quantityRandomization, @NotNull Map<String, ZPLootNbtValue> nbtContainer) implements IZPLootItem {
     @Override
     public @Nullable ItemStack buildItemStack() {
         Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(locationKey));
@@ -53,13 +51,18 @@ public record LootItemNonBreakable(@NotNull String locationKey, int spawnWeight,
             stack.setCount(quantity);
         }
         for (Map.Entry<String, ZPLootNbtValue> entry : nbtContainer.entrySet()) {
-            entry.getValue().writeValue(stack.getOrCreateTag(), entry.getKey());
+            CompoundTag nbt = stack.getOrCreateTag();
+            final String[] subNBTs = entry.getKey().split(":");
+            for (int i = 0; i < subNBTs.length - 1; i++) {
+                nbt = nbt.getCompound(subNBTs[i]);
+            }
+            entry.getValue().writeValue(nbt, subNBTs[subNBTs.length - 1]);
         }
         return stack;
     }
 
     @Override
-    public int getWeight() {
+    public int spawnWeight() {
         return this.spawnWeight;
     }
 }

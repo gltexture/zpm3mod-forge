@@ -23,11 +23,13 @@ package ru.gltexture.zpm3.modules.mob_effects.events.common;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -69,13 +71,13 @@ public class ZPEntityEffectActionsEvent implements ZPForgeEventHandlerClass {
             if (ZPBloodPainFXPacket.hasBlood(event.getEntity())) {
                 ZombiePlague3.netServer().sendToDimensionRadius(new ZPBloodPainFXPacket(event.getEntity().getId(), false), event.getEntity().getCommandSenderWorld().dimension(), event.getEntity().position(), 64.0f);
             }
-
-            LivingEntity entity = event.getEntity();
+            final LivingEntity entity = event.getEntity();
             if (!ZPEntityConfig.BLEEDING_ONLY_FOR_PLAYERS.getVar() || (entity instanceof Player)) {
-                boolean flag =
-                        event.getSource().type().equals(ZPDamageTypes.getDamageType(serverLevel, DamageTypes.FALL).get()) ||
-                                event.getSource().type().equals(ZPDamageTypes.getDamageType(serverLevel, ZPDamageTypes.zp_bleeding).get());
-                if (!flag) {
+                final DamageSource source = event.getSource();
+                boolean canCauseBleeding =
+                        source.getEntity() != null ||
+                        source.getDirectEntity() instanceof Projectile;
+                if (canCauseBleeding && event.getAmount() > 2.0f) {
                     if (!(entity instanceof ZPAbstractZombie)) {
                         float bleedingChance = event.getEntity().level().getDifficulty().equals(Difficulty.HARD) ? 0.75f : event.getEntity().level().getDifficulty().equals(Difficulty.NORMAL) ? 0.5f : 0.25f;
                         float damage = Math.min(event.getAmount() / 10.0f, 1.5f);

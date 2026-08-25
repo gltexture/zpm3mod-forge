@@ -20,7 +20,10 @@
 
 package ru.gltexture.zpm3.modules.guns.init.helper;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.modules.common.init.ZPSounds;
 import ru.gltexture.zpm3.modules.common.init.ZPTabs;
@@ -37,7 +40,15 @@ import ru.gltexture.zpm3.engine.instances.items.ZPItem;
 import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 public abstract class ZPRegGuns {
+    @OnlyIn(Dist.CLIENT)
+    public static final Set<ResourceLocation> gunTrophies = new HashSet<>();
+
     public static void init(@NotNull ZPCommonRegistry.ZPRegSupplier<Item> regSupplier) {
         {
             ZPGunItems.admin_pistol = regSupplier.register("admin_pistol",
@@ -293,6 +304,7 @@ public abstract class ZPRegGuns {
                     )
             ).afterCreated((e, utils) -> {
                 ZPUtility.sides().onlyClient(() -> {
+                    ZPRegGuns.gunTrophies.add(e.getId());
                     utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
                     utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
                     utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultPistolRenderer, ZPDefaultGunRenderers.defaultPistolRenderer);
@@ -324,6 +336,38 @@ public abstract class ZPRegGuns {
                     )
             ).afterCreated((e, utils) -> {
                 ZPUtility.sides().onlyClient(() -> {
+                    utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                    utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+                    utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultShutterRifleRenderer, ZPDefaultGunRenderers.defaultShutterRifleRenderer);
+                });
+            }).end();
+        }
+
+        {
+            ZPGunItems._ks23 = regSupplier.register("_ks23",
+                    () -> new ZPItem(new Item.Properties().stacksTo(32))
+            ).afterCreated((e, utils) -> {
+                ZPUtility.sides().onlyClient(() -> {
+                    utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
+                    utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
+                });
+            }).end();
+
+            ZPGunItems.ks23 = regSupplier.register("ks23",
+                    () -> new ZPGunShotgun(new Item.Properties(), new ZPBaseGun.GunProperties(ZPGunItems._ks23.get(), ZPBaseGun.GunProperties.HeldType.RIFLE)
+                            .setDamage(4)
+                            .setDurability(200)
+                            .setInaccuracy(4.0f)
+                            .setMaxAmmo(4)
+                            .setReloadTime(8)
+                            .setShootCooldown(18)
+                            .setClientRecoil(14.25f)
+                            .setReloadSound(() -> ZPSounds.shotgun_reload.get())
+                            .setFireSound(() -> ZPSounds.shotgun_fire.get())
+                    )
+            ).afterCreated((e, utils) -> {
+                ZPUtility.sides().onlyClient(() -> {
+                    ZPRegGuns.gunTrophies.add(e.getId());
                     utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
                     utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_ITEM, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.GUN_ITEMS_DIRECTORY);
                     utils.items().setItemRenderer(e, ZPDefaultGunRenderers.defaultShutterRifleRenderer, ZPDefaultGunRenderers.defaultShutterRifleRenderer);

@@ -23,8 +23,6 @@ package ru.gltexture.zpm3.engine.events.client;
 import net.minecraft.client.Minecraft;
 import ru.gltexture.zpm3.engine.client.rendering.ZPClientManager;
 import ru.gltexture.zpm3.engine.client.rendering.crosshair.ZPClientCrosshairRecoilManager;
-import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooks;
-import ru.gltexture.zpm3.engine.client.rendering.hooks.ZPRenderHooksManager;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.api.events.ZPEventDef;
 import ru.gltexture.zpm3.engine.core.api.events.ZombiePlagueEvent;

@@ -36,7 +36,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @Mixin(Gui.class)
-public abstract class  ZPEffectRenderingGuiMixin {
+public abstract class ZPEffectRenderingGuiMixin {
     @Unique
     private List<MobEffectInstance> zpm3forge$store_result;
 

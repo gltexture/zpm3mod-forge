@@ -36,9 +36,14 @@ public class ZPGenTextureData {
     public static final String BARS_KEY = "bars";
     public static final String CROSS_KEY = "cross";
     public static final String BOTTOM_KEY = "bottom";
+    public static final String WEST_KEY = "west";
+    public static final String NORTH_KEY = "north";
+    public static final String SOUTH_KEY = "south";
+    public static final String EAST_KEY = "east";
     public static final String SIDE_KEY = "side";
     public static final String END_KEY = "end";
     public static final String TOP_KEY = "top";
+    public static final String UP_KEY = "up";
 
     private final Map<@Nullable String, @NotNull Supplier<ZPPath>> textures;
     private final MinecraftModelParentReference vanillaModelReference;

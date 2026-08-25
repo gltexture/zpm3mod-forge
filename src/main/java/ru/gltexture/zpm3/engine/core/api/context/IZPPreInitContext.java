@@ -21,8 +21,8 @@
 package ru.gltexture.zpm3.engine.core.api.context;
 
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.engine.zones.ZPZoneFlag;
-import ru.gltexture.zpm3.engine.zones.vars.ZPZoneIntVar;
+import ru.gltexture.zpm3.modules.commands.zones.ZPZoneFlag;
+import ru.gltexture.zpm3.modules.commands.zones.vars.ZPZoneIntVar;
 
 public interface IZPPreInitContext {
     @NotNull ZPZoneFlag registerZoneFlag(@NotNull String flag);

@@ -302,6 +302,10 @@ public abstract class ZPCommonRegistry<T> {
             private Items() {
             }
 
+            public void setFuelTime(@NotNull RegistryObject<? extends Item> item, int time) {
+                ZPItemFuelsHelper.addTempItem(Pair.of(item, time));
+            }
+
             @Deprecated(forRemoval = true)
             @OnlyIn(Dist.CLIENT)
             public void setItemRenderer(@NotNull RegistryObject<? extends Item> item, @NotNull ZPRenderHooks.ZPItemRendering1PersonHook itemRenderingProcessor1, @NotNull ZPRenderHooks.ZPItemRendering3PersonHook itemRenderingProcessor3) {
@@ -363,6 +367,10 @@ public abstract class ZPCommonRegistry<T> {
 
         public static final class Blocks {
             private Blocks() {
+            }
+
+            public void setFuelTime(@NotNull RegistryObject<? extends Block> item, int time) {
+                ZPItemFuelsHelper.addTempBlock(Pair.of(item, time));
             }
 
             @OnlyIn(Dist.CLIENT)

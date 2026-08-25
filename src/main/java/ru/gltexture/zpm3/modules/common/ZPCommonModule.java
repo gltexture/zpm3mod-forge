@@ -28,6 +28,7 @@ import ru.gltexture.zpm3.engine.core.api.modules.context.IModuleClientSetupConte
 import ru.gltexture.zpm3.engine.core.api.modules.context.IModuleInitContext;
 import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePostInitContext;
 import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePreInitContext;
+import ru.gltexture.zpm3.modules.common.events.common.ZPFurnaceFuelsEvent;
 import ru.gltexture.zpm3.modules.common.init.*;
 import ru.gltexture.zpm3.engine.core.api.modules.ZPModule;
 import ru.gltexture.zpm3.engine.core.api.modules.ZPModuleData;
@@ -78,6 +79,7 @@ public class ZPCommonModule extends ZPModule {
     public void initialize(@NotNull IModuleInitContext context) {
         context.addCommonZp3RegistryClass(ZPSounds.class);
         context.addCommonZp3RegistryClass(ZPDamageTypes.class);
+        context.registerForgeEventHandlerClass(ZPFurnaceFuelsEvent.class);
         ZPUtility.sides().onlyClient(() -> {
             context.addCommonZp3RegistryClass(ZPTabs.class);
         });

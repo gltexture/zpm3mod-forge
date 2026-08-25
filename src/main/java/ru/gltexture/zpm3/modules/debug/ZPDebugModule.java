@@ -29,6 +29,7 @@ import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePostInitContext;
 import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePreInitContext;
 import ru.gltexture.zpm3.modules.debug.events.ZPFreeCameraEvents;
 import ru.gltexture.zpm3.modules.debug.events.ZPRenderStuffEvent;
+import ru.gltexture.zpm3.modules.debug.events.ZPTestChestEvent;
 import ru.gltexture.zpm3.modules.debug.imgui.ZPImGuiDebugInterface;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.api.modules.ZPModule;
@@ -82,6 +83,7 @@ public class ZPDebugModule extends ZPModule {
         ZPUtility.sides().onlyClient(() -> {
             context.registerForgeEventHandlerClass(ZPFreeCameraEvents.class);
             context.registerForgeEventHandlerClass(ZPRenderStuffEvent.class);
+            context.registerForgeEventHandlerClass(ZPTestChestEvent.class);
         });
     }
 

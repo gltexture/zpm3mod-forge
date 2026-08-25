@@ -30,45 +30,52 @@ import ru.gltexture.zpm3.engine.helpers.gen.providers.ZPBlockModelProvider;
 
 public abstract class DefaultBlockItemModelExecutors {
     public static @NotNull ZPBlockModelProvider.BlockModelExecutor.EItem<? extends Block> getDefaultItemAsModParent(@NotNull MinecraftModelParentReference reference) {
-        return (blockStateProvider, block, name, textureData) -> {
+        return (blockStateProvider, renderType, block, name, textureData) -> {
             blockStateProvider.itemModels().withExistingParent(name, blockStateProvider.modLoc(reference.mainBlockReference()));
         };
     }
 
     public static @NotNull ZPBlockModelProvider.BlockModelExecutor.EItem<? extends Block> getDefaultItemAsVanillaParent(@NotNull MinecraftModelParentReference reference) {
-        return (blockStateProvider, block, name, textureData) -> {
+        return (blockStateProvider, renderType, block, name, textureData) -> {
             blockStateProvider.itemModels().withExistingParent(name, blockStateProvider.mcLoc(reference.mainBlockReference()));
         };
     }
 
     public static @NotNull ZPBlockModelProvider.BlockModelExecutor.EItem<? extends Block> getDefaultItemAsModBlock(String link) {
-        return (blockStateProvider, block, name, textureData) -> {
+        return (blockStateProvider, renderType, block, name, textureData) -> {
             blockStateProvider.itemModels().withExistingParent(name, blockStateProvider.modLoc("block/" + link));
         };
     }
 
 
     public static @NotNull ZPBlockModelProvider.BlockModelExecutor.EItem<? extends Block> getDefaultItemAsBlock() {
-        return (blockStateProvider, block, name, textureData) -> {
+        return (blockStateProvider, renderType, block, name, textureData) -> {
             blockStateProvider.itemModels().withExistingParent(name, blockStateProvider.modLoc("block/" + name));
         };
     }
 
     public static @NotNull ZPBlockModelProvider.BlockModelExecutor.EItem<? extends Block> getDefaultItemAsBlock(String postfix) {
-        return (blockStateProvider, block, name, textureData) -> {
+        return (blockStateProvider, block, renderType, name, textureData) -> {
             blockStateProvider.itemModels().withExistingParent(name, blockStateProvider.modLoc("block/" + name + postfix));
         };
     }
 
     public static @NotNull ZPBlockModelProvider.BlockModelExecutor.EItem<? extends Block> getDefaultItemAsItem() {
-        return (blockStateProvider, block, name, textureData) -> {
+        return (blockStateProvider, block, renderType, name, textureData) -> {
             String texturePath = textureData.getTextures().values().stream().findFirst().orElseThrow(() -> new ZPRuntimeException("Couldn't create texture for item")).get().getFullPath();
             blockStateProvider.itemModels().withExistingParent(name, "item/generated").texture(ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.locate(blockStateProvider, texturePath));
         };
     }
 
+    public static @NotNull ZPBlockModelProvider.BlockModelExecutor.EItem<? extends Block> getDefaultItemAsItemWithRenderType() {
+        return (blockStateProvider, block, renderType, name, textureData) -> {
+            String texturePath = textureData.getTextures().values().stream().findFirst().orElseThrow(() -> new ZPRuntimeException("Couldn't create texture for item")).get().getFullPath();
+            blockStateProvider.itemModels().withExistingParent(name, "item/generated").renderType(renderType).texture(ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.locate(blockStateProvider, texturePath));
+        };
+    }
+
     public static @NotNull ZPBlockModelProvider.BlockModelExecutor.EItem<? extends Block> getDefaultItemAs2DTexture(@NotNull String path) {
-        return (blockStateProvider, block, name, textureData) -> {
+        return (blockStateProvider, block, renderType, name, textureData) -> {
             blockStateProvider.itemModels().withExistingParent(name, "item/generated").texture(ZPGenTextureData.LAYER0_KEY,  blockStateProvider.modLoc(path));
         };
     }

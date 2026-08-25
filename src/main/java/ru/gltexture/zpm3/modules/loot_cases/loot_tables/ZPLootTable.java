@@ -23,8 +23,8 @@ package ru.gltexture.zpm3.modules.loot_cases.loot_tables;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.gltexture.zpm3.modules.loot_cases.loot_tables.items.LootItemBreakable;
-import ru.gltexture.zpm3.modules.loot_cases.loot_tables.items.LootItemNonBreakable;
+import ru.gltexture.zpm3.modules.loot_cases.loot_tables.items.ZPLootItemBreakable;
+import ru.gltexture.zpm3.modules.loot_cases.loot_tables.items.ZPLootItemNonBreakable;
 import ru.gltexture.zpm3.modules.loot_cases.loot_tables.nbt.container.IZPLootNbtContainer;
 import ru.gltexture.zpm3.modules.loot_cases.loot_tables.nbt.container.ZPLootNbtContainer;
 import ru.gltexture.zpm3.modules.loot_cases.loot_tables.random.ZPRandomization;
@@ -38,7 +38,7 @@ import java.util.function.Function;
 
 public class ZPLootTable {
     @NotNull private final String uniqueId;
-    @NotNull private List<ResourceLocation> extendBy = new ArrayList<>();
+    @NotNull private List<TableExtension> extendBy = new ArrayList<>();
     @NotNull private ZPLootTable.LootGroupsDataSet lootGroupsDataSet;
 
     public ZPLootTable(@NotNull String uniqueId, @NotNull ZPLootTable.LootGroupsDataSet lootGroupsDataSet) {
@@ -50,7 +50,7 @@ public class ZPLootTable {
         return new Builder(uniqueId);
     }
 
-    public @NotNull List<ResourceLocation> getExtendBy() {
+    public @NotNull List<TableExtension> getExtendBy() {
         return this.extendBy;
     }
 
@@ -58,7 +58,7 @@ public class ZPLootTable {
         return this.uniqueId;
     }
 
-    public ZPLootTable setExtendBy(@NotNull List<ResourceLocation> extendBy) {
+    public ZPLootTable setExtendBy(@NotNull List<TableExtension> extendBy) {
         this.extendBy = extendBy;
         return this;
     }
@@ -74,18 +74,35 @@ public class ZPLootTable {
 
     public record LootCaseData(@NotNull String name, @NotNull String textureId, boolean isUnbreakable, int respawnTime) {};
 
-    public record LootGroupsDataSet(int minRolls, int maxRolls, float chanceToStartRolling, float nextRollChanceMultiplier, @Nullable List<LootCommonGroupData> lootCommonGroupDataList, @Nullable List<LootBonusGroupData> lootBonusGroupDataList) {};
+    public record LootGroupsDataSet(@NotNull RollRules rollRules, @Nullable List<LootCommonGroupData> lootCommonGroupDataList, @Nullable List<LootBonusGroupData> lootBonusGroupDataList) {};
 
-    public record LootCommonGroupData(@NotNull LootGroup lootGroup, int maxSpawnTimes, float nextSpawnChanceMultiplier, int spawnWeight) {};
-    public record LootBonusGroupData(@NotNull LootGroup lootGroup, int maxSpawnTimes, float nextSpawnChanceMultiplier, float spawnChance) {};
+    public record LootCommonGroupData(@NotNull LootGroup lootGroup, @NotNull RollRules rollRules, int spawnWeight) {};
+    public record LootBonusGroupData(@NotNull LootGroup lootGroup, @NotNull RollRules rollRules) {};
 
-    public record LootGroup(@NotNull String groupName, List<LootItemNonBreakable> nonBreakable, List<LootItemBreakable> breakable) {};
+    public record LootGroup(@NotNull String groupName, List<ZPLootItemNonBreakable> nonBreakable, List<ZPLootItemBreakable> breakable) {};
+
+    public record RollRules(float chanceToStartRoll, int minRolls, int maxRolls, ZPRandomization randomization) {
+        public static RollRules defaultInst(float chanceToStartRoll) {
+            return new RollRules(chanceToStartRoll, 1, 1, ZPRandomization.uniform());
+        }
+        public static RollRules defaultInst() {
+            return new RollRules(1.0f, 1, 1, ZPRandomization.uniform());
+        }
+    };
+    public record TableExtension(@NotNull String extendByResourceLoc, @Nullable ZPLootTable.RollRules newTableRollRules) {
+        public ResourceLocation getResourceLocation() {
+            return ResourceLocation.tryParse(this.extendByResourceLoc);
+        }
+
+        public static TableExtension defaultInst(@NotNull String extendByResourceLoc) {
+            return new TableExtension(extendByResourceLoc, null);
+        }
+    };
 
     public static class Builder {
         private final String uniqueId;
 
-        private final List<ResourceLocation> extendBy = new ArrayList<>();
-
+        private final List<TableExtension> extendBy = new ArrayList<>();
         private final List<LootCommonGroupData> commonGroups = new ArrayList<>();
         private final List<LootBonusGroupData> bonusGroups = new ArrayList<>();
 
@@ -93,47 +110,37 @@ public class ZPLootTable {
             this.uniqueId = uniqueId;
         }
 
-        public Builder extendBy(@NotNull ResourceLocation... ids) {
+        public Builder extendBy(@NotNull TableExtension... ids) {
             this.extendBy.addAll(Arrays.asList(ids));
             return this;
         }
 
         public Builder commonGroup(@NotNull String name, int weight, @NotNull Consumer<LootGroupBuilder> consumer) {
+            return this.commonGroup(name, weight, RollRules.defaultInst(), consumer);
+        }
+
+        public Builder commonGroup(@NotNull String name, int weight, @NotNull RollRules spawnRules, @NotNull Consumer<LootGroupBuilder> consumer) {
             LootGroupBuilder builder = new LootGroupBuilder(name);
             consumer.accept(builder);
-            commonGroups.add(new LootCommonGroupData(builder.build(), 1, 1.0f, weight));
+            this.commonGroups.add(new LootCommonGroupData(builder.build(), spawnRules, weight));
             return this;
         }
 
-        public Builder bonusGroup(@NotNull String name, float chance, @NotNull Consumer<LootGroupBuilder> consumer) {
+        public Builder bonusGroup(@NotNull String name, float spawnChance, @NotNull Consumer<LootGroupBuilder> consumer) {
+            return this.bonusGroup(name, RollRules.defaultInst(spawnChance), consumer);
+        }
+
+        public Builder bonusGroup(@NotNull String name, @NotNull RollRules spawnRules, @NotNull Consumer<LootGroupBuilder> consumer) {
             LootGroupBuilder builder = new LootGroupBuilder(name);
             consumer.accept(builder);
-            bonusGroups.add(new LootBonusGroupData(builder.build(), 1, 1.0f, chance));
+            this.bonusGroups.add(new LootBonusGroupData(builder.build(), spawnRules));
             return this;
         }
 
-        public Builder commonGroup(@NotNull String name, int maxSpawnTimes, float nextSpawnChanceMultiplier, int weight, @NotNull Consumer<LootGroupBuilder> consumer) {
-            LootGroupBuilder builder = new LootGroupBuilder(name);
-            consumer.accept(builder);
-            commonGroups.add(new LootCommonGroupData(builder.build(), maxSpawnTimes, nextSpawnChanceMultiplier, weight));
-            return this;
-        }
-
-        public Builder bonusGroup(@NotNull String name, int maxSpawnTimes, float nextSpawnChanceMultiplier, float chance, @NotNull Consumer<LootGroupBuilder> consumer) {
-            LootGroupBuilder builder = new LootGroupBuilder(name);
-            consumer.accept(builder);
-            bonusGroups.add(new LootBonusGroupData(builder.build(), maxSpawnTimes, nextSpawnChanceMultiplier, chance));
-            return this;
-        }
-
-        public ZPLootTable build(int maxRolls, float chanceToStartRolling, float nextRollChanceMultiplier) {
-            return this.build(1, maxRolls, chanceToStartRolling, nextRollChanceMultiplier);
-        }
-
-        public ZPLootTable build(int minRolls, int maxRolls, float chanceToStartRolling, float nextRollChanceMultiplier) {
-            LootGroupsDataSet groups = new LootGroupsDataSet(minRolls, maxRolls, chanceToStartRolling, nextRollChanceMultiplier,
-                    commonGroups.isEmpty() ? null : commonGroups,
-                    bonusGroups.isEmpty() ? null : bonusGroups
+        public ZPLootTable build(@NotNull RollRules spawnRules) {
+            LootGroupsDataSet groups = new LootGroupsDataSet(spawnRules,
+                    this.commonGroups.isEmpty() ? null : this.commonGroups,
+                    this.bonusGroups.isEmpty() ? null : this.bonusGroups
             );
 
             ZPLootTable table = new ZPLootTable(uniqueId, groups);
@@ -144,8 +151,8 @@ public class ZPLootTable {
 
         public static class LootGroupBuilder {
             private final String name;
-            private final List<LootItemNonBreakable> nonBreakables = new ArrayList<>();
-            private final List<LootItemBreakable> breakables = new ArrayList<>();
+            private final List<ZPLootItemNonBreakable> nonBreakables = new ArrayList<>();
+            private final List<ZPLootItemBreakable> breakables = new ArrayList<>();
 
             public LootGroupBuilder(String name) {
                 this.name = name;
@@ -164,13 +171,21 @@ public class ZPLootTable {
             }
 
             public LootGroupBuilder addNonBreakable(@NotNull String id, int spawnWeight, int minQ, int maxQ, @NotNull ZPRandomization randomization, @NotNull Function<IZPLootNbtContainer, IZPLootNbtContainer> nbtContainer) {
-                this.nonBreakables.add(new LootItemNonBreakable(id, spawnWeight, minQ, maxQ, randomization, nbtContainer.apply(new ZPLootNbtContainer()).getValues()));
+                this.nonBreakables.add(new ZPLootItemNonBreakable(id, spawnWeight, minQ, maxQ, randomization, nbtContainer.apply(new ZPLootNbtContainer()).getValues()));
                 return this;
             }
 
             public LootGroupBuilder addBreakable(@NotNull String id, int spawnWeight, float minDamage, float maxDamage, @NotNull ZPRandomization randomization, @NotNull Function<IZPLootNbtContainer, IZPLootNbtContainer> nbtContainer) {
-                this.breakables.add(new LootItemBreakable(id, spawnWeight, minDamage, maxDamage, randomization, nbtContainer.apply(new ZPLootNbtContainer()).getValues()));
+                this.breakables.add(new ZPLootItemBreakable(id, spawnWeight, minDamage, maxDamage, randomization, nbtContainer.apply(new ZPLootNbtContainer()).getValues()));
                 return this;
+            }
+
+            public LootGroupBuilder addNonBreakable(@NotNull String id, int spawnWeight, int count, @NotNull Function<IZPLootNbtContainer, IZPLootNbtContainer> nbtContainer) {
+                return this.addNonBreakable(id, spawnWeight, count, count, ZPRandomization.uniform(), nbtContainer);
+            }
+
+            public LootGroupBuilder addNonBreakable(@NotNull String id, int spawnWeight, int count) {
+                return this.addNonBreakable(id, spawnWeight, count, count, ZPRandomization.uniform(), nbt -> nbt);
             }
 
             public LootGroupBuilder addNonBreakable(@NotNull String id, int spawnWeight, int minQ, int maxQ) {
@@ -182,21 +197,21 @@ public class ZPLootTable {
             }
 
             public LootGroupBuilder addNonBreakable(@NotNull String id, int spawnWeight, int minQ, int maxQ, @NotNull ZPRandomization randomization) {
-                this.nonBreakables.add(new LootItemNonBreakable(id, spawnWeight, minQ, maxQ, randomization, Collections.emptyMap()));
+                this.nonBreakables.add(new ZPLootItemNonBreakable(id, spawnWeight, minQ, maxQ, randomization, Collections.emptyMap()));
                 return this;
             }
 
             public LootGroupBuilder addBreakable(@NotNull String id, int spawnWeight, float minDamage, float maxDamage, @NotNull ZPRandomization randomization) {
-                this.breakables.add(new LootItemBreakable(id, spawnWeight, minDamage, maxDamage, randomization, Collections.emptyMap()));
+                this.breakables.add(new ZPLootItemBreakable(id, spawnWeight, minDamage, maxDamage, randomization, Collections.emptyMap()));
                 return this;
             }
 
-            public LootGroupBuilder addNonBreakable(LootItemNonBreakable item) {
+            public LootGroupBuilder addNonBreakable(ZPLootItemNonBreakable item) {
                 this.nonBreakables.add(item);
                 return this;
             }
 
-            public LootGroupBuilder addBreakable(LootItemBreakable item) {
+            public LootGroupBuilder addBreakable(ZPLootItemBreakable item) {
                 this.breakables.add(item);
                 return this;
             }

@@ -22,12 +22,11 @@ package ru.gltexture.zpm3.engine.nbt.itemstack;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.engine.nbt.ZPAbstractNBTClass;
-import ru.gltexture.zpm3.engine.service.Pair;
+
+import java.util.Objects;
 
 public final class ZPItemStackNBT extends ZPAbstractNBTClass<ItemStack> {
     private final @Nullable String innerCompound;
@@ -48,20 +47,23 @@ public final class ZPItemStackNBT extends ZPAbstractNBTClass<ItemStack> {
         this.innerCompound = innerCompound;
     }
 
-    public CompoundTag getTag() {
+    public CompoundTag createTag(@Nullable CompoundTag mainTag) {
         if (this.innerCompound != null) {
-            CompoundTag mainTag = this.t.getOrCreateTag();
-            CompoundTag zpTag = mainTag.getCompound(this.innerCompound);
+            CompoundTag zpTag = Objects.requireNonNull(mainTag).getCompound(this.innerCompound);
             if (!mainTag.contains(this.innerCompound, Tag.TAG_COMPOUND)) {
                 zpTag = new CompoundTag();
                 mainTag.put(this.innerCompound, zpTag);
             }
             return zpTag;
         }
-        return this.t.getOrCreateTag();
+        return mainTag;
+    }
+
+    public CompoundTag getTagOrLazyCreateTag() {
+        return this.createTag(this.t.getOrCreateTag());
     }
 
     public ZPItemStackNBT copy() {
-        return new ZPItemStackNBT(this.t, this.innerCompound, this.getTag().copy());
+        return new ZPItemStackNBT(this.t, this.innerCompound, this.getTagOrLazyCreateTag().copy());
     }
 }

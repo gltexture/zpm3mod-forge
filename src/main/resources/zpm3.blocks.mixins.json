@@ -15,6 +15,7 @@
     "common.ZPFadingLanternMixin",
     "common.ZPFadingPumpkinMixin",
     "common.ZPFadingTorchMixin",
+    "common.ZPFlowingFluidMixin",
     "common.ZPWallBlockMixin",
     "common.ZPWallTorchMixin",
     "common.waterlog.ZPAnvilWaterloggedMixin",

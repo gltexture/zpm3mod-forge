@@ -49,17 +49,17 @@ public final class ZPLootTableExtensionsReloadListener extends SimpleJsonResourc
         for (Map.Entry<ResourceLocation, JsonElement> entry : resources.entrySet()) {
             final ResourceLocation extensionResource = entry.getKey();
             try {
-                final ZPLootTableExtension extension = ZPLootTableExtensionsReloadListener.GSON.fromJson(entry.getValue(), ZPLootTableExtension.class);
+                final ZPLootTableExtensionData extension = ZPLootTableExtensionsReloadListener.GSON.fromJson(entry.getValue(), ZPLootTableExtensionData.class);
                 if (extension == null) {
                     ZPLogger.error("Couldn't read loot table extension: " + extensionResource);
                     continue;
                 }
-                final ZPLootTable lootTable = ZPLootTablesCollection.INSTANCE.getLootTableById(extension.lootTableId());
+                final ZPLootTable lootTable = ZPLootTablesCollection.INSTANCE.getLootTableById(ResourceLocation.tryParse(extension.lootTableId()));
                 if (lootTable == null) {
                     ZPLogger.error("Couldn't extend unknown loot table '" + extension.lootTableId() + "' from " + extensionResource);
                     continue;
                 }
-                lootTable.getExtendBy().addAll(extension.extendBy());
+                lootTable.getExtendBy().addAll(extension.extendByList());
                 ZPLogger.info("Extended loot table '" + extension.lootTableId() + "' from " + extensionResource);
             } catch (Exception e) {
                 ZPLogger.error("Couldn't read loot table extension: " + extensionResource);
@@ -68,6 +68,6 @@ public final class ZPLootTableExtensionsReloadListener extends SimpleJsonResourc
         }
     }
 
-    private record ZPLootTableExtension(@NotNull ResourceLocation lootTableId, @NotNull List<ResourceLocation> extendBy) {
+    public record ZPLootTableExtensionData(@NotNull String lootTableId, @NotNull List<ZPLootTable.TableExtension> extendByList) {
     }
 }

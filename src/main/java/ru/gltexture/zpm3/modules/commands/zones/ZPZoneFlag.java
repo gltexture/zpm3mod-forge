@@ -18,7 +18,7 @@
  *
  */
 
-package ru.gltexture.zpm3.engine.zones;
+package ru.gltexture.zpm3.modules.commands.zones;
 
 import java.util.*;
 

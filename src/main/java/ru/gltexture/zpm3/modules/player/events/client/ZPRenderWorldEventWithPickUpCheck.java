@@ -35,7 +35,7 @@ import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import ru.gltexture.zpm3.engine.network.handler.ZPNetworkHandlerClient;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPClientConfig;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.modules.net_pack.ZPNetPackModule;
 import ru.gltexture.zpm3.modules.net_pack.data.vars.ZPNetDataBoolean;
@@ -75,7 +75,8 @@ public class ZPRenderWorldEventWithPickUpCheck implements ZPForgeEventHandlerCla
 
     @SubscribeEvent
     public static void onRenderWorld(RenderLevelStageEvent event) {
-        final boolean pickUpOnKey = ZombiePlague3.netClient().getNetStaticDataSyncer().getVar(ZPNetPackModule.StoC__SERVER_PICK_UP_ON_KEY).orElse(new ZPNetDataBoolean(ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY.getVar())).getValue();        if (pickUpOnKey && event.getStage() == RenderLevelStageEvent.Stage.AFTER_SOLID_BLOCKS) {
+        final boolean pickUpOnKey = ZombiePlague3.netClient().getNetStaticDataSyncer().getVar(ZPNetPackModule.StoC__SERVER_PICK_UP_ON_KEY).orElse(new ZPNetDataBoolean(ZPClientConfig.PICK_UP_ON_KEY.getVar())).getValue();
+        if (ZPClientConfig.PICK_UP_ON_KEY.getVar() && pickUpOnKey && event.getStage() == RenderLevelStageEvent.Stage.AFTER_SOLID_BLOCKS) {
             Minecraft mc = Minecraft.getInstance();
             if (mc.level == null || mc.player == null) {
                 return;

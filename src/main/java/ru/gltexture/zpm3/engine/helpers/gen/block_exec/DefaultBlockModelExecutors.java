@@ -52,7 +52,7 @@ public abstract class DefaultBlockModelExecutors {
     public static final @NotNull ZPBlockModelProvider.BlockModelExecutor WALL_BLOCK_EXEC_PAIR = () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(DefaultBlockModelExecutors.getDefaultWall(), DefaultBlockItemModelExecutors.getDefaultItemAsBlock("_inventory"));
 
     public static final @NotNull ZPBlockModelProvider.BlockModelExecutor IRON_BARS_BLOCK_EXEC_PAIR = () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(DefaultBlockModelExecutors.getDefaultIronBars(), DefaultBlockItemModelExecutors.getDefaultItemAsItem());
-    public static final @NotNull ZPBlockModelProvider.BlockModelExecutor GLASS_PANE_BLOCK_EXEC_PAIR = () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(DefaultBlockModelExecutors.getDefaultGlassPane(), DefaultBlockItemModelExecutors.getDefaultItemAsItem());
+    public static final @NotNull ZPBlockModelProvider.BlockModelExecutor GLASS_PANE_BLOCK_EXEC_PAIR = () -> new ZPBlockModelProvider.BlockModelExecutor.Pair(DefaultBlockModelExecutors.getDefaultGlassPane(), DefaultBlockItemModelExecutors.getDefaultItemAsItemWithRenderType());
 
 
     public static @NotNull ZPBlockModelProvider.BlockModelExecutor.EBlock<SnowLayerBlock> getDefaultLayerBlock() {
@@ -133,42 +133,44 @@ public abstract class DefaultBlockModelExecutors {
 
     public static @NotNull ZPBlockModelProvider.BlockModelExecutor.EBlock<? extends Block> getDefaultGlassPane() {
         return (blockStateProvider, block, renderType, name, textureData) -> {
-            String texture = Objects.requireNonNull(textureData.getTextureByKey("all")).get().getFullPath();
-            ResourceLocation textureLoc = ZPDataGenHelper.locate(blockStateProvider, texture);
+            final String texture = Objects.requireNonNull(textureData.getTextureByKey("all")).get().getFullPath();
+            final String textureTop = Objects.requireNonNull(textureData.getTextureByKey(ZPGenTextureData.TOP_KEY)).get().getFullPath();
+            final ResourceLocation textureLoc = ZPDataGenHelper.locate(blockStateProvider, texture);
+            final ResourceLocation textureLocTop = ZPDataGenHelper.locate(blockStateProvider, textureTop);
 
             final BlockModelBuilder post = blockStateProvider.models()
-                    .withExistingParent(name + "_post", "minecraft:block/glass_pane_post")
+                    .withExistingParent(name + "_post", "minecraft:block/template_glass_pane_post")
                     .texture("particle", textureLoc)
                     .texture("pane", textureLoc)
-                    .texture("edge", textureLoc)
+                    .texture("edge", textureLocTop)
                     .renderType(renderType);
 
             final BlockModelBuilder side = blockStateProvider.models()
-                    .withExistingParent(name + "_side", "minecraft:block/glass_pane_side")
+                    .withExistingParent(name + "_side", "minecraft:block/template_glass_pane_side")
                     .texture("particle", textureLoc)
                     .texture("pane", textureLoc)
-                    .texture("edge", textureLoc)
+                    .texture("edge", textureLocTop)
                     .renderType(renderType);
 
             final BlockModelBuilder sideAlt = blockStateProvider.models()
-                    .withExistingParent(name + "_side_alt", "minecraft:block/glass_pane_side_alt")
+                    .withExistingParent(name + "_side_alt", "minecraft:block/template_glass_pane_side_alt")
                     .texture("particle", textureLoc)
                     .texture("pane", textureLoc)
-                    .texture("edge", textureLoc)
+                    .texture("edge", textureLocTop)
                     .renderType(renderType);
 
             final BlockModelBuilder noSide = blockStateProvider.models()
-                    .withExistingParent(name + "_noside", "minecraft:block/glass_pane_noside")
+                    .withExistingParent(name + "_noside", "minecraft:block/template_glass_pane_noside")
                     .texture("particle", textureLoc)
                     .texture("pane", textureLoc)
-                    .texture("edge", textureLoc)
+                    .texture("edge", textureLocTop)
                     .renderType(renderType);
 
             final BlockModelBuilder noSideAlt = blockStateProvider.models()
-                    .withExistingParent(name + "_noside_alt", "minecraft:block/glass_pane_noside_alt")
+                    .withExistingParent(name + "_noside_alt", "minecraft:block/template_glass_pane_noside_alt")
                     .texture("particle", textureLoc)
                     .texture("pane", textureLoc)
-                    .texture("edge", textureLoc)
+                    .texture("edge", textureLocTop)
                     .renderType(renderType);
 
             final MultiPartBlockStateBuilder builder = blockStateProvider.getMultipartBuilder(block);

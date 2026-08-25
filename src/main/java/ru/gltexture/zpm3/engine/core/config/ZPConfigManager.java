@@ -38,7 +38,7 @@ import java.util.*;
 public class ZPConfigManager implements IZPConfigClass {
     private static final String REGEX = "[a-zA-Z0-9._-]+";
     private final Map<Class<? extends ZPConfigConstantsClass>, ZPPath> configPathMap;
-    private final Map<Class<? extends ZPConfigConstantsClass>, List<ConfigVarObjectForUI>> classConfigVarObjectForUIMap;
+    private final Map<ZPConfigVar<?>, ConfigVarWrappedObject> classConfigVarObjectForUIMap;
     private final Gson gson;
 
     public ZPConfigManager() {
@@ -61,8 +61,7 @@ public class ZPConfigManager implements IZPConfigClass {
             throw new ZPRuntimeException("Already processed configuration-class: " + clazz.getSimpleName());
         }
         final Map<String, OldConfValue> existingConfigVars = this.readConfigExistingVars(pathToJson);
-        List<ConfigVarObjectForUI> configVarObjectForUIList = new ArrayList<>();
-        this.save(configVarObjectForUIList, existingConfigVars, pathToJson, clazz);
+        this.save(existingConfigVars, pathToJson, clazz);
         this.configPathMap.put(clazz, pathToJson);
     }
 
@@ -111,10 +110,7 @@ public class ZPConfigManager implements IZPConfigClass {
     }
 */
 
-    private void save(@Nullable List<ConfigVarObjectForUI> configVarObjectForUIList, @Nullable Map<String, OldConfValue> existingConfig, ZPPath pathToJson, Class<? extends ZPConfigConstantsClass> clazz) throws IllegalAccessException, IOException {
-        if (configVarObjectForUIList != null) {
-            this.classConfigVarObjectForUIMap.put(clazz, configVarObjectForUIList);
-        }
+    private void save(@Nullable Map<String, OldConfValue> existingConfig, ZPPath pathToJson, Class<? extends ZPConfigConstantsClass> clazz) throws IllegalAccessException, IOException {
         JsonObject mainObj = new JsonObject();
         for (Field field : clazz.getDeclaredFields()) {
             if (field.isAnnotationPresent(ZPVarDefinition.class)) {
@@ -154,9 +150,7 @@ public class ZPConfigManager implements IZPConfigClass {
                         }
                         ZPLogger.trace(pathToJson + " - Config's Field " + fieldName + " = " + var.getVar().toString());
                         jsonObject.add("value", new JsonPrimitive(var.getVar().toString()));
-                        if (configVarObjectForUIList != null) {
-                            configVarObjectForUIList.add(new ConfigVarObjectForUI(fieldName, description, var));
-                        }
+                        this.classConfigVarObjectForUIMap.put(var, new ConfigVarWrappedObject(fieldName, description, var));
                         mainObj.add(fieldName, jsonObject);
                     }
                 } else {
@@ -216,8 +210,8 @@ public class ZPConfigManager implements IZPConfigClass {
         return this.configPathMap.get(clazz);
     }
 
-    public @Nullable List<ConfigVarObjectForUI> configVarObjectsForUI(@NotNull Class<? extends ZPConfigConstantsClass> clazz) {
-        return this.classConfigVarObjectForUIMap.get(clazz);
+    public @Nullable ConfigVarWrappedObject configVarWrappedObject(@NotNull ZPConfigVar<?> var) {
+        return this.classConfigVarObjectForUIMap.get(var);
     }
 
     public Gson getGson() {
@@ -226,15 +220,15 @@ public class ZPConfigManager implements IZPConfigClass {
 
     public record OldConfValue(String value, String defaultV) { ; }
 
-    public record ConfigVarObjectForUI(String varName, String varDescription, ZPConfigVar<?> var) {
+    public record ConfigVarWrappedObject(String varName, String varDescription, ZPConfigVar<?> get) {
         @SuppressWarnings("all")
         public <E extends Serializable> ZPConfigVar<E> getVarUnsafe() {
-            return (ZPConfigVar<E>) this.var();
+            return (ZPConfigVar<E>) this.get();
         }
 
         @Override
         public @NotNull String toString() {
-            return this.var().toString();
+            return this.get().toString();
         }
     }
 }

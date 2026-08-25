@@ -22,7 +22,6 @@ package ru.gltexture.zpm3.modules.loot_cases.instances.block_entities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -30,20 +29,23 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.gltexture.zpm3.engine.core.ZP_EventsManager;
 import ru.gltexture.zpm3.engine.core.api.events.ZPEventDef;
 import ru.gltexture.zpm3.engine.core.api.events.common.ZPEventBus_Blocks;
+import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.modules.blocks.instances.block_entities.ZPFadingBlockEntity;
 import ru.gltexture.zpm3.modules.loot_cases.init.ZPBlockLootCaseEntities;
 import ru.gltexture.zpm3.modules.loot_cases.instances.blocks.ZPDefaultBlockLootCase;
 import ru.gltexture.zpm3.modules.loot_cases.loot_tables.ZPLootTable;
-import ru.gltexture.zpm3.modules.loot_cases.loot_tables.items.ILootItem;
+import ru.gltexture.zpm3.modules.loot_cases.loot_tables.items.IZPLootItem;
 import ru.gltexture.zpm3.modules.loot_cases.registry.ZPLootTablesCollection;
 import ru.gltexture.zpm3.engine.core.random.ZPRandom;
 import ru.gltexture.zpm3.engine.service.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.ToIntFunction;
 
 public class ZPLootCaseBlockEntity extends ChestBlockEntity {
     private long timeLock;
@@ -80,12 +82,12 @@ public class ZPLootCaseBlockEntity extends ChestBlockEntity {
                     if (!cancellable.isCancelled()) {
                         this.clearContent();
                         rootLootTable.getExtendBy().forEach(e -> {
-                            ZPLootTable table = ZPLootTablesCollection.INSTANCE.getLootTableById(e);
+                            ZPLootTable table = ZPLootTablesCollection.INSTANCE.getLootTableById(e.getResourceLocation());
                             if (table != null) {
-                                this.spawnLoot(table);
+                                this.spawnLoot(table, e.newTableRollRules());
                             }
                         });
-                        this.spawnLoot(rootLootTable);
+                        this.spawnLoot(rootLootTable, null);
                     }
                     this.setTime(this.getLevel(), defaultBlockLootCase.getLootRespawnTime(), defaultBlockLootCase.getLootRespawnTime() / 10);
                 }
@@ -93,11 +95,9 @@ public class ZPLootCaseBlockEntity extends ChestBlockEntity {
         }
     }
 
-    protected void spawnLoot(@NotNull ZPLootTable lootTable) {
+    protected void spawnLoot(@NotNull ZPLootTable lootTable, @Nullable ZPLootTable.RollRules overrideRollRules) {
         final ZPLootTable.LootGroupsDataSet dataSet = lootTable.getLootGroupsSpawnDataSet();
-        final int maxRolls = dataSet.maxRolls();
-        final int minRolls = dataSet.minRolls();
-        final float nextRollMultiplier = dataSet.nextRollChanceMultiplier();
+        final ZPLootTable.RollRules rollRules = overrideRollRules != null ? overrideRollRules : lootTable.getLootGroupsSpawnDataSet().rollRules();
 
         List<Integer> freeSlots = new ArrayList<>();
         for (int i = 0; i < this.getContainerSize(); i++) {
@@ -110,39 +110,20 @@ public class ZPLootCaseBlockEntity extends ChestBlockEntity {
             return;
         }
 
-        float rollChance = dataSet.chanceToStartRolling();
+        float rollChance = rollRules.chanceToStartRoll();
+        if (ZPRandom.getRandom().nextFloat() > rollChance) {
+            return;
+        }
 
+        final int maxRolls = rollRules.randomization().random(rollRules.minRolls(), rollRules.maxRolls());
         L0:
-        for (int roll = 0; roll < minRolls + (maxRolls - minRolls); roll++) {
-            if (ZPRandom.getRandom().nextFloat() > rollChance) {
-                break;
-            }
-
+        for (int roll = 0; roll < maxRolls; roll++) {
             if (dataSet.lootCommonGroupDataList() != null && !dataSet.lootCommonGroupDataList().isEmpty()) {
-                Pair<Integer, ZPLootTable.LootGroup> group = this.pickWeightedCommonGroup(dataSet.lootCommonGroupDataList());
-                if (group != null) {
-                    for (int o = 0; o < group.first(); o++) {
-                        this.fillFromGroup(group.second(), freeSlots);
-                        if (freeSlots.isEmpty()) {
-                            break L0;
-                        }
-                    }
-                }
-            }
-
-            if (dataSet.lootBonusGroupDataList() != null) {
-                for (ZPLootTable.LootBonusGroupData bonus : dataSet.lootBonusGroupDataList()) {
-                    if (ZPRandom.getRandom().nextFloat() <= bonus.spawnChance()) {
-                        int spawnTimes = 1;
-                        float c = bonus.nextSpawnChanceMultiplier();
-                        for (int i = 0; i < bonus.maxSpawnTimes() - 1; i++) {
-                            if (ZPRandom.getRandom().nextFloat() <= c) {
-                                spawnTimes += 1;
-                            }
-                            c *= bonus.nextSpawnChanceMultiplier();
-                        }
-                        for (int o = 0; o < spawnTimes; o++) {
-                            this.fillFromGroup(bonus.lootGroup(), freeSlots);
+                final Pair<Integer, ZPLootTable.LootCommonGroupData> commonGroup = this.pickWeightedCommonGroup(dataSet.lootCommonGroupDataList());
+                if (commonGroup != null) {
+                    if (ZPRandom.getRandom().nextFloat() <= commonGroup.second().rollRules().chanceToStartRoll()) {
+                        for (int o = 0; o < commonGroup.first(); o++) {
+                            this.fillFromGroup(commonGroup.second().lootGroup(), freeSlots);
                             if (freeSlots.isEmpty()) {
                                 break L0;
                             }
@@ -150,9 +131,18 @@ public class ZPLootCaseBlockEntity extends ChestBlockEntity {
                     }
                 }
             }
-
-            if (roll >= minRolls) {
-                rollChance *= nextRollMultiplier;
+            if (dataSet.lootBonusGroupDataList() != null) {
+                for (ZPLootTable.LootBonusGroupData bonus : dataSet.lootBonusGroupDataList()) {
+                    final ZPLootTable.RollRules rollRulesBonus = bonus.rollRules();
+                    if (ZPRandom.getRandom().nextFloat() <= rollRulesBonus.chanceToStartRoll()) {
+                        for (int o = 0; o < rollRulesBonus.randomization().random(rollRulesBonus.minRolls(), rollRulesBonus.maxRolls()); o++) {
+                            this.fillFromGroup(bonus.lootGroup(), freeSlots);
+                            if (freeSlots.isEmpty()) {
+                                break L0;
+                            }
+                        }
+                    }
+                }
             }
             if (freeSlots.isEmpty()) {
                 break;
@@ -164,80 +154,61 @@ public class ZPLootCaseBlockEntity extends ChestBlockEntity {
         if (freeSlots.isEmpty()) {
             return;
         }
-
-        List<ILootItem> pool = new ArrayList<>();
-
+        final List<IZPLootItem> pool = new ArrayList<>();
         if (group.nonBreakable() != null) {
             pool.addAll(group.nonBreakable());
         }
-
         if (group.breakable() != null) {
             pool.addAll(group.breakable());
         }
-
         if (pool.isEmpty()) {
             return;
         }
-
-        ILootItem selected = this.pickWeightedItem(pool);
+        IZPLootItem selected = this.pickWeightedItem(pool);
         if (selected == null) {
             return;
         }
-
         ItemStack stack = selected.buildItemStack();
         if (stack == null || stack.isEmpty()) {
             return;
         }
-
         this.putItemRandom(stack, freeSlots);
     }
 
-    private Pair<Integer, ZPLootTable.LootGroup> pickWeightedCommonGroup(List<ZPLootTable.LootCommonGroupData> list) {
-        int totalWeight = 0;
-        for (ZPLootTable.LootCommonGroupData g : list) {
-            totalWeight += g.spawnWeight();
-        }
-        if (totalWeight <= 0) {
+    private Pair<Integer, ZPLootTable.LootCommonGroupData> pickWeightedCommonGroup(List<ZPLootTable.LootCommonGroupData> list) {
+        final ZPLootTable.LootCommonGroupData lootCommonGroupData = this.pickWeighted(list, ZPLootTable.LootCommonGroupData::spawnWeight);
+        if (lootCommonGroupData == null) {
             return null;
         }
-        int r = ZPRandom.getRandom().nextInt(totalWeight);
-        for (ZPLootTable.LootCommonGroupData g : list) {
-            r -= g.spawnWeight();
-            if (r < 0) {
-                int spawnTimes = 1;
-                float c = g.nextSpawnChanceMultiplier();
-                for (int i = 0; i < g.maxSpawnTimes() - 1; i++) {
-                    if (ZPRandom.getRandom().nextFloat() <= c) {
-                        spawnTimes += 1;
-                    }
-                    c *= g.nextSpawnChanceMultiplier();
-                }
-                return Pair.of(spawnTimes, g.lootGroup());
-            }
-        }
-        return null;
+        return Pair.of(lootCommonGroupData.rollRules().randomization().random(lootCommonGroupData.rollRules().minRolls(), lootCommonGroupData.rollRules().maxRolls()), lootCommonGroupData);
     }
 
-    private ILootItem pickWeightedItem(List<ILootItem> list) {
-        int totalWeight = 0;
-        for (ILootItem item : list) {
-            totalWeight += item.getWeight();
-        }
+    private IZPLootItem pickWeightedItem(List<IZPLootItem> list) {
+        return this.pickWeighted(list, IZPLootItem::spawnWeight);
+    }
 
+    private <T> T pickWeighted(List<T> list, ToIntFunction<T> weightGetter) {
+        int totalWeight = 0;
+        for (T value : list) {
+            int weight = weightGetter.applyAsInt(value);
+            if (weight > 0) {
+                totalWeight += weight;
+            }
+        }
         if (totalWeight <= 0) {
             return null;
         }
-
-        int r = ZPRandom.getRandom().nextInt(totalWeight);
-        int current = 0;
-
-        for (ILootItem item : list) {
-            current += item.getWeight();
-            if (r < current) {
-                return item;
+        int random = ZPRandom.getRandom().nextInt(totalWeight);
+        for (T value : list) {
+            int weight = weightGetter.applyAsInt(value);
+            if (weight <= 0) {
+                continue;
+            }
+            random -= weight;
+            if (random < 0) {
+                return value;
             }
         }
-
         return null;
     }
 

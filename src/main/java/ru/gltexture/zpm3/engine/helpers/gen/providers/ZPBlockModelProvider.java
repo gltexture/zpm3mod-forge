@@ -114,7 +114,7 @@ public class ZPBlockModelProvider extends BlockStateProvider {
             pair.block().exec(this, block, renderType, name, textureData);
 
             if (pair.item() != null) {
-                pair.item().exec(this, block, name, textureData);
+                pair.item().exec(this, block, renderType, name, textureData);
             }
         });
 
@@ -139,11 +139,11 @@ public class ZPBlockModelProvider extends BlockStateProvider {
 
         @FunctionalInterface
         interface EItem<R extends Block> {
-            void exec(@NotNull BlockStateProvider blockStateProvider, @NotNull R block, @NotNull String name, @NotNull ZPGenTextureData textureData);
+            void exec(@NotNull BlockStateProvider blockStateProvider, @NotNull R block, @NotNull String renderType, @NotNull String name, @NotNull ZPGenTextureData textureData);
 
             @SuppressWarnings("all")
-            default void exec(@NotNull BlockStateProvider blockStateProvider, @NotNull Object block, @NotNull String name, @NotNull ZPGenTextureData textureData) {
-                this.exec(blockStateProvider, (R) block, name, textureData);
+            default void exec(@NotNull BlockStateProvider blockStateProvider, @NotNull Object block, @NotNull String renderType, @NotNull String name, @NotNull ZPGenTextureData textureData) {
+                this.exec(blockStateProvider, (R) block, renderType, name, textureData);
             }
         }
 

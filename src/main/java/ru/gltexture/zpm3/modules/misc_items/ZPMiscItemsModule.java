@@ -200,7 +200,7 @@ public class ZPMiscItemsModule extends ZPModule {
         static {
             recipeToAdd.add((writer -> {
                 ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ZPMiscItems.chisel_material.get())
-                        .pattern("S").pattern("T")
+                        .pattern(" T").pattern("S ")
                         .define('S', Items.STICK)
                         .define('T', Items.FLINT)
                         .unlockedBy("has_rf", IZPRecipeSpec.has(Items.STICK))
@@ -226,6 +226,7 @@ public class ZPMiscItemsModule extends ZPModule {
             recipeToAdd.add((writer -> {
                 SimpleCookingRecipeBuilder.smelting(Ingredient.of(ZPMiscItems.scrap_stack_material.get()), RecipeCategory.MISC, Items.IRON_INGOT, 0.5f, 300)
                         .unlockedBy("has_rf", IZPRecipeSpec.has(ZPMiscItems.scrap_material.get()))
+                        .group("iron_ingot")
                         .save(writer, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "iron_scrap_smelting"));
             }));
         }

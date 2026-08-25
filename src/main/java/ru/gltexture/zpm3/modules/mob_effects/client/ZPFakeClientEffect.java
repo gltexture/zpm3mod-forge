@@ -20,6 +20,8 @@
 
 package ru.gltexture.zpm3.modules.mob_effects.client;
 
+import net.minecraft.Util;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -29,15 +31,17 @@ import net.minecraftforge.client.extensions.common.IClientMobEffectExtensions;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.modules.mob_effects.instances.ZPDefaultMobEffect;
 
+import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 @OnlyIn(Dist.CLIENT)
 public class ZPFakeClientEffect extends MobEffect {
-    private final Supplier<ResourceLocation> icon;
-    private final ResourceLocation id;
-    private Object effectRenderer;
+    protected final Supplier<ResourceLocation> icon;
+    protected final ResourceLocation id;
+    protected Object effectRenderer;
+    @Nullable protected String descriptionId;
 
     public ZPFakeClientEffect(@NotNull MobEffectCategory mobEffectCategory, @NotNull ResourceLocation id, @NotNull Supplier<ResourceLocation> icon, int color) {
         super(mobEffectCategory, color);
@@ -59,8 +63,11 @@ public class ZPFakeClientEffect extends MobEffect {
     }
 
     @Override
-    public @NotNull String getDescriptionId() {
-        return this.getId().toString();
+    protected @NotNull String getOrCreateDescriptionId() {
+        if (this.descriptionId == null) {
+            this.descriptionId = Util.makeDescriptionId("fake_effect", this.getId());
+        }
+        return this.descriptionId;
     }
 
     public ResourceLocation getId() {

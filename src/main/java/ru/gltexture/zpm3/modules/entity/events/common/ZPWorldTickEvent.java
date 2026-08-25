@@ -36,9 +36,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPZombieConfig;
-import ru.gltexture.zpm3.engine.network.handler.ZPNetworkHandler;
-import ru.gltexture.zpm3.engine.network.handler.ZPNetworkHandlerServer;
-import ru.gltexture.zpm3.engine.zones.ZPZoneChecks;
+import ru.gltexture.zpm3.modules.commands.zones.ZPZoneChecks;
 
 import ru.gltexture.zpm3.modules.entity.instances.mobs.ai.ZPZombieMiningGoal;
 import ru.gltexture.zpm3.modules.net_pack.packets.S2C.ZPBlockCrackPacket;
@@ -55,28 +53,6 @@ public class ZPWorldTickEvent implements ZPForgeEventHandlerClass {
     private static Map<ResourceKey<Level>, Integer> ticks = new HashMap<>();
 
     public ZPWorldTickEvent() {
-    }
-
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void exec1(@NotNull BlockEvent.BreakEvent event) {
-        if (event.getLevel() instanceof ServerLevel serverLevel) {
-            if (!event.getPlayer().isCreative()) {
-                if (ZPZoneChecks.INSTANCE.isNoBlocksDestruction(serverLevel, event.getPos())) {
-                    event.setCanceled(true);
-                }
-            }
-        }
-    }
-
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void exec11(@NotNull BlockEvent.EntityPlaceEvent event) {
-        if (event.getLevel() instanceof ServerLevel serverLevel) {
-            if (event.getEntity() instanceof Player player && !player.isCreative()) {
-                if (ZPZoneChecks.INSTANCE.isNoBlocksDestruction(serverLevel, event.getPos())) {
-                    event.setCanceled(true);
-                }
-            }
-        }
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)

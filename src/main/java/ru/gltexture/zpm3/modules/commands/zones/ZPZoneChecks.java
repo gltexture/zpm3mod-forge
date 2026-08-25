@@ -18,7 +18,7 @@
  *
  */
 
-package ru.gltexture.zpm3.engine.zones;
+package ru.gltexture.zpm3.modules.commands.zones;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
@@ -27,7 +27,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import ru.gltexture.zpm3.engine.service.Pair;
-import ru.gltexture.zpm3.engine.zones.vars.ZPZoneIntVar;
+import ru.gltexture.zpm3.modules.commands.zones.vars.ZPZoneIntVar;
 
 import java.util.Collection;
 
@@ -65,8 +65,24 @@ public final class ZPZoneChecks {
         return this.checkFlag(level, Mth.floor(entity.getX()), Mth.floor(entity.getY()), Mth.floor(entity.getZ()), ZPDefaultZones.toxicCloud);
     }
 
-    public boolean isNoBlocksDestruction(@NotNull Level level, @NotNull BlockPos pos) {
-        return this.checkFlag(level, pos.getX(), pos.getY(), pos.getZ(), ZPDefaultZones.noBlocksDestruction);
+    public boolean isFluidPlaceFluidProtected(@NotNull Level level, @NotNull BlockPos pos) {
+        return this.checkFlag(level, pos.getX(), pos.getY(), pos.getZ(), ZPDefaultZones.blockFluidPlaceFluid);
+    }
+
+    public boolean isBlockPlacementProtected(@NotNull Level level, @NotNull BlockPos pos) {
+        return this.checkFlag(level, pos.getX(), pos.getY(), pos.getZ(), ZPDefaultZones.blockPlaceProtection);
+    }
+
+    public boolean isUsageProtected(@NotNull Level level, @NotNull BlockPos pos) {
+        return this.checkFlag(level, pos.getX(), pos.getY(), pos.getZ(), ZPDefaultZones.blockUseProtection);
+    }
+
+    public boolean isBlockPistonsProtected(@NotNull Level level, @NotNull BlockPos pos) {
+        return this.checkFlag(level, pos.getX(), pos.getY(), pos.getZ(), ZPDefaultZones.blockPistons);
+    }
+
+    public boolean isBlockDestructionProtected(@NotNull Level level, @NotNull BlockPos pos) {
+        return this.checkFlag(level, pos.getX(), pos.getY(), pos.getZ(), ZPDefaultZones.blockDestructProtection);
     }
 
     public boolean isBarbaredWiresDisabled(@NotNull Level level, @NotNull BlockPos pos) {

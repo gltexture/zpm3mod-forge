@@ -20,16 +20,42 @@
 
 package ru.gltexture.zpm3.modules.loot_cases.loot_tables.nbt.container;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 import ru.gltexture.zpm3.modules.loot_cases.loot_tables.nbt.ZPLootNbtValue;
 import ru.gltexture.zpm3.modules.loot_cases.loot_tables.nbt.values.*;
 import ru.gltexture.zpm3.modules.loot_cases.loot_tables.random.ZPRandomization;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public interface IZPLootNbtContainer {
+    static CompoundTag compound(Consumer<CompoundTag> consumer) {
+        CompoundTag tag = new CompoundTag();
+        consumer.accept(tag);
+        return tag;
+    }
+
+    static Tag list(CompoundTag... compound) {
+        final ListTag tag = new ListTag();
+        tag.addAll(Arrays.asList(compound));
+        return tag;
+    }
+
     IZPLootNbtContainer add(@NotNull String id, @NotNull ZPLootNbtValue value);
+
+    default IZPLootNbtContainer add(@NotNull String key, @NotNull CompoundTag value) {
+        return this.add(key, new ZPLootNbtCompoundTag(value));
+    }
+
+    default IZPLootNbtContainer add(@NotNull String key, List<CompoundTag> value) {
+        return this.add(key, new ZPLootNbtListTag(value));
+    }
 
     default IZPLootNbtContainer add(@NotNull String key, int value) {
         return this.add(key, new ZPLootNbtInt(value));
@@ -41,6 +67,10 @@ public interface IZPLootNbtContainer {
 
     default IZPLootNbtContainer add(@NotNull String key, float value) {
         return this.add(key, new ZPLootNbtFloat(value));
+    }
+
+    default IZPLootNbtContainer add(@NotNull String key, String value) {
+        return this.add(key, new ZPLootNbtString(value));
     }
 
     default IZPLootNbtContainer add(@NotNull String key, double value) {

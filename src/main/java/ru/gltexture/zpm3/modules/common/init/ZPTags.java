@@ -53,6 +53,7 @@ public abstract class ZPTags {
 
     public static final TagKey<Item> I_CAN_MINE_SCRAP = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "i_mineable_scrap"));
     public static final TagKey<Item> I_CAN_MINE_BARBARED_WIRE = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "i_mineable_barbared_wire"));
+    public static final TagKey<Item> I_CAN_MINE_CRAFTING_TABLE = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "i_can_mine_crafting_table"));
     public static final TagKey<Item> I_CAN_MINE_CHAIN_LINK = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "i_mineable_chani_link"));
 
     public static final TagKey<Item> I_AQUALUNG_O2_ITEM = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "i_aqualung_o2_item"));

@@ -33,7 +33,7 @@ public final class ZPEntityNBT extends ZPAbstractNBTClass<Entity> {
 
     public static final String PERSISTED_NBT_TAG = "ZPM3EntityPersisted";
 
-    public CompoundTag getTag() {
+    public CompoundTag getTagOrLazyCreateTag() {
         CompoundTag data = this.t.getPersistentData();
         return data.getCompound(ZPEntityNBT.PERSISTED_NBT_TAG);
     }

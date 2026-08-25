@@ -21,6 +21,8 @@
 package ru.gltexture.zpm3.modules.blocks.init.helper;
 
 import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -119,7 +121,21 @@ public abstract class ZPRegCommonBlocks {
             });
         }).end();
 
-        ZPBlocks.armored_glass = regSupplier.register("armored_glass", () -> new ZPBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLUE).instrument(NoteBlockInstrument.CHIME).strength(30.0f).sound(SoundType.GLASS).noOcclusion().lightLevel((e) -> 0))
+        ZPBlocks.cracked_crafting_table = regSupplier.register("cracked_crafting_table", () -> new ZPBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).strength(2.5F).sound(SoundType.WOOD))
+        ).afterCreated((e, utils) -> {
+            utils.loot().addSelfDropLootTable(e);
+            utils.blocks().setFuelTime(e, 400);
+            ZPUtility.sides().onlyClient(() -> {
+                utils.blocks().addBlockModelKey_ValueArray(e, ZPDataGenHelper.DEFAULT_CRAFTING_TABLE,
+                        Pair.of(ZPGenTextureData.WEST_KEY, () -> new ZPPath(ZPDataGenHelper.WORKSTATIONS_BLOCKS_DIRECTORY, "crafting_table_side_cracked")),
+                        Pair.of(ZPGenTextureData.NORTH_KEY, () -> new ZPPath(ZPDataGenHelper.WORKSTATIONS_BLOCKS_DIRECTORY, "crafting_table_side_cracked")),
+                        Pair.of(ZPGenTextureData.SOUTH_KEY, () -> new ZPPath(ZPDataGenHelper.WORKSTATIONS_BLOCKS_DIRECTORY, "crafting_table_side_cracked")),
+                        Pair.of(ZPGenTextureData.EAST_KEY, () -> new ZPPath(ZPDataGenHelper.WORKSTATIONS_BLOCKS_DIRECTORY, "crafting_table_side_cracked")),
+                        Pair.of(ZPGenTextureData.UP_KEY, () -> new ZPPath(ZPDataGenHelper.WORKSTATIONS_BLOCKS_DIRECTORY, "crafting_table_top_cracked")));
+            });
+        }).end();
+
+        ZPBlocks.armored_glass = regSupplier.register("armored_glass", () -> new ZPGlassBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLUE).instrument(NoteBlockInstrument.CHIME).noOcclusion().strength(30.0f).sound(SoundType.GLASS).lightLevel((e) -> 0))
         ).afterCreated((e, utils) -> {
             utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
             ZPUtility.sides().onlyClient(() -> {
@@ -128,11 +144,13 @@ public abstract class ZPRegCommonBlocks {
             });
         }).end();
 
-        ZPBlocks.armored_glasspane = regSupplier.register("armored_glasspane", () -> new ZPGlassPaneBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLUE).instrument(NoteBlockInstrument.CHIME).strength(30.0f).sound(SoundType.GLASS).noOcclusion().lightLevel((e) -> 0))
+        ZPBlocks.armored_glasspane = regSupplier.register("armored_glasspane", () -> new ZPGlassPaneBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLUE).instrument(NoteBlockInstrument.CHIME).noOcclusion().strength(30.0f).sound(SoundType.GLASS).lightLevel((e) -> 0))
         ).afterCreated((e, utils) -> {
             utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
             ZPUtility.sides().onlyClient(() -> {
-                utils.blocks().addBlockModelKey_ValueArray(e, ZPDataGenHelper.NO_REFERENCE, Pair.of(ZPGenTextureData.ALL_KEY, () -> new ZPPath(ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY, "armored_glass")));
+                utils.blocks().addBlockModelKey_ValueArray(e, ZPDataGenHelper.NO_REFERENCE,
+                        Pair.of(ZPGenTextureData.ALL_KEY, () -> new ZPPath(ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY, "armored_glass")),
+                        Pair.of(ZPGenTextureData.TOP_KEY, () -> new ZPPath(ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY, "armored_glass_pane_top")));
                 utils.blocks().setBlockRenderType(e, ZPDataGenHelper.TRANSLUCENT_RENDER_TYPE);
             });
         }).end();
@@ -472,7 +490,7 @@ public abstract class ZPRegCommonBlocks {
                     BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).instrument(NoteBlockInstrument.BANJO).strength(10.0F, 3.0F).sound(SoundType.METAL),
                     (e, regUtils) -> {
                         regUtils.loot().addBlockLootTable(e, () -> new LootPool.Builder()
-                                .setRolls(UniformGenerator.between(0, 2))
+                                .setRolls(UniformGenerator.between(1, 3))
                                 .add(LootItem.lootTableItem(ZPMiscItems.scrap_material.get()))
                                 .when(MatchTool.toolMatches(
                                         ItemPredicate.Builder.item().of(ZPTags.I_CAN_MINE_SCRAP)
@@ -488,7 +506,7 @@ public abstract class ZPRegCommonBlocks {
         }
 
 
-        ZPBlocks.scrap_door = regSupplier.register("scrap_door", () -> new ZPRustyDoor(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).strength(16.0F, 2.0F).sound(SoundType.METAL), BlockSetType.IRON)
+        ZPBlocks.scrap_door = regSupplier.register("scrap_door", () -> new ZPRustyDoor(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).strength(10.0F, 2.0F).noOcclusion().sound(SoundType.METAL), BlockSetType.IRON)
         ).afterCreated((e, utils) -> {
             //utils.addBlockLootTable(e, () -> new LootPool.Builder().setRolls(UniformGenerator.between(0, 2)).add(LootItem.lootTableItem(Items.IRON_NUGGET)));
             utils.loot().addBlockLootTable(e, () -> new LootPool.Builder()
@@ -498,6 +516,7 @@ public abstract class ZPRegCommonBlocks {
                             ItemPredicate.Builder.item().of(ZPTags.I_CAN_MINE_SCRAP)
                     ))
             );
+            utils.blocks().addTagToBlock(e, BlockTags.DOORS);
             utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
             utils.blocks().addTagToBlock(e, ZPTags.B_MINEABLE_WITH_WRENCH);
             utils.blocks().addTagToBlock(e, ZPTags.B_MINEABLE_WITH_CROWBAR);
@@ -510,31 +529,32 @@ public abstract class ZPRegCommonBlocks {
             utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
         }).end();
 
-        ZPBlocks.scrap_trapDoor = regSupplier.register("scrap_trapdoor", () -> new ZPRustyTrapDoor(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).strength(16.0F, 2.0F).sound(SoundType.METAL), BlockSetType.IRON)
+        ZPBlocks.scrap_trapDoor = regSupplier.register("scrap_trapdoor", () -> new ZPRustyTrapDoor(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).noOcclusion().strength(10.0F, 2.0F).sound(SoundType.METAL), BlockSetType.IRON)
         ).afterCreated((e, utils) -> {
             //utils.addBlockLootTable(e, () -> new LootPool.Builder().setRolls(UniformGenerator.between(0, 2)).add(LootItem.lootTableItem(Items.IRON_NUGGET)));
             utils.loot().addBlockLootTable(e, () -> new LootPool.Builder()
-                    .setRolls(UniformGenerator.between(0, 2))
+                    .setRolls(UniformGenerator.between(1, 3))
                     .add(LootItem.lootTableItem(ZPMiscItems.scrap_material.get()))
                     .when(MatchTool.toolMatches(
                             ItemPredicate.Builder.item().of(ZPTags.I_CAN_MINE_SCRAP)
                     ))
             );
+            utils.blocks().addTagToBlock(e, BlockTags.TRAPDOORS);
             utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
             utils.blocks().addTagToBlock(e, ZPTags.B_MINEABLE_WITH_WRENCH);
             utils.blocks().addTagToBlock(e, ZPTags.B_MINEABLE_WITH_CROWBAR);
             ZPUtility.sides().onlyClient(() -> {
                 utils.blocks().setBlockItemModelExecutor(e, DefaultBlockModelExecutors.getDefaultTrapDoor(), DefaultBlockItemModelExecutors.getDefaultItemAsModBlock("scrap_trapdoor_bottom"));
                 utils.blocks().addBlockModelKey_ValueArray(e, ZPDataGenHelper.NO_REFERENCE, Pair.of(ZPGenTextureData.ALL_KEY, () -> new ZPPath(ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY, "scrap_trapdoor")));
-                utils.blocks().setBlockRenderType(e, ZPDataGenHelper.TRANSLUCENT_RENDER_TYPE);
+                utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
             });
         }).end();
 
-        ZPBlocks.scrap_bars = regSupplier.register("scrap_bars", () -> new ZPIronBarsBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).instrument(NoteBlockInstrument.BASEDRUM).strength(1.0F, 8.0F).sound(SoundType.METAL))
+        ZPBlocks.scrap_bars = regSupplier.register("scrap_bars", () -> new ZPIronBarsBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).instrument(NoteBlockInstrument.BASEDRUM).strength(10.0F, 2.0F).sound(SoundType.METAL))
         ).afterCreated((e, utils) -> {
             utils.blocks().addTagToBlock(e, ZPTags.B_BULLET_50PRC_IGNORE);
             utils.loot().addBlockLootTable(e, () -> new LootPool.Builder()
-                    .setRolls(UniformGenerator.between(0, 2))
+                    .setRolls(UniformGenerator.between(1, 3))
                     .add(LootItem.lootTableItem(ZPMiscItems.scrap_material.get()))
                     .when(MatchTool.toolMatches(
                             ItemPredicate.Builder.item().of(ZPTags.I_CAN_MINE_SCRAP)

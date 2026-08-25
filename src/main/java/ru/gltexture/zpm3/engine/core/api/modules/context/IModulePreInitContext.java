@@ -27,8 +27,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.api.context.IZPPreInitContext;
 import ru.gltexture.zpm3.engine.keybind.ZPKeyBindingsManager;
-import ru.gltexture.zpm3.engine.zones.ZPZoneFlag;
-import ru.gltexture.zpm3.engine.zones.vars.ZPZoneIntVar;
 
 import java.util.function.Supplier;
 

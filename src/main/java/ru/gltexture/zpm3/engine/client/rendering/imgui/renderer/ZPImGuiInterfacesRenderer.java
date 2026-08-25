@@ -22,6 +22,7 @@ package ru.gltexture.zpm3.engine.client.rendering.imgui.renderer;
 
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.shaders.Uniform;
+import com.mojang.blaze3d.systems.RenderSystem;
 import imgui.*;
 import imgui.flag.ImGuiKey;
 import imgui.flag.ImGuiMouseButton;
@@ -29,6 +30,7 @@ import imgui.type.ImInt;
 import net.minecraft.client.KeyboardHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -38,6 +40,7 @@ import org.joml.Vector2i;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL46;
 import ru.gltexture.zpm3.engine.client.rendering.IZPClientManager;
+import ru.gltexture.zpm3.engine.client.rendering.callbacks.IZPClientCallbacksManager;
 import ru.gltexture.zpm3.engine.client.rendering.gl.textures.TextureSimple2DProgram;
 import ru.gltexture.zpm3.engine.client.rendering.gl.textures.properties.TextureProperties;
 import ru.gltexture.zpm3.engine.client.rendering.imgui.interfaces.IZPImGuiInterface;
@@ -50,6 +53,7 @@ import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.ByteBuffer;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -61,9 +65,10 @@ public class ZPImGuiInterfacesRenderer implements IZPClientManager.ResourceLifec
     private TextureSimple2DProgram textureSample;
     private int sampler;
 
-    public ZPImGuiInterfacesRenderer(@NotNull IZPImGuiInterfacesManager imGuiInterfacesManager) {
+    public ZPImGuiInterfacesRenderer(@NotNull IZPClientCallbacksManager clientCallbacksManager,  @NotNull IZPImGuiInterfacesManager imGuiInterfacesManager) {
         this.imGuiInterfacesManager = imGuiInterfacesManager;
         this.sampler = 0;
+        this.createUICallbacks(clientCallbacksManager);
     }
 
     @Override
@@ -100,7 +105,6 @@ public class ZPImGuiInterfacesRenderer implements IZPClientManager.ResourceLifec
         fontAtlas.setTexID(this.textureSample.getTextureId());
 
         this.imGuiMesh = new ZPImGuiMesh();
-        this.createUICallbacks(window);
     }
 
     @Override
@@ -108,25 +112,27 @@ public class ZPImGuiInterfacesRenderer implements IZPClientManager.ResourceLifec
         this.io.setDisplaySize(width, height);
     }
 
-    private void createUICallbacks(Window window) {
-        ZombiePlague3.getClientManager().getCallbacksManager().addMouseScrollCallback((descriptor, x, y) -> {
-            if (GLFW.glfwGetInputMode(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_CURSOR) == GLFW.GLFW_CURSOR_DISABLED) {
-                return;
+    private boolean wantsMouseInput() {
+        return ImGui.getIO().getWantCaptureMouse();
+    }
+
+    private boolean wantsKeyboardInput() {
+        return ImGui.getIO().getWantCaptureKeyboard();
+    }
+
+    private void createUICallbacks(@NotNull IZPClientCallbacksManager clientCallbacksManager) {
+        clientCallbacksManager.addMouseScrollCallback((descriptor, x, y) -> {
+            final boolean flag = GLFW.glfwGetInputMode(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_CURSOR) != GLFW.GLFW_CURSOR_DISABLED;
+            if (flag) {
+                this.io.addMouseWheelEvent(x, y);
             }
-            this.io.addMouseWheelEvent(x, y);
         });
 
-        ZombiePlague3.getClientManager().getCallbacksManager().addMouseButtonCallback((descriptor, button, action, mods) -> {
-            if (GLFW.glfwGetInputMode(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_CURSOR) == GLFW.GLFW_CURSOR_DISABLED) {
-                return;
-            }
+        clientCallbacksManager.addMouseButtonCallback((descriptor, button, action, mods) -> {
             this.io.addMouseButtonEvent(button, action != GLFW.GLFW_RELEASE);
         });
 
-        ZombiePlague3.getClientManager().getCallbacksManager().addKeyboardCallback((descriptor, key, scanCode, action, mods) -> {
-            if (GLFW.glfwGetInputMode(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_CURSOR) == GLFW.GLFW_CURSOR_DISABLED) {
-                return;
-            }
+        clientCallbacksManager.addKeyboardCallback((descriptor, key, scanCode, action, mods) -> {
             final int imguiKey = ZPImGuiInterfacesRenderer.mapGlfwKey(key);
             if (imguiKey != ImGuiKey.None) {
                 io.addKeyEvent(imguiKey, action != GLFW.GLFW_RELEASE);
@@ -137,10 +143,7 @@ public class ZPImGuiInterfacesRenderer implements IZPClientManager.ResourceLifec
             this.io.addKeyEvent(ImGuiKey.ImGuiMod_Super, (mods & GLFW.GLFW_MOD_SUPER) != 0);
         });
 
-        ZombiePlague3.getClientManager().getCallbacksManager().addCharCallback((descriptor, c) -> {
-            if (GLFW.glfwGetInputMode(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_CURSOR) == GLFW.GLFW_CURSOR_DISABLED) {
-                return;
-            }
+        clientCallbacksManager.addCharCallback((descriptor, c) -> {
             this.io.addInputCharacter(c);
         });
     }
@@ -193,13 +196,23 @@ public class ZPImGuiInterfacesRenderer implements IZPClientManager.ResourceLifec
         final MouseHandler mouse = mc.mouseHandler;
         final KeyboardHandler keyboardHandler = mc.keyboardHandler;
 
+        {
+            final boolean flag = GLFW.glfwGetInputMode(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_CURSOR) != GLFW.GLFW_CURSOR_DISABLED;
+            this.io.setWantCaptureKeyboard(flag);
+            this.io.setWantCaptureMouse(flag);
+            this.io.setWantTextInput(flag);
+            this.io.setWantCaptureMouse(flag);
+            this.io.setWantSetMousePos(flag);
+            if (flag) {
+            this.io.setMousePos((float) Minecraft.getInstance().mouseHandler.xpos(), (float) Minecraft.getInstance().mouseHandler.ypos());
+            }
+        }
+
         float delta = frameTicking;
         if (delta <= 0.0f) {
             delta = 1.0f / 60.0f;
         }
-        io.setDeltaTime(delta);
-
-        this.io.setMousePos((float) Minecraft.getInstance().mouseHandler.xpos(), (float) Minecraft.getInstance().mouseHandler.ypos());
+        this.io.setDeltaTime(delta);
         ImGui.newFrame();
         try {
             dearUIInterfaceSet.forEach(e -> e.drawGui(window, new IZPImGuiInterface.Input(mouse, keyboardHandler)));
@@ -223,84 +236,130 @@ public class ZPImGuiInterfacesRenderer implements IZPClientManager.ResourceLifec
     }
 
     private void openGlPass(@NotNull ImDrawData drawData, @NotNull ShaderInstance shader) {
-        shader.apply();
-        ImVec2 dSize = new ImVec2();
-        this.io.getDisplaySize(dSize);
+        final int previousVao = GL46.glGetInteger(GL46.GL_VERTEX_ARRAY_BINDING);
+        final int previousArrayBuffer = GL46.glGetInteger(GL46.GL_ARRAY_BUFFER_BINDING);
+        final int previousElementBuffer = GL46.glGetInteger(GL46.GL_ELEMENT_ARRAY_BUFFER_BINDING);
+        final int previousActiveTexture = GL46.glGetInteger(GL46.GL_ACTIVE_TEXTURE);
 
-        Uniform scaleUniform = shader.getUniform("scale");
-        if (scaleUniform != null) {
-            scaleUniform.set(2.0f / dSize.x, -2.0f / dSize.y);
-        }
-        Uniform textureUniform = shader.getUniform("texture_map");
-        if (textureUniform != null) {
-            textureUniform.set(0);
-        }
+        final boolean blendEnabled = GL46.glIsEnabled(GL46.GL_BLEND);
+        final boolean depthEnabled = GL46.glIsEnabled(GL46.GL_DEPTH_TEST);
+        final boolean cullEnabled = GL46.glIsEnabled(GL46.GL_CULL_FACE);
+        final boolean scissorEnabled = GL46.glIsEnabled(GL46.GL_SCISSOR_TEST);
 
-        GL46.glEnable(GL46.GL_BLEND);
-        GL46.glBlendEquation(GL46.GL_FUNC_ADD);
-        GL46.glBlendFuncSeparate(GL46.GL_SRC_ALPHA, GL46.GL_ONE_MINUS_SRC_ALPHA, GL46.GL_ONE, GL46.GL_ONE_MINUS_SRC_ALPHA);
-        GL46.glDisable(GL46.GL_DEPTH_TEST);
-        GL46.glDisable(GL46.GL_CULL_FACE);
+        final int blendSrcRgb = GL46.glGetInteger(GL46.GL_BLEND_SRC_RGB);
+        final int blendDstRgb = GL46.glGetInteger(GL46.GL_BLEND_DST_RGB);
+        final int blendSrcAlpha = GL46.glGetInteger(GL46.GL_BLEND_SRC_ALPHA);
+        final int blendDstAlpha = GL46.glGetInteger(GL46.GL_BLEND_DST_ALPHA);
 
-        GL46.glBindVertexArray(this.imGuiMesh.getVaoId());
-        GL46.glBindBuffer(GL46.GL_ARRAY_BUFFER, this.imGuiMesh.getVerticesVbo());
-        GL46.glBindBuffer(GL46.GL_ELEMENT_ARRAY_BUFFER, this.imGuiMesh.getIndicesVbo());
+        final int blendEquationRgb = GL46.glGetInteger(GL46.GL_BLEND_EQUATION_RGB);
+        final int blendEquationAlpha = GL46.glGetInteger(GL46.GL_BLEND_EQUATION_ALPHA);
 
-        int numLists = drawData.getCmdListsCount();
+        final int[] previousScissorBox = new int[4];
+        GL46.glGetIntegerv(GL46.GL_SCISSOR_BOX, previousScissorBox);
 
-        ImVec2 dPos = new ImVec2();
-        ImVec2 fbScale = new ImVec2();
+        final int previousTexture = GL46.glGetInteger(GL46.GL_TEXTURE_BINDING_2D);
+        final int previousSampler = GL46.glGetInteger(GL46.GL_SAMPLER_BINDING);
 
-        drawData.getDisplayPos(dPos);
-        drawData.getFramebufferScale(fbScale);
+        try {
+            final ShaderInstance oldShader = RenderSystem.getShader();
+            shader.apply();
+            ImVec2 dSize = new ImVec2();
+            this.io.getDisplaySize(dSize);
+            Uniform scaleUniform = shader.getUniform("scale");
+            if (scaleUniform != null) {
+                scaleUniform.set(2.0f / dSize.x, -2.0f / dSize.y);
+            }
+            Uniform textureUniform = shader.getUniform("texture_map");
+            if (textureUniform != null) {
+                textureUniform.set(0);
+            }
+            GL46.glEnable(GL46.GL_BLEND);
+            GL46.glBlendEquation(GL46.GL_FUNC_ADD);
+            GL46.glBlendFuncSeparate(GL46.GL_SRC_ALPHA, GL46.GL_ONE_MINUS_SRC_ALPHA, GL46.GL_ONE, GL46.GL_ONE_MINUS_SRC_ALPHA);
+            GL46.glDisable(GL46.GL_DEPTH_TEST);
+            GL46.glDisable(GL46.GL_CULL_FACE);
+            GL46.glBindVertexArray(this.imGuiMesh.getVaoId());
+            GL46.glBindBuffer(GL46.GL_ARRAY_BUFFER, this.imGuiMesh.getVerticesVbo());
+            GL46.glBindBuffer(GL46.GL_ELEMENT_ARRAY_BUFFER, this.imGuiMesh.getIndicesVbo());
+            int numLists = drawData.getCmdListsCount();
+            ImVec2 dPos = new ImVec2();
+            ImVec2 fbScale = new ImVec2();
+            drawData.getDisplayPos(dPos);
+            drawData.getFramebufferScale(fbScale);
+            final float clipOffX = dPos.x;
+            final float clipOffY = dPos.y;
+            final float clipScaleX = fbScale.x;
+            final float clipScaleY = fbScale.y;
 
-        final float clipOffX = dPos.x;
-        final float clipOffY = dPos.y;
-        final float clipScaleX = fbScale.x;
-        final float clipScaleY = fbScale.y;
-
-        for (int i = 0; i < numLists; i++) {
-            GL46.glBufferData(GL46.GL_ARRAY_BUFFER, drawData.getCmdListVtxBufferData(i), GL46.GL_STREAM_DRAW);
-            GL46.glBufferData(GL46.GL_ELEMENT_ARRAY_BUFFER, drawData.getCmdListIdxBufferData(i), GL46.GL_STREAM_DRAW);
-
-            for (int j = 0; j < drawData.getCmdListCmdBufferSize(i); j++) {
-                final int elemCount = drawData.getCmdListCmdBufferElemCount(i, j);
-                final int idxBufferOffset = drawData.getCmdListCmdBufferIdxOffset(i, j);
-                final int indices = idxBufferOffset * ImDrawData.sizeOfImDrawIdx();
-
-                int textureId = (int) drawData.getCmdListCmdBufferTextureId(i, j);
-                GL46.glActiveTexture(GL46.GL_TEXTURE0);
-
-                if (textureId > 0) {
-                    GL46.glBindSampler(0, this.sampler);
-                    GL46.glBindTexture(GL46.GL_TEXTURE_2D, textureId);
-                } else {
-                    this.textureSample.bindTexture();
+            for (int i = 0; i < numLists; i++) {
+                GL46.glBufferData(GL46.GL_ARRAY_BUFFER, drawData.getCmdListVtxBufferData(i), GL46.GL_STREAM_DRAW);
+                GL46.glBufferData(GL46.GL_ELEMENT_ARRAY_BUFFER, drawData.getCmdListIdxBufferData(i), GL46.GL_STREAM_DRAW);
+                for (int j = 0; j < drawData.getCmdListCmdBufferSize(i); j++) {
+                    final int elemCount = drawData.getCmdListCmdBufferElemCount(i, j);
+                    final int idxBufferOffset = drawData.getCmdListCmdBufferIdxOffset(i, j);
+                    final int indices = idxBufferOffset * ImDrawData.sizeOfImDrawIdx();
+                    int textureId = (int) drawData.getCmdListCmdBufferTextureId(i, j);
+                    GL46.glActiveTexture(GL46.GL_TEXTURE0);
+                    if (textureId > 0) {
+                        GL46.glBindSampler(0, this.sampler);
+                        GL46.glBindTexture(GL46.GL_TEXTURE_2D, textureId);
+                    } else {
+                        this.textureSample.bindTexture();
+                    }
+                    ImVec4 clipRect = drawData.getCmdListCmdBufferClipRect(i, j);
+                    final float clipMinX = (clipRect.x - clipOffX) * clipScaleX;
+                    final float clipMinY = (clipRect.y - clipOffY) * clipScaleY;
+                    final float clipMaxX = (clipRect.z - clipOffX) * clipScaleX;
+                    final float clipMaxY = (clipRect.w - clipOffY) * clipScaleY;
+                    final int fbHeight = (int) (dSize.y * fbScale.y);
+                    if (clipMaxX <= clipMinX || clipMaxY <= clipMinY) {
+                        continue;
+                    }
+                    GL46.glEnable(GL46.GL_SCISSOR_TEST);
+                    GL46.glScissor((int) clipMinX, (int) (fbHeight - clipMaxY), (int) (clipMaxX - clipMinX), (int) (clipMaxY - clipMinY));
+                    GL46.glDrawElements(GL46.GL_TRIANGLES, elemCount, GL46.GL_UNSIGNED_SHORT, indices);
+                    GL46.glDisable(GL46.GL_SCISSOR_TEST);
                 }
+            }
+            Objects.requireNonNull(oldShader).apply();
+        } finally {
+            GL46.glBindVertexArray(previousVao);
+            GL46.glBindBuffer(GL46.GL_ARRAY_BUFFER, previousArrayBuffer);
+            GL46.glBindBuffer(GL46.GL_ELEMENT_ARRAY_BUFFER, previousElementBuffer);
 
-                ImVec4 clipRect = drawData.getCmdListCmdBufferClipRect(i, j);
-                final float clipMinX = (clipRect.x - clipOffX) * clipScaleX;
-                final float clipMinY = (clipRect.y - clipOffY) * clipScaleY;
-                final float clipMaxX = (clipRect.z - clipOffX) * clipScaleX;
-                final float clipMaxY = (clipRect.w - clipOffY) * clipScaleY;
-                final int fbHeight = (int) (dSize.y * fbScale.y);
+            GL46.glActiveTexture(previousActiveTexture);
+            GL46.glBindTexture(GL46.GL_TEXTURE_2D, previousTexture);
+            GL46.glBindSampler(0, previousSampler);
 
-                if (clipMaxX <= clipMinX || clipMaxY <= clipMinY) {
-                    continue;
-                }
+            if (blendEnabled) {
+                GL46.glEnable(GL46.GL_BLEND);
+            } else {
+                GL46.glDisable(GL46.GL_BLEND);
+            }
 
+            GL46.glBlendFuncSeparate(blendSrcRgb, blendDstRgb, blendSrcAlpha, blendDstAlpha);
+            GL46.glBlendEquationSeparate(blendEquationRgb, blendEquationAlpha);
+
+            if (depthEnabled) {
+                GL46.glEnable(GL46.GL_DEPTH_TEST);
+            } else {
+                GL46.glDisable(GL46.GL_DEPTH_TEST);
+            }
+
+            if (cullEnabled) {
+                GL46.glEnable(GL46.GL_CULL_FACE);
+            } else {
+                GL46.glDisable(GL46.GL_CULL_FACE);
+            }
+
+            if (scissorEnabled) {
                 GL46.glEnable(GL46.GL_SCISSOR_TEST);
-                GL46.glScissor((int) clipMinX, (int) (fbHeight - clipMaxY), (int) (clipMaxX - clipMinX), (int) (clipMaxY - clipMinY));
-                GL46.glDrawElements(GL46.GL_TRIANGLES, elemCount, GL46.GL_UNSIGNED_SHORT, indices);
+            } else {
                 GL46.glDisable(GL46.GL_SCISSOR_TEST);
             }
+
+            GL46.glScissor(previousScissorBox[0], previousScissorBox[1], previousScissorBox[2], previousScissorBox[3]);
         }
-
-        GL46.glEnable(GL46.GL_DEPTH_TEST);
-        GL46.glEnable(GL46.GL_CULL_FACE);
-        GL46.glEnable(GL46.GL_BLEND);
-
-        GL46.glBindSampler(0, 0);
     }
 
     public Supplier<ShaderInstance> getShaderManager() {

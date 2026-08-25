@@ -469,7 +469,7 @@ public abstract class ZPDefaultGunLogicFunctions {
                         if (!(virtualBulletHitResult.damagedEntity() instanceof ArmorStand)) {
                             ZombiePlague3.netServer().sendToDimensionRadius(new ZPBulletBloodFXPacket(
                                     virtualBulletHitResult.hitPoint().x, virtualBulletHitResult.hitPoint().y, virtualBulletHitResult.hitPoint().z,
-                                    -motion.x, -motion.y, -motion.z, virtualBulletHitResult.wasHeadshot()), serverLevel.dimension(), new Vec3(pos), 32.0f);
+                                    -motion.x, -motion.y, -motion.z, virtualBulletHitResult.wasHeadshot()), serverLevel.dimension(), new Vec3(pos), 64.0f);
                         }
                     }
                 }
@@ -505,7 +505,7 @@ public abstract class ZPDefaultGunLogicFunctions {
             }
             Vector3f startPos = new Vector3f(player.position().toVector3f().add(0.0f, player.getEyeHeight(), 0.0f));
             for (int i = 0; i < bullets; i++) {
-                VirtualBullet virtualBullet = new VirtualBullet(player, startPos, ZPDefaultGunLogicFunctions.inaccuracyReduction(player) * item.getGunProperties().getInaccuracy(), item.getGunProperties().getDamage(), bullets > 1 ? 32.0f : 256.0f);
+                VirtualBullet virtualBullet = new VirtualBullet(player, startPos, ZPDefaultGunLogicFunctions.inaccuracyReduction(player) * item.getGunProperties().getInaccuracy(), item.getGunProperties().getDamage(), bullets > 1 ? 64.0f : 256.0f);
                 virtualBullet.simulate();
                 VirtualBullet.VirtualBulletHitResult virtualBulletHitResult = virtualBullet.getVirtualBulletHitResult();
                 if (virtualBulletHitResult != null) {
@@ -520,7 +520,7 @@ public abstract class ZPDefaultGunLogicFunctions {
                             if (!(virtualBulletHitResult.damagedEntity() instanceof ArmorStand)) {
                                 ZombiePlague3.netServer().sendToDimensionRadius(new ZPBulletBloodFXPacket(
                                         virtualBulletHitResult.hitPoint().x, virtualBulletHitResult.hitPoint().y, virtualBulletHitResult.hitPoint().z,
-                                        -motion.x, -motion.y, -motion.z, virtualBulletHitResult.wasHeadshot()), serverLevel.dimension(), new Vec3(pos), 32.0f);
+                                        -motion.x, -motion.y, -motion.z, virtualBulletHitResult.wasHeadshot()), serverLevel.dimension(), new Vec3(pos), 64.0f);
                             }
                         }
                     }

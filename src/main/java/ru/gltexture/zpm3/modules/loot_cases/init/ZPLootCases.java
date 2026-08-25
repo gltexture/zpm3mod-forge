@@ -61,6 +61,7 @@ public class ZPLootCases extends ZPCommonRegistry<ZPDefaultBlockLootCase> implem
             }).end();
             //ZPLootCases.generatedLootCases.put(lootCaseName, syntheticLootCase);
         }
+        ZPSyntheticLootCasesDataGenRegistry.clearRuntime();
         this.stopInstanceCollecting();
     }
 

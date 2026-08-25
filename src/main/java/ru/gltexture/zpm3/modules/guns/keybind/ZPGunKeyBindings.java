@@ -31,7 +31,7 @@ public final class ZPGunKeyBindings extends ZPKeyBindingsManager {
 
     @Override
     public void init() {
-        ZPGunKeyBindings.reloadKey = this.addKeyBinding(new KeyMapping("zpm.key.reload", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_R, "key.categories.zpm"));
-        ZPGunKeyBindings.unloadKey = this.addKeyBinding(new KeyMapping("zpm.key.unloadKey", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_Y, "key.categories.zpm"));
+        ZPGunKeyBindings.reloadKey = this.addKeyBinding(new KeyMapping("key.zpm3.reload", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_R, "key.categories.zpm"));
+        ZPGunKeyBindings.unloadKey = this.addKeyBinding(new KeyMapping("key.zpm3.unloadKey", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_Y, "key.categories.zpm"));
     }
 }

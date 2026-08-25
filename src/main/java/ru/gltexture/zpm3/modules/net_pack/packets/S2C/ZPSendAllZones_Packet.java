@@ -27,10 +27,10 @@ import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3i;
 import ru.gltexture.zpm3.engine.network.ZPNetwork;
-import ru.gltexture.zpm3.engine.zones.ZPZoneFlag;
-import ru.gltexture.zpm3.engine.zones.ZPZoneManager;
-import ru.gltexture.zpm3.engine.zones.ZPZonesRegistry;
-import ru.gltexture.zpm3.engine.zones.vars.ZPZoneIntVar;
+import ru.gltexture.zpm3.modules.commands.zones.ZPZoneFlag;
+import ru.gltexture.zpm3.modules.commands.zones.ZPZoneManager;
+import ru.gltexture.zpm3.modules.commands.zones.ZPZonesRegistry;
+import ru.gltexture.zpm3.modules.commands.zones.vars.ZPZoneIntVar;
 
 import java.util.*;
 

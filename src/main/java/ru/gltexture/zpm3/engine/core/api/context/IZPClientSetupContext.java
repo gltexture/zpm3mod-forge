@@ -28,7 +28,7 @@ import ru.gltexture.zpm3.engine.client.rendering.callbacks.IZPClientCallbacksMan
 import ru.gltexture.zpm3.engine.client.rendering.hooks.IZPRenderHooksManager;
 import ru.gltexture.zpm3.engine.client.rendering.imgui.interfaces.IZPImGuiInterface;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.zones.ZPZoneFlag;
+import ru.gltexture.zpm3.modules.commands.zones.ZPZoneFlag;
 import ru.gltexture.zpm3.modules.armor.events.client.ZPPlayerArmorSoundOnClientEvent;
 import ru.gltexture.zpm3.modules.commands.events.client.ZPRenderSpecialZoneEffectsOnClient;
 import ru.gltexture.zpm3.modules.mob_effects.client.ZPFakeClientEffect;

@@ -22,7 +22,6 @@ package ru.gltexture.zpm3.engine.core.config.builtin;
 
 import ru.gltexture.zpm3.engine.core.config.ZPConfigConstantsClass;
 import ru.gltexture.zpm3.engine.core.config.vars.*;
-import ru.gltexture.zpm3.engine.service.Pair;
 
 public class ZPWorldConfig implements ZPConfigConstantsClass {
 
@@ -66,8 +65,8 @@ public class ZPWorldConfig implements ZPConfigConstantsClass {
     public static final ZPConfig_INT ENTITY_ITEM_LIFESPAN =
             new ZPConfig_INT(16000, 0, Integer.MAX_VALUE);
 
-    @ZPVarDefinition(description = "Enables item pickup via the <key>. Works on both client and server. If disabled on the server, the feature is forcibly disabled on all clients.")
-    public static final ZPConfig_BOOL ALLOW_ITEMS_PICKING_ON_KEY =
+    @ZPVarDefinition(description = "(Server-side) Enables item pickup via the <key>. Works on both client and server. If disabled on the server, the feature is forcibly disabled on all clients.")
+    public static final ZPConfig_BOOL ALLOW_ITEMS_PICKUP_ON_KEY =
             new ZPConfig_BOOL(true);
 
     @ZPVarDefinition(description = "If enabled, server applies extreme darkness shader gamma reduction for all players regardless of client settings.")
@@ -80,7 +79,7 @@ public class ZPWorldConfig implements ZPConfigConstantsClass {
 
     @ZPVarDefinition(description = "Increases cooking time. Affects all vanilla crafting blocks (furnace, campfire, etc.).")
     public static final ZPConfig_FLOAT ZP_COOKING_TIME_MULTIPLIER =
-            new ZPConfig_FLOAT(3.0f);
+            new ZPConfig_FLOAT(4.25f);
 
     @ZPVarDefinition(description = "Duration in ticks before a placed torch light source fades.")
     public static final ZPConfig_INT TORCH_FADING_TIME =

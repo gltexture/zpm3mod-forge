@@ -18,7 +18,7 @@
  *
  */
 
-package ru.gltexture.zpm3.engine.zones;
+package ru.gltexture.zpm3.modules.commands.zones;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -39,7 +39,7 @@ import ru.gltexture.zpm3.engine.core.ZPLogger;
 import ru.gltexture.zpm3.engine.network.handler.ZPNetworkHandlerServer;
 import ru.gltexture.zpm3.engine.exceptions.ZPIOException;
 import ru.gltexture.zpm3.engine.service.Pair;
-import ru.gltexture.zpm3.engine.zones.vars.ZPZoneIntVar;
+import ru.gltexture.zpm3.modules.commands.zones.vars.ZPZoneIntVar;
 
 import java.io.*;
 import java.lang.reflect.Type;

@@ -20,11 +20,19 @@
 
 package ru.gltexture.zpm3.modules.blocks.init.helper;
 
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.helpers.gen.ZPDataGenHelper;
 import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockItemModelExecutors;
@@ -36,7 +44,13 @@ import ru.gltexture.zpm3.engine.service.ZPUtility;
 import ru.gltexture.zpm3.modules.blocks.init.ZPCampfireBlocks;
 import ru.gltexture.zpm3.modules.blocks.instances.blocks.campfire.ZPCampfireBlock;
 
+import java.util.function.ToIntFunction;
+
 public abstract class ZPRegCampfireBlocks {
+    private static ToIntFunction<BlockState> litBlockEmission(int pLightValue) {
+        return (p_50763_) -> p_50763_.getValue(BlockStateProperties.LIT) ? pLightValue : 0;
+    }
+
     public static void init(ZPCampfireBlocks campfireBlocks, @NotNull ZPCommonRegistry.ZPRegSupplier<Block> regSupplier) {
         campfireBlocks.initInstanceCollecting("campfires");
         
@@ -48,9 +62,17 @@ public abstract class ZPRegCampfireBlocks {
                         .strength(2.0F)
                         .sound(SoundType.WOOD)
                         .noOcclusion()
+                        .lightLevel(litBlockEmission(11))
                         .ignitedByLava())
         ).afterCreated((e, utils) -> {
             utils.loot().addSelfDropLootTable(e);
+            utils.loot().addBlockLootTable(e, () -> new LootPool.Builder()
+                    .add(LootItem.lootTableItem(Items.CHARCOAL))
+                    .when(ExplosionCondition.survivesExplosion())
+            );
+            utils.blocks().addTagToBlock(e, BlockTags.CAMPFIRES);
+            utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_AXE);
+            utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
             ZPUtility.sides().onlyClient(() -> {
                 utils.blocks().setBlockItemModelExecutor(e, DefaultBlockModelExecutors.getDefaultCampfire(), DefaultBlockItemModelExecutors.getDefaultItemAs2DTexture("item/blocks/campfire"));
                 utils.blocks().addBlockModelKey_ValueArray(e, ZPDataGenHelper.DEFAULT_CAMPFIRE,

@@ -38,6 +38,7 @@ import ru.gltexture.zpm3.engine.instances.blocks.ZPSlabBlock;
 import ru.gltexture.zpm3.engine.instances.blocks.ZPStairsBlock;
 import ru.gltexture.zpm3.engine.instances.blocks.ZPStoneWallBlock;
 import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
+import ru.gltexture.zpm3.engine.service.Ref;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 import ru.gltexture.zpm3.modules.blocks.init.ZPBlocks;
 
@@ -81,7 +82,7 @@ public abstract class ZPRegColorBlocks {
     };
 
     @SuppressWarnings("all")
-    private static final RegistryObject<ZPBlock>[] coloredStones = new RegistryObject[] {
+    private static final Ref<RegistryObject<ZPBlock>>[] coloredStones = new Ref[] {
         ZPBlocks.stone_white,
         ZPBlocks.stone_black,
         ZPBlocks.stone_blue,
@@ -101,7 +102,7 @@ public abstract class ZPRegColorBlocks {
     };
 
     @SuppressWarnings("all")
-    private static final RegistryObject<ZPStairsBlock>[] coloredStoneStairs = new RegistryObject[] {
+    private static final Ref<RegistryObject<ZPStairsBlock>>[] coloredStoneStairs = new Ref[] {
             ZPBlocks.stone_stairs_white,
             ZPBlocks.stone_stairs_black,
             ZPBlocks.stone_stairs_blue,
@@ -121,7 +122,7 @@ public abstract class ZPRegColorBlocks {
     };
 
     @SuppressWarnings("all")
-    private static final RegistryObject<ZPSlabBlock>[] coloredStoneSlabs = new RegistryObject[] {
+    private static final Ref<RegistryObject<ZPSlabBlock>>[] coloredStoneSlabs = new Ref[] {
             ZPBlocks.stone_slab_white,
             ZPBlocks.stone_slab_black,
             ZPBlocks.stone_slab_blue,
@@ -141,7 +142,7 @@ public abstract class ZPRegColorBlocks {
     };
 
     @SuppressWarnings("all")
-    private static final RegistryObject<ZPStoneWallBlock>[] coloredStoneWall = new RegistryObject[] {
+    private static final Ref<RegistryObject<ZPStoneWallBlock>>[] coloredStoneWall = new Ref[] {
             ZPBlocks.stone_wall_white,
             ZPBlocks.stone_wall_black,
             ZPBlocks.stone_wall_blue,
@@ -163,7 +164,7 @@ public abstract class ZPRegColorBlocks {
     public static void init(@NotNull ZPCommonRegistry.ZPRegSupplier<Block> regSupplier) {
         for (int i = 0; i < ZPRegColorBlocks.colorQueue.length; i++) {
             final int finalI = i;
-            ZPRegColorBlocks.coloredStones[i] = regSupplier.register("stone_" + ZPRegColorBlocks.colorQueue[i], () -> new ZPBlock(BlockBehaviour.Properties.of()
+            ZPRegColorBlocks.coloredStones[i].set(regSupplier.register("stone_" + ZPRegColorBlocks.colorQueue[i], () -> new ZPBlock(BlockBehaviour.Properties.of()
                     .mapColor(MAP_COLORS[finalI]).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(1.8F, 6.0F).instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.STONE))
             ).afterCreated((e, utils) -> {
                 utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
@@ -173,33 +174,33 @@ public abstract class ZPRegColorBlocks {
                 ZPUtility.sides().onlyClient(() -> {
                     utils.blocks().addBlockModelSimpleOneTexture(e, ZPDataGenHelper.DEFAULT_BLOCK_CUBE, ZPGenTextureData.ALL_KEY, ZPDataGenHelper.COMMON_COLORED_BLOCKS_DIRECTORY);
                 });
-            }).end();
+            }).end());
 
-            ZPRegColorBlocks.coloredStoneSlabs[i] = regSupplier.register("stone_slab_" + ZPRegColorBlocks.colorQueue[i], () -> new ZPSlabBlock(BlockBehaviour.Properties.copy(ZPRegColorBlocks.coloredStones[finalI].get()))
+            ZPRegColorBlocks.coloredStoneSlabs[i].set(regSupplier.register("stone_slab_" + ZPRegColorBlocks.colorQueue[i], () -> new ZPSlabBlock(BlockBehaviour.Properties.copy(ZPRegColorBlocks.coloredStones[finalI].object().get()))
             ).afterCreated((e, utils) -> {
                 utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
                 utils.loot().addBlockLootTable(e, () -> new LootPool.Builder()
                         .add(LootItem.lootTableItem(Blocks.COBBLESTONE_SLAB))
                 );
                 ZPUtility.sides().onlyClient(() -> {
-                    utils.blocks().addBlockModelWithCopiedTexture(e, ZPDataGenHelper.NO_REFERENCE, ZPRegColorBlocks.coloredStones[finalI]);
+                    utils.blocks().addBlockModelWithCopiedTexture(e, ZPDataGenHelper.NO_REFERENCE, ZPRegColorBlocks.coloredStones[finalI].object());
                 });
-            }).end();
+            }).end());
 
 
-            ZPRegColorBlocks.coloredStoneStairs[i] = regSupplier.register("stone_stairs_" + ZPRegColorBlocks.colorQueue[i], () -> new ZPStairsBlock(() -> ZPRegColorBlocks.coloredStones[finalI].get().defaultBlockState(), BlockBehaviour.Properties.copy(ZPRegColorBlocks.coloredStones[finalI].get()))
+            ZPRegColorBlocks.coloredStoneStairs[i].set(regSupplier.register("stone_stairs_" + ZPRegColorBlocks.colorQueue[i], () -> new ZPStairsBlock(() -> ZPRegColorBlocks.coloredStones[finalI].object().get().defaultBlockState(), BlockBehaviour.Properties.copy(ZPRegColorBlocks.coloredStones[finalI].object().get()))
             ).afterCreated((e, utils) -> {
                 utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
                 utils.loot().addBlockLootTable(e, () -> new LootPool.Builder()
                         .add(LootItem.lootTableItem(Blocks.COBBLESTONE_STAIRS))
                 );
                 ZPUtility.sides().onlyClient(() -> {
-                    utils.blocks().addBlockModelWithCopiedTexture(e, ZPDataGenHelper.NO_REFERENCE, ZPRegColorBlocks.coloredStones[finalI]);
+                    utils.blocks().addBlockModelWithCopiedTexture(e, ZPDataGenHelper.NO_REFERENCE, ZPRegColorBlocks.coloredStones[finalI].object());
                 });
-            }).end();
+            }).end());
 
 
-            ZPRegColorBlocks.coloredStoneWall[i] = regSupplier.register("stone_wall_" + ZPRegColorBlocks.colorQueue[i], () -> new ZPStoneWallBlock(BlockBehaviour.Properties.copy(ZPRegColorBlocks.coloredStones[finalI].get()).forceSolidOn())
+            ZPRegColorBlocks.coloredStoneWall[i].set(regSupplier.register("stone_wall_" + ZPRegColorBlocks.colorQueue[i], () -> new ZPStoneWallBlock(BlockBehaviour.Properties.copy(ZPRegColorBlocks.coloredStones[finalI].object().get()).forceSolidOn())
             ).afterCreated((e, utils) -> {
                 utils.blocks().addTagToBlock(e, BlockTags.MINEABLE_WITH_PICKAXE);
                 utils.blocks().addTagToBlock(e, BlockTags.WALLS);
@@ -207,9 +208,9 @@ public abstract class ZPRegColorBlocks {
                         .add(LootItem.lootTableItem(Blocks.COBBLESTONE_WALL))
                 );
                 ZPUtility.sides().onlyClient(() -> {
-                    utils.blocks().addBlockModelWithCopiedTexture(e, ZPDataGenHelper.NO_REFERENCE, ZPRegColorBlocks.coloredStones[finalI]);
+                    utils.blocks().addBlockModelWithCopiedTexture(e, ZPDataGenHelper.NO_REFERENCE, ZPRegColorBlocks.coloredStones[finalI].object());
                 });
-            }).end();
+            }).end());
         }
     }
 

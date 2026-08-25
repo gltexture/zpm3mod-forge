@@ -32,11 +32,9 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.network.handler.ZPNetworkHandlerServer;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
-import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.modules.net_pack.ZPNetPackModule;
 import ru.gltexture.zpm3.modules.net_pack.data.vars.ZPNetDataBoolean;
 
@@ -44,8 +42,8 @@ public class ZPPlayerEntityItemEvent implements ZPForgeEventHandlerClass {
     @SubscribeEvent
     public static void exec(@NotNull EntityItemPickupEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
-            final boolean pickUpOnKey = ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY.getVar() && ZombiePlague3.netServer().getNetStaticDataSyncer().getPack(player).flatMap(pack -> pack.getVar(ZPNetPackModule.CtoS__PICK_UP_ON_KEY)).orElse(new ZPNetDataBoolean(ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY.getVar())).getValue();
-            if (ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY.getVar() && pickUpOnKey) {
+            final boolean pickUpOnKey = ZPWorldConfig.ALLOW_ITEMS_PICKUP_ON_KEY.getVar() && ZombiePlague3.netServer().getNetStaticDataSyncer().getPack(player).flatMap(pack -> pack.getVar(ZPNetPackModule.CtoS__PICK_UP_ON_KEY)).orElse(new ZPNetDataBoolean(ZPWorldConfig.ALLOW_ITEMS_PICKUP_ON_KEY.getVar())).getValue();
+            if (ZPWorldConfig.ALLOW_ITEMS_PICKUP_ON_KEY.getVar() && pickUpOnKey) {
                 event.setCanceled(true);
             }
         }
@@ -55,11 +53,14 @@ public class ZPPlayerEntityItemEvent implements ZPForgeEventHandlerClass {
     public static void onPlayerDropItem(ItemTossEvent event) {
         Player player = event.getPlayer();
         ItemEntity droppedItem = event.getEntity();
-        droppedItem.setPickUpDelay(10);
-        float dot = (player.getLookAngle().toVector3f().dot(new Vector3f(0.0f, 1.0f, 0.0f)) + 1.0f) / 2.0f;
-        dot = Math.max(dot, 0.25f);
-        Vec3 vecMovement = new Vec3(new Vector3f(player.getLookAngle().toVector3f()).mul(0.75f * dot));
-        droppedItem.setDeltaMovement(vecMovement);
+        if (player instanceof ServerPlayer serverPlayer) {
+            final boolean pickUpOnKey = ZPWorldConfig.ALLOW_ITEMS_PICKUP_ON_KEY.getVar() && ZombiePlague3.netServer().getNetStaticDataSyncer().getPack(serverPlayer).flatMap(pack -> pack.getVar(ZPNetPackModule.CtoS__PICK_UP_ON_KEY)).orElse(new ZPNetDataBoolean(ZPWorldConfig.ALLOW_ITEMS_PICKUP_ON_KEY.getVar())).getValue();
+            droppedItem.setPickUpDelay(pickUpOnKey ? 10 : 20);
+            float dot = (player.getLookAngle().toVector3f().dot(new Vector3f(0.0f, 1.0f, 0.0f)) + 1.0f) / 2.0f;
+            dot = Math.max(dot, 0.25f);
+            Vec3 vecMovement = new Vec3(new Vector3f(player.getLookAngle().toVector3f()).mul(0.75f * dot));
+            droppedItem.setDeltaMovement(vecMovement);
+        }
     }
 
     @Override

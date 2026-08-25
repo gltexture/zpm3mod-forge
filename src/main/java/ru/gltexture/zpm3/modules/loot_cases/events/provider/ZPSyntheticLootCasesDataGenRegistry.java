@@ -32,6 +32,11 @@ public abstract class ZPSyntheticLootCasesDataGenRegistry {
     private static final List<ZPSyntheticLootCaseDescription> DATA_TO_GEN_CASES = new ArrayList<>();
     private static final Map<ZPLootTable, List<ZPSyntheticLootCaseDescription>> DATA_TO_GEN_TABLE_CASES = new LinkedHashMap<>();
     private static final List<ZPSyntheticLootCaseDescription> DATA_TO_GEN_RUNTIME = new ArrayList<>();
+    private static final Map<String, List<ZPLootTable.TableExtension>> DATA_TO_GEN_TABLE_EXTENSIONS = new LinkedHashMap<>();
+
+    public static void registerSyntheticLootTableExtension(@NotNull String lootTableId, @NotNull List<ZPLootTable.TableExtension> extendByList) {
+        ZPSyntheticLootCasesDataGenRegistry.DATA_TO_GEN_TABLE_EXTENSIONS.put(lootTableId, extendByList);
+    }
 
     public static void registerSyntheticLootTable(@NotNull ZPLootTable lootTable) {
         ZPSyntheticLootCasesDataGenRegistry.DATA_TO_GEN_TABLES.add(lootTable);
@@ -65,10 +70,15 @@ public abstract class ZPSyntheticLootCasesDataGenRegistry {
         return Collections.unmodifiableList(ZPSyntheticLootCasesDataGenRegistry.DATA_TO_GEN_RUNTIME);
     }
 
+    public static @NotNull Map<String, List<ZPLootTable.TableExtension>> getDataToGenGather_LootCaseExtensions() {
+        return Collections.unmodifiableMap(ZPSyntheticLootCasesDataGenRegistry.DATA_TO_GEN_TABLE_EXTENSIONS);
+    }
+
     public static void clearGather() {
         ZPSyntheticLootCasesDataGenRegistry.DATA_TO_GEN_TABLES.clear();
         ZPSyntheticLootCasesDataGenRegistry.DATA_TO_GEN_CASES.clear();
         ZPSyntheticLootCasesDataGenRegistry.DATA_TO_GEN_TABLE_CASES.clear();
+        ZPSyntheticLootCasesDataGenRegistry.DATA_TO_GEN_TABLE_EXTENSIONS.clear();
     }
 
     public static void clearRuntime() {

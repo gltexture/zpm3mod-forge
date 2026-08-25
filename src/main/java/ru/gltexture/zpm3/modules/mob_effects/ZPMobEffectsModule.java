@@ -33,6 +33,7 @@ import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePostInitContext;
 import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePreInitContext;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 import ru.gltexture.zpm3.modules.entity.util.ZPEntityStat;
+import ru.gltexture.zpm3.modules.entity.util.ZPEntityUtil;
 import ru.gltexture.zpm3.modules.entity.util.ZPLivingStat;
 import ru.gltexture.zpm3.modules.mob_effects.client.ZPFakeClientEffect;
 import ru.gltexture.zpm3.modules.mob_effects.client.ZPLocalPlayerFakeEffectsManager;

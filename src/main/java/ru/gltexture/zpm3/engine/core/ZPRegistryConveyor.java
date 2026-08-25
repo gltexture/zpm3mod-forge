@@ -40,7 +40,7 @@ public final class ZPRegistryConveyor {
     }
 
     void launch(@NotNull Collection<Class<? extends ZPCommonRegistry<?>>> registryClasses) {
-        List<ZPCommonRegistry<?>> registries = new ArrayList<>();
+        final List<ZPCommonRegistry<?>> registries = new ArrayList<>();
         try {
             for (Class<? extends ZPCommonRegistry<?>> zpRegistryProcessorClass : registryClasses) {
                 ZPCommonRegistry<?> zpRegistry = zpRegistryProcessorClass.getConstructor().newInstance();

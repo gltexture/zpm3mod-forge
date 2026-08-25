@@ -20,5 +20,9 @@
 
 package ru.gltexture.zpm3.engine.core.api.context;
 
+import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
+
 public interface IZPPostInitContext {
+    void setItemDistanceBonus(@NotNull ResourceLocation itemResLoc, float distanceBonus);
 }

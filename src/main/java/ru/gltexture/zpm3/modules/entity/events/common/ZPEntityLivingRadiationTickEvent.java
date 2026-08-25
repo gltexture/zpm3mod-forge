@@ -66,12 +66,6 @@ public class ZPEntityLivingRadiationTickEvent implements ZPForgeEventHandlerClas
                     }
                 }
             }
-            ZPEntityNBT playerNBT = new ZPEntityNBT(entity);
-            ZPTagID.ENTITY_TAGS_TO_DECREMENT_EACH_TICK.forEach(e -> {
-                if (playerNBT.has(e) && playerNBT.getTagInt(e) > 0) {
-                    playerNBT.decrementInt(null, e);
-                }
-            });
         }
     }
 

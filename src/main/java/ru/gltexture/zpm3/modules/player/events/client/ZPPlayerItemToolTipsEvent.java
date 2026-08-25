@@ -27,11 +27,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.gltexture.zpm3.modules.guns.init.helper.ZPRegGuns;
 import ru.gltexture.zpm3.modules.melee_throwables_tools.misc.ZPDefaultItemsHandReach;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
+
+import java.util.List;
 
 public class ZPPlayerItemToolTipsEvent implements ZPForgeEventHandlerClass {
     public static @Nullable ItemEntity entityToPickUp = null;
@@ -52,10 +56,16 @@ public class ZPPlayerItemToolTipsEvent implements ZPForgeEventHandlerClass {
     @SubscribeEvent
     public static void toolTip(ItemTooltipEvent event) {
         ItemStack stack = event.getItemStack();
-
         float bonus = ZPDefaultItemsHandReach.get(stack.getItem());
-        if (bonus != 0.0f) {
-            event.getToolTip().add(Component.translatable("tooltip.zpm3.weapon.hand_bonus", bonus).withStyle(bonus > 0.0f ? ChatFormatting.BLUE : ChatFormatting.RED));
+        final List<Component> tooltip = event.getToolTip();
+        if (ZPRegGuns.gunTrophies.contains(ForgeRegistries.ITEMS.getKey(stack.getItem()))) {
+            Component component = Component.translatable("tooltip.zpm3.weapon.trophy").withStyle(ChatFormatting.LIGHT_PURPLE);
+            tooltip.add(1, component);
+        }
+        if (bonus != 0.0F) {
+            final String s = (bonus > 0.0F ? "+" : "") + bonus;
+            final Component component = Component.translatable("tooltip.zpm3.weapon.hand_bonus", (s)).withStyle(bonus > 0.0F ? ChatFormatting.BLUE : ChatFormatting.RED);
+            tooltip.add(3, component);
         }
     }
 }

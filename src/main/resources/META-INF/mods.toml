@@ -103,3 +103,6 @@ config = "zpm3.net_pack.mixins.json"
 
 [[mixins]]
 config = "zpm3.ui.mixins.json"
+
+[[mixins]]
+config = "zpm3.oculus_compat.mixins.json"

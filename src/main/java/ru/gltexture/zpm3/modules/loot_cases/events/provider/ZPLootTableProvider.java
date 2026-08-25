@@ -23,14 +23,19 @@ package ru.gltexture.zpm3.modules.loot_cases.events.provider;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import org.jetbrains.annotations.NotNull;
+import org.spongepowered.asm.mixin.injection.struct.InjectorGroupInfo;
 import ru.gltexture.zpm3.modules.loot_cases.loot_tables.ZPLootTable;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
+import ru.gltexture.zpm3.modules.loot_cases.loot_tables.nbt.values.ZPLootNbtCompoundTag;
+import ru.gltexture.zpm3.modules.loot_cases.loot_tables.nbt.values.ZPLootNbtListTag;
 import ru.gltexture.zpm3.modules.loot_cases.loot_tables.synthetic.ZPSyntheticLootCaseDescription;
+import ru.gltexture.zpm3.modules.loot_cases.reload.ZPLootTableExtensionsReloadListener;
+import ru.gltexture.zpm3.modules.loot_cases.reload.gson.ZPLootNBTCompTagSerializer;
+import ru.gltexture.zpm3.modules.loot_cases.reload.gson.ZPLootNBTListCompTagSerializer;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -41,6 +46,7 @@ import java.util.concurrent.CompletableFuture;
 public class ZPLootTableProvider implements DataProvider {
     public static final String indexFile = "index.json";
     public static final String lootTables = "zp_loot_tables";
+    public static final String lootTablesExtensions = "zp_loot_tables_extensions";
     public static final String lootCases = "zp_loot_cases";
 
     private final PackOutput output;
@@ -48,13 +54,17 @@ public class ZPLootTableProvider implements DataProvider {
 
     public ZPLootTableProvider(PackOutput output) {
         this.output = output;
-        this.gson = new GsonBuilder().setPrettyPrinting().create();
+        this.gson = new GsonBuilder().setPrettyPrinting()
+                .registerTypeAdapter(ZPLootNbtCompoundTag.class, new ZPLootNBTCompTagSerializer())
+                .registerTypeAdapter(ZPLootNbtListTag.class, new ZPLootNBTListCompTagSerializer())
+                .create();
     }
 
     @Override
     public @NotNull CompletableFuture<?> run(@NotNull CachedOutput cache) {
-        final Path tablesFolder = this.output.getOutputFolder(PackOutput.Target.DATA_PACK).resolve(ZombiePlague3.MOD_ID()).resolve("zp_loot_tables");
-        final Path casesFolder = this.output.getOutputFolder(PackOutput.Target.DATA_PACK).resolve(ZombiePlague3.MOD_ID()).resolve("zp_loot_cases");
+        final Path tablesFolder = this.output.getOutputFolder(PackOutput.Target.DATA_PACK).resolve(ZombiePlague3.MOD_ID()).resolve(ZPLootTableProvider.lootTables);
+        final Path casesFolder = this.output.getOutputFolder(PackOutput.Target.DATA_PACK).resolve(ZombiePlague3.MOD_ID()).resolve(ZPLootTableProvider.lootCases);
+        final Path lootExtensionsFolder = this.output.getOutputFolder(PackOutput.Target.DATA_PACK).resolve(ZombiePlague3.MOD_ID()).resolve(ZPLootTableProvider.lootTablesExtensions);
         final List<CompletableFuture<?>> futures = new ArrayList<>();
 
         for (ZPLootTable lootTable : ZPSyntheticLootCasesDataGenRegistry.getDataToGenTables()) {
@@ -72,6 +82,12 @@ public class ZPLootTableProvider implements DataProvider {
             final JsonElement json = this.gson.toJsonTree(lootCase);
             futures.add(DataProvider.saveStable(cache, json, file));
         }
+
+        ZPSyntheticLootCasesDataGenRegistry.getDataToGenGather_LootCaseExtensions().forEach((k, v) -> {
+            final Path file = lootExtensionsFolder.resolve(k.replaceAll(":", "_") + ".json");
+            final JsonElement json = this.gson.toJsonTree(new ZPLootTableExtensionsReloadListener.ZPLootTableExtensionData(k, v));
+            futures.add(DataProvider.saveStable(cache, json, file));
+        });
 
         final Path indexFile = casesFolder.resolve("index.json");
         final JsonElement jsonIndex = this.gson.toJsonTree(caseIds);

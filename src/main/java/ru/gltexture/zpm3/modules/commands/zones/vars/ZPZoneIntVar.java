@@ -18,7 +18,7 @@
  *
  */
 
-package ru.gltexture.zpm3.engine.zones.vars;
+package ru.gltexture.zpm3.modules.commands.zones.vars;
 
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;

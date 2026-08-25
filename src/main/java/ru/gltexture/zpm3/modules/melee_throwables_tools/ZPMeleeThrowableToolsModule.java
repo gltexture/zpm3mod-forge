@@ -130,6 +130,16 @@ public class ZPMeleeThrowableToolsModule extends ZPModule {
             }));
 
             recipeToAdd.add((writer -> {
+                ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ZPMeleeThrowableToolsItems.metal_cutters.get())
+                        .pattern(" I ").pattern("I I").pattern("C C")
+                        .define('I', Items.IRON_INGOT)
+                        .define('C', Items.IRON_NUGGET)
+                        .unlockedBy("has_rf", IZPRecipeSpec.has(Items.IRON_INGOT))
+                        .unlockedBy("has_rf2", IZPRecipeSpec.has(Items.IRON_NUGGET))
+                        .save(writer, ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "metal_cutters"));
+            }));
+
+            recipeToAdd.add((writer -> {
                 ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ZPMeleeThrowableToolsItems.matches.get())
                         .pattern("CS").pattern("PP")
                         .define('C', Items.COAL)

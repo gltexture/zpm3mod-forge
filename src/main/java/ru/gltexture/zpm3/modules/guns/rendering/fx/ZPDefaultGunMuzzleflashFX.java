@@ -21,6 +21,7 @@
 package ru.gltexture.zpm3.modules.guns.rendering.fx;
 
 import com.mojang.blaze3d.platform.Window;
+import com.mojang.blaze3d.shaders.Uniform;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.GraphicsStatus;
@@ -39,6 +40,7 @@ import org.joml.Vector3f;
 import org.lwjgl.opengl.GL46;
 
 import ru.gltexture.zpm3.engine.client.rendering.callbacks.ZPClientCallbacks;
+import ru.gltexture.zpm3.engine.core.ZPLogger;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPClientConfig;
 import ru.gltexture.zpm3.modules.debug.imgui.ZPImGuiDebugInterface;
 import ru.gltexture.zpm3.modules.guns.mixins.ext.IZPPlayerClientDataExt;
@@ -199,6 +201,8 @@ public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderH
         boolean depthEnabled = GL46.glIsEnabled(GL46.GL_DEPTH_TEST);
         GL46.glEnable(GL46.GL_BLEND);
         GL46.glEnable(GL46.GL_DEPTH_TEST);
+        Minecraft minecraft = Minecraft.getInstance();
+
         this.renderMuzzleFlash1Person(this.muzzleflashScissor1Person[0], false);
         this.renderMuzzleFlash1Person(this.muzzleflashScissor1Person[1], true);
         if (!blendEnabled) {
@@ -285,15 +289,15 @@ public class ZPDefaultGunMuzzleflashFX implements IZPGunMuzzleflashFX, ZPRenderH
     }
 
     public static boolean renderMuzzleflash1Person() {
-        return ZPDefaultGunMuzzleflashFX.minQuality() >= 2 && ZPClientConfig.RENDER_MUZZLE_FLASHES.getVar();
+        return ZPClientConfig.RENDER_MUZZLE_FLASHES.getVar();
     }
 
     public static boolean renderMuzzleflash3Person() {
-        return ZPDefaultGunMuzzleflashFX.minQuality() >= 2 && ZPClientConfig.RENDER_MUZZLE_FLASHES.getVar();
+        return ZPClientConfig.RENDER_MUZZLE_FLASHES.getVar();
     }
 
     public static boolean useFancyRendering1person() {
-        return ZPDefaultGunMuzzleflashFX.minQuality() == 3 && ZPDefaultGunMuzzleflashFX.muzzleflashFBO != null && !ZPDefaultGunMuzzleflashFX.muzzleflashFBO.getTexturePrograms().isEmpty();
+        return ZPDefaultGunMuzzleflashFX.minQuality() > 1 && ZPDefaultGunMuzzleflashFX.muzzleflashFBO != null && !ZPDefaultGunMuzzleflashFX.muzzleflashFBO.getTexturePrograms().isEmpty();
     }
 
     public static boolean useFancyRendering3person() {

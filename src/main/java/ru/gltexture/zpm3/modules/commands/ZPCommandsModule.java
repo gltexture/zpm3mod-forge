@@ -39,11 +39,12 @@ import ru.gltexture.zpm3.engine.core.api.modules.context.IModuleInitContext;
 import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePostInitContext;
 import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePreInitContext;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
-import ru.gltexture.zpm3.engine.zones.ZPDefaultZones;
-import ru.gltexture.zpm3.engine.zones.vars.ZPZoneIntVar;
+import ru.gltexture.zpm3.modules.commands.events.common.ZPZoneProtectionEvents;
+import ru.gltexture.zpm3.modules.commands.zones.ZPDefaultZones;
+import ru.gltexture.zpm3.modules.commands.zones.vars.ZPZoneIntVar;
 import ru.gltexture.zpm3.modules.commands.events.client.ZPRenderSpecialZoneEffectsOnClient;
-import ru.gltexture.zpm3.engine.zones.ZPZoneFlag;
-import ru.gltexture.zpm3.engine.zones.ZPZoneManager;
+import ru.gltexture.zpm3.modules.commands.zones.ZPZoneFlag;
+import ru.gltexture.zpm3.modules.commands.zones.ZPZoneManager;
 import ru.gltexture.zpm3.engine.core.ZPSide;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.api.modules.ZPModule;
@@ -52,7 +53,7 @@ import ru.gltexture.zpm3.engine.events.ZPForgeEventHandlerClass;
 import ru.gltexture.zpm3.modules.commands.events.client.ZPCreativeUtilityMenuEvent;
 import ru.gltexture.zpm3.modules.commands.events.client.ZPRenderZones;
 import ru.gltexture.zpm3.modules.commands.imgui.ZPImGuiCreativeUtilityUI;
-import ru.gltexture.zpm3.engine.zones.ZPZonesRegistry;
+import ru.gltexture.zpm3.modules.commands.zones.ZPZonesRegistry;
 import ru.gltexture.zpm3.modules.net_pack.data.data_ent.ZPNetEntDataSyncer;
 
 import java.util.*;
@@ -105,6 +106,7 @@ public class ZPCommandsModule extends ZPModule {
     @Override
     public void initialize(@NotNull IModuleInitContext context) {
         context.registerForgeEventHandlerClass(ZPCommandsEvent.class);
+        context.registerForgeEventHandlerClass(ZPZoneProtectionEvents.class);
         ZPUtility.sides().onlyClient(() -> {
             if (ZombiePlague3.getClientManager().isImGuiValid()) {
                 context.registerForgeEventHandlerClass(ZPRenderZones.class);
@@ -453,7 +455,7 @@ public class ZPCommandsModule extends ZPModule {
                                                                 }
                                                                 final ZPZoneIntVar finalVar = new ZPZoneIntVar(varId, value, var.getMin(), var.getMax());
                                                                 if (!ZPZoneManager.INSTANCE.setZoneIntVariable(level, zoneId, finalVar)) {
-                                                                    ctx.getSource().sendFailure(Component.literal("Failed to set var."));
+                                                                    ctx.getSource().sendFailure(Component.literal("Failed to set get."));
                                                                     return 0;
                                                                 }
                                                                 ctx.getSource().sendSuccess(() -> Component.literal("Variable " + varId + " updated"), false);

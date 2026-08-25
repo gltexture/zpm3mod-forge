@@ -48,6 +48,7 @@ import java.util.*;
 public abstract class ZPDataGenHelper {
     public static final String DEFAULT_RENDER_TYPE = "solid";
     public static final String CUTOUT_RENDER_TYPE = "cutout";
+    public static final String CUTOUT_MIPPED_RENDER_TYPE = "cutout_mipped";
     public static final String TRANSLUCENT_RENDER_TYPE = "translucent";
 
     public static final MinecraftModelParentReference DEFAULT_BLOCK_AIR = new MinecraftModelParentReference("block/air");
@@ -67,6 +68,7 @@ public abstract class ZPDataGenHelper {
     public static final MinecraftModelParentReference DEFAULT_CAMPFIRE = new MinecraftModelParentReference("block/template_campfire",
             Map.of("off", "block/campfire_off"));
 
+    public static final MinecraftModelParentReference DEFAULT_CRAFTING_TABLE = new MinecraftModelParentReference("block/crafting_table");
     public static final MinecraftModelParentReference DEFAULT_TORCH = new MinecraftModelParentReference("block/template_torch");
     public static final MinecraftModelParentReference DEFAULT_TORCH_WALL = new MinecraftModelParentReference("block/template_torch_wall");
 
@@ -84,6 +86,7 @@ public abstract class ZPDataGenHelper {
     public static final MinecraftModelParentReference DEFAULT_SHOVEL = new MinecraftModelParentReference("item/diamond_shovel");
     public static final MinecraftModelParentReference DEFAULT_HOE = new MinecraftModelParentReference("item/diamond_hoe");
 
+    public static final ZPPath WORKSTATIONS_BLOCKS_DIRECTORY = new ZPPath("workstations");
     public static final ZPPath COMMON_BLOCKS_DIRECTORY = new ZPPath("common");
     public static final ZPPath COMMON_COLORED_BLOCKS_DIRECTORY = new ZPPath("common_color");
     public static final ZPPath TORCH_BLOCKS_DIRECTORY = new ZPPath("torch");

@@ -35,7 +35,6 @@ import ru.gltexture.zpm3.engine.client.rendering.imgui.renderer.ZPImGuiInterface
 import ru.gltexture.zpm3.engine.client.rendering.postfx.ZPPostFXChain;
 import ru.gltexture.zpm3.engine.core.ZPLogger;
 import ru.gltexture.zpm3.engine.core.ZP_EventsManager;
-import ru.gltexture.zpm3.engine.core.api.events.client.ZPEventBus_ClientInput;
 import ru.gltexture.zpm3.engine.core.api.events.client.ZPEventBus_ClientResources;
 import ru.gltexture.zpm3.modules.armor.events.client.ZPPlayerArmorSoundOnClientEvent;
 
@@ -51,10 +50,11 @@ public class ZPClientManager implements IZPClientManager, IZPClientManager.Resou
     public ZPClientManager() {
         this.clientCallbacksManager = new ZPClientCallbacksManager();
         this.postFXChain = new ZPPostFXChain();
-        this.checkImGui();
-
         {
             this.callbackItSelf();
+        }
+        {
+            this.checkAndSetImGui();
         }
     }
 
@@ -72,11 +72,11 @@ public class ZPClientManager implements IZPClientManager, IZPClientManager.Resou
         this.registerResourceReloadListener(this);
     }
 
-    private void checkImGui() {
+    private void checkAndSetImGui() {
         try {
             Class.forName("imgui.ImGui", false, ZPClientManager.class.getClassLoader());
             this.imGuiManager = new ZPImGuiInterfacesManager();
-            this.imGuiRenderer = new ZPImGuiInterfacesRenderer(this.imGuiManager);
+            this.imGuiRenderer = new ZPImGuiInterfacesRenderer(this.clientCallbacksManager, this.imGuiManager);
             ZPLogger.info("IMGUI Ready.");
         } catch (ClassNotFoundException e) {
             ZPLogger.error("Couldn't find IMGUI library in your client! IMGUI Disabled.");

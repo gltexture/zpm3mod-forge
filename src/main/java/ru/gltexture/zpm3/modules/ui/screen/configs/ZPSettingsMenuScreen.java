@@ -28,7 +28,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPClientConfig;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
+import ru.gltexture.zpm3.modules.net_pack.ZPNetPackModule;
+import ru.gltexture.zpm3.modules.net_pack.data.vars.ZPNetDataBoolean;
 import ru.gltexture.zpm3.modules.ui.screen.ZPScreen;
 
 import java.util.Objects;
@@ -50,7 +54,21 @@ public class ZPSettingsMenuScreen extends ZPScreen {
         this.addRenderableWidget(
                 Button.builder(
                         Component.translatable("ui.zpm3.modSettings")
-                                .withStyle(style -> style.withColor(0xf8a3ff37)), button -> Objects.requireNonNull(this.minecraft).setScreen(new ZPClientConfigOptionsScreen(ZPClientConfig.class, this))
+                                .withStyle(style -> style.withColor(0xf8a3ff37)), button -> Objects.requireNonNull(this.minecraft).setScreen(
+                                        new ZPClientConfigOptionsScreen(this,
+                                                new ZPClientConfigOptionsScreen.ConfigVarUIWithEditCallback(Objects.requireNonNull(ZombiePlague3.getZpConfigManager().configVarWrappedObject(ZPClientConfig.RENDER_MUZZLE_FLASHES)), null),
+                                                new ZPClientConfigOptionsScreen.ConfigVarUIWithEditCallback(Objects.requireNonNull(ZombiePlague3.getZpConfigManager().configVarWrappedObject(ZPClientConfig.ARMOR_LOOPED_SOUNDS)), null),
+                                                new ZPClientConfigOptionsScreen.ConfigVarUIWithEditCallback(Objects.requireNonNull(ZombiePlague3.getZpConfigManager().configVarWrappedObject(ZPClientConfig.FANCY_ITEM_ENTITIES)), null),
+                                                new ZPClientConfigOptionsScreen.ConfigVarUIWithEditCallback(Objects.requireNonNull(ZombiePlague3.getZpConfigManager().configVarWrappedObject(ZPClientConfig.FIRST_PERSON_RENDER_SCALE_TYPE)), null),
+                                                new ZPClientConfigOptionsScreen.ConfigVarUIWithEditCallback(Objects.requireNonNull(ZombiePlague3.getZpConfigManager().configVarWrappedObject(ZPClientConfig.FIRST_PERSON_RENDER_SPACE_SCALE_BY_FOV)), null),
+                                                new ZPClientConfigOptionsScreen.ConfigVarUIWithEditCallback(Objects.requireNonNull(ZombiePlague3.getZpConfigManager().configVarWrappedObject(ZPClientConfig.RENDER_ARMOR_LAYERS_ON_HANDS)), null),
+                                                new ZPClientConfigOptionsScreen.ConfigVarUIWithEditCallback(Objects.requireNonNull(ZombiePlague3.getZpConfigManager().configVarWrappedObject(ZPClientConfig.RENDER_BULLET_TRACERS)), null),
+                                                new ZPClientConfigOptionsScreen.ConfigVarUIWithEditCallback(Objects.requireNonNull(ZombiePlague3.getZpConfigManager().configVarWrappedObject(ZPClientConfig.SHOW_VERSION_INFO_ON_SCREEN)), null),
+                                                new ZPClientConfigOptionsScreen.ConfigVarUIWithEditCallback(Objects.requireNonNull(ZombiePlague3.getZpConfigManager().configVarWrappedObject(ZPClientConfig.PICK_UP_ON_KEY)), (v) -> {
+                                                    ZombiePlague3.netClient().getNetStaticDataSyncer().setValue(ZPNetPackModule.CtoS__PICK_UP_ON_KEY, new ZPNetDataBoolean((Boolean) v.getVar()));
+                                                })
+                                                )
+                        )
                 ).bounds(this.width / 2 - 50, this.height / 2, 100, 20).build()
         );
 

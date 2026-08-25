@@ -109,12 +109,12 @@ public abstract class ZPEffectRenderingInventoryScreenMixin {
                 }
                 if (pIsSmall) {
                     if (!(mobeffectinstance instanceof ZPFakeClientEffectInstance clientEffect)) {
-                        Component component = this.getEffectName(mobeffectinstance);
+                        final Component component = this.getEffectName(mobeffectinstance);
                         pGuiGraphics.drawString(effectRenderingInventoryScreen.getMinecraft().font, component, pRenderX + 10 + 18, i + 6, 16777215);
-                        Component component1 = MobEffectUtil.formatDuration(mobeffectinstance, 1.0F);
+                        final Component component1 = MobEffectUtil.formatDuration(mobeffectinstance, 1.0F);
                         pGuiGraphics.drawString(effectRenderingInventoryScreen.getMinecraft().font, component1, pRenderX + 10 + 18, i + 6 + 10, 0xc8c8ff);
                     } else {
-                        Component component = this.getEffectName(mobeffectinstance);
+                        final Component component = this.getEffectName(mobeffectinstance);
                         pGuiGraphics.drawString(effectRenderingInventoryScreen.getMinecraft().font, component, pRenderX + 10 + 18, i + 6, clientEffect.getEffect().getColor());
                     }
                 }

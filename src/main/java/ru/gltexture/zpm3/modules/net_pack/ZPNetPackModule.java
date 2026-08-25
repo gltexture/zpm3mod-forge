@@ -31,10 +31,10 @@ import ru.gltexture.zpm3.engine.core.api.modules.context.IModuleClientSetupConte
 import ru.gltexture.zpm3.engine.core.api.modules.context.IModuleInitContext;
 import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePostInitContext;
 import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePreInitContext;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPClientConfig;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPWorldConfig;
 
 import ru.gltexture.zpm3.modules.net_pack.data.accessors.*;
-import ru.gltexture.zpm3.modules.net_pack.data.data_ent.ZPNetDataVar;
 import ru.gltexture.zpm3.modules.net_pack.data.events.ZPNetSyncEvents;
 import ru.gltexture.zpm3.modules.net_pack.data.vars.ZPNetDataBoolean;
 import ru.gltexture.zpm3.modules.net_pack.data.vars.ZPNetDataFloat;
@@ -127,11 +127,11 @@ public class ZPNetPackModule extends ZPModule {
         context.defineNetAccessorOnEntity(LivingEntity.class, ZPNetPackModule.RADIATION);
 
         context.defineStaticNetAccessor_ForServer(ZPNetPackModule.StoC__DARKNESS_ENABLED, new ZPNetDataBoolean(ZPWorldConfig.ENABLE_HARDCORE_DARKNESS_SERVER_SIDE.getVar()));
-        context.defineStaticNetAccessor_ForServer(ZPNetPackModule.StoC__SERVER_PICK_UP_ON_KEY, new ZPNetDataBoolean(ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY.getVar()));
+        context.defineStaticNetAccessor_ForServer(ZPNetPackModule.StoC__SERVER_PICK_UP_ON_KEY, new ZPNetDataBoolean(ZPWorldConfig.ALLOW_ITEMS_PICKUP_ON_KEY.getVar()));
         context.defineStaticNetAccessor_ForServer(ZPNetPackModule.StoC__DAY_TIME_CYCLE_TICKS_FREEZE, new ZPNetDataInt(ZPWorldConfig.WORLD_DAY_SLOWDOWN_CYCLE_TICKING.getVar()));
         context.defineStaticNetAccessor_ForServer(ZPNetPackModule.StoC__NIGHT_TIME_CYCLE_TICKS_FREEZE, new ZPNetDataInt(ZPWorldConfig.WORLD_NIGHT_SLOWDOWN_CYCLE_TICKING.getVar()));
         context.defineStaticNetAccessor_ForServer(ZPNetPackModule.StoC__DARKNESS_FACTOR, new ZPNetDataFloat(ZPWorldConfig.DARKNESS_GAMMA_STATIC_FACTOR_SERVER_SIDE.getVar()));
-        context.defineStaticNetAccessor_ForClient(ZPNetPackModule.CtoS__PICK_UP_ON_KEY, new ZPNetDataBoolean(ZPWorldConfig.ALLOW_ITEMS_PICKING_ON_KEY.getVar()));
+        context.defineStaticNetAccessor_ForClient(ZPNetPackModule.CtoS__PICK_UP_ON_KEY, new ZPNetDataBoolean(ZPClientConfig.PICK_UP_ON_KEY.getVar()));
     }
 
     @Override

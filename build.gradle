@@ -91,6 +91,7 @@ mixin {
     config "zpm3.debug.mixins.json"
     config "zpm3.net_pack.mixins.json"
     config "zpm3.ui.mixins.json"
+    config "zpm3.oculus_compat.mixins.json"
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
@@ -114,6 +115,9 @@ dependencies {
     minecraftLibrary 'io.github.spair:imgui-java-natives-windows:1.92.7.1'
     minecraftLibrary 'io.github.spair:imgui-java-natives-linux:1.92.7.1'
     minecraftLibrary 'io.github.spair:imgui-java-natives-macos:1.92.7.1'
+
+    implementation fg.deobf("blank:embeddium-0.3.31+mc1.20.1:0.3.31")
+    implementation fg.deobf("blank:oculus-mc1.20.1-1.8.0:1.8.0")
 }
 
 tasks.named('processResources', ProcessResources).configure {

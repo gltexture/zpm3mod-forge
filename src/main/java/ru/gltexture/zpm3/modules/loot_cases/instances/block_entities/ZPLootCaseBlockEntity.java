@@ -77,6 +77,9 @@ public class ZPLootCaseBlockEntity extends ChestBlockEntity {
                 }
                 if (flag) {
                     final ZPLootTable rootLootTable = ZPLootTablesCollection.INSTANCE.getLootTableById(defaultBlockLootCase.getConnectedLootTable());
+                    if (rootLootTable == null) {
+                        throw new ZPRuntimeException("Couldn't find loot table for " + defaultBlockLootCase.getConnectedLootTable());
+                    }
                     final ZPEventDef.Cancellable cancellable = new ZPEventBus_Blocks.LootCaseRespawnEvent(this.getLevel(), this.getBlockPos(), pPlayer, this, rootLootTable);
                     ZP_EventsManager.pushEvent((ZPEventDef.IEvent) cancellable);
                     if (!cancellable.isCancelled()) {

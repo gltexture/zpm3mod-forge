@@ -28,6 +28,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -50,6 +51,7 @@ import ru.gltexture.zpm3.engine.core.ZPRegistryConveyor;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
+import ru.gltexture.zpm3.modules.melee_throwables_tools.init.ZPMeleeThrowableToolsItems;
 
 import java.util.List;
 import java.util.Objects;
@@ -125,6 +127,7 @@ public class ZPEntities extends ZPCommonRegistry<EntityType<?>> {
                     utils.loot().addEntityLootTable(e, () -> new LootPool.Builder()
                             .setRolls(UniformGenerator.between(0, 2))
                             .add(LootItem.lootTableItem(Items.ROTTEN_FLESH))
+                            .add(LootItem.lootTableItem(ZPMeleeThrowableToolsItems.rock.get()).when(LootItemRandomChanceCondition.randomChance(0.005f)))
                     );
                     ZPUtility.sides().onlyClient(() -> ZPEntities.registerZombieRenderer(e, utils));
                     ZPEntityMobAttributes.addNewAttributeCreationUnsafe(e, ZPCommonZombie::createAttributes);
@@ -138,6 +141,7 @@ public class ZPEntities extends ZPCommonRegistry<EntityType<?>> {
                     utils.loot().addEntityLootTable(e, () -> new LootPool.Builder()
                             .setRolls(UniformGenerator.between(0, 2))
                             .add(LootItem.lootTableItem(Items.ROTTEN_FLESH))
+                            .add(LootItem.lootTableItem(ZPMeleeThrowableToolsItems.rock.get()).when(LootItemRandomChanceCondition.randomChance(0.005f)))
                     );
                     ZPUtility.sides().onlyClient(() -> ZPEntities.registerMinerZombieRenderer(e, utils));
                     ZPEntityMobAttributes.addNewAttributeCreationUnsafe(e, ZPCommonZombie::createAttributes);

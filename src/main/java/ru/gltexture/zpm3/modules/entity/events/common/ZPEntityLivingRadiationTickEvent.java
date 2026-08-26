@@ -54,14 +54,14 @@ public class ZPEntityLivingRadiationTickEvent implements ZPForgeEventHandlerClas
             if (radTickRate > 0) {
                 if (ZPLivingStat.RADIATION.get(entity) < 100) {
                     if (entity.tickCount % radTickRate == 0) {
-                        ZPLivingStat.RADIATION.add(entity, 1);
+                        ZPLivingStat.RADIATION.add(entity, 1, false);
                         //System.out.println(izpLivingEntityExt.zpm3forge$getRadiationLevel());
                     }
                 }
             } else {
                 if (ZPLivingStat.RADIATION.get(entity) > 0) {
                     if (entity.tickCount % 10 == 0) {
-                        ZPLivingStat.RADIATION.decrease(entity, 1);
+                        ZPLivingStat.RADIATION.decrease(entity, 1, false);
                         //System.out.println(izpLivingEntityExt.zpm3forge$getRadiationLevel());
                     }
                 }

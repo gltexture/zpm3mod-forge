@@ -79,16 +79,7 @@ public abstract class ZPEntityLivingExtendingMixin implements IZPLivingEntityExt
     }
 
     @Override
-    public void zpm3forge$setIntoxicationLevelForce(int intoxicationLevel) {
-        final Entity entity = (Entity) (Object) this;
-        ZombiePlague3.net(!entity.level().isClientSide()).getNetEntDataSyncer().setVar(((Entity) (Object) this), ZPNetPackModule.INTOXICATION, new ZPNetDataInt(Math.min(intoxicationLevel, 1024)));
-    }
-
-    @Override
     public void zpm3forge$setIntoxicationLevel(int intoxicationLevel) {
-        if (ZPEffectUtils.isImmune((LivingEntity) (Object) this)) {
-            return;
-        }
         final Entity entity = (Entity) (Object) this;
         ZombiePlague3.net(!entity.level().isClientSide()).getNetEntDataSyncer().setVar(((LivingEntity) (Object) this), ZPNetPackModule.INTOXICATION, new ZPNetDataInt(Math.min(intoxicationLevel, 1024)));
     }

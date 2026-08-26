@@ -38,10 +38,12 @@ import org.jetbrains.annotations.Nullable;
 
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPCombatConfig;
 import ru.gltexture.zpm3.modules.entity.mixins.ext.IZPLivingEntityExt;
+import ru.gltexture.zpm3.modules.entity.util.ZPLivingStat;
 import ru.gltexture.zpm3.modules.misc_items.init.ZPMiscItems;
 import ru.gltexture.zpm3.engine.core.ZPLogger;
 import ru.gltexture.zpm3.engine.exceptions.ZPRuntimeException;
 import ru.gltexture.zpm3.engine.registry.ZPRegistryCollections;
+import ru.gltexture.zpm3.modules.mob_effects.utils.ZPEffectUtils;
 
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -90,9 +92,7 @@ public class ZPItemMedicine extends ZPItem {
             }
             this.addEatEffect(pFood, pLevel, entityToAffect);
             if (this.getZpMedicineProperties().getIntoxication() > 0) {
-                if (entityToAffect instanceof IZPLivingEntityExt ext) {
-                    ext.zpm3forge$addIntoxicationLevel(this.getZpMedicineProperties().getIntoxication());
-                }
+                ZPLivingStat.INTOXICATION.add(entityToAffect, this.getZpMedicineProperties().getIntoxication(), true);
             }
             if (this.getZpMedicineProperties().getConsumer() != null) {
                 this.getZpMedicineProperties().getConsumer().accept(entityToAffect);

@@ -41,11 +41,11 @@ public class ZPEntityLivingToxicTickEvent implements ZPForgeEventHandlerClass {
             final int toxicTickRate = ZPEntityUtil.getEntityToxicAffectionTickRate(entity);
             if (toxicTickRate > 0) {
                 if (entity.tickCount % toxicTickRate == 0) {
-                    ZPLivingStat.INTOXICATION.add(entity, 1);
+                    ZPLivingStat.INTOXICATION.add(entity, 1, false);
                 }
             } else {
                 if (entity.tickCount % 10 == 0 && ZPLivingStat.INTOXICATION.get(entity) > 0) {
-                    ZPLivingStat.INTOXICATION.add(entity, -1);
+                    ZPLivingStat.INTOXICATION.add(entity, -1, false);
                 }
             }
             ZPEntityUtil.applyIntoxicationEffects(entity, ZPLivingStat.INTOXICATION.get(entity));

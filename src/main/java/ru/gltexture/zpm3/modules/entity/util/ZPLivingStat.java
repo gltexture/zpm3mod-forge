@@ -23,6 +23,7 @@ package ru.gltexture.zpm3.modules.entity.util;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.modules.entity.mixins.ext.IZPLivingEntityExt;
+import ru.gltexture.zpm3.modules.mob_effects.utils.ZPEffectUtils;
 
 public enum ZPLivingStat {
     RADIATION {
@@ -32,7 +33,10 @@ public enum ZPLivingStat {
         }
 
         @Override
-        public void set(@NotNull LivingEntity entity, int value) {
+        public void set(@NotNull LivingEntity entity, int value, boolean doNotAffectIfHasImmune) {
+            if (doNotAffectIfHasImmune && ZPEffectUtils.isRadiationProtected(entity)) {
+                return;
+            }
             ((IZPLivingEntityExt) entity).zpm3forge$setRadiationLevel(value);
         }
     },
@@ -44,20 +48,23 @@ public enum ZPLivingStat {
         }
 
         @Override
-        public void set(@NotNull LivingEntity entity, int value) {
+        public void set(@NotNull LivingEntity entity, int value, boolean doNotAffectIfHasImmune) {
+            if (doNotAffectIfHasImmune && ZPEffectUtils.isImmune(entity)) {
+                return;
+            }
             ((IZPLivingEntityExt) entity).zpm3forge$setIntoxicationLevel(value);
         }
     };
 
     public abstract int get(@NotNull LivingEntity entity);
 
-    public abstract void set(@NotNull LivingEntity entity, int value);
+    public abstract void set(@NotNull LivingEntity entity, int value, boolean doNotAffectIfHasImmune);
 
-    public final void add(@NotNull LivingEntity entity, int value) {
-        this.set(entity, this.get(entity) + value);
+    public final void add(@NotNull LivingEntity entity, int value, boolean doNotAffectIfHasImmune) {
+        this.set(entity, this.get(entity) + value,  doNotAffectIfHasImmune);
     }
 
-    public final void decrease(@NotNull LivingEntity entity, int value) {
-        this.set(entity, this.get(entity) - value);
+    public final void decrease(@NotNull LivingEntity entity, int value, boolean doNotAffectIfHasImmune) {
+        this.set(entity, this.get(entity) - value,  doNotAffectIfHasImmune);
     }
 }

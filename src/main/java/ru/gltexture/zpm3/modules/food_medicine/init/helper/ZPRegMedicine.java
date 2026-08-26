@@ -166,6 +166,7 @@ public abstract class ZPRegMedicine {
     public static final ZPItemMedicine.ZPMedicineProperties SPLINT = new ZPItemMedicine.ZPMedicineProperties(ZPRegMedicine.DEFAULT_MEDICINE()
             .effect(() -> new MobEffectInstance(ZPMobEffects.fracture.get(), -1), 1.0F)
             .build())
+                .setEatTime(196)
                 .setMedicineAnim(ZPItemMedicine.MedicineAnim.BLOCK)
                 .setSoundToPlayOnConsume(() -> ZPSounds.bandage.get());
 

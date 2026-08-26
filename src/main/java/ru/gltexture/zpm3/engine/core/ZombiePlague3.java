@@ -733,6 +733,7 @@ public final class ZombiePlague3 {
             return this.getClientManager().getCallbacksManager();
         }
 
+        @Deprecated(forRemoval = true)
         @Override
         public @NotNull IZPRenderHooksManager getClientRenderHooksManager() {
             return ZPRenderHooksManager.INSTANCE;
@@ -923,6 +924,7 @@ public final class ZombiePlague3 {
             return this.getClientManager().getCallbacksManager();
         }
 
+        @Deprecated(forRemoval = true)
         @Override
         public @NotNull IZPRenderHooksManager getClientRenderHooksManager() {
             return ZPRenderHooksManager.INSTANCE;

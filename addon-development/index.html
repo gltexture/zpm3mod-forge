@@ -272,6 +272,19 @@
               </ul>
             </li>
             
+            <li class="nav-item" data-bs-level="1"><a href="#using-network-accessors" class="nav-link">Using Network Accessors</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#entity-network-accessors_1" class="nav-link">Entity Network Accessors</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#static-network-accessors_2" class="nav-link">Static Network Accessors</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
             <li class="nav-item" data-bs-level="1"><a href="#addon-configuration" class="nav-link">Addon Configuration</a>
               <ul class="nav flex-column">
               </ul>
@@ -876,6 +889,69 @@ Clients
 Client B ── setting ──► Server
 Client C ── setting ──► Server
 </code></pre>
+<h1 id="using-network-accessors">Using Network Accessors</h1>
+<h2 id="entity-network-accessors_1">Entity Network Accessors</h2>
+<p>After registering an accessor with <code>defineNetAccessorOnEntity</code>, the accessor can be used to read and modify synchronized data associated with a specific entity.</p>
+<h3 id="example">Example</h3>
+<p>The following example exposes a synchronized <code>seasicknessLevel</code> value for a player:</p>
+<pre><code class="language-java">@Override
+public int zpm3forge$getSeasicknessLevel() {
+    final boolean server = !((Player) (Object) this).level().isClientSide();
+
+    return ZombiePlague3.net(server)
+            .getNetEntDataSyncer()
+            .getVarOfDefault(
+                    ((LivingEntity) (Object) this),
+                    ZPNetPackModule.SEASICKNESS
+            )
+            .getValue();
+}
+
+@Override
+public void zpm3forge$setSeasicknessLevel(int level) {
+    final boolean server = !((Player) (Object) this).level().isClientSide();
+
+    ZombiePlague3.net(server)
+            .getNetEntDataSyncer()
+            .setVar(
+                    ((LivingEntity) (Object) this),
+                    ZPNetPackModule.SEASICKNESS,
+                    new ZPNetDataInt(Math.min(level, 512))
+            );
+}
+</code></pre>
+<p>The side is selected based on the entity's current level:</p>
+<pre><code class="language-java">final boolean server = !entity.level().isClientSide();
+</code></pre>
+<p>This ensures that the accessor uses the appropriate network handler on the current side.</p>
+<p><code>getVarOfDefault</code> returns the synchronized value or the accessor's default value when no value has been explicitly assigned to the entity.</p>
+<p><code>setVar</code> updates the synchronized value for the specified entity.</p>
+<hr />
+<h2 id="static-network-accessors_2">Static Network Accessors</h2>
+<h3 id="example_1">Example</h3>
+<p>The following example reads a client-side static accessor:</p>
+<pre><code class="language-java">final boolean pickUpOnKey =
+        ZombiePlague3.netClient()
+                .getNetStaticDataSyncer()
+                .getVar(ZPNetPackModule.StoC__SERVER_PICK_UP_ON_KEY)
+                .orElse(new ZPNetDataBoolean(ZPClientConfig.PICK_UP_ON_KEY.getVar()))
+                .getValue();
+</code></pre>
+<p>In this example, the accessor value is used when it is available. Otherwise, the local client configuration value is used as a fallback.</p>
+<p>This pattern is useful when an addon needs to support both:</p>
+<ul>
+<li>a synchronized value supplied by the server;</li>
+<li>a local default value when the synchronized value is unavailable.</li>
+</ul>
+<h3 id="general-pattern">General Pattern</h3>
+<pre><code class="language-java">final T value =
+        ZombiePlague3.netClient()
+                .getNetStaticDataSyncer()
+                .getVar(ACCESSOR)
+                .orElse(DEFAULT_VALUE)
+                .getValue();
+</code></pre>
+<p>For server-managed static accessors, the corresponding server-side network handler should be used.</p>
 <hr />
 <h1 id="addon-configuration">Addon Configuration</h1>
 <p><code>IZPAddonEntry</code> provides a convenient way to register addon-specific configuration files.</p>
@@ -1003,12 +1079,22 @@ modules/
 <pre><code class="language-text">zp_loot_tables_extensions/
 
 ...
-
 {
-  &quot;lootTableId&quot;: &quot;zpm3:some_loot_table&quot;,
-  &quot;extendBy&quot;: [
-    &quot;testzp3addon:my_custom_loot&quot;
-  ]
+  &quot;extendByList&quot;: [
+    {
+      &quot;extendByResourceLoc&quot;: &quot;zpm3:sampleExtension&quot;,
+      &quot;newTableRollRules&quot;: {
+        &quot;chanceToStartRoll&quot;: 0.5,
+        &quot;maxRolls&quot;: 2,
+        &quot;minRolls&quot;: 1,
+        &quot;randomization&quot;: {
+          &quot;type&quot;: &quot;UNIFORM&quot;,
+          &quot;parameter&quot;: 1.0
+        }
+      }
+    }
+  ],
+  &quot;lootTableId&quot;: &quot;zpm3:sample&quot;
 }
 </code></pre>
 <p>to extend an existing ZPM3 loot table with additional entries.</p>

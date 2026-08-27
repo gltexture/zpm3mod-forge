@@ -50,7 +50,7 @@ public class ZPMapDataInJarResourcesManager extends ZPMapDataResourcesManager {
 
     @Override
     public void lazyCreate() {
-        if (this.imageRelPath == null) {
+        if (this.imageRelPath == null || this.imageRelPath.isEmpty()) {
             return;
         }
         Resource resource = Minecraft.getInstance().getResourceManager().getResource(ResourceLocation.fromNamespaceAndPath(this.modNameSpace, new ZPPath(this.pathToFolder, this.imageRelPath).getFullPath())).orElse(null);

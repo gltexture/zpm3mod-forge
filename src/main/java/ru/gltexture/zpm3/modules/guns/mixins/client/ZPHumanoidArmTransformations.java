@@ -23,7 +23,6 @@ package ru.gltexture.zpm3.modules.guns.mixins.client;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.tags.FluidTags;
@@ -39,9 +38,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
-import ru.gltexture.zpm3.engine.mixins.util.ZPHumanoidArmorLayerOnArm;
 import ru.gltexture.zpm3.modules.entity.util.ZPEntityUtil;
 import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
+import ru.gltexture.zpm3.modules.player.events.common.ZPPlayerTickEvent;
 
 @Deprecated(forRemoval = true)
 public abstract class ZPHumanoidArmTransformations {
@@ -161,10 +160,10 @@ public abstract class ZPHumanoidArmTransformations {
         ItemStack mainHand = entity.getMainHandItem();
         ItemStack offHand = entity.getOffhandItem();
 
-        final boolean gunIsRight = ZPHumanoidArmTransformations.isGun(mainHand);
-        final boolean gunIsLeft = ZPHumanoidArmTransformations.isGun(offHand);
-        final boolean rifleIsRight = ZPHumanoidArmTransformations.isRifleType(mainHand);
-        final boolean rifleIsLeft = ZPHumanoidArmTransformations.isRifleType(offHand);
+        final boolean gunIsRight = ZPPlayerTickEvent.isGun(mainHand);
+        final boolean gunIsLeft = ZPPlayerTickEvent.isGun(offHand);
+        final boolean rifleIsRight = ZPPlayerTickEvent.isRifleType(mainHand);
+        final boolean rifleIsLeft = ZPPlayerTickEvent.isRifleType(offHand);
 
         final float animConstXRot = (float) (swimAnim ? -Math.PI : -Math.PI * 0.5f);
         if (gunIsRight || (swimAnim && entity.isUsingItem())) {
@@ -245,13 +244,5 @@ public abstract class ZPHumanoidArmTransformations {
         }
 
         return pMaxAngle + pAngle * f;
-    }
-
-    public static boolean isGun(ItemStack stack) {
-        return stack != null && stack.getItem() instanceof ZPBaseGun;
-    }
-
-    public static boolean isRifleType(ItemStack stack) {
-        return stack != null && stack.getItem() instanceof ZPBaseGun baseGun && baseGun.getGunProperties().getHeldType().equals(ZPBaseGun.GunProperties.HeldType.RIFLE);
     }
 }

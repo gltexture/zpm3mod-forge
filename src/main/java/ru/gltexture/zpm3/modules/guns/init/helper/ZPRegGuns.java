@@ -46,8 +46,8 @@ import java.util.List;
 import java.util.Set;
 
 public abstract class ZPRegGuns {
-    @OnlyIn(Dist.CLIENT)
-    public static final Set<ResourceLocation> gunTrophies = new HashSet<>();
+    //@OnlyIn(Dist.CLIENT)
+    public static final Set<ResourceLocation> gunTrophies = new HashSet<>(); //TEMPORARY
 
     public static void init(@NotNull ZPCommonRegistry.ZPRegSupplier<Item> regSupplier) {
         {

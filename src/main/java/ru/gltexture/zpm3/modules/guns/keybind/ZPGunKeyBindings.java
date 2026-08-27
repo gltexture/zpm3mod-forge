@@ -22,11 +22,17 @@ package ru.gltexture.zpm3.modules.guns.keybind;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.glfw.GLFW;
 import ru.gltexture.zpm3.engine.keybind.ZPKeyBindingsManager;
 
+//@OnlyIn(Dist.CLIENT)
 public final class ZPGunKeyBindings extends ZPKeyBindingsManager {
+    @OnlyIn(Dist.CLIENT)
     public static KeyMapping reloadKey;
+
+    @OnlyIn(Dist.CLIENT)
     public static KeyMapping unloadKey;
 
     @Override

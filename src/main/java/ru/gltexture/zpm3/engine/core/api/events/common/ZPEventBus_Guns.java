@@ -30,69 +30,6 @@ import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
 import ru.gltexture.zpm3.modules.guns.processing.logic.ZPDefaultGunLogicFunctions;
 
 public abstract class ZPEventBus_Guns {
-    @OnlyIn(Dist.CLIENT)
-    public static final class ClientGunEmptyShotEvent extends ZPEventDef.Cancellable implements ZPEventDef.IEvent {
-        private final Player player;
-        private final ZPBaseGun item;
-        private final ItemStack itemStack;
-        private final boolean isRightHand;
-
-        public ClientGunEmptyShotEvent(@NotNull Player player, @NotNull ZPBaseGun item, @NotNull ItemStack itemStack, boolean isRightHand) {
-            this.player = player;
-            this.item = item;
-            this.itemStack = itemStack;
-            this.isRightHand = isRightHand;
-        }
-
-        public @NotNull Player getPlayer() {
-            return this.player;
-        }
-
-        public @NotNull ZPBaseGun getItem() {
-            return this.item;
-        }
-
-        public @NotNull ItemStack getItemStack() {
-            return this.itemStack;
-        }
-
-        public boolean isRightHand() {
-            return this.isRightHand;
-        }
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @Deprecated(forRemoval = true)
-    public static final class ClientGunShotEvent extends ZPEventDef.Cancellable implements ZPEventDef.IEvent {
-        private final Player player;
-        private final ZPBaseGun item;
-        private final ItemStack itemStack;
-        private final ZPDefaultGunLogicFunctions.GunClientData_Shot gunFXData;
-
-        public ClientGunShotEvent(@NotNull Player player, @NotNull ZPBaseGun item, @NotNull ItemStack itemStack, @NotNull ZPDefaultGunLogicFunctions.GunClientData_Shot gunFXData) {
-            this.player = player;
-            this.item = item;
-            this.itemStack = itemStack;
-            this.gunFXData = gunFXData;
-        }
-
-        public @NotNull Player getPlayer() {
-            return this.player;
-        }
-
-        public @NotNull ZPBaseGun getItem() {
-            return this.item;
-        }
-
-        public @NotNull ItemStack getItemStack() {
-            return this.itemStack;
-        }
-
-        public @NotNull ZPDefaultGunLogicFunctions.GunClientData_Shot getGunFXData() {
-            return this.gunFXData;
-        }
-    }
-
     public static final class GunShotEvent extends ZPEventDef.Cancellable implements ZPEventDef.IEvent {
         private final Player player;
         private final ZPBaseGun item;

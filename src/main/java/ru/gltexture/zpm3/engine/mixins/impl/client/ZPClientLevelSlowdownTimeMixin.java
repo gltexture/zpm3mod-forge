@@ -23,6 +23,8 @@ package ru.gltexture.zpm3.engine.mixins.impl.client;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -36,6 +38,7 @@ import ru.gltexture.zpm3.modules.net_pack.ZPNetPackModule;
 import ru.gltexture.zpm3.modules.net_pack.data.vars.ZPNetDataInt;
 
 
+@OnlyIn(Dist.CLIENT)
 @Mixin(ClientLevel.class)
 public abstract class ZPClientLevelSlowdownTimeMixin {
     @Shadow

@@ -23,13 +23,16 @@ package ru.gltexture.zpm3.modules.worldgen;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.api.modules.context.IModuleClientSetupContext;
 import ru.gltexture.zpm3.engine.core.api.modules.context.IModuleInitContext;
 import ru.gltexture.zpm3.engine.core.api.modules.ZPModule;
 import ru.gltexture.zpm3.engine.core.api.modules.ZPModuleData;
 import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePostInitContext;
 import ru.gltexture.zpm3.engine.core.api.modules.context.IModulePreInitContext;
+import ru.gltexture.zpm3.engine.service.ZPPath;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
+import ru.gltexture.zpm3.modules.worldgen.archiver.ZPMapArchivedRegistry;
 
 public class ZPWorldGenModule extends ZPModule {
     public ZPWorldGenModule(@NotNull ZPModuleData zpModuleData) {
@@ -52,7 +55,7 @@ public class ZPWorldGenModule extends ZPModule {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void clientSetup(@NotNull IModuleClientSetupContext context) {
-
+        context.registerZpArchivedMap(ZombiePlague3.MOD_ID(), new ZPPath(ZPMapArchivedRegistry.MAPS_DIR, "test_map").getFullPath());
     }
 
     @OnlyIn(Dist.CLIENT)

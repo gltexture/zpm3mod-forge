@@ -38,6 +38,8 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -53,6 +55,7 @@ import ru.gltexture.zpm3.modules.player.keybind.ZPPickUpKeyBindings;
 import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
 import ru.gltexture.zpm3.modules.guns.item.ZPGunPistol;
 
+@OnlyIn(Dist.CLIENT)
 public class ZPRenderEntityItem extends ItemEntityRenderer {
     private final ItemRenderer itemRenderer;
     private final RandomSource random = RandomSource.create();

@@ -25,6 +25,8 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkRegistry;
@@ -34,8 +36,6 @@ import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 import java.util.function.Supplier;
 
 public class ZPNetwork {
@@ -82,14 +82,19 @@ public class ZPNetwork {
                 context.enqueueWork(() -> this.onServer(context.getSender(), (ServerLevel) context.getSender().level()));
             } else if (context.getDirection() == NetworkDirection.PLAY_TO_CLIENT) {
                 ZPUtility.sides().onlyClient(() -> {
-                    context.enqueueWork(() -> {
-                        final Player player = Minecraft.getInstance().player;
-                        if (player != null) {
-                            this.onClient(player);
-                        }
-                    });
+                    this.onClient_Context(context);
                 });
             }
+        }
+
+        @OnlyIn(Dist.CLIENT)
+        default void onClient_Context(final NetworkEvent.Context context) {
+            context.enqueueWork(() -> {
+                final Player player = Minecraft.getInstance().player;
+                if (player != null) {
+                    this.onClient(player);
+                }
+            });
         }
 
         void onServer(@NotNull Player sender, @NotNull ServerLevel serverLevel);

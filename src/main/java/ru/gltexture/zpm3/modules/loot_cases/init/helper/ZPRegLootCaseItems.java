@@ -46,8 +46,7 @@ public abstract class ZPRegLootCaseItems {
     }
 
     private static void lootCases(@NotNull ZPCommonRegistry.ZPRegSupplier<Item> regSupplier) {
-        if (ZPTabs.zp_blocks_tab != null) {
-            final RegistryObject<CreativeModeTab> tabToAdd = ZPTabs.zp_blocks_tab;
+        {
             try {
                 for (RegistryObject<ZPDefaultBlockLootCase> registryObject : ZPRegistryCollections.getCollectionById(ZPLootCases.class, "lootCases")) {
                     RegistryObject<BlockItem> blockItemRegistryObject = ZPItemBlockHelper.createBlockItemWithClientCustomInit(regSupplier, registryObject, (consumer ->
@@ -59,7 +58,10 @@ public abstract class ZPRegLootCaseItems {
                             }))
                     ).afterCreated((e, utils) -> {
                         ZPUtility.sides().onlyClient(() -> {
-                            utils.items().addItemInTab(e, tabToAdd);
+                            final RegistryObject<CreativeModeTab> tabToAdd = ZPTabs.zp_blocks_tab;
+                            if (ZPTabs.zp_blocks_tab != null) {
+                                utils.items().addItemInTab(e, tabToAdd);
+                            }
                         });
                     }).end();
                     ZPBlockItemsRegistry.putNewEntry(registryObject, blockItemRegistryObject);

@@ -506,6 +506,94 @@ Registers a static network accessor whose value is managed on the client.
 
 ![{7F8DFD49-1CE7-471D-8BA9-D9080E7B84E2}.png](pictures/%7B7F8DFD49-1CE7-471D-8BA9-D9080E7B84E2%7D.png)
 
+# Using Network Accessors
+
+## Entity Network Accessors
+
+After registering an accessor with `defineNetAccessorOnEntity`, the accessor can be used to read and modify synchronized data associated with a specific entity.
+
+### Example
+
+The following example exposes a synchronized `seasicknessLevel` value for a player:
+
+```java
+@Override
+public int zpm3forge$getSeasicknessLevel() {
+    final boolean server = !((Player) (Object) this).level().isClientSide();
+
+    return ZombiePlague3.net(server)
+            .getNetEntDataSyncer()
+            .getVarOfDefault(
+                    ((LivingEntity) (Object) this),
+                    ZPNetPackModule.SEASICKNESS
+            )
+            .getValue();
+}
+
+@Override
+public void zpm3forge$setSeasicknessLevel(int level) {
+    final boolean server = !((Player) (Object) this).level().isClientSide();
+
+    ZombiePlague3.net(server)
+            .getNetEntDataSyncer()
+            .setVar(
+                    ((LivingEntity) (Object) this),
+                    ZPNetPackModule.SEASICKNESS,
+                    new ZPNetDataInt(Math.min(level, 512))
+            );
+}
+```
+
+The side is selected based on the entity's current level:
+
+```java
+final boolean server = !entity.level().isClientSide();
+```
+
+This ensures that the accessor uses the appropriate network handler on the current side.
+
+`getVarOfDefault` returns the synchronized value or the accessor's default value when no value has been explicitly assigned to the entity.
+
+`setVar` updates the synchronized value for the specified entity.
+
+---
+
+## Static Network Accessors
+
+### Example
+
+The following example reads a client-side static accessor:
+
+```java
+final boolean pickUpOnKey =
+        ZombiePlague3.netClient()
+                .getNetStaticDataSyncer()
+                .getVar(ZPNetPackModule.StoC__SERVER_PICK_UP_ON_KEY)
+                .orElse(new ZPNetDataBoolean(ZPClientConfig.PICK_UP_ON_KEY.getVar()))
+                .getValue();
+```
+
+In this example, the accessor value is used when it is available. Otherwise, the local client configuration value is used as a fallback.
+
+This pattern is useful when an addon needs to support both:
+
+* a synchronized value supplied by the server;
+* a local default value when the synchronized value is unavailable.
+
+### General Pattern
+
+```java
+final T value =
+        ZombiePlague3.netClient()
+                .getNetStaticDataSyncer()
+                .getVar(ACCESSOR)
+                .orElse(DEFAULT_VALUE)
+                .getValue();
+```
+
+For server-managed static accessors, the corresponding server-side network handler should be used.
+
+
 > **Advanced API:** This system is part of the internal ZPM3 networking architecture and is covered separately.
 
 ---
@@ -1096,12 +1184,22 @@ ZPM3 also supports **loot table extensions**. An addon can provide a JSON resour
 zp_loot_tables_extensions/
 
 ...
-
 {
-  "lootTableId": "zpm3:some_loot_table",
-  "extendBy": [
-    "testzp3addon:my_custom_loot"
-  ]
+  "extendByList": [
+    {
+      "extendByResourceLoc": "zpm3:sampleExtension",
+      "newTableRollRules": {
+        "chanceToStartRoll": 0.5,
+        "maxRolls": 2,
+        "minRolls": 1,
+        "randomization": {
+          "type": "UNIFORM",
+          "parameter": 1.0
+        }
+      }
+    }
+  ],
+  "lootTableId": "zpm3:sample"
 }
 ```
 

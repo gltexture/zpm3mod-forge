@@ -32,7 +32,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
-import ru.gltexture.zpm3.modules.guns.mixins.client.ZPHumanoidArmTransformations;
+import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
 import ru.gltexture.zpm3.modules.player.events.client.ZPPlayerLyingClientCheckEvent;
 import ru.gltexture.zpm3.modules.melee_throwables_tools.misc.ZPDefaultItemsHandReach;
 import ru.gltexture.zpm3.engine.core.ZPSide;
@@ -95,10 +95,10 @@ public class ZPPlayerTickEvent implements ZPForgeEventHandlerClass {
     public static float getBodyRotationOffset(Player player) {
         ItemStack mainHand = player.getMainHandItem();
         ItemStack offHand = player.getOffhandItem();
-        boolean gunRight = ZPHumanoidArmTransformations.isGun(mainHand);
-        boolean gunLeft = ZPHumanoidArmTransformations.isGun(offHand);
-        boolean rifleRight = ZPHumanoidArmTransformations.isRifleType(mainHand);
-        boolean rifleLeft = ZPHumanoidArmTransformations.isRifleType(offHand);
+        boolean gunRight = isGun(mainHand);
+        boolean gunLeft = isGun(offHand);
+        boolean rifleRight = isRifleType(mainHand);
+        boolean rifleLeft = isRifleType(offHand);
         if (gunRight && gunLeft) {
             return 0.0f;
         }
@@ -124,6 +124,16 @@ public class ZPPlayerTickEvent implements ZPForgeEventHandlerClass {
         if (Math.abs(f1) > 50.0F) {
             livingEntity.yBodyRot += f1 - (float)(Mth.sign(f1) * 50);
         }
+    }
+
+    @Deprecated(forRemoval = true)
+    public static boolean isGun(ItemStack stack) {
+        return stack != null && stack.getItem() instanceof ZPBaseGun;
+    }
+
+    @Deprecated(forRemoval = true)
+    public static boolean isRifleType(ItemStack stack) {
+        return stack != null && stack.getItem() instanceof ZPBaseGun baseGun && baseGun.getGunProperties().getHeldType().equals(ZPBaseGun.GunProperties.HeldType.RIFLE);
     }
 
     @Override

@@ -124,7 +124,7 @@ public class ZPGunsModule extends ZPModule {
     @Override
     public void preInitialize(@NotNull IModulePreInitContext context) {
         ZPUtility.sides().onlyClient(() -> {
-            ZombiePlague3.registerKeyBindings(new ZPGunKeyBindings());
+            context.registerKeyBindings(new ZPGunKeyBindings());
         });
     }
 

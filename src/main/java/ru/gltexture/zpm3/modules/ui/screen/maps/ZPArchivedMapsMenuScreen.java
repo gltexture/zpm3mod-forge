@@ -70,10 +70,9 @@ public class ZPArchivedMapsMenuScreen extends ZPScreen {
         this.launchButton = Button.builder(Component.translatable("ui.zpm3.launch"), b -> {
             if (this.mapList.getSelected() != null) {
                 CompletableFuture.runAsync(() -> {
-                    ZPMapInstaller.installMap(this.mapList.getSelected().getData());
-
+                    final String mapName = ZPMapInstaller.installMap(this.mapList.getSelected().getData());
                     Minecraft.getInstance().execute(() -> {
-                        Minecraft.getInstance().createWorldOpenFlows().loadLevel(this, this.mapList.getSelected().getData().mapName());
+                        Minecraft.getInstance().createWorldOpenFlows().loadLevel(this, mapName);
                     });
                 }).exceptionally(e -> {
                     e.printStackTrace(System.err);

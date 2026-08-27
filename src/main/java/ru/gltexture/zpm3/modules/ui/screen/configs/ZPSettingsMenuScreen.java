@@ -20,6 +20,7 @@
 
 package ru.gltexture.zpm3.modules.ui.screen.configs;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.OptionsScreen;
@@ -65,7 +66,9 @@ public class ZPSettingsMenuScreen extends ZPScreen {
                                                 new ZPClientConfigOptionsScreen.ConfigVarUIWithEditCallback(Objects.requireNonNull(ZombiePlague3.getZpConfigManager().configVarWrappedObject(ZPClientConfig.RENDER_BULLET_TRACERS)), null),
                                                 new ZPClientConfigOptionsScreen.ConfigVarUIWithEditCallback(Objects.requireNonNull(ZombiePlague3.getZpConfigManager().configVarWrappedObject(ZPClientConfig.SHOW_VERSION_INFO_ON_SCREEN)), null),
                                                 new ZPClientConfigOptionsScreen.ConfigVarUIWithEditCallback(Objects.requireNonNull(ZombiePlague3.getZpConfigManager().configVarWrappedObject(ZPClientConfig.PICK_UP_ON_KEY)), (v) -> {
-                                                    ZombiePlague3.netClient().getNetStaticDataSyncer().setValue(ZPNetPackModule.CtoS__PICK_UP_ON_KEY, new ZPNetDataBoolean((Boolean) v.getVar()));
+                                                    if (Minecraft.getInstance().player != null) {
+                                                        ZombiePlague3.netClient().getNetStaticDataSyncer().setValue(ZPNetPackModule.CtoS__PICK_UP_ON_KEY, new ZPNetDataBoolean((Boolean) v.getVar()));
+                                                    }
                                                 })
                                                 )
                         )

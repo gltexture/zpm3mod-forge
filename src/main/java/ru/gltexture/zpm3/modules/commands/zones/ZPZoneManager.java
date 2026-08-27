@@ -48,7 +48,7 @@ import java.util.*;
 public final class ZPZoneManager {
     public static final ZPZonesRegistry ZP_ZONES_REGISTRY = new ZPZonesRegistry();
 
-    private static final String jsonName = "zp_zones.json";
+    private static final String jsonName = "zp3_zones.json";
     private final Map<Level, ZonesContainer> zonesPerLevelMap;
     public static ZPZoneManager INSTANCE = new ZPZoneManager();
 

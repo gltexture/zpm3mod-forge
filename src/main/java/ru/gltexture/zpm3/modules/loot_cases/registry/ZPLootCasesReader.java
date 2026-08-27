@@ -59,7 +59,11 @@ public abstract class ZPLootCasesReader {
                     continue;
                 }
                 ZPSyntheticLootCasesDataGenRegistry.registerRuntime(description);
-                ZPLogger.info("Read synthetic loot-case " + fileName);
+                ZPLogger.info("Synthetic Loot case parsed: " +
+                                ", blockId=" + description.blockId() +
+                                ", lootId=" + description.lootId() +
+                                ", textureId=" + description.textureId()
+                );
             }
         } catch (Exception e) {
             ZPLogger.error("Couldn't read loot cases index: " + indexPath);

@@ -37,7 +37,7 @@ public final class ZPMapInstaller {
         return FMLPaths.GAMEDIR.get().resolve("saves");
     }
 
-    public static void installMap(ZPMapMetaData data) {
+    public static String installMap(ZPMapMetaData data) {
         String folderName = data.mapName();
         Path saveFolder = ZPMapInstaller.getSavesFolder().resolve(folderName);
         try {
@@ -46,6 +46,7 @@ public final class ZPMapInstaller {
             }
             Files.createDirectories(saveFolder);
             ZPMapInstaller.unzip(data.mapDataResourcesManager().getArchiveStream().get(), saveFolder);
+            return saveFolder.getFileName().toString();
         } catch (Exception e) {
             throw new RuntimeException("Failed to install map: " + folderName, e);
         }

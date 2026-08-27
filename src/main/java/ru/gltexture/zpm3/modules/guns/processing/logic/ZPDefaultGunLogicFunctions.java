@@ -45,6 +45,7 @@ import org.joml.Vector3i;
 import ru.gltexture.zpm3.engine.client.rendering.callbacks.ZPClientCallbacksManager;
 import ru.gltexture.zpm3.engine.core.ZP_EventsManager;
 import ru.gltexture.zpm3.engine.core.api.events.ZPEventDef;
+import ru.gltexture.zpm3.engine.core.api.events.client.ZPEventBus_ClientGuns;
 import ru.gltexture.zpm3.engine.core.api.events.common.ZPEventBus_Guns;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPNetworkConfig;
 import ru.gltexture.zpm3.modules.common.init.ZPSounds;
@@ -113,7 +114,7 @@ public abstract class ZPDefaultGunLogicFunctions {
                         }
                     }
                     final float recoilStrength = ZPClientCrosshairRecoilManager.applyVerticalRecoil(recoil);
-                    final ZPEventDef.Cancellable cancellable = new ZPEventBus_Guns.ClientGunShotEvent(player, item, itemStack, new GunClientData_Shot(isRightHand, ZPDefaultGunLogicFunctions.recoilReduction(player) * recoilStrength, 0.25f));
+                    final ZPEventDef.Cancellable cancellable = new ZPEventBus_ClientGuns.ClientGunShotEvent(player, item, itemStack, new GunClientData_Shot(isRightHand, ZPDefaultGunLogicFunctions.recoilReduction(player) * recoilStrength, 0.25f));
                     ZP_EventsManager.pushEvent((ZPEventDef.IEvent) cancellable);
                     if (cancellable.isCancelled()) {
                         return false;
@@ -136,7 +137,7 @@ public abstract class ZPDefaultGunLogicFunctions {
                             }
                         }
                     }
-                    final ZPEventDef.Cancellable cancellable = new ZPEventBus_Guns.ClientGunEmptyShotEvent(player, item, itemStack, isRightHand);
+                    final ZPEventDef.Cancellable cancellable = new ZPEventBus_ClientGuns.ClientGunEmptyShotEvent(player, item, itemStack, isRightHand);
                     ZP_EventsManager.pushEvent((ZPEventDef.IEvent) cancellable);
                     if (cancellable.isCancelled()) {
                         return false;
@@ -150,7 +151,7 @@ public abstract class ZPDefaultGunLogicFunctions {
                 return true;
             }
         } else {
-            final ZPEventDef.Cancellable cancellable = new ZPEventBus_Guns.ClientGunShotEvent(player, item, itemStack, new GunClientData_Shot(isRightHand, item.getGunProperties().getClientVerticalRecoil(), 0.25f));
+            final ZPEventDef.Cancellable cancellable = new ZPEventBus_ClientGuns.ClientGunShotEvent(player, item, itemStack, new GunClientData_Shot(isRightHand, item.getGunProperties().getClientVerticalRecoil(), 0.25f));
             ZP_EventsManager.pushEvent((ZPEventDef.IEvent) cancellable);
             if (cancellable.isCancelled()) {
                 return false;
@@ -183,7 +184,7 @@ public abstract class ZPDefaultGunLogicFunctions {
                         }
                     }
                     final float recoilStrength = ZPClientCrosshairRecoilManager.applyVerticalRecoil(recoil);
-                    final ZPEventDef.Cancellable cancellable = new ZPEventBus_Guns.ClientGunShotEvent(player, item, itemStack, new GunClientData_Shot(isRightHand, ZPDefaultGunLogicFunctions.recoilReduction(player) * recoilStrength, 0.25f));
+                    final ZPEventDef.Cancellable cancellable = new ZPEventBus_ClientGuns.ClientGunShotEvent(player, item, itemStack, new GunClientData_Shot(isRightHand, ZPDefaultGunLogicFunctions.recoilReduction(player) * recoilStrength, 0.25f));
                     ZP_EventsManager.pushEvent((ZPEventDef.IEvent) cancellable);
                     if (cancellable.isCancelled()) {
                         return false;
@@ -206,7 +207,7 @@ public abstract class ZPDefaultGunLogicFunctions {
                             }
                         }
                     }
-                    final ZPEventDef.Cancellable cancellable = new ZPEventBus_Guns.ClientGunShotEvent(player, item, itemStack, new GunClientData_Shot(isRightHand, item.getGunProperties().getClientVerticalRecoil(), 0.25f));
+                    final ZPEventDef.Cancellable cancellable = new ZPEventBus_ClientGuns.ClientGunShotEvent(player, item, itemStack, new GunClientData_Shot(isRightHand, item.getGunProperties().getClientVerticalRecoil(), 0.25f));
                     ZP_EventsManager.pushEvent((ZPEventDef.IEvent) cancellable);
                     if (cancellable.isCancelled()) {
                         return false;
@@ -220,7 +221,7 @@ public abstract class ZPDefaultGunLogicFunctions {
                 return true;
             }
         } else {
-            final ZPEventDef.Cancellable cancellable = new ZPEventBus_Guns.ClientGunEmptyShotEvent(player, item, itemStack, isRightHand);
+            final ZPEventDef.Cancellable cancellable = new ZPEventBus_ClientGuns.ClientGunEmptyShotEvent(player, item, itemStack, isRightHand);
             ZP_EventsManager.pushEvent((ZPEventDef.IEvent) cancellable);
             if (cancellable.isCancelled()) {
                 return false;

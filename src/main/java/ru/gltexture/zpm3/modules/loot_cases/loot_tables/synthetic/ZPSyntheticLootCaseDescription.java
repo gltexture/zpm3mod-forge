@@ -23,5 +23,5 @@ package ru.gltexture.zpm3.modules.loot_cases.loot_tables.synthetic;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
-public record ZPSyntheticLootCaseDescription(@NotNull ResourceLocation lootId, @NotNull String blockId, @NotNull String textureId, float hardness, int lootRespawnTime) {
+public record ZPSyntheticLootCaseDescription(@NotNull String lootId, @NotNull String blockId, @NotNull String textureId, float hardness, int lootRespawnTime) {
 }

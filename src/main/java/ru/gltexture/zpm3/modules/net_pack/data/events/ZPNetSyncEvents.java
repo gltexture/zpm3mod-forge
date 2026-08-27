@@ -23,6 +23,8 @@ package ru.gltexture.zpm3.modules.net_pack.data.events;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
@@ -60,6 +62,7 @@ public class ZPNetSyncEvents implements ZPForgeEventHandlerClass {
         ZombiePlague3.netServer().getNetEntDataSyncer().markEntityDirty(target, player);
     }
 
+    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void onClientLogout(ClientPlayerNetworkEvent.LoggingOut event) {
         ZPUtility.sides().onlyClient(() -> {
@@ -67,6 +70,7 @@ public class ZPNetSyncEvents implements ZPForgeEventHandlerClass {
         });
     }
 
+    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void onClientLogin(ClientPlayerNetworkEvent.LoggingIn event) {
         ZPUtility.sides().onlyClient(() -> {

@@ -20,11 +20,14 @@
 
 package ru.gltexture.zpm3.engine.helpers;
 
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.core.ZPLogger;
 
 import java.util.*;
 
@@ -39,7 +42,11 @@ public abstract class ZPItemTabAddHelper {
         for (Map.Entry<RegistryObject<CreativeModeTab>, Set<RegistryObject<? extends Item>>> entry : ZPItemTabAddHelper.getItemMap().entrySet()) {
             if (entry.getKey() != null && entry.getKey().isPresent() && entry.getKey().get() == event.getTab()) {
                 for (RegistryObject<? extends Item> item : entry.getValue()) {
-                    event.accept(item.get());
+                    if (!item.isPresent()) {
+                        ZPLogger.error("Caught null RegObject " + item.getId());
+                    } else {
+                        event.accept(item.get());
+                    }
                 }
             }
         }

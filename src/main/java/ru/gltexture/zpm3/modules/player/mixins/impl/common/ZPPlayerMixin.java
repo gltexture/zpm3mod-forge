@@ -33,6 +33,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -42,6 +44,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPNetworkConfig;
+import ru.gltexture.zpm3.engine.service.ZPUtility;
 import ru.gltexture.zpm3.modules.common.init.ZPDamageTypes;
 import ru.gltexture.zpm3.modules.net_pack.ZPNetPackModule;
 import ru.gltexture.zpm3.modules.net_pack.data.vars.ZPNetDataInt;
@@ -90,6 +93,13 @@ public abstract class ZPPlayerMixin implements IZPPlayerMixinExt {
            // }
             return;
         }
+        //TODO
+        ZPUtility.sides().onlyClient(this::zpm3forge$clientNetCheck);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Unique
+    private void zpm3forge$clientNetCheck() {
         long now = System.currentTimeMillis();
         if (((now - this.zpm3forge$lastSentTime)) >= 5000) {
             this.zpm3forge$waitingResponse = false;

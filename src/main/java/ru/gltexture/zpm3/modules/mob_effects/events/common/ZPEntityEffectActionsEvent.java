@@ -56,7 +56,7 @@ import java.util.Objects;
 public class ZPEntityEffectActionsEvent implements ZPForgeEventHandlerClass {
     @SubscribeEvent
     public static void exec(@NotNull LivingEvent.LivingTickEvent event) {
-        if (event.getEntity().level().isClientSide()) {
+        if (!event.getEntity().level().isClientSide()) {
             if (ZPBloodPainFXPacket.hasBlood(event.getEntity()) && ZPEffectUtils.isBleeding(event.getEntity())) {
                 if (event.getEntity().tickCount % 10 == 0) {
                     ZombiePlague3.netServer().sendToDimensionRadius(new ZPBloodPainFXPacket(event.getEntity().getId(), true), event.getEntity().getCommandSenderWorld().dimension(), event.getEntity().position(), 64.0f);

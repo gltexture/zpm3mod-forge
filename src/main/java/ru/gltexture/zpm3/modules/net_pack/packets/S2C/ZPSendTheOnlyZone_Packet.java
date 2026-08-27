@@ -24,6 +24,8 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3i;
 import ru.gltexture.zpm3.engine.network.ZPNetwork;
@@ -106,6 +108,7 @@ public class ZPSendTheOnlyZone_Packet implements ZPNetwork.ZPPacket {
     public void onServer(@NotNull Player sender, @NotNull ServerLevel level) {
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void onClient(@NotNull Player player) {
         if (this.zone.uniqueId().startsWith(ZPSendTheOnlyZone_Packet.REM_FLAG)) {

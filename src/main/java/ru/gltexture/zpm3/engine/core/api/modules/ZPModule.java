@@ -51,7 +51,7 @@ public abstract class ZPModule {
     @OnlyIn(Dist.CLIENT)
     public abstract void clientShutDown();
 
-    @Deprecated
+    //@Deprecated
     //public void setupMixins(@NotNull ZombiePlague3.IMixinEntry mixinEntry) { }
 
     public abstract void preInitialize(@NotNull IModulePreInitContext context);

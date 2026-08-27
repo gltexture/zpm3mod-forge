@@ -20,10 +20,12 @@
 
 package ru.gltexture.zpm3.modules.loot_cases.init;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
+import ru.gltexture.zpm3.engine.core.ZPLogger;
 import ru.gltexture.zpm3.engine.helpers.gen.block_exec.DefaultBlockModelExecutors;
 import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.modules.loot_cases.events.provider.ZPSyntheticLootCasesDataGenRegistry;
@@ -38,9 +40,11 @@ import ru.gltexture.zpm3.engine.service.Pair;
 import ru.gltexture.zpm3.engine.service.ZPPath;
 import ru.gltexture.zpm3.engine.service.ZPUtility;
 
-public class ZPLootCases extends ZPCommonRegistry<ZPDefaultBlockLootCase> implements IZPCollectRegistryObjects {
-   // public static Map<String, RegistryObject<ZPDefaultBlockLootCase>> generatedLootCases = new HashMap<>();
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
+public class ZPLootCases extends ZPCommonRegistry<ZPDefaultBlockLootCase> implements IZPCollectRegistryObjects {
     public ZPLootCases() {
         super(ZPRegistryConveyor.Target.BLOCK);
     }
@@ -52,14 +56,14 @@ public class ZPLootCases extends ZPCommonRegistry<ZPDefaultBlockLootCase> implem
             final String lootCaseName = lootCase.blockId().toLowerCase();
             final float hardness = lootCase.hardness();
             final int lootRespawnTime = lootCase.lootRespawnTime();
-            final RegistryObject<ZPDefaultBlockLootCase> syntheticLootCase = regSupplier.register(lootCaseName, () -> new ZPDefaultBlockLootCase(BlockBehaviour.Properties.of().strength(hardness, hardness).sound(SoundType.WOOD), lootCase.textureId(), lootCase.lootId(), lootRespawnTime)
+            final RegistryObject<ZPDefaultBlockLootCase> syntheticLootCase = regSupplier.register(lootCaseName, () -> new ZPDefaultBlockLootCase(BlockBehaviour.Properties.of().strength(hardness, hardness).sound(SoundType.WOOD), lootCase.textureId(), Objects.requireNonNull(ResourceLocation.tryParse(lootCase.lootId())), lootRespawnTime)
             ).afterCreated((e, utils) -> {
                 ZPUtility.sides().onlyClient(() -> {
                     utils.blocks().addBlockModelKey_ValueArray(e, ZPDataGenHelper.DEFAULT_CHEST_BLOCK, Pair.of("particle", () -> new ZPPath(ZPDataGenHelper.MINECRAFT_VANILLA_ROOT, "oak_planks")));
                     utils.blocks().setBlockItemModelExecutor(e, DefaultBlockModelExecutors.getDefault(), DefaultBlockItemModelExecutors.getDefaultItemAsVanillaParent(ZPDataGenHelper.DEFAULT_CHEST_ITEM));
                 });
+                ZPLogger.info("Registering synthetic loot case: " + e.getId() + " : LootTable=" + lootCase.lootId());
             }).end();
-            //ZPLootCases.generatedLootCases.put(lootCaseName, syntheticLootCase);
         }
         ZPSyntheticLootCasesDataGenRegistry.clearRuntime();
         this.stopInstanceCollecting();

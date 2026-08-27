@@ -96,11 +96,11 @@ public class ZPArmorModule extends ZPModule {
 
     @Override
     public void initialize(@NotNull IModuleInitContext context) {
-        context.registerZP3EventHandlerClass(ZPAdjustNightVisionGogglesLightMap.class);
-        context.registerForgeEventHandlerClass(ZPPlayerArmorSoundOnClientEvent.class);
         context.addCommonZp3RegistryClass(ZPArmorItems.class);
 
         ZPUtility.sides().onlyClient(() -> {
+            context.registerZP3EventHandlerClass(ZPAdjustNightVisionGogglesLightMap.class);
+            context.registerForgeEventHandlerClass(ZPPlayerArmorSoundOnClientEvent.class);
             /*
             ZPPlayerArmorSoundOnClientEvent.registerArmorSound(new ZPPlayerArmorSoundOnClientEvent.TrackedSoundLauncher() {
                 @Override

@@ -1,0 +1,12 @@
+{
+  "archive": "test.zip",
+  "preview": "preview.png",
+  "name": "test",
+  "version": "1.0",
+  "authors": [
+    "UNKNOWN"
+  ],
+  "description": "TODO",
+  "recommendedPlayers": -1,
+  "modVersion": "0.0a"
+}

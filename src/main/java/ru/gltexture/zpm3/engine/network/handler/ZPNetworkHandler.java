@@ -20,6 +20,8 @@
 
 package ru.gltexture.zpm3.engine.network.handler;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.network.ZPNetwork;
 import ru.gltexture.zpm3.modules.net_pack.data.data_ent.IZPNetEntDataSyncer;
@@ -52,6 +54,7 @@ public abstract class ZPNetworkHandler {
         return ZPNetworkHandlerServer.instance;
     }
 
+    @OnlyIn(Dist.CLIENT)
     public static ZPNetworkHandlerClient client() {
         return ZPNetworkHandlerClient.instance;
     }

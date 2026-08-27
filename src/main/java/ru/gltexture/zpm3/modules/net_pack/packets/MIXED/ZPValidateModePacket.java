@@ -30,9 +30,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.network.ZPNetwork;
-import ru.gltexture.zpm3.engine.network.handler.ZPNetworkHandler;
-import ru.gltexture.zpm3.engine.network.handler.ZPNetworkHandlerClient;
-import ru.gltexture.zpm3.engine.network.handler.ZPNetworkHandlerServer;
 
 public class ZPValidateModePacket implements ZPNetwork.ZPPacket {
     private final boolean devMode;

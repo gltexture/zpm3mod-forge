@@ -93,10 +93,6 @@ public class ZPMeleeThrowableToolsModule extends ZPModule {
     public void clientShutDown() {
     }
 
-    public static void addNewLineToDraw(@NotNull ZPRenderStuffEvent.LineRequest lineRequest) {
-        ZPRenderStuffEvent.addNewLineToDraw(lineRequest);
-    }
-
     @Override
     public void initialize(@NotNull IModuleInitContext context) {
         ZPUtility.sides().onlyClient(() -> {

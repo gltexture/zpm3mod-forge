@@ -184,254 +184,254 @@ public class ZPLootCasesModule extends ZPModule {
     //36000
 
     public static final ZPSyntheticLootCaseDescription Case__debris = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_debris"),
+            "zpm3:loot_debris",
             "loot_debris",
-            "tier1",
+            "loot_debris/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_village_tier1 = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_village_tier1"),
+            ("zpm3:loot_village_tier1"),
             "loot_village_tier1",
-            "tier1",
+            "loot_village_tier1/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_village_tier2 = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_village_tier2"),
+            ("zpm3:loot_village_tier2"),
             "loot_village_tier2",
-            "tier1",
+            "loot_village_tier2/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_village_tier3 = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_village_tier3"),
+            ("zpm3:loot_village_tier3"),
             "loot_village_tier3",
-            "tier1",
+            "loot_village_tier3/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_city_tier1 = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_city_tier1"),
+            ("zpm3:loot_city_tier1"),
             "loot_city_tier1",
-            "tier1",
+            "loot_city_tier1/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_city_tier2 = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_city_tier2"),
+            ("zpm3:loot_city_tier2"),
             "loot_city_tier2",
-            "tier1",
+            "loot_city_tier2/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_city_tier3 = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_city_tier3"),
+            ("zpm3:loot_city_tier3"),
             "loot_city_tier3",
-            "tier1",
+            "loot_city_tier3/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_garage_tier1 = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_garage_tier1"),
+            ("zpm3:loot_garage_tier1"),
             "loot_garage_tier1",
-            "tier1",
+            "loot_garage_tier1/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_kitchen_tier1 = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_kitchen_tier1"),
+            ("zpm3:loot_kitchen_tier1"),
             "loot_kitchen_tier1",
-            "tier1",
+            "loot_kitchen_tier1/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_restaurant_tier1 = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_restaurant_tier1"),
+            ("zpm3:loot_restaurant_tier1"),
             "loot_restaurant_tier1",
-            "tier1",
+            "loot_restaurant_tier1/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_bar_tier1 = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_bar_tier1"),
+            ("zpm3:loot_bar_tier1"),
             "loot_bar_tier1",
-            "tier1",
+            "loot_bar_tier1/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_building_store_tier1 = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_building_store_tier1"),
+            ("zpm3:loot_building_store_tier1"),
             "loot_building_store_tier1",
-            "tier1",
+            "loot_building_store_tier1/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_building_store_tier2 = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_building_store_tier2"),
+            ("zpm3:loot_building_store_tier2"),
             "loot_building_store_tier2",
-            "tier1",
+            "loot_building_store_tier2/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_home_stash = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_home_stash"),
+            ("zpm3:loot_home_stash"),
             "loot_home_stash",
-            "tier1",
+            "loot_home_stash/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_construction_site = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_construction_site"),
+            ("zpm3:loot_construction_site"),
             "loot_construction_site",
-            "tier1",
+            "loot_construction_site/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_firefighter_tier1 = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_firefighter_tier1"),
+            ("zpm3:loot_firefighter_tier1"),
             "loot_firefighter_tier1",
-            "tier1",
+            "loot_firefighter_tier1/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_firefighter_tier2 = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_firefighter_tier2"),
+            ("zpm3:loot_firefighter_tier2"),
             "loot_firefighter_tier2",
-            "tier1",
+            "loot_firefighter_tier2/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_police_tier1 = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_police_tier1"),
+            ("zpm3:loot_police_tier1"),
             "loot_police_tier1",
-            "tier1",
+            "loot_police_tier1/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_police_tier2 = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_police_tier2"),
+            ("zpm3:loot_police_tier2"),
             "loot_police_tier2",
-            "tier1",
+            "loot_police_tier2/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_police_tier3 = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_police_tier3"),
+            ("zpm3:loot_police_tier3"),
             "loot_police_tier3",
-            "tier1",
+            "loot_police_tier3/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_fishing_tier1 = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_fishing_tier1"),
+            ("zpm3:loot_fishing_tier1"),
             "loot_fishing_tier1",
-            "tier1",
+            "loot_fishing_tier1/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_fishing_tier2 = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_fishing_tier2"),
+            ("zpm3:loot_fishing_tier2"),
             "loot_fishing_tier2",
-            "tier1",
+            "loot_fishing_tier2/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_pharmacy_tier1 = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_pharmacy_tier1"),
+            ("zpm3:loot_pharmacy_tier1"),
             "loot_pharmacy_tier1",
-            "tier1",
+            "loot_pharmacy_tier1/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_pharmacy_tier2 = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_pharmacy_tier2"),
+            ("zpm3:loot_pharmacy_tier2"),
             "loot_pharmacy_tier2",
-            "tier1",
+            "loot_pharmacy_tier2/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_hospital_tier1 = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_hospital_tier1"),
+            ("zpm3:loot_hospital_tier1"),
             "loot_hospital_tier1",
-            "tier1",
+            "loot_hospital_tier1/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_hospital_tier2 = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_hospital_tier2"),
+            ("zpm3:loot_hospital_tier2"),
             "loot_hospital_tier2",
-            "tier1",
+            "loot_hospital_tier2/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_ammunition_tier1 = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_ammunition_tier1"),
+            ("zpm3:loot_ammunition_tier1"),
             "loot_ammunition_tier1",
-            "tier1",
+            "loot_ammunition_tier1/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_ammunition_tier2 = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_ammunition_tier2"),
+            ("zpm3:loot_ammunition_tier2"),
             "loot_ammunition_tier2",
-            "tier1",
+            "loot_ammunition_tier2/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_ammunition_tier3 = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_ammunition_tier3"),
+            ("zpm3:loot_ammunition_tier3"),
             "loot_ammunition_tier3",
-            "tier1",
+            "loot_ammunition_tier3/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_submarine = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_submarine"),
+            ("zpm3:loot_submarine"),
             "loot_submarine",
-            "tier1",
+            "loot_submarine/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_military_tier1 = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_military_tier1"),
+            ("zpm3:loot_military_tier1"),
             "loot_military_tier1",
-            "tier1",
+            "loot_military_tier1/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_military_tier2 = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_military_tier2"),
+            ("zpm3:loot_military_tier2"),
             "loot_military_tier2",
-            "tier1",
+            "loot_military_tier2/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_military_tier3 = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_military_tier3"),
+            ("zpm3:loot_military_tier3"),
             "loot_military_tier3",
-            "tier1",
+            "loot_military_tier3/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_radiation_zone = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_radiation_zone"),
+            ("zpm3:loot_radiation_zone"),
             "loot_radiation_zone",
-            "tier1",
+            "loot_radiation_zone/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_toxic_zone = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_toxic_zone"),
+            ("zpm3:loot_toxic_zone"),
             "loot_toxic_zone",
-            "tier1",
+            "loot_toxic_zone/tier",
             -1.0f,
             0
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_chemzone_endgame = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "loot_chemzone_endgame"),
+            ("zpm3:loot_chemzone_endgame"),
             "loot_chemzone_endgame",
-            "tier1",
+            "loot_chemzone_endgame/tier",
             -1.0f,
             0
     );
@@ -467,11 +467,26 @@ public class ZPLootCasesModule extends ZPModule {
                             .addBreakable("zpm3:oxygen",                         5, 0.50f, 1.0f)
             )
             .commonGroup("firearms", 18, (g) -> g
-                    .addBreakable("zpm3:machinegun", 15, 0.90f, 1.0f)
-                    .addBreakable("zpm3:m16",        3, 0.75f, 1.0f)
-                    .addBreakable("zpm3:akm",        3, 0.75f, 1.0f)
-                    .addBreakable("zpm3:mp5",        2, 0.75f, 1.0f)
-                    .addBreakable("zpm3:deagle",     2, 0.75f, 1.0f)
+                    .addBreakable("zpm3:machinegun", 15, 0.90f, 1.0f,
+                            nbt -> nbt.addRandom(
+                                    "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
+                                    20, 40, ZPRandomization.power(1.25f)))
+                    .addBreakable("zpm3:m16",        3, 0.75f, 1.0f,
+                            nbt -> nbt.addRandom(
+                                    "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
+                                    15, 30, ZPRandomization.power(1.25f)))
+                    .addBreakable("zpm3:akm",        3, 0.75f, 1.0f,
+                            nbt -> nbt.addRandom(
+                                    "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
+                                    15, 30, ZPRandomization.power(1.25f)))
+                    .addBreakable("zpm3:mp5",        2, 0.75f, 1.0f,
+                            nbt -> nbt.addRandom(
+                                    "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
+                                    15, 30, ZPRandomization.power(1.25f)))
+                    .addBreakable("zpm3:deagle",     2, 0.75f, 1.0f,
+                            nbt -> nbt.addRandom(
+                                    "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
+                                    5, 7, ZPRandomization.power(1.25f)))
             )
             .commonGroup("ammunition", 32,
                     new ZPLootTable.RollRules(1.0f, 3, 6, ZPRandomization.power(1.25f)), (g) -> g
@@ -501,7 +516,7 @@ public class ZPLootCasesModule extends ZPModule {
                             .addNonBreakable("zpm3:acid_bottle",       5, 2, 6)
                             .addNonBreakable("zpm3:acid_bucket",       3, 1, 2)
                             .addNonBreakable("zpm3:toxicwater_bucket", 2, 1)
-                            .addNonBreakable("zpm3:cement_material",   5, 1, 3)
+                            .addNonBreakable("zpm3:cement_material",   5, 1)
                             .addNonBreakable("zpm3:steel_black",       3, 4, 12)
                             .addNonBreakable("zpm3:steel_gray",        3, 4, 12)
                             .addNonBreakable("zpm3:steel_hazard",      3, 4, 12)
@@ -535,7 +550,10 @@ public class ZPLootCasesModule extends ZPModule {
                     .addNonBreakable("minecraft:ancient_debris", 2, 1)
                     .addNonBreakable("minecraft:diamond",          8, 4, 8)
                     .addNonBreakable("zpm3:_machinegun",            8, 24, 32)
-                    .addBreakable("zpm3:machinegun",                 5, 0.95f, 1.0f)
+                    .addBreakable("zpm3:machinegun",                 5, 0.95f, 1.0f,
+                            nbt -> nbt.addRandom(
+                                    "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
+                                    0, 50, ZPRandomization.power(1.25f)))
                     .addNonBreakable("zpm3:anti_zplague_syringe",    4, 1)
                     .addNonBreakable("zpm3:radiation_protection_pill", 3, 1, 2))
             .build(new ZPLootTable.RollRules(1.0f, 2, 4, ZPRandomization.power(3.0f)));
@@ -693,7 +711,7 @@ public class ZPLootCasesModule extends ZPModule {
                             .addNonBreakable("minecraft:stone",       4, 4, 16)
                             .addNonBreakable("minecraft:iron_block",  2, 1, 2)
                             .addNonBreakable("minecraft:obsidian",    2, 1, 4)
-                            .addNonBreakable("zpm3:cement_material",  5, 1, 4)
+                            .addNonBreakable("zpm3:cement_material",  5, 1)
                             .addNonBreakable("zpm3:armored_glass",    4, 2, 8)
                             .addNonBreakable("zpm3:armored_glasspane", 3, 2, 8)
             )
@@ -717,12 +735,30 @@ public class ZPLootCasesModule extends ZPModule {
                             new ZPLootTable.RollRules(0.40f, 1, 1, ZPRandomization.uniform()))
             )
             .commonGroup("elite_firearms", 22, (g) -> g
-                            .addBreakable("zpm3:deagle",     5, 0.55f, 0.85f)
-                            .addBreakable("zpm3:machinegun", 1, 0.05f, 0.15f)
-                            .addBreakable("zpm3:mp5",        4, 0.45f, 0.75f)
-                            .addBreakable("zpm3:m16",        4, 0.45f, 0.75f)
-                            .addBreakable("zpm3:akm",        4, 0.40f, 0.70f)
-                            .addBreakable("zpm3:mosin",      2, 0.25f, 0.55f)
+                    .addBreakable("zpm3:deagle",     5, 0.55f, 0.85f,
+                            nbt -> nbt.addRandom(
+                                    "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
+                                    0, 7, ZPRandomization.power(1.25f)))
+                    .addBreakable("zpm3:machinegun", 1, 0.05f, 0.15f,
+                            nbt -> nbt.addRandom(
+                                    "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
+                                    0, 40, ZPRandomization.power(1.25f)))
+                    .addBreakable("zpm3:mp5",        4, 0.45f, 0.75f,
+                            nbt -> nbt.addRandom(
+                                    "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
+                                    0, 30, ZPRandomization.power(1.25f)))
+                    .addBreakable("zpm3:m16",        4, 0.45f, 0.75f,
+                            nbt -> nbt.addRandom(
+                                    "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
+                                    0, 30, ZPRandomization.power(1.25f)))
+                    .addBreakable("zpm3:akm",        4, 0.40f, 0.70f,
+                            nbt -> nbt.addRandom(
+                                    "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
+                                    0, 30, ZPRandomization.power(1.25f)))
+                    .addBreakable("zpm3:mosin",      2, 0.25f, 0.55f,
+                            nbt -> nbt.addRandom(
+                                    "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
+                                    0, 5, ZPRandomization.power(1.25f)))
             )
             .commonGroup("ammunition", 25,
                     new ZPLootTable.RollRules(1.0f, 2, 4, ZPRandomization.power(1.25f)), (g) -> g
@@ -777,7 +813,7 @@ public class ZPLootCasesModule extends ZPModule {
             )
             .commonGroup("military_materials", 8,
                     new ZPLootTable.RollRules(1.0f, 1, 2, ZPRandomization.power(1.5f)), (g) -> g
-                            .addNonBreakable("zpm3:cement_material",  4, 1, 3)
+                            .addNonBreakable("zpm3:cement_material",  4, 1)
                             .addNonBreakable("zpm3:plate",             4, 1, 4)
                             .addNonBreakable("zpm3:scrap_material",   5, 2, 8, ZPRandomization.power(2.0f))
                             .addNonBreakable("minecraft:iron_ingot",  4, 2, 6, ZPRandomization.power(1.5f))
@@ -798,7 +834,7 @@ public class ZPLootCasesModule extends ZPModule {
                     .addNonBreakable("zpm3:_m16",     3, 24, 32)
                     .addNonBreakable("zpm3:_machinegun", 2, 24, 32)
                     .addNonBreakable("minecraft:diamond", 2, 1, 2)
-                    .addNonBreakable("zpm3:cement_material", 3, 2, 4))
+                    .addNonBreakable("zpm3:cement_material", 3, 1))
             .build(new ZPLootTable.RollRules(1.0f, 2, 3, ZPRandomization.power(2.5f)));
 
     // ====================================================
@@ -828,11 +864,26 @@ public class ZPLootCasesModule extends ZPModule {
                             .addBreakable("zpm3:winter_boots",       3, 0.40f, 0.75f)
             )
             .commonGroup("firearms", 18, (g) -> g
-                            .addBreakable("zpm3:akm",       8, 0.20f, 0.50f)
-                            .addBreakable("zpm3:m16",       8, 0.20f, 0.50f)
-                            .addBreakable("zpm3:deagle",    8, 0.20f, 0.50f)
-                            .addBreakable("zpm3:shotgun",   6, 0.15f, 0.40f)
-                            .addBreakable("zpm3:machinegun", 1, 0.01f, 0.05f)
+                    .addBreakable("zpm3:akm",        8, 0.20f, 0.50f,
+                            nbt -> nbt.addRandom(
+                                    "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
+                                    0, 30, ZPRandomization.power(1.5f)))
+                    .addBreakable("zpm3:m16",        8, 0.20f, 0.50f,
+                            nbt -> nbt.addRandom(
+                                    "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
+                                    0, 30, ZPRandomization.power(1.5f)))
+                    .addBreakable("zpm3:deagle",     8, 0.20f, 0.50f,
+                            nbt -> nbt.addRandom(
+                                    "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
+                                    0, 7, ZPRandomization.power(1.5f)))
+                    .addBreakable("zpm3:shotgun",    6, 0.15f, 0.40f,
+                            nbt -> nbt.addRandom(
+                                    "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
+                                    0, 6, ZPRandomization.power(1.5f)))
+                    .addBreakable("zpm3:machinegun", 1, 0.01f, 0.05f,
+                            nbt -> nbt.addRandom(
+                                    "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
+                                    0, 26, ZPRandomization.power(1.5f)))
             )
             .commonGroup("ammunition", 25,
                     new ZPLootTable.RollRules(1.0f, 2, 4, ZPRandomization.power(1.5f)), (g) -> g
@@ -922,10 +973,22 @@ public class ZPLootCasesModule extends ZPModule {
                             .addBreakable("zpm3:winter_boots",       3, 0.25f, 0.60f)
             )
             .commonGroup("firearms", 20, (g) -> g
-                            .addBreakable("zpm3:usp",    5, 0.35f, 0.65f)
-                            .addBreakable("zpm3:uzi",    4, 0.25f, 0.55f)
-                            .addBreakable("zpm3:mp5",    3, 0.25f, 0.55f)
-                            .addBreakable("zpm3:mosin",  3, 0.20f, 0.50f)
+                    .addBreakable("zpm3:usp",    5, 0.35f, 0.65f,
+                            nbt -> nbt.addRandom(
+                                    "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
+                                    0, 12, ZPRandomization.power(2.0f)))
+                    .addBreakable("zpm3:uzi",    4, 0.25f, 0.55f,
+                            nbt -> nbt.addRandom(
+                                    "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
+                                    0, 30, ZPRandomization.power(2.0f)))
+                    .addBreakable("zpm3:mp5",    3, 0.25f, 0.55f,
+                            nbt -> nbt.addRandom(
+                                    "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
+                                    0, 30, ZPRandomization.power(2.0f)))
+                    .addBreakable("zpm3:mosin",  3, 0.20f, 0.50f,
+                            nbt -> nbt.addRandom(
+                                    "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
+                                    0, 5, ZPRandomization.power(2.0f)))
                             .addBreakable("zpm3:iron_club", 5, 0.35f, 0.70f)
             )
             .commonGroup("ammunition", 25,
@@ -990,14 +1053,38 @@ public class ZPLootCasesModule extends ZPModule {
                             .addBreakable("zpm3:radiation_costume_boots",       15, 0.15f, 0.6f, ZPRandomization.power(1.25f))
                             .addBreakable("zpm3:oxygen",                        5, 0.15f, 0.50f))
             .commonGroup("firearms", 18, (g) -> g
-                            .addBreakable("zpm3:usp",      4, 0.65f, 0.90f)
-                            .addBreakable("zpm3:colt",     4, 0.65f, 0.90f)
-                            .addBreakable("zpm3:uzi",      3, 0.55f, 0.85f)
-                            .addBreakable("zpm3:mp5",      2, 0.45f, 0.75f)
-                            .addBreakable("zpm3:shotgun",  3, 0.50f, 0.80f)
-                            .addBreakable("zpm3:mosin",    2, 0.10f, 0.40f)
-                            .addBreakable("zpm3:akm",      2, 0.05f, 0.25f)
-                            .addBreakable("zpm3:m16",      2, 0.05f, 0.25f))
+                    .addBreakable("zpm3:usp",     4, 0.65f, 0.90f,
+                            nbt -> nbt.addRandom(
+                                    "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
+                                    0, 12, ZPRandomization.power(2.0f)))
+                    .addBreakable("zpm3:colt",    4, 0.65f, 0.90f,
+                            nbt -> nbt.addRandom(
+                                    "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
+                                    0, 6, ZPRandomization.power(2.0f)))
+                    .addBreakable("zpm3:uzi",     3, 0.55f, 0.85f,
+                            nbt -> nbt.addRandom(
+                                    "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
+                                    0, 30, ZPRandomization.power(2.0f)))
+                    .addBreakable("zpm3:mp5",     2, 0.45f, 0.75f,
+                            nbt -> nbt.addRandom(
+                                    "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
+                                    0, 30, ZPRandomization.power(2.0f)))
+                    .addBreakable("zpm3:shotgun", 3, 0.50f, 0.80f,
+                            nbt -> nbt.addRandom(
+                                    "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
+                                    0, 6, ZPRandomization.power(2.0f)))
+                    .addBreakable("zpm3:mosin",   2, 0.10f, 0.40f,
+                            nbt -> nbt.addRandom(
+                                    "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
+                                    0, 5, ZPRandomization.power(2.0f)))
+                    .addBreakable("zpm3:akm",     2, 0.05f, 0.25f,
+                            nbt -> nbt.addRandom(
+                                    "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
+                                    0, 30, ZPRandomization.power(2.0f)))
+                    .addBreakable("zpm3:m16",     2, 0.05f, 0.25f,
+                            nbt -> nbt.addRandom(
+                                    "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
+                                    0, 30, ZPRandomization.power(2.0f))))
             .commonGroup("ammunition", 22,
                     new ZPLootTable.RollRules(1.0f, 2, 4, ZPRandomization.power(1.5f)), (g) -> g
                             .addNonBreakable("zpm3:_usp",        4, 8, 24, ZPRandomization.power(1.5f))
@@ -1603,9 +1690,7 @@ public class ZPLootCasesModule extends ZPModule {
             )
             .commonGroup("firearms_pistols", 18, (g) -> g
                     .addBreakable("zpm3:makarov",  4, 0.70f, 0.95f,
-                            nbt -> nbt.addRandom(
-                                    "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
-                                    0, 8, ZPRandomization.power(2.0f)))
+                            nbt -> nbt.addRandom("zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(), 0, 8, ZPRandomization.power(2.0f)))
                     .addBreakable("zpm3:usp",      5, 0.65f, 0.90f,
                             nbt -> nbt.addRandom(
                                     "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
@@ -1613,24 +1698,24 @@ public class ZPLootCasesModule extends ZPModule {
                     .addBreakable("zpm3:m1911",     4, 0.65f, 0.90f,
                             nbt -> nbt.addRandom(
                                     "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
-                                    0, 9, ZPRandomization.power(2.0f)))
+                                    0, 7, ZPRandomization.power(2.0f)))
                     .addBreakable("zpm3:colt",      4, 0.65f, 0.90f,
                             nbt -> nbt.addRandom(
                                     "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
-                                    0, 8, ZPRandomization.power(2.0f)))
+                                    0, 6, ZPRandomization.power(2.0f)))
                     .addBreakable("zpm3:handmade_pistol", 1, 0.50f, 0.80f,
                             nbt -> nbt.addRandom(
                                     "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
-                                    0, 3, ZPRandomization.power(2.0f))))
+                                    0, 1, ZPRandomization.power(2.0f))))
             .commonGroup("firearms_automatic", 7, (g) -> g
                     .addBreakable("zpm3:uzi", 4, 0.50f, 0.80f,
                             nbt -> nbt.addRandom(
                                     "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
-                                    0, 12, ZPRandomization.power(2.0f)))
+                                    0, 30, ZPRandomization.power(2.0f)))
                     .addBreakable("zpm3:mp5", 1, 0.05f, 0.25f,
                             nbt -> nbt.addRandom(
                                     "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
-                                    0, 10, ZPRandomization.power(1.5f))))
+                                    0, 20, ZPRandomization.power(1.5f))))
             .commonGroup("firearms_special", 8, (g) -> g
                     .addBreakable("zpm3:shotgun", 3, 0.05f, 0.20f,
                             nbt -> nbt.addRandom(
@@ -2403,7 +2488,7 @@ public class ZPLootCasesModule extends ZPModule {
                             .addNonBreakable("zpm3:block_lamp",       2, 1)
             )
             .commonGroup("cement", 12, (g) -> g
-                            .addNonBreakable("zpm3:cement_material",  5, 1, 2)
+                            .addNonBreakable("zpm3:cement_material",  5, 1)
                             .addNonBreakable("zpm3:scrap_stack_material", 4, 1, 3)
             )
             .commonGroup("technical", 12,
@@ -2441,7 +2526,7 @@ public class ZPLootCasesModule extends ZPModule {
                             .addNonBreakable("zpm3:shelves_material",   4, 1)
             )
             .bonusGroup("building_store_tier2_bonus", 0.012f, (g) -> g
-                            .addNonBreakable("zpm3:cement_material",       3, 1, 2)
+                            .addNonBreakable("zpm3:cement_material",       3, 1)
                             .addNonBreakable("zpm3:wall_lamp",              2, 1)
                             .addNonBreakable("zpm3:block_lamp",             2, 1)
                             .addNonBreakable("minecraft:stonecutter",       2, 1)
@@ -2928,7 +3013,7 @@ public class ZPLootCasesModule extends ZPModule {
                     .addBreakable("minecraft:iron_chestplate", 1, 0.20f, 0.80f)
                     .addBreakable("minecraft:iron_leggings",   1, 0.20f, 0.80f)
                     .addBreakable("minecraft:iron_boots",      1, 0.20f, 0.80f))
-            .commonGroup("food", 35, (g) -> g
+            .commonGroup("food", 40, (g) -> g
                     .addNonBreakable("minecraft:golden_carrot",     2, 1)
                     .addNonBreakable("minecraft:cooked_chicken",    8, 1, 2)
                     .addNonBreakable("minecraft:cooked_rabbit",     7, 1, 2)
@@ -3081,7 +3166,7 @@ public class ZPLootCasesModule extends ZPModule {
                     .addBreakable("zpm3:bandage", 8, 0.25f, 1.00f)
                     .addNonBreakable("zpm3:splint", 4, 1)
                     .addNonBreakable("zpm3:anti_headache_pill", 2, 1))
-            .commonGroup("food", 45, (g) -> g
+            .commonGroup("food", 36, (g) -> g
                     .addNonBreakable("minecraft:cooked_chicken", 8, 1)
                     .addNonBreakable("minecraft:cooked_rabbit",  6, 1)
                     .addNonBreakable("minecraft:bread",          8, 1, 3)
@@ -3103,7 +3188,7 @@ public class ZPLootCasesModule extends ZPModule {
                     .addNonBreakable("zpm3:bean",                5, 1, 3)
                     .addNonBreakable("zpm3:soda",                4, 1, 2)
                     .addNonBreakable("zpm3:rotten_apple",        2, 1, 4))
-            .commonGroup("blocks", 15, new ZPLootTable.RollRules(1.0f, 2, 4, ZPRandomization.power(1.25f)), (g) -> g
+            .commonGroup("blocks", 18, new ZPLootTable.RollRules(1.0f, 2, 4, ZPRandomization.power(1.25f)), (g) -> g
                     .addNonBreakable("minecraft:bricks",             5, 1, 3)
                     .addNonBreakable("minecraft:stone_bricks",      5, 1, 3)
                     .addNonBreakable("minecraft:glass",             5, 1, 4)
@@ -3219,13 +3304,13 @@ public class ZPLootCasesModule extends ZPModule {
                                             "zpgun_s:" + ZPTagID.GUN_AMMO_INSIDE_TAG.id(),
                                             0, 4,
                                             ZPRandomization.power(2.5f))))
-            .commonGroup("firearms_ammo", 12, new ZPLootTable.RollRules(1.0f, 1, 2, ZPRandomization.power(2.5f)), (g) -> g
+            .commonGroup("firearms_ammo", 8, new ZPLootTable.RollRules(1.0f, 1, 2, ZPRandomization.power(2.5f)), (g) -> g
                     .addNonBreakable("zpm3:_makarov",        5, 1, 8, ZPRandomization.power(2.5f))
                     .addNonBreakable("zpm3:_handmade_pistol", 3, 1, 6, ZPRandomization.power(2.5f))
                     .addNonBreakable("zpm3:_colt",           2, 1, 4, ZPRandomization.power(2.5f))
                     .addNonBreakable("zpm3:_m1911",          2, 1, 8, ZPRandomization.power(2.5f))
                     .addNonBreakable("zpm3:_usp",            1, 1, 6, ZPRandomization.power(2.5f)))
-            .commonGroup("blocks", 16, new ZPLootTable.RollRules(1.0f, 2, 6, ZPRandomization.power(1.25f)), (g) -> g
+            .commonGroup("blocks", 22, new ZPLootTable.RollRules(1.0f, 2, 6, ZPRandomization.power(1.25f)), (g) -> g
                     .addNonBreakable("minecraft:oak_log",             5, 1, 3)
                     .addNonBreakable("minecraft:oak_planks",          6, 1, 4)
                     .addNonBreakable("minecraft:oak_stairs",          4, 1, 3)
@@ -3246,7 +3331,7 @@ public class ZPLootCasesModule extends ZPModule {
                     .addNonBreakable("minecraft:brick_slab",           2, 1, 3)
                     .addNonBreakable("minecraft:brick_stairs",         2, 1, 3)
                     .addNonBreakable("minecraft:brick_wall",           2, 1, 3))
-            .commonGroup("melee", 25, (g) -> g
+            .commonGroup("melee", 35, (g) -> g
                     .addBreakable("zpm3:bat",                10, 0.15f, 0.45f)
                     .addBreakable("zpm3:broom",               8, 0.65f, 0.85f)
                     .addBreakable("zpm3:golf_club",           5, 0.20f, 0.50f)
@@ -3264,7 +3349,7 @@ public class ZPLootCasesModule extends ZPModule {
             .commonGroup("ranged", 6, (g) -> g
                     .addBreakable("minecraft:bow", 1, 0.05f, 0.1f)
                     .addNonBreakable("minecraft:arrow", 4, 1, 4))
-            .commonGroup("food", 40, (g) -> g
+            .commonGroup("food", 20, (g) -> g
                     .addNonBreakable("zpm3:mysterious_can",  8, 1)
                     .addNonBreakable("zpm3:sprats",          6, 1)
                     .addNonBreakable("zpm3:chocolate",       6, 1)
@@ -3291,7 +3376,7 @@ public class ZPLootCasesModule extends ZPModule {
                                         tag.putInt("EffectDuration", 300);
                                     })
                             ))))
-            .commonGroup("survival", 25, (g) -> g
+            .commonGroup("survival", 32, (g) -> g
                     .addNonBreakable("zpm3:plate",             6, 1, 5)
                     .addNonBreakable("zpm3:shelves_material", 5, 1)
                     .addNonBreakable("zpm3:chisel_material",  5, 1)
@@ -3368,7 +3453,7 @@ public class ZPLootCasesModule extends ZPModule {
                     .addNonBreakable("zpm3:_makarov",    6, 1, 16, ZPRandomization.power(1.5f))
                     .addNonBreakable("zpm3:_colt",       2, 1, 6, ZPRandomization.power(1.5f))
                     .addNonBreakable("zpm3:_handmade_pistol", 2, 1, 6, ZPRandomization.power(1.2f)))
-            .commonGroup("food", 45, (g) -> g
+            .commonGroup("food", 40, (g) -> g
                     .addNonBreakable("minecraft:beetroot",          10, 1)
                     .addNonBreakable("minecraft:carrot",            10, 1)
                     .addNonBreakable("minecraft:apple",             10, 1)
@@ -3464,7 +3549,7 @@ public class ZPLootCasesModule extends ZPModule {
                     .addNonBreakable("zpm3:_makarov",    6, 1, 12, ZPRandomization.power(1.5f))
                     .addNonBreakable("zpm3:_colt",       2, 1, 4, ZPRandomization.power(1.5f))
                     .addNonBreakable("zpm3:_handmade_pistol", 2, 1, 4, ZPRandomization.power(1.2f)))
-            .commonGroup("food", 40, (g) -> g
+            .commonGroup("food", 24, (g) -> g
                     .addNonBreakable("minecraft:carrot",               10, 1)
                     .addNonBreakable("minecraft:potato",               10, 1)
                     .addNonBreakable("minecraft:sweet_berries",        10, 1, 2)
@@ -3514,7 +3599,7 @@ public class ZPLootCasesModule extends ZPModule {
                                     })
                             ))
                     ))
-            .commonGroup("survival", 30, (g) -> g
+            .commonGroup("survival", 36, (g) -> g
                     .addNonBreakable("zpm3:campfire2",                      6, 1)
                     .addNonBreakable("zpm3:water",                      10, 1)
                     .addNonBreakable("zpm3:chocolate",                  8, 1)
@@ -3569,7 +3654,7 @@ public class ZPLootCasesModule extends ZPModule {
 
     public static final ZPLootTable loot_village_tier1 = ZPLootTable.builder("loot_village_tier1")
             .extendBy(ZPLootTable.TableExtension.defaultInst("zpm3:loot_debris"))
-            .commonGroup("building", 12, (g) -> g
+            .commonGroup("building", 16, (g) -> g
                     .addNonBreakable("minecraft:oak_log",              3, 1)
                     .addNonBreakable("minecraft:oak_planks",           5, 1, 4)
                     .addNonBreakable("minecraft:oak_stairs",           3, 1, 2)
@@ -3588,7 +3673,7 @@ public class ZPLootCasesModule extends ZPModule {
                     .addNonBreakable("minecraft:flower_pot",             1, 1)
                     .addNonBreakable("minecraft:hay_block",              1, 1)
             )
-            .commonGroup("food", 10, (g) -> g
+            .commonGroup("food", 4, (g) -> g
                     .addNonBreakable("minecraft:bread",          4, 1)
                     .addNonBreakable("minecraft:cookie",         8, 1, 2)
                     .addNonBreakable("minecraft:beetroot",       5, 1)
@@ -3672,7 +3757,7 @@ public class ZPLootCasesModule extends ZPModule {
                     .addNonBreakable("minecraft:name_tag",      1, 1)
             )
 
-            .build(new ZPLootTable.RollRules(1.0f, 1, 2, ZPRandomization.power(3.0f)));
+            .build(new ZPLootTable.RollRules(0.7f, 1, 2, ZPRandomization.power(3.0f)));
 
     // ================================================================
 
@@ -3779,9 +3864,9 @@ public class ZPLootCasesModule extends ZPModule {
 
 
     public static final ZPSyntheticLootCaseDescription Case__sample = new ZPSyntheticLootCaseDescription(
-            ResourceLocation.fromNamespaceAndPath(ZombiePlague3.MOD_ID(), "sample"),
+            ("zpm3:sample"),
             "sample",
-            "tier1",
+            "tier",
             -1.0f,
             1200
     );

@@ -65,6 +65,7 @@ public class ZPSyncStaticDataPacket_S2C implements ZPNetwork.ZPPacket {
         this.applyClient(accessor);
     }
 
+    @OnlyIn(Dist.CLIENT)
     @SuppressWarnings({"unchecked", "rawtypes"})
     private void applyClient(@NotNull ZPNetDataAccessor accessor) {
         ZombiePlague3.netClient().getNetStaticDataSyncer().setValue(accessor, this.value);

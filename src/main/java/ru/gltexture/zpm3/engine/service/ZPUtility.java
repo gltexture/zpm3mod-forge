@@ -37,6 +37,7 @@ import org.jetbrains.annotations.NotNull;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 
 import java.io.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public final class ZPUtility {
@@ -169,6 +170,13 @@ public final class ZPUtility {
             return runnable;
         }
 
+        @SuppressWarnings("all")
+        public <T> T onlyClient(CGet get) {
+            final AtomicReference<T> t = new AtomicReference<>();
+            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> t.set((T) get.run()));
+            return t.get();
+        }
+
         public void onlyClient(CRun runnable) {
             DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> runnable::run);
         }
@@ -176,6 +184,11 @@ public final class ZPUtility {
         // WARN ONLY DEDICATED!!!!!!!!!!!!!!!!!!!!!!!!!
         public void onlyDedicatedServer(SRun runnable) {
             DistExecutor.unsafeRunWhenOn(Dist.DEDICATED_SERVER, () -> runnable::run);
+        }
+
+        @FunctionalInterface
+        public interface CGet {
+            Object run();
         }
 
         @FunctionalInterface

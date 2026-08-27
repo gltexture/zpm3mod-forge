@@ -20,13 +20,6 @@
 
 package ru.gltexture.zpm3.engine.events.common;
 
-import ru.gltexture.zpm3.engine.client.rendering.callbacks.ZPClientCallbacksManager;
-import ru.gltexture.zpm3.engine.core.ZombiePlague3;
-import ru.gltexture.zpm3.engine.core.api.events.ZombiePlagueEvent;
-import ru.gltexture.zpm3.engine.core.api.events.common.ZPEventBus_Guns;
-import ru.gltexture.zpm3.modules.guns.item.ZPBaseGun;
-import ru.gltexture.zpm3.modules.guns.processing.logic.ZPDefaultGunLogicFunctions;
-
 public class ZPCommonZp3 {
     /*
     @Deprecated(forRemoval = true)

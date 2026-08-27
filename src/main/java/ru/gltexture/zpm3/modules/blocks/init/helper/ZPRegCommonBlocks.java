@@ -521,12 +521,12 @@ public abstract class ZPRegCommonBlocks {
             utils.blocks().addTagToBlock(e, ZPTags.B_MINEABLE_WITH_WRENCH);
             utils.blocks().addTagToBlock(e, ZPTags.B_MINEABLE_WITH_CROWBAR);
             ZPUtility.sides().onlyClient(() -> {
+                utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
                 utils.blocks().setBlockItemModelExecutor(e, DefaultBlockModelExecutors.getDefaultDoor(), DefaultBlockItemModelExecutors.getDefaultItemAs2DTexture("item/blocks/scrap_door"));
                 utils.blocks().addBlockModelKey_ValueArray(e, ZPDataGenHelper.NO_REFERENCE,
                         Pair.of(ZPGenTextureData.BOTTOM_KEY, () -> new ZPPath(ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY, "scrap_door_bottom")),
                         Pair.of(ZPGenTextureData.TOP_KEY, () -> new ZPPath(ZPDataGenHelper.COMMON_BLOCKS_DIRECTORY, "scrap_door_top")));
             });
-            utils.blocks().setBlockRenderType(e, ZPDataGenHelper.CUTOUT_RENDER_TYPE);
         }).end();
 
         ZPBlocks.scrap_trapDoor = regSupplier.register("scrap_trapdoor", () -> new ZPRustyTrapDoor(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).noOcclusion().strength(10.0F, 2.0F).sound(SoundType.METAL), BlockSetType.IRON)

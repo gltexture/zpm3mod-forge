@@ -120,7 +120,7 @@ public class ZPImGuiCreativeUtilityUI implements IZPImGuiInterface {
                 Files.createDirectories(zpMaps);
                 final Path inner = zpMaps.resolve(server.getWorldData().getLevelName().toLowerCase().replaceAll(" ", "_"));
                 Files.createDirectories(inner);
-                final Path zip = inner.resolve(server.getWorldData().getLevelName().toLowerCase().replaceAll(" ", "_") + ".zip");
+                final Path zip = inner.resolve( "map.zip");
                 ZPMapArchiver.archive(server, zip, a -> {
                     a.file("level.dat");
                     a.folder("region");

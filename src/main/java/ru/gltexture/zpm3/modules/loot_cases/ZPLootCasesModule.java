@@ -188,252 +188,252 @@ public class ZPLootCasesModule extends ZPModule {
             "loot_debris",
             "loot_debris/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_village_tier1 = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_village_tier1"),
             "loot_village_tier1",
             "loot_village_tier1/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_village_tier2 = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_village_tier2"),
             "loot_village_tier2",
             "loot_village_tier2/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_village_tier3 = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_village_tier3"),
             "loot_village_tier3",
             "loot_village_tier3/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_city_tier1 = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_city_tier1"),
             "loot_city_tier1",
             "loot_city_tier1/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_city_tier2 = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_city_tier2"),
             "loot_city_tier2",
             "loot_city_tier2/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_city_tier3 = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_city_tier3"),
             "loot_city_tier3",
             "loot_city_tier3/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_garage_tier1 = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_garage_tier1"),
             "loot_garage_tier1",
             "loot_garage_tier1/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_kitchen_tier1 = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_kitchen_tier1"),
             "loot_kitchen_tier1",
             "loot_kitchen_tier1/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_restaurant_tier1 = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_restaurant_tier1"),
             "loot_restaurant_tier1",
             "loot_restaurant_tier1/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_bar_tier1 = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_bar_tier1"),
             "loot_bar_tier1",
             "loot_bar_tier1/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_building_store_tier1 = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_building_store_tier1"),
             "loot_building_store_tier1",
             "loot_building_store_tier1/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_building_store_tier2 = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_building_store_tier2"),
             "loot_building_store_tier2",
             "loot_building_store_tier2/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_home_stash = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_home_stash"),
             "loot_home_stash",
             "loot_home_stash/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_construction_site = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_construction_site"),
             "loot_construction_site",
             "loot_construction_site/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_firefighter_tier1 = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_firefighter_tier1"),
             "loot_firefighter_tier1",
             "loot_firefighter_tier1/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_firefighter_tier2 = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_firefighter_tier2"),
             "loot_firefighter_tier2",
             "loot_firefighter_tier2/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_police_tier1 = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_police_tier1"),
             "loot_police_tier1",
             "loot_police_tier1/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_police_tier2 = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_police_tier2"),
             "loot_police_tier2",
             "loot_police_tier2/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_police_tier3 = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_police_tier3"),
             "loot_police_tier3",
             "loot_police_tier3/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_fishing_tier1 = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_fishing_tier1"),
             "loot_fishing_tier1",
             "loot_fishing_tier1/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_fishing_tier2 = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_fishing_tier2"),
             "loot_fishing_tier2",
             "loot_fishing_tier2/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_pharmacy_tier1 = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_pharmacy_tier1"),
             "loot_pharmacy_tier1",
             "loot_pharmacy_tier1/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_pharmacy_tier2 = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_pharmacy_tier2"),
             "loot_pharmacy_tier2",
             "loot_pharmacy_tier2/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_hospital_tier1 = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_hospital_tier1"),
             "loot_hospital_tier1",
             "loot_hospital_tier1/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_hospital_tier2 = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_hospital_tier2"),
             "loot_hospital_tier2",
             "loot_hospital_tier2/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_ammunition_tier1 = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_ammunition_tier1"),
             "loot_ammunition_tier1",
             "loot_ammunition_tier1/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_ammunition_tier2 = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_ammunition_tier2"),
             "loot_ammunition_tier2",
             "loot_ammunition_tier2/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_ammunition_tier3 = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_ammunition_tier3"),
             "loot_ammunition_tier3",
             "loot_ammunition_tier3/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_submarine = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_submarine"),
             "loot_submarine",
             "loot_submarine/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_military_tier1 = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_military_tier1"),
             "loot_military_tier1",
             "loot_military_tier1/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_military_tier2 = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_military_tier2"),
             "loot_military_tier2",
             "loot_military_tier2/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_military_tier3 = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_military_tier3"),
             "loot_military_tier3",
             "loot_military_tier3/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_radiation_zone = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_radiation_zone"),
             "loot_radiation_zone",
             "loot_radiation_zone/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_toxic_zone = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_toxic_zone"),
             "loot_toxic_zone",
             "loot_toxic_zone/tier",
             -1.0f,
-            0
+            36000
     );
     public static final ZPSyntheticLootCaseDescription Case__loot_chemzone_endgame = new ZPSyntheticLootCaseDescription(
             ("zpm3:loot_chemzone_endgame"),
             "loot_chemzone_endgame",
             "loot_chemzone_endgame/tier",
             -1.0f,
-            0
+            36000
     );
     // ====================================================
     // ====================================================

@@ -375,6 +375,7 @@
   "ui.zpm3.config.FIRST_PERSON_RENDER_SCALE_TYPE": "Тип масштабирования FOV",
   "ui.zpm3.config.PICK_UP_ON_KEY": "Подбор по клавише: %s",
   "ui.zpm3.config.ARMOR_LOOPED_SOUNDS": "Звуки брони: %s",
+  "ui.zpm3.config.NIGHT_VISION_FX_INTENSITY": "ПНВ Яркость: %s",
 
   "ui.zpm3.exit": "Готово",
   "ui.zpm3.modSettings": "ZP3 Настройки",

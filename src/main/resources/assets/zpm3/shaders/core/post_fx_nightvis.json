@@ -19,6 +19,12 @@
       "type": "float",
       "count": 1,
       "values": [ 0.0 ]
+    },
+    {
+      "name": "adjBrightnessNormalized",
+      "type": "float",
+      "count": 1,
+      "values": [ 0.0 ]
     }
   ]
 }

@@ -57,7 +57,7 @@ public abstract class ZPRegGuns {
                             .setDurability(9999)
                             .setInaccuracy(0.0f)
                             .setMaxAmmo(9999)
-                            .setReloadTime(40)
+                            .setReloadTime(1)
                             .setShootCooldown(1)
                             .setClientRecoil(0.0f)
                             .setAuto(true)
@@ -87,7 +87,7 @@ public abstract class ZPRegGuns {
                             .setDurability(280)
                             .setInaccuracy(1.8f)
                             .setMaxAmmo(8)
-                            .setReloadTime(40)
+                            .setReloadTime(50)
                             .setShootCooldown(4)
                             .setClientRecoil(3.0f)
                             .setReloadSound(() -> ZPSounds.makarov_reload.get())
@@ -119,7 +119,7 @@ public abstract class ZPRegGuns {
                             .setDurability(90)
                             .setInaccuracy(2.0f)
                             .setMaxAmmo(1)
-                            .setReloadTime(50)
+                            .setReloadTime(60)
                             .setShootCooldown(5)
                             .setClientRecoil(8.0f)
                             .setReloadSound(() -> ZPSounds.handmade_pistol_reload.get())
@@ -182,7 +182,7 @@ public abstract class ZPRegGuns {
                             .setDurability(320)
                             .setInaccuracy(1.25f)
                             .setMaxAmmo(7)
-                            .setReloadTime(40)
+                            .setReloadTime(46)
                             .setShootCooldown(4)
                             .setClientRecoil(3.8f)
                             .setReloadSound(() -> ZPSounds.m1911_reload.get())
@@ -482,10 +482,10 @@ public abstract class ZPRegGuns {
 
             ZPGunItems.mp5 = regSupplier.register("mp5",
                     () -> new ZPGunPistol(new Item.Properties(), new ZPBaseGun.GunProperties(ZPGunItems._mp5.get(), ZPBaseGun.GunProperties.HeldType.RIFLE)
-                            .setDamage(3)
+                            .setDamage(4)
                             .setAuto(true)
                             .setDurability(520)
-                            .setInaccuracy(1.25f)
+                            .setInaccuracy(1.375f)
                             .setMaxAmmo(30)
                             .setReloadTime(76)
                             .setShootCooldown(3)
@@ -504,7 +504,7 @@ public abstract class ZPRegGuns {
 
         {
             ZPGunItems._machinegun = regSupplier.register("_machinegun",
-                    () -> new ZPItem(new Item.Properties().stacksTo(32))
+                    () -> new ZPItem(new Item.Properties().stacksTo(48))
             ).afterCreated((e, utils) -> {
                 ZPUtility.sides().onlyClient(() -> {
                     utils.items().addItemInTab(e, ZPTabs.zp_guns_tab);
@@ -514,11 +514,11 @@ public abstract class ZPRegGuns {
 
             ZPGunItems.machinegun = regSupplier.register("machinegun",
                     () -> new ZPGunPistol(new Item.Properties(), new ZPBaseGun.GunProperties(ZPGunItems._machinegun.get(), ZPBaseGun.GunProperties.HeldType.RIFLE)
-                            .setDamage(2)
+                            .setDamage(3)
                             .setAuto(true)
                             .setDurability(700)
-                            .setInaccuracy(2.25f)
-                            .setMaxAmmo(64)
+                            .setInaccuracy(2.5f)
+                            .setMaxAmmo(86)
                             .setReloadTime(100)
                             .setShootCooldown(2)
                             .setClientRecoil(2.0f)

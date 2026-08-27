@@ -380,6 +380,7 @@
   "ui.zpm3.config.FIRST_PERSON_RENDER_SCALE_TYPE": "FOV Scaling Type",
   "ui.zpm3.config.PICK_UP_ON_KEY": "Pick Up on Key Press: %s",
   "ui.zpm3.config.ARMOR_LOOPED_SOUNDS": "Armor Sounds: %s",
+  "ui.zpm3.config.NIGHT_VISION_FX_INTENSITY": "NVG Brightness: %s",
 
   "ui.zpm3.exit": "Done",
   "ui.zpm3.modSettings": "ZP3 Settings",

@@ -36,9 +36,9 @@ import ru.gltexture.zpm3.engine.core.ZombiePlague3;
 import ru.gltexture.zpm3.engine.core.config.ZPConfigManager;
 import ru.gltexture.zpm3.engine.core.config.builtin.ZPClientConfig;
 import ru.gltexture.zpm3.engine.core.config.vars.*;
-import ru.gltexture.zpm3.engine.registry.ZPCommonRegistry;
 import ru.gltexture.zpm3.modules.ui.screen.ZPScreen;
 import ru.gltexture.zpm3.modules.ui.screen.instances.ZPConfigEditBox;
+import ru.gltexture.zpm3.modules.ui.screen.instances.ZPFloatSlider;
 import ru.gltexture.zpm3.modules.ui.screen.instances.ZPLabeledEditBox;
 
 import java.io.Serializable;
@@ -78,8 +78,12 @@ public class ZPClientConfigOptionsScreen extends ZPScreen {
         );
     }
 
+    private static Component float_sliderMsg(ZPConfigManager.ConfigVarWrappedObject configVar) {
+        return Component.translatable("ui.zpm3.config." + configVar.varName(), String.format("%.2f", (float) configVar.get().getVar()));
+    }
+
     private static Component buttonMsg(ZPConfigManager.ConfigVarWrappedObject configVar) {
-        return Component.translatable("ui.zpm3.config." + configVar.varName(), ((ZPConfig_BOOL) configVar.get()).getVar());
+        return Component.translatable("ui.zpm3.config." + configVar.varName(), (configVar.get()).getVar());
     }
 
     protected void drawUiElementFor(GridLayout.RowHelper rowHelper, ConfigVarUIWithEditCallback varObj) {
@@ -122,21 +126,11 @@ public class ZPClientConfigOptionsScreen extends ZPScreen {
                     },
                     Double::parseDouble).setOnUpdateText(onUpdateText);
             this.createEditBoxWidget(rowHelper, box, Component.translatable("ui.zpm3.config." + varObj.configVar().varName()));
-        } else if (varObj.configVar().get() instanceof ZPConfig_FLOAT) {
-            ZPConfigEditBox box = this.getEditBoxFor(varObj,
-                    s -> {
-                        if (s.isEmpty()) {
-                            return true;
-                        }
-                        try {
-                            Float.parseFloat(s);
-                            return true;
-                        } catch (NumberFormatException ignored) {
-                            return false;
-                        }
-                    },
-                    Float::parseFloat).setOnUpdateText(onUpdateText);
-            this.createEditBoxWidget(rowHelper, box, Component.translatable("ui.zpm3.config." + varObj.configVar().varName()));
+        } else if (varObj.configVar().get() instanceof ZPConfig_FLOAT configFloat) {
+            rowHelper.addChild(new ZPFloatSlider(configFloat.getMin(), configFloat.getMax(), (e) -> {
+                configFloat.setVar(e.getValue());
+                e.setMessage(ZPClientConfigOptionsScreen.float_sliderMsg(varObj.configVar()));
+            }, 0, 0, 150, 20, ZPClientConfigOptionsScreen.float_sliderMsg(varObj.configVar()), (configFloat.getVar() / configFloat.getMax())));
         } else if (varObj.configVar().get() instanceof ZPConfig_STRING configString) {
             ZPConfigEditBox box = this.getEditBoxFor(varObj,
                     s -> true,

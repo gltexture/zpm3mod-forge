@@ -28,6 +28,7 @@ import ru.gltexture.zpm3.engine.client.rendering.postfx.ZPPostFXChain;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPDefaultShaders;
 import ru.gltexture.zpm3.engine.client.rendering.shaders.ZPShaderLoader;
 import ru.gltexture.zpm3.engine.core.ZombiePlague3;
+import ru.gltexture.zpm3.engine.core.config.builtin.ZPClientConfig;
 import ru.gltexture.zpm3.modules.armor.utils.ZPArmorUtil;
 import ru.gltexture.zpm3.modules.debug.imgui.ZPImGuiDebugInterface;
 
@@ -49,6 +50,7 @@ public class ZPNightVisPostFXProcessor extends ZPPostFXProcessor{
             GL46.glBindTexture(GL46.GL_TEXTURE_2D, screenTexture_GL_ID);
             shader.safeGetUniform("texture_map").set(0);
             shader.safeGetUniform("timer").set(ZPPostFXChain.TIMER);
+            shader.safeGetUniform("adjBrightnessNormalized").set(ZPClientConfig.NIGHT_VISION_FX_INTENSITY.getVar());
             ZombiePlague3.getClientManager().renderScreenMesh();
         }
         Objects.requireNonNull(shader).clear();

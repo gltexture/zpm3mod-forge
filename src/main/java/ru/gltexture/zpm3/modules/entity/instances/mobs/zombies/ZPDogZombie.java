@@ -96,7 +96,7 @@ public class ZPDogZombie extends ZPAbstractZombie {
                 .add(Attributes.MAX_HEALTH, 20.0f * ZPZombieConfig.ZOMBIE_MAX_HEALTH_MULTIPLIER.getVar())
                 .add(Attributes.FOLLOW_RANGE, ZPZombieConfig.ZOMBIE_FOLLOW_RANGE.getVar())
                 .add(Attributes.MOVEMENT_SPEED, 0.34f * ZPZombieConfig.ZOMBIE_MOVEMENT_SPEED_MULTIPLIER.getVar())
-                .add(Attributes.ATTACK_DAMAGE, 2.0f * ZPZombieConfig.ZOMBIE_ATTACK_DAMAGE_MULTIPLIER.getVar())
+                .add(Attributes.ATTACK_DAMAGE, 2.5f * ZPZombieConfig.ZOMBIE_ATTACK_DAMAGE_MULTIPLIER.getVar())
                 .add(Attributes.ARMOR, 0.0f)
                 .add(ZPEntityAttributes.zm_attack_range_multiplier.get(), 1.0f / ZPZombieConfig.ZOMBIE_DOG_ATTACK_RANGE_MULTIPLIER.getVar())
                 .add(ZPEntityAttributes.zm_mining_speed.get(), 0.0f)

@@ -59,7 +59,7 @@ public class ZPClientConfig implements ZPConfigConstantsClass {
 
     @ZPVarDefinition(description = "(CLIENT) Night vision FX intensity/brightness.")
     public static final ZPConfig_FLOAT NIGHT_VISION_FX_INTENSITY =
-            new ZPConfig_FLOAT(1.0f, 0.0f, 1.0f);
+            new ZPConfig_FLOAT(0.5f, 0.0f, 1.0f);
 
     @ZPVarDefinition(description = "(CLIENT) Enable items pickup on key.")
     public static final ZPConfig_BOOL PICK_UP_ON_KEY =

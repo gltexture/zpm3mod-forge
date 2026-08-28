@@ -121,42 +121,77 @@ public abstract class ZPRenderingUtil {
 
     @Deprecated(forRemoval = true)
     public static void renderTextureIDScreenOverlayFromFBO(@NotNull ShaderInstance shaderToRender, @NotNull Consumer<ShaderInstance> doUniforms, @NotNull List<Pair<String, ITexture2DProgram>> texturesWithUniforms) {
-        shaderToRender.apply();
+        final boolean blendEnabled = GL46.glIsEnabled(GL46.GL_BLEND);
+        final boolean depthTestEnabled = GL46.glIsEnabled(GL46.GL_DEPTH_TEST);
+        final boolean cullFaceEnabled = GL46.glIsEnabled(GL46.GL_CULL_FACE);
+        final boolean depthWriteEnabled = GL46.glGetBoolean(GL46.GL_DEPTH_WRITEMASK);
+        final int blendSrcRgb = GL46.glGetInteger(GL46.GL_BLEND_SRC_RGB);
+        final int blendDstRgb = GL46.glGetInteger(GL46.GL_BLEND_DST_RGB);
+        final int blendSrcAlpha = GL46.glGetInteger(GL46.GL_BLEND_SRC_ALPHA);
+        final int blendDstAlpha = GL46.glGetInteger(GL46.GL_BLEND_DST_ALPHA);
+        final int activeTexture = GL46.glGetInteger(GL46.GL_ACTIVE_TEXTURE);
+        final int[] viewport = new int[4];
+        GL46.glGetIntegerv(GL46.GL_VIEWPORT, viewport);
 
-        //  GL46.glDisable(GL46.GL_CULL_FACE);
-        GL46.glEnable(GL46.GL_BLEND);
-        GL46.glDisable(GL46.GL_DEPTH_TEST);
+        final int textureCount = texturesWithUniforms.size();
+        final int[] textureBindings = new int[textureCount];
+        final int[] samplerBindings = new int[textureCount];
+        for (int i = 0; i < textureCount; i++) {
+            final int textureUnit = GL46.GL_TEXTURE0 + i;
+            GL46.glActiveTexture(textureUnit);
+            textureBindings[i] = GL46.glGetInteger(GL46.GL_TEXTURE_BINDING_2D);
+            samplerBindings[i] = GL46.glGetInteger(GL46.GL_SAMPLER_BINDING);
+        }
 
-        int texUnit = 0;
-        for (Pair<String, ITexture2DProgram> pair : texturesWithUniforms) {
-            String uniformName = pair.first();
-            ITexture2DProgram textureProgram = pair.second();
-
-            Uniform uniform = shaderToRender.getUniform(uniformName);
-            if (uniform != null) {
-                uniform.set(texUnit);
+        try {
+            shaderToRender.apply();
+            GL46.glEnable(GL46.GL_BLEND);
+            GL46.glDisable(GL46.GL_DEPTH_TEST);
+            int texUnit = 0;
+            for (Pair<String, ITexture2DProgram> pair : texturesWithUniforms) {
+                final String uniformName = pair.first();
+                final ITexture2DProgram textureProgram = pair.second();
+                final Uniform uniform = shaderToRender.getUniform(uniformName);
+                if (uniform != null) {
+                    uniform.set(texUnit);
+                }
+                GL46.glActiveTexture(GL46.GL_TEXTURE0 + texUnit);
+                textureProgram.bindSampler(texUnit);
+                textureProgram.bindTexture();
+                texUnit++;
+            }
+            doUniforms.accept(shaderToRender);
+            ZombiePlague3.getClientManager().renderScreenMesh();
+        } finally {
+            for (int i = 0; i < textureCount; i++) {
+                final int textureUnit = GL46.GL_TEXTURE0 + i;
+                GL46.glActiveTexture(textureUnit);
+                texturesWithUniforms.get(i).second().unBindSampler(i);
+                GL46.glBindTexture(GL46.GL_TEXTURE_2D, textureBindings[i]);
+                GL46.glBindSampler(i, samplerBindings[i]);
             }
 
-            GL46.glActiveTexture(GL46.GL_TEXTURE0 + texUnit);
-            textureProgram.bindSampler(texUnit);
-            textureProgram.bindTexture();
-
-            texUnit++;
+            GL46.glActiveTexture(activeTexture);
+            if (blendEnabled) {
+                GL46.glEnable(GL46.GL_BLEND);
+            } else {
+                GL46.glDisable(GL46.GL_BLEND);
+            }
+            GL46.glBlendFuncSeparate(blendSrcRgb, blendDstRgb, blendSrcAlpha, blendDstAlpha);
+            if (depthTestEnabled) {
+                GL46.glEnable(GL46.GL_DEPTH_TEST);
+            } else {
+                GL46.glDisable(GL46.GL_DEPTH_TEST);
+            }
+            GL46.glDepthMask(depthWriteEnabled);
+            if (cullFaceEnabled) {
+                GL46.glEnable(GL46.GL_CULL_FACE);
+            } else {
+                GL46.glDisable(GL46.GL_CULL_FACE);
+            }
+            GL46.glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
+            RenderSystem.setShader(GameRenderer::getPositionTexShader);
         }
-
-        doUniforms.accept(shaderToRender);
-
-        ZombiePlague3.getClientManager().renderScreenMesh();
-
-        texUnit = 0;
-        for (Pair<String, ITexture2DProgram> pair : texturesWithUniforms) {
-            pair.second().unBindSampler(texUnit);
-            texUnit++;
-        }
-
-        GL46.glEnable(GL46.GL_DEPTH_TEST);
-        GL46.glActiveTexture(GL46.GL_TEXTURE0);
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
     }
 
     public static Vector2i getWindowSize() {

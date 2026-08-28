@@ -191,6 +191,9 @@ public class ZPImGuiInterfacesRenderer implements IZPClientManager.ResourceLifec
         if (shader == null || Minecraft.getInstance().options.hideGui) {
             return;
         }
+        if (GLFW.glfwGetWindowAttrib(window.getWindow(), GLFW.GLFW_VISIBLE) == GLFW.GLFW_FALSE) {
+            return;
+        }
 
         final Minecraft mc = Minecraft.getInstance();
         final MouseHandler mouse = mc.mouseHandler;
@@ -216,6 +219,7 @@ public class ZPImGuiInterfacesRenderer implements IZPClientManager.ResourceLifec
         ImGui.newFrame();
         try {
             dearUIInterfaceSet.forEach(e -> e.drawGui(window, new IZPImGuiInterface.Input(mouse, keyboardHandler)));
+            ImGui.render();
         } catch (Exception e) {
             ImGui.pushID(e.toString());
             ImGui.setNextWindowSize(800, 1200);
@@ -228,8 +232,8 @@ public class ZPImGuiInterfacesRenderer implements IZPClientManager.ResourceLifec
             ImGui.endChild();
             ImGui.end();
             ImGui.popID();
+            ImGui.render();
         }
-        ImGui.render();
 
         final ImDrawData drawData = ImGui.getDrawData();
         this.openGlPass(drawData, shader);

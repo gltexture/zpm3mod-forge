@@ -116,8 +116,17 @@ dependencies {
     minecraftLibrary 'io.github.spair:imgui-java-natives-linux:1.92.7.1'
     minecraftLibrary 'io.github.spair:imgui-java-natives-macos:1.92.7.1'
 
+    ///implementation fg.deobf("blank:vss-0.2.10-forge-1.20.1:0.2.10")
+    //implementation fg.deobf("blank:DistantHorizons-2.4.5-b-1.20.1-fabric-forge:2.4.5-b")
+    implementation fg.deobf("blank:DistantHorizons-3.2.0-b-1.20.1-fabric-forge:3.2.0-b")
     implementation fg.deobf("blank:embeddium-0.3.31+mc1.20.1:0.3.31")
     implementation fg.deobf("blank:oculus-mc1.20.1-1.8.0:1.8.0")
+    implementation fg.deobf("blank:worldedit-mod-7.2.15-1.20.1-fabric-forge:7.2.15")
+    
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.4"))
+    implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.5.4")) {
+        jarJar.ranged(it, "[0.5.4,)")
+    }
 }
 
 tasks.named('processResources', ProcessResources).configure {

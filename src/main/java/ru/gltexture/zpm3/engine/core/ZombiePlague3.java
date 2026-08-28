@@ -150,7 +150,7 @@ public final class ZombiePlague3 {
     public static final String assetsJsonPath = "zpm3.modules.json";
     public static final String MOD_ID = "zpm3";
     static final Logger LOGGER = LoggerFactory.getLogger(ZombiePlague3.MOD_ID);
-    private static final ZPProject MOD_INFO = new ZPProject("ZombiePlague3Mod", ZombiePlague3.MOD_ID, "0.2.1a DEV");
+    private static final ZPProject MOD_INFO = new ZPProject("ZombiePlague3Mod", ZombiePlague3.MOD_ID, "0.2.2a DEV");
     private final ZPRegistryConveyor zpRegistryConveyor;
     private final List<ZPModule> assets;
     private ZPNetwork zpNetwork;

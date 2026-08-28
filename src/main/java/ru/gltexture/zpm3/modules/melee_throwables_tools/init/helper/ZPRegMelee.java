@@ -39,7 +39,7 @@ import ru.gltexture.zpm3.modules.melee_throwables_tools.init.ZPMeleeThrowableToo
 
 public abstract class ZPRegMelee {
     public static void init(@NotNull ZPCommonRegistry.ZPRegSupplier<Item> regSupplier) {
-        ZPMeleeThrowableToolsItems.bat = regSupplier.register("bat", () -> new ZPItemSword(ZPCommonToolMeleeTiers.ZP_WOOD, 6, -3.2F, new Item.Properties())
+        ZPMeleeThrowableToolsItems.bat = regSupplier.register("bat", () -> new ZPItemSword(ZPCommonToolMeleeTiers.ZP_WOOD, 6, -2.8F, new Item.Properties())
         ).afterCreated((e, utils) -> {
             ZPUtility.sides().onlyClient(() -> {
                 ZPItemTabAddHelper.addItemInTab(e, ZPTabs.zp_melee_tab);
@@ -48,7 +48,7 @@ public abstract class ZPRegMelee {
             utils.items().setItemDistanceBonus(e.getId(), 0.2f);
         }).end();
 
-        ZPMeleeThrowableToolsItems.iron_club = regSupplier.register("iron_club", () -> new ZPItemSword(ZPCommonToolMeleeTiers.ZP_IRON_2, 3, -1.2F, new Item.Properties())
+        ZPMeleeThrowableToolsItems.iron_club = regSupplier.register("iron_club", () -> new ZPItemSword(ZPCommonToolMeleeTiers.ZP_IRON_2, 3, -1.5F, new Item.Properties())
         ).afterCreated((e, utils) -> {
                     ZPUtility.sides().onlyClient(() -> {
                         utils.items().addItemInTab(e, ZPTabs.zp_melee_tab);
@@ -57,22 +57,22 @@ public abstract class ZPRegMelee {
             utils.items().setItemDistanceBonus(e.getId(),0.3f);
         }).end();
 
-        ZPMeleeThrowableToolsItems.pipe = regSupplier.register("pipe", () -> new ZPItemSword(ZPCommonToolMeleeTiers.ZP_IRON_1, 3, -2.8F, new Item.Properties())
+        ZPMeleeThrowableToolsItems.pipe = regSupplier.register("pipe", () -> new ZPItemSword(ZPCommonToolMeleeTiers.ZP_IRON_1, 3, -2.0F, new Item.Properties())
         ).afterCreated((e, utils) -> {
                     ZPUtility.sides().onlyClient(() -> {
                         utils.items().addItemInTab(e, ZPTabs.zp_melee_tab);
                         utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_MELEE, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MELEE_ITEMS_DIRECTORY);
                     });
-            utils.items().setItemDistanceBonus(e.getId(),0.4f);
+            utils.items().setItemDistanceBonus(e.getId(),0.35f);
         }).end();
 
-        ZPMeleeThrowableToolsItems.golf_club = regSupplier.register("golf_club", () -> new ZPItemSword(ZPCommonToolMeleeTiers.ZP_IRON_1, 4, -1.8F, new Item.Properties())
+        ZPMeleeThrowableToolsItems.golf_club = regSupplier.register("golf_club", () -> new ZPItemSword(ZPCommonToolMeleeTiers.ZP_IRON_1, 4, -1.2F, new Item.Properties())
         ).afterCreated((e, utils) -> {
                     ZPUtility.sides().onlyClient(() -> {
                         utils.items().addItemInTab(e, ZPTabs.zp_melee_tab);
                         utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_MELEE, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MELEE_ITEMS_DIRECTORY);
                     });
-            utils.items().setItemDistanceBonus(e.getId(), 0.3f);
+            utils.items().setItemDistanceBonus(e.getId(), 0.25f);
         }).end();
 
         ZPMeleeThrowableToolsItems.crowbar = regSupplier.register("crowbar", () -> new ZPCrowbarSword(ZPCommonToolMeleeTiers.ZP_IRON_3, 4, -0.8F, new Item.Properties())
@@ -100,25 +100,25 @@ public abstract class ZPRegMelee {
                 utils.items().addItemInTab(e, ZPTabs.zp_melee_tab);
                 utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_BRUSH, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MELEE_ITEMS_DIRECTORY);
             });
-            utils.items().setItemDistanceBonus(e.getId(), 0.1f);
+            utils.items().setItemDistanceBonus(e.getId(), 0.15f);
         }).end();
 
-        ZPMeleeThrowableToolsItems.hatchet = regSupplier.register("hatchet", () -> new ZPItemAxe(ZPCommonToolMeleeTiers.ZP_IRON_3, 5.0f, -3.2F, new Item.Properties())
+        ZPMeleeThrowableToolsItems.hatchet = regSupplier.register("hatchet", () -> new ZPItemAxe(ZPCommonToolMeleeTiers.ZP_IRON_3, 5.0f, -2.8F, new Item.Properties())
         ).afterCreated((e, utils) -> {
                     ZPUtility.sides().onlyClient(() -> {
                         utils.items().addItemInTab(e, ZPTabs.zp_melee_tab);
                         utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_MELEE, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MELEE_ITEMS_DIRECTORY);
                     });
-            utils.items().setItemDistanceBonus(e.getId(), 0.1f);
+            utils.items().setItemDistanceBonus(e.getId(), 0.15f);
         }).end();
 
-        ZPMeleeThrowableToolsItems.sledgehammer = regSupplier.register("sledgehammer", () -> new ZPItemPickaxe(ZPCommonToolMeleeTiers.ZP_IRON_3, 5, -3.2F, new Item.Properties())
+        ZPMeleeThrowableToolsItems.sledgehammer = regSupplier.register("sledgehammer", () -> new ZPItemPickaxe(ZPCommonToolMeleeTiers.ZP_IRON_3, 5, -2.8F, new Item.Properties())
         ).afterCreated((e, utils) -> {
                     ZPUtility.sides().onlyClient(() -> {
                         utils.items().addItemInTab(e, ZPTabs.zp_melee_tab);
                         utils.items().addItemModel(e, ZPDataGenHelper.DEFAULT_MELEE, ZPGenTextureData.LAYER0_KEY, ZPDataGenHelper.MELEE_ITEMS_DIRECTORY);
                     });
-            utils.items().setItemDistanceBonus(e.getId(), 0.1f);
+            utils.items().setItemDistanceBonus(e.getId(), 0.15f);
         }).end();
     }
 

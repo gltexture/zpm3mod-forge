@@ -98,7 +98,7 @@ public class ZPMinerZombie extends ZPAbstractZombie {
                 .add(Attributes.MAX_HEALTH, 40.0f * ZPZombieConfig.ZOMBIE_MAX_HEALTH_MULTIPLIER.getVar())
                 .add(Attributes.FOLLOW_RANGE, ZPZombieConfig.ZOMBIE_FOLLOW_RANGE.getVar() * 0.8f)
                 .add(Attributes.MOVEMENT_SPEED, 0.22f * ZPZombieConfig.ZOMBIE_MOVEMENT_SPEED_MULTIPLIER.getVar())
-                .add(Attributes.ATTACK_DAMAGE, 3.0f * ZPZombieConfig.ZOMBIE_ATTACK_DAMAGE_MULTIPLIER.getVar())
+                .add(Attributes.ATTACK_DAMAGE, 3.5f * ZPZombieConfig.ZOMBIE_ATTACK_DAMAGE_MULTIPLIER.getVar())
                 .add(Attributes.ARMOR, 1.0f)
                 .add(ZPEntityAttributes.zm_attack_range_multiplier.get(), 0.55f / ZPZombieConfig.ZOMBIE_ATTACK_RANGE_MULTIPLIER.getVar())
                 .add(ZPEntityAttributes.zm_mining_speed.get(), 0.006f * ZPZombieConfig.ZOMBIE_MINING_SPEED_MULTIPLIER.getVar())
